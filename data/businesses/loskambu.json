@@ -1,0 +1,24 @@
+{
+  "slug": "loskambu",
+  "name": "Los Kambu Sandwiches",
+  "headline": "Sandwiches boricuas con flow",
+  "description": "Sandwiches artesanales y comida callejera con sabor boricua. Ordena por WhatsApp o visítanos.",
+  "hours": {
+    "mon": "Cerrado",
+    "tue": "4:00 PM - 10:00 PM",
+    "wed": "4:00 PM - 10:00 PM",
+    "thu": "4:00 PM - 10:00 PM",
+    "fri": "4:00 PM - 11:00 PM",
+    "sat": "12:00 PM - 11:00 PM",
+    "sun": "12:00 PM - 9:00 PM"
+  },
+  "links": {
+    "whatsapp": "https://wa.me/17870000000",
+    "instagram": "https://instagram.com/loskambu",
+    "googleMaps": "https://maps.google.com/?q=Los+Kambu"
+  },
+  "menu": [
+    { "name": "Kambu Classic", "price": 12.0, "desc": "Pollo, lechuga, tomate, mayo-ketchup." },
+    { "name": "Kambu Bacon", "price": 14.0, "desc": "Bacon crujiente, queso y salsa especial." }
+  ]
+}
