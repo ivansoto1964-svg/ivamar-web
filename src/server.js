@@ -64,6 +64,23 @@ app.get("/contact", (req, res) => {
   res.send(layout({ title: "Contacto", body }));
 });
 
+// Endpoint del asistente IvA (simple por ahora)
+app.post("/api/assistant", (req, res) => {
+  const message = (req.body?.message || "").toString().toLowerCase();
+
+  let reply = "👋 Soy IvA, el asistente de Ivamar AI. Dime qué tipo de negocio tienes y te explico cómo te ayudamos a vender más sin comisiones.";
+
+  if (message.includes("precio") || message.includes("plan")) {
+    reply = "Planes desde .99/mes. Incluye landing personalizada + asistente + enlaces a WhatsApp/Instagram/Maps. Si quieres, te preparo un demo.";
+  } else if (message.includes("demo")) {
+    reply = "Puedes ver un ejemplo aquí: /loskambu. Cada negocio tiene su landing tipo /tu-negocio.";
+  } else if (message.includes("como funciona") || message.includes("cómo funciona")) {
+    reply = "Así funciona: 1) Creamos tu landing, 2) Subes tu info y menú, 3) El asistente responde preguntas y guía al cliente a WhatsApp para ordenar.";
+  }
+
+  res.json({ reply });
+});
+
 // Ruta dinámica por negocio
 app.get("/:slug", (req, res) => {
   const slug = req.params.slug;
