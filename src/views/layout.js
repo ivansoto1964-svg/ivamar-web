@@ -48,6 +48,11 @@ module.exports = function layout({ title, body }) {
           © ${new Date().getFullYear()} Ivamar AI · Hecho para negocios que quieren vender más sin comisiones.
         </div>
       </div>
+<button id="ivaTest" style="position:fixed;bottom:20px;right:20px;padding:12px 16px;background:#22c55e;border:0;border-radius:10px;font-weight:bold;cursor:pointer;">
+IvA
+</button>
+
+
     </body>
   </html>
   `;
