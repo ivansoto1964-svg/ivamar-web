@@ -122,6 +122,17 @@ app.post("/api/assistant", async (req, res) => {
   const brainUrl = process.env.IVA_BRAIN_URL || "https://ivamar-brain.onrender.com/api/chat";
   const brainAssistant = process.env.IVA_BRAIN_ASSISTANT || "nayeli";
 
+  if ((message || "").trim() === "__debug") {
+    try {
+      const out = await postJson(brainUrl, { assistant: brainAssistant, message: "ping" });
+      let data = null;
+      try { data = out.body ? JSON.parse(out.body) : null; } catch (_) { data = null; }
+      return res.json({ debug: true, brainUrl, brainAssistant, status: out.status, bodyPreview: (out.body || "").slice(0, 200), parsedReply: data && data.reply ? (""+data.reply).slice(0,120) : null });
+    } catch (e) {
+      return res.json({ debug: true, brainUrl, brainAssistant, error: (e && e.message) ? e.message : String(e) });
+    }
+  }
+
   try {
     const out = await postJson(brainUrl, { assistant: brainAssistant, message });
 
