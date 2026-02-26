@@ -114,7 +114,7 @@ module.exports = function layout({ title, body }) {
 
   <div class="iva-foot">
     <input class="iva-input" id="ivaInput" placeholder="Escribe aquí… (ej: precios, demo, cómo funciona)" />
-    <button class="iva-send" id="ivaSend">Enviar</button>
+    <button type="button" class="iva-send" id="ivaSend">Enviar</button>
   </div>
 </div>
 
@@ -139,16 +139,37 @@ module.exports = function layout({ title, body }) {
     }
 
     async function ask(message){
+      const controller = new AbortController();
+      const t = setTimeout(() => controller.abort(), 15000);
+      send.disabled = true;
+      send.textContent = "...";
       try{
         const res = await fetch("/api/assistant", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message })
+          body: JSON.stringify({ message }),
+          signal: controller.signal
         });
-        const data = await res.json();
-        addMsg(data.reply || "Hmm… ahora mismo no pude responder. Intenta de nuevo.", "bot");
+
+        const raw = await res.text();
+        let data = null;
+        try{ data = raw ? JSON.parse(raw) : null; }catch(_){ data = null; }
+
+        if(!res.ok){
+          addMsg("⚠️ IvA respondió con error (" + res.status + "). Intenta otra vez.", "bot");
+          return;
+        }
+
+        addMsg((data && data.reply) ? data.reply : "Hmm… ahora mismo no pude responder. Intenta de nuevo.", "bot");
       }catch(e){
-        addMsg("Ups. Hubo un problema conectando con IvA. Intenta otra vez.", "bot");
+        const msg = (e && e.name === "AbortError")
+          ? "⏳ Se tardó demasiado. Intenta otra vez."
+          : "Ups. Hubo un problema conectando con IvA. Intenta otra vez.";
+        addMsg(msg, "bot");
+      }finally{
+        clearTimeout(t);
+        send.disabled = false;
+        send.textContent = "Enviar";
       }
     }
 
