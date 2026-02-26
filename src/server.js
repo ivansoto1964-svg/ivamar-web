@@ -7,6 +7,43 @@ const app = express();
 app.use(express.json());
 const PORT = process.env.PORT || 4000;
 
+// POST JSON helper (works even if fetch() is not available)
+function postJson(urlStr, payload) {
+  return new Promise((resolve, reject) => {
+    try {
+      const url = new URL(urlStr);
+      const lib = url.protocol === "https:" ? require("https") : require("http");
+      const data = Buffer.from(JSON.stringify(payload));
+
+      const req = lib.request({
+        hostname: url.hostname,
+        port: url.port || (url.protocol === "https:" ? 443 : 80),
+        path: url.pathname + (url.search || ""),
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Content-Length": data.length
+        },
+        timeout: 15000
+      }, (res) => {
+        let body = "";
+        res.on("data", (chunk) => body += chunk);
+        res.on("end", () => resolve({ status: res.statusCode || 0, body }));
+      });
+
+      req.on("timeout", () => {
+        req.destroy(new Error("timeout"));
+      });
+      req.on("error", reject);
+      req.write(data);
+      req.end();
+    } catch (e) {
+      reject(e);
+    }
+  });
+}
+
+
 // Home
 app.get("/", (req, res) => {
   const body = `
@@ -66,20 +103,39 @@ app.get("/contact", (req, res) => {
 });
 
 // Endpoint del asistente IvA (simple por ahora)
-app.post("/api/assistant", (req, res) => {
-  const message = (req.body?.message || "").toString().toLowerCase();
+app.post("/api/assistant", async (req, res) => {
+  const message = (req.body?.message || "").toString();
 
-  let reply = "👋 Soy IvA, el asistente de Ivamar AI. Dime qué tipo de negocio tienes y te explico cómo te ayudamos a vender más sin comisiones.";
+  // Fallback simple (por si el "cerebro" falla)
+  const m = message.toLowerCase();
+  let fallback = "👋 Soy IvA, el asistente de Ivamar AI. Dime qué tipo de negocio tienes y te explico cómo te ayudamos a vender más sin comisiones.";
 
-  if (message.includes("precio") || message.includes("plan")) {
-    reply = "Planes desde .99/mes. Incluye landing personalizada + asistente + enlaces a WhatsApp/Instagram/Maps. Si quieres, te preparo un demo.";
-  } else if (message.includes("demo")) {
-    reply = "Puedes ver un ejemplo aquí: /loskambu. Cada negocio tiene su landing tipo /tu-negocio.";
-  } else if (message.includes("como funciona") || message.includes("cómo funciona")) {
-    reply = "Así funciona: 1) Creamos tu landing, 2) Subes tu info y menú, 3) El asistente responde preguntas y guía al cliente a WhatsApp para ordenar.";
+  if (m.includes("precio") || m.includes("plan") || m.includes("cuanto cuesta") || m.includes("cuánto cuesta") || m.includes("costo") || m.includes("cost") || m.includes("tarifa") || m.includes("mensual")) {
+    fallback = "Planes desde .99/mes. Incluye landing personalizada + asistente + enlaces a WhatsApp/Instagram/Maps. Si quieres, te preparo un demo.";
+  } else if (m.includes("demo")) {
+    fallback = "Puedes ver un ejemplo aquí: /loskambu. Cada negocio tiene su landing tipo /tu-negocio.";
+  } else if (m.includes("como funciona") || m.includes("cómo funciona")) {
+    fallback = "Así funciona: 1) Creamos tu landing, 2) Subes tu info y menú, 3) El asistente responde preguntas y guía al cliente a WhatsApp para ordenar.";
   }
 
-  res.json({ reply });
+  // "Cerebro" (por ahora: Nayeli local). Luego lo cambiamos a tu SaaS en Render.
+  const brainUrl = process.env.IVA_BRAIN_URL || "http://localhost:3000/api/chat";
+  const brainAssistant = process.env.IVA_BRAIN_ASSISTANT || "nayeli";
+
+  try {
+    const out = await postJson(brainUrl, { assistant: brainAssistant, message });
+
+    let data = null;
+    try { data = out.body ? JSON.parse(out.body) : null; } catch (_) { data = null; }
+
+    if (out.status >= 200 && out.status < 300 && data && typeof data.reply === "string" && data.reply.trim()) {
+      return res.json({ reply: data.reply });
+    }
+
+    return res.json({ reply: fallback });
+  } catch (e) {
+    return res.json({ reply: fallback });
+  }
 });
 
 // Ruta dinámica por negocio
