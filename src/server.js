@@ -119,8 +119,8 @@ app.post("/api/assistant", async (req, res) => {
   }
 
   // "Cerebro" (por ahora: Nayeli local). Luego lo cambiamos a tu SaaS en Render.
-  const brainUrl = process.env.IVA_BRAIN_URL || "https://ivamar-brain.onrender.com/api/chat";
-  const brainAssistant = process.env.IVA_BRAIN_ASSISTANT || "nayeli";
+    const brainUrl = process.env.IVA_BRAIN_URL || "https://ivamar-brain.onrender.com/v1/chat";  
+    const brainAssistant = process.env.IVA_BRAIN_ASSISTANT || "nayeli";
 
   if ((message || "").trim() === "__debug") {
     try {
