@@ -8,7 +8,7 @@ app.use(express.json());
 const PORT = process.env.PORT || 4000;
 
 // POST JSON helper (works even if fetch() is not available)
-function postJson(urlStr, payload) {
+function postJson(urlStr, payload, options = {}) {
   return new Promise((resolve, reject) => {
     try {
       const url = new URL(urlStr);
@@ -21,9 +21,14 @@ function postJson(urlStr, payload) {
         path: url.pathname + (url.search || ""),
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
-          "Content-Length": data.length
-        },
+  "Content-Type": "application/json",
+  "Content-Length": data.length,
+  ...(options.headers || {})
+},
+
+
+
+
         timeout: 15000
       }, (res) => {
         let body = "";
@@ -124,7 +129,13 @@ app.post("/api/assistant", async (req, res) => {
 
   if ((message || "").trim() === "__debug") {
     try {
-      const out = await postJson(brainUrl, { assistant: brainAssistant, message: "ping" });
+const out = await postJson(
+  brainUrl,
+  { assistantId: brainAssistant, message, sessionId: "web-session" },
+  { headers: { Authorization: `Bearer ${process.env.IVA_BRAIN_API_KEY || "dev-secret"}` } }
+);
+
+
       let data = null;
       try { data = out.body ? JSON.parse(out.body) : null; } catch (_) { data = null; }
       return res.json({ debug: true, brainUrl, brainAssistant, status: out.status, bodyPreview: (out.body || "").slice(0, 200), parsedReply: data && data.reply ? (""+data.reply).slice(0,120) : null });
