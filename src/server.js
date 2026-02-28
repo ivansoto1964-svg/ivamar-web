@@ -113,7 +113,7 @@ app.post("/api/assistant", async (req, res) => {
 
   // Fallback simple (por si el "cerebro" falla)
   const m = message.toLowerCase();
-  let fallback = "👋 Soy IvA, el asistente de Ivamar AI. Dime qué tipo de negocio tienes y te explico cómo te ayudamos a vender más sin comisiones.";
+let fallback = "🌺 Soy Nayeli, tu embajadora digital boricua. Ahora mismo estoy teniendo un glitch técnico 😅. Escríbeme de nuevo en unos segundos, o dime tu negocio y te ayudo con lo básico aquí mismo.";
 
   if (m.includes("precio") || m.includes("plan") || m.includes("cuanto cuesta") || m.includes("cuánto cuesta") || m.includes("costo") || m.includes("cost") || m.includes("tarifa") || m.includes("mensual")) {
     fallback = "Planes desde .99/mes. Incluye landing personalizada + asistente + enlaces a WhatsApp/Instagram/Maps. Si quieres, te preparo un demo.";
