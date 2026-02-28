@@ -155,8 +155,8 @@ app.post("/api/assistant", async (req, res) => {
         brainUrl,
         brainAssistant,
         hasBrainKey: !!(process.env.IVA_BRAIN_API_KEY && process.env.IVA_BRAIN_API_KEY.trim()),
-       error: (e && e.message) ? e.message : String(e)
- });
+        error: (e && e.message) ? e.message : String(e)
+      });
     }
   }
 
@@ -167,26 +167,6 @@ app.post("/api/assistant", async (req, res) => {
       { assistantId: brainAssistant, message, sessionId: req.body?.sessionId || "web-session" },
       { headers: { Authorization: `Bearer ${brainKey}` } }
     );
-
-    let data = null;
-    try { data = out.body ? JSON.parse(out.body) : null; } catch (_) { data = null; }
-
-    if (out.status >= 200 && out.status < 300 && data && typeof data.reply === "string" && data.reply.trim()) {
-      return res.json({ reply: data.reply });
-    }
-
-    return res.json({ reply: fallback });
-  } catch (e) {
-    return res.json({ reply: fallback });
-  }
-});
-    } catch (e) {
-      return res.json({ debug: true, brainUrl, brainAssistant, error: (e && e.message) ? e.message : String(e) });
-    }
-  }
-
-  try {
-    const out = await postJson(brainUrl, { assistant: brainAssistant, message });
 
     let data = null;
     try { data = out.body ? JSON.parse(out.body) : null; } catch (_) { data = null; }
