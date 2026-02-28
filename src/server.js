@@ -123,22 +123,63 @@ app.post("/api/assistant", async (req, res) => {
     fallback = "Así funciona: 1) Creamos tu landing, 2) Subes tu info y menú, 3) El asistente responde preguntas y guía al cliente a WhatsApp para ordenar.";
   }
 
-  // "Cerebro" (por ahora: Nayeli local). Luego lo cambiamos a tu SaaS en Render.
-    const brainUrl = process.env.IVA_BRAIN_URL || "https://ivamar-brain.onrender.com/v1/chat";  
-    const brainAssistant = process.env.IVA_BRAIN_ASSISTANT || "nayeli";
+  // Cerebro real (Render)
+  const brainUrl = process.env.IVA_BRAIN_URL || "https://ivamar-brain.onrender.com/v1/chat";
+  const brainAssistant = process.env.IVA_BRAIN_ASSISTANT || "nayeli";
+  const brainKey = process.env.IVA_BRAIN_API_KEY || "dev-secret";
 
+  // Debug del bridge
   if ((message || "").trim() === "__debug") {
     try {
-const out = await postJson(
-  brainUrl,
-  { assistantId: brainAssistant, message, sessionId: "web-session" },
-  { headers: { Authorization: `Bearer ${process.env.IVA_BRAIN_API_KEY || "dev-secret"}` } }
-);
-
+      const out = await postJson(
+        brainUrl,
+        { assistantId: brainAssistant, message: "ping", sessionId: "web-session" },
+        { headers: { Authorization: `Bearer ${brainKey}` } }
+      );
 
       let data = null;
       try { data = out.body ? JSON.parse(out.body) : null; } catch (_) { data = null; }
-      return res.json({ debug: true, brainUrl, brainAssistant, status: out.status, bodyPreview: (out.body || "").slice(0, 200), parsedReply: data && data.reply ? (""+data.reply).slice(0,120) : null });
+
+      return res.json({
+        debug: true,
+        brainUrl,
+        brainAssistant,
+        hasBrainKey: !!(process.env.IVA_BRAIN_API_KEY && process.env.IVA_BRAIN_API_KEY.trim()),
+        status: out.status,
+        bodyPreview: (out.body || "").slice(0, 200),
+        parsedReply: data && data.reply ? ("" + data.reply).slice(0, 120) : null
+      });
+    } catch (e) {
+      return res.json({
+        debug: true,
+        brainUrl,
+        brainAssistant,
+        hasBrainKey: !!(process.env.IVA_BRAIN_API_KEY && process.env.IVA_BRAIN_API_KEY.trim()),
+       error: (e && e.message) ? e.message : String(e)
+ });
+    }
+  }
+
+  // Llamada real al brain
+  try {
+    const out = await postJson(
+      brainUrl,
+      { assistantId: brainAssistant, message, sessionId: req.body?.sessionId || "web-session" },
+      { headers: { Authorization: `Bearer ${brainKey}` } }
+    );
+
+    let data = null;
+    try { data = out.body ? JSON.parse(out.body) : null; } catch (_) { data = null; }
+
+    if (out.status >= 200 && out.status < 300 && data && typeof data.reply === "string" && data.reply.trim()) {
+      return res.json({ reply: data.reply });
+    }
+
+    return res.json({ reply: fallback });
+  } catch (e) {
+    return res.json({ reply: fallback });
+  }
+});
     } catch (e) {
       return res.json({ debug: true, brainUrl, brainAssistant, error: (e && e.message) ? e.message : String(e) });
     }
