@@ -129,8 +129,8 @@ let fallback = "🌺 Soy Nayeli, tu embajadora digital boricua. Ahora mismo esto
   const brainKey = process.env.IVA_BRAIN_API_KEY || "dev-secret";
 
   // Debug del bridge
-  if ((message || "").trim() === "__debug") {
-    try {
+ if (process.env.NODE_ENV !== "production" && (message || "").trim() === "__debug") {
+      try {
       const out = await postJson(
         brainUrl,
         { assistantId: brainAssistant, message: "ping", sessionId: "web-session" },
