@@ -125,7 +125,7 @@ let fallback = "🌺 Soy Nayeli, tu embajadora digital boricua. Ahora mismo esto
 
   // Cerebro real (Render)
   const brainUrl = process.env.IVA_BRAIN_URL || "https://ivamar-brain.onrender.com/v1/chat";
-  const brainAssistant = process.env.IVA_BRAIN_ASSISTANT || "nayeli";
+const brainAssistant = process.env.IVA_BRAIN_ASSISTANT || "iva";
   const brainKey = process.env.IVA_BRAIN_API_KEY || "dev-secret";
 
   // Debug del bridge
