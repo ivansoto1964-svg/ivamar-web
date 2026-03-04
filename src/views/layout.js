@@ -127,12 +127,28 @@ module.exports = function layout({ title, body }) {
     const input = document.getElementById("ivaInput");
     const send = document.getElementById("ivaSend");
 
-    function addMsg(text, who){
+function escapeHtml(str){
+  return String(str)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+}
+
+function linkify(text){
+  const safe = escapeHtml(text);
+  const urlRegex = /(https?:\/\/[^\s]+)/g;
+  return safe.replace(urlRegex, (url) => {
+    return `<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`;
+  });
+}   
+ function addMsg(text, who){
       const row = document.createElement("div");
       row.className = "iva-msg " + (who === "user" ? "user" : "bot");
       const bubble = document.createElement("div");
       bubble.className = "iva-bubble";
-      bubble.textContent = text;
+      bubble.innerHTML = linkify(text);
       row.appendChild(bubble);
       body.appendChild(row);
       body.scrollTop = body.scrollHeight;
@@ -177,7 +193,7 @@ module.exports = function layout({ title, body }) {
       panel.style.display = "flex";
       fab.style.display = "none";
       if (!body.dataset.welcomed){
-        addMsg("👋 Soy IvA. Pregúntame por precios, demo o cómo funciona.", "bot");
+        addMsg("Hola, gracias por ponerte en contacto con Ivamar AI.\nSoy IvA y estoy aquí para orientarte.\n¿Qué tipo de negocio tienes y en qué ciudad operas?", "bot");
         body.dataset.welcomed = "1";
       }
       setTimeout(()=>input.focus(), 50);
