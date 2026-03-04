@@ -144,9 +144,21 @@ function escapeHtml(str){
 
 function linkify(text){
   const safe = escapeHtml(text);
-  const urlRegex = /(https?:\/\/[^\s]+)/g;
-  return safe.replace(urlRegex, (url) => {
-  return '<a href="' + url + '" target="_blank" rel="noopener noreferrer">' + url + '</a>';
+  // Detecta URLs separadas por espacios, sin usar \s ni \/\/ (evita escapes rotos en templates)
+  const parts = safe.split(" ");
+  for (let i = 0; i < parts.length; i++) {
+    const p = parts[i];
+    if (p.startsWith("http://") || p.startsWith("https://")) {
+      parts[i] = '<a href="' + p + '" target="_blank" rel="noopener noreferrer">' + p + "</a>";
+    }
+  }
+  return parts.join(" ");
+}
+
+
+
+
+
     });
 }   
  function addMsg(text, who){
