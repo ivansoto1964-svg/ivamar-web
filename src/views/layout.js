@@ -1,250 +1,289 @@
-module.exports = function layout({ title, body }) {
-  return `
-  <html>
-    <head>
-      <meta charset="utf-8" />
-      <meta name="viewport" content="width=device-width,initial-scale=1" />
-      <title>${title}</title>
-      <style>
-        :root{--bg:#0b1220;--card:#0f172a;--muted:#94a3b8;--text:#e2e8f0;--accent:#22c55e;}
-        body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;background:linear-gradient(180deg,#070b14, var(--bg));color:var(--text);}
-        .wrap{max-width:980px;margin:0 auto;padding:28px;}
-        .nav{display:flex;gap:16px;align-items:center;justify-content:space-between;margin-bottom:28px;}
-        .nav a{color:var(--muted);text-decoration:none;font-weight:700}
-        .nav a:hover{color:var(--text)}
-        .brand{display:flex;gap:10px;align-items:center}
-        .dot{width:10px;height:10px;border-radius:999px;background:var(--accent);box-shadow:0 0 18px rgba(34,197,94,.6)}
-        .card{background:rgba(15,23,42,.85);border:1px solid rgba(148,163,184,.15);border-radius:18px;padding:26px;box-shadow:0 12px 40px rgba(0,0,0,.35)}
-        h1{font-size:44px;line-height:1.05;margin:0 0 10px}
-        h2{margin:0 0 10px}
-        p{color:var(--muted);font-size:18px;line-height:1.45}
-        .btns{display:flex;gap:12px;flex-wrap:wrap;margin-top:14px}
-        .btn{display:inline-block;padding:12px 16px;border-radius:12px;font-weight:900;text-decoration:none}
-        .btn.primary{background:var(--accent);color:#06110b}
-        .btn.ghost{border:1px solid rgba(148,163,184,.25);color:var(--text)}
-        .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}
-        .tile{padding:14px;border-radius:14px;border:1px solid rgba(148,163,184,.15);background:rgba(2,6,23,.35)}
-        .tile b{display:block;margin-bottom:6px;color:var(--text)}
-        .footer{margin-top:28px;color:var(--muted);font-size:13px}
-        @media (max-width:860px){.grid{grid-template-columns:1fr}h1{font-size:36px}}
-/* IvA Chat */
-.iva-fab{
-  position:fixed;right:18px;bottom:18px;z-index:9999;
-  width:56px;height:56px;border-radius:999px;border:0;
-  background:var(--accent);color:#04110a;font-weight:900;
-  box-shadow:0 18px 50px rgba(0,0,0,.45);
-  cursor:pointer;
-}
-.iva-panel{
-  position:fixed;right:18px;bottom:86px;z-index:9999;
-  width:min(360px, calc(100vw - 36px));
-  height:520px;max-height:70vh;
-  display:none;flex-direction:column;
-  background:rgba(15,23,42,.92);
-  border:1px solid rgba(148,163,184,.18);
-  border-radius:18px;overflow:hidden;
-  box-shadow:0 22px 70px rgba(0,0,0,.55);
-  backdrop-filter: blur(10px);
-}
-.iva-head{display:flex;align-items:center;justify-co.iva
-const leadBtn = document.getElementById("ivaLeadBtn");
--title{display:flex;gap:10px;align-items:center}
-.iva-title b{font-size:14px}
-.iva-title span{color:var(--muted);font-size:12px}
-.iva-close{background:transparent;border:0;color:var(--muted);cursor:pointer;font-size:18px;line-height:1}
-.iva-body{padding:12px;overflow:auto;flex:1}
-.iva-msg{margin:10px 0;display:flex}
-.iva-msg.user{justify-content:flex-end}
-.iva-bubble{
-  max-width:85%;
-  padding:10px 12px;border-radius:14px;
-  border:1px solid rgba(148,163,184,.12);
-  background:rgba(2,6,23,.55);
-  color:var(--text);font-size:13px;line-height:1.35
-}
-.iva-msg.user .iva-bubble{background:rgba(34,197,94,.14);border-color:rgba(34,197,94,.25)}
-.iva-foot{display:flex;gap:10px;padding:12px;border-top:1px solid rgba(148,163,184,.12)}
-.iva-input{
-  flex:1;padding:12px 12px;border-radius:12px;
-  border:1px solid rgba(148,163,184,.18);
-  background:rgba(2,6,23,.55);color:var(--text);
-  outline:none;
-}
-.iva-send{
-  padding:12px 14px;border-radius:12px;border:0;
-  background:var(--accent);color:#04110a;font-weight:900;cursor:pointer;
+/**
+ * src/views/layout.js
+ * Layout base + IvA Chat Widget
+ *
+ * Fixes:
+ * - Elimina llaves sueltas que rompen el <script>
+ * - Linkify sin regex con backslashes (para evitar escapes rotos en templates)
+ * - Incluye CTA fijo al Google Form + leadUrl constante
+ */
+
+function escapeHtml(str) {
+  return String(str)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
 }
 
-      </style>
-    </head>
-    <body>
-      <div class="wrap">
-        <div class="nav">
-          <div class="brand">
-            <span class="dot"></span>
-            <a href="/" style="color:var(--text);font-weight:900">Ivamar AI</a>
-          </div>
-          <div style="display:flex;gap:14px;flex-wrap:wrap">
-            <a href="/demo">Demo</a>
-            <a href="/pricing">Precios</a>
-            <a href="/contact">Contacto</a>
-          </div>
-        </div>
+module.exports = function layout({ title = "Ivamar AI", body = "" } = {}) {
+  return `<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>${escapeHtml(title)}</title>
 
-        ${body}
-        <div class="footer">
-          © ${new Date().getFullYear()} Ivamar AI · Hecho para negocios que quieren vender más sin comisiones.
-        </div>
-      </div>
-<!-- IvA Chat Widget -->
-<button class="iva-fab" id="ivaFab" aria-label="Abrir chat">IvA</button>
+  <style>
+    :root{
+      --bg:#0b0b0f; --panel:#12121a; --text:#f5f5f7; --muted:#b7b7c2;
+      --accent:#6ee7ff; --border:rgba(255,255,255,.12);
+    }
+    body{ margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; background:var(--bg); color:var(--text); }
+    .wrap{ max-width:1100px; margin:0 auto; padding:24px 16px; }
+    a{ color:inherit; }
 
-<div class="iva-panel" id="ivaPanel" role="dialog" aria-label="Chat IvA">
-  <div class="iva-head">
-    <div class="iva-title">
-      <span class="dot"></span>
-      <div>
-        <b>IvA</b><br/>
-        <span>Asistente de Ivamar AI</span>
-      </div>
-    </div>
-    <button class="iva-close" id="ivaClose" aria-label="Cerrar">×</button>
+    /* IvA Chat */
+    .iva-fab{
+      position:fixed; right:18px; bottom:18px;
+      width:58px; height:58px; border-radius:999px;
+      background:var(--accent); border:none; cursor:pointer;
+      box-shadow:0 14px 30px rgba(0,0,0,.35);
+      display:flex; align-items:center; justify-content:center;
+      font-weight:900; color:#001014; z-index:9999;
+    }
+    .iva-panel{
+      position:fixed; right:18px; bottom:18px;
+      width:min(420px, calc(100vw - 36px));
+      height:560px;
+      background:var(--panel);
+      border:1px solid var(--border);
+      border-radius:18px;
+      display:none;
+      flex-direction:column;
+      overflow:hidden;
+      box-shadow:0 18px 50px rgba(0,0,0,.45);
+      z-index:10000;
+    }
+    .iva-head{
+      padding:12px;
+      display:flex; align-items:center; justify-content:space-between;
+      border-bottom:1px solid var(--border);
+      gap:10px;
+    }
+    .iva-brand{ display:flex; align-items:center; gap:10px; }
+    .iva-dot{ width:10px; height:10px; border-radius:999px; background:var(--accent); box-shadow:0 0 0 4px rgba(110,231,255,.15); }
+    .iva-title{ font-weight:900; letter-spacing:.2px; }
+    .iva-sub{ font-size:12px; color:var(--muted); margin-top:2px; }
+    .iva-close{
+      border:1px solid var(--border);
+      background:transparent;
+      color:var(--text);
+      border-radius:12px;
+      padding:8px 10px;
+      cursor:pointer;
+    }
+
+    .iva-body{ padding:12px; overflow:auto; flex:1; }
+    .iva-msg{ display:flex; margin:10px 0; }
+    .iva-msg.user{ justify-content:flex-end; }
+    .iva-bubble{
+      max-width:82%;
+      padding:10px 12px;
+      border-radius:16px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.03);
+      line-height:1.25;
+      font-size:14px;
+      word-wrap:break-word;
+    }
+    .iva-msg.user .iva-bubble{
+      background:rgba(110,231,255,.10);
+      border-color:rgba(110,231,255,.25);
+    }
+    .iva-bubble a{ color:var(--accent); text-decoration:underline; }
+
+    .iva-cta{
+      padding:10px 12px;
+      border-top:1px solid var(--border);
+      background:rgba(255,255,255,.02);
+      display:flex; gap:10px; align-items:center; justify-content:space-between;
+    }
+    .iva-cta small{ color:var(--muted); }
+    .iva-cta a{
+      display:inline-flex; align-items:center; gap:8px;
+      padding:10px 12px; border-radius:12px;
+      border:1px solid rgba(110,231,255,.35);
+      background:rgba(110,231,255,.10);
+      color:var(--text);
+      text-decoration:none;
+      font-weight:900;
+      white-space:nowrap;
+    }
+
+    .iva-foot{
+      border-top:1px solid var(--border);
+      padding:10px;
+      display:flex; gap:10px; align-items:center;
+      background:rgba(0,0,0,.12);
+    }
+    .iva-input{
+      flex:1;
+      padding:10px 12px;
+      border-radius:12px;
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.04);
+      color:var(--text);
+      outline:none;
+    }
+    .iva-send{
+      padding:10px 14px;
+      border-radius:12px;
+      border:none;
+      background:var(--accent);
+      color:#001014;
+      font-weight:900;
+      cursor:pointer;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    ${body}
   </div>
 
-  <div class="iva-body" id="ivaBody"></div>
+  <!-- IvA Chat Widget -->
+  <button class="iva-fab" id="ivaFab" aria-label="Abrir chat">IvA</button>
 
-<div class="iva-footer">
-  <input id="ivaInput" placeholder="Escribe tu mensaje..." />
-  <button id="ivaSend">Enviar</button>
-  <button id="ivaLeadBtn" class="iva-lead">📄 Solicitar propuesta</button>
-</div>
+  <div class="iva-panel" id="ivaPanel" role="dialog" aria-label="Chat IvA">
+    <div class="iva-head">
+      <div class="iva-brand">
+        <span class="iva-dot"></span>
+        <div>
+          <div class="iva-title">IvA</div>
+          <div class="iva-sub">Asistente de Ivamar AI</div>
+        </div>
+      </div>
+      <button class="iva-close" id="ivaClose" aria-label="Cerrar">Cerrar</button>
+    </div>
 
+    <div class="iva-body" id="ivaBody"></div>
 
+    <div class="iva-cta">
+      <small>¿Quieres demo o cotización?</small>
+      <a href="https://forms.gle/cW7qTdj5zTx2S4ZH7" target="_blank" rel="noopener noreferrer">
+        Abrir Google Form →
+      </a>
+    </div>
 
+    <div class="iva-foot">
+      <input class="iva-input" id="ivaInput" placeholder="Escribe aquí…" autocomplete="off" />
+      <button class="iva-send" id="ivaSend">Enviar</button>
+    </div>
+  </div>
 
-</div>
+  <script>
+    (function(){
+      const leadUrl = "https://forms.gle/cW7qTdj5zTx2S4ZH7";
 
-<script>
-  (function(){
-    const fab = document.getElementById("ivaFab");
-    const panel = document.getElementById("ivaPanel");
-    const closeBtn = document.getElementById("ivaClose");
-    const body = document.getElementById("ivaBody");
-    const input = document.getElementById("ivaInput");
-    const send = document.getElementById("ivaSend");
+      const fab = document.getElementById("ivaFab");
+      const panel = document.getElementById("ivaPanel");
+      const closeBtn = document.getElementById("ivaClose");
+      const body = document.getElementById("ivaBody");
+      const input = document.getElementById("ivaInput");
+      const send = document.getElementById("ivaSend");
 
-function escapeHtml(str){
-  return String(str)
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
-}
+      function escapeHtmlLocal(str){
+        return String(str)
+          .replaceAll("&","&amp;")
+          .replaceAll("<","&lt;")
+          .replaceAll(">","&gt;")
+          .replaceAll('"',"&quot;")
+          .replaceAll("'","&#039;");
+      }
 
-function linkify(text){
-  const safe = escapeHtml(text);
-  // Detecta URLs separadas por espacios, sin usar \s ni \/\/ (evita escapes rotos en templates)
-  const parts = safe.split(" ");
-  for (let i = 0; i < parts.length; i++) {
-    const p = parts[i];
-    if (p.startsWith("http://") || p.startsWith("https://")) {
-      parts[i] = '<a href="' + p + '" target="_blank" rel="noopener noreferrer">' + p + "</a>";
-    }
-  }
-  return parts.join(" ");
-}
-
-}   
- function addMsg(text, who){
-      const row = document.createElement("div");
-      row.className = "iva-msg " + (who === "user" ? "user" : "bot");
-      const bubble = document.createElement("div");
-      bubble.className = "iva-bubble";
-      bubble.innerHTML = linkify(text);
-      row.appendChild(bubble);
-      body.appendChild(row);
-      body.scrollTop = body.scrollHeight;
-    }
-
-    async function ask(message){
-      const controller = new AbortController();
-      const t = setTimeout(() => controller.abort(), 15000);
-      send.disabled = true;
-      send.textContent = "...";
-      try{
-        const res = await fetch("/api/assistant", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message }),
-          signal: controller.signal
-        });
-
-        const raw = await res.text();
-        let data = null;
-        try{ data = raw ? JSON.parse(raw) : null; }catch(_){ data = null; }
-
-        if(!res.ok){
-          addMsg("⚠️ IvA respondió con error (" + res.status + "). Intenta otra vez.", "bot");
-          return;
+      function linkify(text){
+        const safe = escapeHtmlLocal(text);
+        const parts = safe.split(" ");
+        for (let i = 0; i < parts.length; i++) {
+          const p = parts[i];
+          if (p.startsWith("http://") || p.startsWith("https://")) {
+            parts[i] = '<a href="' + p + '" target="_blank" rel="noopener noreferrer">' + p + "</a>";
+          }
         }
-
-        addMsg((data && data.reply) ? data.reply : "Hmm… ahora mismo no pude responder. Intenta de nuevo.", "bot");
-      }catch(e){
-        const msg = (e && e.name === "AbortError")
-          ? "⏳ Se tardó demasiado. Intenta otra vez."
-          : "Ups. Hubo un problema conectando con IvA. Intenta otra vez.";
-        addMsg(msg, "bot");
-      }finally{
-        clearTimeout(t);
-        send.disabled = false;
-        send.textContent = "Enviar";
+        return parts.join(" ");
       }
-    }
 
-    function open(){
-      panel.style.display = "flex";
-      fab.style.display = "none";
-      if (!body.dataset.welcomed){
-        addMsg("Hola, gracias por ponerte en contacto con Ivamar AI.\nSoy IvA y estoy aquí para orientarte.\n¿Qué tipo de negocio tienes y en qué ciudad operas?", "bot");
-        body.dataset.welcomed = "1";
+      function addMsg(text, who){
+        const row = document.createElement("div");
+        row.className = "iva-msg " + (who === "user" ? "user" : "bot");
+        const bubble = document.createElement("div");
+        bubble.className = "iva-bubble";
+        bubble.innerHTML = linkify(text);
+        row.appendChild(bubble);
+        body.appendChild(row);
+        body.scrollTop = body.scrollHeight;
       }
-      setTimeout(()=>input.focus(), 50);
-    }
 
+      async function ask(message){
+        const controller = new AbortController();
+        const t = setTimeout(() => controller.abort(), 15000);
+        send.disabled = true;
+        send.textContent = "...";
 
-function close(){
-  panel.style.display = "none";
-  fab.style.display = "block";
-}
+        try{
+          const res = await fetch("/api/assistant", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ message }),
+            signal: controller.signal
+          });
 
-fab.addEventListener("click", open);
-closeBtn.addEventListener("click", close);
+          const raw = await res.text();
+          let data = null;
+          try{ data = raw ? JSON.parse(raw) : null; }catch(_){ data = null; }
 
-// BOTÓN: Solicitar propuesta (abre Google Form)
-const leadBtn = document.getElementById("ivaLeadBtn");
-const leadUrl = "https://forms.gle/cW7qTdj5zTx2S4ZH7";
+          if(!res.ok){
+            addMsg("⚠️ IvA respondió con error (" + res.status + "). Intenta otra vez.", "bot");
+            return;
+          }
 
-if (leadBtn) {
-  leadBtn.addEventListener("click", () => {
-   
-      async function sendMsg(){
-      const msg = (input.value || "").trim();
-      if(!msg) return;
-      input.value = "";
-      addMsg(msg, "user");
-      await ask(msg);
-    }
+          addMsg((data && data.reply) ? data.reply : "Hmm… ahora mismo no pude responder. Intenta de nuevo.", "bot");
+        }catch(e){
+          const msg = (e && e.name === "AbortError")
+            ? "⏳ Se tardó demasiado. Intenta otra vez."
+            : "Ups. Hubo un problema conectando con IvA. Intenta otra vez.";
+          addMsg(msg, "bot");
+        }finally{
+          clearTimeout(t);
+          send.disabled = false;
+          send.textContent = "Enviar";
+        }
+      }
 
-    send.addEventListener("click", sendMsg);
-    input.addEventListener("keydown", (e)=>{
-      if(e.key === "Enter") sendMsg();
-      if(e.key === "Escape") close();
-    });
-  })();
-</script>
+      function open(){
+        panel.style.display = "flex";
+        fab.style.display = "none";
+        if(!body.dataset.welcomed){
+          body.dataset.welcomed = "1";
+          addMsg("Soy IvA y estoy aquí para orientarte. Si quieres una demo/cotización, usa el botón de abajo o este enlace: " + leadUrl, "bot");
+        }
+        input.focus();
+      }
 
-    </body>
-  </html>
-  `;
+      function close(){
+        panel.style.display = "none";
+        fab.style.display = "flex";
+      }
+
+      fab.addEventListener("click", open);
+      closeBtn.addEventListener("click", close);
+
+      send.addEventListener("click", () => {
+        const msg = (input.value || "").trim();
+        if(!msg) return;
+        addMsg(msg, "user");
+        input.value = "";
+        ask(msg);
+      });
+
+      input.addEventListener("keydown", (e) => {
+        if(e.key === "Enter") send.click();
+      });
+    })();
+  </script>
+</body>
+</html>`;
 };
