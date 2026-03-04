@@ -155,11 +155,6 @@ function linkify(text){
   return parts.join(" ");
 }
 
-
-
-
-
-    });
 }   
  function addMsg(text, who){
       const row = document.createElement("div");
