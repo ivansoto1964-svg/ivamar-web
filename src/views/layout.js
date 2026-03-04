@@ -46,8 +46,9 @@ module.exports = function layout({ title, body }) {
   box-shadow:0 22px 70px rgba(0,0,0,.55);
   backdrop-filter: blur(10px);
 }
-.iva-head{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid rgba(148,163,184,.12)}
-.iva-title{display:flex;gap:10px;align-items:center}
+.iva-head{display:flex;align-items:center;justify-co.iva
+const leadBtn = document.getElementById("ivaLeadBtn");
+-title{display:flex;gap:10px;align-items:center}
 .iva-title b{font-size:14px}
 .iva-title span{color:var(--muted);font-size:12px}
 .iva-close{background:transparent;border:0;color:var(--muted);cursor:pointer;font-size:18px;line-height:1}
@@ -112,10 +113,15 @@ module.exports = function layout({ title, body }) {
 
   <div class="iva-body" id="ivaBody"></div>
 
-  <div class="iva-foot">
-    <input class="iva-input" id="ivaInput" placeholder="Escribe aquí… (ej: precios, demo, cómo funciona)" />
-    <button type="button" class="iva-send" id="ivaSend">Enviar</button>
-  </div>
+<div class="iva-footer">
+  <input id="ivaInput" placeholder="Escribe tu mensaje..." />
+  <button id="ivaSend">Enviar</button>
+  <button id="ivaLeadBtn" class="iva-lead">📄 Solicitar propuesta</button>
+</div>
+
+
+
+
 </div>
 
 <script>
@@ -140,8 +146,8 @@ function linkify(text){
   const safe = escapeHtml(text);
   const urlRegex = /(https?:\/\/[^\s]+)/g;
   return safe.replace(urlRegex, (url) => {
-    return `<a href="${url}" target="_blank" rel="noopener noreferrer">${url}</a>`;
-  });
+  return '<a href="' + url + '" target="_blank" rel="noopener noreferrer">' + url + '</a>';
+    });
 }   
  function addMsg(text, who){
       const row = document.createElement("div");
@@ -199,15 +205,23 @@ function linkify(text){
       setTimeout(()=>input.focus(), 50);
     }
 
-    function close(){
-      panel.style.display = "none";
-      fab.style.display = "block";
-    }
 
-    fab.addEventListener("click", open);
-    closeBtn.addEventListener("click", close);
+function close(){
+  panel.style.display = "none";
+  fab.style.display = "block";
+}
 
-    async function sendMsg(){
+fab.addEventListener("click", open);
+closeBtn.addEventListener("click", close);
+
+// BOTÓN: Solicitar propuesta (abre Google Form)
+const leadBtn = document.getElementById("ivaLeadBtn");
+const leadUrl = "https://forms.gle/cW7qTdj5zTx2S4ZH7";
+
+if (leadBtn) {
+  leadBtn.addEventListener("click", () => {
+   
+      async function sendMsg(){
       const msg = (input.value || "").trim();
       if(!msg) return;
       input.value = "";
