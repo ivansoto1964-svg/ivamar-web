@@ -107,6 +107,67 @@ app.get("/contact", (req, res) => {
   res.send(layout({ title: "Contacto", body }));
 });
 
+// About
+app.get("/about", (req, res) => {
+  const body = `
+    <div class="card">
+      <h2>Quiénes somos</h2>
+      <p><b>Ivamar AI LLC</b> crea asistentes de inteligencia artificial y experiencias web para ayudar a pequeños negocios a atender clientes, recibir leads y vender más.</p>
+      <p>Nuestro enfoque: tecnología útil, simple y con <i>human touch</i>.</p>
+      <div class="btns">
+        <a class="btn primary" href="/demo">Ver demo</a>
+        <a class="btn ghost" href="/">Volver</a>
+      </div>
+    </div>
+  `;
+  res.send(layout({ title: "Quiénes somos", body }));
+});
+
+// Privacy
+app.get("/privacy", (req, res) => {
+  const body = `
+    <div class="card">
+      <h2>Política de Privacidad</h2>
+      <p>Resumido:</p>
+      <ul>
+        <li>Podemos recopilar información que tú nos envías (por ejemplo, mediante formularios de contacto/cotización).</li>
+        <li>Podemos usar cookies básicas para funcionamiento y medición.</li>
+        <li>No vendemos tu información personal.</li>
+      </ul>
+      <p>Si tienes preguntas, contáctanos desde <a href="/contact">/contact</a>.</p>
+      <a class="btn ghost" href="/">Volver</a>
+    </div>
+  `;
+  res.send(layout({ title: "Privacidad", body }));
+});
+
+// Terms
+app.get("/terms", (req, res) => {
+  const body = `
+    <div class="card">
+      <h2>Términos del Servicio</h2>
+      <p>Resumido:</p>
+      <ul>
+        <li>Ivamar AI ofrece servicios y herramientas digitales (páginas, asistentes, automatizaciones) según el plan acordado.</li>
+        <li>El cliente es responsable del contenido que provee (menús, precios, imágenes y textos).</li>
+        <li>El servicio puede incluir integraciones de terceros (WhatsApp, Stripe, OpenAI, etc.).</li>
+        <li>Podemos actualizar estos términos cuando sea necesario.</li>
+      </ul>
+      <p>Para soporte y coordinación visita <a href="/contact">/contact</a>.</p>
+      <a class="btn ghost" href="/">Volver</a>
+    </div>
+  `;
+  res.send(layout({ title: "Términos", body }));
+});
+
+
+
+
+
+
+
+
+
 // Endpoint del asistente IvA (simple por ahora)
 app.post("/api/assistant", async (req, res) => {
   const message = (req.body?.message || "").toString();
