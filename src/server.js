@@ -1,5 +1,6 @@
 const express = require("express");
 const layout = require("./views/layout");
+const home = require("./views/home");
 const fs = require("fs");
 const path = require("path");
 
@@ -68,16 +69,7 @@ app.get("/", (req, res) => {
   res.send(layout({ title: "Ivamar AI", body }));
 });// Demo
 app.get("/demo", (req, res) => {
-  const body = `
-    <div class="card">
-      <h2>Demo</h2>
-      <p>Prueba un ejemplo real:</p>
-      <div class="btns">
-        <a class="btn primary" href="/loskambu">Ver Los Kambu</a>
-        <a class="btn ghost" href="/">Volver</a>
-      </div>
-    </div>
-  `;
+const body = home;
   res.send(layout({ title: "Demo", body }));
 });
 
