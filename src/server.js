@@ -1,6 +1,8 @@
 const express = require("express");
 const layout = require("./views/layout");
 const home = require("./views/home");
+const homeES = require("./views/home-es");
+const homeEN = require("./views/home-en");
 const fs = require("fs");
 const path = require("path");
 
@@ -52,11 +54,41 @@ function postJson(urlStr, payload, options = {}) {
 
 
 // Home
+// Home
 app.get("/", (req, res) => {
   const body = home;
   res.send(layout({ title: "Ivamar AI", body }));
-});// Demo
+});
+
+app.get("/es", (req, res) => {
+  const body = homeES;
+  res.send(layout({ title: "Ivamar AI ES", body }));
+});
+
+app.get("/en", (req, res) => {
+  const body = homeEN;
+  res.send(layout({ title: "Ivamar AI EN", body }));
+});
+
+// Demo
 app.get("/demo", (req, res) => {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
   const body = `
     <div class="card">
       <h2>Demo</h2>
