@@ -6,6 +6,7 @@ const path = require("path");
 
 const app = express();
 app.use(express.json());
+app.use(express.static("public"));
 const PORT = process.env.PORT || 4000;
 
 // POST JSON helper (works even if fetch() is not available)
