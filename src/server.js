@@ -52,24 +52,20 @@ function postJson(urlStr, payload, options = {}) {
 
 // Home
 app.get("/", (req, res) => {
-  const body = `
-    <div class="card">
-      <h1>Landing + Asistente para negocios.</h1>
-      <p>
-        Tu negocio tiene una página tipo <b>ivamarai.com/tu-negocio</b>.
-        Sin comisiones, directo por WhatsApp.
-      </p>
-      <div class="btns">
-        <a class="btn primary" href="/demo">Ver demo</a>
-        <a class="btn ghost" href="/pricing">Precios</a>
-        <a class="btn ghost" href="/contact">Contacto</a>
-      </div>
-    </div>
-  `;
+  const body = home;
   res.send(layout({ title: "Ivamar AI", body }));
 });// Demo
 app.get("/demo", (req, res) => {
-const body = home;
+  const body = `
+    <div class="card">
+      <h2>Demo</h2>
+      <p>Prueba un ejemplo real:</p>
+      <div class="btns">
+        <a class="btn primary" href="/loskambu">Ver Los Kambu</a>
+        <a class="btn ghost" href="/">Volver</a>
+      </div>
+    </div>
+  `;
   res.send(layout({ title: "Demo", body }));
 });
 
