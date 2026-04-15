@@ -7,6 +7,7 @@ const about = require("./views/about");
 const contact = require("./views/contact");
 const privacy = require("./views/privacy");
 const terms = require("./views/terms");
+const demo = require("./views/demo");
 const fs = require("fs");
 const path = require("path");
 
@@ -101,18 +102,10 @@ app.get("/terms", (req, res) => {
 
 // Demo
 app.get("/demo", (req, res) => {
-  const body = `
-    <div class="card">
-      <h2>Demo</h2>
-      <p>Prueba un ejemplo real:</p>
-      <div class="btns">
-        <a class="btn primary" href="/loskambu">Ver Los Kambu</a>
-        <a class="btn ghost" href="/">Volver</a>
-      </div>
-    </div>
-  `;
-  res.send(layout({ title: "Demo", body }));
+  res.send(layout({ title: "Demo — El Rincón Boricua", body: demo }));
 });
+
+
 
 // Pricing
 app.get("/pricing", (req, res) => {
