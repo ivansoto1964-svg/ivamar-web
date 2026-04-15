@@ -17,13 +17,14 @@ module.exports = `
 .iva-doc-hero h1{font-size:clamp(2rem,4vw,3rem);font-weight:800;letter-spacing:-0.03em;margin-bottom:0.8rem;}
 .iva-doc-hero p{color:#8892A4;font-size:0.9rem;font-weight:400;}
 .iva-doc-content{max-width:740px;margin:0 auto;padding:2rem 2rem 5rem;}
+.iva-doc-updated{font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:#4A5568;margin-bottom:2.5rem;padding:0.6rem 1rem;background:#0D1420;border-radius:6px;display:inline-block;}
 .iva-doc-section{margin-bottom:2.5rem;}
-.iva-doc-section h2{font-size:1.1rem;font-weight:700;margin-bottom:0.8rem;padding-bottom:0.6rem;border-bottom:1px solid rgba(255,255,255,0.06);color:#F0F4FF;}
+.iva-doc-section h2{font-size:1.05rem;font-weight:700;margin-bottom:0.8rem;padding-bottom:0.6rem;border-bottom:1px solid rgba(255,255,255,0.06);color:#F0F4FF;}
 .iva-doc-section p{color:#8892A4;line-height:1.8;font-size:0.9rem;font-weight:400;margin-bottom:0.8rem;}
+.iva-doc-section p:last-child{margin-bottom:0;}
 .iva-doc-section ul{list-style:none;padding:0;}
 .iva-doc-section ul li{color:#8892A4;font-size:0.9rem;line-height:1.7;padding:0.4rem 0;padding-left:1.2rem;position:relative;}
 .iva-doc-section ul li::before{content:'→';position:absolute;left:0;color:#00E5C8;font-size:0.75rem;}
-.iva-doc-updated{font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:#4A5568;margin-bottom:2.5rem;padding:0.6rem 1rem;background:#0D1420;border-radius:6px;display:inline-block;}
 .iva-sub-footer{padding:2rem;border-top:1px solid rgba(255,255,255,0.04);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;font-size:0.78rem;color:#4A5568;}
 .iva-sub-footer strong{color:#8892A4;}
 .iva-sub-footer-links{display:flex;gap:1.2rem;}
@@ -38,102 +39,106 @@ module.exports = `
       <div class="iva-sub-logo-mark">IvA</div>
       <span class="iva-sub-logo-text">Ivamar <span>AI</span></span>
     </a>
-    <a href="/" class="iva-sub-back">← Volver / Back</a>
+    <a href="/" class="iva-sub-back">← Back</a>
   </nav>
 
   <div class="iva-doc-hero">
     <div class="iva-doc-tag">Legal</div>
     <h1>Terms of Service</h1>
-    <p>Términos del Servicio · Ivamar AI LLC</p>
+    <p>Ivamar AI LLC · Delaware, USA</p>
   </div>
 
   <div class="iva-doc-content">
-    <div class="iva-doc-updated">Last updated / Última actualización: January 2025</div>
+    <div class="iva-doc-updated">Last updated: January 2025</div>
 
     <div class="iva-doc-section">
-      <h2>1. Agreement / Acuerdo</h2>
-      <p>By using Ivamar AI services, you agree to these Terms of Service. These terms govern the relationship between Ivamar AI LLC ("Company") and you ("Client").</p>
-      <p>Al usar los servicios de Ivamar AI, aceptas estos Términos del Servicio. Estos términos rigen la relación entre Ivamar AI LLC y tú como cliente.</p>
+      <h2>1. Agreement</h2>
+      <p>By accessing or using any service provided by Ivamar AI LLC ("Company", "we", "us"), you ("Client") agree to be bound by these Terms of Service. If you do not agree, do not use our services.</p>
     </div>
 
     <div class="iva-doc-section">
-      <h2>2. Services / Servicios</h2>
-      <p>Ivamar AI provides the following services:</p>
+      <h2>2. Services</h2>
+      <p>Ivamar AI LLC provides the following digital services:</p>
       <ul>
         <li>Custom mobile-first landing pages for businesses</li>
-        <li>AI assistant (IvA) trained on your business information</li>
+        <li>AI assistant (IvA) trained on client business information</li>
         <li>WhatsApp order flow integration</li>
-        <li>Payment processing integration (Stripe, ATH Móvil, PayPal)</li>
+        <li>Payment processing integration (Stripe, ATH Móvil, PayPal, Square)</li>
         <li>Hosting, maintenance and technical support</li>
         <li>Menu and content editor access</li>
       </ul>
     </div>
 
     <div class="iva-doc-section">
-      <h2>3. Pricing & Payment / Precios y pago</h2>
+      <h2>3. Pricing & Payment</h2>
       <ul>
-        <li>One-time setup fee: $125 USD (includes first month of service)</li>
-        <li>Monthly service fee: $49 USD/month starting month 2</li>
+        <li>One-time setup fee: $125 USD (includes first month of service free)</li>
+        <li>Monthly service fee: $49 USD/month starting in month 2</li>
         <li>Payments are processed via Stripe or other agreed methods</li>
-        <li>Monthly fees are due on the same day each month</li>
+        <li>Monthly fees are due on the same date each month</li>
         <li>Services may be suspended after 7 days of non-payment</li>
         <li>No commissions are charged per order or transaction</li>
       </ul>
     </div>
 
     <div class="iva-doc-section">
-      <h2>4. Client Responsibilities / Responsabilidades del cliente</h2>
+      <h2>4. Client Responsibilities</h2>
       <ul>
-        <li>Provide accurate business information (menu, prices, hours, photos)</li>
-        <li>Keep business information up to date</li>
+        <li>Provide accurate and complete business information (menu, prices, hours, photos)</li>
+        <li>Keep all business information up to date</li>
         <li>Not use the platform for illegal activities or prohibited content</li>
-        <li>Comply with applicable laws in Puerto Rico and the United States</li>
+        <li>Comply with all applicable laws in Puerto Rico and the United States</li>
         <li>Maintain their own payment processor accounts (Stripe, ATH Móvil, etc.)</li>
+        <li>Ensure all content provided does not infringe third-party rights</li>
       </ul>
     </div>
 
     <div class="iva-doc-section">
-      <h2>5. Intellectual Property / Propiedad intelectual</h2>
-      <p>The client owns all content they provide (logos, photos, menu, descriptions). Ivamar AI retains ownership of the platform, templates, AI systems and technology.</p>
-      <p>Upon cancellation, clients may request an export of their business data.</p>
+      <h2>5. Intellectual Property</h2>
+      <p>The client retains ownership of all content they provide, including logos, photos, menus and business descriptions. Ivamar AI LLC retains full ownership of the platform, templates, AI systems, code and technology.</p>
+      <p>Upon cancellation, clients may request an export of their business data within 30 days.</p>
     </div>
 
     <div class="iva-doc-section">
-      <h2>6. Cancellation / Cancelación</h2>
+      <h2>6. Cancellation</h2>
       <ul>
         <li>Either party may cancel with 30 days written notice via WhatsApp or email</li>
-        <li>Setup fees are non-refundable after the page is published</li>
+        <li>Setup fees are non-refundable once the page has been published</li>
         <li>Monthly fees are non-refundable for the current billing period</li>
-        <li>Client data will be deleted 30 days after cancellation</li>
+        <li>Client data will be permanently deleted 30 days after cancellation</li>
       </ul>
     </div>
 
     <div class="iva-doc-section">
-      <h2>7. Limitation of Liability / Limitación de responsabilidad</h2>
-      <p>Ivamar AI is a technology provider — we are not responsible for the products, services or transactions of our clients. We are not liable for indirect, incidental or consequential damages arising from use of our platform.</p>
-      <p>Our maximum liability is limited to fees paid in the last 3 months.</p>
+      <h2>7. Limitation of Liability</h2>
+      <p>Ivamar AI LLC is a technology provider. We are not responsible for the products, services, pricing or transactions of our clients. We are not liable for any indirect, incidental, special or consequential damages arising from use of our platform.</p>
+      <p>Our maximum total liability to any client is limited to the fees paid in the 3 months preceding the claim.</p>
     </div>
 
     <div class="iva-doc-section">
-      <h2>8. AI Disclaimer / Sobre el asistente de IA</h2>
-      <p>IvA is an AI assistant designed to help businesses communicate with customers. Its responses are based on information provided by the client. Ivamar AI is not responsible for errors in AI responses. Clients should review and keep their business information accurate.</p>
+      <h2>8. AI Assistant Disclaimer</h2>
+      <p>IvA is an AI assistant designed to help businesses communicate with their customers. All responses are generated based on information provided by the client. Ivamar AI LLC is not responsible for errors, inaccuracies or omissions in AI-generated responses. Clients are responsible for keeping their business information accurate and current.</p>
     </div>
 
     <div class="iva-doc-section">
-      <h2>9. Governing Law / Ley aplicable</h2>
-      <p>These terms are governed by the laws of the State of Delaware, USA. Any disputes will be resolved through binding arbitration in accordance with AAA rules.</p>
+      <h2>9. Governing Law & Disputes</h2>
+      <p>These Terms of Service are governed by the laws of the State of Delaware, United States of America. Any disputes arising under these terms will be resolved through binding arbitration in accordance with the rules of the American Arbitration Association (AAA).</p>
     </div>
 
     <div class="iva-doc-section">
-      <h2>10. Contact / Contacto</h2>
+      <h2>10. Changes to Terms</h2>
+      <p>Ivamar AI LLC reserves the right to update these Terms of Service at any time. Clients will be notified of material changes via WhatsApp or email. Continued use of our services after notification constitutes acceptance of the updated terms.</p>
+    </div>
+
+    <div class="iva-doc-section">
+      <h2>11. Contact</h2>
       <ul>
         <li>Company: Ivamar AI LLC</li>
-        <li>State: Delaware, USA</li>
+        <li>State of incorporation: Delaware, USA</li>
         <li>WhatsApp: <a href="https://wa.me/18635216708">+1 (863) 521-6708</a></li>
         <li>Website: <a href="https://ivamarai.com">ivamarai.com</a></li>
       </ul>
     </div>
-
   </div>
 
   <div class="iva-sub-footer">

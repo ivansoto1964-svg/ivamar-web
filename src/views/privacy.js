@@ -17,13 +17,14 @@ module.exports = `
 .iva-doc-hero h1{font-size:clamp(2rem,4vw,3rem);font-weight:800;letter-spacing:-0.03em;margin-bottom:0.8rem;}
 .iva-doc-hero p{color:#8892A4;font-size:0.9rem;font-weight:400;}
 .iva-doc-content{max-width:740px;margin:0 auto;padding:2rem 2rem 5rem;}
+.iva-doc-updated{font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:#4A5568;margin-bottom:2.5rem;padding:0.6rem 1rem;background:#0D1420;border-radius:6px;display:inline-block;}
 .iva-doc-section{margin-bottom:2.5rem;}
-.iva-doc-section h2{font-size:1.1rem;font-weight:700;margin-bottom:0.8rem;padding-bottom:0.6rem;border-bottom:1px solid rgba(255,255,255,0.06);color:#F0F4FF;}
+.iva-doc-section h2{font-size:1.05rem;font-weight:700;margin-bottom:0.8rem;padding-bottom:0.6rem;border-bottom:1px solid rgba(255,255,255,0.06);color:#F0F4FF;}
 .iva-doc-section p{color:#8892A4;line-height:1.8;font-size:0.9rem;font-weight:400;margin-bottom:0.8rem;}
+.iva-doc-section p:last-child{margin-bottom:0;}
 .iva-doc-section ul{list-style:none;padding:0;}
 .iva-doc-section ul li{color:#8892A4;font-size:0.9rem;line-height:1.7;padding:0.4rem 0;padding-left:1.2rem;position:relative;}
 .iva-doc-section ul li::before{content:'→';position:absolute;left:0;color:#00E5C8;font-size:0.75rem;}
-.iva-doc-updated{font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:#4A5568;margin-bottom:2.5rem;padding:0.6rem 1rem;background:#0D1420;border-radius:6px;display:inline-block;}
 .iva-sub-footer{padding:2rem;border-top:1px solid rgba(255,255,255,0.04);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;font-size:0.78rem;color:#4A5568;}
 .iva-sub-footer strong{color:#8892A4;}
 .iva-sub-footer-links{display:flex;gap:1.2rem;}
@@ -38,92 +39,116 @@ module.exports = `
       <div class="iva-sub-logo-mark">IvA</div>
       <span class="iva-sub-logo-text">Ivamar <span>AI</span></span>
     </a>
-    <a href="/" class="iva-sub-back">← Volver / Back</a>
+    <a href="/" class="iva-sub-back">← Back</a>
   </nav>
 
   <div class="iva-doc-hero">
     <div class="iva-doc-tag">Legal</div>
     <h1>Privacy Policy</h1>
-    <p>Política de Privacidad · Ivamar AI LLC</p>
+    <p>Ivamar AI LLC · Delaware, USA</p>
   </div>
 
   <div class="iva-doc-content">
-    <div class="iva-doc-updated">Last updated / Última actualización: January 2025</div>
+    <div class="iva-doc-updated">Last updated: January 2025</div>
 
     <div class="iva-doc-section">
-      <h2>1. Who We Are / Quiénes somos</h2>
-      <p>Ivamar AI LLC ("Ivamar AI", "we", "us") is a Delaware limited liability company that provides AI-powered digital pages and assistant services for businesses in Puerto Rico and the United States.</p>
-      <p>Ivamar AI LLC es una compañía de responsabilidad limitada registrada en Delaware que provee páginas digitales con asistente de IA para negocios en Puerto Rico y Estados Unidos.</p>
+      <h2>1. Who We Are</h2>
+      <p>Ivamar AI LLC ("Ivamar AI", "we", "us", "our") is a limited liability company incorporated in Delaware, USA. We provide AI-powered digital pages and assistant services for businesses in Puerto Rico and the United States. This Privacy Policy explains how we collect, use and protect your information when you use our services.</p>
     </div>
 
     <div class="iva-doc-section">
-      <h2>2. Information We Collect / Información que recopilamos</h2>
+      <h2>2. Information We Collect</h2>
       <p>We collect information you voluntarily provide when using our services:</p>
       <ul>
-        <li>Business information (name, type, menu, services, prices)</li>
-        <li>Contact information (name, email, phone, WhatsApp)</li>
+        <li>Business information (name, type, menu, services, prices, hours)</li>
+        <li>Contact information (owner name, email address, phone, WhatsApp number)</li>
         <li>Messages sent through our AI assistant (IvA)</li>
-        <li>Form submissions and demo requests</li>
-        <li>Basic usage data (page visits, browser type) via analytics</li>
+        <li>Form submissions, demo requests and onboarding data</li>
+        <li>Logo images, photos and other media provided by clients</li>
+        <li>Basic usage data (page visits, browser type) via analytics tools</li>
       </ul>
     </div>
 
     <div class="iva-doc-section">
-      <h2>3. How We Use Your Information / Cómo usamos tu información</h2>
+      <h2>3. How We Use Your Information</h2>
       <ul>
         <li>To create and manage your business page on our platform</li>
-        <li>To configure and train your IvA assistant</li>
-        <li>To process payments through third-party providers (Stripe, PayPal)</li>
-        <li>To send you service updates and support communications</li>
-        <li>To improve our platform and services</li>
+        <li>To configure and train your IvA AI assistant</li>
+        <li>To process payments through third-party providers</li>
+        <li>To send service updates, invoices and support communications</li>
+        <li>To improve our platform, features and user experience</li>
+        <li>To respond to your inquiries and provide customer support</li>
       </ul>
     </div>
 
     <div class="iva-doc-section">
-      <h2>4. Third-Party Services / Servicios de terceros</h2>
-      <p>Our platform integrates with the following third-party services, each with their own privacy policies:</p>
+      <h2>4. Third-Party Services</h2>
+      <p>Our platform integrates with the following third-party services. Each has its own privacy policy and data practices:</p>
       <ul>
         <li>Stripe — payment processing (stripe.com/privacy)</li>
-        <li>WhatsApp / Meta — messaging (whatsapp.com/legal/privacy-policy)</li>
+        <li>WhatsApp / Meta — customer messaging</li>
         <li>Anthropic / OpenAI — AI assistant functionality</li>
-        <li>Google Forms — demo request forms</li>
-        <li>Render — cloud hosting provider</li>
+        <li>Google Forms — demo request and onboarding forms</li>
+        <li>Render — cloud hosting infrastructure</li>
+        <li>ATH Móvil / PayPal / Square — alternative payment processors</li>
       </ul>
     </div>
 
     <div class="iva-doc-section">
-      <h2>5. Data Sharing / Compartir datos</h2>
-      <p>We do not sell your personal information. We only share data with third parties as necessary to provide our services (payment processors, hosting providers, AI providers) or as required by law.</p>
-      <p>No vendemos tu información personal. Solo compartimos datos con terceros según sea necesario para proveer nuestros servicios.</p>
+      <h2>5. Data Sharing</h2>
+      <p>We do not sell, rent or trade your personal information to third parties. We only share data as necessary to provide our services (payment processors, hosting providers, AI providers) or as required by applicable law.</p>
+      <p>We may share aggregated, anonymized data that cannot identify any individual for analytics or business improvement purposes.</p>
     </div>
 
     <div class="iva-doc-section">
-      <h2>6. Data Security / Seguridad de datos</h2>
-      <p>We implement industry-standard security measures to protect your information. Payment data is processed exclusively by PCI-compliant providers — we never store credit card numbers.</p>
+      <h2>6. Data Security</h2>
+      <p>We implement industry-standard security measures to protect your information, including encrypted connections (HTTPS), secure hosting infrastructure and access controls.</p>
+      <p>Payment data is processed exclusively by PCI-compliant third-party providers. Ivamar AI LLC never stores credit card numbers or sensitive payment credentials.</p>
     </div>
 
     <div class="iva-doc-section">
-      <h2>7. Your Rights / Tus derechos</h2>
+      <h2>7. Data Retention</h2>
+      <p>We retain your data for as long as your account is active or as needed to provide our services. Upon cancellation, your data will be retained for 30 days to allow for export requests, then permanently deleted.</p>
+    </div>
+
+    <div class="iva-doc-section">
+      <h2>8. Your Rights</h2>
+      <p>You have the following rights regarding your personal data:</p>
       <ul>
-        <li>Request access to your personal data</li>
-        <li>Request correction or deletion of your data</li>
-        <li>Opt out of marketing communications at any time</li>
-        <li>Request data portability</li>
+        <li>Access — request a copy of the data we hold about you</li>
+        <li>Correction — request correction of inaccurate data</li>
+        <li>Deletion — request deletion of your data</li>
+        <li>Portability — request an export of your business data</li>
+        <li>Opt-out — unsubscribe from marketing communications at any time</li>
       </ul>
-      <p style="margin-top:0.8rem">To exercise these rights, contact us at <a href="https://wa.me/18635216708">WhatsApp</a>.</p>
+      <p>To exercise any of these rights, contact us via <a href="https://wa.me/18635216708">WhatsApp</a>.</p>
     </div>
 
     <div class="iva-doc-section">
-      <h2>8. Contact / Contacto</h2>
-      <p>For privacy questions or requests:</p>
+      <h2>9. Cookies</h2>
+      <p>Our platform may use basic cookies for functionality and analytics purposes. We do not use cookies for advertising or tracking across third-party sites. You can disable cookies in your browser settings, though some features may not function correctly.</p>
+    </div>
+
+    <div class="iva-doc-section">
+      <h2>10. Children's Privacy</h2>
+      <p>Our services are not directed to individuals under the age of 18. We do not knowingly collect personal information from minors. If we become aware that a minor has provided us with personal data, we will delete it promptly.</p>
+    </div>
+
+    <div class="iva-doc-section">
+      <h2>11. Changes to This Policy</h2>
+      <p>We may update this Privacy Policy from time to time. We will notify clients of material changes via WhatsApp or email. Continued use of our services after notification constitutes acceptance of the updated policy.</p>
+    </div>
+
+    <div class="iva-doc-section">
+      <h2>12. Contact</h2>
+      <p>For privacy questions, requests or concerns:</p>
       <ul>
         <li>Company: Ivamar AI LLC</li>
-        <li>State: Delaware, USA</li>
+        <li>State of incorporation: Delaware, USA</li>
         <li>WhatsApp: <a href="https://wa.me/18635216708">+1 (863) 521-6708</a></li>
         <li>Website: <a href="https://ivamarai.com">ivamarai.com</a></li>
       </ul>
     </div>
-
   </div>
 
   <div class="iva-sub-footer">
