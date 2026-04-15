@@ -117,8 +117,8 @@ module.exports = `
     <div class="iva-badge"><span class="iva-badge-dot"></span>NOW SERVING PUERTO RICO & USA</div>
     <h1>The <em>Human Touch</em><br>of Intelligence</h1>
     <p class="iva-hero-sub">AI-powered pages for real businesses. Your customers ask questions, order, and pay — without you lifting a finger.</p>
-    <div class="iva-hero-actions">
-      <a href="https:///quote/cW7qTdj5zTx2S4ZH7" target="_blank" class="iva-btn-main">Request Demo →</a>
+    <div class="iva-hero-actions"> 
+     <a href="/quote" target="_blank" class="iva-btn-main">Request Demo →</a>
       <a href="/demo" class="iva-btn-ghost">See live demo</a>
     </div>
     <div class="iva-stats">
@@ -180,8 +180,8 @@ module.exports = `
     <p>Join businesses across Puerto Rico and the US already using Ivamar AI to sell more and work less.</p>
     <div class="iva-cta-btns">
       <a href="https://wa.me/18635216708" target="_blank" class="iva-btn-main">Chat on WhatsApp →</a>
-      <a href="https:///quote/cW7qTdj5zTx2S4ZH7" target="_blank" class="iva-btn-ghost">Request demo</a>
-    </div>
+<a href="/quote" target="_blank" class="iva-btn-main">Request Demo →</a>
+ </div>
   </div>
 
   <div class="iva-footer">
