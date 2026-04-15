@@ -8,6 +8,7 @@ const contact = require("./views/contact");
 const privacy = require("./views/privacy");
 const terms = require("./views/terms");
 const demo = require("./views/demo");
+const quote = require("./views/quote");
 const fs = require("fs");
 const path = require("path");
 
@@ -105,7 +106,9 @@ app.get("/demo", (req, res) => {
   res.send(layout({ title: "Demo — El Rincón Boricua", body: demo }));
 });
 
-
+app.get("/quote", (req, res) => {
+  res.send(layout({ title: "Get Started — Ivamar AI", body: quote }));
+});
 
 // Pricing
 app.get("/pricing", (req, res) => {
