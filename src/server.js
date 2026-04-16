@@ -14,6 +14,8 @@ const adminDashboard = require("./views/admin-dashboard");
 const adminEdit = require("./views/admin-edit");
 const fs = require("fs");
 const path = require("path");
+const Anthropic = require("@anthropic-ai/sdk");
+const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 const cookieParser = require("cookie-parser");
 
 const app = express();
@@ -199,38 +201,55 @@ app.post("/admin/delete/:slug", requireAdmin, (req, res) => {
 // API ASSISTANT
 // ==========================================
 
+
+
+
+
 app.post("/api/assistant", async (req, res) => {
   const message = (req.body?.message || "").toString();
-  const m = message.toLowerCase();
+  const sessionId = req.body?.sessionId || "default";
+  const businessSlug = req.body?.businessSlug || null;
 
-  let fallback = "🌺 Soy IvA, tu asistente de Ivamar AI. Ahora mismo tengo un problema técnico 😅. Escríbeme de nuevo en unos segundos.";
-  if (m.includes("precio") || m.includes("plan") || m.includes("cuanto cuesta") || m.includes("cuánto cuesta") || m.includes("mensual")) {
-    fallback = "Nuestros planes comienzan en $49/mes + $125 de setup único. Incluye landing personalizada + asistente IvA + WhatsApp + pagos. ¿Quieres un demo?";
-  } else if (m.includes("demo")) {
-    fallback = "Puedes ver un ejemplo en /demo. Cada negocio tiene su propia página personalizada.";
-  } else if (m.includes("como funciona") || m.includes("cómo funciona")) {
-    fallback = "Así funciona: 1) Creamos tu landing, 2) Configuramos IvA con tu info, 3) Tus clientes preguntan, ordenan y pagan directo a ti.";
+  // Cargar info del negocio si existe
+  let bizContext = "";
+  if (businessSlug) {
+    const bizFile = path.join(__dirname, "..", "data", "businesses", `${businessSlug}.json`);
+    if (fs.existsSync(bizFile)) {
+      const biz = JSON.parse(fs.readFileSync(bizFile, "utf8"));
+      bizContext = `
+Negocio: ${biz.name}
+Descripción: ${biz.description || ""}
+Dirección: ${biz.address || "No especificada"}
+Horario: ${biz.hours || "No especificado"}
+Estado: ${biz.status || "abierto"}
+WhatsApp: ${biz.links?.whatsapp || ""}
+Menú: ${(biz.menu || []).map(i => i.name + (i.price ? " $" + i.price : "")).join(", ")}
+${(biz.drinks||[]).length ? "Bebidas: " + biz.drinks.map(i => i.name + (i.price ? " $" + i.price : "")).join(", ") : ""}
+      `.trim();
+    }
   }
 
-  const brainUrl = process.env.IVA_BRAIN_URL || "https://ivamar-brain.onrender.com/v1/chat";
-  const brainAssistant = process.env.IVA_BRAIN_ASSISTANT || "iva";
-  const brainKey = process.env.IVA_BRAIN_API_KEY || "dev-secret";
+  const systemPrompt = bizContext ? 
+    `Eres IvA, un asistente de IA amigable y profesional para el siguiente negocio. Responde en el idioma del cliente (español o inglés). Sé conciso, máximo 3 oraciones. Guía al cliente a ordenar por WhatsApp cuando sea apropiado.
+
+${bizContext}` :
+    `Eres IvA, el asistente virtual de Ivamar AI. Ayudas a negocios en Puerto Rico y USA a crecer con tecnología. Responde en el idioma del cliente. Sé amigable y conciso. Setup: $125 único. Mensual: $49/mes. Primer mes gratis.`;
 
   try {
-    const out = await postJson(brainUrl,
-      { assistantId: brainAssistant, message, sessionId: req.body?.sessionId || "web-session" },
-      { headers: { Authorization: `Bearer ${brainKey}` } }
-    );
-    let data = null;
-    try { data = out.body ? JSON.parse(out.body) : null; } catch (_) {}
-    if (out.status >= 200 && out.status < 300 && data && typeof data.reply === "string" && data.reply.trim()) {
-      return res.json({ reply: data.reply });
-    }
-    return res.json({ reply: fallback });
+    const response = await anthropic.messages.create({
+      model: "claude-haiku-4-5-20251001",
+      max_tokens: 300,
+      system: systemPrompt,
+      messages: [{ role: "user", content: message }]
+    });
+    return res.json({ reply: response.content[0].text });
   } catch (e) {
-    return res.json({ reply: fallback });
+    console.error("Claude error:", e.message);
+    return res.json({ reply: "Disculpa, tuve un problema técnico. Por favor escríbeme directamente por WhatsApp." });
   }
 });
+
+
 
 // ==========================================
 // START FORM
