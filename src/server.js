@@ -12,21 +12,20 @@ const quote = require("./views/quote");
 const adminLogin = require("./views/admin-login");
 const adminDashboard = require("./views/admin-dashboard");
 const adminEdit = require("./views/admin-edit");
+const Anthropic = require("@anthropic-ai/sdk");
 const fs = require("fs");
 const path = require("path");
-const Anthropic = require("@anthropic-ai/sdk");
-const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 const cookieParser = require("cookie-parser");
 
 const app = express();
 const PORT = process.env.PORT || 4000;
+const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
 const BILLING_API_URL = process.env.BILLING_API_URL || "https://ivamar-brain.onrender.com/v1/billing/checkout-session";
 const BILLING_API_KEY = process.env.BILLING_API_KEY || "dev-secret";
 const ADMIN_USER = process.env.ADMIN_USER || "ivamar-admin";
 const ADMIN_PASS = process.env.ADMIN_PASS || "ivamar2025";
 
-// Sesiones en memoria
 const sessions = new Map();
 
 function generateToken() {
@@ -45,10 +44,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.use(cookieParser());
-
-function slugify(text = "") {
-  return text.toString().normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "").replace(/-{2,}/g, "-");
-}
 
 function postJson(urlStr, payload, options = {}) {
   return new Promise((resolve, reject) => {
@@ -89,32 +84,22 @@ app.get("/privacy", (req, res) => res.send(layout({ title: "Privacy Policy — I
 app.get("/terms", (req, res) => res.send(layout({ title: "Terms of Service — Ivamar AI LLC", body: terms })));
 app.get("/demo", (req, res) => res.send(layout({ title: "Demo — El Rincón Boricua", body: demo })));
 app.get("/quote", (req, res) => res.send(layout({ title: "Get Started — Ivamar AI", body: quote })));
-
-// Pricing (simple redirect to quote)
 app.get("/pricing", (req, res) => res.redirect("/quote"));
 
 // ==========================================
 // ADMIN ROUTES
 // ==========================================
 
-// Login page
-app.get("/admin", (req, res) => {
-  res.send(layout({ title: "Admin — Ivamar AI", body: adminLogin }));
-});
+app.get("/admin", (req, res) => res.send(layout({ title: "Admin — Ivamar AI", body: adminLogin })));
 
-// Auth
 app.post("/admin/auth", (req, res) => {
   const { user, pass } = req.body || {};
-
-  // Admin maestro
   if (user === ADMIN_USER && pass === ADMIN_PASS) {
     const token = generateToken();
     sessions.set(token, { role: "admin", slug: null });
     res.cookie("adminToken", token, { httpOnly: true, maxAge: 86400000 * 7 });
     return res.json({ ok: true, redirect: "/admin/dashboard" });
   }
-
-  // Cliente — slug como usuario
   const businessFile = path.join(__dirname, "..", "data", "businesses", `${user}.json`);
   if (fs.existsSync(businessFile)) {
     const clientPass = process.env[`CLIENT_PASS_${user.toUpperCase().replace(/-/g, "_")}`] || user + "2025";
@@ -125,11 +110,9 @@ app.post("/admin/auth", (req, res) => {
       return res.json({ ok: true, redirect: `/admin/edit/${user}` });
     }
   }
-
   res.json({ ok: false });
 });
 
-// Logout
 app.get("/admin/logout", (req, res) => {
   const token = req.cookies?.adminToken;
   if (token) sessions.delete(token);
@@ -137,7 +120,6 @@ app.get("/admin/logout", (req, res) => {
   res.redirect("/admin");
 });
 
-// Dashboard — solo admin maestro
 app.get("/admin/dashboard", requireAdmin, (req, res) => {
   if (req.adminSession.role !== "admin") return res.redirect(`/admin/edit/${req.adminSession.slug}`);
   const bizDir = path.join(__dirname, "..", "data", "businesses");
@@ -149,13 +131,11 @@ app.get("/admin/dashboard", requireAdmin, (req, res) => {
   res.send(layout({ title: "Dashboard — Ivamar AI", body: adminDashboard(businesses) }));
 });
 
-// New business
 app.get("/admin/new", requireAdmin, (req, res) => {
   if (req.adminSession.role !== "admin") return res.redirect("/admin/dashboard");
   res.send(layout({ title: "Nuevo negocio — Admin", body: adminEdit({}, true) }));
 });
 
-// Edit business
 app.get("/admin/edit/:slug", requireAdmin, (req, res) => {
   const slug = req.params.slug;
   if (req.adminSession.role === "client" && req.adminSession.slug !== slug) {
@@ -169,7 +149,6 @@ app.get("/admin/edit/:slug", requireAdmin, (req, res) => {
   res.send(layout({ title: `Editando ${biz.name || slug} — Admin`, body: adminEdit(biz, false) }));
 });
 
-// Save business
 app.post("/admin/save", requireAdmin, (req, res) => {
   const data = req.body;
   if (!data || !data.slug) return res.json({ ok: false, error: "slug requerido" });
@@ -185,7 +164,6 @@ app.post("/admin/save", requireAdmin, (req, res) => {
   }
 });
 
-// Delete business
 app.post("/admin/delete/:slug", requireAdmin, (req, res) => {
   if (req.adminSession.role !== "admin") return res.json({ ok: false, error: "no autorizado" });
   try {
@@ -198,42 +176,41 @@ app.post("/admin/delete/:slug", requireAdmin, (req, res) => {
 });
 
 // ==========================================
-// API ASSISTANT
+// IVA ASSISTANT API — CLAUDE
 // ==========================================
-
-
-
-
 
 app.post("/api/assistant", async (req, res) => {
   const message = (req.body?.message || "").toString();
-  const sessionId = req.body?.sessionId || "default";
   const businessSlug = req.body?.businessSlug || null;
 
-  // Cargar info del negocio si existe
   let bizContext = "";
   if (businessSlug) {
     const bizFile = path.join(__dirname, "..", "data", "businesses", `${businessSlug}.json`);
     if (fs.existsSync(bizFile)) {
-      const biz = JSON.parse(fs.readFileSync(bizFile, "utf8"));
-      bizContext = `
+      try {
+        const biz = JSON.parse(fs.readFileSync(bizFile, "utf8"));
+        bizContext = `
 Negocio: ${biz.name}
+Tipo: ${biz.headline || "Negocio local"}
 Descripción: ${biz.description || ""}
 Dirección: ${biz.address || "No especificada"}
 Horario: ${biz.hours || "No especificado"}
 Estado: ${biz.status || "abierto"}
 WhatsApp: ${biz.links?.whatsapp || ""}
-Menú: ${(biz.menu || []).map(i => i.name + (i.price ? " $" + i.price : "")).join(", ")}
-${(biz.drinks||[]).length ? "Bebidas: " + biz.drinks.map(i => i.name + (i.price ? " $" + i.price : "")).join(", ") : ""}
-      `.trim();
+Menú: ${(biz.menu || []).map(i => i.name + (i.price ? " — $" + i.price : "")).join(", ")}
+${(biz.sides || []).length ? "Acompañantes: " + biz.sides.map(i => i.name + (i.price ? " — $" + i.price : "")).join(", ") : ""}
+${(biz.drinks || []).length ? "Bebidas: " + biz.drinks.map(i => i.name + (i.price ? " — $" + i.price : "")).join(", ") : ""}
+Tono del asistente: ${biz.assistant?.tone || "amistoso y profesional"}
+        `.trim();
+      } catch (e) {}
     }
   }
 
-  const systemPrompt = bizContext ? 
-    `Eres IvA, un asistente de IA amigable y profesional para el siguiente negocio. Responde en el idioma del cliente (español o inglés). Sé conciso, máximo 3 oraciones. Guía al cliente a ordenar por WhatsApp cuando sea apropiado.
+  const systemPrompt = bizContext ?
+    `Eres ${req.body?.assistantName || "IvA"}, un asistente de IA para el siguiente negocio. Responde en el idioma del cliente (español o inglés). Sé conciso — máximo 3 oraciones. Cuando el cliente quiera ordenar, guíalo a WhatsApp.
 
 ${bizContext}` :
-    `Eres IvA, el asistente virtual de Ivamar AI. Ayudas a negocios en Puerto Rico y USA a crecer con tecnología. Responde en el idioma del cliente. Sé amigable y conciso. Setup: $125 único. Mensual: $49/mes. Primer mes gratis.`;
+    `Eres IvA, el asistente virtual de Ivamar AI. Ayudas a negocios en Puerto Rico y USA a crecer con tecnología y páginas con IA. Responde en el idioma del cliente. Sé amigable y conciso. Setup: $125 único. Mensual desde $49/mes. Primer mes gratis.`;
 
   try {
     const response = await anthropic.messages.create({
@@ -245,11 +222,9 @@ ${bizContext}` :
     return res.json({ reply: response.content[0].text });
   } catch (e) {
     console.error("Claude error:", e.message);
-    return res.json({ reply: "Disculpa, tuve un problema técnico. Por favor escríbeme directamente por WhatsApp." });
+    return res.json({ reply: "Disculpa, tuve un problema técnico. Por favor escríbeme directamente por WhatsApp. 🙏" });
   }
 });
-
-
 
 // ==========================================
 // START FORM
@@ -260,7 +235,7 @@ app.get("/start", (req, res) => {
   <div class="card">
     <h1>Comienza tu página con Ivamar AI</h1>
     <p style="margin-bottom:20px;">En menos de 48 horas tu negocio tiene su propia página con asistente de IA.</p>
-    <form class="ivamar-form" method="POST" action="/start">
+    <form method="POST" action="/start">
       <label>Nombre del negocio</label>
       <input type="text" name="businessName" placeholder="Ej. El Rincón Boricua" required style="margin-bottom:16px;padding:10px;" />
       <label>Nombre del dueño</label>
@@ -279,7 +254,7 @@ app.get("/start", (req, res) => {
       <label>Descripción</label>
       <textarea name="description" rows="3" placeholder="Describe tu negocio" style="margin-bottom:16px;padding:10px;"></textarea>
       <label>Menú o servicios</label>
-      <textarea name="menu" rows="5" placeholder="Ej. Tripleta - $12&#10;Papas fritas - $4" style="margin-bottom:16px;padding:10px;"></textarea>
+      <textarea name="menu" rows="5" placeholder="Ej. Tripleta - $12" style="margin-bottom:16px;padding:10px;"></textarea>
       <label>Bebidas</label>
       <textarea name="drinks" rows="3" placeholder="Ej. Refresco - $2" style="margin-bottom:16px;padding:10px;"></textarea>
       <label>Dirección</label>
@@ -357,14 +332,165 @@ app.get("/:slug", (req, res) => {
     else pageStyle = "background:#ffffff;color:#111111;";
 
     const assistantName = data.assistant?.name || "IvA";
-    const assistantWelcome = data.assistant?.welcome || "Hola, ¿en qué te ayudo hoy?";
+    const assistantWelcome = data.assistant?.welcome || "¡Hola! ¿En qué te ayudo hoy?";
     const whatsappNumber = (data.links?.whatsapp || "").replace(/\D/g, "");
+    const hours = typeof data.hours === "string" ? data.hours : "";
 
     let statusLabel = "";
     if (data.status === "cerrado") statusLabel = "🔴 Cerrado";
     else if (data.status === "vacaciones") statusLabel = "🌴 Vacaciones";
     else if (data.status === "feriado") statusLabel = "📅 Feriado";
     else statusLabel = "🟢 Abierto";
+
+    const chatHTML = `
+<style>
+.iva-chat-section{margin-top:40px;padding:24px;background:#0D1420;border-radius:16px;border:1px solid rgba(0,229,200,0.15);}
+.iva-chat-section h3{font-family:sans-serif;font-size:18px;font-weight:700;color:#F0F4FF;margin-bottom:4px;}
+.iva-chat-section p{font-size:13px;color:#8892A4;margin-bottom:16px;}
+.iva-chat-box{background:#080C12;border:1px solid rgba(255,255,255,0.06);border-radius:12px;overflow:hidden;}
+.iva-chat-topbar{background:#111827;padding:12px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,0.05);}
+.iva-chat-avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#00E5C8,#00a896);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.iva-chat-agent{flex:1;}
+.iva-chat-agent-name{font-size:13px;font-weight:700;color:#F0F4FF;}
+.iva-chat-agent-status{font-size:11px;color:#4CAF50;display:flex;align-items:center;gap:4px;}
+.iva-chat-agent-status::before{content:'●';font-size:8px;}
+.iva-chat-msgs{height:280px;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;scroll-behavior:smooth;}
+.iva-chat-msgs::-webkit-scrollbar{width:3px;}
+.iva-chat-msgs::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:2px;}
+.iva-msg{max-width:82%;display:flex;flex-direction:column;gap:3px;}
+.iva-msg.bot{align-self:flex-start;}
+.iva-msg.user{align-self:flex-end;}
+.iva-msg-bubble{padding:10px 13px;border-radius:12px;font-size:13px;line-height:1.5;font-family:sans-serif;}
+.iva-msg.bot .iva-msg-bubble{background:#1C2536;color:#F0F4FF;border-bottom-left-radius:4px;}
+.iva-msg.user .iva-msg-bubble{background:#00E5C8;color:#030508;border-bottom-right-radius:4px;font-weight:500;}
+.iva-msg-time{font-size:10px;color:#4A5568;}
+.iva-msg.user .iva-msg-time{text-align:right;}
+.iva-typing{display:flex;gap:3px;padding:10px 13px;background:#1C2536;border-radius:12px;border-bottom-left-radius:4px;width:fit-content;}
+.iva-typing span{width:5px;height:5px;background:#8892A4;border-radius:50%;animation:ivaTyping 1.2s ease-in-out infinite;}
+.iva-typing span:nth-child(2){animation-delay:0.2s;}
+.iva-typing span:nth-child(3){animation-delay:0.4s;}
+@keyframes ivaTyping{0%,100%{opacity:0.3;transform:scale(0.8)}50%{opacity:1;transform:scale(1)}}
+.iva-suggestions{display:flex;gap:6px;flex-wrap:wrap;padding:8px 16px;}
+.iva-suggestion{padding:5px 10px;background:rgba(0,229,200,0.07);border:1px solid rgba(0,229,200,0.2);border-radius:100px;font-size:11px;color:#00E5C8;cursor:pointer;transition:all 0.2s;white-space:nowrap;}
+.iva-suggestion:hover{background:rgba(0,229,200,0.15);}
+.iva-chat-input-area{padding:12px 16px;border-top:1px solid rgba(255,255,255,0.05);display:flex;gap:8px;align-items:center;}
+.iva-chat-input{flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:10px 14px;color:#F0F4FF;font-family:sans-serif;font-size:13px;outline:none;transition:border-color 0.2s;}
+.iva-chat-input:focus{border-color:rgba(0,229,200,0.4);}
+.iva-chat-input::placeholder{color:#4A5568;}
+.iva-chat-send{width:36px;height:36px;background:#00E5C8;border:none;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all 0.2s;flex-shrink:0;}
+.iva-chat-send:hover{background:#00c8b0;}
+.iva-float-btn{position:fixed;bottom:24px;right:24px;width:56px;height:56px;background:linear-gradient(135deg,#00E5C8,#00a896);border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 8px 25px rgba(0,229,200,0.35);z-index:999;transition:all 0.3s;animation:floatPulse 3s ease-in-out infinite;}
+@keyframes floatPulse{0%,100%{box-shadow:0 8px 25px rgba(0,229,200,0.35)}50%{box-shadow:0 8px 35px rgba(0,229,200,0.55)}}
+.iva-float-btn:hover{transform:scale(1.1);}
+.iva-float-badge{position:absolute;top:-2px;right:-2px;width:16px;height:16px;background:#4CAF50;border-radius:50%;border:2px solid white;animation:ivaBlink2 2s ease-in-out infinite;}
+@keyframes ivaBlink2{0%,100%{opacity:1}50%{opacity:0.4}}
+.iva-float-panel{position:fixed;bottom:90px;right:24px;width:300px;max-height:420px;background:#0D1420;border:1px solid rgba(0,229,200,0.2);border-radius:16px;overflow:hidden;z-index:998;display:none;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,0.5);}
+.iva-float-panel.open{display:flex;}
+.iva-float-header{background:#111827;padding:12px 14px;display:flex;align-items:center;gap:8px;border-bottom:1px solid rgba(255,255,255,0.05);}
+.iva-float-avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#00E5C8,#00a896);display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;}
+.iva-float-info{flex:1;}
+.iva-float-name{font-size:11px;font-weight:700;color:#F0F4FF;}
+.iva-float-status{font-size:10px;color:#4CAF50;}
+.iva-float-close{background:transparent;border:none;color:#4A5568;font-size:15px;cursor:pointer;}
+.iva-float-close:hover{color:#F0F4FF;}
+.iva-float-msgs{flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:8px;}
+.iva-float-input-area{padding:8px 10px;border-top:1px solid rgba(255,255,255,0.05);display:flex;gap:6px;}
+.iva-float-input{flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:7px;padding:7px 10px;color:#F0F4FF;font-family:sans-serif;font-size:12px;outline:none;}
+.iva-float-input:focus{border-color:rgba(0,229,200,0.4);}
+.iva-float-input::placeholder{color:#4A5568;}
+.iva-float-send{width:30px;height:30px;background:#00E5C8;border:none;border-radius:7px;cursor:pointer;font-size:11px;}
+</style>
+
+<div class="iva-chat-section">
+  <h3>💬 Habla con ${assistantName}</h3>
+  <p>Tu asistente de IA disponible 24/7 — en español e inglés.</p>
+  <div class="iva-chat-box">
+    <div class="iva-chat-topbar">
+      <div class="iva-chat-avatar">🤖</div>
+      <div class="iva-chat-agent">
+        <div class="iva-chat-agent-name">${assistantName} — ${data.name}</div>
+        <div class="iva-chat-agent-status">En línea ahora</div>
+      </div>
+    </div>
+    <div class="iva-chat-msgs" id="ivaMsgs">
+      <div class="iva-msg bot">
+        <div class="iva-msg-bubble">${assistantWelcome}</div>
+        <div class="iva-msg-time">Ahora</div>
+      </div>
+    </div>
+    <div class="iva-suggestions" id="ivaSuggestions">
+      <span class="iva-suggestion" onclick="ivaSendSugg(this)">¿Qué incluye el menú?</span>
+      <span class="iva-suggestion" onclick="ivaSendSugg(this)">¿Cuál es el horario?</span>
+      <span class="iva-suggestion" onclick="ivaSendSugg(this)">¿Cómo ordeno?</span>
+    </div>
+    <div class="iva-chat-input-area">
+      <input class="iva-chat-input" id="ivaInput" placeholder="Escribe tu pregunta..." onkeydown="if(event.key==='Enter')ivaSend('main')" />
+      <button class="iva-chat-send" onclick="ivaSend('main')">➤</button>
+    </div>
+  </div>
+</div>
+
+<button class="iva-float-btn" onclick="ivaToggleFloat()">
+  🤖<div class="iva-float-badge"></div>
+</button>
+
+<div class="iva-float-panel" id="ivaFloatPanel">
+  <div class="iva-float-header">
+    <div class="iva-float-avatar">🤖</div>
+    <div class="iva-float-info">
+      <div class="iva-float-name">${assistantName} — ${data.name}</div>
+      <div class="iva-float-status">● En línea</div>
+    </div>
+    <button class="iva-float-close" onclick="ivaToggleFloat()">✕</button>
+  </div>
+  <div class="iva-float-msgs" id="ivaFloatMsgs">
+    <div class="iva-msg bot">
+      <div class="iva-msg-bubble">${assistantWelcome}</div>
+      <div class="iva-msg-time">Ahora</div>
+    </div>
+  </div>
+  <div class="iva-float-input-area">
+    <input class="iva-float-input" id="ivaFloatInput" placeholder="Escribe aquí..." onkeydown="if(event.key==='Enter')ivaSend('float')" />
+    <button class="iva-float-send" onclick="ivaSend('float')">➤</button>
+  </div>
+</div>
+
+<script>
+const IVA_SLUG = "${slug}";
+function ivaToggleFloat() { document.getElementById('ivaFloatPanel').classList.toggle('open'); }
+function ivaAddMsg(cId, text, type) {
+  const c = document.getElementById(cId);
+  const now = new Date().toLocaleTimeString('es',{hour:'2-digit',minute:'2-digit'});
+  const d = document.createElement('div');
+  d.className = 'iva-msg ' + type;
+  d.innerHTML = '<div class="iva-msg-bubble">' + text + '</div><div class="iva-msg-time">' + now + '</div>';
+  c.appendChild(d); c.scrollTop = c.scrollHeight;
+}
+function ivaShowTyping(cId) {
+  const c = document.getElementById(cId);
+  const d = document.createElement('div');
+  d.className = 'iva-msg bot'; d.id = 'ivaT_' + cId;
+  d.innerHTML = '<div class="iva-typing"><span></span><span></span><span></span></div>';
+  c.appendChild(d); c.scrollTop = c.scrollHeight;
+}
+function ivaHideTyping(cId) { const el = document.getElementById('ivaT_' + cId); if(el) el.remove(); }
+async function ivaSend(mode) {
+  const iId = mode==='float'?'ivaFloatInput':'ivaInput';
+  const mId = mode==='float'?'ivaFloatMsgs':'ivaMsgs';
+  const input = document.getElementById(iId);
+  const text = input.value.trim(); if(!text) return;
+  input.value = '';
+  const sugg = document.getElementById('ivaSuggestions');
+  if(sugg) sugg.style.display = 'none';
+  ivaAddMsg(mId, text, 'user'); ivaShowTyping(mId);
+  try {
+    const r = await fetch('/api/assistant', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:text,businessSlug:IVA_SLUG})});
+    const data = await r.json();
+    ivaHideTyping(mId); ivaAddMsg(mId, data.reply || '¿En qué más te ayudo?', 'bot');
+  } catch(e) { ivaHideTyping(mId); ivaAddMsg(mId, 'Disculpa, tuve un problema. Intenta de nuevo.', 'bot'); }
+}
+function ivaSendSugg(el) { document.getElementById('ivaInput').value = el.textContent; ivaSend('main'); }
+<\/script>`;
 
     const body = `
       <div class="card" style="${pageStyle}">
@@ -375,23 +501,26 @@ app.get("/:slug", (req, res) => {
           <h1 style="margin:8px 0;font-size:30px;">${data.name}</h1>
           <p style="color:var(--muted);font-size:16px;max-width:600px;margin:0 auto;">${data.description || ""}</p>
         </div>
-        ${data.address || data.hours ? `<div style="text-align:center;margin-bottom:20px;">${data.address ? `<div style="margin-bottom:6px;"><b>📍</b> ${data.address}</div>` : ""}${data.hours ? `<div><b>🕐</b> ${data.hours}</div>` : ""}</div>` : ""}
+        ${data.address || hours ? `<div style="text-align:center;margin-bottom:20px;">${data.address ? `<div style="margin-bottom:6px;">📍 ${data.address}</div>` : ""}${hours ? `<div>🕐 ${hours}</div>` : ""}</div>` : ""}
         <div style="text-align:center;margin:20px 0;">
           <a href="${data.links?.whatsapp || "#"}" target="_blank" style="display:inline-block;background:#25D366;color:#fff;text-decoration:none;font-size:17px;font-weight:700;padding:13px 22px;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,.15);">📲 Ordenar por WhatsApp</a>
         </div>
         <h2 style="margin-top:36px;font-size:26px;">Menú</h2>
         <div class="grid">
-          ${(data.menu || []).map((item, i) => `<div class="tile"><b>${item.name}</b><div style="margin-top:6px;font-weight:900;">${item.price !== null ? "$" + item.price : "Precio pendiente"}</div><div style="margin-top:10px;display:flex;align-items:center;gap:8px;"><button onclick="changeQty('menu-${i}',-1)" style="padding:5px 9px;border:none;border-radius:7px;cursor:pointer;">-</button><span id="qty-menu-${i}">0</span><button onclick="changeQty('menu-${i}',1)" style="padding:5px 9px;border:none;border-radius:7px;cursor:pointer;">+</button></div></div>`).join("")}
+          ${(data.menu || []).map((item, i) => `<div class="tile"><b>${item.name}</b><div style="font-size:13px;color:#888;margin-top:4px;">${item.desc || ""}</div><div style="margin-top:6px;font-weight:900;">${item.price !== null ? "$" + item.price : "Precio pendiente"}</div><div style="margin-top:10px;display:flex;align-items:center;gap:8px;"><button onclick="changeQty('menu-${i}',-1)" style="padding:5px 9px;border:none;border-radius:7px;cursor:pointer;">-</button><span id="qty-menu-${i}">0</span><button onclick="changeQty('menu-${i}',1)" style="padding:5px 9px;border:none;border-radius:7px;cursor:pointer;">+</button></div></div>`).join("")}
         </div>
-        ${(data.drinks || []).length ? `<h2 style="margin-top:32px;">Bebidas</h2><div class="grid">${(data.drinks || []).map((item, i) => `<div class="tile"><b>${item.name}</b><div style="margin-top:6px;font-weight:900;">${item.price !== null ? "$" + item.price : "Precio pendiente"}</div><div style="margin-top:10px;display:flex;align-items:center;gap:8px;"><button onclick="changeQty('drink-${i}',-1)" style="padding:5px 9px;border:none;border-radius:7px;cursor:pointer;">-</button><span id="qty-drink-${i}">0</span><button onclick="changeQty('drink-${i}',1)" style="padding:5px 9px;border:none;border-radius:7px;cursor:pointer;">+</button></div></div>`).join("")}</div>` : ""}
+        ${(data.sides || []).length ? `<h2 style="margin-top:28px;font-size:22px;">Acompañantes</h2><div class="grid">${(data.sides || []).map((item, i) => `<div class="tile"><b>${item.name}</b><div style="margin-top:6px;font-weight:900;">${item.price !== null ? "$" + item.price : ""}</div><div style="margin-top:10px;display:flex;align-items:center;gap:8px;"><button onclick="changeQty('side-${i}',-1)" style="padding:5px 9px;border:none;border-radius:7px;cursor:pointer;">-</button><span id="qty-side-${i}">0</span><button onclick="changeQty('side-${i}',1)" style="padding:5px 9px;border:none;border-radius:7px;cursor:pointer;">+</button></div></div>`).join("")}</div>` : ""}
+        ${(data.drinks || []).length ? `<h2 style="margin-top:28px;font-size:22px;">Bebidas</h2><div class="grid">${(data.drinks || []).map((item, i) => `<div class="tile"><b>${item.name}</b><div style="margin-top:6px;font-weight:900;">${item.price !== null ? "$" + item.price : ""}</div><div style="margin-top:10px;display:flex;align-items:center;gap:8px;"><button onclick="changeQty('drink-${i}',-1)" style="padding:5px 9px;border:none;border-radius:7px;cursor:pointer;">-</button><span id="qty-drink-${i}">0</span><button onclick="changeQty('drink-${i}',1)" style="padding:5px 9px;border:none;border-radius:7px;cursor:pointer;">+</button></div></div>`).join("")}</div>` : ""}
         <div id="cart" style="margin-top:36px;padding:18px;border-radius:16px;background:#f0f0f0;">
           <h2 style="margin-top:0;">🛒 Tu orden</h2>
           <div id="cart-items" style="margin-bottom:14px;color:#555;">No has añadido nada todavía.</div>
           <div style="font-weight:700;"><div>Subtotal: $<span id="subtotal">0.00</span></div><div>Tax (11.5%): $<span id="tax">0.00</span></div><div style="font-size:18px;margin-top:6px;">Total: $<span id="total">0.00</span></div></div>
           <a id="send-order-btn" href="#" target="_blank" style="margin-top:14px;display:inline-block;width:100%;padding:12px;border-radius:10px;background:#25D366;color:white;font-weight:700;text-decoration:none;text-align:center;">Enviar pedido por WhatsApp</a>
         </div>
+        ${chatHTML}
         <script>
         const menuItems = ${JSON.stringify(data.menu || [])};
+        const sidesItems = ${JSON.stringify(data.sides || [])};
         const drinkItems = ${JSON.stringify(data.drinks || [])};
         const waNumber = "${whatsappNumber}";
         const bizName = "${data.name}";
@@ -412,7 +541,7 @@ app.get("/:slug", (req, res) => {
               if (qty > 0) { const price = Number.isFinite(Number(item.price)) ? Number(item.price) : 0; subtotal += qty * price; lines.push(item.name + " x" + qty + " = $" + (qty * price).toFixed(2)); }
             });
           }
-          process(menuItems, "menu"); process(drinkItems, "drink");
+          process(menuItems, "menu"); process(sidesItems, "side"); process(drinkItems, "drink");
           document.getElementById("cart-items").innerHTML = lines.length ? lines.join("<br/>") : "No has añadido nada todavía.";
           const tax = subtotal * 0.115;
           document.getElementById("subtotal").textContent = subtotal.toFixed(2);
@@ -422,12 +551,11 @@ app.get("/:slug", (req, res) => {
           document.getElementById("send-order-btn").href = "https://wa.me/" + waNumber + "?text=" + encodeURIComponent(msg);
         }
         updateCart();
-        </script>
+        <\/script>
       </div>`;
     return res.send(layout({ title: data.name, body }));
   }
 
-  // Buscar en clients.json
   let clients = [];
   try {
     const raw = fs.readFileSync(clientsFilePath, "utf8");
