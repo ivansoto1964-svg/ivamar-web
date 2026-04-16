@@ -4,8 +4,6 @@ module.exports = `
 .iva-quote{font-family:'Syne',sans-serif;background:#030508;color:#F0F4FF;margin:-20px;overflow-x:hidden;}
 .iva-quote *{box-sizing:border-box;margin:0;padding:0;}
 .iva-quote a{color:#00E5C8;text-decoration:none;}
-
-/* NAV */
 .iva-q-nav{padding:1.2rem 2rem;display:flex;align-items:center;justify-content:space-between;background:rgba(3,5,8,0.95);border-bottom:1px solid rgba(0,229,200,0.08);position:sticky;top:0;z-index:100;backdrop-filter:blur(12px);}
 .iva-q-logo{display:flex;align-items:center;gap:0.6rem;text-decoration:none!important;}
 .iva-q-logo-mark{width:30px;height:30px;border:1.5px solid #00E5C8;border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:0.65rem;color:#00E5C8;background:rgba(0,229,200,0.06);}
@@ -13,27 +11,19 @@ module.exports = `
 .iva-q-logo-text span{color:#00E5C8;}
 .iva-q-back{font-size:0.82rem;color:#8892A4;border:1px solid rgba(255,255,255,0.1);padding:0.4rem 1rem;border-radius:6px;transition:all 0.2s;text-decoration:none!important;}
 .iva-q-back:hover{color:#F0F4FF;border-color:rgba(255,255,255,0.25);}
-
-/* HERO */
 .iva-q-hero{padding:4rem 2rem 3rem;text-align:center;position:relative;overflow:hidden;}
 .iva-q-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 50% 0%,rgba(0,229,200,0.07),transparent 70%);pointer-events:none;}
 .iva-q-tag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:#00E5C8;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:1rem;padding:0.3rem 0.8rem;border:1px solid rgba(0,229,200,0.2);border-radius:4px;}
 .iva-q-hero h1{font-size:clamp(2.2rem,5vw,3.5rem);font-weight:800;letter-spacing:-0.03em;line-height:1.05;margin-bottom:1rem;position:relative;}
 .iva-q-hero h1 em{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:#00E5C8;}
 .iva-q-hero p{color:#8892A4;font-size:1rem;line-height:1.7;max-width:480px;margin:0 auto;font-weight:400;position:relative;}
-
-/* FORM CONTAINER */
 .iva-q-content{max-width:680px;margin:0 auto;padding:2rem 2rem 5rem;}
-
 .iva-q-card{background:#0D1420;border:1px solid rgba(255,255,255,0.06);border-radius:20px;padding:2.5rem;margin-bottom:1.5rem;position:relative;overflow:hidden;}
 .iva-q-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,#00E5C8,transparent);}
-
 .iva-q-card-title{font-size:0.72rem;font-family:'JetBrains Mono',monospace;color:#00E5C8;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:1.5rem;display:flex;align-items:center;gap:0.5rem;}
 .iva-q-card-title::before{content:'';width:16px;height:1px;background:#00E5C8;}
-
 .iva-q-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;}
 .iva-q-row.single{grid-template-columns:1fr;}
-
 .iva-q-field{display:flex;flex-direction:column;gap:0.4rem;}
 .iva-q-field label{font-size:0.75rem;color:#8892A4;letter-spacing:0.05em;font-weight:500;}
 .iva-q-field input,
@@ -46,6 +36,12 @@ module.exports = `
 .iva-q-field select option{background:#0D1420;color:#F0F4FF;}
 .iva-q-field textarea{resize:vertical;min-height:100px;line-height:1.6;}
 
+/* PRICING ALERT */
+.iva-q-price-alert{background:rgba(0,229,200,0.06);border:1px solid rgba(0,229,200,0.2);border-radius:12px;padding:1rem 1.2rem;margin-bottom:1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;}
+.iva-q-price-alert-text{font-size:0.85rem;color:#8892A4;}
+.iva-q-price-alert-text strong{color:#F0F4FF;}
+.iva-q-price-badge{font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:#00E5C8;background:rgba(0,229,200,0.1);border:1px solid rgba(0,229,200,0.3);padding:0.3rem 0.8rem;border-radius:100px;white-space:nowrap;}
+
 /* PLAN SELECTOR */
 .iva-q-plans{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;}
 .iva-q-plan{border:1.5px solid rgba(255,255,255,0.08);border-radius:12px;padding:1.2rem;cursor:pointer;transition:all 0.2s;position:relative;}
@@ -57,14 +53,10 @@ module.exports = `
 .iva-q-plan-check{position:absolute;top:0.8rem;right:0.8rem;width:20px;height:20px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:0.65rem;transition:all 0.2s;}
 .iva-q-plan.selected .iva-q-plan-check{background:#00E5C8;border-color:#00E5C8;color:#030508;}
 
-/* SUBMIT */
 .iva-q-submit{width:100%;padding:1rem;background:#00E5C8;color:#030508;border:none;border-radius:12px;font-family:'Syne',sans-serif;font-weight:700;font-size:1.05rem;cursor:pointer;transition:all 0.25s;display:flex;align-items:center;justify-content:center;gap:0.6rem;margin-top:0.5rem;}
 .iva-q-submit:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,229,200,0.3);}
-.iva-q-submit:active{transform:translateY(0);}
-
 .iva-q-note{text-align:center;font-size:0.78rem;color:#4A5568;margin-top:1rem;line-height:1.5;}
 
-/* SUCCESS */
 .iva-q-success{display:none;text-align:center;padding:4rem 2rem;}
 .iva-q-success-icon{font-size:4rem;margin-bottom:1.5rem;}
 .iva-q-success h2{font-size:2rem;font-weight:800;letter-spacing:-0.03em;margin-bottom:0.8rem;}
@@ -78,12 +70,7 @@ module.exports = `
 .iva-q-footer-links{display:flex;gap:1.2rem;}
 .iva-q-footer-links a{color:#4A5568;text-decoration:none;transition:color 0.2s;}
 .iva-q-footer-links a:hover{color:#00E5C8;}
-
-@media(max-width:600px){
-  .iva-q-row{grid-template-columns:1fr;}
-  .iva-q-plans{grid-template-columns:1fr;}
-  .iva-q-footer{flex-direction:column;text-align:center;}
-}
+@media(max-width:600px){.iva-q-row{grid-template-columns:1fr;}.iva-q-plans{grid-template-columns:1fr;}.iva-q-footer{flex-direction:column;text-align:center;}}
 </style>
 
 <div class="iva-quote">
@@ -98,12 +85,10 @@ module.exports = `
   <div class="iva-q-hero">
     <div class="iva-q-tag">Get Started · Empezar</div>
     <h1>Let's build your<br><em>AI-powered page</em></h1>
-    <p>Fill out the form below and we'll get back to you within 24 hours to get started. No commitment required.</p>
+    <p>Fill out the form and we'll get back to you within 24 hours. No commitment required.</p>
   </div>
 
   <div class="iva-q-content">
-
-    <!-- FORM -->
     <div id="quoteForm">
 
       <!-- BUSINESS INFO -->
@@ -116,25 +101,66 @@ module.exports = `
           </div>
           <div class="iva-q-field">
             <label>Business Type *</label>
-            <select id="qBizType">
-              <option value="">Select type</option>
-              <option>Food Truck</option>
-              <option>Restaurant / Chinchorro</option>
-              <option>Bakery / Panadería</option>
-              <option>Cafetería</option>
-              <option>Bar / Drinks</option>
-              <option>Salon / Beauty</option>
-              <option>Car Dealer</option>
-              <option>Contractor / Services</option>
-              <option>Retail Store</option>
-              <option>Professional Services</option>
-              <option>Other</option>
+            <select id="qBizType" onchange="updatePricing()">
+              <option value="">Select type / Selecciona</option>
+              <optgroup label="🍽 Food & Beverage">
+                <option value="food_basic">Food Truck</option>
+                <option value="food_basic">Restaurant / Chinchorro</option>
+                <option value="food_basic">Bakery / Panadería</option>
+                <option value="food_basic">Cafetería</option>
+                <option value="food_basic">Bar / Drinks</option>
+                <option value="food_basic">Kiosko / Street Food</option>
+              </optgroup>
+              <optgroup label="💇 Beauty & Wellness">
+                <option value="beauty_basic">Salon / Barbershop</option>
+                <option value="beauty_basic">Spa / Nails</option>
+                <option value="beauty_basic">Gym / Fitness</option>
+              </optgroup>
+              <optgroup label="🚗 Automotive">
+                <option value="auto_pro">Car Dealer / Dealer de Autos</option>
+                <option value="auto_pro">Auto Repair / Mecánica</option>
+                <option value="auto_pro">Car Rental</option>
+              </optgroup>
+              <optgroup label="🏠 Real Estate">
+                <option value="realtor_pro">Realtor / Agente de Bienes Raíces</option>
+                <option value="realtor_pro">Property Manager</option>
+                <option value="realtor_pro">Home Services / Contractor</option>
+              </optgroup>
+              <optgroup label="🏥 Health & Medical">
+                <option value="medical_pro">Doctor / Médico General</option>
+                <option value="medical_pro">Dentist / Dentista</option>
+                <option value="medical_pro">Therapist / Terapeuta</option>
+                <option value="medical_pro">Veterinarian / Veterinario</option>
+                <option value="medical_pro">Pharmacy / Farmacia</option>
+              </optgroup>
+              <optgroup label="⚖️ Professional Services">
+                <option value="legal_pro">Lawyer / Abogado</option>
+                <option value="legal_pro">Accountant / Contador</option>
+                <option value="legal_pro">Insurance Agent</option>
+                <option value="legal_pro">Financial Advisor</option>
+              </optgroup>
+              <optgroup label="🏪 Retail & Other">
+                <option value="retail_basic">Retail Store / Tienda</option>
+                <option value="retail_basic">Photography / Fotógrafo</option>
+                <option value="retail_basic">Event Planner</option>
+                <option value="retail_basic">Other / Otro</option>
+              </optgroup>
             </select>
           </div>
         </div>
+
+        <!-- DYNAMIC PRICE ALERT -->
+        <div class="iva-q-price-alert" id="priceAlert" style="display:none;">
+          <div class="iva-q-price-alert-text">
+            Recommended plan for <strong id="alertBizType">your business</strong>:
+            <span id="alertPlanName" style="color:#00E5C8;font-weight:600;"></span>
+          </div>
+          <div class="iva-q-price-badge" id="alertPrice"></div>
+        </div>
+
         <div class="iva-q-row single">
           <div class="iva-q-field">
-            <label>Business Location</label>
+            <label>Location / Ubicación</label>
             <input type="text" id="qLocation" placeholder="Caguas, PR · Orlando, FL · etc." />
           </div>
         </div>
@@ -149,7 +175,7 @@ module.exports = `
             <input type="text" id="qName" placeholder="María González" />
           </div>
           <div class="iva-q-field">
-            <label>WhatsApp Number *</label>
+            <label>WhatsApp *</label>
             <input type="tel" id="qPhone" placeholder="+1 (787) 000-0000" />
           </div>
         </div>
@@ -161,26 +187,26 @@ module.exports = `
         </div>
       </div>
 
-      <!-- PLAN -->
+      <!-- PLAN SELECTOR -->
       <div class="iva-q-card">
         <div class="iva-q-card-title">Choose your plan</div>
         <div class="iva-q-plans">
-          <div class="iva-q-plan selected" onclick="selectPlan(this,'IvA Chat — $125 setup + $49/mes')">
+          <div class="iva-q-plan selected" id="plan1" onclick="selectPlan(this,'IvA Chat')">
             <div class="iva-q-plan-check">✓</div>
             <div class="iva-q-plan-name">🤖 IvA Chat</div>
-            <div class="iva-q-plan-price">$125 setup + $49/mo</div>
+            <div class="iva-q-plan-price" id="plan1Price">$125 setup + $49/mo</div>
             <div class="iva-q-plan-desc">Landing page + AI assistant + WhatsApp flow</div>
           </div>
-          <div class="iva-q-plan" onclick="selectPlan(this,'IvA + Orders — $125 setup + $49/mes')">
+          <div class="iva-q-plan" id="plan2" onclick="selectPlan(this,'IvA + Orders')">
             <div class="iva-q-plan-check"></div>
             <div class="iva-q-plan-name">🛒 IvA + Orders</div>
-            <div class="iva-q-plan-price">$125 setup + $49/mo</div>
+            <div class="iva-q-plan-price" id="plan2Price">$125 setup + $49/mo</div>
             <div class="iva-q-plan-desc">Everything above + menu, cart & payments</div>
           </div>
         </div>
       </div>
 
-      <!-- EXTRA INFO -->
+      <!-- NOTES -->
       <div class="iva-q-card">
         <div class="iva-q-card-title">Anything else?</div>
         <div class="iva-q-row single">
@@ -194,8 +220,7 @@ module.exports = `
       <button class="iva-q-submit" onclick="submitQuote()">
         📲 Send via WhatsApp →
       </button>
-      <p class="iva-q-note">You'll be redirected to WhatsApp with your info pre-filled. We respond within 24 hours. · Respondemos en menos de 24 horas.</p>
-
+      <p class="iva-q-note">You'll be redirected to WhatsApp with your info pre-filled. We respond within 24 hours.</p>
     </div>
 
     <!-- SUCCESS -->
@@ -205,7 +230,6 @@ module.exports = `
       <p>Your request was sent via WhatsApp. We'll get back to you within 24 hours to get your page started.</p>
       <a href="/" class="iva-q-success-btn">← Back to Ivamar AI</a>
     </div>
-
   </div>
 
   <div class="iva-q-footer">
@@ -220,7 +244,43 @@ module.exports = `
 </div>
 
 <script>
-let selectedPlan = 'IvA Chat — $125 setup + $49/mes';
+// Pricing tiers
+const PRICING = {
+  food_basic:   { monthly: 49,  label: 'Food & Beverage' },
+  beauty_basic: { monthly: 49,  label: 'Beauty & Wellness' },
+  retail_basic: { monthly: 49,  label: 'Retail & Other' },
+  auto_pro:     { monthly: 99,  label: 'Automotive' },
+  realtor_pro:  { monthly: 99,  label: 'Real Estate' },
+  medical_pro:  { monthly: 99,  label: 'Health & Medical' },
+  legal_pro:    { monthly: 99,  label: 'Professional Services' },
+};
+
+let selectedPlan = 'IvA Chat';
+let currentMonthly = 49;
+
+function updatePricing() {
+  const select = document.getElementById('qBizType');
+  const val = select.value;
+  const tier = PRICING[val];
+
+  if (!tier) {
+    document.getElementById('priceAlert').style.display = 'none';
+    return;
+  }
+
+  currentMonthly = tier.monthly;
+  const priceStr = '$125 setup + $' + tier.monthly + '/mo';
+
+  // Update plan prices
+  document.getElementById('plan1Price').textContent = priceStr;
+  document.getElementById('plan2Price').textContent = priceStr;
+
+  // Show alert
+  document.getElementById('alertBizType').textContent = tier.label;
+  document.getElementById('alertPlanName').textContent = tier.monthly === 49 ? 'Standard' : 'Professional';
+  document.getElementById('alertPrice').textContent = '$' + tier.monthly + '/month';
+  document.getElementById('priceAlert').style.display = 'flex';
+}
 
 function selectPlan(el, plan) {
   document.querySelectorAll('.iva-q-plan').forEach(p => {
@@ -234,7 +294,7 @@ function selectPlan(el, plan) {
 
 function submitQuote() {
   const bizName = document.getElementById('qBizName').value.trim();
-  const bizType = document.getElementById('qBizType').value;
+  const bizType = document.getElementById('qBizType').options[document.getElementById('qBizType').selectedIndex]?.text || '';
   const name = document.getElementById('qName').value.trim();
   const phone = document.getElementById('qPhone').value.trim();
 
@@ -249,12 +309,12 @@ function submitQuote() {
 
   let msg = '🌟 *NEW QUOTE REQUEST — Ivamar AI*\\n\\n';
   msg += '🏪 *Business:* ' + bizName + '\\n';
-  if (bizType) msg += '📂 *Type:* ' + bizType + '\\n';
+  msg += '📂 *Type:* ' + bizType + '\\n';
   if (location) msg += '📍 *Location:* ' + location + '\\n';
   msg += '\\n👤 *Contact:* ' + name + '\\n';
   msg += '📱 *WhatsApp:* ' + phone + '\\n';
   if (email) msg += '✉️ *Email:* ' + email + '\\n';
-  msg += '\\n💼 *Plan:* ' + selectedPlan + '\\n';
+  msg += '\\n💼 *Plan:* ' + selectedPlan + ' — $125 setup + $' + currentMonthly + '/mo\\n';
   if (notes) msg += '\\n📝 *Notes:* ' + notes + '\\n';
   msg += '\\n---\\nSent from ivamarai.com/quote';
 
