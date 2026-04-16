@@ -47,8 +47,17 @@ module.exports = `
 .iva-section-label::before{content:'';width:20px;height:1px;background:#00E5C8;}
 .iva-section-title{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;letter-spacing:-0.03em;line-height:1.1;margin-bottom:0.8rem;}
 .iva-section-title em{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:#00E5C8;}
+.iva-industries{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:3rem;}
+.iva-industry{background:#0D1420;border:1px solid rgba(255,255,255,0.05);border-radius:14px;padding:1.5rem 1.2rem;text-align:center;transition:all 0.3s;position:relative;overflow:hidden;cursor:pointer;text-decoration:none;display:block;color:inherit;}
+.iva-industry::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#00E5C8,transparent);opacity:0;transition:opacity 0.3s;}
+.iva-industry:hover{transform:translateY(-4px);border-color:rgba(0,229,200,0.2);box-shadow:0 12px 30px rgba(0,0,0,0.3);}
+.iva-industry:hover::before{opacity:1;}
+.iva-industry-icon{font-size:2.2rem;margin-bottom:0.8rem;display:block;}
+.iva-industry-name{font-size:0.9rem;font-weight:700;margin-bottom:0.3rem;color:#F0F4FF;}
+.iva-industry-desc{font-size:0.72rem;color:#4A5568;line-height:1.4;}
+.iva-industry-tag{display:inline-block;margin-top:0.8rem;font-family:'JetBrains Mono',monospace;font-size:0.6rem;color:#00E5C8;letter-spacing:0.1em;border:1px solid rgba(0,229,200,0.2);padding:0.2rem 0.5rem;border-radius:3px;}
 .iva-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:3rem;background:rgba(0,229,200,0.08);border-radius:16px;overflow:hidden;border:1px solid rgba(0,229,200,0.1);}
-.iva-step{background:#080C12;padding:2.5rem 2rem;transition:background 0.3s;}
+.iva-step{background:#030508;padding:2.5rem 2rem;transition:background 0.3s;}
 .iva-step:hover{background:rgba(0,229,200,0.04);}
 .iva-step-num{font-family:'JetBrains Mono',monospace;font-size:0.65rem;color:#00E5C8;letter-spacing:0.15em;margin-bottom:1rem;opacity:0.7;}
 .iva-step-icon{font-size:2rem;margin-bottom:0.8rem;display:block;}
@@ -89,7 +98,7 @@ module.exports = `
 .iva-footer-links{display:flex;gap:1.5rem;}
 .iva-footer-links a{color:#4A5568;text-decoration:none;transition:color 0.2s;}
 .iva-footer-links a:hover{color:#00E5C8;}
-@media(max-width:700px){.iva-nav-links{display:none;}.iva-steps{grid-template-columns:1fr;}.iva-features{grid-template-columns:1fr;}.iva-feature.wide{grid-column:span 1;}.iva-pricing-list{grid-template-columns:1fr;}.iva-footer{flex-direction:column;text-align:center;}}
+@media(max-width:700px){.iva-nav-links{display:none;}.iva-industries{grid-template-columns:repeat(2,1fr);}.iva-steps{grid-template-columns:1fr;}.iva-features{grid-template-columns:1fr;}.iva-feature.wide{grid-column:span 1;}.iva-pricing-list{grid-template-columns:1fr;}.iva-footer{flex-direction:column;text-align:center;}}
 </style>
 
 <div class="iva-page">
@@ -99,15 +108,15 @@ module.exports = `
       <span class="iva-logo-text">Ivamar <span>AI</span></span>
     </a>
     <ul class="iva-nav-links">
+      <li><a href="#industries">Industrias</a></li>
       <li><a href="#how">Cómo funciona</a></li>
-      <li><a href="#features">Servicios</a></li>
       <li><a href="#pricing">Precios</a></li>
       <li><a href="/demo">Demo</a></li>
       <li><a href="/about">Nosotros</a></li>
     </ul>
     <div class="iva-nav-right">
       <a href="/en" class="iva-lang-switch">🇺🇸 English</a>
-      <a href="https://wa.me/18635216708" target="_blank" class="iva-nav-cta">Empezar →</a>
+      <a href="/quote" class="iva-nav-cta">Empezar →</a>
     </div>
   </nav>
 
@@ -117,8 +126,8 @@ module.exports = `
     <div class="iva-badge"><span class="iva-badge-dot"></span>DISPONIBLE EN PUERTO RICO & USA</div>
     <h1>The <em>Human Touch</em><br>of Intelligence</h1>
     <p class="iva-hero-sub">Creamos páginas con asistente de IA para negocios reales. Tus clientes preguntan, ordenan y pagan — sin que tú tengas que estar al teléfono.</p>
-    <div class="iva-hero-actions">    
-<a href="/quote" target="_blank" class="iva-btn-main">Request Demo →</a>
+    <div class="iva-hero-actions">
+      <a href="/quote" class="iva-btn-main">Empezar ahora →</a>
       <a href="/demo" class="iva-btn-ghost">Ver demo en vivo</a>
     </div>
     <div class="iva-stats">
@@ -129,7 +138,66 @@ module.exports = `
     </div>
   </div>
 
-  <div class="iva-section iva-section-dark" id="how">
+  <!-- INDUSTRIAS -->
+  <div class="iva-section iva-section-dark" id="industries">
+    <div class="iva-inner">
+      <div class="iva-section-label">A quién servimos</div>
+      <h2 class="iva-section-title">Para <em>cualquier</em> negocio local</h2>
+      <div class="iva-industries">
+        <a href="/quote" class="iva-industry">
+          <span class="iva-industry-icon">🚚</span>
+          <div class="iva-industry-name">Food Trucks</div>
+          <div class="iva-industry-desc">Menú digital, pedidos por WhatsApp y pagos</div>
+          <span class="iva-industry-tag">$49/mes</span>
+        </a>
+        <a href="/quote" class="iva-industry">
+          <span class="iva-industry-icon">🍽</span>
+          <div class="iva-industry-name">Restaurantes</div>
+          <div class="iva-industry-desc">Menú completo, reservaciones y asistente IA</div>
+          <span class="iva-industry-tag">$49/mes</span>
+        </a>
+        <a href="/quote" class="iva-industry">
+          <span class="iva-industry-icon">🥐</span>
+          <div class="iva-industry-name">Panaderías & Cafés</div>
+          <div class="iva-industry-desc">Especiales del día, órdenes y chat con clientes</div>
+          <span class="iva-industry-tag">$49/mes</span>
+        </a>
+        <a href="/quote" class="iva-industry">
+          <span class="iva-industry-icon">🚗</span>
+          <div class="iva-industry-name">Dealers de Autos</div>
+          <div class="iva-industry-desc">Inventario, captura de leads e info de financiamiento</div>
+          <span class="iva-industry-tag">$99/mes</span>
+        </a>
+        <a href="/quote" class="iva-industry">
+          <span class="iva-industry-icon">🏠</span>
+          <div class="iva-industry-name">Realtors</div>
+          <div class="iva-industry-desc">Propiedades, captura de leads y citas</div>
+          <span class="iva-industry-tag">$99/mes</span>
+        </a>
+        <a href="/quote" class="iva-industry">
+          <span class="iva-industry-icon">🏥</span>
+          <div class="iva-industry-name">Médicos & Dentistas</div>
+          <div class="iva-industry-desc">Servicios, citas y preguntas de pacientes</div>
+          <span class="iva-industry-tag">$99/mes</span>
+        </a>
+        <a href="/quote" class="iva-industry">
+          <span class="iva-industry-icon">💇</span>
+          <div class="iva-industry-name">Salones & Spas</div>
+          <div class="iva-industry-desc">Servicios, precios y reservaciones por WhatsApp</div>
+          <span class="iva-industry-tag">$49/mes</span>
+        </a>
+        <a href="/quote" class="iva-industry">
+          <span class="iva-industry-icon">⚖️</span>
+          <div class="iva-industry-name">Abogados & Servicios</div>
+          <div class="iva-industry-desc">Áreas de práctica, consultas y captura de leads</div>
+          <span class="iva-industry-tag">$99/mes</span>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- COMO FUNCIONA -->
+  <div class="iva-section iva-section-void" id="how">
     <div class="iva-inner">
       <div class="iva-section-label">El proceso</div>
       <h2 class="iva-section-title">Listo en <em>48 horas</em></h2>
@@ -141,21 +209,23 @@ module.exports = `
     </div>
   </div>
 
-  <div class="iva-section iva-section-void" id="features">
+  <!-- FEATURES -->
+  <div class="iva-section iva-section-dark">
     <div class="iva-inner">
       <div class="iva-section-label">Qué incluye</div>
       <h2 class="iva-section-title">Todo lo que tu negocio<br><em>necesita</em></h2>
       <div class="iva-features">
-        <div class="iva-feature"><div class="iva-feature-icon">🤖</div><div class="iva-feature-title">IvA — Tu Asistente de IA</div><div class="iva-feature-desc">Entrenado con la info de tu negocio. Responde preguntas, toma órdenes y guía clientes las 24 horas en inglés y español.</div><span class="iva-feature-tag">BILINGÜE · EN + ES</span></div>
+        <div class="iva-feature"><div class="iva-feature-icon">🤖</div><div class="iva-feature-title">IvA — Tu Asistente de IA</div><div class="iva-feature-desc">Entrenado con la info de tu negocio. Responde preguntas, toma órdenes y guía clientes 24/7 en inglés y español.</div><span class="iva-feature-tag">BILINGÜE · EN + ES</span></div>
         <div class="iva-feature"><div class="iva-feature-icon">📱</div><div class="iva-feature-title">Landing Page Mobile-First</div><div class="iva-feature-desc">Una página hermosa y rápida diseñada para teléfonos. Tu menú, servicios, fotos y precios en un solo lugar.</div><span class="iva-feature-tag">OPTIMIZADA PARA MÓVIL</span></div>
-        <div class="iva-feature"><div class="iva-feature-icon">💳</div><div class="iva-feature-title">Pagos Directos al Comerciante</div><div class="iva-feature-desc">Acepta Stripe, ATH Móvil, PayPal o Square. El dinero va directo a tu cuenta — sin intermediarios ni esperas.</div><span class="iva-feature-tag">0% COMISIÓN</span></div>
-        <div class="iva-feature"><div class="iva-feature-icon">📲</div><div class="iva-feature-title">Pedidos por WhatsApp</div><div class="iva-feature-desc">Los pedidos llegan formateados directo a tu WhatsApp con todos los detalles. Sin apps, sin complicaciones.</div><span class="iva-feature-tag">NOTIFICACIONES INSTANTÁNEAS</span></div>
-        <div class="iva-feature wide"><div class="iva-feature-icon">🏪</div><div class="iva-feature-title">Ideal para Cualquier Negocio Local en PR y USA</div><div class="iva-feature-desc">Food trucks, panaderías, chinchorros, salones, dealers de autos, contratistas — si tienes clientes, IvA trabaja para ti.</div><span class="iva-feature-tag">FOOD TRUCKS · RESTAURANTES · SERVICIOS · RETAIL · AUTOS</span></div>
+        <div class="iva-feature"><div class="iva-feature-icon">💳</div><div class="iva-feature-title">Pagos Directos</div><div class="iva-feature-desc">Acepta Stripe, ATH Móvil, PayPal o Square. El dinero va directo a tu cuenta — sin intermediarios.</div><span class="iva-feature-tag">0% COMISIÓN</span></div>
+        <div class="iva-feature"><div class="iva-feature-icon">📲</div><div class="iva-feature-title">Pedidos por WhatsApp</div><div class="iva-feature-desc">Los pedidos llegan formateados directo a tu WhatsApp. Sin apps, sin complicaciones.</div><span class="iva-feature-tag">NOTIFICACIONES INSTANTÁNEAS</span></div>
+        <div class="iva-feature wide"><div class="iva-feature-icon">🔧</div><div class="iva-feature-title">Panel de Admin — Edita Todo Tú Mismo</div><div class="iva-feature-desc">Actualiza tu menú, precios, fotos y horario cuando quieras desde tu propio panel de admin. Sin código, sin desarrolladores. Tu página se actualiza al instante.</div><span class="iva-feature-tag">SIN CÓDIGO · ACTUALIZACIONES INSTANTÁNEAS · CONTROL TOTAL</span></div>
       </div>
     </div>
   </div>
 
-  <div class="iva-section iva-section-dark" id="pricing">
+  <!-- PRECIOS -->
+  <div class="iva-section iva-section-void" id="pricing">
     <div class="iva-inner" style="text-align:center">
       <div class="iva-section-label" style="justify-content:center">Precios</div>
       <h2 class="iva-section-title">Simple. <em>Transparente.</em> Tuyo.</h2>
@@ -167,9 +237,9 @@ module.exports = `
           <li>Landing page personalizada</li><li>Asistente IvA 24/7</li>
           <li>Pedidos por WhatsApp</li><li>Integración de pagos</li>
           <li>Bilingüe EN + ES</li><li>Hosting y actualizaciones</li>
-          <li>Editor de menú</li><li>Soporte prioritario</li>
+          <li>Panel de admin</li><li>Soporte prioritario</li>
         </ul>
-        <a href="https://wa.me/18635216708" target="_blank" class="iva-btn-pricing">Empezar por WhatsApp →</a>
+        <a href="/quote" class="iva-btn-pricing">Empezar ahora →</a>
       </div>
     </div>
   </div>
@@ -179,8 +249,8 @@ module.exports = `
     <h2>Tu negocio merece<br><em>mejores herramientas</em></h2>
     <p>Únete a negocios en Puerto Rico y USA que ya usan Ivamar AI para vender más y trabajar menos.</p>
     <div class="iva-cta-btns">
-      <a href="https://wa.me/18635216708" target="_blank" class="iva-btn-main">Hablar por WhatsApp →</a>     
-<a href="/quote" target="_blank" class="iva-btn-main">Request Demo →</a>
+      <a href="https://wa.me/18635216708" target="_blank" class="iva-btn-main">Hablar por WhatsApp →</a>
+      <a href="/quote" class="iva-btn-ghost">Empezar ahora</a>
     </div>
   </div>
 
