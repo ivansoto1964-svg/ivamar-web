@@ -3,6 +3,11 @@ const layout = require("./views/layout");
 const home = require("./views/home");
 const homeES = require("./views/home-es");
 const homeEN = require("./views/home-en");
+const adminLogin = require("./views/admin-login");
+const adminDashboard = require("./views/admin-dashboard");
+const adminEdit = require("./views/admin-edit");
+
+
 const about = require("./views/about");
 const contact = require("./views/contact");
 const privacy = require("./views/privacy");
@@ -72,6 +77,8 @@ function postJson(urlStr, payload, options = {}) {
 app.get("/", (req, res) => {
   res.send(layout({ title: "Ivamar AI", body: home }));
 });
+
+app.use(require("cookie-parser")());
 
 app.get("/es", (req, res) => {
   res.send(layout({ title: "Ivamar AI ES", body: homeES }));
@@ -319,6 +326,150 @@ app.post("/api/assistant", async (req, res) => {
     return res.json({ reply: fallback });
   }
 });
+
+// ============================================
+// ADMIN PANEL — Agregar estas líneas al server.js
+// ============================================
+
+// 1) Agrega estos requires al inicio del archivo junto a los demás:
+const adminLogin = require("./views/admin-login");
+const adminDashboard = require("./views/admin-dashboard");
+const adminEdit = require("./views/admin-edit");
+
+// 2) Agrega estas variables de configuración (después de BILLING_API_KEY):
+const ADMIN_USER = process.env.ADMIN_USER || "ivamar-admin";
+const ADMIN_PASS = process.env.ADMIN_PASS || "ivamar2025";
+
+// Sesiones simples en memoria
+const sessions = new Map();
+
+function generateToken() {
+  return Math.random().toString(36).substring(2) + Date.now().toString(36);
+}
+
+function requireAdmin(req, res, next) {
+  const token = req.cookies?.adminToken;
+  const session = sessions.get(token);
+  if (!session) return res.redirect("/admin");
+  req.adminSession = session;
+  next();
+}
+
+// 3) Agrega este middleware para cookies (después de app.use(express.json())):
+// app.use(require("cookie-parser")());
+// IMPORTANTE: También corre en terminal: npm install cookie-parser
+
+// 4) Agrega estas rutas ANTES de la ruta dinámica app.get("/:slug"):
+
+// LOGIN PAGE
+app.get("/admin", (req, res) => {
+  res.send(layout({ title: "Admin — Ivamar AI", body: adminLogin }));
+});
+
+// AUTH
+app.post("/admin/auth", (req, res) => {
+  const { user, pass } = req.body || {};
+
+  // Admin maestro
+  if (user === ADMIN_USER && pass === ADMIN_PASS) {
+    const token = generateToken();
+    sessions.set(token, { role: "admin", slug: null });
+    res.cookie("adminToken", token, { httpOnly: true, maxAge: 86400000 * 7 });
+    return res.json({ ok: true, redirect: "/admin/dashboard" });
+  }
+
+  // Cliente — verifica si el usuario es un slug existente
+  const businessFile = path.join(__dirname, "..", "data", "businesses", `${user}.json`);
+  if (fs.existsSync(businessFile)) {
+    // La contraseña del cliente es su slug por ahora
+    // En producción se puede mejorar con contraseñas individuales
+    const clientPass = process.env[`CLIENT_PASS_${user.toUpperCase().replace(/-/g,'_')}`] || user + "2025";
+    if (pass === clientPass) {
+      const token = generateToken();
+      sessions.set(token, { role: "client", slug: user });
+      res.cookie("adminToken", token, { httpOnly: true, maxAge: 86400000 * 7 });
+      return res.json({ ok: true, redirect: `/admin/edit/${user}` });
+    }
+  }
+
+  res.json({ ok: false });
+});
+
+// LOGOUT
+app.get("/admin/logout", (req, res) => {
+  const token = req.cookies?.adminToken;
+  if (token) sessions.delete(token);
+  res.clearCookie("adminToken");
+  res.redirect("/admin");
+});
+
+// DASHBOARD (solo admin maestro)
+app.get("/admin/dashboard", requireAdmin, (req, res) => {
+  if (req.adminSession.role !== "admin") return res.redirect(`/admin/edit/${req.adminSession.slug}`);
+  const bizDir = path.join(__dirname, "..", "data", "businesses");
+  const files = fs.readdirSync(bizDir).filter(f => f.endsWith(".json"));
+  const businesses = files.map(f => {
+    try { return JSON.parse(fs.readFileSync(path.join(bizDir, f), "utf8")); }
+    catch (e) { return null; }
+  }).filter(Boolean);
+  res.send(layout({ title: "Dashboard — Ivamar AI", body: adminDashboard(businesses) }));
+});
+
+// NEW BUSINESS
+app.get("/admin/new", requireAdmin, (req, res) => {
+  if (req.adminSession.role !== "admin") return res.redirect("/admin/dashboard");
+  res.send(layout({ title: "Nuevo negocio — Admin", body: adminEdit({}, true) }));
+});
+
+// EDIT BUSINESS
+app.get("/admin/edit/:slug", requireAdmin, (req, res) => {
+  const slug = req.params.slug;
+  // Clientes solo pueden editar su propio negocio
+  if (req.adminSession.role === "client" && req.adminSession.slug !== slug) {
+    return res.redirect(`/admin/edit/${req.adminSession.slug}`);
+  }
+  const bizFile = path.join(__dirname, "..", "data", "businesses", `${slug}.json`);
+  let biz = {};
+  if (fs.existsSync(bizFile)) {
+    try { biz = JSON.parse(fs.readFileSync(bizFile, "utf8")); } catch (e) {}
+  }
+  res.send(layout({ title: `Editando ${biz.name || slug} — Admin`, body: adminEdit(biz, false) }));
+});
+
+// SAVE BUSINESS
+app.post("/admin/save", requireAdmin, (req, res) => {
+  const data = req.body;
+  if (!data || !data.slug) return res.json({ ok: false, error: "slug requerido" });
+  // Clientes solo pueden guardar su propio negocio
+  if (req.adminSession.role === "client" && req.adminSession.slug !== data.slug) {
+    return res.json({ ok: false, error: "no autorizado" });
+  }
+  try {
+    const bizFile = path.join(__dirname, "..", "data", "businesses", `${data.slug}.json`);
+    fs.writeFileSync(bizFile, JSON.stringify(data, null, 2), "utf8");
+    res.json({ ok: true });
+  } catch (e) {
+    res.json({ ok: false, error: e.message });
+  }
+});
+
+// DELETE BUSINESS
+app.post("/admin/delete/:slug", requireAdmin, (req, res) => {
+  if (req.adminSession.role !== "admin") return res.json({ ok: false, error: "no autorizado" });
+  const slug = req.params.slug;
+  try {
+    const bizFile = path.join(__dirname, "..", "data", "businesses", `${slug}.json`);
+    if (fs.existsSync(bizFile)) fs.unlinkSync(bizFile);
+    res.json({ ok: true });
+  } catch (e) {
+    res.json({ ok: false, error: e.message });
+  }
+});
+
+
+
+
+
 
 // Ruta dinámica por negocio
 app.get("/:slug", (req, res) => {
