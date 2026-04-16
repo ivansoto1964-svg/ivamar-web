@@ -1,24 +1,42 @@
 {
   "slug": "loskambu",
   "name": "Los Kambu Sandwiches",
-  "headline": "Sandwiches boricuas con flow",
+  "headline": "Food Truck con Ivamar AI",
   "description": "Sandwiches artesanales y comida callejera con sabor boricua. Ordena por WhatsApp o visítanos.",
-  "hours": {
-    "mon": "Cerrado",
-    "tue": "4:00 PM - 10:00 PM",
-    "wed": "4:00 PM - 10:00 PM",
-    "thu": "4:00 PM - 10:00 PM",
-    "fri": "4:00 PM - 11:00 PM",
-    "sat": "12:00 PM - 11:00 PM",
-    "sun": "12:00 PM - 9:00 PM"
+  "logoUrl": "",
+  "businessPhotoUrl": "",
+  "address": "Caguas, Puerto Rico",
+  "hours": "Mar-Jue 4pm-10pm · Vie 4pm-11pm · Sáb-Dom 12pm-11pm · Lun Cerrado",
+  "status": "abierto",
+  "theme": "light",
+  "assistant": {
+    "name": "IvA",
+    "tone": "amistoso y boricua",
+    "welcome": "¡Wepa! Soy IvA, el asistente de Los Kambu. ¿Qué te preparo hoy? 🥪",
+    "keywords": ["wepa", "brutal", "al punto"],
+    "avatarUrl": ""
   },
   "links": {
     "whatsapp": "https://wa.me/17870000000",
     "instagram": "https://instagram.com/loskambu",
-    "googleMaps": "https://maps.google.com/?q=Los+Kambu"
+    "googleMaps": "https://maps.google.com/?q=Los+Kambu+Caguas"
   },
   "menu": [
-    { "name": "Kambu Classic", "price": 12.0, "desc": "Pollo, lechuga, tomate, mayo-ketchup." },
-    { "name": "Kambu Bacon", "price": 14.0, "desc": "Bacon crujiente, queso y salsa especial." }
-  ]
+    { "name": "Kambu Classic", "price": 12.00, "desc": "Pollo, lechuga, tomate, mayo-ketchup." },
+    { "name": "Kambu Bacon", "price": 14.00, "desc": "Bacon crujiente, queso y salsa especial." },
+    { "name": "Kambu Veggie", "price": 11.00, "desc": "Vegetal fresco, aguacate y aderezo de limón." },
+    { "name": "Kambu Pernil", "price": 15.00, "desc": "Pernil asado lento con tostones y pique." }
+  ],
+  "sides": [
+    { "name": "Papas Fritas", "price": 4.00, "desc": "" },
+    { "name": "Tostones", "price": 4.50, "desc": "" },
+    { "name": "Ensalada", "price": 3.50, "desc": "" }
+  ],
+  "drinks": [
+    { "name": "Refresco", "price": 2.00, "desc": "" },
+    { "name": "Agua", "price": 1.50, "desc": "" },
+    { "name": "Malta", "price": 2.50, "desc": "" },
+    { "name": "Jugo Natural", "price": 3.50, "desc": "" }
+  ],
+  "desserts": []
 }
