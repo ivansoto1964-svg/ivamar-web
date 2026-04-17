@@ -183,38 +183,21 @@ app.post("/api/assistant", async (req, res) => {
   const message = (req.body?.message || "").toString();
   const businessSlug = req.body?.businessSlug || null;
 
+  let systemPrompt = "Eres IvA, el asistente virtual de Ivamar AI. Ayudas a negocios en Puerto Rico y USA a crecer con tecnologia y paginas con IA. Responde en el idioma del cliente. Se amigable y conciso. Setup: $125. Mensual desde $49/mes. Primer mes gratis.";
 
-let bizContext = "";
-
-  if (businessSlug === 'demo') {
-    bizContext = `Negocio: El Rincón Boricua
-Tipo: Food Truck en Puerto Rico
-Menú: Mofongo con Camarones $14.99, Pernil Plate $13.99, Chuletas Can-Can $15.99, Alcapurrias de Pollo $8.99, Tostones con Mojo $5.99, Empanadillas x4 $7.99, Coquito Shake $5.99, Limonada Tamarindo $3.99, Malta Caribeña $2.99, Tembleque $4.99, Arroz con Leche $3.99
-Ubicación: Caguas, Puerto Rico
-Horario: Mar-Jue 4pm-10pm, Vie 4pm-11pm, Sab-Dom 12pm-11pm, Lun Cerrado
-Delivery: Si, $3 adicional. Pickup: Gratis
-Tono: Boricua autentico. Usa: brutal, riquísimo, espectacular, a otro nivel, wepa, duro, al punto. NUNCA uses: ahorita, que lo que, expresiones mexicanas.`;
+  if (businessSlug === "demo") {
+    systemPrompt = "Eres IvA, el asistente boricua de El Rincon Boricua, un food truck en Puerto Rico. MENU: Mofongo con Camarones $14.99, Pernil Plate $13.99, Chuletas Can-Can $15.99, Alcapurrias de Pollo $8.99, Tostones con Mojo $5.99, Empanadillas x4 $7.99, Coquito Shake $5.99, Limonada Tamarindo $3.99, Malta Caribena $2.99, Tembleque $4.99, Arroz con Leche $3.99. UBICACION: Caguas, Puerto Rico. HORARIO: Mar-Jue 4pm-10pm, Vie 4pm-11pm, Sab-Dom 12pm-11pm, Lun Cerrado. DELIVERY: Si, $3 adicional. PICKUP: Gratis. PERSONALIDAD: Boricua autentico de Puerto Rico. Usa: brutal, riquísimo, espectacular, a otro nivel, wepa, duro, al punto. Para tiempo: ahora, en pal de minutos. NUNCA uses: ahorita, que lo que, expresiones mexicanas o dominicanas. Responde en el idioma del cliente. Maximo 3 oraciones.";
   } else if (businessSlug) {
     const bizFile = path.join(__dirname, "..", "data", "businesses", `${businessSlug}.json`);
     if (fs.existsSync(bizFile)) {
       try {
         const biz = JSON.parse(fs.readFileSync(bizFile, "utf8"));
-        bizContext = `Negocio: ${biz.name}
-Tipo: ${biz.headline || "Negocio local"}
-Descripción: ${biz.description || ""}
-Dirección: ${biz.address || "No especificada"}
-Horario: ${biz.hours || "No especificado"}
-Estado: ${biz.status || "abierto"}
-WhatsApp: ${biz.links?.whatsapp || ""}
-Menú: ${(biz.menu || []).map(i => i.name + (i.price ? " $" + i.price : "")).join(", ")}
-Tono: ${biz.assistant?.tone || "amistoso y profesional"}`;
-      } catch (e) {}
+        systemPrompt = `Eres ${biz.assistant?.name || "IvA"}, un asistente de IA para ${biz.name}. Tipo: ${biz.headline || "Negocio local"}. Descripcion: ${biz.description || ""}. Direccion: ${biz.address || ""}. Horario: ${biz.hours || ""}. Estado: ${biz.status || "abierto"}. WhatsApp: ${biz.links?.whatsapp || ""}. Menu: ${(biz.menu || []).map(i => i.name + (i.price ? " $" + i.price : "")).join(", ")}. Bebidas: ${(biz.drinks || []).map(i => i.name + (i.price ? " $" + i.price : "")).join(", ")}. Tono: ${biz.assistant?.tone || "amistoso y profesional"}. Responde en el idioma del cliente. Maximo 3 oraciones. Cuando el cliente quiera ordenar, guialo a WhatsApp.`;
+      } catch (e) {
+        console.error("Error loading business:", e.message);
+      }
     }
   }
-
-  const systemPrompt = bizContext ?
-    `Eres IvA, un asistente de IA para el siguiente negocio. Responde en el idioma del cliente. Sé conciso, máximo 3 oraciones. Guía a ordenar por WhatsApp cuando sea apropiado.\n\n${bizContext}` :
-    `Eres IvA, el asistente virtual de Ivamar AI. Ayudas a negocios en Puerto Rico y USA a crecer con tecnología. Responde en el idioma del cliente. Sé amigable y conciso. Setup: $125. Mensual desde $49/mes. Primer mes gratis.`;
 
   try {
     const response = await anthropic.messages.create({
@@ -224,9 +207,9 @@ Tono: ${biz.assistant?.tone || "amistoso y profesional"}`;
       messages: [{ role: "user", content: message }]
     });
     return res.json({ reply: response.content[0].text });
-  } catch (e) {   
-console.error("Claude error v2:", e.message);
- return res.json({ reply: "Disculpa, tuve un problema técnico. Escríbeme por WhatsApp." });
+  } catch (e) {
+    console.error("Claude API error:", e.message);
+    return res.json({ reply: "Disculpa, tuve un problema tecnico. Por favor escribeme directamente por WhatsApp." });
   }
 });
 
@@ -359,8 +342,6 @@ app.get("/:slug", (req, res) => {
 .iva-chat-agent-status{font-size:11px;color:#4CAF50;display:flex;align-items:center;gap:4px;}
 .iva-chat-agent-status::before{content:'●';font-size:8px;}
 .iva-chat-msgs{height:280px;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;scroll-behavior:smooth;}
-.iva-chat-msgs::-webkit-scrollbar{width:3px;}
-.iva-chat-msgs::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:2px;}
 .iva-msg{max-width:82%;display:flex;flex-direction:column;gap:3px;}
 .iva-msg.bot{align-self:flex-start;}
 .iva-msg.user{align-self:flex-end;}
@@ -378,16 +359,13 @@ app.get("/:slug", (req, res) => {
 .iva-suggestion{padding:5px 10px;background:rgba(0,229,200,0.07);border:1px solid rgba(0,229,200,0.2);border-radius:100px;font-size:11px;color:#00E5C8;cursor:pointer;transition:all 0.2s;white-space:nowrap;}
 .iva-suggestion:hover{background:rgba(0,229,200,0.15);}
 .iva-chat-input-area{padding:12px 16px;border-top:1px solid rgba(255,255,255,0.05);display:flex;gap:8px;align-items:center;}
-.iva-chat-input{flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:10px 14px;color:#F0F4FF;font-family:sans-serif;font-size:13px;outline:none;transition:border-color 0.2s;}
+.iva-chat-input{flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:10px 14px;color:#F0F4FF;font-family:sans-serif;font-size:13px;outline:none;}
 .iva-chat-input:focus{border-color:rgba(0,229,200,0.4);}
 .iva-chat-input::placeholder{color:#4A5568;}
 .iva-chat-send{width:36px;height:36px;background:#00E5C8;border:none;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all 0.2s;flex-shrink:0;}
-.iva-chat-send:hover{background:#00c8b0;}
-.iva-float-btn{position:fixed;bottom:24px;right:24px;width:56px;height:56px;background:linear-gradient(135deg,#00E5C8,#00a896);border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 8px 25px rgba(0,229,200,0.35);z-index:999;transition:all 0.3s;animation:floatPulse 3s ease-in-out infinite;}
-@keyframes floatPulse{0%,100%{box-shadow:0 8px 25px rgba(0,229,200,0.35)}50%{box-shadow:0 8px 35px rgba(0,229,200,0.55)}}
+.iva-float-btn{position:fixed;bottom:24px;right:24px;width:56px;height:56px;background:linear-gradient(135deg,#00E5C8,#00a896);border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 8px 25px rgba(0,229,200,0.35);z-index:999;transition:all 0.3s;}
 .iva-float-btn:hover{transform:scale(1.1);}
-.iva-float-badge{position:absolute;top:-2px;right:-2px;width:16px;height:16px;background:#4CAF50;border-radius:50%;border:2px solid white;animation:ivaBlink2 2s ease-in-out infinite;}
-@keyframes ivaBlink2{0%,100%{opacity:1}50%{opacity:0.4}}
+.iva-float-badge{position:absolute;top:-2px;right:-2px;width:16px;height:16px;background:#4CAF50;border-radius:50%;border:2px solid white;}
 .iva-float-panel{position:fixed;bottom:90px;right:24px;width:300px;max-height:420px;background:#0D1420;border:1px solid rgba(0,229,200,0.2);border-radius:16px;overflow:hidden;z-index:998;display:none;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,0.5);}
 .iva-float-panel.open{display:flex;}
 .iva-float-header{background:#111827;padding:12px 14px;display:flex;align-items:center;gap:8px;border-bottom:1px solid rgba(255,255,255,0.05);}
@@ -396,11 +374,9 @@ app.get("/:slug", (req, res) => {
 .iva-float-name{font-size:11px;font-weight:700;color:#F0F4FF;}
 .iva-float-status{font-size:10px;color:#4CAF50;}
 .iva-float-close{background:transparent;border:none;color:#4A5568;font-size:15px;cursor:pointer;}
-.iva-float-close:hover{color:#F0F4FF;}
 .iva-float-msgs{flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:8px;}
 .iva-float-input-area{padding:8px 10px;border-top:1px solid rgba(255,255,255,0.05);display:flex;gap:6px;}
 .iva-float-input{flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:7px;padding:7px 10px;color:#F0F4FF;font-family:sans-serif;font-size:12px;outline:none;}
-.iva-float-input:focus{border-color:rgba(0,229,200,0.4);}
 .iva-float-input::placeholder{color:#4A5568;}
 .iva-float-send{width:30px;height:30px;background:#00E5C8;border:none;border-radius:7px;cursor:pointer;font-size:11px;}
 </style>
@@ -437,7 +413,6 @@ app.get("/:slug", (req, res) => {
 <button class="iva-float-btn" onclick="ivaToggleFloat()">
   🤖<div class="iva-float-badge"></div>
 </button>
-
 <div class="iva-float-panel" id="ivaFloatPanel">
   <div class="iva-float-header">
     <div class="iva-float-avatar">🤖</div>
@@ -461,39 +436,25 @@ app.get("/:slug", (req, res) => {
 
 <script>
 const IVA_SLUG = "${slug}";
-function ivaToggleFloat() { document.getElementById('ivaFloatPanel').classList.toggle('open'); }
-function ivaAddMsg(cId, text, type) {
-  const c = document.getElementById(cId);
-  const now = new Date().toLocaleTimeString('es',{hour:'2-digit',minute:'2-digit'});
-  const d = document.createElement('div');
-  d.className = 'iva-msg ' + type;
-  d.innerHTML = '<div class="iva-msg-bubble">' + text + '</div><div class="iva-msg-time">' + now + '</div>';
-  c.appendChild(d); c.scrollTop = c.scrollHeight;
+function ivaToggleFloat(){document.getElementById('ivaFloatPanel').classList.toggle('open');}
+function ivaAddMsg(cId,text,type){const c=document.getElementById(cId);const now=new Date().toLocaleTimeString('es',{hour:'2-digit',minute:'2-digit'});const d=document.createElement('div');d.className='iva-msg '+type;d.innerHTML='<div class="iva-msg-bubble">'+text+'</div><div class="iva-msg-time">'+now+'</div>';c.appendChild(d);c.scrollTop=c.scrollHeight;}
+function ivaShowTyping(cId){const c=document.getElementById(cId);const d=document.createElement('div');d.className='iva-msg bot';d.id='ivaT_'+cId;d.innerHTML='<div class="iva-typing"><span></span><span></span><span></span></div>';c.appendChild(d);c.scrollTop=c.scrollHeight;}
+function ivaHideTyping(cId){const el=document.getElementById('ivaT_'+cId);if(el)el.remove();}
+async function ivaSend(mode){
+  const iId=mode==='float'?'ivaFloatInput':'ivaInput';
+  const mId=mode==='float'?'ivaFloatMsgs':'ivaMsgs';
+  const input=document.getElementById(iId);
+  const text=input.value.trim();if(!text)return;
+  input.value='';
+  const sugg=document.getElementById('ivaSuggestions');if(sugg)sugg.style.display='none';
+  ivaAddMsg(mId,text,'user');ivaShowTyping(mId);
+  try{
+    const r=await fetch('/api/assistant',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:text,businessSlug:IVA_SLUG})});
+    const data=await r.json();
+    ivaHideTyping(mId);ivaAddMsg(mId,data.reply||'¿En qué más te ayudo?','bot');
+  }catch(e){ivaHideTyping(mId);ivaAddMsg(mId,'Disculpa, tuve un problema. Intenta de nuevo.','bot');}
 }
-function ivaShowTyping(cId) {
-  const c = document.getElementById(cId);
-  const d = document.createElement('div');
-  d.className = 'iva-msg bot'; d.id = 'ivaT_' + cId;
-  d.innerHTML = '<div class="iva-typing"><span></span><span></span><span></span></div>';
-  c.appendChild(d); c.scrollTop = c.scrollHeight;
-}
-function ivaHideTyping(cId) { const el = document.getElementById('ivaT_' + cId); if(el) el.remove(); }
-async function ivaSend(mode) {
-  const iId = mode==='float'?'ivaFloatInput':'ivaInput';
-  const mId = mode==='float'?'ivaFloatMsgs':'ivaMsgs';
-  const input = document.getElementById(iId);
-  const text = input.value.trim(); if(!text) return;
-  input.value = '';
-  const sugg = document.getElementById('ivaSuggestions');
-  if(sugg) sugg.style.display = 'none';
-  ivaAddMsg(mId, text, 'user'); ivaShowTyping(mId);
-  try {
-    const r = await fetch('/api/assistant', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:text,businessSlug:IVA_SLUG})});
-    const data = await r.json();
-    ivaHideTyping(mId); ivaAddMsg(mId, data.reply || '¿En qué más te ayudo?', 'bot');
-  } catch(e) { ivaHideTyping(mId); ivaAddMsg(mId, 'Disculpa, tuve un problema. Intenta de nuevo.', 'bot'); }
-}
-function ivaSendSugg(el) { document.getElementById('ivaInput').value = el.textContent; ivaSend('main'); }
+function ivaSendSugg(el){document.getElementById('ivaInput').value=el.textContent;ivaSend('main');}
 <\/script>`;
 
     const body = `
@@ -507,13 +468,12 @@ function ivaSendSugg(el) { document.getElementById('ivaInput').value = el.textCo
         </div>
         ${data.address || hours ? `<div style="text-align:center;margin-bottom:20px;">${data.address ? `<div style="margin-bottom:6px;">📍 ${data.address}</div>` : ""}${hours ? `<div>🕐 ${hours}</div>` : ""}</div>` : ""}
         <div style="text-align:center;margin:20px 0;">
-          <a href="${data.links?.whatsapp || "#"}" target="_blank" style="display:inline-block;background:#25D366;color:#fff;text-decoration:none;font-size:17px;font-weight:700;padding:13px 22px;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,.15);">📲 Ordenar por WhatsApp</a>
+          <a href="${data.links?.whatsapp || "#"}" target="_blank" style="display:inline-block;background:#25D366;color:#fff;text-decoration:none;font-size:17px;font-weight:700;padding:13px 22px;border-radius:12px;">📲 Ordenar por WhatsApp</a>
         </div>
         <h2 style="margin-top:36px;font-size:26px;">Menú</h2>
         <div class="grid">
           ${(data.menu || []).map((item, i) => `<div class="tile"><b>${item.name}</b><div style="font-size:13px;color:#888;margin-top:4px;">${item.desc || ""}</div><div style="margin-top:6px;font-weight:900;">${item.price !== null ? "$" + item.price : "Precio pendiente"}</div><div style="margin-top:10px;display:flex;align-items:center;gap:8px;"><button onclick="changeQty('menu-${i}',-1)" style="padding:5px 9px;border:none;border-radius:7px;cursor:pointer;">-</button><span id="qty-menu-${i}">0</span><button onclick="changeQty('menu-${i}',1)" style="padding:5px 9px;border:none;border-radius:7px;cursor:pointer;">+</button></div></div>`).join("")}
         </div>
-        ${(data.sides || []).length ? `<h2 style="margin-top:28px;font-size:22px;">Acompañantes</h2><div class="grid">${(data.sides || []).map((item, i) => `<div class="tile"><b>${item.name}</b><div style="margin-top:6px;font-weight:900;">${item.price !== null ? "$" + item.price : ""}</div><div style="margin-top:10px;display:flex;align-items:center;gap:8px;"><button onclick="changeQty('side-${i}',-1)" style="padding:5px 9px;border:none;border-radius:7px;cursor:pointer;">-</button><span id="qty-side-${i}">0</span><button onclick="changeQty('side-${i}',1)" style="padding:5px 9px;border:none;border-radius:7px;cursor:pointer;">+</button></div></div>`).join("")}</div>` : ""}
         ${(data.drinks || []).length ? `<h2 style="margin-top:28px;font-size:22px;">Bebidas</h2><div class="grid">${(data.drinks || []).map((item, i) => `<div class="tile"><b>${item.name}</b><div style="margin-top:6px;font-weight:900;">${item.price !== null ? "$" + item.price : ""}</div><div style="margin-top:10px;display:flex;align-items:center;gap:8px;"><button onclick="changeQty('drink-${i}',-1)" style="padding:5px 9px;border:none;border-radius:7px;cursor:pointer;">-</button><span id="qty-drink-${i}">0</span><button onclick="changeQty('drink-${i}',1)" style="padding:5px 9px;border:none;border-radius:7px;cursor:pointer;">+</button></div></div>`).join("")}</div>` : ""}
         <div id="cart" style="margin-top:36px;padding:18px;border-radius:16px;background:#f0f0f0;">
           <h2 style="margin-top:0;">🛒 Tu orden</h2>
@@ -524,36 +484,11 @@ function ivaSendSugg(el) { document.getElementById('ivaInput').value = el.textCo
         ${chatHTML}
         <script>
         const menuItems = ${JSON.stringify(data.menu || [])};
-        const sidesItems = ${JSON.stringify(data.sides || [])};
         const drinkItems = ${JSON.stringify(data.drinks || [])};
         const waNumber = "${whatsappNumber}";
         const bizName = "${data.name}";
-        function changeQty(id, delta) {
-          const el = document.getElementById("qty-" + id);
-          if (!el) return;
-          let qty = parseInt(el.textContent || "0", 10) + delta;
-          if (qty < 0) qty = 0;
-          el.textContent = qty;
-          updateCart();
-        }
-        function updateCart() {
-          let lines = [], subtotal = 0;
-          function process(items, prefix) {
-            items.forEach((item, i) => {
-              const el = document.getElementById("qty-" + prefix + "-" + i);
-              const qty = el ? parseInt(el.textContent || "0", 10) : 0;
-              if (qty > 0) { const price = Number.isFinite(Number(item.price)) ? Number(item.price) : 0; subtotal += qty * price; lines.push(item.name + " x" + qty + " = $" + (qty * price).toFixed(2)); }
-            });
-          }
-          process(menuItems, "menu"); process(sidesItems, "side"); process(drinkItems, "drink");
-          document.getElementById("cart-items").innerHTML = lines.length ? lines.join("<br/>") : "No has añadido nada todavía.";
-          const tax = subtotal * 0.115;
-          document.getElementById("subtotal").textContent = subtotal.toFixed(2);
-          document.getElementById("tax").textContent = tax.toFixed(2);
-          document.getElementById("total").textContent = (subtotal + tax).toFixed(2);
-          const msg = "🛒 *Pedido — " + bizName + "*\\n\\n" + lines.join("\\n") + "\\n\\n💰 *Total: $" + (subtotal + tax).toFixed(2) + "*\\n\\n¡Gracias!";
-          document.getElementById("send-order-btn").href = "https://wa.me/" + waNumber + "?text=" + encodeURIComponent(msg);
-        }
+        function changeQty(id,delta){const el=document.getElementById("qty-"+id);if(!el)return;let qty=parseInt(el.textContent||"0",10)+delta;if(qty<0)qty=0;el.textContent=qty;updateCart();}
+        function updateCart(){let lines=[],subtotal=0;function process(items,prefix){items.forEach((item,i)=>{const el=document.getElementById("qty-"+prefix+"-"+i);const qty=el?parseInt(el.textContent||"0",10):0;if(qty>0){const price=Number.isFinite(Number(item.price))?Number(item.price):0;subtotal+=qty*price;lines.push(item.name+" x"+qty+" = $"+(qty*price).toFixed(2));}});}process(menuItems,"menu");process(drinkItems,"drink");document.getElementById("cart-items").innerHTML=lines.length?lines.join("<br/>"):"No has añadido nada todavía.";const tax=subtotal*0.115;document.getElementById("subtotal").textContent=subtotal.toFixed(2);document.getElementById("tax").textContent=tax.toFixed(2);document.getElementById("total").textContent=(subtotal+tax).toFixed(2);const msg="🛒 *Pedido — "+bizName+"*\\n\\n"+lines.join("\\n")+"\\n\\n💰 *Total: $"+(subtotal+tax).toFixed(2)+"*\\n\\n¡Gracias!";document.getElementById("send-order-btn").href="https://wa.me/"+waNumber+"?text="+encodeURIComponent(msg);}
         updateCart();
         <\/script>
       </div>`;
