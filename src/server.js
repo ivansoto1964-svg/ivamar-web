@@ -224,9 +224,9 @@ Tono: ${biz.assistant?.tone || "amistoso y profesional"}`;
       messages: [{ role: "user", content: message }]
     });
     return res.json({ reply: response.content[0].text });
-  } catch (e) {
-    console.error("Claude error:", e.message);
-    return res.json({ reply: "Disculpa, tuve un problema técnico. Escríbeme por WhatsApp." });
+  } catch (e) {   
+console.error("Claude error v2:", e.message);
+ return res.json({ reply: "Disculpa, tuve un problema técnico. Escríbeme por WhatsApp." });
   }
 });
 
