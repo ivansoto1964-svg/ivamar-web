@@ -597,7 +597,7 @@ async function demoSendChat(mode) {
   demoAddMsg(msgsId, text, 'user');
   demoShowTyping(msgsId);
   try {
-    const res = await fetch('/api/assistant', {
+    const res = await fetch('/api/assistant/demo', {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
       body: JSON.stringify({message: text, sessionId: 'demo-rincon-boricua'})
