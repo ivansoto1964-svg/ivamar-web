@@ -183,25 +183,38 @@ app.post("/api/assistant", async (req, res) => {
   const message = (req.body?.message || "").toString();
   const businessSlug = req.body?.businessSlug || null;
 
-  let bizContext = "";
 
+let bizContext = "";
 
-
-if (businessSlug === 'demo') {
-  bizContext = `Negocio: El Rincón Boricua
+  if (businessSlug === 'demo') {
+    bizContext = `Negocio: El Rincón Boricua
 Tipo: Food Truck en Puerto Rico
 Menú: Mofongo con Camarones $14.99, Pernil Plate $13.99, Chuletas Can-Can $15.99, Alcapurrias de Pollo $8.99, Tostones con Mojo $5.99, Empanadillas x4 $7.99, Coquito Shake $5.99, Limonada Tamarindo $3.99, Malta Caribeña $2.99, Tembleque $4.99, Arroz con Leche $3.99
 Ubicación: Caguas, Puerto Rico
-Horario: Mar-Jue 4pm-10pm · Vie 4pm-11pm · Sáb-Dom 12pm-11pm · Lun Cerrado
-Delivery: Sí, $3 adicional. Pickup: Gratis
-Tono: Boricua auténtico. Usa: brutal, riquísimo, espectacular, a otro nivel, wepa, duro, al punto. Para tiempo: ahora, en pal de minutos. NUNCA uses: ahorita, qué lo que, expresiones mexicanas o dominicanas.`;
-
+Horario: Mar-Jue 4pm-10pm, Vie 4pm-11pm, Sab-Dom 12pm-11pm, Lun Cerrado
+Delivery: Si, $3 adicional. Pickup: Gratis
+Tono: Boricua autentico. Usa: brutal, riquísimo, espectacular, a otro nivel, wepa, duro, al punto. NUNCA uses: ahorita, que lo que, expresiones mexicanas.`;
+  } else if (businessSlug) {
+    const bizFile = path.join(__dirname, "..", "data", "businesses", `${businessSlug}.json`);
+    if (fs.existsSync(bizFile)) {
+      try {
+        const biz = JSON.parse(fs.readFileSync(bizFile, "utf8"));
+        bizContext = `Negocio: ${biz.name}
+Tipo: ${biz.headline || "Negocio local"}
+Descripción: ${biz.description || ""}
+Dirección: ${biz.address || "No especificada"}
+Horario: ${biz.hours || "No especificado"}
+Estado: ${biz.status || "abierto"}
+WhatsApp: ${biz.links?.whatsapp || ""}
+Menú: ${(biz.menu || []).map(i => i.name + (i.price ? " $" + i.price : "")).join(", ")}
+Tono: ${biz.assistant?.tone || "amistoso y profesional"}`;
+      } catch (e) {}
+    }
+  }
 
   const systemPrompt = bizContext ?
-    `Eres ${req.body?.assistantName || "IvA"}, un asistente de IA para el siguiente negocio. Responde en el idioma del cliente (español o inglés). Sé conciso — máximo 3 oraciones. Cuando el cliente quiera ordenar, guíalo a WhatsApp.
-
-${bizContext}` :
-    `Eres IvA, el asistente virtual de Ivamar AI. Ayudas a negocios en Puerto Rico y USA a crecer con tecnología y páginas con IA. Responde en el idioma del cliente. Sé amigable y conciso. Setup: $125 único. Mensual desde $49/mes. Primer mes gratis.`;
+    `Eres IvA, un asistente de IA para el siguiente negocio. Responde en el idioma del cliente. Sé conciso, máximo 3 oraciones. Guía a ordenar por WhatsApp cuando sea apropiado.\n\n${bizContext}` :
+    `Eres IvA, el asistente virtual de Ivamar AI. Ayudas a negocios en Puerto Rico y USA a crecer con tecnología. Responde en el idioma del cliente. Sé amigable y conciso. Setup: $125. Mensual desde $49/mes. Primer mes gratis.`;
 
   try {
     const response = await anthropic.messages.create({
@@ -213,7 +226,7 @@ ${bizContext}` :
     return res.json({ reply: response.content[0].text });
   } catch (e) {
     console.error("Claude error:", e.message);
-    return res.json({ reply: "Disculpa, tuve un problema técnico. Por favor escríbeme directamente por WhatsApp. 🙏" });
+    return res.json({ reply: "Disculpa, tuve un problema técnico. Escríbeme por WhatsApp." });
   }
 });
 
