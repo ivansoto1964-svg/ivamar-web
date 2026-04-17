@@ -184,25 +184,25 @@ app.post("/api/assistant", async (req, res) => {
   const businessSlug = req.body?.businessSlug || null;
 
   let bizContext = "";
-  if (businessSlug) {
-    const bizFile = path.join(__dirname, "..", "data", "businesses", `${businessSlug}.json`);
-    if (fs.existsSync(bizFile)) {
-      try {
-        const biz = JSON.parse(fs.readFileSync(bizFile, "utf8"));
-        bizContext = `
-Negocio: ${biz.name}
-Tipo: ${biz.headline || "Negocio local"}
-Descripción: ${biz.description || ""}
-Dirección: ${biz.address || "No especificada"}
-Horario: ${biz.hours || "No especificado"}
-Estado: ${biz.status || "abierto"}
-WhatsApp: ${biz.links?.whatsapp || ""}
-Menú: ${(biz.menu || []).map(i => i.name + (i.price ? " — $" + i.price : "")).join(", ")}
-${(biz.sides || []).length ? "Acompañantes: " + biz.sides.map(i => i.name + (i.price ? " — $" + i.price : "")).join(", ") : ""}
-${(biz.drinks || []).length ? "Bebidas: " + biz.drinks.map(i => i.name + (i.price ? " — $" + i.price : "")).join(", ") : ""}
-Tono del asistente: ${biz.assistant?.tone || "amistoso y profesional"}
-        `.trim();
-      } catch (e) {}
+
+
+
+if (businessSlug === 'demo') {
+  bizContext = `Negocio: El Rincón Boricua
+Tipo: Food Truck en Puerto Rico
+Menú: Mofongo con Camarones $14.99, Pernil Plate $13.99, Chuletas Can-Can $15.99, Alcapurrias de Pollo $8.99, Tostones con Mojo $5.99, Empanadillas x4 $7.99, Coquito Shake $5.99, Limonada Tamarindo $3.99, Malta Caribeña $2.99, Tembleque $4.99, Arroz con Leche $3.99
+Ubicación: Caguas, Puerto Rico
+Horario: Mar-Jue 4pm-10pm · Vie 4pm-11pm · Sáb-Dom 12pm-11pm · Lun Cerrado
+Delivery: Sí, $3 adicional. Pickup: Gratis
+Tono: Boricua auténtico. Usa: brutal, riquísimo, espectacular, a otro nivel, wepa, duro, al punto. Para tiempo: ahora, en pal de minutos. NUNCA uses: ahorita, qué lo que, expresiones mexicanas o dominicanas.`;
+
+
+
+
+
+
+
+
     }
   }
 

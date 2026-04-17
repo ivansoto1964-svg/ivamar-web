@@ -600,8 +600,8 @@ async function demoSendChat(mode) {
     const res = await fetch('/api/assistant/demo', {
       method: 'POST',
       headers: {'Content-Type':'application/json'},
-      body: JSON.stringify({message: text, sessionId: 'demo-rincon-boricua'})
-    });
+body: JSON.stringify({message: text, sessionId: 'demo-rincon-boricua', businessSlug: 'demo'})
+ });
     const data = await res.json();
     demoHideTyping(msgsId);
     demoAddMsg(msgsId, data.reply || '¿En qué más te ayudo?', 'bot');
