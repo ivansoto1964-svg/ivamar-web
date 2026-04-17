@@ -197,15 +197,6 @@ Delivery: Sí, $3 adicional. Pickup: Gratis
 Tono: Boricua auténtico. Usa: brutal, riquísimo, espectacular, a otro nivel, wepa, duro, al punto. Para tiempo: ahora, en pal de minutos. NUNCA uses: ahorita, qué lo que, expresiones mexicanas o dominicanas.`;
 
 
-
-
-
-
-
-
-    }
-  }
-
   const systemPrompt = bizContext ?
     `Eres ${req.body?.assistantName || "IvA"}, un asistente de IA para el siguiente negocio. Responde en el idioma del cliente (español o inglés). Sé conciso — máximo 3 oraciones. Cuando el cliente quiera ordenar, guíalo a WhatsApp.
 
