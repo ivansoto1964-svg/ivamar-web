@@ -87,18 +87,38 @@ module.exports = `
 .iva-pricing-list li::before{content:'✓';color:#00E5C8;font-weight:700;font-size:0.75rem;flex-shrink:0;}
 .iva-btn-pricing{display:block;width:100%;background:#00E5C8;color:#030508;padding:1rem;border-radius:10px;font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;text-decoration:none;transition:all 0.25s;border:none;cursor:pointer;text-align:center;}
 .iva-btn-pricing:hover{box-shadow:0 8px 30px rgba(0,229,200,0.3);transform:translateY(-2px);}
-.iva-cta{text-align:center;padding:5rem 2rem;background:#080C12;position:relative;}
-.iva-cta-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:400px;height:400px;background:radial-gradient(circle,rgba(0,229,200,0.07),transparent 70%);pointer-events:none;}
-.iva-cta h2{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;letter-spacing:-0.03em;margin-bottom:1rem;position:relative;}
+
+/* CTA SECTION — MOBILE FIXED */
+.iva-cta{text-align:center;padding:5rem 2rem;background:#080C12;position:relative;overflow:hidden;}
+.iva-cta-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:300px;height:300px;background:radial-gradient(circle,rgba(0,229,200,0.07),transparent 70%);pointer-events:none;z-index:0;}
+.iva-cta-inner{position:relative;z-index:1;max-width:560px;margin:0 auto;}
+.iva-cta h2{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;letter-spacing:-0.03em;margin-bottom:1rem;line-height:1.15;}
 .iva-cta h2 em{font-family:'Instrument Serif',serif;font-style:italic;color:#00E5C8;}
-.iva-cta p{color:#8892A4;margin-bottom:2rem;line-height:1.7;font-weight:400;max-width:500px;margin-left:auto;margin-right:auto;position:relative;}
-.iva-cta-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;position:relative;}
+.iva-cta p{color:#8892A4;margin-bottom:2rem;line-height:1.7;font-weight:400;font-size:0.95rem;}
+.iva-cta-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+
 .iva-footer{background:#030508;padding:2rem 2.5rem;border-top:1px solid rgba(255,255,255,0.04);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;font-size:0.8rem;color:#4A5568;}
 .iva-footer strong{color:#8892A4;}
 .iva-footer-links{display:flex;gap:1.5rem;}
 .iva-footer-links a{color:#4A5568;text-decoration:none;transition:color 0.2s;}
 .iva-footer-links a:hover{color:#00E5C8;}
-@media(max-width:700px){.iva-nav-links{display:none;}.iva-industries{grid-template-columns:repeat(2,1fr);}.iva-steps{grid-template-columns:1fr;}.iva-features{grid-template-columns:1fr;}.iva-feature.wide{grid-column:span 1;}.iva-pricing-list{grid-template-columns:1fr;}.iva-footer{flex-direction:column;text-align:center;}}
+
+@media(max-width:700px){
+  .iva-nav-links{display:none;}
+  .iva-industries{grid-template-columns:repeat(2,1fr);}
+  .iva-steps{grid-template-columns:1fr;}
+  .iva-features{grid-template-columns:1fr;}
+  .iva-feature.wide{grid-column:span 1;}
+  .iva-pricing-list{grid-template-columns:1fr;}
+  .iva-footer{flex-direction:column;text-align:center;}
+  .iva-cta{padding:4rem 1.5rem;}
+  .iva-cta h2{font-size:clamp(1.6rem,6vw,2.2rem);}
+  .iva-cta-btns{flex-direction:column;align-items:center;}
+  .iva-cta-btns a{width:100%;justify-content:center;}
+  .iva-stats{gap:1.5rem;}
+  .iva-hero-actions{flex-direction:column;align-items:center;}
+  .iva-hero-actions a{width:100%;justify-content:center;}
+}
 </style>
 
 <div class="iva-page">
@@ -144,54 +164,14 @@ module.exports = `
       <div class="iva-section-label">A quién servimos</div>
       <h2 class="iva-section-title">Para <em>cualquier</em> negocio local</h2>
       <div class="iva-industries">
-        <a href="/quote" class="iva-industry">
-          <span class="iva-industry-icon">🚚</span>
-          <div class="iva-industry-name">Food Trucks</div>
-          <div class="iva-industry-desc">Menú digital, pedidos por WhatsApp y pagos</div>
-          <span class="iva-industry-tag">$49/mes</span>
-        </a>
-        <a href="/quote" class="iva-industry">
-          <span class="iva-industry-icon">🍽</span>
-          <div class="iva-industry-name">Restaurantes</div>
-          <div class="iva-industry-desc">Menú completo, reservaciones y asistente IA</div>
-          <span class="iva-industry-tag">$49/mes</span>
-        </a>
-        <a href="/quote" class="iva-industry">
-          <span class="iva-industry-icon">🥐</span>
-          <div class="iva-industry-name">Panaderías & Cafés</div>
-          <div class="iva-industry-desc">Especiales del día, órdenes y chat con clientes</div>
-          <span class="iva-industry-tag">$49/mes</span>
-        </a>
-        <a href="/quote" class="iva-industry">
-          <span class="iva-industry-icon">🚗</span>
-          <div class="iva-industry-name">Dealers de Autos</div>
-          <div class="iva-industry-desc">Inventario, captura de leads e info de financiamiento</div>
-          <span class="iva-industry-tag">$99/mes</span>
-        </a>
-        <a href="/quote" class="iva-industry">
-          <span class="iva-industry-icon">🏠</span>
-          <div class="iva-industry-name">Realtors</div>
-          <div class="iva-industry-desc">Propiedades, captura de leads y citas</div>
-          <span class="iva-industry-tag">$99/mes</span>
-        </a>
-        <a href="/quote" class="iva-industry">
-          <span class="iva-industry-icon">🏥</span>
-          <div class="iva-industry-name">Médicos & Dentistas</div>
-          <div class="iva-industry-desc">Servicios, citas y preguntas de pacientes</div>
-          <span class="iva-industry-tag">$99/mes</span>
-        </a>
-        <a href="/quote" class="iva-industry">
-          <span class="iva-industry-icon">💇</span>
-          <div class="iva-industry-name">Salones & Spas</div>
-          <div class="iva-industry-desc">Servicios, precios y reservaciones por WhatsApp</div>
-          <span class="iva-industry-tag">$49/mes</span>
-        </a>
-        <a href="/quote" class="iva-industry">
-          <span class="iva-industry-icon">⚖️</span>
-          <div class="iva-industry-name">Abogados & Servicios</div>
-          <div class="iva-industry-desc">Áreas de práctica, consultas y captura de leads</div>
-          <span class="iva-industry-tag">$99/mes</span>
-        </a>
+        <a href="/quote" class="iva-industry"><span class="iva-industry-icon">🚚</span><div class="iva-industry-name">Food Trucks</div><div class="iva-industry-desc">Menú digital, pedidos por WhatsApp y pagos</div><span class="iva-industry-tag">$49/mes</span></a>
+        <a href="/quote" class="iva-industry"><span class="iva-industry-icon">🍽</span><div class="iva-industry-name">Restaurantes</div><div class="iva-industry-desc">Menú completo, reservaciones y asistente IA</div><span class="iva-industry-tag">$49/mes</span></a>
+        <a href="/quote" class="iva-industry"><span class="iva-industry-icon">🥐</span><div class="iva-industry-name">Panaderías & Cafés</div><div class="iva-industry-desc">Especiales del día, órdenes y chat con clientes</div><span class="iva-industry-tag">$49/mes</span></a>
+        <a href="/quote" class="iva-industry"><span class="iva-industry-icon">🚗</span><div class="iva-industry-name">Dealers de Autos</div><div class="iva-industry-desc">Inventario, captura de leads e info de financiamiento</div><span class="iva-industry-tag">$99/mes</span></a>
+        <a href="/quote" class="iva-industry"><span class="iva-industry-icon">🏠</span><div class="iva-industry-name">Realtors</div><div class="iva-industry-desc">Propiedades, captura de leads y citas</div><span class="iva-industry-tag">$99/mes</span></a>
+        <a href="/quote" class="iva-industry"><span class="iva-industry-icon">🏥</span><div class="iva-industry-name">Médicos & Dentistas</div><div class="iva-industry-desc">Servicios, citas y preguntas de pacientes</div><span class="iva-industry-tag">$99/mes</span></a>
+        <a href="/quote" class="iva-industry"><span class="iva-industry-icon">💇</span><div class="iva-industry-name">Salones & Spas</div><div class="iva-industry-desc">Servicios, precios y reservaciones por WhatsApp</div><span class="iva-industry-tag">$49/mes</span></a>
+        <a href="/quote" class="iva-industry"><span class="iva-industry-icon">⚖️</span><div class="iva-industry-name">Abogados & Servicios</div><div class="iva-industry-desc">Áreas de práctica, consultas y captura de leads</div><span class="iva-industry-tag">$99/mes</span></a>
       </div>
     </div>
   </div>
@@ -244,13 +224,16 @@ module.exports = `
     </div>
   </div>
 
+  <!-- CTA — MOBILE FIXED -->
   <div class="iva-cta">
     <div class="iva-cta-glow"></div>
-    <h2>Tu negocio merece<br><em>mejores herramientas</em></h2>
-    <p>Únete a negocios en Puerto Rico y USA que ya usan Ivamar AI para vender más y trabajar menos.</p>
-    <div class="iva-cta-btns">
-      <a href="https://wa.me/18635216708" target="_blank" class="iva-btn-main">Hablar por WhatsApp →</a>
-      <a href="/quote" class="iva-btn-ghost">Empezar ahora</a>
+    <div class="iva-cta-inner">
+      <h2>Tu negocio merece<br><em>mejores herramientas</em></h2>
+      <p>Únete a negocios en Puerto Rico y USA que ya usan Ivamar AI para vender más y trabajar menos.</p>
+      <div class="iva-cta-btns">
+        <a href="https://wa.me/18635216708" target="_blank" class="iva-btn-main">Hablar por WhatsApp →</a>
+        <a href="/quote" class="iva-btn-ghost">Empezar ahora</a>
+      </div>
     </div>
   </div>
 
