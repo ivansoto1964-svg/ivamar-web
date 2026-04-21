@@ -87,58 +87,18 @@ module.exports = `
 .iva-pricing-list li::before{content:'✓';color:#00E5C8;font-weight:700;font-size:0.75rem;flex-shrink:0;}
 .iva-btn-pricing{display:block;width:100%;background:#00E5C8;color:#030508;padding:1rem;border-radius:10px;font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;text-decoration:none;transition:all 0.25s;border:none;cursor:pointer;text-align:center;}
 .iva-btn-pricing:hover{box-shadow:0 8px 30px rgba(0,229,200,0.3);transform:translateY(-2px);}
-
-/* CTA SECTION — MOBILE FIXED */
-.iva-cta{
-  text-align:center;
-  padding:5rem 2rem;
-  background:#080C12;
-  position:relative;
-  overflow:hidden;
-}
-.iva-cta-glow{
-  position:absolute;
-  top:50%;left:50%;
-  transform:translate(-50%,-50%);
-  width:300px;height:300px;
-  background:radial-gradient(circle,rgba(0,229,200,0.07),transparent 70%);
-  pointer-events:none;
-  z-index:0;
-}
-.iva-cta-inner{
-  position:relative;
-  z-index:1;
-  max-width:560px;
-  margin:0 auto;
-}
-.iva-cta h2{
-  font-size:clamp(1.8rem,4vw,2.8rem);
-  font-weight:800;
-  letter-spacing:-0.03em;
-  margin-bottom:1rem;
-  line-height:1.15;
-}
+.iva-cta{text-align:center;padding:5rem 2rem;background:#080C12;position:relative;overflow:hidden;}
+.iva-cta-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:300px;height:300px;background:radial-gradient(circle,rgba(0,229,200,0.07),transparent 70%);pointer-events:none;z-index:0;}
+.iva-cta-inner{position:relative;z-index:1;max-width:560px;margin:0 auto;}
+.iva-cta h2{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;letter-spacing:-0.03em;margin-bottom:1rem;line-height:1.15;}
 .iva-cta h2 em{font-family:'Instrument Serif',serif;font-style:italic;color:#00E5C8;}
-.iva-cta p{
-  color:#8892A4;
-  margin-bottom:2rem;
-  line-height:1.7;
-  font-weight:400;
-  font-size:0.95rem;
-}
-.iva-cta-btns{
-  display:flex;
-  gap:1rem;
-  justify-content:center;
-  flex-wrap:wrap;
-}
-
+.iva-cta p{color:#8892A4;margin-bottom:2rem;line-height:1.7;font-weight:400;font-size:0.95rem;}
+.iva-cta-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
 .iva-footer{background:#030508;padding:2rem 2.5rem;border-top:1px solid rgba(255,255,255,0.04);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;font-size:0.8rem;color:#4A5568;}
 .iva-footer strong{color:#8892A4;}
 .iva-footer-links{display:flex;gap:1.5rem;}
 .iva-footer-links a{color:#4A5568;text-decoration:none;transition:color 0.2s;}
 .iva-footer-links a:hover{color:#00E5C8;}
-
 @media(max-width:700px){
   .iva-nav-links{display:none;}
   .iva-industries{grid-template-columns:repeat(2,1fr);}
@@ -167,11 +127,11 @@ module.exports = `
       <li><a href="#industries">Industries</a></li>
       <li><a href="#how">How it works</a></li>
       <li><a href="#pricing">Pricing</a></li>
-      <li><a href="/demo">Demo</a></li>
+      <li><a href="/demos">Demos</a></li>
       <li><a href="/about">About</a></li>
     </ul>
     <div class="iva-nav-right">
-      <a href="/es" class="iva-lang-switch">🇵🇷 Español</a>
+      <a href="/es" class="iva-lang-switch">ES · Español</a>
       <a href="/quote" class="iva-nav-cta">Get Started →</a>
     </div>
   </nav>
@@ -179,12 +139,12 @@ module.exports = `
   <div class="iva-hero">
     <div class="iva-orb iva-orb-1"></div>
     <div class="iva-orb iva-orb-2"></div>
-    <div class="iva-badge"><span class="iva-badge-dot"></span>NOW SERVING PUERTO RICO & USA</div>
+    <div class="iva-badge"><span class="iva-badge-dot"></span>FROM USA TO AROUND THE WORLD 🌎</div>
     <h1>The <em>Human Touch</em><br>of Intelligence</h1>
     <p class="iva-hero-sub">AI-powered pages for real businesses. Your customers ask questions, order, and pay — without you lifting a finger.</p>
     <div class="iva-hero-actions">
       <a href="/quote" class="iva-btn-main">Get Started →</a>
-      <a href="/demo" class="iva-btn-ghost">See live demo</a>
+      <a href="/demos" class="iva-btn-ghost">See live demos</a>
     </div>
     <div class="iva-stats">
       <div class="iva-stat"><div class="iva-stat-num">$125<span></span></div><div class="iva-stat-label">One-time setup</div></div>
@@ -194,7 +154,6 @@ module.exports = `
     </div>
   </div>
 
-  <!-- INDUSTRIES -->
   <div class="iva-section iva-section-dark" id="industries">
     <div class="iva-inner">
       <div class="iva-section-label">Who we serve</div>
@@ -212,7 +171,6 @@ module.exports = `
     </div>
   </div>
 
-  <!-- HOW IT WORKS -->
   <div class="iva-section iva-section-void" id="how">
     <div class="iva-inner">
       <div class="iva-section-label">The process</div>
@@ -225,13 +183,12 @@ module.exports = `
     </div>
   </div>
 
-  <!-- FEATURES -->
   <div class="iva-section iva-section-dark">
     <div class="iva-inner">
       <div class="iva-section-label">What's included</div>
       <h2 class="iva-section-title">Everything your<br>business <em>needs</em></h2>
       <div class="iva-features">
-        <div class="iva-feature"><div class="iva-feature-icon">🤖</div><div class="iva-feature-title">IvA — Your AI Assistant</div><div class="iva-feature-desc">Trained on your business. Answers questions, takes orders, and guides customers 24/7 in English and Spanish.</div><span class="iva-feature-tag">BILINGUAL · EN + ES</span></div>
+        <div class="iva-feature"><div class="iva-feature-icon">🤖</div><div class="iva-feature-title">IvA — Your AI Assistant</div><div class="iva-feature-desc">Trained on your business. Answers questions, takes orders, and guides customers 24/7 in any language.</div><span class="iva-feature-tag">MULTILINGUAL</span></div>
         <div class="iva-feature"><div class="iva-feature-icon">📱</div><div class="iva-feature-title">Mobile-First Landing Page</div><div class="iva-feature-desc">Beautiful and fast, designed for phones. Your menu, services, photos and prices — all in one place.</div><span class="iva-feature-tag">OPTIMIZED FOR MOBILE</span></div>
         <div class="iva-feature"><div class="iva-feature-icon">💳</div><div class="iva-feature-title">Direct Payments</div><div class="iva-feature-desc">Accept Stripe, ATH Móvil, PayPal or Square. Money goes directly to your account — no middlemen.</div><span class="iva-feature-tag">0% COMMISSION</span></div>
         <div class="iva-feature"><div class="iva-feature-icon">📲</div><div class="iva-feature-title">WhatsApp Order Flow</div><div class="iva-feature-desc">Orders formatted and sent directly to your WhatsApp. No apps to download, no training needed.</div><span class="iva-feature-tag">INSTANT NOTIFICATIONS</span></div>
@@ -240,7 +197,6 @@ module.exports = `
     </div>
   </div>
 
-  <!-- PRICING -->
   <div class="iva-section iva-section-void" id="pricing">
     <div class="iva-inner" style="text-align:center">
       <div class="iva-section-label" style="justify-content:center">Pricing</div>
@@ -252,7 +208,7 @@ module.exports = `
         <ul class="iva-pricing-list">
           <li>Custom landing page</li><li>IvA AI assistant 24/7</li>
           <li>WhatsApp order flow</li><li>Payment integration</li>
-          <li>Bilingual EN + ES</li><li>Hosting & updates</li>
+          <li>Multilingual support</li><li>Hosting & updates</li>
           <li>Admin panel</li><li>Priority support</li>
         </ul>
         <a href="/quote" class="iva-btn-pricing">Get started →</a>
@@ -260,12 +216,11 @@ module.exports = `
     </div>
   </div>
 
-  <!-- CTA — MOBILE FIXED -->
   <div class="iva-cta">
     <div class="iva-cta-glow"></div>
     <div class="iva-cta-inner">
       <h2>Your business deserves<br><em>better tools</em></h2>
-      <p>Join businesses across Puerto Rico and the US already using Ivamar AI to sell more and work less.</p>
+      <p>Join businesses from USA to around the world already using Ivamar AI to sell more and work less.</p>
       <div class="iva-cta-btns">
         <a href="https://wa.me/18635216708" target="_blank" class="iva-btn-main">Chat on WhatsApp →</a>
         <a href="/quote" class="iva-btn-ghost">Get started</a>
@@ -274,7 +229,7 @@ module.exports = `
   </div>
 
   <div class="iva-footer">
-    <div>© 2025 <strong>Ivamar AI LLC</strong> · Delaware, USA · All rights reserved</div>
+    <div>© 2025 <strong>Ivamar AI LLC</strong> · 8 The Green, Suite B, Dover, DE 19901, USA · From USA to Around the World 🌎</div>
     <div class="iva-footer-links">
       <a href="/privacy">Privacy</a><a href="/terms">Terms</a>
       <a href="/about">About</a><a href="/contact">Contact</a>
