@@ -8,6 +8,7 @@ const contact = require("./views/contact");
 const privacy = require("./views/privacy");
 const terms = require("./views/terms");
 const demo = require("./views/demo");
+const demoAutos = require("./views/demo-autos");
 const quote = require("./views/quote");
 const adminLogin = require("./views/admin-login");
 const adminDashboard = require("./views/admin-dashboard");
@@ -83,6 +84,7 @@ app.get("/contact", (req, res) => res.send(layout({ title: "Contact — Ivamar A
 app.get("/privacy", (req, res) => res.send(layout({ title: "Privacy Policy — Ivamar AI LLC", body: privacy })));
 app.get("/terms", (req, res) => res.send(layout({ title: "Terms of Service — Ivamar AI LLC", body: terms })));
 app.get("/demo", (req, res) => res.send(layout({ title: "Demo — El Rincón Boricua", body: demo })));
+app.get("/demo-autos", (req, res) => res.send(layout({ title: "Demo — Luis Soto Autos", body: demoAutos })));
 app.get("/quote", (req, res) => res.send(layout({ title: "Get Started — Ivamar AI", body: quote })));
 app.get("/pricing", (req, res) => res.redirect("/quote"));
 
@@ -195,6 +197,45 @@ app.post("/api/demo", async (req, res) => {
     return res.json({ reply: "Wepa, tuve un problema. Escríbeme por WhatsApp 🇵🇷" });
   }
 });
+
+app.post("/api/demo-autos", async (req, res) => {
+  const message = (req.body?.message || "").toString();
+  try {
+    const response = await anthropic.messages.create({
+      model: "claude-haiku-4-5-20251001",
+      max_tokens: 300,
+      system: "Eres IvA, asistente de Luis Soto Autos dealer en Puerto Rico y Florida. INVENTARIO: Honda CR-V 2022 $28,900 18,500mi SUV, Toyota Tacoma 2021 $34,500 24,000mi Truck, Hyundai Tucson 2023 $31,200 8,200mi SUV nuevo, Toyota Camry 2022 $26,400 21,000mi Sedan, Ford F-150 2021 $38,900 29,000mi Truck, Honda Civic 2023 $22,800 5,400mi Sedan nuevo. Aceptamos trade-in. Financiamiento todos los creditos desde $0 down. Horario Lun-Sab 9am-7pm. Captura nombre y telefono del prospecto. Maximo 3 oraciones. Responde en idioma del cliente.",
+      messages: [{ role: "user", content: message }]
+    });
+    return res.json({ reply: response.content[0].text });
+  } catch (e) {
+    console.error("Demo autos error:", e.message);
+    return res.json({ reply: "Disculpa, tuve un problema. Llámanos directamente." });
+  }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 app.post("/api/assistant", async (req, res) => {
   const message = (req.body?.message || "").toString();
