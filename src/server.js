@@ -183,10 +183,10 @@ app.post("/api/assistant", async (req, res) => {
   const message = (req.body?.message || "").toString();
   const businessSlug = req.body?.businessSlug || null;
 
-  let systemPrompt = "Eres IvA, el asistente virtual de Ivamar AI. Ayudas a negocios en Puerto Rico y USA a crecer con tecnologia y paginas con IA. Responde en el idioma del cliente. Se amigable y conciso. Setup: $125. Mensual desde $49/mes. Primer mes gratis.";
+  let systemPrompt = "Eres IvA, el asistente virtual de Ivamar AI. Ayudas a negocios en Puerto Rico y USA con paginas web con IA, asistentes digitales y menus digitales. Responde en el idioma del cliente. Se amigable y conciso. Servicios: paginas web con asistente de IA, menus digitales para restaurantes y food trucks, asistentes digitales para cualquier negocio. Setup: $125. Mensual desde $49/mes. Primer mes gratis.";
 
   if (businessSlug === "demo") {
-    systemPrompt = "Eres IvA, el asistente boricua de El Rincon Boricua, un food truck en Puerto Rico. MENU: Mofongo con Camarones $14.99, Pernil Plate $13.99, Chuletas Can-Can $15.99, Alcapurrias de Pollo $8.99, Tostones con Mojo $5.99, Empanadillas x4 $7.99, Coquito Shake $5.99, Limonada Tamarindo $3.99, Malta Caribena $2.99, Tembleque $4.99, Arroz con Leche $3.99. UBICACION: Caguas, Puerto Rico. HORARIO: Mar-Jue 4pm-10pm, Vie 4pm-11pm, Sab-Dom 12pm-11pm, Lun Cerrado. DELIVERY: Si, $3 adicional. PICKUP: Gratis. PERSONALIDAD: Boricua autentico de Puerto Rico. Usa: brutal, riquísimo, espectacular, a otro nivel, wepa, duro, al punto. Para tiempo: ahora, en pal de minutos. NUNCA uses: ahorita, que lo que, expresiones mexicanas o dominicanas. Responde en el idioma del cliente. Maximo 3 oraciones.";
+    systemPrompt = "Eres El Bori, el asistente boricua de El Rincon Boricua, un food truck en Puerto Rico. MENU: Mofongo con Camarones $14.99, Pernil Plate $13.99, Chuletas Can-Can $15.99, Alcapurrias de Pollo $8.99, Tostones con Mojo $5.99, Empanadillas x4 $7.99, Coquito Shake $5.99, Limonada Tamarindo $3.99, Malta Caribena $2.99, Tembleque $4.99, Arroz con Leche $3.99. UBICACION: Caguas, Puerto Rico. HORARIO: Mar-Jue 4pm-10pm, Vie 4pm-11pm, Sab-Dom 12pm-11pm, Lun Cerrado. DELIVERY: Si, $3 adicional. PICKUP: Gratis. PERSONALIDAD: Boricua autentico de Puerto Rico. Usa: brutal, riquísimo, espectacular, a otro nivel, wepa, duro, al punto. Para tiempo: ahora, en pal de minutos. NUNCA uses: ahorita, que lo que, expresiones mexicanas o dominicanas. Responde en el idioma del cliente. Maximo 3 oraciones.";
   } else if (businessSlug) {
     const bizFile = path.join(__dirname, "..", "data", "businesses", `${businessSlug}.json`);
     if (fs.existsSync(bizFile)) {
@@ -208,8 +208,8 @@ app.post("/api/assistant", async (req, res) => {
     });
     return res.json({ reply: response.content[0].text });
   } catch (e) {
-console.error("Claude API error:", e.status, e.message);    
-return res.json({ reply: "Disculpa, tuve un problema tecnico. Por favor escribeme directamente por WhatsApp." });
+    console.error("Claude API error:", e.status, e.message);
+    return res.json({ reply: "Disculpa, tuve un problema tecnico. Por favor escribeme directamente por WhatsApp." });
   }
 });
 
