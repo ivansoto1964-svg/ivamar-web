@@ -179,6 +179,23 @@ app.post("/admin/delete/:slug", requireAdmin, (req, res) => {
 // IVA ASSISTANT API — CLAUDE
 // ==========================================
 
+
+app.post("/api/demo", async (req, res) => {
+  const message = (req.body?.message || "").toString();
+  try {
+    const response = await anthropic.messages.create({
+      model: "claude-haiku-4-5-20251001",
+      max_tokens: 300,
+      system: "Eres El Bori, asistente boricua de El Rincon Boricua food truck en Caguas PR. Menu: Mofongo $14.99, Pernil $13.99, Chuletas $15.99, Alcapurrias $8.99, Tostones $5.99, Empanadillas $7.99, Coquito Shake $5.99, Malta $2.99, Tembleque $4.99. Horario: Mar-Jue 4-10pm, Vie 4-11pm, Sab-Dom 12-11pm. Delivery $3. Eres boricua autentico, usa wepa, brutal, riquísimo, a otro nivel. NUNCA uses ahorita. Maximo 3 oraciones.",
+      messages: [{ role: "user", content: message }]
+    });
+    return res.json({ reply: response.content[0].text });
+  } catch (e) {
+    console.error("Demo error:", e.message);
+    return res.json({ reply: "Wepa, tuve un problema. Escríbeme por WhatsApp 🇵🇷" });
+  }
+});
+
 app.post("/api/assistant", async (req, res) => {
   const message = (req.body?.message || "").toString();
   const businessSlug = req.body?.businessSlug || null;
