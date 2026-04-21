@@ -291,24 +291,24 @@ module.exports = `
 
   <div class="demo-toast" id="demoToast"></div>
 
-  <!-- IVA CHAT -->
-  <div class="demo-iva-section">
-    <div class="demo-iva-header">
-      <div class="demo-iva-tag">🤖 ASISTENTE IA</div>
-      <h2>Habla con <span>IvA</span></h2>
-      <p>IvA conoce el menú, precios y horario. Pregúntale lo que quieras — en español o inglés.</p>
+  <!-- El Bori CHAT -->
+  <div class="demo-el bori-section">
+    <div class="demo- el bori-header">
+      <div class="demo-el bori-tag">🤖 ASISTENTE IA</div>
+      <h2>Habla con <span>el bori</span></h2>
+      <p>el bori conoce el menú, precios y horario. Pregúntale lo que quieras — en español o inglés.</p>
     </div>
     <div class="demo-chat-box">
       <div class="demo-chat-topbar">
         <div class="demo-chat-av">🤖</div>
         <div>
-          <div class="demo-chat-agent-name">IvA — El Rincón Boricua</div>
+          <div class="demo-chat-agent-name">El Bori — El Rincón Boricua</div>
           <div class="demo-chat-status">En línea ahora</div>
         </div>
       </div>
       <div class="demo-chat-msgs" id="demoChatMsgs">
         <div class="demo-msg bot">
-          <div class="demo-msg-bubble">¡Wepa! Soy IvA, el asistente de El Rincón Boricua. ¿Qué te preparo hoy? 🥪🔥</div>
+          <div class="demo-msg-bubble">¡Wepa! Soy El Bori, el asistente de El Rincón Boricua. ¿Qué te preparo hoy? 🥪🔥</div>
           <div class="demo-msg-time">Ahora</div>
         </div>
       </div>
@@ -333,14 +333,14 @@ module.exports = `
     <div class="demo-float-header">
       <div class="demo-float-av">🤖</div>
       <div class="demo-float-info">
-        <div class="demo-float-name">IvA — El Rincón Boricua</div>
+        <div class="demo-float-name">El Bori — El Rincón Boricua</div>
         <div class="demo-float-status">● En línea</div>
       </div>
       <button class="demo-float-close" onclick="demoToggleFloat()">✕</button>
     </div>
     <div class="demo-float-msgs" id="demoFloatMsgs">
       <div class="demo-msg bot">
-        <div class="demo-msg-bubble">¡Wepa! Soy IvA 🔥 ¿Qué te preparo?</div>
+        <div class="demo-msg-bubble">¡Wepa! Soy El Bori 🔥 ¿Qué te preparo?</div>
         <div class="demo-msg-time">Ahora</div>
       </div>
     </div>
