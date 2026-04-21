@@ -201,7 +201,7 @@ app.post("/api/assistant", async (req, res) => {
 
   try {
     const response = await anthropic.messages.create({
-      model: "claude-haiku-4-5",
+      model: "claude-3-5-haiku-20241022",
       max_tokens: 300,
       system: systemPrompt,
       messages: [{ role: "user", content: message }]
