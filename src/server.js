@@ -208,8 +208,8 @@ app.post("/api/assistant", async (req, res) => {
     });
     return res.json({ reply: response.content[0].text });
   } catch (e) {
-    console.error(console.error("Claude API error:", e.status, e.message, JSON.stringify(e.error));
-    return res.json({ reply: "Disculpa, tuve un problema tecnico. Por favor escribeme directamente por WhatsApp." });
+console.error("Claude API error:", e.status, e.message);    
+return res.json({ reply: "Disculpa, tuve un problema tecnico. Por favor escribeme directamente por WhatsApp." });
   }
 });
 
