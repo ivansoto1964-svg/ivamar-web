@@ -183,20 +183,19 @@ app.post("/admin/delete/:slug", requireAdmin, (req, res) => {
 // IVA ASSISTANT API — CLAUDE
 // ==========================================
 
-
 app.post("/api/demo", async (req, res) => {
   const message = (req.body?.message || "").toString();
   try {
     const response = await anthropic.messages.create({
       model: "claude-haiku-4-5-20251001",
       max_tokens: 300,
-      system: "Eres El Bori, asistente boricua de El Rincon Boricua food truck en Caguas PR. Menu: Mofongo $14.99, Pernil $13.99, Chuletas $15.99, Alcapurrias $8.99, Tostones $5.99, Empanadillas $7.99, Coquito Shake $5.99, Malta $2.99, Tembleque $4.99. Horario: Mar-Jue 4-10pm, Vie 4-11pm, Sab-Dom 12-11pm. Delivery $3. Eres boricua autentico, usa wepa, brutal, riquísimo, a otro nivel. NUNCA uses ahorita. Maximo 3 oraciones.",
+      system: "Eres IvA, el asistente de La Plaza Restaurant en Miami, FL. MENU: Ropa Vieja $15.99, Pollo a la Brasa $14.99, Camarones al Ajillo $18.99, Tostones con Guacamole $7.99, Empanadas x3 $8.99, Ensalada Tropical $9.99, Agua de Jamaica $3.99, Limonada Natural $3.99, Cafe Cubano $2.99, Flan de Coco $5.99, Churros con Chocolate $6.99. HORARIO: Lun-Vie 11am-10pm, Sab-Dom 10am-11pm. DELIVERY: Si, $3 adicional. PICKUP: Gratis. Responde en el idioma del cliente. Se amistoso y profesional. Maximo 3 oraciones.",
       messages: [{ role: "user", content: message }]
     });
     return res.json({ reply: response.content[0].text });
   } catch (e) {
     console.error("Demo error:", e.message);
-    return res.json({ reply: "Wepa, tuve un problema. Escríbeme por WhatsApp 🇵🇷" });
+    return res.json({ reply: "Sorry, I had a problem. Please try again or contact us via WhatsApp." });
   }
 });
 
