@@ -178,7 +178,8 @@ module.exports = `
     </div>
   </div>
 
-  <!-- INDUSTRIAS -->
+
+<!-- INDUSTRIAS -->
   <div class="iva-section iva-section-dark" id="industries">
     <div class="iva-inner">
       <div class="iva-section-label">A quién servimos</div>
@@ -191,10 +192,27 @@ module.exports = `
         <a href="/quote" class="iva-industry"><span class="iva-industry-icon">🚗</span><div class="iva-industry-name">Dealers de Autos</div><div class="iva-industry-desc">Inventario, captura de leads e info de financiamiento</div><span class="iva-industry-tag">$99/mes</span></a>
         <a href="/quote" class="iva-industry"><span class="iva-industry-icon">🏠</span><div class="iva-industry-name">Realtors</div><div class="iva-industry-desc">Propiedades, captura de leads y citas</div><span class="iva-industry-tag">$99/mes</span></a>
         <a href="/quote" class="iva-industry"><span class="iva-industry-icon">🏥</span><div class="iva-industry-name">Médicos & Dentistas</div><div class="iva-industry-desc">Servicios, citas y preguntas de pacientes</div><span class="iva-industry-tag">$99/mes</span></a>
-        <a href="/quote" class="iva-industry"><span class="iva-industry-icon">⚖️</span><div class="iva-industry-name">Abogados & Servicios</div><div class="iva-industry-desc">Áreas de práctica, consultas y captura de leads</div><span class="iva-industry-tag">$99/mes</span></div>
+        <a href="/quote" class="iva-industry"><span class="iva-industry-icon">⚖️</span><div class="iva-industry-name">Abogados & Servicios</div><div class="iva-industry-desc">Áreas de práctica, consultas y captura de leads</div><span class="iva-industry-tag">$99/mes</span></a>
       </div>
     </div>
   </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   <!-- COMO FUNCIONA -->
   <div class="iva-section iva-section-void" id="how">
