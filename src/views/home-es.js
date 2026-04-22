@@ -73,20 +73,45 @@ module.exports = `
 .iva-feature-title{font-size:1rem;font-weight:700;margin-bottom:0.4rem;}
 .iva-feature-desc{font-size:0.83rem;color:#8892A4;line-height:1.6;font-weight:400;}
 .iva-feature-tag{display:inline-block;margin-top:0.8rem;background:rgba(0,229,200,0.07);border:1px solid rgba(0,229,200,0.2);color:#00E5C8;font-family:'JetBrains Mono',monospace;font-size:0.62rem;padding:0.2rem 0.6rem;border-radius:4px;letter-spacing:0.1em;}
-.iva-pricing-card{background:#0D1420;border:1px solid rgba(0,229,200,0.2);border-radius:20px;padding:3rem;margin-top:3rem;position:relative;overflow:hidden;text-align:center;max-width:600px;margin-left:auto;margin-right:auto;}
-.iva-pricing-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#00E5C8,#E8C97A,#00E5C8,transparent);}
-.iva-pricing-badge{display:inline-flex;align-items:center;gap:0.4rem;background:rgba(232,201,122,0.1);border:1px solid rgba(232,201,122,0.3);color:#E8C97A;font-size:0.75rem;font-family:'JetBrains Mono',monospace;padding:0.3rem 0.8rem;border-radius:100px;margin-bottom:1.5rem;}
-.iva-price{display:flex;align-items:flex-start;justify-content:center;gap:0.3rem;margin-bottom:0.4rem;}
-.iva-price-currency{font-size:1.4rem;font-weight:700;color:#8892A4;margin-top:0.5rem;}
-.iva-price-amount{font-size:5rem;font-weight:800;letter-spacing:-0.04em;line-height:1;}
-.iva-price-period{font-size:0.9rem;color:#8892A4;align-self:flex-end;margin-bottom:0.8rem;}
-.iva-price-setup{font-size:0.85rem;color:#8892A4;margin-bottom:2rem;}
+
+/* DUAL PRICING */
+.iva-pricing-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:3rem;max-width:700px;margin-left:auto;margin-right:auto;}
+.iva-pricing-card{background:#0D1420;border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:2.5rem;position:relative;overflow:hidden;text-align:center;transition:transform 0.3s,border-color 0.3s;}
+.iva-pricing-card:hover{transform:translateY(-4px);}
+.iva-pricing-card.featured{border-color:rgba(0,229,200,0.3);background:rgba(0,229,200,0.03);}
+.iva-pricing-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.1),transparent);}
+.iva-pricing-card.featured::before{background:linear-gradient(90deg,transparent,#00E5C8,transparent);}
+.iva-pricing-badge{display:inline-flex;align-items:center;gap:0.4rem;font-size:0.72rem;font-family:'JetBrains Mono',monospace;padding:0.3rem 0.8rem;border-radius:100px;margin-bottom:1.2rem;}
+.iva-pricing-badge.standard{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#8892A4;}
+.iva-pricing-badge.pro{background:rgba(232,201,122,0.1);border:1px solid rgba(232,201,122,0.3);color:#E8C97A;}
+.iva-pricing-plan-name{font-size:1.1rem;font-weight:800;margin-bottom:0.3rem;}
+.iva-pricing-industries{font-size:0.75rem;color:#4A5568;margin-bottom:1.5rem;line-height:1.5;}
+.iva-price{display:flex;align-items:flex-start;justify-content:center;gap:0.2rem;margin-bottom:0.3rem;}
+.iva-price-currency{font-size:1.2rem;font-weight:700;color:#8892A4;margin-top:0.4rem;}
+.iva-price-amount{font-size:4rem;font-weight:800;letter-spacing:-0.04em;line-height:1;}
+.iva-price-period{font-size:0.85rem;color:#8892A4;align-self:flex-end;margin-bottom:0.6rem;}
+.iva-price-setup{font-size:0.8rem;color:#8892A4;margin-bottom:1.5rem;}
 .iva-price-setup strong{color:#E8C97A;}
-.iva-pricing-list{list-style:none;text-align:left;margin-bottom:2rem;display:grid;grid-template-columns:1fr 1fr;gap:0.7rem;}
-.iva-pricing-list li{display:flex;align-items:center;gap:0.5rem;font-size:0.86rem;color:#8892A4;font-weight:400;}
-.iva-pricing-list li::before{content:'✓';color:#00E5C8;font-weight:700;font-size:0.75rem;flex-shrink:0;}
-.iva-btn-pricing{display:block;width:100%;background:#00E5C8;color:#030508;padding:1rem;border-radius:10px;font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;text-decoration:none;transition:all 0.25s;border:none;cursor:pointer;text-align:center;}
-.iva-btn-pricing:hover{box-shadow:0 8px 30px rgba(0,229,200,0.3);transform:translateY(-2px);}
+.iva-pricing-list{list-style:none;text-align:left;margin-bottom:1.5rem;display:flex;flex-direction:column;gap:0.5rem;}
+.iva-pricing-list li{display:flex;align-items:center;gap:0.5rem;font-size:0.82rem;color:#8892A4;font-weight:400;}
+.iva-pricing-list li::before{content:'✓';color:#00E5C8;font-weight:700;font-size:0.72rem;flex-shrink:0;}
+.iva-btn-pricing{display:block;width:100%;padding:0.85rem;border-radius:10px;font-family:'Syne',sans-serif;font-weight:700;font-size:0.95rem;text-decoration:none;transition:all 0.25s;border:none;cursor:pointer;text-align:center;}
+.iva-btn-pricing.standard{background:rgba(255,255,255,0.06);color:#F0F4FF;border:1px solid rgba(255,255,255,0.12);}
+.iva-btn-pricing.standard:hover{background:rgba(255,255,255,0.1);}
+.iva-btn-pricing.pro{background:#00E5C8;color:#030508;}
+.iva-btn-pricing.pro:hover{box-shadow:0 8px 30px rgba(0,229,200,0.3);transform:translateY(-2px);}
+
+/* FAQ */
+.iva-faq{display:flex;flex-direction:column;gap:0.8rem;margin-top:3rem;}
+.iva-faq-item{background:#0D1420;border:1px solid rgba(255,255,255,0.05);border-radius:12px;overflow:hidden;}
+.iva-faq-q{padding:1.2rem 1.5rem;font-size:0.95rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:1rem;transition:background 0.2s;}
+.iva-faq-q:hover{background:rgba(0,229,200,0.03);}
+.iva-faq-icon{font-size:1.1rem;color:#00E5C8;flex-shrink:0;transition:transform 0.3s;}
+.iva-faq-item.open .iva-faq-icon{transform:rotate(45deg);}
+.iva-faq-a{max-height:0;overflow:hidden;transition:max-height 0.3s ease;font-size:0.88rem;color:#8892A4;line-height:1.7;font-weight:400;}
+.iva-faq-item.open .iva-faq-a{max-height:200px;}
+.iva-faq-a-inner{padding:0 1.5rem 1.2rem;}
+
 .iva-cta{text-align:center;padding:5rem 2rem;background:#080C12;position:relative;overflow:hidden;}
 .iva-cta-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:300px;height:300px;background:radial-gradient(circle,rgba(0,229,200,0.07),transparent 70%);pointer-events:none;z-index:0;}
 .iva-cta-inner{position:relative;z-index:1;max-width:560px;margin:0 auto;}
@@ -105,7 +130,7 @@ module.exports = `
   .iva-steps{grid-template-columns:1fr;}
   .iva-features{grid-template-columns:1fr;}
   .iva-feature.wide{grid-column:span 1;}
-  .iva-pricing-list{grid-template-columns:1fr;}
+  .iva-pricing-grid{grid-template-columns:1fr;}
   .iva-footer{flex-direction:column;text-align:center;}
   .iva-cta{padding:4rem 1.5rem;}
   .iva-cta-btns{flex-direction:column;align-items:center;}
@@ -140,19 +165,20 @@ module.exports = `
     <div class="iva-orb iva-orb-2"></div>
     <div class="iva-badge"><span class="iva-badge-dot"></span>FROM USA TO AROUND THE WORLD 🌎</div>
     <h1>The <em>Human Touch</em><br>of Intelligence</h1>
-    <p class="iva-hero-sub">Creamos páginas con asistente de IA para negocios reales. Tus clientes preguntan, ordenan y pagan — sin que tú tengas que estar al teléfono.</p>
+    <p class="iva-hero-sub">Creamos páginas con asistente digital de IA para negocios reales. Tus clientes preguntan, ordenan y pagan — sin que tú tengas que estar al teléfono.</p>
     <div class="iva-hero-actions">
       <a href="/quote" class="iva-btn-main">Empezar ahora →</a>
       <a href="/demos" class="iva-btn-ghost">Ver demos en vivo</a>
     </div>
     <div class="iva-stats">
       <div class="iva-stat"><div class="iva-stat-num">$125<span></span></div><div class="iva-stat-label">Setup único</div></div>
-      <div class="iva-stat"><div class="iva-stat-num">$49<span>/mes</span></div><div class="iva-stat-label">Mensualidad</div></div>
+      <div class="iva-stat"><div class="iva-stat-num">$49<span>/mes</span></div><div class="iva-stat-label">Desde</div></div>
       <div class="iva-stat"><div class="iva-stat-num">0<span>%</span></div><div class="iva-stat-label">Comisión</div></div>
       <div class="iva-stat"><div class="iva-stat-num">24<span>/7</span></div><div class="iva-stat-label">Asistente IvA</div></div>
     </div>
   </div>
 
+  <!-- INDUSTRIAS -->
   <div class="iva-section iva-section-dark" id="industries">
     <div class="iva-inner">
       <div class="iva-section-label">A quién servimos</div>
@@ -160,16 +186,17 @@ module.exports = `
       <div class="iva-industries">
         <a href="/quote" class="iva-industry"><span class="iva-industry-icon">🚚</span><div class="iva-industry-name">Food Trucks</div><div class="iva-industry-desc">Menú digital, pedidos por WhatsApp y pagos</div><span class="iva-industry-tag">$49/mes</span></a>
         <a href="/quote" class="iva-industry"><span class="iva-industry-icon">🍽</span><div class="iva-industry-name">Restaurantes</div><div class="iva-industry-desc">Menú completo, reservaciones y asistente IA</div><span class="iva-industry-tag">$49/mes</span></a>
+        <a href="/quote" class="iva-industry"><span class="iva-industry-icon">💇</span><div class="iva-industry-name">Salones & Spas</div><div class="iva-industry-desc">Servicios, precios y reservaciones por WhatsApp</div><span class="iva-industry-tag">$49/mes</span></a>
         <a href="/quote" class="iva-industry"><span class="iva-industry-icon">🥐</span><div class="iva-industry-name">Panaderías & Cafés</div><div class="iva-industry-desc">Especiales del día, órdenes y chat con clientes</div><span class="iva-industry-tag">$49/mes</span></a>
         <a href="/quote" class="iva-industry"><span class="iva-industry-icon">🚗</span><div class="iva-industry-name">Dealers de Autos</div><div class="iva-industry-desc">Inventario, captura de leads e info de financiamiento</div><span class="iva-industry-tag">$99/mes</span></a>
         <a href="/quote" class="iva-industry"><span class="iva-industry-icon">🏠</span><div class="iva-industry-name">Realtors</div><div class="iva-industry-desc">Propiedades, captura de leads y citas</div><span class="iva-industry-tag">$99/mes</span></a>
         <a href="/quote" class="iva-industry"><span class="iva-industry-icon">🏥</span><div class="iva-industry-name">Médicos & Dentistas</div><div class="iva-industry-desc">Servicios, citas y preguntas de pacientes</div><span class="iva-industry-tag">$99/mes</span></a>
-        <a href="/quote" class="iva-industry"><span class="iva-industry-icon">💇</span><div class="iva-industry-name">Salones & Spas</div><div class="iva-industry-desc">Servicios, precios y reservaciones por WhatsApp</div><span class="iva-industry-tag">$49/mes</span></a>
-        <a href="/quote" class="iva-industry"><span class="iva-industry-icon">⚖️</span><div class="iva-industry-name">Abogados & Servicios</div><div class="iva-industry-desc">Áreas de práctica, consultas y captura de leads</div><span class="iva-industry-tag">$99/mes</span></a>
+        <a href="/quote" class="iva-industry"><span class="iva-industry-icon">⚖️</span><div class="iva-industry-name">Abogados & Servicios</div><div class="iva-industry-desc">Áreas de práctica, consultas y captura de leads</div><span class="iva-industry-tag">$99/mes</span></div>
       </div>
     </div>
   </div>
 
+  <!-- COMO FUNCIONA -->
   <div class="iva-section iva-section-void" id="how">
     <div class="iva-inner">
       <div class="iva-section-label">El proceso</div>
@@ -182,6 +209,7 @@ module.exports = `
     </div>
   </div>
 
+  <!-- FEATURES -->
   <div class="iva-section iva-section-dark">
     <div class="iva-inner">
       <div class="iva-section-label">Qué incluye</div>
@@ -196,30 +224,90 @@ module.exports = `
     </div>
   </div>
 
+  <!-- PRECIOS -->
   <div class="iva-section iva-section-void" id="pricing">
     <div class="iva-inner" style="text-align:center">
       <div class="iva-section-label" style="justify-content:center">Precios</div>
       <h2 class="iva-section-title">Simple. <em>Transparente.</em> Tuyo.</h2>
-      <div class="iva-pricing-card">
-        <div class="iva-pricing-badge">⭐ Primer mes gratis</div>
-        <div class="iva-price"><span class="iva-price-currency">$</span><span class="iva-price-amount">49</span><span class="iva-price-period">/mes</span></div>
-        <p class="iva-price-setup">+ <strong>$125 setup único</strong> · Primer mes incluido gratis</p>
-        <ul class="iva-pricing-list">
-          <li>Página web personalizada</li><li>Asistente digital IvA 24/7</li>
-          <li>Pedidos por WhatsApp</li><li>Integración de pagos</li>
-          <li>Multilingüe</li><li>Hosting y actualizaciones</li>
-          <li>Panel de admin</li><li>Soporte prioritario</li>
-        </ul>
-        <a href="/quote" class="iva-btn-pricing">Empezar ahora →</a>
+      <p style="color:#8892A4;margin-top:0.5rem;font-size:0.95rem;">Todos los planes incluyen $125 de setup · Primer mes gratis</p>
+      <div class="iva-pricing-grid">
+
+        <!-- BÁSICO -->
+        <div class="iva-pricing-card">
+          <div class="iva-pricing-badge standard">⚡ Estándar</div>
+          <div class="iva-pricing-plan-name">Plan Básico</div>
+          <div class="iva-pricing-industries">Food trucks · Restaurantes<br>Salones · Panaderías · Cafés</div>
+          <div class="iva-price"><span class="iva-price-currency">$</span><span class="iva-price-amount">49</span><span class="iva-price-period">/mes</span></div>
+          <p class="iva-price-setup">+ <strong>$125 setup</strong> · Primer mes gratis</p>
+          <ul class="iva-pricing-list">
+            <li>Página web personalizada</li>
+            <li>Asistente digital IvA 24/7</li>
+            <li>Pedidos por WhatsApp</li>
+            <li>Integración de pagos</li>
+            <li>Panel de admin</li>
+            <li>Multilingüe</li>
+          </ul>
+          <a href="/quote" class="iva-btn-pricing standard">Empezar →</a>
+        </div>
+
+        <!-- PROFESIONAL -->
+        <div class="iva-pricing-card featured">
+          <div class="iva-pricing-badge pro">🚀 Profesional</div>
+          <div class="iva-pricing-plan-name">Plan Pro</div>
+          <div class="iva-pricing-industries">Dealers · Realtors<br>Médicos · Abogados · Finanzas</div>
+          <div class="iva-price"><span class="iva-price-currency">$</span><span class="iva-price-amount">99</span><span class="iva-price-period">/mes</span></div>
+          <p class="iva-price-setup">+ <strong>$125 setup</strong> · Primer mes gratis</p>
+          <ul class="iva-pricing-list">
+            <li>Todo lo del Plan Básico</li>
+            <li>Captura de leads</li>
+            <li>Reservación de citas</li>
+            <li>Soporte prioritario</li>
+            <li>Prompts avanzados para IvA</li>
+            <li>Showcase de inventario</li>
+          </ul>
+          <a href="/quote" class="iva-btn-pricing pro">Empezar →</a>
+        </div>
+
       </div>
     </div>
   </div>
 
+  <!-- FAQ -->
+  <div class="iva-section iva-section-dark">
+    <div class="iva-inner">
+      <div class="iva-section-label">FAQ</div>
+      <h2 class="iva-section-title">Preguntas <em>frecuentes</em></h2>
+      <div class="iva-faq">
+        <div class="iva-faq-item">
+          <div class="iva-faq-q" onclick="toggleFaq(this)">¿Necesito saber de tecnología o programación? <span class="iva-faq-icon">+</span></div>
+          <div class="iva-faq-a"><div class="iva-faq-a-inner">Para nada. Nosotros configuramos todo por ti. Solo nos envías tu info — logo, menú, precios, horario — y tu página sale en vivo en 48 horas. Después puedes actualizar todo desde tu panel de admin sin ningún conocimiento técnico.</div></div>
+        </div>
+        <div class="iva-faq-item">
+          <div class="iva-faq-q" onclick="toggleFaq(this)">¿Cuánto tiempo tarda el setup? <span class="iva-faq-icon">+</span></div>
+          <div class="iva-faq-a"><div class="iva-faq-a-inner">Tu página sale en vivo dentro de 48 horas después de que nos envíes tu información. En la mayoría de los casos entregamos el mismo día.</div></div>
+        </div>
+        <div class="iva-faq-item">
+          <div class="iva-faq-q" onclick="toggleFaq(this)">¿IvA habla español e inglés? <span class="iva-faq-icon">+</span></div>
+          <div class="iva-faq-a"><div class="iva-faq-a-inner">¡Sí! IvA detecta automáticamente el idioma en que te escribe tu cliente y responde en el mismo idioma. Funciona en español, inglés y otros idiomas también.</div></div>
+        </div>
+        <div class="iva-faq-item">
+          <div class="iva-faq-q" onclick="toggleFaq(this)">¿Puedo cancelar cuando quiera? <span class="iva-faq-icon">+</span></div>
+          <div class="iva-faq-a"><div class="iva-faq-a-inner">Sí. No hay contratos a largo plazo. Puedes cancelar tu suscripción mensual en cualquier momento. El primer mes siempre es gratis.</div></div>
+        </div>
+        <div class="iva-faq-item">
+          <div class="iva-faq-q" onclick="toggleFaq(this)">¿Qué pasa después de que pago? <span class="iva-faq-icon">+</span></div>
+          <div class="iva-faq-a"><div class="iva-faq-a-inner">Después del pago te contactamos por WhatsApp para recopilar la info de tu negocio. En 48 horas tu página está en vivo en ivamarai.com/tu-negocio. También recibes acceso a tu panel de admin para hacer cambios cuando quieras.</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CTA -->
   <div class="iva-cta">
     <div class="iva-cta-glow"></div>
     <div class="iva-cta-inner">
-      <h2>Tu negocio merece<br><em>mejores herramientas</em></h2>
-      <p>Únete a negocios desde USA hasta el mundo entero que ya usan Ivamar AI para vender más y trabajar menos.</p>
+      <h2>Sé el primero en tu área<br>en ofrecer <em>servicio con IA</em></h2>
+      <p>Tus clientes ya están buscando negocios como el tuyo en internet. Dales la mejor experiencia — 24/7, en cualquier idioma.</p>
       <div class="iva-cta-btns">
         <a href="https://wa.me/18635216708" target="_blank" class="iva-btn-main">Hablar por WhatsApp →</a>
         <a href="/quote" class="iva-btn-ghost">Empezar ahora</a>
@@ -235,4 +323,11 @@ module.exports = `
     </div>
   </div>
 </div>
+
+<script>
+function toggleFaq(el) {
+  const item = el.parentElement;
+  item.classList.toggle('open');
+}
+</script>
 `;

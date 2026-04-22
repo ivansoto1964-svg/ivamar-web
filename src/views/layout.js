@@ -1,4 +1,4 @@
-function escapeHtml(str) {
+wfunction escapeHtml(str) {
   return String(str)
     .replaceAll("&", "&amp;")
     .replaceAll("<", "&lt;")
@@ -159,7 +159,7 @@ module.exports = function layout({ title = "Ivamar AI", body = "" } = {}) {
     </div>
     <div class="iva-body" id="ivaBody"></div>
     <div class="iva-cta">
-      <small>¿Quieres una página así?</small>
+      <small>¿Cómo puedo ayudarte?</small>
       <a href="/quote">Solicitar ahora →</a>
     </div>
     <div class="iva-foot">
@@ -239,7 +239,7 @@ module.exports = function layout({ title = "Ivamar AI", body = "" } = {}) {
         fab.style.display = "none";
         if(!body.dataset.welcomed){
           body.dataset.welcomed = "1";
-          addMsg("¡Hola! Soy IvA, el asistente de Ivamar AI. Puedo ayudarte a crear tu página con asistente de IA para tu negocio. ¿Qué tipo de negocio tienes? 🚀", "bot");
+          addMsg("¡Hola! Soy IvA 👋 ¿En qué puedo ayudarte hoy? Puedo ayudarte a crear tu página con asistente de IA para tu negocio. ¿Qué tipo de negocio tienes? 🚀", "bot");
         }
         input.focus();
       }
