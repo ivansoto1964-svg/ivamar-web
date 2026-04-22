@@ -1,4 +1,4 @@
-wfunction escapeHtml(str) {
+function escapeHtml(str) {
   return String(str)
     .replaceAll("&", "&amp;")
     .replaceAll("<", "&lt;")
