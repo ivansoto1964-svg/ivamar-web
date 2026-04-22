@@ -53,17 +53,20 @@ module.exports = `
 .iva-q-plan-check{position:absolute;top:0.8rem;right:0.8rem;width:20px;height:20px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:0.65rem;transition:all 0.2s;}
 .iva-q-plan.selected .iva-q-plan-check{background:#00E5C8;border-color:#00E5C8;color:#030508;}
 
-.iva-q-submit{width:100%;padding:1rem;background:#00E5C8;color:#030508;border:none;border-radius:12px;font-family:'Syne',sans-serif;font-weight:700;font-size:1.05rem;cursor:pointer;transition:all 0.25s;display:flex;align-items:center;justify-content:center;gap:0.6rem;margin-top:0.5rem;}
-.iva-q-submit:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,229,200,0.3);}
+/* STRIPE BUTTON */
+.iva-q-stripe-btn{width:100%;padding:1rem;background:linear-gradient(135deg,#635BFF,#4B44CC);color:white;border:none;border-radius:12px;font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;cursor:pointer;transition:all 0.25s;display:flex;align-items:center;justify-content:center;gap:0.6rem;margin-bottom:0.8rem;text-decoration:none;}
+.iva-q-stripe-btn:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(99,91,255,0.3);}
+.iva-q-wa-btn{width:100%;padding:1rem;background:linear-gradient(135deg,#25D366,#128C7E);color:white;border:none;border-radius:12px;font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;cursor:pointer;transition:all 0.25s;display:flex;align-items:center;justify-content:center;gap:0.6rem;text-decoration:none;}
+.iva-q-wa-btn:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(37,211,102,0.25);}
+.iva-q-divider{text-align:center;font-size:0.78rem;color:#4A5568;margin:0.8rem 0;letter-spacing:0.05em;}
+
 .iva-q-note{text-align:center;font-size:0.78rem;color:#4A5568;margin-top:1rem;line-height:1.5;}
 
-.iva-q-success{display:none;text-align:center;padding:4rem 2rem;}
-.iva-q-success-icon{font-size:4rem;margin-bottom:1.5rem;}
-.iva-q-success h2{font-size:2rem;font-weight:800;letter-spacing:-0.03em;margin-bottom:0.8rem;}
-.iva-q-success h2 em{font-family:'Instrument Serif',serif;font-style:italic;color:#00E5C8;}
-.iva-q-success p{color:#8892A4;line-height:1.7;max-width:400px;margin:0 auto 2rem;font-weight:400;}
-.iva-q-success-btn{display:inline-flex;align-items:center;gap:0.5rem;background:#00E5C8;color:#030508;padding:0.8rem 2rem;border-radius:8px;font-weight:700;font-size:0.95rem;text-decoration:none;transition:all 0.25s;}
-.iva-q-success-btn:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(0,229,200,0.25);}
+/* STRIPE INFO BOX */
+.iva-q-stripe-info{background:rgba(99,91,255,0.06);border:1px solid rgba(99,91,255,0.2);border-radius:12px;padding:1rem 1.2rem;margin-bottom:1.5rem;display:flex;align-items:flex-start;gap:0.8rem;}
+.iva-q-stripe-info-icon{font-size:1.2rem;flex-shrink:0;margin-top:0.1rem;}
+.iva-q-stripe-info-text{font-size:0.82rem;color:#8892A4;line-height:1.6;}
+.iva-q-stripe-info-text strong{color:#F0F4FF;}
 
 .iva-q-footer{padding:2rem;border-top:1px solid rgba(255,255,255,0.04);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;font-size:0.78rem;color:#4A5568;}
 .iva-q-footer strong{color:#8892A4;}
@@ -85,155 +88,160 @@ module.exports = `
   <div class="iva-q-hero">
     <div class="iva-q-tag">Get Started · Empezar</div>
     <h1>Let's build your<br><em>AI-powered page</em></h1>
-    <p>Fill out the form and we'll get back to you within 24 hours. No commitment required.</p>
+    <p>Fill out the form, choose your plan and pay securely with Stripe. Your page will be live in 48 hours.</p>
   </div>
 
   <div class="iva-q-content">
-    <div id="quoteForm">
 
-      <!-- BUSINESS INFO -->
-      <div class="iva-q-card">
-        <div class="iva-q-card-title">Your business info</div>
-        <div class="iva-q-row">
-          <div class="iva-q-field">
-            <label>Business Name *</label>
-            <input type="text" id="qBizName" placeholder="El Rincón Boricua" />
-          </div>
-          <div class="iva-q-field">
-            <label>Business Type *</label>
-            <select id="qBizType" onchange="updatePricing()">
-              <option value="">Select type / Selecciona</option>
-              <optgroup label="🍽 Food & Beverage">
-                <option value="food_basic">Food Truck</option>
-                <option value="food_basic">Restaurant / Chinchorro</option>
-                <option value="food_basic">Bakery / Panadería</option>
-                <option value="food_basic">Cafetería</option>
-                <option value="food_basic">Bar / Drinks</option>
-                <option value="food_basic">Kiosko / Street Food</option>
-              </optgroup>
-              <optgroup label="💇 Beauty & Wellness">
-                <option value="beauty_basic">Salon / Barbershop</option>
-                <option value="beauty_basic">Spa / Nails</option>
-                <option value="beauty_basic">Gym / Fitness</option>
-              </optgroup>
-              <optgroup label="🚗 Automotive">
-                <option value="auto_pro">Car Dealer / Dealer de Autos</option>
-                <option value="auto_pro">Auto Repair / Mecánica</option>
-                <option value="auto_pro">Car Rental</option>
-              </optgroup>
-              <optgroup label="🏠 Real Estate">
-                <option value="realtor_pro">Realtor / Agente de Bienes Raíces</option>
-                <option value="realtor_pro">Property Manager</option>
-                <option value="realtor_pro">Home Services / Contractor</option>
-              </optgroup>
-              <optgroup label="🏥 Health & Medical">
-                <option value="medical_pro">Doctor / Médico General</option>
-                <option value="medical_pro">Dentist / Dentista</option>
-                <option value="medical_pro">Therapist / Terapeuta</option>
-                <option value="medical_pro">Veterinarian / Veterinario</option>
-                <option value="medical_pro">Pharmacy / Farmacia</option>
-              </optgroup>
-              <optgroup label="⚖️ Professional Services">
-                <option value="legal_pro">Lawyer / Abogado</option>
-                <option value="legal_pro">Accountant / Contador</option>
-                <option value="legal_pro">Insurance Agent</option>
-                <option value="legal_pro">Financial Advisor</option>
-              </optgroup>
-              <optgroup label="🏪 Retail & Other">
-                <option value="retail_basic">Retail Store / Tienda</option>
-                <option value="retail_basic">Photography / Fotógrafo</option>
-                <option value="retail_basic">Event Planner</option>
-                <option value="retail_basic">Other / Otro</option>
-              </optgroup>
-            </select>
-          </div>
+    <!-- BUSINESS INFO -->
+    <div class="iva-q-card">
+      <div class="iva-q-card-title">Your business info</div>
+      <div class="iva-q-row">
+        <div class="iva-q-field">
+          <label>Business Name *</label>
+          <input type="text" id="qBizName" placeholder="La Plaza Restaurant" />
         </div>
-
-        <!-- DYNAMIC PRICE ALERT -->
-        <div class="iva-q-price-alert" id="priceAlert" style="display:none;">
-          <div class="iva-q-price-alert-text">
-            Recommended plan for <strong id="alertBizType">your business</strong>:
-            <span id="alertPlanName" style="color:#00E5C8;font-weight:600;"></span>
-          </div>
-          <div class="iva-q-price-badge" id="alertPrice"></div>
-        </div>
-
-        <div class="iva-q-row single">
-          <div class="iva-q-field">
-            <label>Location / Ubicación</label>
-            <input type="text" id="qLocation" placeholder="Caguas, PR · Orlando, FL · etc." />
-          </div>
+        <div class="iva-q-field">
+          <label>Business Type *</label>
+          <select id="qBizType" onchange="updatePricing()">
+            <option value="">Select type / Selecciona</option>
+            <optgroup label="🍽 Food & Beverage">
+              <option value="food_basic">Food Truck</option>
+              <option value="food_basic">Restaurant / Chinchorro</option>
+              <option value="food_basic">Bakery / Panadería</option>
+              <option value="food_basic">Cafetería</option>
+              <option value="food_basic">Bar / Drinks</option>
+              <option value="food_basic">Kiosko / Street Food</option>
+            </optgroup>
+            <optgroup label="💇 Beauty & Wellness">
+              <option value="beauty_basic">Salon / Barbershop</option>
+              <option value="beauty_basic">Spa / Nails</option>
+              <option value="beauty_basic">Gym / Fitness</option>
+            </optgroup>
+            <optgroup label="🚗 Automotive">
+              <option value="auto_pro">Car Dealer / Dealer de Autos</option>
+              <option value="auto_pro">Auto Repair / Mecánica</option>
+              <option value="auto_pro">Car Rental</option>
+            </optgroup>
+            <optgroup label="🏠 Real Estate">
+              <option value="realtor_pro">Realtor / Agente de Bienes Raíces</option>
+              <option value="realtor_pro">Property Manager</option>
+              <option value="realtor_pro">Home Services / Contractor</option>
+            </optgroup>
+            <optgroup label="🏥 Health & Medical">
+              <option value="medical_pro">Doctor / Médico General</option>
+              <option value="medical_pro">Dentist / Dentista</option>
+              <option value="medical_pro">Therapist / Terapeuta</option>
+              <option value="medical_pro">Veterinarian / Veterinario</option>
+              <option value="medical_pro">Pharmacy / Farmacia</option>
+            </optgroup>
+            <optgroup label="⚖️ Professional Services">
+              <option value="legal_pro">Lawyer / Abogado</option>
+              <option value="legal_pro">Accountant / Contador</option>
+              <option value="legal_pro">Insurance Agent</option>
+              <option value="legal_pro">Financial Advisor</option>
+            </optgroup>
+            <optgroup label="🏪 Retail & Other">
+              <option value="retail_basic">Retail Store / Tienda</option>
+              <option value="retail_basic">Photography / Fotógrafo</option>
+              <option value="retail_basic">Event Planner</option>
+              <option value="retail_basic">Other / Otro</option>
+            </optgroup>
+          </select>
         </div>
       </div>
 
-      <!-- CONTACT INFO -->
-      <div class="iva-q-card">
-        <div class="iva-q-card-title">Your contact info</div>
-        <div class="iva-q-row">
-          <div class="iva-q-field">
-            <label>Your Name *</label>
-            <input type="text" id="qName" placeholder="María González" />
-          </div>
-          <div class="iva-q-field">
-            <label>WhatsApp *</label>
-            <input type="tel" id="qPhone" placeholder="+1 (787) 000-0000" />
-          </div>
+      <div class="iva-q-price-alert" id="priceAlert" style="display:none;">
+        <div class="iva-q-price-alert-text">
+          Recommended plan for <strong id="alertBizType">your business</strong>:
+          <span id="alertPlanName" style="color:#00E5C8;font-weight:600;"></span>
         </div>
-        <div class="iva-q-row single">
-          <div class="iva-q-field">
-            <label>Email (optional)</label>
-            <input type="email" id="qEmail" placeholder="tu@email.com" />
-          </div>
-        </div>
+        <div class="iva-q-price-badge" id="alertPrice"></div>
       </div>
 
-      <!-- PLAN SELECTOR -->
-      <div class="iva-q-card">
-        <div class="iva-q-card-title">Choose your plan</div>
-        <div class="iva-q-plans">
-          <div class="iva-q-plan selected" id="plan1" onclick="selectPlan(this,'IvA Chat')">
-            <div class="iva-q-plan-check">✓</div>
-            <div class="iva-q-plan-name">🤖 IvA Chat</div>
-            <div class="iva-q-plan-price" id="plan1Price">$125 setup + $49/mo</div>
-            <div class="iva-q-plan-desc">Landing page + AI assistant + WhatsApp flow</div>
-          </div>
-          <div class="iva-q-plan" id="plan2" onclick="selectPlan(this,'IvA + Orders')">
-            <div class="iva-q-plan-check"></div>
-            <div class="iva-q-plan-name">🛒 IvA + Orders</div>
-            <div class="iva-q-plan-price" id="plan2Price">$125 setup + $49/mo</div>
-            <div class="iva-q-plan-desc">Everything above + menu, cart & payments</div>
-          </div>
+      <div class="iva-q-row single">
+        <div class="iva-q-field">
+          <label>Location / Ubicación</label>
+          <input type="text" id="qLocation" placeholder="Miami, FL · Caguas, PR · etc." />
         </div>
       </div>
-
-      <!-- NOTES -->
-      <div class="iva-q-card">
-        <div class="iva-q-card-title">Anything else?</div>
-        <div class="iva-q-row single">
-          <div class="iva-q-field">
-            <label>Tell us about your business (optional)</label>
-            <textarea id="qNotes" placeholder="What do you sell? Any special requests? Preferred language for IvA?"></textarea>
-          </div>
-        </div>
-      </div>
-
-      <button class="iva-q-submit" onclick="submitQuote()">
-        📲 Send via WhatsApp →
-      </button>
-      <p class="iva-q-note">You'll be redirected to WhatsApp with your info pre-filled. We respond within 24 hours.</p>
     </div>
 
-    <!-- SUCCESS -->
-    <div class="iva-q-success" id="quoteSuccess">
-      <div class="iva-q-success-icon">🎉</div>
-      <h2>You're all set,<br><em>let's build it!</em></h2>
-      <p>Your request was sent via WhatsApp. We'll get back to you within 24 hours to get your page started.</p>
-      <a href="/" class="iva-q-success-btn">← Back to Ivamar AI</a>
+    <!-- CONTACT INFO -->
+    <div class="iva-q-card">
+      <div class="iva-q-card-title">Your contact info</div>
+      <div class="iva-q-row">
+        <div class="iva-q-field">
+          <label>Your Name *</label>
+          <input type="text" id="qName" placeholder="María González" />
+        </div>
+        <div class="iva-q-field">
+          <label>WhatsApp *</label>
+          <input type="tel" id="qPhone" placeholder="+1 (305) 000-0000" />
+        </div>
+      </div>
+      <div class="iva-q-row single">
+        <div class="iva-q-field">
+          <label>Email *</label>
+          <input type="email" id="qEmail" placeholder="tu@email.com" />
+        </div>
+      </div>
     </div>
+
+    <!-- PLAN SELECTOR -->
+    <div class="iva-q-card">
+      <div class="iva-q-card-title">Choose your plan</div>
+      <div class="iva-q-plans">
+        <div class="iva-q-plan selected" id="plan1" onclick="selectPlan(this,'IvA Chat')">
+          <div class="iva-q-plan-check">✓</div>
+          <div class="iva-q-plan-name">🤖 IvA Chat</div>
+          <div class="iva-q-plan-price" id="plan1Price">$125 setup + $49/mo</div>
+          <div class="iva-q-plan-desc">Landing page + AI assistant + WhatsApp flow</div>
+        </div>
+        <div class="iva-q-plan" id="plan2" onclick="selectPlan(this,'IvA + Orders')">
+          <div class="iva-q-plan-check"></div>
+          <div class="iva-q-plan-name">🛒 IvA + Orders</div>
+          <div class="iva-q-plan-price" id="plan2Price">$125 setup + $49/mo</div>
+          <div class="iva-q-plan-desc">Everything above + menu, cart & payments</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NOTES -->
+    <div class="iva-q-card">
+      <div class="iva-q-card-title">Anything else?</div>
+      <div class="iva-q-row single">
+        <div class="iva-q-field">
+          <label>Tell us about your business (optional)</label>
+          <textarea id="qNotes" placeholder="What do you sell? Any special requests? Preferred language for IvA?"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- PAYMENT INFO -->
+    <div class="iva-q-stripe-info">
+      <div class="iva-q-stripe-info-icon">🔒</div>
+      <div class="iva-q-stripe-info-text">
+        <strong>Secure payment via Stripe.</strong> You'll pay the $125 setup today. The monthly plan starts with a <strong>30-day free trial</strong> — your card will not be charged until after your first month.
+      </div>
+    </div>
+
+    <!-- PAY BUTTONS -->
+    <button class="iva-q-stripe-btn" onclick="goToStripe()">
+      💳 Pay with Stripe →
+    </button>
+
+    <div class="iva-q-divider">— or send your request via —</div>
+
+    <button class="iva-q-wa-btn" onclick="submitWhatsApp()">
+      📲 Send via WhatsApp
+    </button>
+
+    <p class="iva-q-note">Stripe payment is secure and encrypted. First month free — cancel anytime.</p>
   </div>
 
   <div class="iva-q-footer">
-    <div>© 2025 <strong>Ivamar AI LLC</strong> · 8 The Green, Suite B, Dover, DE 19901</div>
+    <div>© 2025 <strong>Ivamar AI LLC</strong> · 8 The Green, Suite B, Dover, DE 19901, USA</div>
     <div class="iva-q-footer-links">
       <a href="/privacy">Privacy</a>
       <a href="/terms">Terms</a>
@@ -244,7 +252,10 @@ module.exports = `
 </div>
 
 <script>
-// Pricing tiers
+const STRIPE_SETUP = 'https://buy.stripe.com/bJe6oH81Q2eafoc17af3a00';
+const STRIPE_49 = 'https://buy.stripe.com/14A28ra9Y3ieb7W8zCf3a01';
+const STRIPE_99 = 'https://buy.stripe.com/28E6oHgymf0Wdg46ruf3a02';
+
 const PRICING = {
   food_basic:   { monthly: 49,  label: 'Food & Beverage' },
   beauty_basic: { monthly: 49,  label: 'Beauty & Wellness' },
@@ -262,20 +273,11 @@ function updatePricing() {
   const select = document.getElementById('qBizType');
   const val = select.value;
   const tier = PRICING[val];
-
-  if (!tier) {
-    document.getElementById('priceAlert').style.display = 'none';
-    return;
-  }
-
+  if (!tier) { document.getElementById('priceAlert').style.display = 'none'; return; }
   currentMonthly = tier.monthly;
   const priceStr = '$125 setup + $' + tier.monthly + '/mo';
-
-  // Update plan prices
   document.getElementById('plan1Price').textContent = priceStr;
   document.getElementById('plan2Price').textContent = priceStr;
-
-  // Show alert
   document.getElementById('alertBizType').textContent = tier.label;
   document.getElementById('alertPlanName').textContent = tier.monthly === 49 ? 'Standard' : 'Professional';
   document.getElementById('alertPrice').textContent = '$' + tier.monthly + '/month';
@@ -292,19 +294,59 @@ function selectPlan(el, plan) {
   selectedPlan = plan;
 }
 
-function submitQuote() {
+function validate() {
+  const bizName = document.getElementById('qBizName').value.trim();
+  const name = document.getElementById('qName').value.trim();
+  const phone = document.getElementById('qPhone').value.trim();
+  const email = document.getElementById('qEmail').value.trim();
+  if (!bizName || !name || !phone || !email) {
+    alert('Please fill in: Business Name, Your Name, WhatsApp and Email.');
+    return false;
+  }
+  return true;
+}
+
+function goToStripe() {
+  if (!validate()) return;
+
+  const bizName = document.getElementById('qBizName').value.trim();
+  const name = document.getElementById('qName').value.trim();
+  const phone = document.getElementById('qPhone').value.trim();
+  const email = document.getElementById('qEmail').value.trim();
+  const bizType = document.getElementById('qBizType').options[document.getElementById('qBizType').selectedIndex]?.text || '';
+  const notes = document.getElementById('qNotes').value.trim();
+
+  // First send WhatsApp notification to Ivan
+  let msg = '💳 *NEW STRIPE PAYMENT — Ivamar AI*\\n\\n';
+  msg += '🏪 *Business:* ' + bizName + '\\n';
+  msg += '📂 *Type:* ' + bizType + '\\n';
+  msg += '👤 *Contact:* ' + name + '\\n';
+  msg += '📱 *WhatsApp:* ' + phone + '\\n';
+  msg += '✉️ *Email:* ' + email + '\\n';
+  msg += '💼 *Plan:* ' + selectedPlan + ' — $125 setup + $' + currentMonthly + '/mo\\n';
+  if (notes) msg += '📝 *Notes:* ' + notes + '\\n';
+  msg += '\\n---\\nSent from ivamarai.com/quote';
+
+  // Open WhatsApp notification
+  window.open('https://wa.me/18635216708?text=' + encodeURIComponent(msg), '_blank');
+
+  // Then redirect to Stripe after short delay
+  setTimeout(() => {
+    const monthlyLink = currentMonthly === 99 ? STRIPE_99 : STRIPE_49;
+    // Add prefill params to Stripe
+    const setupUrl = STRIPE_SETUP + '?prefilled_email=' + encodeURIComponent(email);
+    window.location.href = setupUrl;
+  }, 1000);
+}
+
+function submitWhatsApp() {
+  if (!validate()) return;
   const bizName = document.getElementById('qBizName').value.trim();
   const bizType = document.getElementById('qBizType').options[document.getElementById('qBizType').selectedIndex]?.text || '';
   const name = document.getElementById('qName').value.trim();
   const phone = document.getElementById('qPhone').value.trim();
-
-  if (!bizName || !name || !phone) {
-    alert('Please fill in: Business Name, Your Name and WhatsApp number.');
-    return;
-  }
-
-  const location = document.getElementById('qLocation').value.trim();
   const email = document.getElementById('qEmail').value.trim();
+  const location = document.getElementById('qLocation').value.trim();
   const notes = document.getElementById('qNotes').value.trim();
 
   let msg = '🌟 *NEW QUOTE REQUEST — Ivamar AI*\\n\\n';
@@ -313,16 +355,12 @@ function submitQuote() {
   if (location) msg += '📍 *Location:* ' + location + '\\n';
   msg += '\\n👤 *Contact:* ' + name + '\\n';
   msg += '📱 *WhatsApp:* ' + phone + '\\n';
-  if (email) msg += '✉️ *Email:* ' + email + '\\n';
+  msg += '✉️ *Email:* ' + email + '\\n';
   msg += '\\n💼 *Plan:* ' + selectedPlan + ' — $125 setup + $' + currentMonthly + '/mo\\n';
   if (notes) msg += '\\n📝 *Notes:* ' + notes + '\\n';
   msg += '\\n---\\nSent from ivamarai.com/quote';
 
   window.open('https://wa.me/18635216708?text=' + encodeURIComponent(msg), '_blank');
-
-  document.getElementById('quoteForm').style.display = 'none';
-  document.getElementById('quoteSuccess').style.display = 'block';
-  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 </script>
 `;
