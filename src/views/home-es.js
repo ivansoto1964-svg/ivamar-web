@@ -152,7 +152,7 @@ module.exports = `
       <li><a href="#how">Cómo funciona</a></li>
       <li><a href="#pricing">Precios</a></li>
       <li><a href="/demos">Demos</a></li>
-      <li><a href="/about">Nosotros</a></li>
+      <li><a href="/sobre-nosotros">Nosotros</a></li>
     </ul>
     <div class="iva-nav-right">
       <a href="/en" class="iva-lang-switch">EN · English</a>
@@ -336,8 +336,8 @@ module.exports = `
   <div class="iva-footer">
     <div>© 2025 <strong>Ivamar AI LLC</strong> · 8 The Green, Suite B, Dover, DE 19901, USA · From USA to Around the World 🌎</div>
     <div class="iva-footer-links">
-      <a href="/privacidad">Privacy</a><a href="/terminos">Terms</a>
-      <a href="/about">About</a><a href="/contact">Contact</a>
+      <a href="/privacidad">Privacidad</a><a href="/terminos">Términos</a>
+      <a href="/sobre-nosotros">Nosotros</a><a href="/contacto">Contacto</a>
     </div>
   </div>
 </div>
