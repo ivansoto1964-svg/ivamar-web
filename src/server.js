@@ -13,6 +13,7 @@ const demo = require("./views/demo");
 const demos = require("./views/demos");
 const demoAutos = require("./views/demo-autos");
 const quote = require("./views/quote");
+const quoteES = require("./views/quote-es");
 const adminLogin = require("./views/admin-login");
 const adminDashboard = require("./views/admin-dashboard");
 const adminEdit = require("./views/admin-edit");
@@ -92,6 +93,7 @@ app.get("/demo", (req, res) => res.send(layout({ title: "Demo — El Rincón Bor
 app.get("/demos", (req, res) => res.send(layout({ title: "Demos — Ivamar AI", body: demos })));
 app.get("/demo-autos", (req, res) => res.send(layout({ title: "Demo — Luis Soto Autos", body: demoAutos })));
 app.get("/quote", (req, res) => res.send(layout({ title: "Get Started — Ivamar AI", body: quote })));
+app.get("/cotizar", (req, res) => res.send(layout({ title: "Empezar — Ivamar AI", body: quoteES })));
 app.get("/pricing", (req, res) => res.redirect("/quote"));
 
 // ==========================================
