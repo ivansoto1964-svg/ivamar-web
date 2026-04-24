@@ -59,7 +59,7 @@ module.exports = `
 <div class="about-page">
   <nav class="about-nav">
     <a href="/" class="about-logo">
-      <div class="about-logo-mark">IvA</div>
+      <img src="/logo-white.png" alt="Ivamar AI" style="height:28px;width:auto;">
       <span class="about-logo-text">Ivamar <span>AI</span></span>
     </a>
     <a href="/" class="about-back">← Back</a>
@@ -67,7 +67,7 @@ module.exports = `
 
   <div class="about-hero">
     <div class="about-tag">About Ivamar AI</div>
-    <h1>Technology with a<br><em>human touch</em></h1>
+    <h1>The Human Touch<br><em>of Intelligence</em></h1>
     <p>We build AI-powered tools for real businesses — from food trucks to law firms — across the USA and around the world.</p>
   </div>
 

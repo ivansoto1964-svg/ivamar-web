@@ -63,7 +63,7 @@ module.exports = `
 
   <div class="about-hero">
     <div class="about-tag">Sobre Ivamar AI</div>
-    <h1>Tecnología con<br><em>toque humano</em></h1>
+    <h1>The Human Touch<br><em>of Intelligence</em></h1>
     <p>Construimos herramientas con IA para negocios reales — desde food trucks hasta despachos de abogados — en USA y alrededor del mundo.</p>
   </div>
 
