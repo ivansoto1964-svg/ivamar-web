@@ -64,7 +64,7 @@ module.exports = `
   <div class="demos-hero">
     <div class="demos-tag">Demos en vivo</div>
     <h1>Mira cómo funciona<br><em>en tu industria</em></h1>
-    <p>Cada demo es un ejemplo real de lo que Ivamar AI puede hacer para tu negocio. Prueba el asistente, ordena, explora.</p>
+    <p>Each demo is a real example of what Ivamar AI can do for your business. Try the assistant, order, explore.</p>
   </div>
 
   <div class="demos-grid">
@@ -78,10 +78,10 @@ module.exports = `
       <div class="demo-card-body">
         <div class="demo-card-industry">Restaurant · Food Truck · Cafetería</div>
         <div class="demo-card-title">La Plaza Restaurant</div>
-        <div class="demo-card-desc">Menú digital con fotos, carrito de pedidos, opciones de delivery y pickup, instrucciones especiales e IvA — tu asistente digital disponible 24/7 en español e inglés.</div>
+        <div class="demo-card-desc">Digital menu with photos, order cart, delivery and pickup options, special instructions and IvA — your digital assistant available 24/7.</div>
         <div class="demo-card-features">
-          <span class="demo-card-feature">Menú con fotos</span>
-          <span class="demo-card-feature">Carrito</span>
+          <span class="demo-card-feature">Menu with photos</span>
+          <span class="demo-card-feature">Cart</span>
           <span class="demo-card-feature">Delivery/Pickup</span>
           <span class="demo-card-feature">WhatsApp</span>
           <span class="demo-card-feature">IvA IA</span>
@@ -99,12 +99,12 @@ module.exports = `
       <div class="demo-card-body">
         <div class="demo-card-industry">Dealer de Autos · Concesionario</div>
         <div class="demo-card-title">Luis Soto Autos</div>
-        <div class="demo-card-desc">Inventario de vehículos, filtros por tipo, testimonios de clientes e IvA — el asistente que captura leads y responde sobre financiamiento 24/7.</div>
+        <div class="demo-card-desc">Vehicle inventory, type filters, customer testimonials and IvA — the assistant that captures leads and answers financing questions 24/7.</div>
         <div class="demo-card-features">
-          <span class="demo-card-feature">Inventario</span>
+          <span class="demo-card-feature">Inventory</span>
           <span class="demo-card-feature">Filtros</span>
           <span class="demo-card-feature">Trade-in</span>
-          <span class="demo-card-feature">Financiamiento</span>
+          <span class="demo-card-feature">Financing</span>
           <span class="demo-card-feature">IvA IA</span>
         </div>
         <div class="demo-card-btn">See car dealer demo →</div>
@@ -119,12 +119,12 @@ module.exports = `
       </div>
       <div class="demo-card-body">
         <div class="demo-card-industry">Salón · Spa · Barbershop</div>
-        <div class="demo-card-title">Salón de Belleza</div>
-        <div class="demo-card-desc">Servicios, precios, galería de fotos y reservaciones directas por WhatsApp con IvA como asistente digital.</div>
+        <div class="demo-card-title">Beauty Salon</div>
+        <div class="demo-card-desc">Services, pricing, photo gallery and direct bookings via WhatsApp with IvA as digital assistant.</div>
         <div class="demo-card-features">
-          <span class="demo-card-feature">Servicios</span>
-          <span class="demo-card-feature">Galería</span>
-          <span class="demo-card-feature">Reservaciones</span>
+          <span class="demo-card-feature">Services</span>
+          <span class="demo-card-feature">Gallery</span>
+          <span class="demo-card-feature">Bookings</span>
           <span class="demo-card-feature">IvA IA</span>
         </div>
         <div class="demo-card-btn">Coming soon →</div>
@@ -139,12 +139,12 @@ module.exports = `
       </div>
       <div class="demo-card-body">
         <div class="demo-card-industry">Realtor · Bienes Raíces</div>
-        <div class="demo-card-title">Agente de Bienes Raíces</div>
-        <div class="demo-card-desc">Listado de propiedades, captura de leads calificados e IvA que pre-califica compradores 24/7.</div>
+        <div class="demo-card-title">Real Estate Agent</div>
+        <div class="demo-card-desc">Property listings, qualified lead capture and IvA that pre-qualifies buyers 24/7.</div>
         <div class="demo-card-features">
-          <span class="demo-card-feature">Propiedades</span>
+          <span class="demo-card-feature">Properties</span>
           <span class="demo-card-feature">Leads</span>
-          <span class="demo-card-feature">Pre-calificación</span>
+          <span class="demo-card-feature">Pre-qualification</span>
           <span class="demo-card-feature">IvA IA</span>
         </div>
         <div class="demo-card-btn">Coming soon →</div>
@@ -155,8 +155,8 @@ module.exports = `
 
   <div class="demos-cta">
     <h2>¿Quieres una página<br><em>para tu negocio?</em></h2>
-    <p>En 48 horas tu negocio tiene su propia página con asistente digital IA. Setup $125 + $49/mes. Primer mes gratis.</p>
-    <a href="/quote" class="demos-cta-btn">Solicitar mi página →</a>
+    <p>In 48 hours your business has its own page with AI digital assistant. Setup $125 + $49/mo. First month free.</p>
+    <a href="/quote" class="demos-cta-btn">Get your page →</a>
   </div>
 
 </div>
