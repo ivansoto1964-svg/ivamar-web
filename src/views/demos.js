@@ -63,7 +63,7 @@ module.exports = `
 
   <div class="demos-hero">
     <div class="demos-tag">Live Demo</div>
-    <h1>See how it works for your industry<br><em>en tu industria</em></h1>
+    <h1>See how it works for<br><em>your industry</em></h1>
     <p>Each demo is a real example of what Ivamar AI can do for your business. Try the assistant, order, explore.</p>
   </div>
 
