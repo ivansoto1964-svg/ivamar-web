@@ -33,7 +33,7 @@ module.exports = `
 
   <div class="home-sel-inner">
     <div class="home-sel-logo">
-      <div class="home-sel-logo-mark">IvA</div>
+      <img src="/logo-white.png" alt="Ivamar AI" style="height:36px;width:auto;">
       <span class="home-sel-logo-text">Ivamar <span>AI</span></span>
     </div>
 
