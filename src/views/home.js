@@ -45,8 +45,8 @@ module.exports = `
       <a href="/en" class="home-sel-card">
         <div class="home-sel-card-icon">🌐</div>
         <div class="home-sel-card-lang">English</div>
-        <div class="home-sel-card-sub">Continue in English</div>
-        <div class="home-sel-card-arrow">Continue →</div>
+        <div class="home-sel-card-sub">Continue in English →</div>
+        <div class="home-sel-card-arrow"></div>
       </a>
       <a href="/es" class="home-sel-card">
         <div class="home-sel-card-icon">🌐</div>

@@ -167,7 +167,7 @@ module.exports = `
     <h1>The <em>Human Touch</em><br>of Intelligence</h1>
     <p class="iva-hero-sub">Creamos páginas con asistente digital de IA para negocios reales. Tus clientes preguntan, ordenan y pagan — sin que tú tengas que estar al teléfono.</p>
     <div class="iva-hero-actions">
-      <a href="/cotizar" class="iva-btn-main">Empezar ahora →</a>
+      <a href="/cotizar" class="iva-btn-main">Empieza ahora →</a>
       <a href="/demos" class="iva-btn-ghost">Ver demos en vivo</a>
     </div>
     <div class="iva-stats">
