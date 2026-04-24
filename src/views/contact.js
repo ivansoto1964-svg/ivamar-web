@@ -48,7 +48,7 @@ module.exports = `
 <div class="iva-sub">
   <nav class="iva-sub-nav">
     <a href="/" class="iva-sub-logo">
-      <div class="iva-sub-logo-mark">IvA</div>
+      <img src="/logo-white.png" alt="Ivamar AI" style="height:28px;width:auto;">
       <span class="iva-sub-logo-text">Ivamar <span>AI</span></span>
     </a>
     <a href="/" class="iva-sub-back">← Volver / Back</a>
