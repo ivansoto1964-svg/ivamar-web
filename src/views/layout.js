@@ -12,9 +12,11 @@ module.exports = function layout({ title = "Ivamar AI", body = "" } = {}) {
 <html lang="es">
 <head>
   <meta charset="utf-8" />
+<link rel="icon" href="/favicon.gif" type="image/gif">
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>${escapeHtml(title)}</title>
-  <style>
+<link rel="icon" href="/favicon.gif" type="image/gif">  
+<style>
     :root{
       --bg:#0b0b0f; --panel:#12121a; --text:#f5f5f7; --muted:#b7b7c2;
       --accent:#00E5C8; --border:rgba(255,255,255,.12);
