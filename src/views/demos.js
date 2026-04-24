@@ -54,11 +54,11 @@ module.exports = `
 
 <div class="demos-page">
   <nav class="demos-nav">
-    <a href="/" class="demos-logo">
+    <a href="/en" class="demos-logo">
       <img src="/logo-white.png" alt="Ivamar AI" style="height:28px;width:auto;">
       <span class="demos-logo-text">Ivamar <span>AI</span></span>
     </a>
-    <a href="/" class="demos-back">← Volver</a>
+    <a href="/en" class="demos-back">← Back</a>
   </nav>
 
   <div class="demos-hero">
@@ -86,7 +86,7 @@ module.exports = `
           <span class="demo-card-feature">WhatsApp</span>
           <span class="demo-card-feature">IvA IA</span>
         </div>
-        <div class="demo-card-btn">Ver demo del restaurante →</div>
+        <div class="demo-card-btn">See restaurant demo →</div>
       </div>
     </a>
 
@@ -107,14 +107,14 @@ module.exports = `
           <span class="demo-card-feature">Financiamiento</span>
           <span class="demo-card-feature">IvA IA</span>
         </div>
-        <div class="demo-card-btn">Ver demo del dealer →</div>
+        <div class="demo-card-btn">See car dealer demo →</div>
       </div>
     </a>
 
     <!-- COMING SOON: SALON -->
     <div class="demo-card soon">
       <div class="demo-card-hero">
-        <div class="demo-card-tag">Próximamente</div>
+        <div class="demo-card-tag">Coming soon</div>
         <div class="demo-card-emoji">💇</div>
       </div>
       <div class="demo-card-body">
@@ -127,14 +127,14 @@ module.exports = `
           <span class="demo-card-feature">Reservaciones</span>
           <span class="demo-card-feature">IvA IA</span>
         </div>
-        <div class="demo-card-btn">Próximamente →</div>
+        <div class="demo-card-btn">Coming soon →</div>
       </div>
     </div>
 
     <!-- COMING SOON: REALTOR -->
     <div class="demo-card soon">
       <div class="demo-card-hero">
-        <div class="demo-card-tag">Próximamente</div>
+        <div class="demo-card-tag">Coming soon</div>
         <div class="demo-card-emoji">🏠</div>
       </div>
       <div class="demo-card-body">
@@ -147,7 +147,7 @@ module.exports = `
           <span class="demo-card-feature">Pre-calificación</span>
           <span class="demo-card-feature">IvA IA</span>
         </div>
-        <div class="demo-card-btn">Próximamente →</div>
+        <div class="demo-card-btn">Coming soon →</div>
       </div>
     </div>
 
