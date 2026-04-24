@@ -144,7 +144,7 @@ module.exports = `
 <div class="iva-page">
   <nav class="iva-nav">
     <a href="/" class="iva-logo">
-      <div class="iva-logo-mark">IvA</div>
+      <img src="/logo-white.png" alt="Ivamar AI" style="height:28px;width:auto;">
       <span class="iva-logo-text">Ivamar <span>AI</span></span>
     </a>
     <ul class="iva-nav-links">
