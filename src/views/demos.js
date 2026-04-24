@@ -72,11 +72,11 @@ module.exports = `
     <!-- RESTAURANT / FOOD TRUCK -->
     <a href="/demo" class="demo-card restaurant">
       <div class="demo-card-hero">
-        <div class="demo-card-tag">🍽 En vivo</div>
+        <div class="demo-card-tag">🍽 Live</div>
         <div class="demo-card-emoji">🍽</div>
       </div>
       <div class="demo-card-body">
-        <div class="demo-card-industry">Restaurant · Food Truck · Cafetería</div>
+        <div class="demo-card-industry">Restaurant · Food Truck · Bakeries</div>
         <div class="demo-card-title">La Plaza Restaurant</div>
         <div class="demo-card-desc">Digital menu with photos, order cart, delivery and pickup options, special instructions and IvA — your digital assistant available 24/7.</div>
         <div class="demo-card-features">
@@ -93,11 +93,11 @@ module.exports = `
     <!-- DEALER AUTOS -->
     <a href="/demo-autos" class="demo-card auto">
       <div class="demo-card-hero">
-        <div class="demo-card-tag">🚗 En vivo</div>
+        <div class="demo-card-tag">🚗 Live</div>
         <div class="demo-card-emoji">🚗</div>
       </div>
       <div class="demo-card-body">
-        <div class="demo-card-industry">Dealer de Autos · Concesionario</div>
+        <div class="demo-card-industry">Cars Dealers · Dealership</div>
         <div class="demo-card-title">Luis Soto Autos</div>
         <div class="demo-card-desc">Vehicle inventory, type filters, customer testimonials and IvA — the assistant that captures leads and answers financing questions 24/7.</div>
         <div class="demo-card-features">
