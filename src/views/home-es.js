@@ -151,7 +151,7 @@ module.exports = `
       <li><a href="#industries">Industrias</a></li>
       <li><a href="#how">Cómo funciona</a></li>
       <li><a href="#pricing">Precios</a></li>
-      <li><a href="/demos">Demos</a></li>
+      <li><a href="/demos-es">Demos</a></li>
       <li><a href="/sobre-nosotros">Nosotros</a></li>
     </ul>
     <div class="iva-nav-right">
@@ -168,7 +168,7 @@ module.exports = `
     <p class="iva-hero-sub">Creamos páginas con asistente digital de IA para negocios reales. Tus clientes preguntan, ordenan y pagan — sin que tú tengas que estar al teléfono.</p>
     <div class="iva-hero-actions">
       <a href="/cotizar" class="iva-btn-main">Empieza ahora →</a>
-      <a href="/demos" class="iva-btn-ghost">Ver demos en vivo</a>
+      <a href="/demos-es" class="iva-btn-ghost">Ver demos en vivo</a>
     </div>
     <div class="iva-stats">
       <div class="iva-stat"><div class="iva-stat-num">$125<span></span></div><div class="iva-stat-label">Setup único</div></div>
