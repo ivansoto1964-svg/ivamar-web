@@ -62,8 +62,8 @@ module.exports = `
   </nav>
 
   <div class="demos-hero">
-    <div class="demos-tag">Demos en vivo</div>
-    <h1>Mira cómo funciona<br><em>en tu industria</em></h1>
+    <div class="demos-tag">Live Demo</div>
+    <h1>See how it works for your industry<br><em>en tu industria</em></h1>
     <p>Each demo is a real example of what Ivamar AI can do for your business. Try the assistant, order, explore.</p>
   </div>
 
@@ -154,7 +154,7 @@ module.exports = `
   </div>
 
   <div class="demos-cta">
-    <h2>¿Quieres una página<br><em>para tu negocio?</em></h2>
+    <h2>Want a page like this<br><em>for your business?</em></h2>
     <p>In 48 hours your business has its own page with AI digital assistant. Setup $125 + $49/mo. First month free.</p>
     <a href="/quote" class="demos-cta-btn">Get your page →</a>
   </div>
