@@ -6,8 +6,7 @@ module.exports = `
 .iva-quote a{color:#00E5C8;text-decoration:none;}
 .iva-q-nav{padding:1.2rem 2rem;display:flex;align-items:center;justify-content:space-between;background:rgba(3,5,8,0.95);border-bottom:1px solid rgba(0,229,200,0.08);position:sticky;top:0;z-index:100;backdrop-filter:blur(12px);}
 .iva-q-logo{display:flex;align-items:center;gap:0.6rem;text-decoration:none!important;}
-.iva-q-logo-mark{width:30px;height:30px;border:1.5px solid #00E5C8;border-radius:7px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:0.65rem;color:#00E5C8;background:rgba(0,229,200,0.06);}
-.iva-q-logo-text{font-size:1rem;font-weight:700;color:#F0F4FF;letter-spacing:-0.02em;}
+.iva-q-logo-text{font-size:1rem;font-weight:700;color:#F0F4FF;letter-spacing:-0.02em;margin-left:0.5rem;}
 .iva-q-logo-text span{color:#00E5C8;}
 .iva-q-back{font-size:0.82rem;color:#8892A4;border:1px solid rgba(255,255,255,0.1);padding:0.4rem 1rem;border-radius:6px;transition:all 0.2s;text-decoration:none!important;}
 .iva-q-back:hover{color:#F0F4FF;border-color:rgba(255,255,255,0.25);}
@@ -48,12 +47,26 @@ module.exports = `
 .iva-q-plan-desc{font-size:0.75rem;color:#8892A4;line-height:1.4;}
 .iva-q-plan-check{position:absolute;top:0.8rem;right:0.8rem;width:20px;height:20px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:0.65rem;transition:all 0.2s;}
 .iva-q-plan.selected .iva-q-plan-check{background:#00E5C8;border-color:#00E5C8;color:#030508;}
+
+/* AGREEMENT BOX */
+.iva-agreement{background:rgba(99,91,255,0.04);border:1.5px solid rgba(99,91,255,0.2);border-radius:14px;padding:1.5rem;margin-bottom:1.5rem;}
+.iva-agreement-title{font-size:0.95rem;font-weight:700;color:#F0F4FF;margin-bottom:1rem;display:flex;align-items:center;gap:0.5rem;}
+.iva-agreement-summary{font-size:0.82rem;color:#8892A4;line-height:1.7;margin-bottom:1.2rem;}
+.iva-agreement-summary strong{color:#F0F4FF;}
+.iva-checkbox-row{display:flex;align-items:flex-start;gap:0.7rem;margin-bottom:0.8rem;padding:0.7rem;border-radius:8px;transition:background 0.2s;}
+.iva-checkbox-row:hover{background:rgba(255,255,255,0.02);}
+.iva-checkbox{margin-top:0.2rem;width:18px;height:18px;cursor:pointer;accent-color:#00E5C8;flex-shrink:0;}
+.iva-checkbox-label{font-size:0.82rem;color:#8892A4;line-height:1.5;cursor:pointer;flex:1;}
+.iva-checkbox-label strong{color:#F0F4FF;}
+.iva-checkbox-label a{color:#00E5C8;text-decoration:underline;}
+
 .iva-q-stripe-info{background:rgba(99,91,255,0.06);border:1px solid rgba(99,91,255,0.2);border-radius:12px;padding:1rem 1.2rem;margin-bottom:1.5rem;display:flex;align-items:flex-start;gap:0.8rem;}
 .iva-q-stripe-info-icon{font-size:1.2rem;flex-shrink:0;margin-top:0.1rem;}
 .iva-q-stripe-info-text{font-size:0.82rem;color:#8892A4;line-height:1.6;}
 .iva-q-stripe-info-text strong{color:#F0F4FF;}
 .iva-q-stripe-btn{width:100%;padding:1rem;background:linear-gradient(135deg,#635BFF,#4B44CC);color:white;border:none;border-radius:12px;font-family:'Syne',sans-serif;font-weight:700;font-size:1.05rem;cursor:pointer;transition:all 0.25s;display:flex;align-items:center;justify-content:center;gap:0.6rem;margin-bottom:0.8rem;}
-.iva-q-stripe-btn:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(99,91,255,0.3);}
+.iva-q-stripe-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 30px rgba(99,91,255,0.3);}
+.iva-q-stripe-btn:disabled{opacity:0.4;cursor:not-allowed;background:#444;}
 .iva-q-divider{text-align:center;font-size:0.78rem;color:#4A5568;margin:0.8rem 0;letter-spacing:0.05em;}
 .iva-q-wa-btn{width:100%;padding:1rem;background:linear-gradient(135deg,#25D366,#128C7E);color:white;border:none;border-radius:12px;font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;cursor:pointer;transition:all 0.25s;display:flex;align-items:center;justify-content:center;gap:0.6rem;}
 .iva-q-wa-btn:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(37,211,102,0.25);}
@@ -78,7 +91,7 @@ module.exports = `
   <div class="iva-q-hero">
     <div class="iva-q-tag">Get Started · Empezar</div>
     <h1>Let's build your<br><em>AI-powered page</em></h1>
-    <p>Fill out the form, choose your plan and pay securely with Stripe. Your page will be live in 48 hours.</p>
+    <p>Fill out the form, choose your plan, accept the terms and pay securely with Stripe. Your page will be live in 48 hours.</p>
   </div>
 
   <div class="iva-q-content">
@@ -101,7 +114,6 @@ module.exports = `
               <option value="food_basic">Bakery</option>
               <option value="food_basic">Café</option>
               <option value="food_basic">Bar / Drinks</option>
-              <option value="food_basic">Street Food</option>
             </optgroup>
             <optgroup label="💇 Beauty & Wellness">
               <option value="beauty_basic">Salon / Barbershop</option>
@@ -116,7 +128,7 @@ module.exports = `
             <optgroup label="🏠 Real Estate">
               <option value="realtor_pro">Realtor</option>
               <option value="realtor_pro">Property Manager</option>
-              <option value="realtor_pro">Home Services / Contractor</option>
+              <option value="realtor_pro">Home Services</option>
             </optgroup>
             <optgroup label="🏥 Health & Medical">
               <option value="medical_pro">Doctor</option>
@@ -134,7 +146,6 @@ module.exports = `
             <optgroup label="🏪 Retail & Other">
               <option value="retail_basic">Retail Store</option>
               <option value="retail_basic">Photographer</option>
-              <option value="retail_basic">Event Planner</option>
               <option value="retail_basic">Other</option>
             </optgroup>
           </select>
@@ -151,8 +162,8 @@ module.exports = `
 
       <div class="iva-q-row single">
         <div class="iva-q-field">
-          <label>Location</label>
-          <input type="text" id="qLocation" placeholder="Miami, FL · New York, NY · etc." />
+          <label>Address / Location *</label>
+          <input type="text" id="qLocation" placeholder="123 Main St, Miami, FL" />
         </div>
       </div>
     </div>
@@ -162,8 +173,8 @@ module.exports = `
       <div class="iva-q-card-title">Your contact info</div>
       <div class="iva-q-row">
         <div class="iva-q-field">
-          <label>Your Name *</label>
-          <input type="text" id="qName" placeholder="María González" />
+          <label>Owner Name *</label>
+          <input type="text" id="qName" placeholder="John Smith" />
         </div>
         <div class="iva-q-field">
           <label>WhatsApp *</label>
@@ -203,8 +214,40 @@ module.exports = `
       <div class="iva-q-row single">
         <div class="iva-q-field">
           <label>Tell us about your business (optional)</label>
-          <textarea id="qNotes" placeholder="What do you sell? Any special requests? Preferred language for IvA?"></textarea>
+          <textarea id="qNotes" placeholder="What do you sell? Any special requests? Preferred name for your AI assistant?"></textarea>
         </div>
+      </div>
+    </div>
+
+    <!-- AGREEMENT BOX -->
+    <div class="iva-agreement">
+      <div class="iva-agreement-title">📋 Service Agreement — Please review</div>
+      <div class="iva-agreement-summary">
+        <strong>Pricing:</strong> $125 setup (one-time) + $49/month subscription. First 30 days included after setup. Cancel anytime, no contracts.<br><br>
+        <strong>Payments:</strong> Ivamar AI is NOT a payment processor. ALL customer payments go 100% directly to YOUR payment account (Stripe, PayPal, etc.). Zero commissions. We only charge the monthly subscription.<br><br>
+        <strong>Your responsibility:</strong> You are solely responsible for your products, services, prices, taxes, and customer interactions. We are a technology provider only.<br><br>
+        <strong>Our promise:</strong> No hidden fees. If you ever see one extra penny on your bill, we refund it immediately.
+      </div>
+
+      <div class="iva-checkbox-row">
+        <input type="checkbox" id="agreeTerms" class="iva-checkbox" onchange="updateButton()">
+        <label for="agreeTerms" class="iva-checkbox-label">
+          <strong>I have read and agree</strong> to the <a href="/terms" target="_blank">Terms of Service</a> and <a href="/privacy" target="_blank">Privacy Policy</a>.
+        </label>
+      </div>
+
+      <div class="iva-checkbox-row">
+        <input type="checkbox" id="agreeBilling" class="iva-checkbox" onchange="updateButton()">
+        <label for="agreeBilling" class="iva-checkbox-label">
+          <strong>I authorize the $125 setup charge</strong> and the recurring $49/month subscription (first 30 days included). I understand I can cancel anytime.
+        </label>
+      </div>
+
+      <div class="iva-checkbox-row">
+        <input type="checkbox" id="agreeResponsibility" class="iva-checkbox" onchange="updateButton()">
+        <label for="agreeResponsibility" class="iva-checkbox-label">
+          <strong>I understand</strong> that I am solely responsible for my products, services, prices, taxes, and customer interactions. Ivamar AI is a technology provider only.
+        </label>
       </div>
     </div>
 
@@ -212,25 +255,25 @@ module.exports = `
     <div class="iva-q-stripe-info">
       <div class="iva-q-stripe-info-icon">🔒</div>
       <div class="iva-q-stripe-info-text">
-        <strong>Secure payment via Stripe.</strong> You'll pay the $125 setup today. The monthly plan starts with a <strong>30-day free trial</strong> — your card will not be charged until after your first month.
+        <strong>Secure payment via Stripe.</strong> You'll pay the $125 setup today. The monthly plan starts after a <strong>30-day free trial</strong> — your card will not be charged until after your first month.
       </div>
     </div>
 
-    <button class="iva-q-stripe-btn" onclick="goToStripe()">
-      💳 Pay with Stripe →
+    <button class="iva-q-stripe-btn" id="stripeBtn" onclick="goToStripe()" disabled>
+      🔒 Accept terms above to continue →
     </button>
 
-    <div class="iva-q-divider">— or send your request via —</div>
+    <div class="iva-q-divider">— or contact us via —</div>
 
     <button class="iva-q-wa-btn" onclick="submitWhatsApp()">
-      📲 Send via WhatsApp
+      📲 Send Inquiry via WhatsApp
     </button>
 
     <p class="iva-q-note">Stripe payment is secure and encrypted. First month free — cancel anytime.</p>
   </div>
 
   <div class="iva-q-footer">
-    <div>© 2025 <strong>Ivamar AI LLC</strong> · 8 The Green, Suite B, Dover, DE 19901, USA</div>
+    <div>© 2025 <strong>Ivamar AI LLC</strong> · Dover, DE 19901, USA</div>
     <div class="iva-q-footer-links">
       <a href="/privacy">Privacy</a>
       <a href="/terms">Terms</a>
@@ -242,8 +285,6 @@ module.exports = `
 
 <script>
 const STRIPE_SETUP = 'https://buy.stripe.com/bJe6oH81Q2eafoc17af3a00';
-const STRIPE_49 = 'https://buy.stripe.com/14A28ra9Y3ieb7W8zCf3a01';
-const STRIPE_99 = 'https://buy.stripe.com/28E6oHgymf0Wdg46ruf3a02';
 
 const PRICING = {
   food_basic:   { monthly: 49, label: 'Food & Beverage' },
@@ -283,20 +324,59 @@ function selectPlan(el, plan) {
   selectedPlan = plan;
 }
 
+function updateButton() {
+  const t = document.getElementById('agreeTerms').checked;
+  const b = document.getElementById('agreeBilling').checked;
+  const r = document.getElementById('agreeResponsibility').checked;
+  const btn = document.getElementById('stripeBtn');
+  if (t && b && r) {
+    btn.disabled = false;
+    btn.innerHTML = '💳 Pay $125 with Stripe →';
+  } else {
+    btn.disabled = true;
+    btn.innerHTML = '🔒 Accept terms above to continue →';
+  }
+}
+
 function validate() {
-  const bizName = document.getElementById('qBizName').value.trim();
-  const name = document.getElementById('qName').value.trim();
-  const phone = document.getElementById('qPhone').value.trim();
-  const email = document.getElementById('qEmail').value.trim();
-  if (!bizName || !name || !phone || !email) {
-    alert('Please fill in: Business Name, Your Name, WhatsApp and Email.');
-    return false;
+  const fields = ['qBizName','qName','qPhone','qEmail','qLocation'];
+  for (const f of fields) {
+    if (!document.getElementById(f).value.trim()) {
+      alert('Please fill all required fields marked with *');
+      return false;
+    }
   }
   return true;
 }
 
-function goToStripe() {
+async function logAcceptance() {
+  const data = {
+    bizName: document.getElementById('qBizName').value.trim(),
+    bizType: document.getElementById('qBizType').options[document.getElementById('qBizType').selectedIndex]?.text || '',
+    name: document.getElementById('qName').value.trim(),
+    phone: document.getElementById('qPhone').value.trim(),
+    email: document.getElementById('qEmail').value.trim(),
+    location: document.getElementById('qLocation').value.trim(),
+    notes: document.getElementById('qNotes').value.trim(),
+    plan: selectedPlan,
+    monthly: currentMonthly,
+    agreed: { terms: true, billing: true, responsibility: true },
+    timestamp: new Date().toISOString(),
+    termsVersion: '2.0',
+    language: 'en'
+  };
+  try {
+    await fetch('/api/log-agreement', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify(data)
+    });
+  } catch(e) { console.log('Log fail (non-blocking)'); }
+}
+
+async function goToStripe() {
   if (!validate()) return;
+  await logAcceptance();
   const email = document.getElementById('qEmail').value.trim();
   const setupUrl = STRIPE_SETUP + '?prefilled_email=' + encodeURIComponent(email);
   window.location.href = setupUrl;
@@ -315,13 +395,13 @@ function submitWhatsApp() {
   let msg = '🌟 *NEW QUOTE REQUEST — Ivamar AI*\\n\\n';
   msg += '🏪 *Business:* ' + bizName + '\\n';
   msg += '📂 *Type:* ' + bizType + '\\n';
-  if (location) msg += '📍 *Location:* ' + location + '\\n';
-  msg += '\\n👤 *Contact:* ' + name + '\\n';
+  msg += '📍 *Location:* ' + location + '\\n';
+  msg += '\\n👤 *Owner:* ' + name + '\\n';
   msg += '📱 *WhatsApp:* ' + phone + '\\n';
   msg += '✉️ *Email:* ' + email + '\\n';
-  msg += '\\n💼 *Plan:* ' + selectedPlan + ' — $125 setup + $' + currentMonthly + '/mo\\n';
+  msg += '\\n💼 *Plan:* ' + selectedPlan + ' — $125 + $' + currentMonthly + '/mo\\n';
   if (notes) msg += '\\n📝 *Notes:* ' + notes + '\\n';
-  msg += '\\n---\\nSent from ivamarai.com/quote';
+  msg += '\\n---\\nFrom ivamarai.com/quote';
 
   window.open('https://wa.me/18635216708?text=' + encodeURIComponent(msg), '_blank');
 }
