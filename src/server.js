@@ -1,3 +1,4 @@
+
 const express = require("express");
 const layout = require("./views/layout");
 const home = require("./views/home");
@@ -24,6 +25,15 @@ const Anthropic = require("@anthropic-ai/sdk");
 const fs = require("fs");
 const path = require("path");
 const cookieParser = require("cookie-parser");
+// Agreements directory for legal acceptance logs
+const agreementsDir = path.join(__dirname, "..", "data", "agreements");
+if (!fs.existsSync(agreementsDir)) {
+  fs.mkdirSync(agreementsDir, { recursive: true });
+}
+
+
+
+
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -99,6 +109,38 @@ app.get("/demos", (req, res) => res.send(layout({ title: "Demos — Ivamar AI", 
 app.get("/demos-es", (req, res) => res.send(layout({ title: "Demos — Ivamar AI", body: demosES })));
 app.get("/demo-autos", (req, res) => res.send(layout({ title: "Demo — Luis Soto Autos", body: demoAutos })));
 app.get("/quote", (req, res) => res.send(layout({ title: "Get Started — Ivamar AI", body: quote })));
+
+
+// API: Log legal agreement acceptance
+app.post("/api/log-agreement", express.json(), (req, res) => {
+  try {
+    const ip = req.headers['x-forwarded-for']?.split(',')[0]?.trim() 
+            || req.headers['x-real-ip']
+            || req.socket?.remoteAddress 
+            || 'unknown';
+    const userAgent = req.headers['user-agent'] || 'unknown';
+    
+    const record = {
+      ...req.body,
+      ip: ip,
+      userAgent: userAgent,
+      receivedAt: new Date().toISOString()
+    };
+    
+    const fileName = `${Date.now()}_${(req.body.email || 'unknown').replace(/[^a-z0-9]/gi, '_')}.json`;
+    const filePath = path.join(agreementsDir, fileName);
+    
+    fs.writeFileSync(filePath, JSON.stringify(record, null, 2));
+    
+    console.log(`✅ Agreement logged: ${req.body.bizName} (${req.body.email}) from IP ${ip}`);
+    
+    res.json({ success: true, id: fileName });
+  } catch (err) {
+    console.error('Agreement log error:', err);
+    res.status(500).json({ error: 'Failed to log agreement' });
+  }
+});
+
 app.get("/cotizar", (req, res) => res.send(layout({ title: "Empezar — Ivamar AI", body: quoteES })));
 app.get("/pricing", (req, res) => res.redirect("/quote"));
 

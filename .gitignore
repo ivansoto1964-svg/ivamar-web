@@ -1,3 +1,15 @@
 node_modules
 .DS_Store
 src/views/layout.js.bak
+
+# Backups
+*.bak
+*.bak2
+*.bak3
+*.bak4
+*.save
+*.save.*
+
+# Data sensible (clientes y agreements)
+data/clients.json
+data/agreements/
