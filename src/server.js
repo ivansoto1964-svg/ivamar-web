@@ -22,6 +22,8 @@ const adminLogin = require("./views/admin-login");
 const adminDashboard = require("./views/admin-dashboard");
 const adminEdit = require("./views/admin-edit");
 const Anthropic = require("@anthropic-ai/sdk");
+const { Resend } = require("resend");
+const resend = new Resend(process.env.RESEND_API_KEY);
 const fs = require("fs");
 const path = require("path");
 const cookieParser = require("cookie-parser");
@@ -133,6 +135,33 @@ app.post("/api/log-agreement", express.json(), (req, res) => {
     fs.writeFileSync(filePath, JSON.stringify(record, null, 2));
     
     console.log(`✅ Agreement logged: ${req.body.bizName} (${req.body.email}) from IP ${ip}`);
+    
+    // Send backup email to business owner
+    if (process.env.RESEND_API_KEY && process.env.AGREEMENT_EMAIL_TO) {
+      resend.emails.send({
+        from: 'Ivamar AI <onboarding@resend.dev>',
+        to: process.env.AGREEMENT_EMAIL_TO,
+        subject: `📋 New Agreement: ${req.body.bizName || 'Unknown'} (${req.body.email || 'no email'})`,
+        html: `<h2>New Legal Agreement Signed</h2>
+<p><strong>Business:</strong> ${req.body.bizName || 'N/A'}</p>
+<p><strong>Name:</strong> ${req.body.name || 'N/A'}</p>
+<p><strong>Email:</strong> ${req.body.email || 'N/A'}</p>
+<p><strong>Plan:</strong> ${req.body.plan || 'N/A'}</p>
+<p><strong>IP:</strong> ${ip}</p>
+<p><strong>Time:</strong> ${record.receivedAt}</p>
+<p><strong>File ID:</strong> ${fileName}</p>
+<hr>
+<pre>${JSON.stringify(record, null, 2)}</pre>`,
+        attachments: [{
+          filename: fileName,
+          content: Buffer.from(JSON.stringify(record, null, 2)).toString('base64')
+        }]
+      }).then(() => {
+        console.log(`📧 Email backup sent for ${fileName}`);
+      }).catch(emailErr => {
+        console.error('Email backup failed:', emailErr);
+      });
+    }
     
     res.json({ success: true, id: fileName });
   } catch (err) {
