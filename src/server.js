@@ -524,14 +524,14 @@ app.get("/:slug", (req, res) => {
 </style>
 
 <div class="iva-chat-section">
-  <h3>💬 Habla con ${assistantName}</h3>
-  <p>Tu asistente de IA disponible 24/7 — en español e inglés.</p>
+  <h3>💬 Chat with ${assistantName}</h3>
+  <p>Your AI assistant available 24/7 — in English & Spanish.</p>
   <div class="iva-chat-box">
     <div class="iva-chat-topbar">
       <div class="iva-chat-avatar">🤖</div>
       <div class="iva-chat-agent">
         <div class="iva-chat-agent-name">${assistantName} — ${data.name}</div>
-        <div class="iva-chat-agent-status">En línea ahora</div>
+        <div class="iva-chat-agent-status">Online now</div>
       </div>
     </div>
     <div class="iva-chat-msgs" id="ivaMsgs">
