@@ -469,7 +469,7 @@ app.get("/:slug", (req, res) => {
     if (data.status === "cerrado") statusLabel = "🔴 Cerrado";
     else if (data.status === "vacaciones") statusLabel = "🌴 Vacaciones";
     else if (data.status === "feriado") statusLabel = "📅 Feriado";
-    else statusLabel = "🟢 Abierto";
+    else statusLabel = "🟢 Open";
 
     const chatHTML = `
 <style>
@@ -537,13 +537,13 @@ app.get("/:slug", (req, res) => {
     <div class="iva-chat-msgs" id="ivaMsgs">
       <div class="iva-msg bot">
         <div class="iva-msg-bubble">${assistantWelcome}</div>
-        <div class="iva-msg-time">Ahora</div>
+        <div class="iva-msg-time">Now</div>
       </div>
     </div>
     <div class="iva-suggestions" id="ivaSuggestions">
-      <span class="iva-suggestion" onclick="ivaSendSugg(this)">¿Qué incluye el menú?</span>
-      <span class="iva-suggestion" onclick="ivaSendSugg(this)">¿Cuál es el horario?</span>
-      <span class="iva-suggestion" onclick="ivaSendSugg(this)">¿Cómo ordeno?</span>
+      <span class="iva-suggestion" onclick="ivaSendSugg(this)">What's on the menu?</span>
+      <span class="iva-suggestion" onclick="ivaSendSugg(this)">What are the hours?</span>
+      <span class="iva-suggestion" onclick="ivaSendSugg(this)">How do I order?</span>
     </div>
     <div class="iva-chat-input-area">
       <input class="iva-chat-input" id="ivaInput" placeholder="Escribe tu pregunta..." onkeydown="if(event.key==='Enter')ivaSend('main')" />
@@ -567,7 +567,7 @@ app.get("/:slug", (req, res) => {
   <div class="iva-float-msgs" id="ivaFloatMsgs">
     <div class="iva-msg bot">
       <div class="iva-msg-bubble">${assistantWelcome}</div>
-      <div class="iva-msg-time">Ahora</div>
+      <div class="iva-msg-time">Now</div>
     </div>
   </div>
   <div class="iva-float-input-area">
@@ -610,9 +610,9 @@ function ivaSendSugg(el){document.getElementById('ivaInput').value=el.textConten
         </div>
         ${data.address || hours ? `<div style="text-align:center;margin-bottom:20px;">${data.address ? `<div style="margin-bottom:6px;">📍 ${data.address}</div>` : ""}${hours ? `<div>🕐 ${hours}</div>` : ""}</div>` : ""}
         <div style="text-align:center;margin:20px 0;">
-          <a href="${data.links?.whatsapp || "#"}" target="_blank" style="display:inline-block;background:#25D366;color:#fff;text-decoration:none;font-size:17px;font-weight:700;padding:13px 22px;border-radius:12px;">📲 Ordenar por WhatsApp</a>
+          <a href="${data.links?.whatsapp || "#"}" target="_blank" style="display:inline-block;background:#25D366;color:#fff;text-decoration:none;font-size:17px;font-weight:700;padding:13px 22px;border-radius:12px;">📲 Order via WhatsApp</a>
         </div>
-        <h2 style="margin-top:36px;font-size:26px;">Menú</h2>
+        <h2 style="margin-top:36px;font-size:26px;">Menu</h2>
         <div class="grid">
           ${(data.menu || []).map((item, i) => `<div class="tile"><b>${item.name}</b><div style="font-size:13px;color:#888;margin-top:4px;">${item.desc || ""}</div><div style="margin-top:6px;font-weight:900;">${item.price !== null ? "$" + item.price : "Precio pendiente"}</div><div style="margin-top:10px;display:flex;align-items:center;gap:8px;"><button onclick="changeQty('menu-${i}',-1)" style="padding:5px 9px;border:none;border-radius:7px;cursor:pointer;">-</button><span id="qty-menu-${i}">0</span><button onclick="changeQty('menu-${i}',1)" style="padding:5px 9px;border:none;border-radius:7px;cursor:pointer;">+</button></div></div>`).join("")}
         </div>
