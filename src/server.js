@@ -618,10 +618,10 @@ function ivaSendSugg(el){document.getElementById('ivaInput').value=el.textConten
         </div>
         ${(data.drinks || []).length ? `<h2 style="margin-top:28px;font-size:22px;">Bebidas</h2><div class="grid">${(data.drinks || []).map((item, i) => `<div class="tile"><b>${item.name}</b><div style="margin-top:6px;font-weight:900;">${item.price !== null ? "$" + item.price : ""}</div><div style="margin-top:10px;display:flex;align-items:center;gap:8px;"><button onclick="changeQty('drink-${i}',-1)" style="padding:5px 9px;border:none;border-radius:7px;cursor:pointer;">-</button><span id="qty-drink-${i}">0</span><button onclick="changeQty('drink-${i}',1)" style="padding:5px 9px;border:none;border-radius:7px;cursor:pointer;">+</button></div></div>`).join("")}</div>` : ""}
         <div id="cart" style="margin-top:36px;padding:18px;border-radius:16px;background:#f0f0f0;">
-          <h2 style="margin-top:0;">🛒 Tu orden</h2>
-          <div id="cart-items" style="margin-bottom:14px;color:#555;">No has añadido nada todavía.</div>
+          <h2 style="margin-top:0;">🛒 Your Order</h2>
+          <div id="cart-items" style="margin-bottom:14px;color:#555;">Nothing added yet.</div>
           <div style="font-weight:700;"><div>Subtotal: $<span id="subtotal">0.00</span></div><div>Tax (11.5%): $<span id="tax">0.00</span></div><div style="font-size:18px;margin-top:6px;">Total: $<span id="total">0.00</span></div></div>
-          <a id="send-order-btn" href="#" target="_blank" style="margin-top:14px;display:inline-block;width:100%;padding:12px;border-radius:10px;background:#25D366;color:white;font-weight:700;text-decoration:none;text-align:center;">Enviar pedido por WhatsApp</a>
+          <a id="send-order-btn" href="#" target="_blank" style="margin-top:14px;display:inline-block;width:100%;padding:12px;border-radius:10px;background:#25D366;color:white;font-weight:700;text-decoration:none;text-align:center;">Send Order via WhatsApp</a>
         </div>
         ${chatHTML}
         <script>
@@ -630,7 +630,7 @@ function ivaSendSugg(el){document.getElementById('ivaInput').value=el.textConten
         const waNumber = "${whatsappNumber}";
         const bizName = "${data.name}";
         function changeQty(id,delta){const el=document.getElementById("qty-"+id);if(!el)return;let qty=parseInt(el.textContent||"0",10)+delta;if(qty<0)qty=0;el.textContent=qty;updateCart();}
-        function updateCart(){let lines=[],subtotal=0;function process(items,prefix){items.forEach((item,i)=>{const el=document.getElementById("qty-"+prefix+"-"+i);const qty=el?parseInt(el.textContent||"0",10):0;if(qty>0){const price=Number.isFinite(Number(item.price))?Number(item.price):0;subtotal+=qty*price;lines.push(item.name+" x"+qty+" = $"+(qty*price).toFixed(2));}});}process(menuItems,"menu");process(drinkItems,"drink");document.getElementById("cart-items").innerHTML=lines.length?lines.join("<br/>"):"No has añadido nada todavía.";const tax=subtotal*0.115;document.getElementById("subtotal").textContent=subtotal.toFixed(2);document.getElementById("tax").textContent=tax.toFixed(2);document.getElementById("total").textContent=(subtotal+tax).toFixed(2);const msg="🛒 *Pedido — "+bizName+"*\\n\\n"+lines.join("\\n")+"\\n\\n💰 *Total: $"+(subtotal+tax).toFixed(2)+"*\\n\\n¡Gracias!";document.getElementById("send-order-btn").href="https://wa.me/"+waNumber+"?text="+encodeURIComponent(msg);}
+        function updateCart(){let lines=[],subtotal=0;function process(items,prefix){items.forEach((item,i)=>{const el=document.getElementById("qty-"+prefix+"-"+i);const qty=el?parseInt(el.textContent||"0",10):0;if(qty>0){const price=Number.isFinite(Number(item.price))?Number(item.price):0;subtotal+=qty*price;lines.push(item.name+" x"+qty+" = $"+(qty*price).toFixed(2));}});}process(menuItems,"menu");process(drinkItems,"drink");document.getElementById("cart-items").innerHTML=lines.length?lines.join("<br/>"):"Nothing added yet.";const tax=subtotal*0.115;document.getElementById("subtotal").textContent=subtotal.toFixed(2);document.getElementById("tax").textContent=tax.toFixed(2);document.getElementById("total").textContent=(subtotal+tax).toFixed(2);const msg="🛒 *Order — "+bizName+"*\\n\\n"+lines.join("\\n")+"\\n\\n💰 *Total: $"+(subtotal+tax).toFixed(2)+"*\\n\\nThank you!";document.getElementById("send-order-btn").href="https://wa.me/"+waNumber+"?text="+encodeURIComponent(msg);}
         updateCart();
         <\/script>
       </div>`;
