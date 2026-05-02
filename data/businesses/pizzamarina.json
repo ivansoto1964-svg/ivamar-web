@@ -1,0 +1,55 @@
+{
+  "slug": "pizzamarina",
+  "name": "Pizza Marina Sport Bar",
+  "headline": "Pizzería & Sport Bar · Vega Baja, PR",
+  "description": "La mejor pizza frente al mar. Masa fresca, ingredientes de calidad y el mejor ambiente sport bar de Vega Baja. ¡Ven a disfrutar!",
+  "logoUrl": "",
+  "businessPhotoUrl": "",
+  "address": "Frente a Mar Bella, Vega Baja, Puerto Rico",
+  "hours": "Lun a Dom 11:00am - 11:00pm",
+  "status": "abierto",
+  "theme": "dark",
+  "assistant": {
+    "name": "Sharky",
+    "tone": "Divertido, playero, entusiasta sobre pizza y el sport bar. Menciona siempre las promociones y el ambiente. Guía a los clientes a llamar para ordenar o reservar.",
+    "welcome": "¡Wepa! Bienvenido a Pizza Marina Sport Bar 🦈🍕 Soy Sharky, tu guía pizzero. Tenemos las mejores pizzas frente al mar en Vega Baja. ¿En qué te puedo ayudar hoy?",
+    "keywords": ["pizza", "sport bar", "mar", "vega baja", "delivery"],
+    "avatarUrl": ""
+  },
+  "links": {
+    "whatsapp": "https://wa.me/1787000000",
+    "instagram": "",
+    "googleMaps": "https://maps.google.com/?q=Mar+Bella+Vega+Baja+Puerto+Rico"
+  },
+  "menu": [
+    { "name": "🍕 Personal 8\" — Queso", "price": 8.99, "desc": "Pizza personal de queso" },
+    { "name": "🍕 Personal 8\" — Pepperoni", "price": 9.99, "desc": "Pizza personal de pepperoni" },
+    { "name": "🍕 Personal 8\" — Pollo BBQ", "price": 10.99, "desc": "Pizza personal de pollo BBQ" },
+    { "name": "🍕 Personal 8\" — Vegetariana", "price": 10.99, "desc": "Pizza personal vegetariana" },
+    { "name": "🍕 Mediana 12\" — Queso", "price": 13.99, "desc": "Pizza mediana de queso" },
+    { "name": "🍕 Mediana 12\" — Pepperoni", "price": 15.99, "desc": "Pizza mediana de pepperoni" },
+    { "name": "🍕 Mediana 12\" — Pollo BBQ", "price": 16.99, "desc": "Pizza mediana de pollo BBQ" },
+    { "name": "🍕 Mediana 12\" — Hawaiana", "price": 16.99, "desc": "Pizza mediana hawaiana" },
+    { "name": "🍕 Grande 16\" — Queso", "price": 17.99, "desc": "Pizza grande de queso" },
+    { "name": "🍕 Grande 16\" — Pepperoni", "price": 19.99, "desc": "Pizza grande de pepperoni" },
+    { "name": "🍕 Grande 16\" — Pollo BBQ", "price": 20.99, "desc": "Pizza grande de pollo BBQ" },
+    { "name": "🍕 Grande 16\" — Marina Especial", "price": 23.99, "desc": "Pizza grande con mariscos frescos" }
+  ],
+  "sides": [
+    { "name": "Alitas de Pollo (6)", "price": 8.99, "desc": "Con salsa BBQ o picante" },
+    { "name": "Palitos de Ajo", "price": 4.99, "desc": "Con salsa marinara" },
+    { "name": "Ensalada Mixta", "price": 5.99, "desc": "Fresca del día" }
+  ],
+  "drinks": [
+    { "name": "Refresco", "price": 2.50, "desc": "Pepsi, 7Up, Agua" },
+    { "name": "Cerveza", "price": 3.50, "desc": "Medalla, Corona, Heineken" },
+    { "name": "Piña Colada", "price": 6.99, "desc": "La especialidad de la casa 🍹" }
+  ],
+  "combos": [
+    { "name": "Combo Familiar", "price": 34.99, "desc": "Pizza grande + 6 alitas + 2 refrescos" },
+    { "name": "Combo Pareja", "price": 24.99, "desc": "Pizza mediana + palitos de ajo + 2 refrescos" }
+  ],
+  "platters": [],
+  "familyMeals": [],
+  "desserts": []
+}
