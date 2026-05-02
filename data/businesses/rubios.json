@@ -1,0 +1,50 @@
+{
+  "slug": "rubios",
+  "name": "Rubio's Pizza",
+  "headline": "Pizzería · Lake Wales, FL",
+  "description": "Las mejores pizzas de Lake Wales. Masa fresca, ingredientes de calidad y sabor auténtico. ¡Con servicio a domicilio!",
+  "logoUrl": "",
+  "businessPhotoUrl": "",
+  "address": "1700 State Road 60 West, Lake Wales, Florida",
+  "hours": "Jue a Dom 11:00am - 11:00pm",
+  "status": "abierto",
+  "theme": "dark",
+  "assistant": {
+    "name": "IvA",
+    "tone": "Amigable, entusiasta sobre pizza, servicial. Menciona siempre el servicio a domicilio y las opciones de tamaño. Guía a los clientes a llamar al (863) 383-7593 para ordenar.",
+    "welcome": "¡Hola! Bienvenido a Rubio's Pizza 🍕 Soy IvA, tu asistente digital. Tenemos pizzas personales, medianas y grandes con los mejores sabores. ¿En qué te puedo ayudar hoy?",
+    "keywords": ["pizza", "pepperoni", "churrasco", "delivery", "domicilio"],
+    "avatarUrl": ""
+  },
+  "links": {
+    "whatsapp": "https://wa.me/18633837593",
+    "instagram": "https://instagram.com/rubiospizzafl",
+    "googleMaps": "https://maps.google.com/?q=1700+State+Road+60+West+Lake+Wales+Florida"
+  },
+  "menu": [
+    { "name": "🍕 Personal 8\" — Queso", "price": 8.99, "desc": "Pizza personal de queso" },
+    { "name": "🍕 Personal 8\" — Pepperoni", "price": 9.99, "desc": "Pizza personal de pepperoni" },
+    { "name": "🍕 Personal 8\" — Pollo", "price": 10.99, "desc": "Pizza personal de pollo" },
+    { "name": "🍕 Personal 8\" — Bacon", "price": 10.99, "desc": "Pizza personal de bacon" },
+    { "name": "🍕 Personal 8\" — Churrasco", "price": 11.99, "desc": "Pizza personal de churrasco" },
+    { "name": "🍕 Mediana 12\" — Queso", "price": 13.99, "desc": "Pizza mediana de queso" },
+    { "name": "🍕 Mediana 12\" — Pepperoni", "price": 15.99, "desc": "Pizza mediana de pepperoni" },
+    { "name": "🍕 Mediana 12\" — Pollo", "price": 16.99, "desc": "Pizza mediana de pollo" },
+    { "name": "🍕 Mediana 12\" — Bacon", "price": 16.99, "desc": "Pizza mediana de bacon" },
+    { "name": "🍕 Mediana 12\" — Churrasco", "price": 18.99, "desc": "Pizza mediana de churrasco" },
+    { "name": "🍕 Grande 16\" — Queso", "price": 17.99, "desc": "Pizza grande de queso" },
+    { "name": "🍕 Grande 16\" — Pepperoni", "price": 19.99, "desc": "Pizza grande de pepperoni" },
+    { "name": "🍕 Grande 16\" — Pollo", "price": 20.99, "desc": "Pizza grande de pollo" },
+    { "name": "🍕 Grande 16\" — Bacon", "price": 20.99, "desc": "Pizza grande de bacon" },
+    { "name": "🍕 Grande 16\" — Churrasco", "price": 23.99, "desc": "Pizza grande de churrasco" }
+  ],
+  "sides": [
+    { "name": "Extra Topping Regular", "price": 2.50, "desc": "Ingrediente extra regular" },
+    { "name": "Extra Topping Premium (Churrasco)", "price": 3.50, "desc": "Ingrediente extra premium" }
+  ],
+  "drinks": [],
+  "combos": [],
+  "platters": [],
+  "familyMeals": [],
+  "desserts": []
+}
