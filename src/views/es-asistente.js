@@ -538,8 +538,8 @@ nav {
         <ul class="price-features">
           <li>Asistente IA para tu negocio</li>
           <li>Español e inglés</li>
-          <li>Integración web</li>
-          <li>Mobile-friendly</li>
+          <li>Integración web o link directo para redes sociales</li>
+          <li>Mobile-friendly · Funciona en Instagram, Facebook y WhatsApp</li>
           <li>Captura de leads básica</li>
           <li>Entrenamiento básico</li>
         </ul>

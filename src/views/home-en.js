@@ -184,7 +184,7 @@ module.exports = `
       <div class="iva-section-label">Who we serve</div>
       <h2 class="iva-section-title">Built for <em>every</em> local business</h2>
       <div class="iva-industries">
-        <a href="/quote" class="iva-industry"><span class="iva-industry-icon">🚚</span><div class="iva-industry-name">Food Trucks</div><div class="iva-industry-desc">Digital menu, WhatsApp orders and payments</div><span class="iva-industry-tag">from $29/mo</span></a>
+        <a href="/quote" class="iva-industry"><span class="iva-industry-icon">🚚</span><div class="iva-industry-name">Food Trucks</div><div class="iva-industry-desc">Digital menu, WhatsApp orders and payments · Share link on social media</div><span class="iva-industry-tag">from $29/mo</span></a>
         <a href="/quote" class="iva-industry"><span class="iva-industry-icon">🍽</span><div class="iva-industry-name">Restaurants</div><div class="iva-industry-desc">Full menu, reservations and AI assistant</div><span class="iva-industry-tag">from $29/mo</span></a>
         <a href="/quote" class="iva-industry"><span class="iva-industry-icon">💇</span><div class="iva-industry-name">Salons & Spas</div><div class="iva-industry-desc">Services, pricing and booking via WhatsApp</div><span class="iva-industry-tag">from $29/mo</span></a>
         <a href="/quote" class="iva-industry"><span class="iva-industry-icon">🥐</span><div class="iva-industry-name">Bakeries & Cafés</div><div class="iva-industry-desc">Daily specials, orders and customer chat</div><span class="iva-industry-tag">from $29/mo</span></a>
@@ -215,7 +215,7 @@ module.exports = `
       <div class="iva-section-label">What's included</div>
       <h2 class="iva-section-title">Everything your<br>business <em>needs</em></h2>
       <div class="iva-features">
-        <div class="iva-feature"><div class="iva-feature-icon">🤖</div><div class="iva-feature-title">IvA — Your AI Assistant</div><div class="iva-feature-desc">Trained on your business. Answers questions, takes orders, and guides customers 24/7 in any language.</div><span class="iva-feature-tag">MULTILINGUAL</span></div>
+        <div class="iva-feature"><div class="iva-feature-icon">🤖</div><div class="iva-feature-title">IvA — Your AI Assistant</div><div class="iva-feature-desc">Trained on your business. Answers questions, takes orders, and guides customers 24/7 in any language. Works on your website or as a direct link for Instagram, Facebook & WhatsApp.</div><span class="iva-feature-tag">MULTILINGUAL</span></div>
         <div class="iva-feature"><div class="iva-feature-icon">📱</div><div class="iva-feature-title">Mobile-First Landing Page</div><div class="iva-feature-desc">Beautiful and fast, designed for phones. Your menu, services, photos and prices — all in one place.</div><span class="iva-feature-tag">OPTIMIZED FOR MOBILE</span></div>
         <div class="iva-feature"><div class="iva-feature-icon">💳</div><div class="iva-feature-title">Direct Payments</div><div class="iva-feature-desc">Accept Stripe, ATH Móvil, PayPal or Square. Money goes directly to your account — no middlemen.</div><span class="iva-feature-tag">0% COMMISSION</span></div>
         <div class="iva-feature"><div class="iva-feature-icon">📲</div><div class="iva-feature-title">WhatsApp Order Flow</div><div class="iva-feature-desc">Orders formatted and sent directly to your WhatsApp. No apps to download, no training needed.</div><span class="iva-feature-tag">INSTANT NOTIFICATIONS</span></div>

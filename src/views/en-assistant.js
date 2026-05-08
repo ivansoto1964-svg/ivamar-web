@@ -521,8 +521,8 @@ nav {
         <ul class="price-features">
           <li>AI Assistant for your business</li>
           <li>English & Spanish</li>
-          <li>Web integration</li>
-          <li>Mobile-friendly</li>
+          <li>Web integration or direct link for social media</li>
+          <li>Mobile-friendly · Works on Instagram, Facebook & WhatsApp</li>
           <li>Basic lead capture</li>
           <li>Basic business training</li>
         </ul>
