@@ -186,20 +186,37 @@ module.exports = `
 
     <div class="iva-q-card">
       <div class="iva-q-card-title">Elige tu plan</div>
+<p style="font-size:0.78rem;color:#8892A4;margin-bottom:0.8rem;">🤖 <strong style="color:#F0F4FF">Solo Asistente</strong> — integración a tu web existente</p>
       <div class="iva-q-plans">
-        <div class="iva-q-plan selected" id="plan1" onclick="selectPlan(this,'IvA Chat')">
+        <div class="iva-q-plan selected" id="plan1" onclick="selectPlan(this,'Asistente Starter')">
           <div class="iva-q-plan-check">✓</div>
-          <div class="iva-q-plan-name">🤖 IvA Chat</div>
-          <div class="iva-q-plan-price" id="plan1Price">$125 setup + $49/mes</div>
-          <div class="iva-q-plan-desc">Página + asistente digital + flujo WhatsApp</div>
+          <div class="iva-q-plan-name">⚡ Starter</div>
+          <div class="iva-q-plan-price" id="plan1Price">$125 setup + $29/mes</div>
+          <div class="iva-q-plan-desc">Asistente IA · ES & EN · Captura de leads · Integración web</div>
         </div>
-        <div class="iva-q-plan" id="plan2" onclick="selectPlan(this,'IvA + Pedidos')">
+        <div class="iva-q-plan" id="plan2" onclick="selectPlan(this,'Asistente Growth')">
           <div class="iva-q-plan-check"></div>
-          <div class="iva-q-plan-name">🛒 IvA + Pedidos</div>
+          <div class="iva-q-plan-name">🚀 Growth</div>
           <div class="iva-q-plan-price" id="plan2Price">$125 setup + $49/mes</div>
-          <div class="iva-q-plan-desc">Todo lo anterior + menú, carrito y pagos</div>
+          <div class="iva-q-plan-desc">Todo en Starter + WhatsApp + Entrenamiento avanzado + Soporte prioritario</div>
         </div>
       </div>
+      <p style="font-size:0.78rem;color:#8892A4;margin:1rem 0 0.8rem;">🌐 <strong style="color:#F0F4FF">Asistente + Página Web</strong> — también creamos tu página</p>
+      <div class="iva-q-plans">
+        <div class="iva-q-plan" id="plan3" onclick="selectPlan(this,'Página + Asistente Starter')">
+          <div class="iva-q-plan-check"></div>
+          <div class="iva-q-plan-name">⚡ Starter + Página</div>
+          <div class="iva-q-plan-price" id="plan3Price">$250 setup + $29/mes</div>
+          <div class="iva-q-plan-desc">Página personalizada + asistente IA · Mobile-first · Tu branding</div>
+        </div>
+        <div class="iva-q-plan" id="plan4" onclick="selectPlan(this,'Página + Asistente Growth')">
+          <div class="iva-q-plan-check"></div>
+          <div class="iva-q-plan-name">🚀 Growth + Página</div>
+          <div class="iva-q-plan-price" id="plan4Price">$250 setup + $49/mes</div>
+          <div class="iva-q-plan-desc">Todo en Growth + Página personalizada + WhatsApp + Pedidos</div>
+        </div>
+      </div>
+      <p style="font-size:0.72rem;color:#4A5568;margin-top:1rem;text-align:center;">¿Necesitas algo personalizado? <a href="https://wa.me/18635216708" target="_blank" style="color:#00E5C8">Contáctanos por WhatsApp →</a></p>
     </div>
 
     <div class="iva-q-card">
@@ -287,7 +304,7 @@ const PRICING = {
   legal_pro:    { monthly: 99, label: 'Servicios Profesionales' },
 };
 
-let selectedPlan = 'IvA Chat';
+let selectedPlan = 'Asistente Starter';
 let currentMonthly = 49;
 
 function updatePricing() {
@@ -306,6 +323,10 @@ function updatePricing() {
 }
 
 function selectPlan(el, plan) {
+  document.querySelectorAll('.iva-q-plan').forEach(p => {
+    p.classList.remove('selected');
+    p.querySelector('.iva-q-plan-check').textContent = '';
+  });
   document.querySelectorAll('.iva-q-plan').forEach(p => {
     p.classList.remove('selected');
     p.querySelector('.iva-q-plan-check').textContent = '';
