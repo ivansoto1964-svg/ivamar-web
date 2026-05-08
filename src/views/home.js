@@ -42,13 +42,13 @@ module.exports = `
     <p class="home-sel-sub">Select your language · Selecciona tu idioma</p>
 
     <div class="home-sel-cards">
-      <a href="/en" class="home-sel-card">
+      <a href="/en/assistant" class="home-sel-card">
         <div class="home-sel-card-icon">🌐</div>
         <div class="home-sel-card-lang">English</div>
         <div class="home-sel-card-sub">Continue in English →</div>
         <div class="home-sel-card-arrow"></div>
       </a>
-      <a href="/es" class="home-sel-card">
+      <a href="/es/asistente" class="home-sel-card">
         <div class="home-sel-card-icon">🌐</div>
         <div class="home-sel-card-lang">Español</div>
         <div class="home-sel-card-sub">Continuar en español</div>
