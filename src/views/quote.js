@@ -301,7 +301,12 @@ module.exports = `
 </div>
 
 <script>
-const STRIPE_SETUP = 'https://buy.stripe.com/bJe6oH81Q2eafoc17af3a00';
+const STRIPE_LINKS = {
+  'Assistant Starter':           'https://buy.stripe.com/7sYdR9a9Yf0W4Jy7vyf3a03',
+  'Assistant Growth':            'https://buy.stripe.com/8x2dR9fui8Cy5NCcPSf3a04',
+  'Landing + Assistant Starter': 'https://buy.stripe.com/6oU00jgymcSO3FueY0f3a05',
+  'Landing + Assistant Growth':  'https://buy.stripe.com/dRmbJ1eqeg50b7W3fif3a06'
+};
 
 const PRICING = {
   food_basic:   { monthly: 49, label: 'Food & Beverage' },
@@ -313,7 +318,7 @@ const PRICING = {
   legal_pro:    { monthly: 99, label: 'Professional Services' },
 };
 
-let selectedPlan = 'IvA Chat';
+let selectedPlan = 'Assistant Starter';
 let currentMonthly = 49;
 
 function updatePricing() {
@@ -395,7 +400,7 @@ async function goToStripe() {
   if (!validate()) return;
   await logAcceptance();
   const email = document.getElementById('qEmail').value.trim();
-  const setupUrl = STRIPE_SETUP + '?prefilled_email=' + encodeURIComponent(email);
+  const setupUrl = (STRIPE_LINKS[selectedPlan] || STRIPE_LINKS['Assistant Starter']) + '?prefilled_email=' + encodeURIComponent(email);
   window.location.href = setupUrl;
 }
 
