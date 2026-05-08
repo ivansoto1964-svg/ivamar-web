@@ -18,6 +18,8 @@ const demosES = require("./views/demos-es");
 const demoAutos = require("./views/demo-autos");
 const quote = require("./views/quote");
 const quoteES = require("./views/quote-es");
+const esAsistente = require("./views/es-asistente");
+const enAssistant = require("./views/en-assistant");
 const adminLogin = require("./views/admin-login");
 const adminDashboard = require("./views/admin-dashboard");
 const adminEdit = require("./views/admin-edit");
@@ -170,6 +172,8 @@ app.post("/api/log-agreement", express.json(), (req, res) => {
   }
 });
 
+app.get("/es/asistente", (req, res) => res.send(esAsistente));
+app.get("/en/assistant", (req, res) => res.send(enAssistant));
 app.get("/cotizar", (req, res) => res.send(layout({ title: "Empezar — Ivamar AI", body: quoteES })));
 app.get("/pricing", (req, res) => res.redirect("/quote"));
 
