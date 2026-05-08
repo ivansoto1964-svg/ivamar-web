@@ -192,20 +192,37 @@ module.exports = `
     <!-- PLAN -->
     <div class="iva-q-card">
       <div class="iva-q-card-title">Choose your plan</div>
+      <p style="font-size:0.78rem;color:#8892A4;margin-bottom:0.8rem;">🤖 <strong style="color:#F0F4FF">AI Assistant Only</strong> — integrate into your existing website</p>
       <div class="iva-q-plans">
-        <div class="iva-q-plan selected" id="plan1" onclick="selectPlan(this,'IvA Chat')">
+        <div class="iva-q-plan selected" id="plan1" onclick="selectPlan(this,'Assistant Starter')">
           <div class="iva-q-plan-check">✓</div>
-          <div class="iva-q-plan-name">🤖 IvA Chat</div>
-          <div class="iva-q-plan-price" id="plan1Price">$125 setup + $49/mo</div>
-          <div class="iva-q-plan-desc">Landing page + AI assistant + WhatsApp flow</div>
+          <div class="iva-q-plan-name">⚡ Starter</div>
+          <div class="iva-q-plan-price" id="plan1Price">$125 setup + $29/mo</div>
+          <div class="iva-q-plan-desc">AI assistant · EN & ES · Basic lead capture · Web integration</div>
         </div>
-        <div class="iva-q-plan" id="plan2" onclick="selectPlan(this,'IvA + Orders')">
+        <div class="iva-q-plan" id="plan2" onclick="selectPlan(this,'Assistant Growth')">
           <div class="iva-q-plan-check"></div>
-          <div class="iva-q-plan-name">🛒 IvA + Orders</div>
+          <div class="iva-q-plan-name">🚀 Growth</div>
           <div class="iva-q-plan-price" id="plan2Price">$125 setup + $49/mo</div>
-          <div class="iva-q-plan-desc">Everything above + menu, cart & payments</div>
+          <div class="iva-q-plan-desc">Everything in Starter + WhatsApp + Advanced training + Priority support</div>
         </div>
       </div>
+      <p style="font-size:0.78rem;color:#8892A4;margin:1rem 0 0.8rem;">🌐 <strong style="color:#F0F4FF">Assistant + Landing Page</strong> — we build your page too</p>
+      <div class="iva-q-plans">
+        <div class="iva-q-plan" id="plan3" onclick="selectPlan(this,'Landing + Assistant Starter')">
+          <div class="iva-q-plan-check"></div>
+          <div class="iva-q-plan-name">⚡ Starter + Page</div>
+          <div class="iva-q-plan-price" id="plan3Price">$250 setup + $29/mo</div>
+          <div class="iva-q-plan-desc">Custom landing page + AI assistant · Mobile-first · Your branding</div>
+        </div>
+        <div class="iva-q-plan" id="plan4" onclick="selectPlan(this,'Landing + Assistant Growth')">
+          <div class="iva-q-plan-check"></div>
+          <div class="iva-q-plan-name">🚀 Growth + Page</div>
+          <div class="iva-q-plan-price" id="plan4Price">$250 setup + $49/mo</div>
+          <div class="iva-q-plan-desc">Everything in Growth + Custom landing page + WhatsApp + Orders</div>
+        </div>
+      </div>
+      <p style="font-size:0.72rem;color:#4A5568;margin-top:1rem;text-align:center;">Need something custom? <a href="https://wa.me/18635216708" target="_blank" style="color:#00E5C8">Contact us on WhatsApp →</a></p>
     </div>
 
     <!-- NOTES -->
@@ -223,7 +240,7 @@ module.exports = `
     <div class="iva-agreement">
       <div class="iva-agreement-title">📋 Service Agreement — Please review</div>
       <div class="iva-agreement-summary">
-        <strong>Pricing:</strong> $125 setup (one-time) + $49/month subscription. First 30 days included after setup. Cancel anytime, no contracts.<br><br>
+        <strong>Pricing:</strong> Setup from $125 (one-time) + from $29/month subscription. Cancel anytime, no contracts.<br><br>
         <strong>Payments:</strong> Ivamar AI is NOT a payment processor. ALL customer payments go 100% directly to YOUR payment account (Stripe, PayPal, etc.). Zero commissions. We only charge the monthly subscription.<br><br>
         <strong>Your responsibility:</strong> You are solely responsible for your products, services, prices, taxes, and customer interactions. We are a technology provider only.<br><br>
         <strong>Our promise:</strong> No hidden fees. If you ever see one extra penny on your bill, we refund it immediately.
