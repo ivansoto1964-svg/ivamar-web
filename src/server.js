@@ -99,20 +99,20 @@ function postJson(urlStr, payload, options = {}) {
 
 app.get("/", (req, res) => res.send(layout({ title: "Ivamar AI", body: home })));
 app.get("/es", (req, res) => res.send(layout({ title: "Ivamar AI · Español", body: homeES })));
-app.get("/en", (req, res) => res.send(layout({ title: "Ivamar AI · English", body: homeEN })));
-app.get("/about", (req, res) => res.send(layout({ title: "About — Ivamar AI LLC", body: about })));
+app.get("/en", (req, res) => res.send(layout({  lang: "en", title: "Ivamar AI · English", body: homeEN })));
+app.get("/about", (req, res) => res.send(layout({  lang: "en", title: "About — Ivamar AI LLC", body: about })));
 app.get("/sobre-nosotros", (req, res) => res.send(layout({ title: "Sobre Nosotros — Ivamar AI", body: sobreNosotros })));
 app.get("/contacto", (req, res) => res.send(layout({ title: "Contacto — Ivamar AI", body: contactoES })));
-app.get("/contact", (req, res) => res.send(layout({ title: "Contact — Ivamar AI LLC", body: contact })));
-app.get("/privacy", (req, res) => res.send(layout({ title: "Privacy Policy — Ivamar AI LLC", body: privacy })));
-app.get("/terms", (req, res) => res.send(layout({ title: "Terms of Service — Ivamar AI LLC", body: terms })));
+app.get("/contact", (req, res) => res.send(layout({  lang: "en", title: "Contact — Ivamar AI LLC", body: contact })));
+app.get("/privacy", (req, res) => res.send(layout({  lang: "en", title: "Privacy Policy — Ivamar AI LLC", body: privacy })));
+app.get("/terms", (req, res) => res.send(layout({  lang: "en", title: "Terms of Service — Ivamar AI LLC", body: terms })));
 app.get("/terminos", (req, res) => res.send(layout({ title: "Términos de Servicio — Ivamar AI", body: termsES })));
 app.get("/privacidad", (req, res) => res.send(layout({ title: "Política de Privacidad — Ivamar AI", body: privacyES })));
-app.get("/demo", (req, res) => res.send(layout({ title: "Demo — El Rincón Boricua", body: demo })));
-app.get("/demos", (req, res) => res.send(layout({ title: "Demos — Ivamar AI", body: demos })));
+app.get("/demo", (req, res) => res.send(layout({  lang: "en", title: "Demo — El Rincón Boricua", body: demo })));
+app.get("/demos", (req, res) => res.send(layout({  lang: "en", title: "Demos — Ivamar AI", body: demos })));
 app.get("/demos-es", (req, res) => res.send(layout({ title: "Demos — Ivamar AI", body: demosES })));
-app.get("/demo-autos", (req, res) => res.send(layout({ title: "Demo — Luis Soto Autos", body: demoAutos })));
-app.get("/quote", (req, res) => res.send(layout({ title: "Get Started — Ivamar AI", body: quote })));
+app.get("/demo-autos", (req, res) => res.send(layout({  lang: "en", title: "Demo — Luis Soto Autos", body: demoAutos })));
+app.get("/quote", (req, res) => res.send(layout({  lang: "en", title: "Get Started — Ivamar AI", body: quote })));
 
 
 // API: Log legal agreement acceptance

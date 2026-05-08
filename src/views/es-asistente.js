@@ -598,7 +598,7 @@ nav {
         <div class="sec-name">Landing Pages</div>
         <div class="sec-desc">Páginas modernas con tu asistente integrado</div>
       </div>
-      <div class="sec-card" onclick="window.location.href='/demos'" style="cursor:pointer;">
+      <div class="sec-card" onclick="window.location.href='/demos-es'" style="cursor:pointer;">
         <div class="sec-icon">🛒</div>
         <div class="sec-name">Sistemas de Pedidos</div>
         <div class="sec-desc">Carrito digital con pedidos por WhatsApp</div>

@@ -7,7 +7,7 @@ function escapeHtml(str) {
     .replaceAll("'", "&#039;");
 }
 
-module.exports = function layout({ title = "Ivamar AI", body = "" } = {}) {
+module.exports = function layout({ title = "Ivamar AI", body = "", lang = "es" } = {}) {
   return `<!doctype html>
 <html lang="es">
 <head>
@@ -154,19 +154,19 @@ module.exports = function layout({ title = "Ivamar AI", body = "" } = {}) {
         <span class="iva-dot"></span>
         <div>
           <div class="iva-title">IvA</div>
-          <div class="iva-sub">Asistente de Ivamar AI</div>
+          <div class="iva-sub">${lang === "en" ? "Ivamar AI Assistant" : "Asistente de Ivamar AI"}</div>
         </div>
       </div>
-      <button class="iva-close" id="ivaClose">Cerrar</button>
+      <button class="iva-close" id="ivaClose">${lang === "en" ? "Close" : "Cerrar"}</button>
     </div>
     <div class="iva-body" id="ivaBody"></div>
     <div class="iva-cta">
-      <small>¿Cómo puedo ayudarte?</small>
-      <a href="/quote">Solicitar ahora →</a>
+      <small>${lang === "en" ? "How can I help you?" : "¿Cómo puedo ayudarte?"}</small>
+      <a href="${lang === "en" ? '/quote' : '/cotizar'}">${lang === "en" ? "Get started →" : "Solicitar ahora →"}</a>
     </div>
     <div class="iva-foot">
-      <input class="iva-input" id="ivaInput" placeholder="Escribe aquí…" autocomplete="off" />
-      <button class="iva-send" id="ivaSend">Enviar</button>
+      <input class="iva-input" id="ivaInput" placeholder="${lang === "en" ? 'Type here...' : 'Escribe aquí…'}" autocomplete="off" />
+      <button class="iva-send" id="ivaSend">${lang === "en" ? "Send" : "Enviar"}</button>
     </div>
   </div>
 
