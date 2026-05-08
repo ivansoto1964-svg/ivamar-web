@@ -171,8 +171,8 @@ module.exports = `
       <a href="/demos" class="iva-btn-ghost">See live demos</a>
     </div>
     <div class="iva-stats">
-      <div class="iva-stat"><div class="iva-stat-num">$125<span></span></div><div class="iva-stat-label">One-time setup</div></div>
-      <div class="iva-stat"><div class="iva-stat-num">$49<span>/mo</span></div><div class="iva-stat-label">Starting at</div></div>
+      <div class="iva-stat"><div class="iva-stat-num">$125<span>+</span></div><div class="iva-stat-label">Setup from</div></div>
+      <div class="iva-stat"><div class="iva-stat-num">$29<span>/mo</span></div><div class="iva-stat-label">Starting at</div></div>
       <div class="iva-stat"><div class="iva-stat-num">0<span>%</span></div><div class="iva-stat-label">Commission</div></div>
       <div class="iva-stat"><div class="iva-stat-num">24<span>/7</span></div><div class="iva-stat-label">IvA Assistant</div></div>
     </div>
@@ -184,10 +184,10 @@ module.exports = `
       <div class="iva-section-label">Who we serve</div>
       <h2 class="iva-section-title">Built for <em>every</em> local business</h2>
       <div class="iva-industries">
-        <a href="/quote" class="iva-industry"><span class="iva-industry-icon">🚚</span><div class="iva-industry-name">Food Trucks</div><div class="iva-industry-desc">Digital menu, WhatsApp orders and payments</div><span class="iva-industry-tag">$49/mo</span></a>
-        <a href="/quote" class="iva-industry"><span class="iva-industry-icon">🍽</span><div class="iva-industry-name">Restaurants</div><div class="iva-industry-desc">Full menu, reservations and AI assistant</div><span class="iva-industry-tag">$49/mo</span></a>
-        <a href="/quote" class="iva-industry"><span class="iva-industry-icon">💇</span><div class="iva-industry-name">Salons & Spas</div><div class="iva-industry-desc">Services, pricing and booking via WhatsApp</div><span class="iva-industry-tag">$49/mo</span></a>
-        <a href="/quote" class="iva-industry"><span class="iva-industry-icon">🥐</span><div class="iva-industry-name">Bakeries & Cafés</div><div class="iva-industry-desc">Daily specials, orders and customer chat</div><span class="iva-industry-tag">$49/mo</span></a>
+        <a href="/quote" class="iva-industry"><span class="iva-industry-icon">🚚</span><div class="iva-industry-name">Food Trucks</div><div class="iva-industry-desc">Digital menu, WhatsApp orders and payments</div><span class="iva-industry-tag">from $29/mo</span></a>
+        <a href="/quote" class="iva-industry"><span class="iva-industry-icon">🍽</span><div class="iva-industry-name">Restaurants</div><div class="iva-industry-desc">Full menu, reservations and AI assistant</div><span class="iva-industry-tag">from $29/mo</span></a>
+        <a href="/quote" class="iva-industry"><span class="iva-industry-icon">💇</span><div class="iva-industry-name">Salons & Spas</div><div class="iva-industry-desc">Services, pricing and booking via WhatsApp</div><span class="iva-industry-tag">from $29/mo</span></a>
+        <a href="/quote" class="iva-industry"><span class="iva-industry-icon">🥐</span><div class="iva-industry-name">Bakeries & Cafés</div><div class="iva-industry-desc">Daily specials, orders and customer chat</div><span class="iva-industry-tag">from $29/mo</span></a>
         <a href="/quote" class="iva-industry"><span class="iva-industry-icon">🚗</span><div class="iva-industry-name">Car Dealers</div><div class="iva-industry-desc">Inventory showcase, leads and financing info</div><span class="iva-industry-tag">$99/mo</span></a>
         <a href="/quote" class="iva-industry"><span class="iva-industry-icon">🏠</span><div class="iva-industry-name">Realtors</div><div class="iva-industry-desc">Property listings, lead capture and appointments</div><span class="iva-industry-tag">$99/mo</span></a>
         <a href="/quote" class="iva-industry"><span class="iva-industry-icon">🏥</span><div class="iva-industry-name">Medical & Dental</div><div class="iva-industry-desc">Services, appointments and patient questions</div><span class="iva-industry-tag">$99/mo</span></a>
@@ -229,7 +229,7 @@ module.exports = `
     <div class="iva-inner" style="text-align:center">
       <div class="iva-section-label" style="justify-content:center">Pricing</div>
       <h2 class="iva-section-title">Simple. <em>Transparent.</em> Yours.</h2>
-      <p style="color:#8892A4;margin-top:0.5rem;font-size:0.95rem;">All plans include $125 one-time setup · First month free</p>
+      <p style="color:#8892A4;margin-top:0.5rem;font-size:0.95rem;">Setup from $125 · No contracts · Cancel anytime</p>
       <div class="iva-pricing-grid">
 
         <!-- STANDARD -->
@@ -238,7 +238,7 @@ module.exports = `
           <div class="iva-pricing-plan-name">Basic Plan</div>
           <div class="iva-pricing-industries">Food trucks · Restaurants<br>Salons · Bakeries · Cafés</div>
           <div class="iva-price"><span class="iva-price-currency">$</span><span class="iva-price-amount">49</span><span class="iva-price-period">/mo</span></div>
-          <p class="iva-price-setup">+ <strong>$125 setup</strong> · First month free</p>
+          <p class="iva-price-setup">+ <strong>$125 setup</strong> </p>
           <ul class="iva-pricing-list">
             <li>Custom landing page</li>
             <li>IvA AI assistant 24/7</li>
@@ -256,7 +256,7 @@ module.exports = `
           <div class="iva-pricing-plan-name">Pro Plan</div>
           <div class="iva-pricing-industries">Car dealers · Realtors<br>Medical · Lawyers · Finance</div>
           <div class="iva-price"><span class="iva-price-currency">$</span><span class="iva-price-amount">99</span><span class="iva-price-period">/mo</span></div>
-          <p class="iva-price-setup">+ <strong>$125 setup</strong> · First month free</p>
+          <p class="iva-price-setup">+ <strong>$125 setup</strong> </p>
           <ul class="iva-pricing-list">
             <li>Everything in Basic</li>
             <li>Lead capture system</li>
