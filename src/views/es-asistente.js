@@ -668,6 +668,15 @@ const now = () => {
   return d.getHours().toString().padStart(2,'0') + ':' + d.getMinutes().toString().padStart(2,'0');
 };
 
+function scrollToBottom() {
+  const msgs = document.getElementById('msgs');
+  if (!msgs) return;
+  scrollToBottom();
+  // Extra push for mobile
+  setTimeout(() => { scrollToBottom(); }, 50);
+  setTimeout(() => { scrollToBottom(); }, 150);
+}
+
 // ─── RENDER ──────────────────────────────────────────────
 function appendBot(text, delay = 0) {
   return new Promise(resolve => {
@@ -683,7 +692,7 @@ function appendBot(text, delay = 0) {
           <div class="msg-time">\${now()}</div>
         </div>\`;
       msgs.appendChild(div);
-      msgs.scrollTop = msgs.scrollHeight;
+      scrollToBottom();
       resolve();
     }, delay);
   });
@@ -699,7 +708,7 @@ function appendUser(text) {
       <div class="msg-time">\${now()}</div>
     </div>\`;
   msgs.appendChild(div);
-  msgs.scrollTop = msgs.scrollHeight;
+  scrollToBottom();
 }
 
 function showTyping() {
@@ -715,7 +724,7 @@ function showTyping() {
       <div class="typing-dot"></div>
     </div>\`;
   msgs.appendChild(div);
-  msgs.scrollTop = msgs.scrollHeight;
+  scrollToBottom();
 }
 
 function removeTyping() {
@@ -736,7 +745,7 @@ function appendOptions(options) {
       <div class="options-grid">\${grid}</div>
     </div>\`;
   msgs.appendChild(div);
-  msgs.scrollTop = msgs.scrollHeight;
+  scrollToBottom();
 }
 
 function disableInput(placeholder = 'Selecciona una opción...') {
