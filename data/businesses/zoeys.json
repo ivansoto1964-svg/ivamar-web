@@ -1,0 +1,51 @@
+{
+  "slug": "zoeys",
+  "name": "Zoey's Pasta on the Go",
+  "headline": "Pasta Restaurant · Davenport, FL",
+  "description": "Fresh pasta made to order. House-made sauces, over 20 toppings and the best garlic bread in Davenport. Every bowl sautéed to order — because good pasta can't be rushed.",
+  "logoUrl": "",
+  "businessPhotoUrl": "",
+  "address": "145 Ridge Center Dr, Davenport, FL 33837",
+  "hours": "Mon-Sat 11:00am-8:00pm · Sun 12:00pm-7:00pm",
+  "status": "abierto",
+  "theme": "dark",
+  "assistant": {
+    "name": "Zoey",
+    "tone": "Friendly, passionate about fresh pasta, helpful. Always mention that every bowl is made to order with fresh ingredients. Guide customers to order directly via WhatsApp — no Uber Eats, no commissions, better prices direct.",
+    "welcome": "Hey! Welcome to Zoey's Pasta on the Go 🍝 I'm Zoey, your pasta guide! Every bowl is made fresh to order. What can I help you with today?",
+    "keywords": ["pasta", "bowl", "sauce", "garlic bread", "cavatappi", "penne", "spaghetti"],
+    "avatarUrl": ""
+  },
+  "links": {
+    "whatsapp": "https://wa.me/14075555555",
+    "instagram": "https://instagram.com/zoeyspastaonthego",
+    "googleMaps": "https://maps.google.com/?q=145+Ridge+Center+Dr+Davenport+FL+33837"
+  },
+  "menu": [
+    { "name": "🍝 Cavatappi Pollo & Mozzarella", "price": 13.99, "desc": "Cavatappi sautéed with onions, tomatoes, grilled chicken, garlic tomato sauce, basil & mozzarella" },
+    { "name": "🍝 Penne Sausage & Broccoli", "price": 13.99, "desc": "Penne with sausage, broccoli, peppers, onions, peas, dried tomatoes in garlic parmesan sauce" },
+    { "name": "🍝 Cavatappi Bacon Five Cheese", "price": 14.99, "desc": "Cavatappi with bacon, five cheese sauce topped with breaded chicken" },
+    { "name": "🍝 Spaghetti Wine & Mushroom", "price": 13.99, "desc": "Spaghetti with chicken, mushrooms, tomatoes in wine lemon garlic cream sauce" },
+    { "name": "🍝 Build Your Own Pasta Bowl", "price": 11.99, "desc": "Choose your pasta, sauce and toppings — over 20 options available" },
+    { "name": "🥣 Soup of the Day", "price": 5.99, "desc": "Fresh homemade soup — ask for today's selection" },
+    { "name": "🥖 Extra Garlic Bread", "price": 2.99, "desc": "Our famous garlic bread — all bowls include one piece" },
+    { "name": "☕ Coffee", "price": 3.50, "desc": "Fresh brewed coffee — carefully selected beans" }
+  ],
+  "sides": [
+    { "name": "Extra Garlic Bread", "price": 2.99, "desc": "" },
+    { "name": "Side Salad", "price": 4.99, "desc": "Fresh daily" }
+  ],
+  "drinks": [
+    { "name": "Coffee", "price": 3.50, "desc": "Fresh brewed" },
+    { "name": "Bottled Water", "price": 1.99, "desc": "" },
+    { "name": "Soda", "price": 2.50, "desc": "" }
+  ],
+  "combos": [
+    { "name": "Pasta Bowl + Soup + Drink", "price": 17.99, "desc": "Any classic pasta bowl + soup of the day + drink" }
+  ],
+  "platters": [],
+  "familyMeals": [],
+  "desserts": [
+    { "name": "Fresh Dessert of the Day", "price": 5.99, "desc": "Ask for today's fresh dessert selection" }
+  ]
+}
