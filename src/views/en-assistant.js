@@ -653,10 +653,9 @@ const now = () => {
 function scrollToBottom() {
   const msgs = document.getElementById('msgs');
   if (!msgs) return;
-  scrollToBottom();
-  // Extra push for mobile
-  setTimeout(() => { scrollToBottom(); }, 50);
-  setTimeout(() => { scrollToBottom(); }, 150);
+  msgs.scrollTop = msgs.scrollHeight;
+  setTimeout(() => { msgs.scrollTop = msgs.scrollHeight; }, 50);
+  setTimeout(() => { msgs.scrollTop = msgs.scrollHeight; }, 150);
 }
 
 function appendBot(text, delay = 0) {
