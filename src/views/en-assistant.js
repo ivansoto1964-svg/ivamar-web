@@ -604,7 +604,7 @@ nav {
 
 <script>
 let state = {
-  step: 'greeting',
+  step: 'active',
   name: '',
   location: '',
   businessType: '',
@@ -612,8 +612,38 @@ let state = {
   assistantName: '',
   email: '',
   phone: '',
-  isTyping: false
+  isTyping: false,
+  history: []
 };
+
+async function callIvA(userMessage) {
+  try {
+    const response = await fetch('/api/iva-sales', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: userMessage,
+        history: state.history,
+        lang: 'en',
+        context: {
+          name: state.name,
+          businessType: state.businessType,
+          hasWebsite: state.hasWebsite,
+          assistantName: state.assistantName,
+          location: state.location
+        }
+      })
+    });
+    const data = await response.json();
+    const reply = data.reply || 'Sorry, I had an issue. Please reach us on WhatsApp.';
+    state.history.push({ role: 'user', content: userMessage });
+    state.history.push({ role: 'assistant', content: reply });
+    if (state.history.length > 20) state.history = state.history.slice(-20);
+    return reply;
+  } catch(e) {
+    return 'Sorry, I had a technical issue. Please reach us on WhatsApp directly.';
+  }
+}
 
 const now = () => {
   const d = new Date();
@@ -706,10 +736,10 @@ function enableInput(placeholder = 'Type here...') {
 async function startConversation() {
   disableInput('IvA is typing...');
   showTyping();
-  await appendBot('Hi 👋<br>I\\'m IvA, the assistant from Ivamar AI.<br>Your business can have an AI assistant <em>just like this one</em>.', 1200);
-  showTyping();
-  await appendBot('Tell me 😊<br>Where are you visiting us from today?', 2200);
-  state.step = 'location';
+  const greeting = "Hi 👋 I'm IvA, the assistant from Ivamar AI. Your business can have an AI assistant just like this one. Tell me, where are you visiting us from today?";
+  state.history.push({ role: 'assistant', content: greeting });
+  await appendBot(greeting, 1200);
+  state.step = 'active';
   enableInput('Your city or country...');
 }
 
@@ -856,24 +886,14 @@ async function sendMsg() {
   const input = document.getElementById('chatInput');
   const text = input.value.trim();
   if (!text || state.isTyping) return;
-
   state.isTyping = true;
   input.value = '';
+  appendUser(text);
   disableInput('IvA is typing...');
-
-  switch (state.step) {
-    case 'location': await handleLocation(text); break;
-    case 'name': await handleName(text); break;
-    case 'assistantName': await handleAssistantName(text); break;
-    case 'email': await handleEmail(text); break;
-    case 'phone': await handlePhone(text); break;
-    default:
-      appendUser(text);
-      showTyping();
-      await appendBot(\`\${state.name ? state.name + ', t' : 'T'}hanks for reaching out 😊 To continue, complete the flow above or reach us on <a href="https://wa.me/18635216708" style="color:var(--teal)" target="_blank">WhatsApp</a>.\`, 1000);
-      enableInput();
-  }
-
+  showTyping();
+  const reply = await callIvA(text);
+  await appendBot(reply, 0);
+  enableInput();
   state.isTyping = false;
 }
 
