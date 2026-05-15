@@ -1,0 +1,35 @@
+{
+  "slug": "inversionesmartinez",
+  "name": "Inversiones Martinez",
+  "headline": "Bienes Raíces · La Romana, República Dominicana",
+  "description": "Proyectos inmobiliarios exclusivos en República Dominicana. Terrenos, apartamentos y propiedades frente al mar. Inversión segura con cuotas accesibles.",
+  "logoUrl": "",
+  "businessPhotoUrl": "",
+  "address": "La Romana, República Dominicana",
+  "hours": "Lun a Vie 9:00am - 6:00pm · Sáb 9:00am - 1:00pm",
+  "status": "abierto",
+  "theme": "dark",
+  "assistant": {
+    "name": "MarIA",
+    "tone": "Profesional, amigable, conocedora del mercado inmobiliario dominicano. Menciona siempre la oportunidad de inversión, las facilidades de pago y la ubicación privilegiada cerca de Playa Caleta. Captura nombre, teléfono y presupuesto del prospecto. Responde en el idioma del cliente.",
+    "welcome": "¡Hola! Bienvenido a Inversiones Martinez 🏠 Soy MarIA, tu asesora virtual. Tenemos proyectos exclusivos cerca de Playa Caleta en La Romana. ¿En qué puedo ayudarte hoy?",
+    "keywords": ["terreno", "apartamento", "inversión", "playa", "la romana", "propiedad"],
+    "avatarUrl": ""
+  },
+  "links": {
+    "whatsapp": "https://wa.me/18296844040",
+    "instagram": "",
+    "googleMaps": "https://maps.google.com/?q=La+Romana+Republica+Dominicana"
+  },
+  "menu": [
+    { "name": "🏡 Terreno Residencial — Proyecto Playa Caleta", "price": 50000, "desc": "A solo 2 minutos de Playa Caleta, La Romana. Separa con RD$50,000. Hasta 4 meses para completar inicial." },
+    { "name": "🏠 Apartamento — Proyecto Familiar", "price": 85000, "desc": "Proyecto pensado para ti y tu familia. Contenes, agua potable, calles asfaltadas, electricidad y áreas verdes." },
+    { "name": "🌊 Propiedad Frente al Mar", "price": 150000, "desc": "Propiedades exclusivas con vista al mar en La Romana. Inversión premium en el Caribe." }
+  ],
+  "sides": [],
+  "drinks": [],
+  "combos": [],
+  "platters": [],
+  "familyMeals": [],
+  "desserts": []
+}
