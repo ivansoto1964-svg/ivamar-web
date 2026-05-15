@@ -1,0 +1,36 @@
+{
+  "slug": "belygarcia",
+  "name": "Bely Garcia — Realtor",
+  "headline": "Tu Realtor de Confianza · Orlando, FL",
+  "description": "Te ayudo a comprar tu primera casa en Florida. Casas nuevas y reventa en Saint Cloud, Kissimmee, Davenport y zonas cercanas. Orientación paso a paso para que sepas cómo empezar.",
+  "logoUrl": "",
+  "businessPhotoUrl": "",
+  "address": "Saint Cloud · Kissimmee · Davenport · Florida",
+  "hours": "Lun a Dom — Disponible 24/7",
+  "status": "abierto",
+  "theme": "dark",
+  "assistant": {
+    "name": "BIA",
+    "tone": "Amigable, profesional, especialista en compradores de primera casa en Florida. Siempre menciona que el proceso es paso a paso y sin complicaciones. Captura nombre, teléfono, presupuesto y zona de interés del prospecto. Responde en el idioma del cliente.",
+    "welcome": "¡Hola! Bienvenido 🏠 Soy BIA, la asistente virtual de Bely Garcia Realtor. ¿Estás pensando en comprar tu primera casa en Florida? ¡Estoy aquí para orientarte paso a paso! ¿En qué puedo ayudarte hoy?",
+    "keywords": ["casa", "comprar", "florida", "kissimmee", "davenport", "saint cloud", "primera casa"],
+    "avatarUrl": ""
+  },
+  "links": {
+    "whatsapp": "https://wa.me/17865555555",
+    "instagram": "",
+    "googleMaps": "https://maps.google.com/?q=Kissimmee+Florida"
+  },
+  "menu": [
+    { "name": "🏠 Casas Nuevas — Desde $280,000", "price": 280000, "desc": "Construcción nueva en Saint Cloud, Kissimmee y Davenport. Comunidades modernas con amenidades." },
+    { "name": "🏡 Casas de Reventa — Desde $220,000", "price": 220000, "desc": "Excelentes opciones de reventa en las mejores zonas de Orlando. Precios competitivos." },
+    { "name": "📋 Orientación para Primera Casa", "price": 0, "desc": "¿No sabes por dónde empezar? Te guío paso a paso en todo el proceso de compra sin costo." },
+    { "name": "💰 Pre-calificación de Hipoteca", "price": 0, "desc": "Te orientamos para conocer tu capacidad de compra antes de buscar propiedades." }
+  ],
+  "sides": [],
+  "drinks": [],
+  "combos": [],
+  "platters": [],
+  "familyMeals": [],
+  "desserts": []
+}
