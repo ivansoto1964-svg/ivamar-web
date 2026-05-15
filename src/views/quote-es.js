@@ -232,7 +232,7 @@ module.exports = `
     <div class="iva-agreement">
       <div class="iva-agreement-title">📋 Acuerdo de Servicio — Por favor revisa</div>
       <div class="iva-agreement-summary">
-        <strong>Precios:</strong> $125 setup (único) + $49/mes de suscripción. Primeros 30 días incluidos. Cancela cuando quieras, sin contratos.<br><br>
+        <strong>Precios:</strong> Setup desde $125 (único) + desde $29/mes de suscripción. Cancela cuando quieras, sin contratos.<br><br>
         <strong>Pagos:</strong> Ivamar AI NO es procesador de pagos. TODOS los pagos de tus clientes van 100% directo a TU cuenta de pago (Stripe, PayPal, etc.). Cero comisiones. Solo cobramos la mensualidad.<br><br>
         <strong>Tu responsabilidad:</strong> Eres el único responsable de tus productos, servicios, precios, impuestos y la atención a tus clientes. Nosotros somos solo el proveedor tecnológico.<br><br>
         <strong>Nuestra promesa:</strong> Sin cargos escondidos. Si ves un centavo de más en tu factura, te lo devolvemos de inmediato.
@@ -248,7 +248,7 @@ module.exports = `
       <div class="iva-checkbox-row">
         <input type="checkbox" id="agreeBilling" class="iva-checkbox" onchange="updateButton()">
         <label for="agreeBilling" class="iva-checkbox-label">
-          <strong>Autorizo el cargo único de $125</strong> y la suscripción recurrente de $49/mes (primeros 30 días incluidos). Entiendo que puedo cancelar cuando quiera.
+          <strong>Autorizo el cargo de setup</strong> y la suscripción mensual recurrente según el plan seleccionado. Entiendo que puedo cancelar cuando quiera.
         </label>
       </div>
 
@@ -263,7 +263,7 @@ module.exports = `
     <div class="iva-q-stripe-info">
       <div class="iva-q-stripe-info-icon">🔒</div>
       <div class="iva-q-stripe-info-text">
-        <strong>Pago seguro con Stripe.</strong> Hoy pagas el setup de $125. La suscripción mensual comienza después de <strong>30 días gratis</strong> — tu tarjeta no será cobrada hasta el segundo mes.
+        <strong>Pago seguro con Stripe.</strong> Hoy pagas el setup. Tu plan mensual comienza inmediatamente después del setup.
       </div>
     </div>
 

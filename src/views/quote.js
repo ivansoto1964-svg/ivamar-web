@@ -272,7 +272,7 @@ module.exports = `
     <div class="iva-q-stripe-info">
       <div class="iva-q-stripe-info-icon">🔒</div>
       <div class="iva-q-stripe-info-text">
-        <strong>Secure payment via Stripe.</strong> You'll pay the $125 setup today. The monthly plan starts after a <strong>30-day free trial</strong> — your card will not be charged until after your first month.
+        <strong>Secure payment via Stripe.</strong> You'll pay the $125 setup today. Your monthly plan starts immediately after setup.
       </div>
     </div>
 
