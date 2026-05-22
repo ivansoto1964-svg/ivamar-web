@@ -61,6 +61,7 @@ module.exports = function layout({ title = "Ivamar AI", body = "", lang = "es" }
 
 <body>
 ${body}
+<script src="/iva-chat.js"></script>
 </body>
 </html>`;
 };
