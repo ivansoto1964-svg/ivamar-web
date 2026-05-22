@@ -4,11 +4,11 @@ module.exports = `
 .iva-quote{font-family:'Plus Jakarta Sans',sans-serif;background:#ffffff;color:#1a1a2e;margin:-20px;overflow-x:hidden;}
 .iva-quote *{box-sizing:border-box;margin:0;padding:0;}
 .iva-quote a{color:#00C896;text-decoration:none;}
-.iva-q-nav{padding:1.2rem 2rem;display:flex;align-items:center;justify-content:space-between;background:rgba(3,5,8,0.95);border-bottom:1px solid rgba(0,229,200,0.08);position:sticky;top:0;z-index:100;backdrop-filter:blur(12px);}
+.iva-q-nav{padding:1.2rem 2rem;display:flex;align-items:center;justify-content:space-between;background:rgba(255,255,255,0.95);border-bottom:1px solid #f0f0f0;position:sticky;top:0;z-index:100;backdrop-filter:blur(12px);}
 .iva-q-logo{display:flex;align-items:center;gap:0.6rem;text-decoration:none!important;}
 .iva-q-logo-text{font-size:1rem;font-weight:700;color:#1a1a2e;letter-spacing:-0.02em;margin-left:0.5rem;}
 .iva-q-logo-text span{color:#00C896;}
-.iva-q-back{font-size:0.82rem;color:#8892A4;border:1px solid rgba(255,255,255,0.1);padding:0.4rem 1rem;border-radius:6px;transition:all 0.2s;text-decoration:none!important;}
+.iva-q-back{font-size:0.82rem;color:#8892A4;border:1px solid #e5e7eb;padding:0.4rem 1rem;border-radius:6px;transition:all 0.2s;text-decoration:none!important;}
 .iva-q-back:hover{color:#1a1a2e;border-color:rgba(255,255,255,0.25);}
 .iva-q-hero{padding:4rem 2rem 3rem;text-align:center;position:relative;overflow:hidden;}
 .iva-q-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 50% 0%,rgba(0,229,200,0.07),transparent 70%);pointer-events:none;}
@@ -17,7 +17,7 @@ module.exports = `
 .iva-q-hero h1 em{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:#00C896;}
 .iva-q-hero p{color:#8892A4;font-size:1rem;line-height:1.7;max-width:480px;margin:0 auto;font-weight:400;position:relative;}
 .iva-q-content{max-width:680px;margin:0 auto;padding:2rem 2rem 5rem;}
-.iva-q-card{background:#f8f9fa;border:1px solid rgba(255,255,255,0.06);border-radius:20px;padding:2.5rem;margin-bottom:1.5rem;position:relative;overflow:hidden;}
+.iva-q-card{background:#f8f9fa;border:1px solid #f0f0f0;border-radius:20px;padding:2.5rem;margin-bottom:1.5rem;position:relative;overflow:hidden;}
 .iva-q-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,#00C896,transparent);}
 .iva-q-card-title{font-size:0.72rem;font-family:'JetBrains Mono',monospace;color:#00C896;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:1.5rem;display:flex;align-items:center;gap:0.5rem;}
 .iva-q-card-title::before{content:'';width:16px;height:1px;background:#00C896;}

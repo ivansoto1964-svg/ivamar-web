@@ -60,10 +60,7 @@ module.exports = function layout({ title = "Ivamar AI", body = "", lang = "es" }
 </head>
 
 <body>
-  <div class="wrap">
-    ${body}
-  </div>
-
+${body}
 </body>
 </html>`;
 };
