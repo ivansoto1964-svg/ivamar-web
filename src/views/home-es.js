@@ -179,7 +179,7 @@ footer{padding:2rem 1.2rem;flex-direction:column;text-align:center;}
     <a href="#como">Cómo Funciona</a>
     <a href="#para-quien">Para Quién</a>
     <a href="#precios">Precios</a>
-    <a href="/es/asistente" class="nav-cta">Talk to IvA →</a>
+    <a href="/es/asistente" class="nav-cta">Habla con IvA →</a>
   </div>
 </nav>
 
@@ -193,7 +193,7 @@ footer{padding:2rem 1.2rem;flex-direction:column;text-align:center;}
     <h1>No Pierdas Más<br><em>Clientes o Leads.</em></h1>
     <p class="hero-sub">Con un simple link o código QR, tu negocio puede responder a clientes, contestar preguntas y capturar nuevos leads automáticamente — 24/7, en cualquier idioma.</p>
     <div class="hero-btns">
-      <a href="/es/asistente" class="btn-primary">👋 Habla con IvA</a>
+      <a href="#iva" class="btn-primary">👋 Prueba IvA Gratis</a>
       <a href="#como" class="btn-ghost">Cómo Funciona →</a>
     </div>
     <div class="hero-trust">
@@ -288,12 +288,12 @@ footer{padding:2rem 1.2rem;flex-direction:column;text-align:center;}
 </section>
 
 <!-- MEET IVA -->
-<section class="iva-section">
+<section class="iva-section" id="iva">
   <div class="iva-inner">
     <div>
       <div class="iva-tag">Conoce tu Asistente</div>
       <h2 class="iva-title">Conoce a IvA 👋</h2>
-      <p class="iva-sub">Habla con IvA ahora mismo y descubre cómo esta herramienta puede ayudar a tu negocio. IvA es amigable, natural y habla español e inglés.</p>
+      <p class="iva-sub">IvA es el asistente de Ivamar AI — inteligente, amigable y disponible 24/7. Habla con él aquí mismo y descubre cómo puede trabajar para tu negocio.</p>
       <ul class="iva-features">
         <li>Responde preguntas de clientes al instante</li>
         <li>Guía a los clientes naturalmente en la conversación</li>
@@ -302,7 +302,7 @@ footer{padding:2rem 1.2rem;flex-direction:column;text-align:center;}
         <li>Funciona por links, códigos QR o tu página web</li>
         <li>Captura leads y te los envía automáticamente</li>
       </ul>
-      <a href="/es/asistente" class="btn-primary" style="display:inline-flex;">👋 Habla con IvA Ahora</a>
+      
     </div>
     <div class="iva-chat">
       <div class="iva-chat-header">
@@ -329,36 +329,82 @@ footer{padding:2rem 1.2rem;flex-direction:column;text-align:center;}
 </section>
 
 <script>
-const ivaResponses = {
-  'sí, cuéntame más': '¡Perfecto! 😊 IvA es un asistente inteligente que creamos específicamente para tu negocio. Los clientes pueden hablar con él a través de un link o código QR — y responde al instante, 24/7. ¿Qué tipo de negocio tienes?',
-  '¿cuánto cuesta?': "Precios simples 😊 El setup arranca desde $125 (único) y el plan mensual desde $29/mes. Sin contratos, cancela cuando quieras. ¿Quieres ver un demo en vivo para tu tipo de negocio?",
-  'tengo un restaurante': "¡Perfecto! 🍽️ Para restaurantes, IvA puede responder preguntas sobre el menú, horarios, reservaciones y hasta ayudar a tomar pedidos directo por WhatsApp — sin pagar comisiones a Uber Eats. ¿Te gustaría ver cómo se vería para tu restaurante?",
-  'default': "¡Gracias! 😊 La mejor forma de entender cómo IvA puede ayudar a tu negocio es experimentarlo tú mismo. Haz clic en el botón de abajo para tener una conversación completa con IvA."
-};
+let ivaHistory = [];
+let ivaTyping = false;
 
-function ivaReply(el) {
-  const text = el.textContent;
-  addMsg(text, 'user');
-  const key = text.toLowerCase();
-  const reply = ivaResponses[key] || ivaResponses['default'];
-  setTimeout(() => addMsg(reply, 'bot'), 700);
+async function callIvA(message) {
+  try {
+    const response = await fetch('/api/iva-sales', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message: message,
+        history: ivaHistory,
+        lang: 'es',
+        context: {}
+      })
+    });
+    const data = await response.json();
+    const reply = data.reply || 'Disculpa, tuve un problema. Escríbenos por WhatsApp.';
+    ivaHistory.push({ role: 'user', content: message });
+    ivaHistory.push({ role: 'assistant', content: reply });
+    if (ivaHistory.length > 20) ivaHistory = ivaHistory.slice(-20);
+    return reply;
+  } catch(e) {
+    return 'Disculpa, tuve un problema técnico. Por favor escríbenos directamente.';
+  }
 }
 
-function ivaSend() {
-  const input = document.getElementById('ivaInput');
-  if (!input.value.trim()) return;
-  addMsg(input.value, 'user');
-  setTimeout(() => addMsg(ivaResponses['default'], 'bot'), 700);
-  input.value = '';
+function showIvaTyping() {
+  const msgs = document.getElementById('ivaMsgs');
+  const div = document.createElement('div');
+  div.className = 'iv-msg iv-bot';
+  div.id = 'ivaTypingIndicator';
+  div.innerHTML = '<span style="opacity:0.5">IvA está escribiendo...</span>';
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function removeIvaTyping() {
+  const el = document.getElementById('ivaTypingIndicator');
+  if (el) el.remove();
 }
 
 function addMsg(text, type) {
   const msgs = document.getElementById('ivaMsgs');
   const div = document.createElement('div');
   div.className = 'iv-msg iv-' + type;
-  div.textContent = text;
+  div.innerHTML = text.replace(/\n/g, '<br>');
   msgs.appendChild(div);
   msgs.scrollTop = msgs.scrollHeight;
+}
+
+async function ivaReply(el) {
+  if (ivaTyping) return;
+  const text = el.textContent;
+  document.querySelectorAll('.iva-sugg').forEach(b => b.disabled = true);
+  addMsg(text, 'user');
+  ivaTyping = true;
+  showIvaTyping();
+  const reply = await callIvA(text);
+  removeIvaTyping();
+  addMsg(reply, 'bot');
+  ivaTyping = false;
+}
+
+async function ivaSend() {
+  if (ivaTyping) return;
+  const input = document.getElementById('ivaInput');
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  addMsg(text, 'user');
+  ivaTyping = true;
+  showIvaTyping();
+  const reply = await callIvA(text);
+  removeIvaTyping();
+  addMsg(reply, 'bot');
+  ivaTyping = false;
 }
 </script>
 </body>

@@ -427,36 +427,76 @@ footer{padding:2rem 1.2rem;flex-direction:column;text-align:center;}
 </footer>
 
 <script>
-const ivaResponses = {
-  'yes, tell me more': "Great! 😊 IvA is a smart assistant we create specifically for your business. Customers can talk to it through a simple link or QR code — and it responds instantly, 24/7, even when you're busy or sleeping. What type of business do you have?",
-  'how much does it cost?': "Simple pricing 😊 Setup starts at $125 (one-time) and the monthly plan starts from $29/month. No contracts, cancel anytime. Want to see a live demo for your specific business?",
-  'i have a restaurant': "Perfect! 🍽️ For restaurants, IvA can answer questions about your menu, hours, reservations, and even help customers place orders directly via WhatsApp — without Uber Eats commissions. Would you like to see how it would look for your restaurant?",
-  'default': "Thanks for that! 😊 The best way to understand how IvA could help your business is to experience it yourself. Click the button below to have a full conversation with IvA — it'll ask you about your business and show you exactly what's possible."
-};
+let ivaHistory = [];
+let ivaTyping = false;
 
-function ivaReply(el) {
-  const text = el.textContent;
-  addMsg(text, 'user');
-  const key = text.toLowerCase();
-  const reply = ivaResponses[key] || ivaResponses['default'];
-  setTimeout(() => addMsg(reply, 'bot'), 700);
+async function callIvA(message) {
+  try {
+    const response = await fetch('/api/iva-sales', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ message, history: ivaHistory, lang: 'en', context: {} })
+    });
+    const data = await response.json();
+    const reply = data.reply || 'Sorry, I had a technical issue.';
+    ivaHistory.push({ role: 'user', content: message });
+    ivaHistory.push({ role: 'assistant', content: reply });
+    if (ivaHistory.length > 20) ivaHistory = ivaHistory.slice(-20);
+    return reply;
+  } catch(e) { return 'Sorry, I had a technical issue. Please reach us directly.'; }
 }
 
-function ivaSend() {
-  const input = document.getElementById('ivaInput');
-  if (!input.value.trim()) return;
-  addMsg(input.value, 'user');
-  setTimeout(() => addMsg(ivaResponses['default'], 'bot'), 700);
-  input.value = '';
+function showIvaTyping() {
+  const msgs = document.getElementById('ivaMsgs');
+  const div = document.createElement('div');
+  div.className = 'iv-msg iv-bot';
+  div.id = 'ivaTypingIndicator';
+  div.innerHTML = '<span style="opacity:0.5">IvA is typing...</span>';
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+function removeIvaTyping() {
+  const el = document.getElementById('ivaTypingIndicator');
+  if (el) el.remove();
 }
 
 function addMsg(text, type) {
   const msgs = document.getElementById('ivaMsgs');
   const div = document.createElement('div');
   div.className = 'iv-msg iv-' + type;
-  div.textContent = text;
+  div.innerHTML = text.replace(/
+/g, '<br>');
   msgs.appendChild(div);
   msgs.scrollTop = msgs.scrollHeight;
+}
+
+async function ivaReply(el) {
+  if (ivaTyping) return;
+  const text = el.textContent;
+  document.querySelectorAll('.iva-sugg').forEach(b => b.disabled = true);
+  addMsg(text, 'user');
+  ivaTyping = true;
+  showIvaTyping();
+  const reply = await callIvA(text);
+  removeIvaTyping();
+  addMsg(reply, 'bot');
+  ivaTyping = false;
+}
+
+async function ivaSend() {
+  if (ivaTyping) return;
+  const input = document.getElementById('ivaInput');
+  const text = input.value.trim();
+  if (!text) return;
+  input.value = '';
+  addMsg(text, 'user');
+  ivaTyping = true;
+  showIvaTyping();
+  const reply = await callIvA(text);
+  removeIvaTyping();
+  addMsg(reply, 'bot');
+  ivaTyping = false;
 }
 </script>
 </body>
