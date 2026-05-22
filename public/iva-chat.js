@@ -34,12 +34,19 @@ function removeTyping() {
   if (el) el.remove();
 }
 
+function linkify(text) {
+  return text
+    .split('\n').join('<br>')
+    .replace(/https?:\/\/[^\s<]+/g, url => '<a href="' + url + '" target="_blank" style="color:#00C896;text-decoration:underline;">' + url + '</a>')
+    .replace(/ivamarai\.com\/[^\s<,)]+/g, url => '<a href="https://' + url + '" target="_blank" style="color:#00C896;text-decoration:underline;">' + url + '</a>');
+}
+
 function addMsg(text, type) {
   const msgs = document.getElementById('ivaMsgs');
   if (!msgs) return;
   const div = document.createElement('div');
   div.className = 'iv-msg iv-' + type;
-  div.innerHTML = text.split('\n').join('<br>');
+  div.innerHTML = linkify(text);
   msgs.appendChild(div);
   msgs.scrollTop = msgs.scrollHeight;
 }
