@@ -9,7 +9,7 @@ function escapeHtml(str) {
 
 module.exports = function layout({ title = "Ivamar AI", body = "", lang = "es" } = {}) {
   return `<!doctype html>
-<html lang="es">
+<html lang="${lang}">
 <head>
   <meta charset="utf-8" />
 <link rel="icon" href="/favicon.gif" type="image/gif">

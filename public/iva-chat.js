@@ -1,6 +1,6 @@
 let ivaHistory = [];
 let ivaTyping = false;
-const ivaLang = document.documentElement.lang || 'es';
+const ivaLang = document.documentElement.lang === "en" ? "en" : (window.location.pathname.startsWith("/en") ? "en" : "es");
 
 async function callIvA(message) {
   try {
