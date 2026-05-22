@@ -528,7 +528,7 @@ function addMsg(text, type) {
   const msgs = document.getElementById('ivaMsgs');
   const div = document.createElement('div');
   div.className = 'iv-msg iv-' + type;
-  div.innerHTML = text.replace(/\n/g, '<br>');
+  div.innerHTML = text.split('\n').join('<br>');
   msgs.appendChild(div);
   msgs.scrollTop = msgs.scrollHeight;
 }
