@@ -1,78 +1,78 @@
 module.exports = `
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@300;400&display=swap');
-.iva-quote{font-family:'Syne',sans-serif;background:#030508;color:#F0F4FF;margin:-20px;overflow-x:hidden;}
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@300;400&display=swap');
+.iva-quote{font-family:'Plus Jakarta Sans',sans-serif;background:#ffffff;color:#1a1a2e;margin:-20px;overflow-x:hidden;}
 .iva-quote *{box-sizing:border-box;margin:0;padding:0;}
-.iva-quote a{color:#00E5C8;text-decoration:none;}
+.iva-quote a{color:#00C896;text-decoration:none;}
 .iva-q-nav{padding:1.2rem 2rem;display:flex;align-items:center;justify-content:space-between;background:rgba(3,5,8,0.95);border-bottom:1px solid rgba(0,229,200,0.08);position:sticky;top:0;z-index:100;backdrop-filter:blur(12px);}
 .iva-q-logo{display:flex;align-items:center;gap:0.6rem;text-decoration:none!important;}
-.iva-q-logo-text{font-size:1rem;font-weight:700;color:#F0F4FF;letter-spacing:-0.02em;margin-left:0.5rem;}
-.iva-q-logo-text span{color:#00E5C8;}
+.iva-q-logo-text{font-size:1rem;font-weight:700;color:#1a1a2e;letter-spacing:-0.02em;margin-left:0.5rem;}
+.iva-q-logo-text span{color:#00C896;}
 .iva-q-back{font-size:0.82rem;color:#8892A4;border:1px solid rgba(255,255,255,0.1);padding:0.4rem 1rem;border-radius:6px;transition:all 0.2s;text-decoration:none!important;}
-.iva-q-back:hover{color:#F0F4FF;border-color:rgba(255,255,255,0.25);}
+.iva-q-back:hover{color:#1a1a2e;border-color:rgba(255,255,255,0.25);}
 .iva-q-hero{padding:4rem 2rem 3rem;text-align:center;position:relative;overflow:hidden;}
 .iva-q-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 50% 0%,rgba(0,229,200,0.07),transparent 70%);pointer-events:none;}
-.iva-q-tag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:#00E5C8;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:1rem;padding:0.3rem 0.8rem;border:1px solid rgba(0,229,200,0.2);border-radius:4px;}
+.iva-q-tag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:#00C896;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:1rem;padding:0.3rem 0.8rem;border:1px solid rgba(0,229,200,0.2);border-radius:4px;}
 .iva-q-hero h1{font-size:clamp(2.2rem,5vw,3.5rem);font-weight:800;letter-spacing:-0.03em;line-height:1.05;margin-bottom:1rem;position:relative;}
-.iva-q-hero h1 em{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:#00E5C8;}
+.iva-q-hero h1 em{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:#00C896;}
 .iva-q-hero p{color:#8892A4;font-size:1rem;line-height:1.7;max-width:480px;margin:0 auto;font-weight:400;position:relative;}
 .iva-q-content{max-width:680px;margin:0 auto;padding:2rem 2rem 5rem;}
-.iva-q-card{background:#0D1420;border:1px solid rgba(255,255,255,0.06);border-radius:20px;padding:2.5rem;margin-bottom:1.5rem;position:relative;overflow:hidden;}
-.iva-q-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,#00E5C8,transparent);}
-.iva-q-card-title{font-size:0.72rem;font-family:'JetBrains Mono',monospace;color:#00E5C8;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:1.5rem;display:flex;align-items:center;gap:0.5rem;}
-.iva-q-card-title::before{content:'';width:16px;height:1px;background:#00E5C8;}
+.iva-q-card{background:#f8f9fa;border:1px solid rgba(255,255,255,0.06);border-radius:20px;padding:2.5rem;margin-bottom:1.5rem;position:relative;overflow:hidden;}
+.iva-q-card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,#00C896,transparent);}
+.iva-q-card-title{font-size:0.72rem;font-family:'JetBrains Mono',monospace;color:#00C896;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:1.5rem;display:flex;align-items:center;gap:0.5rem;}
+.iva-q-card-title::before{content:'';width:16px;height:1px;background:#00C896;}
 .iva-q-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;}
 .iva-q-row.single{grid-template-columns:1fr;}
 .iva-q-field{display:flex;flex-direction:column;gap:0.4rem;}
 .iva-q-field label{font-size:0.75rem;color:#8892A4;letter-spacing:0.05em;font-weight:500;}
 .iva-q-field input,
 .iva-q-field select,
-.iva-q-field textarea{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:0.75rem 1rem;color:#F0F4FF;font-family:'Syne',sans-serif;font-size:0.9rem;transition:border-color 0.2s,box-shadow 0.2s;outline:none;width:100%;}
+.iva-q-field textarea{background:rgba(0,0,0,.02);border:1px solid rgba(255,255,255,0.1);border-radius:10px;padding:0.75rem 1rem;color:#1a1a2e;font-family:'Plus Jakarta Sans',sans-serif;font-size:0.9rem;transition:border-color 0.2s,box-shadow 0.2s;outline:none;width:100%;}
 .iva-q-field input:focus,
 .iva-q-field select:focus,
-.iva-q-field textarea:focus{border-color:#00E5C8;box-shadow:0 0 0 3px rgba(0,229,200,0.08);}
+.iva-q-field textarea:focus{border-color:#00C896;box-shadow:0 0 0 3px rgba(0,229,200,0.08);}
 .iva-q-field select{cursor:pointer;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238892A4' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 1rem center;}
-.iva-q-field select option{background:#0D1420;color:#F0F4FF;}
+.iva-q-field select option{background:#f8f9fa;color:#1a1a2e;}
 .iva-q-field textarea{resize:vertical;min-height:100px;line-height:1.6;}
 .iva-q-price-alert{background:rgba(0,229,200,0.06);border:1px solid rgba(0,229,200,0.2);border-radius:12px;padding:1rem 1.2rem;margin-bottom:1.5rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;}
 .iva-q-price-alert-text{font-size:0.85rem;color:#8892A4;}
-.iva-q-price-alert-text strong{color:#F0F4FF;}
-.iva-q-price-badge{font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:#00E5C8;background:rgba(0,229,200,0.1);border:1px solid rgba(0,229,200,0.3);padding:0.3rem 0.8rem;border-radius:100px;white-space:nowrap;}
+.iva-q-price-alert-text strong{color:#1a1a2e;}
+.iva-q-price-badge{font-family:'JetBrains Mono',monospace;font-size:0.8rem;color:#00C896;background:rgba(0,229,200,0.1);border:1px solid rgba(0,229,200,0.3);padding:0.3rem 0.8rem;border-radius:100px;white-space:nowrap;}
 .iva-q-plans{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;}
 .iva-q-plan{border:1.5px solid rgba(255,255,255,0.08);border-radius:12px;padding:1.2rem;cursor:pointer;transition:all 0.2s;position:relative;}
 .iva-q-plan:hover{border-color:rgba(0,229,200,0.3);}
-.iva-q-plan.selected{border-color:#00E5C8;background:rgba(0,229,200,0.05);}
+.iva-q-plan.selected{border-color:#00C896;background:rgba(0,229,200,0.05);}
 .iva-q-plan-name{font-size:0.95rem;font-weight:700;margin-bottom:0.3rem;}
-.iva-q-plan-price{font-size:0.8rem;color:#00E5C8;font-family:'JetBrains Mono',monospace;margin-bottom:0.5rem;}
+.iva-q-plan-price{font-size:0.8rem;color:#00C896;font-family:'JetBrains Mono',monospace;margin-bottom:0.5rem;}
 .iva-q-plan-desc{font-size:0.75rem;color:#8892A4;line-height:1.4;}
 .iva-q-plan-check{position:absolute;top:0.8rem;right:0.8rem;width:20px;height:20px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.15);display:flex;align-items:center;justify-content:center;font-size:0.65rem;transition:all 0.2s;}
-.iva-q-plan.selected .iva-q-plan-check{background:#00E5C8;border-color:#00E5C8;color:#030508;}
+.iva-q-plan.selected .iva-q-plan-check{background:#00C896;border-color:#00C896;color:#ffffff;}
 .iva-agreement{background:rgba(99,91,255,0.04);border:1.5px solid rgba(99,91,255,0.2);border-radius:14px;padding:1.5rem;margin-bottom:1.5rem;}
-.iva-agreement-title{font-size:0.95rem;font-weight:700;color:#F0F4FF;margin-bottom:1rem;display:flex;align-items:center;gap:0.5rem;}
+.iva-agreement-title{font-size:0.95rem;font-weight:700;color:#1a1a2e;margin-bottom:1rem;display:flex;align-items:center;gap:0.5rem;}
 .iva-agreement-summary{font-size:0.82rem;color:#8892A4;line-height:1.7;margin-bottom:1.2rem;}
-.iva-agreement-summary strong{color:#F0F4FF;}
+.iva-agreement-summary strong{color:#1a1a2e;}
 .iva-checkbox-row{display:flex;align-items:flex-start;gap:0.7rem;margin-bottom:0.8rem;padding:0.7rem;border-radius:8px;transition:background 0.2s;}
 .iva-checkbox-row:hover{background:rgba(255,255,255,0.02);}
-.iva-checkbox{margin-top:0.2rem;width:18px;height:18px;cursor:pointer;accent-color:#00E5C8;flex-shrink:0;}
+.iva-checkbox{margin-top:0.2rem;width:18px;height:18px;cursor:pointer;accent-color:#00C896;flex-shrink:0;}
 .iva-checkbox-label{font-size:0.82rem;color:#8892A4;line-height:1.5;cursor:pointer;flex:1;}
-.iva-checkbox-label strong{color:#F0F4FF;}
-.iva-checkbox-label a{color:#00E5C8;text-decoration:underline;}
+.iva-checkbox-label strong{color:#1a1a2e;}
+.iva-checkbox-label a{color:#00C896;text-decoration:underline;}
 .iva-q-stripe-info{background:rgba(99,91,255,0.06);border:1px solid rgba(99,91,255,0.2);border-radius:12px;padding:1rem 1.2rem;margin-bottom:1.5rem;display:flex;align-items:flex-start;gap:0.8rem;}
 .iva-q-stripe-info-icon{font-size:1.2rem;flex-shrink:0;margin-top:0.1rem;}
 .iva-q-stripe-info-text{font-size:0.82rem;color:#8892A4;line-height:1.6;}
-.iva-q-stripe-info-text strong{color:#F0F4FF;}
-.iva-q-stripe-btn{width:100%;padding:1rem;background:linear-gradient(135deg,#635BFF,#4B44CC);color:white;border:none;border-radius:12px;font-family:'Syne',sans-serif;font-weight:700;font-size:1.05rem;cursor:pointer;transition:all 0.25s;display:flex;align-items:center;justify-content:center;gap:0.6rem;margin-bottom:0.8rem;}
+.iva-q-stripe-info-text strong{color:#1a1a2e;}
+.iva-q-stripe-btn{width:100%;padding:1rem;background:linear-gradient(135deg,#635BFF,#4B44CC);color:white;border:none;border-radius:12px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:1.05rem;cursor:pointer;transition:all 0.25s;display:flex;align-items:center;justify-content:center;gap:0.6rem;margin-bottom:0.8rem;}
 .iva-q-stripe-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 30px rgba(99,91,255,0.3);}
 .iva-q-stripe-btn:disabled{opacity:0.4;cursor:not-allowed;background:#444;}
 .iva-q-divider{text-align:center;font-size:0.78rem;color:#4A5568;margin:0.8rem 0;letter-spacing:0.05em;}
-.iva-q-wa-btn{width:100%;padding:1rem;background:linear-gradient(135deg,#25D366,#128C7E);color:white;border:none;border-radius:12px;font-family:'Syne',sans-serif;font-weight:700;font-size:1rem;cursor:pointer;transition:all 0.25s;display:flex;align-items:center;justify-content:center;gap:0.6rem;}
+.iva-q-wa-btn{width:100%;padding:1rem;background:linear-gradient(135deg,#25D366,#128C7E);color:white;border:none;border-radius:12px;font-family:'Plus Jakarta Sans',sans-serif;font-weight:700;font-size:1rem;cursor:pointer;transition:all 0.25s;display:flex;align-items:center;justify-content:center;gap:0.6rem;}
 .iva-q-wa-btn:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(37,211,102,0.25);}
 .iva-q-note{text-align:center;font-size:0.78rem;color:#4A5568;margin-top:1rem;line-height:1.5;}
-.iva-q-footer{padding:2rem;border-top:1px solid rgba(255,255,255,0.04);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;font-size:0.78rem;color:#4A5568;}
+.iva-q-footer{padding:2rem;border-top:1px solid rgba(0,0,0,.02);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;font-size:0.78rem;color:#4A5568;}
 .iva-q-footer strong{color:#8892A4;}
 .iva-q-footer-links{display:flex;gap:1.2rem;}
 .iva-q-footer-links a{color:#4A5568;text-decoration:none;transition:color 0.2s;}
-.iva-q-footer-links a:hover{color:#00E5C8;}
+.iva-q-footer-links a:hover{color:#00C896;}
 @media(max-width:600px){.iva-q-row{grid-template-columns:1fr;}.iva-q-plans{grid-template-columns:1fr;}.iva-q-footer{flex-direction:column;text-align:center;}}
 </style>
 
@@ -151,7 +151,7 @@ module.exports = `
       <div class="iva-q-price-alert" id="priceAlert" style="display:none;">
         <div class="iva-q-price-alert-text">
           Plan recomendado para <strong id="alertBizType">tu negocio</strong>:
-          <span id="alertPlanName" style="color:#00E5C8;font-weight:600;"></span>
+          <span id="alertPlanName" style="color:#00C896;font-weight:600;"></span>
         </div>
         <div class="iva-q-price-badge" id="alertPrice"></div>
       </div>
@@ -186,7 +186,7 @@ module.exports = `
 
     <div class="iva-q-card">
       <div class="iva-q-card-title">Elige tu plan</div>
-<p style="font-size:0.78rem;color:#8892A4;margin-bottom:0.8rem;">🤖 <strong style="color:#F0F4FF">Solo Asistente</strong> — integración a tu web existente</p>
+<p style="font-size:0.78rem;color:#8892A4;margin-bottom:0.8rem;">🤖 <strong style="color:#1a1a2e">Solo Asistente</strong> — integración a tu web existente</p>
       <div class="iva-q-plans">
         <div class="iva-q-plan selected" id="plan1" onclick="selectPlan(this,'Asistente Starter')">
           <div class="iva-q-plan-check">✓</div>
@@ -201,7 +201,7 @@ module.exports = `
           <div class="iva-q-plan-desc">Todo en Starter + WhatsApp + Entrenamiento avanzado + Soporte prioritario</div>
         </div>
       </div>
-      <p style="font-size:0.78rem;color:#8892A4;margin:1rem 0 0.8rem;">🌐 <strong style="color:#F0F4FF">Asistente + Página Web</strong> — también creamos tu página</p>
+      <p style="font-size:0.78rem;color:#8892A4;margin:1rem 0 0.8rem;">🌐 <strong style="color:#1a1a2e">Asistente + Página Web</strong> — también creamos tu página</p>
       <div class="iva-q-plans">
         <div class="iva-q-plan" id="plan3" onclick="selectPlan(this,'Página + Asistente Starter')">
           <div class="iva-q-plan-check"></div>
@@ -216,7 +216,7 @@ module.exports = `
           <div class="iva-q-plan-desc">Todo en Growth + Página personalizada + WhatsApp + Pedidos</div>
         </div>
       </div>
-      <p style="font-size:0.72rem;color:#4A5568;margin-top:1rem;text-align:center;">¿Necesitas algo personalizado? <a href="https://wa.me/18635216708" target="_blank" style="color:#00E5C8">Contáctanos por WhatsApp →</a></p>
+      <p style="font-size:0.72rem;color:#4A5568;margin-top:1rem;text-align:center;">¿Necesitas algo personalizado? <a href="https://wa.me/18635216708" target="_blank" style="color:#00C896">Contáctanos por WhatsApp →</a></p>
     </div>
 
     <div class="iva-q-card">

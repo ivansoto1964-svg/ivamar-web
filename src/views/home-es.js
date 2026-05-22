@@ -198,7 +198,7 @@ footer{padding:2rem 1.2rem;flex-direction:column;text-align:center;}
     </div>
     <div class="hero-trust">
       <div class="trust-item"><span class="trust-icon">✦</span> Trabaja 24/7</div>
-      <div class="trust-item"><span class="trust-icon">✦</span> English e inglés</div>
+      <div class="trust-item"><span class="trust-icon">✦</span> Español e inglés</div>
       <div class="trust-item"><span class="trust-icon">✦</span> Sin contratos</div>
       <div class="trust-item"><span class="trust-icon">✦</span> Listo en 48hrs</div>
     </div>
@@ -281,7 +281,7 @@ footer{padding:2rem 1.2rem;flex-direction:column;text-align:center;}
     <div class="biz-card"><div class="biz-icon">💅</div><div class="biz-name">Salones & Spas</div></div>
     <div class="biz-card"><div class="biz-icon">🚗</div><div class="biz-name">Dealers</div></div>
     <div class="biz-card"><div class="biz-icon">❄️</div><div class="biz-name">AC & HVAC</div></div>
-    <div class="biz-card"><div class="biz-icon">💰</div><div class="biz-name">Financial</div></div>
+    <div class="biz-card"><div class="biz-icon">💰</div><div class="biz-name">Financieras</div></div>
     <div class="biz-card"><div class="biz-icon">🐾</div><div class="biz-name">Pet Shops</div></div>
     <div class="biz-card"><div class="biz-icon">✨</div><div class="biz-name">Cualquier Negocio</div></div>
   </div>
@@ -297,12 +297,12 @@ footer{padding:2rem 1.2rem;flex-direction:column;text-align:center;}
       <ul class="iva-features">
         <li>Responde preguntas de clientes al instante</li>
         <li>Guía a los clientes naturalmente en la conversación</li>
-        <li>Trabaja 24/7 — even while you sleep</li>
+        <li>Trabaja 24/7 — incluso mientras duermes</li>
         <li>Habla español, inglés y cualquier idioma</li>
         <li>Funciona por links, códigos QR o tu página web</li>
         <li>Captura leads y te los envía automáticamente</li>
       </ul>
-      <a href="/es/asistente" class="btn-primary" style="display:inline-flex;">👋 Habla con IvA Now</a>
+      <a href="/es/asistente" class="btn-primary" style="display:inline-flex;">👋 Habla con IvA Ahora</a>
     </div>
     <div class="iva-chat">
       <div class="iva-chat-header">
@@ -313,14 +313,27 @@ footer{padding:2rem 1.2rem;flex-direction:column;text-align:center;}
         </div>
       </div>
       <div class="iva-msgs" id="ivaMsgs">
-        <div class="iv-msg iv-bot">Hola 👋 Gracias por visitar Ivamar AI.
+        <div class="iv-msg iv-bot">Hola 👋 Gracias por visitar Ivamar AI.<br><br>Muchos negocios pierden clientes simplemente porque nadie responde a tiempo.<br><br>¿Te gustaría saber si esta herramienta puede ayudar a tu negocio? 😊</div>
+      </div>
+      <div class="iva-suggs">
+        <button class="iva-sugg" onclick="ivaReply(this)">Sí, cuéntame más</button>
+        <button class="iva-sugg" onclick="ivaReply(this)">¿Cuánto cuesta?</button>
+        <button class="iva-sugg" onclick="ivaReply(this)">Tengo un restaurante</button>
+      </div>
+      <div class="iva-input-row">
+        <input class="iva-input" id="ivaInput" placeholder="Escribe aquí..." onkeydown="if(event.key==='Enter')ivaSend()">
+        <button class="iva-send" onclick="ivaSend()">➤</button>
+      </div>
+    </div>
+  </div>
+</section>
 
-Muchos negocios pierden clientes simplemente porque nadie responde a tiempo.
-
-¿Te gustaría saber si esta herramienta puede ayudar a tu negocio? 😊",
-  'how much does it cost?': "Simple pricing 😊 Setup starts at $125 (one-time) and the monthly plan starts from $29/month. Sin contratos, cancel anytime. Want to see a live demo for your specific business?",
-  'i have a restaurant': "Perfect! 🍽️ For restaurants, IvA can answer questions about your menu, hours, reservations, and even help customers place orders directly via WhatsApp — without Uber Eats commissions. Would you like to see how it would look for your restaurant?",
-  'default': "Thanks for that! 😊 The best way to understand how IvA could help your business is to experience it yourself. Click the button below to have a full conversation with IvA — it'll ask you about your business and show you exactly what's possible."
+<script>
+const ivaResponses = {
+  'sí, cuéntame más': '¡Perfecto! 😊 IvA es un asistente inteligente que creamos específicamente para tu negocio. Los clientes pueden hablar con él a través de un link o código QR — y responde al instante, 24/7. ¿Qué tipo de negocio tienes?',
+  '¿cuánto cuesta?': "Precios simples 😊 El setup arranca desde $125 (único) y el plan mensual desde $29/mes. Sin contratos, cancela cuando quieras. ¿Quieres ver un demo en vivo para tu tipo de negocio?",
+  'tengo un restaurante': "¡Perfecto! 🍽️ Para restaurantes, IvA puede responder preguntas sobre el menú, horarios, reservaciones y hasta ayudar a tomar pedidos directo por WhatsApp — sin pagar comisiones a Uber Eats. ¿Te gustaría ver cómo se vería para tu restaurante?",
+  'default': "¡Gracias! 😊 La mejor forma de entender cómo IvA puede ayudar a tu negocio es experimentarlo tú mismo. Haz clic en el botón de abajo para tener una conversación completa con IvA."
 };
 
 function ivaReply(el) {
