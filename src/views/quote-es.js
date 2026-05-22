@@ -87,7 +87,7 @@ module.exports = `
 
   <div class="iva-q-hero">
     <div class="iva-q-tag">Empezar · Get Started</div>
-    <h1>Construyamos tu<br><em>página con IA</em></h1>
+    <h1>Obtén tu<br><em>Asistente Digital</em></h1>
     <p>Llena el formulario, elige tu plan, acepta los términos y paga seguro con Stripe. Tu página estará en vivo en 48 horas.</p>
   </div>
 
@@ -192,7 +192,7 @@ module.exports = `
           <div class="iva-q-plan-check">✓</div>
           <div class="iva-q-plan-name">⚡ Starter</div>
           <div class="iva-q-plan-price" id="plan1Price">$125 setup + $29/mes</div>
-          <div class="iva-q-plan-desc">Asistente IA · ES & EN · Captura de leads · Integración web</div>
+          <div class="iva-q-plan-desc">Asistente Digital · ES & EN · Captura de leads · Integración web</div>
         </div>
         <div class="iva-q-plan" id="plan2" onclick="selectPlan(this,'Asistente Growth')">
           <div class="iva-q-plan-check"></div>
@@ -207,7 +207,7 @@ module.exports = `
           <div class="iva-q-plan-check"></div>
           <div class="iva-q-plan-name">⚡ Starter + Página</div>
           <div class="iva-q-plan-price" id="plan3Price">$250 setup + $29/mes</div>
-          <div class="iva-q-plan-desc">Página personalizada + asistente IA · Mobile-first · Tu branding</div>
+          <div class="iva-q-plan-desc">Página personalizada + Asistente Digital · Mobile-first · Tu branding</div>
         </div>
         <div class="iva-q-plan" id="plan4" onclick="selectPlan(this,'Página + Asistente Growth')">
           <div class="iva-q-plan-check"></div>

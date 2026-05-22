@@ -90,7 +90,7 @@ module.exports = `
 
   <div class="iva-q-hero">
     <div class="iva-q-tag">Get Started · Empezar</div>
-    <h1>Let's build your<br><em>AI-powered page</em></h1>
+    <h1>Let's build your<br><em>Digital Assistant</em></h1>
     <p>Fill out the form, choose your plan, accept the terms and pay securely with Stripe. Your page will be live in 48 hours.</p>
   </div>
 
@@ -192,13 +192,13 @@ module.exports = `
     <!-- PLAN -->
     <div class="iva-q-card">
       <div class="iva-q-card-title">Choose your plan</div>
-      <p style="font-size:0.78rem;color:#8892A4;margin-bottom:0.8rem;">🤖 <strong style="color:#1a1a2e">AI Assistant Only</strong> — integrate into your existing website</p>
+      <p style="font-size:0.78rem;color:#8892A4;margin-bottom:0.8rem;">🤖 <strong style="color:#1a1a2e">Digital Assistant Only</strong> — integrate into your existing website</p>
       <div class="iva-q-plans">
         <div class="iva-q-plan selected" id="plan1" onclick="selectPlan(this,'Assistant Starter')">
           <div class="iva-q-plan-check">✓</div>
           <div class="iva-q-plan-name">⚡ Starter</div>
           <div class="iva-q-plan-price" id="plan1Price">$125 setup + $29/mo</div>
-          <div class="iva-q-plan-desc">AI assistant · EN & ES · Basic lead capture · Web integration</div>
+          <div class="iva-q-plan-desc">Digital assistant · EN & ES · Basic lead capture · Web integration</div>
         </div>
         <div class="iva-q-plan" id="plan2" onclick="selectPlan(this,'Assistant Growth')">
           <div class="iva-q-plan-check"></div>
@@ -213,7 +213,7 @@ module.exports = `
           <div class="iva-q-plan-check"></div>
           <div class="iva-q-plan-name">⚡ Starter + Page</div>
           <div class="iva-q-plan-price" id="plan3Price">$250 setup + $29/mo</div>
-          <div class="iva-q-plan-desc">Custom landing page + AI assistant · Mobile-first · Your branding</div>
+          <div class="iva-q-plan-desc">Custom landing page + Digital assistant · Mobile-first · Your branding</div>
         </div>
         <div class="iva-q-plan" id="plan4" onclick="selectPlan(this,'Landing + Assistant Growth')">
           <div class="iva-q-plan-check"></div>
@@ -231,7 +231,7 @@ module.exports = `
       <div class="iva-q-row single">
         <div class="iva-q-field">
           <label>Tell us about your business (optional)</label>
-          <textarea id="qNotes" placeholder="What do you sell? Any special requests? Preferred name for your AI assistant?"></textarea>
+          <textarea id="qNotes" placeholder="What do you sell? Any special requests? Preferred name for your Digital assistant?"></textarea>
         </div>
       </div>
     </div>
