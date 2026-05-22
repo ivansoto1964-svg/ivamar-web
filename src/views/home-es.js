@@ -86,29 +86,29 @@ nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.95);backdrop
 .biz-name{font-size:0.82rem;font-weight:700;color:#1a1a2e;}
 
 /* MEET IVA */
-.iva-section{padding:5rem 2rem;background:linear-gradient(135deg,#1a1a2e 0%,#0f3460 100%);}
+.iva-section{padding:5rem 2rem;background:#f0fdf9;border-top:1px solid #a7f3d0;border-bottom:1px solid #a7f3d0;}
 .iva-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;}
 .iva-tag{font-size:0.72rem;font-weight:700;color:#00C896;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.8rem;}
-.iva-title{font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:800;letter-spacing:-0.03em;color:#fff;margin-bottom:1rem;line-height:1.2;}
-.iva-sub{font-size:0.95rem;color:rgba(255,255,255,0.6);line-height:1.8;margin-bottom:1.5rem;}
+.iva-title{font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:800;letter-spacing:-0.03em;color:#1a1a2e;margin-bottom:1rem;line-height:1.2;}
+.iva-sub{font-size:0.95rem;color:#555;line-height:1.8;margin-bottom:1.5rem;}
 .iva-features{list-style:none;display:flex;flex-direction:column;gap:0.8rem;margin-bottom:2rem;}
-.iva-features li{display:flex;align-items:flex-start;gap:0.7rem;font-size:0.85rem;color:rgba(255,255,255,0.7);}
+.iva-features li{display:flex;align-items:flex-start;gap:0.7rem;font-size:0.85rem;color:#555;}
 .iva-features li::before{content:'✦';color:#00C896;flex-shrink:0;font-size:0.7rem;margin-top:3px;}
-.iva-chat{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:20px;overflow:hidden;}
-.iva-chat-header{padding:1rem 1.2rem;background:rgba(0,200,150,0.08);border-bottom:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;gap:0.8rem;}
+.iva-chat{background:#fff;border:1px solid #e5e7eb;border-radius:20px;overflow:hidden;}
+.iva-chat-header{padding:1rem 1.2rem;background:#f0fdf9;border-bottom:1px solid #a7f3d0;display:flex;align-items:center;gap:0.8rem;}
 .iva-avatar{width:36px;height:36px;background:linear-gradient(135deg,#00C896,#0088CC);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;}
-.iva-name{font-size:0.85rem;font-weight:700;color:#fff;}
+.iva-name{font-size:0.85rem;font-weight:700;color:#1a1a2e;}
 .iva-online{font-size:0.65rem;color:#00C896;}
 .iva-msgs{padding:1.2rem;display:flex;flex-direction:column;gap:0.8rem;min-height:200px;}
 .iv-msg{max-width:85%;padding:0.75rem 1rem;font-size:0.82rem;line-height:1.6;}
-.iv-bot{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);color:#fff;border-radius:4px 12px 12px 12px;align-self:flex-start;}
-.iv-user{background:rgba(0,200,150,0.15);border:1px solid rgba(0,200,150,0.2);color:#fff;border-radius:12px 4px 12px 12px;align-self:flex-end;}
+.iv-bot{background:#f8f9fa;border:1px solid #f0f0f0;color:#1a1a2e;border-radius:4px 12px 12px 12px;align-self:flex-start;}
+.iv-user{background:rgba(0,200,150,0.15);border:1px solid rgba(0,200,150,0.2);color:#1a1a2e;border-radius:12px 4px 12px 12px;align-self:flex-end;}
 .iva-suggs{padding:0 1rem 0.8rem;display:flex;flex-wrap:wrap;gap:0.4rem;}
-.iva-sugg{font-size:0.7rem;padding:0.3rem 0.7rem;border:1px solid rgba(255,255,255,0.12);border-radius:20px;color:rgba(255,255,255,0.5);cursor:pointer;transition:all 0.2s;background:transparent;font-family:'Plus Jakarta Sans',sans-serif;}
+.iva-sugg{font-size:0.7rem;padding:0.3rem 0.7rem;border:1px solid #e5e7eb;border-radius:20px;color:#666;cursor:pointer;transition:all 0.2s;background:transparent;font-family:'Plus Jakarta Sans',sans-serif;}
 .iva-sugg:hover{border-color:#00C896;color:#00C896;}
-.iva-input-row{padding:0.8rem;border-top:1px solid rgba(255,255,255,0.06);display:flex;gap:0.5rem;}
-.iva-input{flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:0.6rem 0.9rem;color:#fff;font-size:0.78rem;outline:none;font-family:'Plus Jakarta Sans',sans-serif;}
-.iva-input::placeholder{color:rgba(255,255,255,0.25);}
+.iva-input-row{padding:0.8rem;border-top:1px solid #f0f0f0;display:flex;gap:0.5rem;}
+.iva-input{flex:1;background:#fff;border:1px solid #e5e7eb;border-radius:8px;padding:0.6rem 0.9rem;color:#1a1a2e;font-size:0.78rem;outline:none;font-family:'Plus Jakarta Sans',sans-serif;}
+.iva-input::placeholder{color:#aaa;}
 .iva-send{background:#00C896;border:none;border-radius:8px;width:34px;height:34px;cursor:pointer;font-size:0.85rem;}
 
 /* YOUR ASSISTANT */
@@ -177,8 +177,8 @@ footer{padding:2rem 1.2rem;flex-direction:column;text-align:center;}
   </a>
   <div class="nav-links">
     <a href="#como">Cómo Funciona</a>
-    <a href="#para-quien">Who It's For</a>
-    <a href="#precios">Pricing</a>
+    <a href="#para-quien">Para Quién</a>
+    <a href="#precios">Precios</a>
     <a href="/es/asistente" class="nav-cta">Talk to IvA →</a>
   </div>
 </nav>
@@ -236,7 +236,7 @@ footer{padding:2rem 1.2rem;flex-direction:column;text-align:center;}
 <section class="how" id="como">
   <div class="how-inner">
     <div class="section-tag">Proceso Simple</div>
-    <h2 class="section-title">How It <em>Works</em></h2>
+    <h2 class="section-title">Cómo <em>Funciona</em></h2>
     <p class="section-sub">Cuatro pasos simples — sin conocimientos técnicos.</p>
     <div class="steps">
       <div class="step">
@@ -269,7 +269,7 @@ footer{padding:2rem 1.2rem;flex-direction:column;text-align:center;}
 <!-- PERFECT FOR -->
 <section class="for-section" id="para-quien">
   <div class="section-tag">Industrias</div>
-  <h2 class="section-title">Perfect <em>For</em></h2>
+  <h2 class="section-title">Perfecto <em>Para</em></h2>
   <p class="section-sub">Cualquier negocio local que quiera responder más rápido y capturar más leads.</p>
   <div class="biz-grid">
     <div class="biz-card"><div class="biz-icon">🏠</div><div class="biz-name">Realtors</div></div>

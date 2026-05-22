@@ -101,7 +101,7 @@ module.exports = `
 .demo-item-notes{margin-top:0.5rem;}
 .demo-item-notes-btn{background:transparent;border:1px dashed rgba(201,168,76,0.2);color:var(--muted3);font-size:0.72rem;padding:0.3rem 0.7rem;border-radius:6px;cursor:pointer;transition:all 0.2s;font-family:'DM Sans',sans-serif;}
 .demo-item-notes-btn:hover{border-color:rgba(201,168,76,0.5);color:var(--gold);}
-.demo-item-notes-input{width:100%;margin-top:0.4rem;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.15);border-radius:7px;padding:0.5rem 0.7rem;color:var(--cream);font-family:'DM Sans',sans-serif;font-size:0.78rem;outline:none;resize:none;display:none;}
+.demo-item-notes-input{width:100%;margin-top:0.4rem;background:rgba(0,0,0,.02);border:1px solid rgba(201,168,76,0.15);border-radius:7px;padding:0.5rem 0.7rem;color:var(--cream);font-family:'DM Sans',sans-serif;font-size:0.78rem;outline:none;resize:none;display:none;}
 .demo-item-notes-input.visible{display:block;}
 .demo-item-notes-input::placeholder{color:var(--muted3);}
 .demo-summary{background:rgba(201,168,76,0.05);border:1px solid rgba(201,168,76,0.12);border-radius:10px;padding:0.9rem 1.1rem;margin:1.2rem 0;}
@@ -109,7 +109,7 @@ module.exports = `
 .demo-summary-row.total{color:var(--cream);font-weight:700;font-size:1rem;margin-top:0.5rem;padding-top:0.5rem;border-top:1px solid rgba(255,255,255,0.06);margin-bottom:0;}
 .demo-form-group{margin-bottom:0.8rem;}
 .demo-form-group label{display:block;font-size:0.72rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted3);margin-bottom:0.3rem;}
-.demo-form-group input{width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:0.65rem 0.9rem;color:var(--cream);font-family:'DM Sans',sans-serif;font-size:0.9rem;outline:none;transition:border-color 0.2s;}
+.demo-form-group input{width:100%;background:rgba(0,0,0,.02);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:0.65rem 0.9rem;color:var(--cream);font-family:'DM Sans',sans-serif;font-size:0.9rem;outline:none;transition:border-color 0.2s;}
 .demo-form-group input:focus{border-color:var(--verde);}
 .demo-action-btns{display:flex;flex-direction:column;gap:0.7rem;margin-top:1rem;}
 .demo-btn{width:100%;padding:0.9rem;border-radius:10px;border:none;font-family:'DM Sans',sans-serif;font-size:1rem;font-weight:700;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;gap:0.5rem;}
@@ -156,7 +156,7 @@ module.exports = `
 .demo-suggestion{padding:0.4rem 0.9rem;background:rgba(26,92,58,0.1);border:1px solid rgba(26,92,58,0.25);border-radius:100px;font-size:0.75rem;color:#4CAF50;cursor:pointer;transition:all 0.2s;white-space:nowrap;}
 .demo-suggestion:hover{background:rgba(26,92,58,0.2);}
 .demo-chat-input-area{padding:1rem 1.2rem;border-top:1px solid rgba(201,168,76,0.08);display:flex;gap:0.8rem;align-items:center;}
-.demo-chat-input{flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.12);border-radius:8px;padding:0.75rem 1rem;color:var(--cream);font-family:'DM Sans',sans-serif;font-size:0.88rem;outline:none;transition:border-color 0.2s;}
+.demo-chat-input{flex:1;background:rgba(0,0,0,.02);border:1px solid rgba(201,168,76,0.12);border-radius:8px;padding:0.75rem 1rem;color:var(--cream);font-family:'DM Sans',sans-serif;font-size:0.88rem;outline:none;transition:border-color 0.2s;}
 .demo-chat-input:focus{border-color:rgba(26,92,58,0.5);}
 .demo-chat-input::placeholder{color:var(--muted3);}
 .demo-chat-send{width:38px;height:38px;background:var(--verde);border:none;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1rem;transition:all 0.2s;flex-shrink:0;color:white;}
@@ -177,7 +177,7 @@ module.exports = `
 .demo-float-close{background:transparent;border:none;color:var(--muted3);font-size:1rem;cursor:pointer;}
 .demo-float-msgs{flex:1;overflow-y:auto;padding:0.8rem;display:flex;flex-direction:column;gap:0.7rem;}
 .demo-float-input-area{padding:0.7rem 0.8rem;border-top:1px solid rgba(201,168,76,0.08);display:flex;gap:0.5rem;}
-.demo-float-input{flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(201,168,76,0.12);border-radius:7px;padding:0.6rem 0.8rem;color:var(--cream);font-family:'DM Sans',sans-serif;font-size:0.8rem;outline:none;}
+.demo-float-input{flex:1;background:rgba(0,0,0,.02);border:1px solid rgba(201,168,76,0.12);border-radius:7px;padding:0.6rem 0.8rem;color:var(--cream);font-family:'DM Sans',sans-serif;font-size:0.8rem;outline:none;}
 .demo-float-input::placeholder{color:var(--muted3);}
 .demo-float-send{width:30px;height:30px;background:var(--verde);border:none;border-radius:7px;cursor:pointer;font-size:0.85rem;color:white;flex-shrink:0;}
 
@@ -186,9 +186,9 @@ module.exports = `
 .demo-cta-bottom h3{font-family:'Playfair Display',serif;font-size:2rem;color:var(--gold);margin-bottom:0.8rem;}
 .demo-cta-bottom p{color:var(--muted3);font-size:0.9rem;margin-bottom:1.5rem;max-width:420px;margin-left:auto;margin-right:auto;line-height:1.6;}
 .demo-cta-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
-.demo-cta-btn-main{display:inline-flex;align-items:center;gap:0.5rem;background:#00E5C8;color:#030508;padding:0.8rem 1.8rem;border-radius:8px;font-weight:700;font-size:0.9rem;text-decoration:none;transition:all 0.25s;}
+.demo-cta-btn-main{display:inline-flex;align-items:center;gap:0.5rem;background:#00C896;color:#ffffff;padding:0.8rem 1.8rem;border-radius:8px;font-weight:700;font-size:0.9rem;text-decoration:none;transition:all 0.25s;}
 .demo-cta-btn-main:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(0,229,200,0.25);}
-.demo-cta-btn-ghost{display:inline-flex;align-items:center;gap:0.5rem;background:transparent;color:var(--cream);padding:0.8rem 1.8rem;border-radius:8px;font-weight:600;font-size:0.9rem;text-decoration:none;transition:all 0.25s;border:1px solid rgba(255,255,255,0.12);}
+.demo-cta-btn-ghost{display:inline-flex;align-items:center;gap:0.5rem;background:transparent;color:var(--cream);padding:0.8rem 1.8rem;border-radius:8px;font-weight:600;font-size:0.9rem;text-decoration:none;transition:all 0.25s;border:1px solid rgba(0,0,0,.08);}
 .demo-cta-btn-ghost:hover{border-color:rgba(255,255,255,0.3);}
 
 @media(max-width:480px){.demo-grid{grid-template-columns:1fr 1fr;gap:0.8rem;}.demo-card-desc{display:none;}.demo-cta-btns{flex-direction:column;align-items:center;}.demo-cta-btns a{width:100%;justify-content:center;}.demo-hero-actions{flex-direction:column;align-items:center;}.demo-hero-actions a{width:100%;justify-content:center;}}
@@ -267,7 +267,7 @@ module.exports = `
           </div>
         </div>
         <div id="delivery-address-field" style="display:none;margin-top:0.5rem;">
-          <input type="text" id="deliveryAddress" placeholder="📍 Tu dirección de entrega" style="width:100%;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:0.65rem 0.9rem;color:var(--cream);font-family:'DM Sans',sans-serif;font-size:0.88rem;outline:none;" />
+          <input type="text" id="deliveryAddress" placeholder="📍 Tu dirección de entrega" style="width:100%;background:rgba(0,0,0,.02);border:1px solid rgba(255,255,255,0.1);border-radius:8px;padding:0.65rem 0.9rem;color:var(--cream);font-family:'DM Sans',sans-serif;font-size:0.88rem;outline:none;" />
         </div>
       </div>
       <div id="demoCartItems"></div>

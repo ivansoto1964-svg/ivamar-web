@@ -1,7 +1,7 @@
 module.exports = `
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800;900&family=Barlow:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400&display=swap');
-.auto-wrap{--black:#0A0A0A;--steel:#141414;--panel:#1C1C1C;--border:rgba(255,255,255,0.07);--red:#E63329;--white:#F5F5F0;--muted:#6B6B6B;--soft:#9A9A9A;--gold:#C9A84C;font-family:'Barlow',sans-serif;background:var(--black);color:var(--white);margin:-20px;overflow-x:hidden;}
+.auto-wrap{--black:#0A0A0A;--steel:#141414;--panel:#f8f9fa;--border:rgba(255,255,255,0.07);--red:#E63329;--white:#F5F5F0;--muted:#6B6B6B;--soft:#9A9A9A;--gold:#C9A84C;font-family:'Barlow',sans-serif;background:var(--black);color:var(--white);margin:-20px;overflow-x:hidden;}
 .auto-wrap *{box-sizing:border-box;margin:0;padding:0;}
 
 /* BANNER */
@@ -127,7 +127,7 @@ module.exports = `
 .auto-cta h2 span{color:var(--red);}
 .auto-cta p{color:var(--soft);max-width:480px;margin:0 auto 2.5rem;line-height:1.7;position:relative;}
 .auto-cta-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;position:relative;}
-.auto-cta-btn-main{display:inline-flex;align-items:center;gap:0.5rem;background:#00E5C8;color:#030508;padding:0.8rem 1.8rem;border-radius:4px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;transition:all 0.25s;}
+.auto-cta-btn-main{display:inline-flex;align-items:center;gap:0.5rem;background:#00C896;color:#ffffff;padding:0.8rem 1.8rem;border-radius:4px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;transition:all 0.25s;}
 .auto-cta-btn-main:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(0,229,200,0.25);}
 .auto-cta-btn-ghost{display:inline-flex;align-items:center;gap:0.5rem;background:transparent;color:var(--white);padding:0.8rem 1.8rem;border-radius:4px;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:1rem;letter-spacing:0.08em;text-transform:uppercase;text-decoration:none;transition:all 0.25s;border:1px solid rgba(255,255,255,0.15);}
 .auto-cta-btn-ghost:hover{border-color:rgba(255,255,255,0.4);}
