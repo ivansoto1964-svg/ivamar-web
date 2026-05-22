@@ -18,23 +18,24 @@ module.exports = function layout({ title = "Ivamar AI", body = "", lang = "es" }
 <link rel="icon" href="/favicon.gif" type="image/gif">  
 <style>
     :root{
-      --bg:#0b0b0f; --panel:#12121a; --text:#f5f5f7; --muted:#b7b7c2;
-      --accent:#00E5C8; --border:rgba(255,255,255,.12);
+      --bg:#ffffff; --panel:#f8f9fa; --text:#1a1a2e; --muted:#666666;
+      --accent:#00C896; --border:rgba(0,0,0,.08);
     }
-    body{ margin:0; font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif; background:var(--bg); color:var(--text); }
+    body{ margin:0; font-family:'Plus Jakarta Sans',-apple-system,system-ui,sans-serif; background:var(--bg); color:var(--text); }
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
     .wrap{ max-width:1100px; margin:0 auto; padding:24px 16px; }
     a{ color:inherit; }
 
     .grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:16px; margin-top:12px; }
-    .tile{ background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:14px; transition:transform .15s ease; }
-    .tile:hover{ transform:translateY(-2px); }
+    .tile{ background:#fff; border:1px solid var(--border); border-radius:12px; padding:14px; transition:all .15s ease; box-shadow:0 2px 8px rgba(0,0,0,0.04); }
+    .tile:hover{ transform:translateY(-2px); box-shadow:0 8px 20px rgba(0,0,0,0.08); }
 
     /* BUTTONS */
     .btn{ display:inline-flex; align-items:center; justify-content:center; padding:10px 18px; border-radius:10px; font-weight:700; font-size:0.9rem; cursor:pointer; text-decoration:none; border:none; transition:all 0.2s; }
-    .btn.primary{ background:var(--accent); color:#001014; }
+    .btn.primary{ background:#00C896; color:#fff; }
     .btn.primary:hover{ opacity:0.9; transform:translateY(-1px); }
-    .btn.ghost{ background:transparent; color:var(--text); border:1px solid var(--border); }
-    .btn.ghost:hover{ border-color:rgba(255,255,255,0.3); }
+    .btn.ghost{ background:transparent; color:#1a1a2e; border:1px solid #e5e7eb; }
+    .btn.ghost:hover{ border-color:#1a1a2e; }
     .btns{ display:flex; gap:10px; flex-wrap:wrap; }
 
     /* FORMS */
@@ -42,8 +43,8 @@ module.exports = function layout({ title = "Ivamar AI", body = "", lang = "es" }
     .ivamar-form select,
     .ivamar-form textarea{
       width:100%; display:block;
-      background:rgba(255,255,255,0.05);
-      border:1px solid var(--border);
+      background:#ffffff;
+      border:1px solid #e5e7eb;
       border-radius:8px;
       color:var(--text);
       font-family:inherit;
@@ -53,7 +54,7 @@ module.exports = function layout({ title = "Ivamar AI", body = "", lang = "es" }
     .ivamar-form label{ display:block; font-size:0.8rem; color:var(--muted); margin-bottom:4px; margin-top:12px; }
 
     /* CARD */
-    .card{ background:var(--panel); border:1px solid var(--border); border-radius:16px; padding:20px; margin-bottom:16px; }
+    .card{ background:#fff; border:1px solid #f0f0f0; border-radius:16px; padding:20px; margin-bottom:16px; box-shadow:0 2px 12px rgba(0,0,0,0.04); }
 
     /* IvA Chat Widget */
     .iva-fab{
@@ -71,8 +72,8 @@ module.exports = function layout({ title = "Ivamar AI", body = "", lang = "es" }
       position:fixed; right:18px; bottom:18px;
       width:min(400px, calc(100vw - 36px));
       height:540px;
-      background:var(--panel);
-      border:1px solid rgba(0,229,200,0.2);
+      background:#ffffff;
+      border:1px solid rgba(0,200,150,0.2);
       border-radius:18px;
       display:none;
       flex-direction:column;
@@ -83,8 +84,8 @@ module.exports = function layout({ title = "Ivamar AI", body = "", lang = "es" }
     .iva-head{
       padding:12px 14px;
       display:flex; align-items:center; justify-content:space-between;
-      border-bottom:1px solid var(--border);
-      background:rgba(0,0,0,0.2);
+      border-bottom:1px solid #f0f0f0;
+      background:#f8f9fa;
       gap:10px;
     }
     .iva-brand{ display:flex; align-items:center; gap:10px; }
@@ -92,16 +93,16 @@ module.exports = function layout({ title = "Ivamar AI", body = "", lang = "es" }
     @keyframes ivaBlink{ 0%,100%{opacity:1} 50%{opacity:0.3} }
     .iva-title{ font-weight:900; letter-spacing:.2px; font-size:0.9rem; }
     .iva-sub{ font-size:11px; color:var(--muted); margin-top:1px; }
-    .iva-close{ border:1px solid var(--border); background:transparent; color:var(--text); border-radius:8px; padding:6px 10px; cursor:pointer; font-size:0.8rem; }
-    .iva-close:hover{ border-color:rgba(255,255,255,0.3); }
+    .iva-close{ border:1px solid #e5e7eb; background:transparent; color:#666; border-radius:8px; padding:6px 10px; cursor:pointer; font-size:0.8rem; }
+    .iva-close:hover{ border-color:#1a1a2e; color:#1a1a2e; }
     .iva-body{ padding:12px; overflow:auto; flex:1; display:flex; flex-direction:column; gap:8px; }
     .iva-msg{ display:flex; }
     .iva-msg.user{ justify-content:flex-end; }
-    .iva-bubble{ max-width:82%; padding:9px 12px; border-radius:14px; border:1px solid var(--border); background:rgba(255,255,255,.04); line-height:1.4; font-size:13px; word-wrap:break-word; }
+    .iva-bubble{ max-width:82%; padding:9px 12px; border-radius:14px; border:1px solid #f0f0f0; background:#f8f9fa; color:#1a1a2e; line-height:1.4; font-size:13px; word-wrap:break-word; }
     .iva-msg.user .iva-bubble{ background:rgba(0,229,200,.12); border-color:rgba(0,229,200,.25); }
     .iva-bubble a{ color:var(--accent); text-decoration:underline; }
     .iva-typing{ display:flex; gap:3px; padding:9px 12px; background:rgba(255,255,255,.04); border:1px solid var(--border); border-radius:14px; width:fit-content; }
-    .iva-typing span{ width:5px; height:5px; background:var(--muted); border-radius:50%; animation:ivaTyp 1.2s ease-in-out infinite; }
+    .iva-typing span{ width:5px; height:5px; background:#00C896; border-radius:50%; animation:ivaTyp 1.2s ease-in-out infinite; }
     .iva-typing span:nth-child(2){ animation-delay:0.2s; }
     .iva-typing span:nth-child(3){ animation-delay:0.4s; }
     @keyframes ivaTyp{ 0%,100%{opacity:0.3;transform:scale(0.8)} 50%{opacity:1;transform:scale(1)} }
@@ -121,11 +122,11 @@ module.exports = function layout({ title = "Ivamar AI", body = "", lang = "es" }
       font-weight:700; font-size:12px; white-space:nowrap;
     }
     .iva-cta a:hover{ background:rgba(0,229,200,.2); }
-    .iva-foot{ border-top:1px solid var(--border); padding:10px; display:flex; gap:8px; align-items:center; background:rgba(0,0,0,.12); }
-    .iva-input{ flex:1; padding:9px 12px; border-radius:10px; border:1px solid var(--border); background:rgba(255,255,255,.04); color:var(--text); outline:none; font-size:13px; font-family:inherit; }
+    .iva-foot{ border-top:1px solid #f0f0f0; padding:10px; display:flex; gap:8px; align-items:center; background:#fff; }
+    .iva-input{ flex:1; padding:9px 12px; border-radius:10px; border:1px solid #e5e7eb; background:#fff; color:#1a1a2e; outline:none; font-size:13px; font-family:inherit; }
     .iva-input:focus{ border-color:rgba(0,229,200,0.4); }
     .iva-input::placeholder{ color:var(--muted); }
-    .iva-send{ padding:9px 14px; border-radius:10px; border:none; background:var(--accent); color:#001014; font-weight:900; cursor:pointer; font-size:13px; }
+    .iva-send{ padding:9px 14px; border-radius:10px; border:none; background:#00C896; color:#fff; font-weight:900; cursor:pointer; font-size:13px; }
     .iva-send:hover{ opacity:0.9; }
   </style>
 </head>
