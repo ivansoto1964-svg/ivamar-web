@@ -35,10 +35,18 @@ function removeTyping() {
 }
 
 function linkify(text) {
+  // Clean markdown bold/italic markers
+  text = text.replace(/\*\*/g, '').replace(/\*/g, '');
   return text
     .split('\n').join('<br>')
-    .replace(/https?:\/\/[^\s<]+/g, url => '<a href="' + url + '" target="_blank" style="color:#00C896;text-decoration:underline;">' + url + '</a>')
-    .replace(/ivamarai\.com\/[^\s<,)]+/g, url => '<a href="https://' + url + '" target="_blank" style="color:#00C896;text-decoration:underline;">' + url + '</a>');
+    .replace(/https?:\/\/[^\s<,)]+/g, url => {
+      const clean = url.replace(/[*_]+$/, '');
+      return '<a href="' + clean + '" target="_blank" style="color:#00C896;font-weight:600;text-decoration:underline;">' + clean + '</a>';
+    })
+    .replace(/(?<!https?:\/\/)ivamarai\.com\/[^\s<,)]+/g, url => {
+      const clean = url.replace(/[*_]+$/, '');
+      return '<a href="https://' + clean + '" target="_blank" style="color:#00C896;font-weight:600;text-decoration:underline;">' + clean + '</a>';
+    });
 }
 
 function addMsg(text, type) {
