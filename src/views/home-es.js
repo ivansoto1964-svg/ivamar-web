@@ -1,351 +1,353 @@
 module.exports = `
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ivamar AI — Asistente IA para tu Negocio</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Lora:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@300;400&display=swap');
-.iva-page{--void:#030508;--deep:#080C12;--surface:#0D1420;--cyan:#00E5C8;--ivawhite:#F0F4FF;--soft:#8892A4;--gold:#E8C97A;font-family:'Syne',sans-serif;background:var(--void);color:var(--ivawhite);margin:-20px;overflow-x:hidden;}
-.iva-page *{box-sizing:border-box;margin:0;padding:0;}
-.iva-nav{position:sticky;top:0;z-index:100;padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;background:rgba(3,5,8,0.92);backdrop-filter:blur(12px);border-bottom:1px solid rgba(0,229,200,0.08);}
-.iva-logo{display:flex;align-items:center;gap:0.7rem;text-decoration:none;}
-.iva-logo-mark{width:32px;height:32px;border:1.5px solid #00E5C8;border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:#00E5C8;background:rgba(0,229,200,0.06);}
-.iva-logo-text{font-size:1.1rem;font-weight:700;color:#F0F4FF;letter-spacing:-0.02em;}
-.iva-logo-text span{color:#00E5C8;}
-.iva-nav-links{display:flex;gap:1.5rem;list-style:none;}
-.iva-nav-links a{color:#8892A4;text-decoration:none;font-size:0.85rem;font-weight:500;transition:color 0.2s;}
-.iva-nav-links a:hover{color:#F0F4FF;}
-.iva-nav-right{display:flex;align-items:center;gap:0.8rem;}
-.iva-lang-switch{font-size:0.78rem;color:#4A5568;border:1px solid rgba(255,255,255,0.08);padding:0.4rem 0.8rem;border-radius:6px;text-decoration:none;transition:all 0.2s;font-family:'JetBrains Mono',monospace;}
-.iva-lang-switch:hover{color:#8892A4;border-color:rgba(255,255,255,0.15);}
-.iva-nav-cta{background:transparent;border:1px solid rgba(0,229,200,0.4);color:#00E5C8;padding:0.5rem 1.2rem;border-radius:6px;font-family:'Syne',sans-serif;font-size:0.85rem;font-weight:600;cursor:pointer;transition:all 0.25s;text-decoration:none;display:inline-block;}
-.iva-nav-cta:hover{background:rgba(0,229,200,0.1);}
-.iva-hero{min-height:92vh;display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative;padding:5rem 2rem 4rem;overflow:hidden;text-align:center;}
-.iva-hero::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(0,229,200,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,200,0.04) 1px,transparent 1px);background-size:60px 60px;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 20%,transparent 80%);-webkit-mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 20%,transparent 80%);}
-.iva-orb{position:absolute;border-radius:50%;filter:blur(100px);pointer-events:none;}
-.iva-orb-1{width:500px;height:500px;background:rgba(0,229,200,0.08);top:0;left:50%;transform:translateX(-50%);animation:ivaDrift1 8s ease-in-out infinite;}
-.iva-orb-2{width:300px;height:300px;background:rgba(232,201,122,0.06);bottom:20%;left:10%;animation:ivaDrift2 10s ease-in-out infinite;}
-@keyframes ivaDrift1{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-30px)}}
-@keyframes ivaDrift2{0%,100%{transform:translateY(0)}50%{transform:translateY(-20px)}}
-.iva-badge{display:inline-flex;align-items:center;gap:0.5rem;border:1px solid rgba(0,229,200,0.25);background:rgba(0,229,200,0.05);padding:0.4rem 1rem;border-radius:100px;font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:#00E5C8;letter-spacing:0.1em;margin-bottom:2rem;position:relative;}
-.iva-badge-dot{width:6px;height:6px;background:#00E5C8;border-radius:50%;animation:ivaBlink 2s ease-in-out infinite;}
-@keyframes ivaBlink{0%,100%{opacity:1}50%{opacity:0.3}}
-.iva-hero h1{font-size:clamp(2.8rem,7vw,5.5rem);font-weight:800;line-height:1.05;letter-spacing:-0.03em;color:#F0F4FF;margin-bottom:1.2rem;position:relative;}
-.iva-hero h1 em{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:#00E5C8;}
-.iva-hero-sub{max-width:540px;color:#8892A4;font-size:1.05rem;line-height:1.7;margin-bottom:2.5rem;font-weight:400;position:relative;}
-.iva-hero-actions{display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;margin-bottom:4rem;position:relative;}
-.iva-btn-main{display:inline-flex;align-items:center;gap:0.5rem;background:#00E5C8;color:#030508;padding:0.85rem 2rem;border-radius:8px;font-family:'Syne',sans-serif;font-weight:700;font-size:0.95rem;text-decoration:none;transition:all 0.25s;border:none;cursor:pointer;}
-.iva-btn-main:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(0,229,200,0.3);}
-.iva-btn-ghost{display:inline-flex;align-items:center;gap:0.5rem;background:transparent;color:#F0F4FF;padding:0.85rem 2rem;border-radius:8px;font-family:'Syne',sans-serif;font-weight:600;font-size:0.95rem;text-decoration:none;transition:all 0.25s;border:1px solid rgba(255,255,255,0.12);}
-.iva-btn-ghost:hover{border-color:rgba(255,255,255,0.3);background:rgba(255,255,255,0.04);}
-.iva-stats{display:flex;gap:3rem;flex-wrap:wrap;justify-content:center;position:relative;}
-.iva-stat{text-align:center;}
-.iva-stat-num{font-size:2rem;font-weight:800;color:#F0F4FF;letter-spacing:-0.03em;}
-.iva-stat-num span{color:#00E5C8;}
-.iva-stat-label{font-size:0.72rem;color:#4A5568;letter-spacing:0.1em;text-transform:uppercase;margin-top:0.2rem;}
-.iva-section{padding:5rem 2rem;position:relative;}
-.iva-section-dark{background:#080C12;}
-.iva-section-void{background:#030508;}
-.iva-inner{max-width:960px;margin:0 auto;}
-.iva-section-label{display:inline-flex;align-items:center;gap:0.5rem;font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:#00E5C8;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.8rem;}
-.iva-section-label::before{content:'';width:20px;height:1px;background:#00E5C8;}
-.iva-section-title{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;letter-spacing:-0.03em;line-height:1.1;margin-bottom:0.8rem;}
-.iva-section-title em{font-family:'Instrument Serif',serif;font-style:italic;font-weight:400;color:#00E5C8;}
-.iva-industries{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:3rem;}
-.iva-industry{background:#0D1420;border:1px solid rgba(255,255,255,0.05);border-radius:14px;padding:1.5rem 1.2rem;text-align:center;transition:all 0.3s;position:relative;overflow:hidden;cursor:pointer;text-decoration:none;display:block;color:inherit;}
-.iva-industry::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,#00E5C8,transparent);opacity:0;transition:opacity 0.3s;}
-.iva-industry:hover{transform:translateY(-4px);border-color:rgba(0,229,200,0.2);box-shadow:0 12px 30px rgba(0,0,0,0.3);}
-.iva-industry:hover::before{opacity:1;}
-.iva-industry-icon{font-size:2.2rem;margin-bottom:0.8rem;display:block;}
-.iva-industry-name{font-size:0.9rem;font-weight:700;margin-bottom:0.3rem;color:#F0F4FF;}
-.iva-industry-desc{font-size:0.72rem;color:#4A5568;line-height:1.4;}
-.iva-industry-tag{display:inline-block;margin-top:0.8rem;font-family:'JetBrains Mono',monospace;font-size:0.6rem;color:#00E5C8;letter-spacing:0.1em;border:1px solid rgba(0,229,200,0.2);padding:0.2rem 0.5rem;border-radius:3px;}
-.iva-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:3rem;background:rgba(0,229,200,0.08);border-radius:16px;overflow:hidden;border:1px solid rgba(0,229,200,0.1);}
-.iva-step{background:#030508;padding:2.5rem 2rem;transition:background 0.3s;}
-.iva-step:hover{background:rgba(0,229,200,0.04);}
-.iva-step-num{font-family:'JetBrains Mono',monospace;font-size:0.65rem;color:#00E5C8;letter-spacing:0.15em;margin-bottom:1rem;opacity:0.7;}
-.iva-step-icon{font-size:2rem;margin-bottom:0.8rem;display:block;}
-.iva-step-title{font-size:1rem;font-weight:700;margin-bottom:0.5rem;}
-.iva-step-desc{font-size:0.83rem;color:#8892A4;line-height:1.6;font-weight:400;}
-.iva-features{display:grid;grid-template-columns:repeat(2,1fr);gap:1.2rem;margin-top:3rem;}
-.iva-feature{background:#0D1420;border:1px solid rgba(255,255,255,0.05);border-radius:14px;padding:1.8rem;transition:border-color 0.3s,transform 0.3s;position:relative;overflow:hidden;}
-.iva-feature::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,#00E5C8,transparent);opacity:0;transition:opacity 0.3s;}
-.iva-feature:hover{border-color:rgba(0,229,200,0.2);transform:translateY(-3px);}
-.iva-feature:hover::before{opacity:1;}
-.iva-feature.wide{grid-column:span 2;}
-.iva-feature-icon{width:42px;height:42px;background:rgba(0,229,200,0.1);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;margin-bottom:1rem;}
-.iva-feature-title{font-size:1rem;font-weight:700;margin-bottom:0.4rem;}
-.iva-feature-desc{font-size:0.83rem;color:#8892A4;line-height:1.6;font-weight:400;}
-.iva-feature-tag{display:inline-block;margin-top:0.8rem;background:rgba(0,229,200,0.07);border:1px solid rgba(0,229,200,0.2);color:#00E5C8;font-family:'JetBrains Mono',monospace;font-size:0.62rem;padding:0.2rem 0.6rem;border-radius:4px;letter-spacing:0.1em;}
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:#ffffff;color:#1a1a2e;overflow-x:hidden;}
 
-/* DUAL PRICING */
-.iva-pricing-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:3rem;max-width:700px;margin-left:auto;margin-right:auto;}
-.iva-pricing-card{background:#0D1420;border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:2.5rem;position:relative;overflow:hidden;text-align:center;transition:transform 0.3s,border-color 0.3s;}
-.iva-pricing-card:hover{transform:translateY(-4px);}
-.iva-pricing-card.featured{border-color:rgba(0,229,200,0.3);background:rgba(0,229,200,0.03);}
-.iva-pricing-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.1),transparent);}
-.iva-pricing-card.featured::before{background:linear-gradient(90deg,transparent,#00E5C8,transparent);}
-.iva-pricing-badge{display:inline-flex;align-items:center;gap:0.4rem;font-size:0.72rem;font-family:'JetBrains Mono',monospace;padding:0.3rem 0.8rem;border-radius:100px;margin-bottom:1.2rem;}
-.iva-pricing-badge.standard{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#8892A4;}
-.iva-pricing-badge.pro{background:rgba(232,201,122,0.1);border:1px solid rgba(232,201,122,0.3);color:#E8C97A;}
-.iva-pricing-plan-name{font-size:1.1rem;font-weight:800;margin-bottom:0.3rem;}
-.iva-pricing-industries{font-size:0.75rem;color:#4A5568;margin-bottom:1.5rem;line-height:1.5;}
-.iva-price{display:flex;align-items:flex-start;justify-content:center;gap:0.2rem;margin-bottom:0.3rem;}
-.iva-price-currency{font-size:1.2rem;font-weight:700;color:#8892A4;margin-top:0.4rem;}
-.iva-price-amount{font-size:4rem;font-weight:800;letter-spacing:-0.04em;line-height:1;}
-.iva-price-period{font-size:0.85rem;color:#8892A4;align-self:flex-end;margin-bottom:0.6rem;}
-.iva-price-setup{font-size:0.8rem;color:#8892A4;margin-bottom:1.5rem;}
-.iva-price-setup strong{color:#E8C97A;}
-.iva-pricing-list{list-style:none;text-align:left;margin-bottom:1.5rem;display:flex;flex-direction:column;gap:0.5rem;}
-.iva-pricing-list li{display:flex;align-items:center;gap:0.5rem;font-size:0.82rem;color:#8892A4;font-weight:400;}
-.iva-pricing-list li::before{content:'✓';color:#00E5C8;font-weight:700;font-size:0.72rem;flex-shrink:0;}
-.iva-btn-pricing{display:block;width:100%;padding:0.85rem;border-radius:10px;font-family:'Syne',sans-serif;font-weight:700;font-size:0.95rem;text-decoration:none;transition:all 0.25s;border:none;cursor:pointer;text-align:center;}
-.iva-btn-pricing.standard{background:rgba(255,255,255,0.06);color:#F0F4FF;border:1px solid rgba(255,255,255,0.12);}
-.iva-btn-pricing.standard:hover{background:rgba(255,255,255,0.1);}
-.iva-btn-pricing.pro{background:#00E5C8;color:#030508;}
-.iva-btn-pricing.pro:hover{box-shadow:0 8px 30px rgba(0,229,200,0.3);transform:translateY(-2px);}
+/* NAV */
+nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);border-bottom:1px solid #f0f0f0;padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;}
+.nav-logo{display:flex;align-items:center;gap:0.5rem;text-decoration:none;}
+.nav-logo-mark{width:32px;height:32px;background:#00C896;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:0.8rem;font-weight:800;color:#fff;}
+.nav-logo-text{font-size:1.1rem;font-weight:700;color:#1a1a2e;letter-spacing:-0.02em;}
+.nav-logo-text span{color:#00C896;}
+.nav-links{display:flex;align-items:center;gap:2rem;}
+.nav-links a{font-size:0.85rem;color:#666;text-decoration:none;transition:color 0.2s;}
+.nav-links a:hover{color:#1a1a2e;}
+.nav-cta{background:#1a1a2e;color:#fff!important;padding:0.6rem 1.4rem;border-radius:8px;font-weight:600;font-size:0.82rem!important;transition:all 0.2s!important;}
+.nav-cta:hover{background:#00C896!important;transform:translateY(-1px);}
 
-/* FAQ */
-.iva-faq{display:flex;flex-direction:column;gap:0.8rem;margin-top:3rem;}
-.iva-faq-item{background:#0D1420;border:1px solid rgba(255,255,255,0.05);border-radius:12px;overflow:hidden;}
-.iva-faq-q{padding:1.2rem 1.5rem;font-size:0.95rem;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:1rem;transition:background 0.2s;}
-.iva-faq-q:hover{background:rgba(0,229,200,0.03);}
-.iva-faq-icon{font-size:1.1rem;color:#00E5C8;flex-shrink:0;transition:transform 0.3s;}
-.iva-faq-item.open .iva-faq-icon{transform:rotate(45deg);}
-.iva-faq-a{max-height:0;overflow:hidden;transition:max-height 0.3s ease;font-size:0.88rem;color:#8892A4;line-height:1.7;font-weight:400;}
-.iva-faq-item.open .iva-faq-a{max-height:200px;}
-.iva-faq-a-inner{padding:0 1.5rem 1.2rem;}
+/* HERO */
+.hero{padding:5rem 2rem 4rem;max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1.1fr 0.9fr;gap:4rem;align-items:center;}
+.hero-badge{display:inline-flex;align-items:center;gap:0.5rem;background:#f0fdf9;border:1px solid #a7f3d0;padding:0.35rem 1rem;border-radius:30px;margin-bottom:1.5rem;}
+.hero-badge-dot{width:6px;height:6px;background:#00C896;border-radius:50%;animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+.hero-badge-text{font-size:0.72rem;color:#059669;font-weight:600;letter-spacing:0.05em;}
+.hero h1{font-size:clamp(2.2rem,4.5vw,3.4rem);font-weight:800;line-height:1.15;letter-spacing:-0.03em;color:#1a1a2e;margin-bottom:1.2rem;}
+.hero h1 em{font-style:italic;color:#00C896;font-family:'Lora',serif;}
+.hero-sub{font-size:1.05rem;color:#555;line-height:1.8;margin-bottom:2rem;max-width:480px;}
+.hero-btns{display:flex;gap:0.8rem;flex-wrap:wrap;margin-bottom:2rem;}
+.btn-primary{display:inline-flex;align-items:center;gap:0.5rem;background:#1a1a2e;color:#fff;padding:0.9rem 2rem;border-radius:10px;font-size:0.9rem;font-weight:700;text-decoration:none;transition:all 0.2s;}
+.btn-primary:hover{background:#00C896;transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,200,150,0.3);}
+.btn-ghost{display:inline-flex;align-items:center;gap:0.5rem;border:2px solid #e5e7eb;color:#1a1a2e;padding:0.9rem 2rem;border-radius:10px;font-size:0.9rem;font-weight:600;text-decoration:none;transition:all 0.2s;}
+.btn-ghost:hover{border-color:#1a1a2e;}
+.hero-trust{display:flex;align-items:center;gap:1.5rem;flex-wrap:wrap;}
+.trust-item{display:flex;align-items:center;gap:0.4rem;font-size:0.78rem;color:#888;}
+.trust-icon{color:#00C896;}
 
-.iva-cta{text-align:center;padding:5rem 2rem;background:#080C12;position:relative;overflow:hidden;}
-.iva-cta-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:300px;height:300px;background:radial-gradient(circle,rgba(0,229,200,0.07),transparent 70%);pointer-events:none;z-index:0;}
-.iva-cta-inner{position:relative;z-index:1;max-width:560px;margin:0 auto;}
-.iva-cta h2{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;letter-spacing:-0.03em;margin-bottom:1rem;line-height:1.15;}
-.iva-cta h2 em{font-family:'Instrument Serif',serif;font-style:italic;color:#00E5C8;}
-.iva-cta p{color:#8892A4;margin-bottom:2rem;line-height:1.7;font-weight:400;font-size:0.95rem;}
-.iva-cta-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
-.iva-footer{background:#030508;padding:2rem 2.5rem;border-top:1px solid rgba(255,255,255,0.04);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;font-size:0.8rem;color:#4A5568;}
-.iva-footer strong{color:#8892A4;}
-.iva-footer-links{display:flex;gap:1.5rem;}
-.iva-footer-links a{color:#4A5568;text-decoration:none;transition:color 0.2s;}
-.iva-footer-links a:hover{color:#00E5C8;}
-@media(max-width:700px){
-  .iva-nav-links{display:none;}
-  .iva-industries{grid-template-columns:repeat(2,1fr);}
-  .iva-steps{grid-template-columns:1fr;}
-  .iva-features{grid-template-columns:1fr;}
-  .iva-feature.wide{grid-column:span 1;}
-  .iva-pricing-grid{grid-template-columns:1fr;}
-  .iva-footer{flex-direction:column;text-align:center;}
-  .iva-cta{padding:4rem 1.5rem;}
-  .iva-cta-btns{flex-direction:column;align-items:center;}
-  .iva-cta-btns a{width:100%;justify-content:center;}
-  .iva-stats{gap:1.5rem;}
-  .iva-hero-actions{flex-direction:column;align-items:center;}
-  .iva-hero-actions a{width:100%;justify-content:center;}
+/* HERO RIGHT - CHAT MOCKUP */
+.hero-visual{position:relative;}
+.chat-mockup{background:#fff;border-radius:20px;box-shadow:0 20px 60px rgba(0,0,0,0.08),0 0 0 1px rgba(0,0,0,0.04);overflow:hidden;}
+.mockup-header{background:#f8f9fa;padding:1rem 1.2rem;border-bottom:1px solid #f0f0f0;display:flex;align-items:center;gap:0.8rem;}
+.mockup-avatar{width:36px;height:36px;background:linear-gradient(135deg,#00C896,#0088CC);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
+.mockup-name{font-size:0.85rem;font-weight:700;color:#1a1a2e;}
+.mockup-status{font-size:0.65rem;color:#00C896;font-weight:500;}
+.mockup-msgs{padding:1.2rem;display:flex;flex-direction:column;gap:0.8rem;}
+.m-msg{max-width:85%;padding:0.75rem 1rem;border-radius:4px 14px 14px 14px;font-size:0.82rem;line-height:1.6;}
+.m-bot{background:#f8f9fa;color:#1a1a2e;align-self:flex-start;border-radius:4px 14px 14px 14px;}
+.m-user{background:#1a1a2e;color:#fff;align-self:flex-end;border-radius:14px 4px 14px 14px;}
+.mockup-footer{padding:0.8rem 1.2rem;border-top:1px solid #f0f0f0;display:flex;gap:0.5rem;}
+.mockup-input{flex:1;background:#f8f9fa;border:none;border-radius:8px;padding:0.6rem 0.9rem;font-size:0.78rem;color:#666;outline:none;}
+.mockup-send{background:#00C896;border:none;border-radius:8px;width:34px;height:34px;cursor:pointer;font-size:0.9rem;}
+
+/* QR BADGE */
+.qr-badge{position:absolute;bottom:-16px;right:-16px;background:#fff;border-radius:14px;padding:0.8rem 1rem;box-shadow:0 8px 24px rgba(0,0,0,0.1);display:flex;align-items:center;gap:0.6rem;}
+.qr-icon{font-size:1.8rem;}
+.qr-text{font-size:0.72rem;font-weight:600;color:#1a1a2e;line-height:1.3;}
+.qr-sub{font-size:0.65rem;color:#888;}
+
+/* HOW IT WORKS */
+.how{padding:5rem 2rem;background:#f8f9fa;}
+.how-inner{max-width:1100px;margin:0 auto;}
+.section-tag{font-size:0.72rem;font-weight:700;color:#00C896;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.8rem;}
+.section-title{font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:800;letter-spacing:-0.03em;color:#1a1a2e;margin-bottom:0.8rem;line-height:1.2;}
+.section-title em{font-style:italic;color:#00C896;font-family:'Lora',serif;}
+.section-sub{font-size:0.95rem;color:#666;line-height:1.8;max-width:500px;margin-bottom:3rem;}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:1.5rem;}
+.step{background:#fff;border-radius:16px;padding:1.8rem;border:1px solid #f0f0f0;transition:all 0.25s;position:relative;}
+.step:hover{border-color:#00C896;transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,200,150,0.08);}
+.step-num{width:40px;height:40px;background:#f0fdf9;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;margin-bottom:1rem;}
+.step h3{font-size:0.95rem;font-weight:700;margin-bottom:0.5rem;color:#1a1a2e;}
+.step p{font-size:0.8rem;color:#888;line-height:1.6;}
+.step-arrow{position:absolute;right:-16px;top:50%;transform:translateY(-50%);color:#e5e7eb;font-size:1.2rem;z-index:1;}
+
+/* PERFECT FOR */
+.for-section{padding:5rem 2rem;max-width:1100px;margin:0 auto;}
+.biz-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;margin-top:3rem;}
+.biz-card{background:#fff;border:1px solid #f0f0f0;border-radius:14px;padding:1.5rem 1rem;text-align:center;transition:all 0.25s;cursor:default;}
+.biz-card:hover{border-color:#00C896;transform:translateY(-2px);box-shadow:0 8px 20px rgba(0,200,150,0.08);}
+.biz-icon{font-size:2rem;margin-bottom:0.7rem;}
+.biz-name{font-size:0.82rem;font-weight:700;color:#1a1a2e;}
+
+/* MEET IVA */
+.iva-section{padding:5rem 2rem;background:linear-gradient(135deg,#1a1a2e 0%,#0f3460 100%);}
+.iva-inner{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;}
+.iva-tag{font-size:0.72rem;font-weight:700;color:#00C896;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.8rem;}
+.iva-title{font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:800;letter-spacing:-0.03em;color:#fff;margin-bottom:1rem;line-height:1.2;}
+.iva-sub{font-size:0.95rem;color:rgba(255,255,255,0.6);line-height:1.8;margin-bottom:1.5rem;}
+.iva-features{list-style:none;display:flex;flex-direction:column;gap:0.8rem;margin-bottom:2rem;}
+.iva-features li{display:flex;align-items:flex-start;gap:0.7rem;font-size:0.85rem;color:rgba(255,255,255,0.7);}
+.iva-features li::before{content:'✦';color:#00C896;flex-shrink:0;font-size:0.7rem;margin-top:3px;}
+.iva-chat{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);border-radius:20px;overflow:hidden;}
+.iva-chat-header{padding:1rem 1.2rem;background:rgba(0,200,150,0.08);border-bottom:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;gap:0.8rem;}
+.iva-avatar{width:36px;height:36px;background:linear-gradient(135deg,#00C896,#0088CC);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;}
+.iva-name{font-size:0.85rem;font-weight:700;color:#fff;}
+.iva-online{font-size:0.65rem;color:#00C896;}
+.iva-msgs{padding:1.2rem;display:flex;flex-direction:column;gap:0.8rem;min-height:200px;}
+.iv-msg{max-width:85%;padding:0.75rem 1rem;font-size:0.82rem;line-height:1.6;}
+.iv-bot{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.08);color:#fff;border-radius:4px 12px 12px 12px;align-self:flex-start;}
+.iv-user{background:rgba(0,200,150,0.15);border:1px solid rgba(0,200,150,0.2);color:#fff;border-radius:12px 4px 12px 12px;align-self:flex-end;}
+.iva-suggs{padding:0 1rem 0.8rem;display:flex;flex-wrap:wrap;gap:0.4rem;}
+.iva-sugg{font-size:0.7rem;padding:0.3rem 0.7rem;border:1px solid rgba(255,255,255,0.12);border-radius:20px;color:rgba(255,255,255,0.5);cursor:pointer;transition:all 0.2s;background:transparent;font-family:'Plus Jakarta Sans',sans-serif;}
+.iva-sugg:hover{border-color:#00C896;color:#00C896;}
+.iva-input-row{padding:0.8rem;border-top:1px solid rgba(255,255,255,0.06);display:flex;gap:0.5rem;}
+.iva-input{flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:0.6rem 0.9rem;color:#fff;font-size:0.78rem;outline:none;font-family:'Plus Jakarta Sans',sans-serif;}
+.iva-input::placeholder{color:rgba(255,255,255,0.25);}
+.iva-send{background:#00C896;border:none;border-radius:8px;width:34px;height:34px;cursor:pointer;font-size:0.85rem;}
+
+/* YOUR ASSISTANT */
+.your-section{padding:5rem 2rem;background:#f8f9fa;}
+.your-inner{max-width:1100px;margin:0 auto;text-align:center;}
+.your-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1.5rem;margin-top:3rem;}
+.your-card{background:#fff;border:1px solid #f0f0f0;border-radius:16px;padding:2rem 1.5rem;text-align:center;transition:all 0.25s;}
+.your-card:hover{border-color:#00C896;transform:translateY(-3px);}
+.your-icon{font-size:2rem;margin-bottom:1rem;}
+.your-card h3{font-size:0.95rem;font-weight:700;margin-bottom:0.5rem;color:#1a1a2e;}
+.your-card p{font-size:0.8rem;color:#888;line-height:1.6;}
+
+/* PRICING STRIP */
+.price-strip{padding:4rem 2rem;max-width:1100px;margin:0 auto;text-align:center;}
+.price-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3rem;}
+.p-card{background:#fff;border:1px solid #f0f0f0;border-radius:16px;padding:2rem;text-align:left;transition:all 0.25s;position:relative;overflow:hidden;}
+.p-card:hover{transform:translateY(-3px);box-shadow:0 12px 32px rgba(0,0,0,0.06);}
+.p-card.featured{border-color:#00C896;box-shadow:0 0 0 1px #00C896;}
+.p-card.featured::before{content:'Más popular';position:absolute;top:0;right:0;background:#00C896;color:#fff;font-size:0.62rem;font-weight:700;padding:0.25rem 0.8rem;border-radius:0 14px 0 8px;}
+.p-name{font-size:0.7rem;font-weight:700;color:#00C896;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.8rem;}
+.p-price{font-size:2.2rem;font-weight:800;color:#1a1a2e;letter-spacing:-0.04em;line-height:1;margin-bottom:0.2rem;}
+.p-price span{font-size:0.9rem;font-weight:400;color:#888;}
+.p-setup{font-size:0.72rem;color:#888;margin-bottom:1.2rem;}
+.p-features{list-style:none;display:flex;flex-direction:column;gap:0.5rem;margin-bottom:1.5rem;}
+.p-features li{font-size:0.78rem;color:#555;display:flex;align-items:flex-start;gap:0.5rem;}
+.p-features li::before{content:'✓';color:#00C896;font-weight:700;flex-shrink:0;}
+.p-btn{width:100%;background:#1a1a2e;color:#fff;border:none;padding:0.8rem;border-radius:8px;font-size:0.82rem;font-weight:700;cursor:pointer;font-family:'Plus Jakarta Sans',sans-serif;transition:all 0.2s;}
+.p-btn:hover{background:#00C896;}
+.p-card.featured .p-btn{background:#00C896;}
+.p-card.featured .p-btn:hover{background:#00a87a;}
+
+/* FOOTER */
+footer{padding:2.5rem 2rem;border-top:1px solid #f0f0f0;max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem;}
+.footer-brand{font-size:0.9rem;font-weight:700;color:#1a1a2e;}
+.footer-brand span{color:#00C896;}
+.footer-links{display:flex;gap:1.5rem;flex-wrap:wrap;}
+.footer-links a{font-size:0.78rem;color:#888;text-decoration:none;transition:color 0.2s;}
+.footer-links a:hover{color:#1a1a2e;}
+.footer-copy{font-size:0.72rem;color:#bbb;}
+
+@media(max-width:768px){
+nav{padding:0.8rem 1rem;}
+.nav-links{display:none;}
+.hero{grid-template-columns:1fr;gap:2rem;padding:3rem 1.2rem;}
+.hero-visual{display:none;}
+.how{padding:3rem 1.2rem;}
+.steps{grid-template-columns:1fr 1fr;}
+.step-arrow{display:none;}
+.for-section{padding:3rem 1.2rem;}
+.iva-section{padding:3rem 1.2rem;}
+.iva-inner{grid-template-columns:1fr;gap:2rem;}
+.your-section{padding:3rem 1.2rem;}
+.price-strip{padding:3rem 1.2rem;}
+.price-cards{grid-template-columns:1fr;}
+footer{padding:2rem 1.2rem;flex-direction:column;text-align:center;}
 }
 </style>
+</head>
+<body>
 
-<div class="iva-page">
-  <nav class="iva-nav">
-    <a href="/" class="iva-logo">
-      <img src="/logo-white.png" alt="Ivamar AI" style="height:28px;width:auto;">
-      <span class="iva-logo-text">Ivamar <span>AI</span></span>
-    </a>
-    <ul class="iva-nav-links">
-      <li><a href="#industries">Industrias</a></li>
-      <li><a href="#how">Cómo funciona</a></li>
-      <li><a href="#pricing">Precios</a></li>
-      <li><a href="/demos-es">Demos</a></li>
-      <li><a href="/sobre-nosotros">Nosotros</a></li>
-    </ul>
-    <div class="iva-nav-right">
-      <a href="/en" class="iva-lang-switch">EN · English</a>
-      <a href="/cotizar" class="iva-nav-cta">Empezar →</a>
-    </div>
-  </nav>
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-logo">
+    <div class="nav-logo-mark">AI</div>
+    <span class="nav-logo-text">Ivamar <span>AI</span></span>
+  </a>
+  <div class="nav-links">
+    <a href="#como">Cómo Funciona</a>
+    <a href="#para-quien">Who It's For</a>
+    <a href="#precios">Pricing</a>
+    <a href="/es/asistente" class="nav-cta">Talk to IvA →</a>
+  </div>
+</nav>
 
-  <div class="iva-hero">
-    <div class="iva-orb iva-orb-1"></div>
-    <div class="iva-orb iva-orb-2"></div>
-    <div class="iva-badge"><span class="iva-badge-dot"></span>FROM USA TO AROUND THE WORLD 🌎</div>
-    <h1>The <em>Human Touch</em><br>of Intelligence</h1>
-    <p class="iva-hero-sub">Creamos páginas con asistente digital de IA para negocios reales. Tus clientes preguntan, ordenan y pagan — sin que tú tengas que estar al teléfono.</p>
-    <div class="iva-hero-actions">
-      <a href="/cotizar" class="iva-btn-main">Empieza ahora →</a>
-      <a href="/demos-es" class="iva-btn-ghost">Ver demos en vivo</a>
+<!-- HERO -->
+<section class="hero">
+  <div>
+    <div class="hero-badge">
+      <div class="hero-badge-dot"></div>
+      <span class="hero-badge-text">Disponible para negocios locales</span>
     </div>
-    <div class="iva-stats">
-      <div class="iva-stat"><div class="iva-stat-num">$125<span>+</span></div><div class="iva-stat-label">Setup desde</div></div>
-      <div class="iva-stat"><div class="iva-stat-num">$49<span>/mes</span></div><div class="iva-stat-label">Desde</div></div>
-      <div class="iva-stat"><div class="iva-stat-num">0<span>%</span></div><div class="iva-stat-label">Comisión</div></div>
-      <div class="iva-stat"><div class="iva-stat-num">24<span>/7</span></div><div class="iva-stat-label">Asistente IvA</div></div>
+    <h1>No Pierdas Más<br><em>Clientes o Leads.</em></h1>
+    <p class="hero-sub">Con un simple link o código QR, tu negocio puede responder a clientes, contestar preguntas y capturar nuevos leads automáticamente — 24/7, en cualquier idioma.</p>
+    <div class="hero-btns">
+      <a href="/es/asistente" class="btn-primary">👋 Habla con IvA</a>
+      <a href="#como" class="btn-ghost">Cómo Funciona →</a>
+    </div>
+    <div class="hero-trust">
+      <div class="trust-item"><span class="trust-icon">✦</span> Trabaja 24/7</div>
+      <div class="trust-item"><span class="trust-icon">✦</span> English e inglés</div>
+      <div class="trust-item"><span class="trust-icon">✦</span> Sin contratos</div>
+      <div class="trust-item"><span class="trust-icon">✦</span> Listo en 48hrs</div>
     </div>
   </div>
-
-
-<!-- INDUSTRIAS -->
-  <div class="iva-section iva-section-dark" id="industries">
-    <div class="iva-inner">
-      <div class="iva-section-label">A quién servimos</div>
-      <h2 class="iva-section-title">Para <em>cualquier</em> negocio local</h2>
-      <div class="iva-industries">
-        <a href="/cotizar" class="iva-industry"><span class="iva-industry-icon">🚚</span><div class="iva-industry-name">Food Trucks</div><div class="iva-industry-desc">Menú digital, pedidos por WhatsApp y pagos</div><span class="iva-industry-tag">desde $29/mes</span></a>
-        <a href="/cotizar" class="iva-industry"><span class="iva-industry-icon">🍽</span><div class="iva-industry-name">Restaurantes</div><div class="iva-industry-desc">Menú completo, reservaciones y asistente IA</div><span class="iva-industry-tag">desde $29/mes</span></a>
-        <a href="/cotizar" class="iva-industry"><span class="iva-industry-icon">💇</span><div class="iva-industry-name">Salones & Spas</div><div class="iva-industry-desc">Servicios, precios y reservaciones por WhatsApp</div><span class="iva-industry-tag">desde $29/mes</span></a>
-        <a href="/cotizar" class="iva-industry"><span class="iva-industry-icon">🥐</span><div class="iva-industry-name">Panaderías & Cafés</div><div class="iva-industry-desc">Especiales del día, órdenes y chat con clientes</div><span class="iva-industry-tag">desde $29/mes</span></a>
-        <a href="/cotizar" class="iva-industry"><span class="iva-industry-icon">🚗</span><div class="iva-industry-name">Dealers de Autos</div><div class="iva-industry-desc">Inventario, captura de leads e info de financiamiento</div><span class="iva-industry-tag">$99/mes</span></a>
-        <a href="/cotizar" class="iva-industry"><span class="iva-industry-icon">🏠</span><div class="iva-industry-name">Realtors</div><div class="iva-industry-desc">Propiedades, captura de leads y citas</div><span class="iva-industry-tag">$99/mes</span></a>
-        <a href="/cotizar" class="iva-industry"><span class="iva-industry-icon">🏥</span><div class="iva-industry-name">Médicos & Dentistas</div><div class="iva-industry-desc">Servicios, citas y preguntas de pacientes</div><span class="iva-industry-tag">$99/mes</span></a>
-        <a href="/cotizar" class="iva-industry"><span class="iva-industry-icon">⚖️</span><div class="iva-industry-name">Abogados & Servicios</div><div class="iva-industry-desc">Áreas de práctica, consultas y captura de leads</div><span class="iva-industry-tag">$99/mes</span></a>
+  <div class="hero-visual">
+    <div class="chat-mockup">
+      <div class="mockup-header">
+        <div class="mockup-avatar">🤖</div>
+        <div>
+          <div class="mockup-name">IvA — Tu Asistente de Negocio</div>
+          <div class="mockup-status">● En línea · Responde al instante</div>
+        </div>
+      </div>
+      <div class="mockup-msgs">
+        <div class="m-msg m-bot">¡Hola! 👋 Estoy aquí para ayudarte con cualquier pregunta 24/7. ¿En qué puedo ayudarte hoy?</div>
+        <div class="m-msg m-user">¿Cuál es el horario?</div>
+        <div class="m-msg m-bot">Estamos abiertos de lunes a sábado de 9am a 7pm. ¿Te gustaría agendar una cita o necesitas más información? 😊</div>
+      </div>
+      <div class="mockup-footer">
+        <input class="mockup-input" placeholder="Escribe un mensaje...">
+        <button class="mockup-send">➤</button>
+      </div>
+    </div>
+    <div class="qr-badge">
+      <div class="qr-icon">📱</div>
+      <div>
+        <div class="qr-text">Comparte por QR o Link</div>
+        <div class="qr-sub">Funciona en cualquier dispositivo</div>
       </div>
     </div>
   </div>
+</section>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  <!-- COMO FUNCIONA -->
-  <div class="iva-section iva-section-void" id="how">
-    <div class="iva-inner">
-      <div class="iva-section-label">El proceso</div>
-      <h2 class="iva-section-title">Listo en <em>48 horas</em></h2>
-      <div class="iva-steps">
-        <div class="iva-step"><div class="iva-step-num">01 / SETUP</div><span class="iva-step-icon">📋</span><div class="iva-step-title">Nos envías tu info</div><div class="iva-step-desc">Tu logo, menú o servicios, precios y datos del negocio. Nosotros configuramos todo por ti.</div></div>
-        <div class="iva-step"><div class="iva-step-num">02 / LAUNCH</div><span class="iva-step-icon">🚀</span><div class="iva-step-title">Tu página sale en vivo</div><div class="iva-step-desc">Publicamos en tu link personalizado. IvA ya conoce tu negocio y está listo para atender clientes 24/7.</div></div>
-        <div class="iva-step"><div class="iva-step-num">03 / SELL</div><span class="iva-step-icon">💰</span><div class="iva-step-title">Clientes ordenan y pagan</div><div class="iva-step-desc">IvA guía a tus clientes a WhatsApp o al checkout. Los pagos van directo a tu cuenta. Cero comisiones.</div></div>
+<!-- HOW IT WORKS -->
+<section class="how" id="como">
+  <div class="how-inner">
+    <div class="section-tag">Proceso Simple</div>
+    <h2 class="section-title">How It <em>Works</em></h2>
+    <p class="section-sub">Cuatro pasos simples — sin conocimientos técnicos.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">🔗</div>
+        <h3>Comparte tu Link o QR</h3>
+        <p>Pon tu link o código QR en tus flyers, redes sociales, web o rótulos.</p>
+        <div class="step-arrow">›</div>
+      </div>
+      <div class="step">
+        <div class="step-num">💬</div>
+        <h3>Clientes Hacen Preguntas</h3>
+        <p>Los clientes tocan el link y empiezan a chatear al instante — a cualquier hora.</p>
+        <div class="step-arrow">›</div>
+      </div>
+      <div class="step">
+        <div class="step-num">🤖</div>
+        <h3>El Asistente Responde</h3>
+        <p>Tu asistente IA responde naturalmente, en su idioma, las 24 horas del día.</p>
+        <div class="step-arrow">›</div>
+      </div>
+      <div class="step">
+        <div class="step-num">📲</div>
+        <h3>Capturas Más Leads</h3>
+        <p>Cada consulta es capturada y enviada a ti — lista para dar seguimiento.</p>
       </div>
     </div>
   </div>
+</section>
 
-  <!-- FEATURES -->
-  <div class="iva-section iva-section-dark">
-    <div class="iva-inner">
-      <div class="iva-section-label">Qué incluye</div>
-      <h2 class="iva-section-title">Todo lo que tu negocio<br><em>necesita</em></h2>
-      <div class="iva-features">
-        <div class="iva-feature"><div class="iva-feature-icon">🤖</div><div class="iva-feature-title">IvA — Tu Asistente Digital</div><div class="iva-feature-desc">Entrenado con la info de tu negocio. Responde preguntas, toma órdenes y guía clientes 24/7 en cualquier idioma.</div><span class="iva-feature-tag">MULTILINGÜE</span></div>
-        <div class="iva-feature"><div class="iva-feature-icon">📱</div><div class="iva-feature-title">Página Web Mobile-First</div><div class="iva-feature-desc">Una página hermosa y rápida diseñada para teléfonos. Tu menú, servicios, fotos y precios en un solo lugar.</div><span class="iva-feature-tag">OPTIMIZADA PARA MÓVIL</span></div>
-        <div class="iva-feature"><div class="iva-feature-icon">💳</div><div class="iva-feature-title">Pagos Directos</div><div class="iva-feature-desc">Acepta Stripe, ATH Móvil, PayPal o Square. El dinero va directo a tu cuenta — sin intermediarios.</div><span class="iva-feature-tag">0% COMISIÓN</span></div>
-        <div class="iva-feature"><div class="iva-feature-icon">📲</div><div class="iva-feature-title">Pedidos por WhatsApp</div><div class="iva-feature-desc">Los pedidos llegan formateados directo a tu WhatsApp. Sin apps, sin complicaciones.</div><span class="iva-feature-tag">NOTIFICACIONES INSTANTÁNEAS</span></div>
-        <div class="iva-feature wide"><div class="iva-feature-icon">🔧</div><div class="iva-feature-title">Panel de Admin — Edita Todo Tú Mismo</div><div class="iva-feature-desc">Actualiza tu menú, precios, fotos y horario cuando quieras desde tu propio panel de admin. Sin código, sin desarrolladores. Tu página se actualiza al instante.</div><span class="iva-feature-tag">SIN CÓDIGO · ACTUALIZACIONES INSTANTÁNEAS · CONTROL TOTAL</span></div>
-      </div>
-    </div>
+<!-- PERFECT FOR -->
+<section class="for-section" id="para-quien">
+  <div class="section-tag">Industrias</div>
+  <h2 class="section-title">Perfect <em>For</em></h2>
+  <p class="section-sub">Cualquier negocio local que quiera responder más rápido y capturar más leads.</p>
+  <div class="biz-grid">
+    <div class="biz-card"><div class="biz-icon">🏠</div><div class="biz-name">Realtors</div></div>
+    <div class="biz-card"><div class="biz-icon">🍽️</div><div class="biz-name">Restaurantes</div></div>
+    <div class="biz-card"><div class="biz-icon">🚚</div><div class="biz-name">Food Trucks</div></div>
+    <div class="biz-card"><div class="biz-icon">🔨</div><div class="biz-name">Contractors</div></div>
+    <div class="biz-card"><div class="biz-icon">⚖️</div><div class="biz-name">Bufetes</div></div>
+    <div class="biz-card"><div class="biz-icon">🏥</div><div class="biz-name">Clínicas</div></div>
+    <div class="biz-card"><div class="biz-icon">💅</div><div class="biz-name">Salones & Spas</div></div>
+    <div class="biz-card"><div class="biz-icon">🚗</div><div class="biz-name">Dealers</div></div>
+    <div class="biz-card"><div class="biz-icon">❄️</div><div class="biz-name">AC & HVAC</div></div>
+    <div class="biz-card"><div class="biz-icon">💰</div><div class="biz-name">Financial</div></div>
+    <div class="biz-card"><div class="biz-icon">🐾</div><div class="biz-name">Pet Shops</div></div>
+    <div class="biz-card"><div class="biz-icon">✨</div><div class="biz-name">Cualquier Negocio</div></div>
   </div>
+</section>
 
-  <!-- PRECIOS -->
-  <div class="iva-section iva-section-void" id="pricing">
-    <div class="iva-inner" style="text-align:center">
-      <div class="iva-section-label" style="justify-content:center">Precios</div>
-      <h2 class="iva-section-title">Simple. <em>Transparente.</em> Tuyo.</h2>
-      <p style="color:#8892A4;margin-top:0.5rem;font-size:0.95rem;">Setup desde $125 · Sin contratos · Cancela cuando quieras</p>
-      <div class="iva-pricing-grid">
-
-        <!-- BÁSICO -->
-        <div class="iva-pricing-card">
-          <div class="iva-pricing-badge standard">⚡ Estándar</div>
-          <div class="iva-pricing-plan-name">Plan Básico</div>
-          <div class="iva-pricing-industries">Food trucks · Restaurantes<br>Salones · Panaderías · Cafés</div>
-          <div class="iva-price"><span class="iva-price-currency">$</span><span class="iva-price-amount">49</span><span class="iva-price-period">/mes</span></div>
-          <p class="iva-price-setup">+ <strong>$125 setup</strong> </p>
-          <ul class="iva-pricing-list">
-            <li>Página web personalizada</li>
-            <li>Asistente digital IvA 24/7</li>
-            <li>Pedidos por WhatsApp</li>
-            <li>Integración de pagos</li>
-            <li>Panel de admin</li>
-            <li>Multilingüe</li>
-          </ul>
-          <a href="/cotizar" class="iva-btn-pricing standard">Empezar →</a>
-        </div>
-
-        <!-- PROFESIONAL -->
-        <div class="iva-pricing-card featured">
-          <div class="iva-pricing-badge pro">🚀 Profesional</div>
-          <div class="iva-pricing-plan-name">Plan Pro</div>
-          <div class="iva-pricing-industries">Dealers · Realtors<br>Médicos · Abogados · Finanzas</div>
-          <div class="iva-price"><span class="iva-price-currency">$</span><span class="iva-price-amount">99</span><span class="iva-price-period">/mes</span></div>
-          <p class="iva-price-setup">+ <strong>$125 setup</strong> </p>
-          <ul class="iva-pricing-list">
-            <li>Todo lo del Plan Básico</li>
-            <li>Captura de leads</li>
-            <li>Reservación de citas</li>
-            <li>Soporte prioritario</li>
-            <li>Prompts avanzados para IvA</li>
-            <li>Showcase de inventario</li>
-          </ul>
-          <a href="/cotizar" class="iva-btn-pricing pro">Empezar →</a>
-        </div>
-
-      </div>
+<!-- MEET IVA -->
+<section class="iva-section">
+  <div class="iva-inner">
+    <div>
+      <div class="iva-tag">Conoce tu Asistente</div>
+      <h2 class="iva-title">Conoce a IvA 👋</h2>
+      <p class="iva-sub">Habla con IvA ahora mismo y descubre cómo esta herramienta puede ayudar a tu negocio. IvA es amigable, natural y habla español e inglés.</p>
+      <ul class="iva-features">
+        <li>Responde preguntas de clientes al instante</li>
+        <li>Guía a los clientes naturalmente en la conversación</li>
+        <li>Trabaja 24/7 — even while you sleep</li>
+        <li>Habla español, inglés y cualquier idioma</li>
+        <li>Funciona por links, códigos QR o tu página web</li>
+        <li>Captura leads y te los envía automáticamente</li>
+      </ul>
+      <a href="/es/asistente" class="btn-primary" style="display:inline-flex;">👋 Habla con IvA Now</a>
     </div>
-  </div>
-
-  <!-- FAQ -->
-  <div class="iva-section iva-section-dark">
-    <div class="iva-inner">
-      <div class="iva-section-label">FAQ</div>
-      <h2 class="iva-section-title">Preguntas <em>frecuentes</em></h2>
-      <div class="iva-faq">
-        <div class="iva-faq-item">
-          <div class="iva-faq-q" onclick="toggleFaq(this)">¿Necesito saber de tecnología o programación? <span class="iva-faq-icon">+</span></div>
-          <div class="iva-faq-a"><div class="iva-faq-a-inner">Para nada. Nosotros configuramos todo por ti. Solo nos envías tu info — logo, menú, precios, horario — y tu página sale en vivo en 48 horas. Después puedes actualizar todo desde tu panel de admin sin ningún conocimiento técnico.</div></div>
-        </div>
-        <div class="iva-faq-item">
-          <div class="iva-faq-q" onclick="toggleFaq(this)">¿Cuánto tiempo tarda el setup? <span class="iva-faq-icon">+</span></div>
-          <div class="iva-faq-a"><div class="iva-faq-a-inner">Tu página sale en vivo dentro de 48 horas después de que nos envíes tu información. En la mayoría de los casos entregamos el mismo día.</div></div>
-        </div>
-        <div class="iva-faq-item">
-          <div class="iva-faq-q" onclick="toggleFaq(this)">¿IvA habla español e inglés? <span class="iva-faq-icon">+</span></div>
-          <div class="iva-faq-a"><div class="iva-faq-a-inner">¡Sí! IvA detecta automáticamente el idioma en que te escribe tu cliente y responde en el mismo idioma. Funciona en español, inglés y otros idiomas también.</div></div>
-        </div>
-        <div class="iva-faq-item">
-          <div class="iva-faq-q" onclick="toggleFaq(this)">¿Puedo cancelar cuando quiera? <span class="iva-faq-icon">+</span></div>
-          <div class="iva-faq-a"><div class="iva-faq-a-inner">Sí. No hay contratos a largo plazo. Puedes cancelar tu suscripción mensual en cualquier momento. El primer mes siempre es gratis.</div></div>
-        </div>
-        <div class="iva-faq-item">
-          <div class="iva-faq-q" onclick="toggleFaq(this)">¿Qué pasa después de que pago? <span class="iva-faq-icon">+</span></div>
-          <div class="iva-faq-a"><div class="iva-faq-a-inner">Después del pago te contactamos por WhatsApp para recopilar la info de tu negocio. En 48 horas tu página está en vivo en ivamarai.com/tu-negocio. También recibes acceso a tu panel de admin para hacer cambios cuando quieras.</div></div>
+    <div class="iva-chat">
+      <div class="iva-chat-header">
+        <div class="iva-avatar">🤖</div>
+        <div>
+          <div class="iva-name">IvA — Ivamar AI</div>
+          <div class="iva-online">● En línea · Responde al instante</div>
         </div>
       </div>
-    </div>
-  </div>
+      <div class="iva-msgs" id="ivaMsgs">
+        <div class="iv-msg iv-bot">Hola 👋 Gracias por visitar Ivamar AI.
 
-  <!-- CTA -->
-  <div class="iva-cta">
-    <div class="iva-cta-glow"></div>
-    <div class="iva-cta-inner">
-      <h2>Sé el primero en tu área<br>en ofrecer <em>servicio con IA</em></h2>
-      <p>Tus clientes ya están buscando negocios como el tuyo en internet. Dales la mejor experiencia — 24/7, en cualquier idioma.</p>
-      <div class="iva-cta-btns">
-        <a href="https://wa.me/18635216708" target="_blank" class="iva-btn-main">Hablar por WhatsApp →</a>
-        <a href="/cotizar" class="iva-btn-ghost">Empezar ahora</a>
-      </div>
-    </div>
-  </div>
+Muchos negocios pierden clientes simplemente porque nadie responde a tiempo.
 
-  <div class="iva-footer">
-    <div>© 2025 <strong>Ivamar AI LLC</strong> · 8 The Green, Suite B, Dover, DE 19901, USA · From USA to Around the World 🌎</div>
-    <div class="iva-footer-links">
-      <a href="/privacidad">Privacidad</a><a href="/terminos">Términos</a>
-      <a href="/sobre-nosotros">Nosotros</a><a href="/contacto">Contacto</a>
-    </div>
-  </div>
-</div>
+¿Te gustaría saber si esta herramienta puede ayudar a tu negocio? 😊",
+  'how much does it cost?': "Simple pricing 😊 Setup starts at $125 (one-time) and the monthly plan starts from $29/month. Sin contratos, cancel anytime. Want to see a live demo for your specific business?",
+  'i have a restaurant': "Perfect! 🍽️ For restaurants, IvA can answer questions about your menu, hours, reservations, and even help customers place orders directly via WhatsApp — without Uber Eats commissions. Would you like to see how it would look for your restaurant?",
+  'default': "Thanks for that! 😊 The best way to understand how IvA could help your business is to experience it yourself. Click the button below to have a full conversation with IvA — it'll ask you about your business and show you exactly what's possible."
+};
 
-<script>
-function toggleFaq(el) {
-  const item = el.parentElement;
-  item.classList.toggle('open');
+function ivaReply(el) {
+  const text = el.textContent;
+  addMsg(text, 'user');
+  const key = text.toLowerCase();
+  const reply = ivaResponses[key] || ivaResponses['default'];
+  setTimeout(() => addMsg(reply, 'bot'), 700);
+}
+
+function ivaSend() {
+  const input = document.getElementById('ivaInput');
+  if (!input.value.trim()) return;
+  addMsg(input.value, 'user');
+  setTimeout(() => addMsg(ivaResponses['default'], 'bot'), 700);
+  input.value = '';
+}
+
+function addMsg(text, type) {
+  const msgs = document.getElementById('ivaMsgs');
+  const div = document.createElement('div');
+  div.className = 'iv-msg iv-' + type;
+  div.textContent = text;
+  msgs.appendChild(div);
+  msgs.scrollTop = msgs.scrollHeight;
 }
 </script>
+</body>
+</html>
 `;
