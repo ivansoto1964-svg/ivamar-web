@@ -414,7 +414,7 @@ footer{padding:1.5rem;}
 <section class="inv" id="inventory">
   <div class="inv-inner">
     <div class="sec-tag" style="color:rgba(255,255,255,0.35);">Modelos Populares</div>
-    <h2 class="sec-title" style="color:#fff;">Current <em>Inventory</em></h2>
+    <h2 class="sec-title" style="color:#fff;">Inventario <em>Actual</em></h2>
     <div class="inv-grid">
       <div class="car">
         <span class="car-emoji">🚙</span>
