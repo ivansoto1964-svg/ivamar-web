@@ -288,7 +288,7 @@ footer{padding:1.5rem;}
 <section class="how" id="how">
   <div class="how-inner">
     <div class="sec-tag">Proceso Simple</div>
-    <h2 class="sec-title">How It <em>Works</em></h2>
+    <h2 class="sec-title">Cómo <em>Funciona</em></h2>
     <p class="sec-sub">Los clientes obtienen respuestas inmediatas sin esperar a un vendedor — de día o de noche, entre semana o fines de semana.</p>
     <div class="steps">
       <div class="step">
@@ -419,28 +419,28 @@ footer{padding:1.5rem;}
       <div class="car">
         <span class="car-emoji">🚙</span>
         <div class="car-name">Telluride</div>
-        <div class="car-type">3-Row SUV · 8-Passenger</div>
+        <div class="car-type">SUV 3 Filas · 8 Pasajeros</div>
         <div class="car-price">From \$38,490</div>
         <div class="car-avail">● En Stock</div>
       </div>
       <div class="car">
         <span class="car-emoji">🚗</span>
         <div class="car-name">Sportage</div>
-        <div class="car-type">Compact SUV · AWD Available</div>
+        <div class="car-type">SUV Compacto · AWD Disponible</div>
         <div class="car-price">From \$27,090</div>
         <div class="car-avail">● En Stock</div>
       </div>
       <div class="car">
         <span class="car-emoji">🚐</span>
         <div class="car-name">Sorento</div>
-        <div class="car-type">Midsize SUV · Hybrid Available</div>
+        <div class="car-type">SUV Mediano · Híbrido Disponible</div>
         <div class="car-price">From \$32,490</div>
         <div class="car-avail">● En Stock</div>
       </div>
       <div class="car">
         <span class="car-emoji">🏎️</span>
         <div class="car-name">K5</div>
-        <div class="car-type">Midsize Sedan · GT Available</div>
+        <div class="car-type">Sedán Mediano · GT Disponible</div>
         <div class="car-price">From \$25,990</div>
         <div class="car-avail">● En Stock</div>
       </div>
