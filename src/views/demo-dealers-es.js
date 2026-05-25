@@ -326,7 +326,7 @@ footer{padding:1.5rem;}
 <section class="feats">
   <div class="feats-inner">
     <div class="sec-tag">Capacidades del Asistente</div>
-    <h2 class="sec-title">Everything the <em>Assistant</em> Can Do</h2>
+    <h2 class="sec-title">Todo Lo Que el Asistente <em>Puede Hacer</em></h2>
     <p class="sec-sub">Tus clientes obtienen respuestas instantáneas y precisas — 24 horas al día, 7 días a la semana, en cualquier idioma.</p>
     <div class="feats-grid">
       <div class="feat">
@@ -505,7 +505,7 @@ footer{padding:1.5rem;}
 <section class="plans" id="plans">
   <div class="plans-inner">
     <div class="sec-tag">Planes Flexibles</div>
-    <h2 class="sec-title">Choose Your <em>Plan</em></h2>
+    <h2 class="sec-title">Elige Tu <em>Plan</em></h2>
     <p class="sec-sub">Empieza con una ubicación o despliega en todo el grupo. Cada plan incluye setup y soporte completo.</p>
     <div class="plans-grid">
       <div class="plan">
