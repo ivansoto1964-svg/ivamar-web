@@ -1,6 +1,7 @@
 
 const express = require("express");
 const layout = require("./views/layout");
+const dyerKia = require("./views/dyerkia");
 const home = require("./views/home");
 const homeES = require("./views/home-es");
 const homeEN = require("./views/home-en");
@@ -111,6 +112,7 @@ app.get("/privacidad", (req, res) => res.send(layout({ title: "Política de Priv
 app.get("/demo", (req, res) => res.send(layout({  lang: "en", title: "Demo — El Rincón Boricua", body: demo })));
 app.get("/demos", (req, res) => res.send(layout({  lang: "en", title: "Demos — Ivamar AI", body: demos })));
 app.get("/demos-es", (req, res) => res.send(layout({ title: "Demos — Ivamar AI", body: demosES })));
+app.get("/dyerkia", (req, res) => res.send(dyerKia));
 app.get("/demo-autos", (req, res) => res.send(layout({  lang: "en", title: "Demo — Luis Soto Autos", body: demoAutos })));
 app.get("/quote", (req, res) => res.send(layout({  lang: "en", title: "Get Started — Ivamar AI", body: quote })));
 
