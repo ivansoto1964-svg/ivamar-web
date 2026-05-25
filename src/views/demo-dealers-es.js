@@ -210,9 +210,9 @@ footer{padding:1.5rem;}
 <!-- NAV -->
 <nav>
   <div class="nav-logo">
-    <div class="nav-kia">KIA</div>
+    <div class="nav-kia">AUTO</div>
     <div>
-      <div class="nav-name">Your Dealership</div>
+      <div class="nav-name">Tu Dealer</div>
       <span class="nav-sub">Powered by Ivamar AI · ivamarai.com</span>
     </div>
   </div>
@@ -374,7 +374,7 @@ footer{padding:1.5rem;}
   <div class="qr-sec-inner">
     <div>
       <div class="sec-tag">QR en Todas Partes</div>
-      <h2 class="sec-title">Customers Connect<br>From <em>Anywhere.</em></h2>
+      <h2 class="sec-title">Clientes Se Conectan<br>Desde <em>Cualquier Lugar.</em></h2>
       <p class="sec-sub">Coloca QR en tu dealer. Los clientes obtienen respuestas instantáneas incluso cuando está cerrado.</p>
       <div class="qr-grid">
         <div class="qr-card">
@@ -404,7 +404,7 @@ footer{padding:1.5rem;}
         <div class="qr-visual-box">🔲</div>
         <div class="qr-visual-text">Escanea para hablar con<br>Tu Asistente al instante</div>
         <div class="qr-visual-brand">TU DEALER</div>
-        <div class="qr-stat"><strong>78% of car buyers</strong> contact the first dealership that responds. With a 24/7 assistant, you're always first — even at 2am on a Sunday.</div>
+        <div class="qr-stat"><strong>78% de los compradores</strong> contactan al primer dealer que responde. Con un asistente 24/7, siempre eres el primero — incluso a las 2am un domingo.</div>
       </div>
     </div>
   </div>
@@ -478,7 +478,7 @@ footer{padding:1.5rem;}
         <div class="ac-info">
           <div class="ac-avatar">🚗</div>
           <div>
-            <div class="ac-name">Your Assistant</div>
+            <div class="ac-name">Tu Asistente</div>
             <div class="ac-status">● En Línea · Tu Dealer</div>
           </div>
         </div>
@@ -512,8 +512,8 @@ footer{padding:1.5rem;}
         <div class="plan-tag">Una Ubicación</div>
         <div class="plan-name">Starter</div>
         <div class="plan-dealers">1 dealer</div>
-        <div class="plan-price">\$149<span>/mo</span></div>
-        <div class="plan-setup">+ \$500 one-time setup</div>
+        <div class="plan-price">\$149<span>/mes</span></div>
+        <div class="plan-setup">+ \$500 setup único</div>
         <ul class="plan-features">
           <li>Asistente personalizado entrenado en tu inventario y servicios</li>
           <li>Un código QR + link directo para el dealer</li>
@@ -529,7 +529,7 @@ footer{padding:1.5rem;}
         <div class="plan-name">Multi</div>
         <div class="plan-dealers">3 dealers</div>
         <div class="plan-price">\$349<span>/mo</span></div>
-        <div class="plan-setup">+ \$1,200 one-time setup</div>
+        <div class="plan-setup">+ \$1,200 setup único</div>
         <ul class="plan-features">
           <li>Asistente personalizado entrenado en tu inventario y servicios</li>
           <li>Un código QR + link directo para el dealer</li>
@@ -545,7 +545,7 @@ footer{padding:1.5rem;}
         <div class="plan-name">Group</div>
         <div class="plan-dealers">Todos los dealers</div>
         <div class="plan-price">\$599<span>/mo</span></div>
-        <div class="plan-setup">+ \$2,500 one-time setup</div>
+        <div class="plan-setup">+ \$2,500 setup único</div>
         <ul class="plan-features">
           <li>Asistente personalizado entrenado en tu inventario y servicios</li>
           <li>Un código QR + link directo para el dealer</li>
@@ -588,7 +588,7 @@ footer{padding:1.5rem;}
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-kia">DYER <span>KIA</span> LAKE WALES</div>
+  <div class="footer-kia">TU <span>DEALER</span></div>
   <div class="footer-info">
     ivamarai.com · connect@ivamarai.com<br>
     Asistentes IA para Dealers · USA y LATAM
@@ -611,7 +611,7 @@ async function callKiaAssistant(message) {
         lang: message.match(/[áéíóúñ¿¡]/i) ? 'es' : 'en',
         context: {
           businessType: 'Kia dealership',
-          name: 'Your Assistant'
+          name: 'Tu Asistente'
         }
       })
     });
@@ -631,7 +631,7 @@ function showTyping() {
   const div = document.createElement('div');
   div.className = 'ac-bot';
   div.id = 'acTyping';
-  div.innerHTML = '<span style="opacity:0.5">Your Assistant is typing...</span>';
+  div.innerHTML = '<span style="opacity:0.5">Asistente escribiendo...</span>';
   msgs.appendChild(div);
   msgs.scrollTop = msgs.scrollHeight;
 }
