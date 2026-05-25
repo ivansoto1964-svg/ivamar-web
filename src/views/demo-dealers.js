@@ -678,6 +678,7 @@ async function acSend() {
   acTyping = false;
 }
 </script>
+<script src="/dealer-chat.js"></script>
 </body>
 </html>
 `;
