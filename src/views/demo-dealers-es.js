@@ -420,28 +420,28 @@ footer{padding:1.5rem;}
         <span class="car-emoji">🚙</span>
         <div class="car-name">Telluride</div>
         <div class="car-type">SUV 3 Filas · 8 Pasajeros</div>
-        <div class="car-price">From \$38,490</div>
+        <div class="car-price">Desde \$38,490</div>
         <div class="car-avail">● En Stock</div>
       </div>
       <div class="car">
         <span class="car-emoji">🚗</span>
         <div class="car-name">Sportage</div>
         <div class="car-type">SUV Compacto · AWD Disponible</div>
-        <div class="car-price">From \$27,090</div>
+        <div class="car-price">Desde \$27,090</div>
         <div class="car-avail">● En Stock</div>
       </div>
       <div class="car">
         <span class="car-emoji">🚐</span>
         <div class="car-name">Sorento</div>
         <div class="car-type">SUV Mediano · Híbrido Disponible</div>
-        <div class="car-price">From \$32,490</div>
+        <div class="car-price">Desde \$32,490</div>
         <div class="car-avail">● En Stock</div>
       </div>
       <div class="car">
         <span class="car-emoji">🏎️</span>
         <div class="car-name">K5</div>
         <div class="car-type">Sedán Mediano · GT Disponible</div>
-        <div class="car-price">From \$25,990</div>
+        <div class="car-price">Desde \$25,990</div>
         <div class="car-avail">● En Stock</div>
       </div>
     </div>
