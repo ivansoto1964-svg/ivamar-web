@@ -231,7 +231,7 @@ footer{padding:1.5rem;}
     <div>
       <div class="hero-badge">
         <div class="hero-badge-dot"></div>
-        <span class="hero-badge-text">24/7 · English & Spanish · No Missed Leads</span>
+        <span class="hero-badge-text">24/7 · Español e Inglés · Sin Leads Perdidos</span>
       </div>
       <h1>Find Your<br>Next Vehicle<br><em>Faster.</em></h1>
       <p class="hero-sub">Habla con nuestro asistente virtual para explorar inventario, opciones de financiamiento, trade-ins y vehículos disponibles — al instante, a cualquier hora del día o la noche.</p>
@@ -259,25 +259,25 @@ footer{padding:1.5rem;}
         <div class="hc-header">
           <div class="hc-avatar">🚗</div>
           <div>
-            <div class="hc-name">Your Dealership Assistant</div>
-            <div class="hc-status">● Online · Responds Instantly</div>
+            <div class="hc-name">Asistente de Tu Dealer</div>
+            <div class="hc-status">● En Línea · Responde al Instantáneoe</div>
           </div>
         </div>
         <div class="hc-msgs">
-          <div class="hc-bot">Hi! 👋 Welcome to Your Dealership.<br><br>I can help you with:<br>🚗 New inventory · 🚘 Used vehicles<br>💰 Financing · 🔄 Trade-ins · 🔧 Service<br><br>What are you looking for today?</div>
-          <div class="hc-user">I'm interested in an SUV</div>
-          <div class="hc-bot">Great choice! 🔥 We have several SUVs in stock across different price ranges. Would you like to know about financing options or schedule a test drive?</div>
+          <div class="hc-bot">¡Hola! 👋 Bienvenido a Tu Dealer.<br><br>Puedo ayudarte con:<br>🚗 Inventario nuevo · 🚘 Vehículos usados<br>💰 Financiamiento · 🔄 Trade-ins · 🔧 Servicio<br><br>¿En qué puedo ayudarte hoy?</div>
+          <div class="hc-user">Me interesa una SUV</div>
+          <div class="hc-bot">¡Excelente elección! 🔥 Tenemos varias SUVs en inventario en diferentes rangos de precio. ¿Te gustaría conocer las opciones de financiamiento o agendar una prueba de manejo?</div>
         </div>
         <div class="hc-footer">
-          <input class="hc-input" placeholder="Ask about any vehicle...">
+          <input class="hc-input" placeholder="Pregunta sobre cualquier vehículo...">
           <button class="hc-send">➤</button>
         </div>
       </div>
       <div class="qr-float">
         <div class="qr-box">📱</div>
         <div>
-          <div class="qr-info-title">Scan on any vehicle</div>
-          <div class="qr-info-sub">Get instant info via QR</div>
+          <div class="qr-info-title">Escanea en cualquier lugar</div>
+          <div class="qr-info-sub">Info instantánea via QR</div>
         </div>
       </div>
     </div>
@@ -308,7 +308,7 @@ footer{padding:1.5rem;}
       <div class="step">
         <div class="step-n">03</div>
         <div class="step-icon">🚗</div>
-        <h3>Explora al Instante</h3>
+        <h3>Explora al Instantáneoe</h3>
         <p>Obtén precios, especificaciones, financiamiento y disponibilidad — sin esperar.</p>
         <div class="step-arr"></div>
       </div>
@@ -333,19 +333,19 @@ footer{padding:1.5rem;}
         <div class="feat-icon">🚗</div>
         <h3>Preguntas de Inventario</h3>
         <p>Verifica disponibilidad, colores, versiones y especificaciones de cualquier vehículo.</p>
-        <span class="feat-badge">Real-time</span>
+        <span class="feat-badge">Tiempo real</span>
       </div>
       <div class="feat">
         <div class="feat-icon">💰</div>
         <h3>Información de Financiamiento</h3>
         <p>Pagos estimados, opciones de inicial, info de crédito — todo explicado claramente.</p>
-        <span class="feat-badge">Instant</span>
+        <span class="feat-badge">Instantáneo</span>
       </div>
       <div class="feat">
         <div class="feat-icon">🔄</div>
         <h3>Orientación de Trade-In</h3>
         <p>Guía a los clientes por el proceso de trade-in paso a paso automáticamente.</p>
-        <span class="feat-badge">Step by Step</span>
+        <span class="feat-badge">Paso a Paso</span>
       </div>
       <div class="feat">
         <div class="feat-icon">🔧</div>
@@ -357,13 +357,13 @@ footer{padding:1.5rem;}
         <div class="feat-icon">📅</div>
         <h3>Solicitudes de Prueba de Manejo</h3>
         <p>Agenda pruebas de manejo fuera de horario, fines de semana — cuando el cliente quiera.</p>
-        <span class="feat-badge">Always Open</span>
+        <span class="feat-badge">Siempre Abierto</span>
       </div>
       <div class="feat">
         <div class="feat-icon">🌍</div>
         <h3>English & Spanish</h3>
         <p>Responde automáticamente en el idioma del cliente — sin confusión.</p>
-        <span class="feat-badge">Bilingual</span>
+        <span class="feat-badge">Bilingüe</span>
       </div>
     </div>
   </div>
@@ -403,7 +403,7 @@ footer{padding:1.5rem;}
       <div class="qr-visual">
         <div class="qr-visual-box">🔲</div>
         <div class="qr-visual-text">Escanea para hablar con<br>Tu Asistente al instante</div>
-        <div class="qr-visual-brand">YOUR DEALERSHIP</div>
+        <div class="qr-visual-brand">TU DEALER</div>
         <div class="qr-stat"><strong>78% of car buyers</strong> contact the first dealership that responds. With a 24/7 assistant, you're always first — even at 2am on a Sunday.</div>
       </div>
     </div>
@@ -485,16 +485,16 @@ footer{padding:1.5rem;}
         <div class="ac-lang">EN · ES</div>
       </div>
       <div class="ac-msgs" id="acMsgs">
-        <div class="ac-bot">Hi! 👋 Welcome to Your Dealership.<br><br>I can help you with:<br>🚗 New & used inventory<br>💰 Financing options<br>🔄 Trade-in guidance<br>🔧 Service appointments<br>📅 Test drive scheduling<br><br>What are you looking for today?</div>
+        <div class="ac-bot">Hi! 👋 Welcome to Your Dealership.<br><br>I can help you with:<br>🚗 New & used inventory<br>💰 Opciones de financiamiento<br>🔄 Trade-in guidance<br>🔧 Service appointments<br>📅 Test drive scheduling<br><br>What are you looking for today?</div>
       </div>
       <div class="ac-suggs">
-        <button class="ac-sugg" onclick="acReply(this)">New vehicles</button>
-        <button class="ac-sugg" onclick="acReply(this)">Financing options</button>
-        <button class="ac-sugg" onclick="acReply(this)">Schedule test drive</button>
-        <button class="ac-sugg" onclick="acReply(this)">Trade-in my car</button>
+        <button class="ac-sugg" onclick="acReply(this)">Vehículos nuevos</button>
+        <button class="ac-sugg" onclick="acReply(this)">Opciones de financiamiento</button>
+        <button class="ac-sugg" onclick="acReply(this)">Agendar prueba de manejo</button>
+        <button class="ac-sugg" onclick="acReply(this)">Trade-in mi vehículo</button>
       </div>
       <div class="ac-footer">
-        <input class="ac-input" id="acInput" placeholder="Ask about any vehicle..." onkeydown="if(event.key==='Enter')acSend()">
+        <input class="ac-input" id="acInput" placeholder="Pregunta sobre cualquier vehículo..." onkeydown="if(event.key==='Enter')acSend()">
         <button class="ac-send" onclick="acSend()">➤</button>
       </div>
     </div>
@@ -564,7 +564,7 @@ footer{padding:1.5rem;}
 <section class="no-calls">
   <div class="no-calls-inner">
     <div class="no-calls-icon">📧</div>
-    <h2>We Don't Call.<br>We Don't <em>Interrupt.</em></h2>
+    <h2>No Llamamos.<br>We Don't <em>Interrupt.</em></h2>
     <p>En Ivamar AI, todo va a tu ritmo — por email, en tus términos. Sin llamadas de 45 minutos. Sin seguimientos agresivos. Sin presión.</p>
     <p>Configuramos tu asistente, nos aseguramos que todo funcione y estamos disponibles por email cuando nos necesites.</p>
     <div class="no-calls-tags">
