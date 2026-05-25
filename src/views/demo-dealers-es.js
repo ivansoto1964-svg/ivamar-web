@@ -233,7 +233,7 @@ footer{padding:1.5rem;}
         <div class="hero-badge-dot"></div>
         <span class="hero-badge-text">24/7 · Español e Inglés · Sin Leads Perdidos</span>
       </div>
-      <h1>Find Your<br>Next Vehicle<br><em>Faster.</em></h1>
+      <h1>Encuentra Tu<br>Próximo Vehículo<br><em>Más Rápido.</em></h1>
       <p class="hero-sub">Habla con nuestro asistente virtual para explorar inventario, opciones de financiamiento, trade-ins y vehículos disponibles — al instante, a cualquier hora del día o la noche.</p>
       <div class="hero-btns">
         <a href="#assistant" class="btn-red">🚗 Habla Con Nuestro Asistente</a>
@@ -260,7 +260,7 @@ footer{padding:1.5rem;}
           <div class="hc-avatar">🚗</div>
           <div>
             <div class="hc-name">Asistente de Tu Dealer</div>
-            <div class="hc-status">● En Línea · Responde al Instantáneoe</div>
+            <div class="hc-status">● En Línea · Responde al Instante</div>
           </div>
         </div>
         <div class="hc-msgs">
@@ -308,7 +308,7 @@ footer{padding:1.5rem;}
       <div class="step">
         <div class="step-n">03</div>
         <div class="step-icon">🚗</div>
-        <h3>Explora al Instantáneoe</h3>
+        <h3>Explora al Instante</h3>
         <p>Obtén precios, especificaciones, financiamiento y disponibilidad — sin esperar.</p>
         <div class="step-arr"></div>
       </div>
@@ -361,7 +361,7 @@ footer{padding:1.5rem;}
       </div>
       <div class="feat">
         <div class="feat-icon">🌍</div>
-        <h3>English & Spanish</h3>
+        <h3>Español e Inglés</h3>
         <p>Responde automáticamente en el idioma del cliente — sin confusión.</p>
         <span class="feat-badge">Bilingüe</span>
       </div>
@@ -456,7 +456,7 @@ footer{padding:1.5rem;}
   <div class="assist-inner">
     <div>
       <div class="sec-tag">Demo en Vivo</div>
-      <h2 class="sec-title">Meet Your<br><em>Your Assistant</em></h2>
+      <h2 class="sec-title">Conoce Tu<br><em>Asistente</em></h2>
       <p style="font-size:0.88rem;color:var(--mid);line-height:1.7;margin-bottom:1.5rem;">Así es exactamente como tus clientes experimentan el asistente — pruébalo ahora.</p>
       <div style="background:#fff;border:1px solid var(--border);border-radius:12px;padding:1.2rem;margin-bottom:1rem;">
         <div style="font-size:0.65rem;color:var(--mid);margin-bottom:0.8rem;font-weight:700;text-transform:uppercase;letter-spacing:0.08em;">Prueba preguntando:</div>
@@ -485,7 +485,7 @@ footer{padding:1.5rem;}
         <div class="ac-lang">EN · ES</div>
       </div>
       <div class="ac-msgs" id="acMsgs">
-        <div class="ac-bot">Hi! 👋 Welcome to Your Dealership.<br><br>I can help you with:<br>🚗 New & used inventory<br>💰 Opciones de financiamiento<br>🔄 Trade-in guidance<br>🔧 Service appointments<br>📅 Test drive scheduling<br><br>What are you looking for today?</div>
+        <div class="ac-bot">¡Hola! 👋 Bienvenido a Tu Dealer.<br><br>Puedo ayudarte con:<br>🚗 Inventario nuevo y usado<br>💰 Opciones de financiamiento<br>🔄 Orientación de trade-in<br>🔧 Citas de servicio<br>📅 Pruebas de manejo<br><br>¿En qué puedo ayudarte hoy?</div>
       </div>
       <div class="ac-suggs">
         <button class="ac-sugg" onclick="acReply(this)">Vehículos nuevos</button>
@@ -564,7 +564,7 @@ footer{padding:1.5rem;}
 <section class="no-calls">
   <div class="no-calls-inner">
     <div class="no-calls-icon">📧</div>
-    <h2>No Llamamos.<br>We Don't <em>Interrupt.</em></h2>
+    <h2>No Llamamos.<br>No <em>Interrumpimos.</em></h2>
     <p>En Ivamar AI, todo va a tu ritmo — por email, en tus términos. Sin llamadas de 45 minutos. Sin seguimientos agresivos. Sin presión.</p>
     <p>Configuramos tu asistente, nos aseguramos que todo funcione y estamos disponibles por email cuando nos necesites.</p>
     <div class="no-calls-tags">
