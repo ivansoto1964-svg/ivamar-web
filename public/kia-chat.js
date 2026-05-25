@@ -4,17 +4,12 @@ let acTyping = false;
 
 async function callKiaAssistant(message) {
   try {
-    const res = await fetch('/api/iva-sales', {
+    const res = await fetch('/api/kia-demo', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         message,
-        history: acHistory,
-        lang: message.match(/[áéíóúñ¿¡]/i) ? 'es' : 'en',
-        context: {
-          businessType: 'Kia dealership',
-          name: 'Kia Assistant'
-        }
+        history: acHistory
       })
     });
     const data = await res.json();
