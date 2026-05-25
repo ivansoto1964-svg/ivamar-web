@@ -379,8 +379,8 @@ footer{padding:1.5rem;}
       <div class="qr-grid">
         <div class="qr-card">
           <div class="qr-card-icon">🚗</div>
-          <h3>Windshield Sticker</h3>
-          <p>QR on every vehicle. Customers scan from the parking lot at any hour.</p>
+          <h3>Código QR del Dealer</h3>
+          <p>Un código QR para todo tu dealer. Imprímelo donde quieras — rótulos, tarjetas, anuncios.</p>
         </div>
         <div class="qr-card">
           <div class="qr-card-icon">🏢</div>
@@ -402,7 +402,7 @@ footer{padding:1.5rem;}
     <div>
       <div class="qr-visual">
         <div class="qr-visual-box">🔲</div>
-        <div class="qr-visual-text">Scan to talk with the<br>Your Assistant instantly</div>
+        <div class="qr-visual-text">Escanea para hablar con<br>Tu Asistente al instante</div>
         <div class="qr-visual-brand">YOUR DEALERSHIP</div>
         <div class="qr-stat"><strong>78% of car buyers</strong> contact the first dealership that responds. With a 24/7 assistant, you're always first — even at 2am on a Sunday.</div>
       </div>
@@ -506,7 +506,7 @@ footer{padding:1.5rem;}
   <div class="plans-inner">
     <div class="sec-tag">Planes Flexibles</div>
     <h2 class="sec-title">Choose Your <em>Plan</em></h2>
-    <p class="sec-sub">Start with one location or roll out across the entire Dyer group. Every plan includes setup, training and full support.</p>
+    <p class="sec-sub">Empieza con una ubicación o despliega en todo el grupo. Cada plan incluye setup y soporte completo.</p>
     <div class="plans-grid">
       <div class="plan">
         <div class="plan-tag">Una Ubicación</div>
