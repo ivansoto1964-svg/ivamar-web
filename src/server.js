@@ -18,7 +18,7 @@ const privacyES = require("./views/privacy-es");
 const demo = require("./views/demo");
 const demos = require("./views/demos");
 const demosES = require("./views/demos-es");
-const demoAutos = require("./views/demo-autos");
+
 const quote = require("./views/quote");
 const quoteES = require("./views/quote-es");
 const esAsistente = require("./views/es-asistente");
@@ -117,7 +117,7 @@ app.get("/demos-es", (req, res) => res.send(layout({ title: "Demos — Ivamar AI
 app.get("/demo-dealers", (req, res) => res.send(demoDealers));
 app.get("/demo-dealers-es", (req, res) => res.send(demoDealersES));
 app.get("/dyerkia", (req, res) => res.send(dyerKia));
-app.get("/demo-autos", (req, res) => res.send(layout({  lang: "en", title: "Demo — Luis Soto Autos", body: demoAutos })));
+app.get("/demo-autos", (req, res) => res.send(demoDealers));
 app.get("/quote", (req, res) => res.send(layout({  lang: "en", title: "Get Started — Ivamar AI", body: quote })));
 
 

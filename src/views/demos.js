@@ -98,7 +98,7 @@ module.exports = `
       </div>
       <div class="demo-card-body">
         <div class="demo-card-industry">Cars Dealers · Dealership</div>
-        <div class="demo-card-title">Luis Soto Autos</div>
+        <div class="demo-card-title">Car Dealer Demo</div>
         <div class="demo-card-desc">Vehicle inventory, type filters, customer testimonials and IvA — the assistant that captures leads and answers financing questions 24/7.</div>
         <div class="demo-card-features">
           <span class="demo-card-feature">Inventory</span>
