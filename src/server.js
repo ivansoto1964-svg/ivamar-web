@@ -2,6 +2,7 @@
 const express = require("express");
 const layout = require("./views/layout");
 const dyerKia = require("./views/dyerkia");
+const adis = require("./views/adis");
 const demoDealers = require("./views/demo-dealers");
 const demoDealersES = require("./views/demo-dealers-es");
 const home = require("./views/home");
@@ -116,6 +117,7 @@ app.get("/demos", (req, res) => res.send(layout({  lang: "en", title: "Demos —
 app.get("/demos-es", (req, res) => res.send(layout({ title: "Demos — Ivamar AI", body: demosES })));
 app.get("/demo-dealers", (req, res) => res.send(demoDealers));
 app.get("/demo-dealers-es", (req, res) => res.send(demoDealersES));
+app.get("/adis", (req, res) => res.send(adis));
 app.get("/dyerkia", (req, res) => res.send(dyerKia));
 app.get("/demo-autos", (req, res) => res.send(demoDealers));
 app.get("/quote", (req, res) => res.send(layout({  lang: "en", title: "Get Started — Ivamar AI", body: quote })));
