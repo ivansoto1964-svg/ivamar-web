@@ -1,0 +1,39 @@
+{
+  "slug": "cartagena",
+  "name": "Cartagena",
+  "flag": "🇨🇴",
+  "tagline": "Colombia's Crown Jewel on the Sea",
+  "region": "Caribbean Colombia",
+  "country": "Colombia",
+  "gradient": "linear-gradient(135deg, #FFD700 0%, #C8102E 100%)",
+  "bestFor": ["Culture", "History", "Food", "Romance"],
+  "overview": "Cartagena de Indias is one of the most beautiful cities in the Americas — a perfectly preserved colonial walled city on the Caribbean coast of Colombia, where 500 years of history are contained within fortress walls and expressed through streets of impossible color. Gabriel García Márquez set his greatest novels here, and walking through the old city, you understand why.\n\nThe walled city, Cartagena's UNESCO World Heritage heart, is a labyrinth of ochre and indigo buildings draped in bougainvillea, with wooden balconies overhanging streets too narrow for cars and plazas where the evening air smells of fried food and colonial memory. Beyond the walls, the neighborhoods of Getsemaní have transformed into a street art mecca and the creative heart of modern Cartagena.\n\nCartagena is also a gateway to the Islas del Rosario — a coral archipelago of extraordinary clarity 45 minutes offshore — and to the Afro-Colombian communities of the Palenque, where the descendants of the first free Africans in the Americas maintain a culture and language found nowhere else on earth.",
+  "topExperiences": [
+    {"icon": "🏰", "name": "Walled City", "desc": "Walk the 13km of fortified walls surrounding the old city — the most complete colonial fortification in the Americas, with Caribbean views from every rampart."},
+    {"icon": "🎨", "name": "Getsemaní", "desc": "Cartagena's most authentic neighborhood — street art covering every wall, local restaurants, rooftop bars and the creative energy that defines the new Colombia."},
+    {"icon": "🏝️", "name": "Islas del Rosario", "desc": "A coral archipelago 45 minutes from Cartagena — crystal water, pristine reefs and the Caribbean that existed before tourism discovered it."},
+    {"icon": "🌅", "name": "Castillo San Felipe", "desc": "The largest Spanish fortress built in the Americas — an engineering marvel of tunnels and ramparts that successfully repelled every naval attack for 200 years."},
+    {"icon": "🚢", "name": "Sunset Boat Tour", "desc": "The Caribbean light at sunset from the water, with Cartagena's walls glowing amber — one of the most romantic experiences in all of South America."},
+    {"icon": "🥁", "name": "Palenque de San Basilio", "desc": "45 minutes from Cartagena — the first free African village in the Americas, where Palenquero language, drumming traditions and cultural memory are kept alive."}
+  ],
+  "beaches": [
+    {"name": "Islas del Rosario", "type": "Remote", "desc": "The best beaches near Cartagena — a coral archipelago with crystal water and reefs reached by speedboat from the city."},
+    {"name": "Playa Blanca", "type": "Day Trip", "desc": "The most popular day beach from Cartagena — crowded but beautiful, with vendors, hammocks and the characteristic Caribbean blue."},
+    {"name": "Bocagrande Beach", "type": "Urban", "desc": "Cartagena's city beach — not the prettiest water but the social scene and convenience make it a genuine local experience."},
+    {"name": "Barú Island", "type": "Natural", "desc": "A peninsula connected to the mainland with some of the cleanest Caribbean water near Cartagena — best reached by organized tour."}
+  ],
+  "food": [
+    {"name": "Ceviche Cartagenero", "desc": "Caribbean ceviche with a Colombian accent — fresh fish, coconut milk, lime and ají dulce peppers. Found at every street corner and infinitely better than it sounds."},
+    {"name": "Arepa de Huevo", "desc": "A fried corn cake stuffed with egg — the breakfast staple of Colombia's Caribbean coast, eaten standing at a market counter with hot chocolate."},
+    {"name": "Bandeja Paisa", "desc": "Colombia's national plate — rice, beans, chorizo, chicharrón, egg, avocado and plantain. A meal that requires no other meal for the rest of the day."},
+    {"name": "Cocadas", "desc": "Coconut sweets sold by Afro-Colombian women in traditional dress throughout the walled city — soft, dense and the taste of Cartagena."}
+  ],
+  "culture": "Cartagena's culture is the culture of Colombia's Caribbean coast — louder, more sensual and more African-influenced than the Andean interior. Cumbia, the national rhythm, was born here at the meeting of indigenous, African and Spanish musical traditions. The city celebrates this heritage with extraordinary intensity during the November independence festivals, when the streets become one continuous party for weeks.\n\nThe influence of Gabriel García Márquez hangs over the city like magical realism itself — he lived here, set his most famous works here, and the city seems to exist half in reality and half in literature. Walking through the walled city at dusk, it is genuinely difficult to tell where history ends and fiction begins.",
+  "bestTime": "December through April is the dry season and peak time — Christmas and New Year bring festivals and higher prices. The independence celebrations in November are spectacular. May through November is rainy season — afternoon showers are common but mornings are clear and prices drop significantly.",
+  "practical": {
+    "currency": "Colombian Peso (COP) · USD exchanged easily",
+    "language": "Spanish",
+    "howToGet": "Direct flights from US cities to Rafael Núñez Airport (CTG). Also accessible from Bogotá, Medellín and Panama City.",
+    "budget": "$60-120/day mid-range · $30-55 budget · $200+ luxury"
+  }
+}

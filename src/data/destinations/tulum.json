@@ -1,0 +1,39 @@
+{
+  "slug": "tulum",
+  "name": "Tulum",
+  "flag": "🇲🇽",
+  "tagline": "Ancient Ruins, Caribbean Soul",
+  "region": "Mexican Caribbean",
+  "country": "Mexico",
+  "gradient": "linear-gradient(135deg, #2D6A4F 0%, #52B788 100%)",
+  "bestFor": ["Culture", "Nature", "Wellness", "Beach"],
+  "overview": "Tulum occupies a unique position in the Caribbean world — where Mayan civilization meets Caribbean water, where ancient ruins overlook turquoise sea, and where a bohemian international culture has created something unlike anywhere else in the region. It is simultaneously one of the most historically significant and most stylistically distinctive destinations in the Caribbean.\n\nThe Tulum Archaeological Zone sits dramatically on a cliff above the Caribbean, the only Mayan city built by the sea. Below, the water is a color that seems digitally enhanced — turquoise deepening to navy, crystal clear to the bottom. The surrounding jungle hides hundreds of cenotes — freshwater sinkholes of extraordinary beauty that the Maya considered sacred portals to the underworld.\n\nModern Tulum has developed a personality all its own — eco-chic hotels, world-class restaurants, yoga retreats and a wellness culture that draws visitors seeking something more intentional than a traditional beach vacation. It is imperfect, increasingly crowded and endlessly magnetic.",
+  "topExperiences": [
+    {"icon": "🏛️", "name": "Tulum Ruins", "desc": "The only Mayan archaeological site perched above Caribbean water — sunrise here, before the crowds arrive, is one of the most atmospheric experiences in all of Mexico."},
+    {"icon": "💧", "name": "Cenote Swimming", "desc": "The Yucatán Peninsula has over 6,000 cenotes — sacred Mayan freshwater pools of extraordinary clarity. Gran Cenote and Dos Ojos are the most accessible and beautiful."},
+    {"icon": "🌿", "name": "Sian Ka'an Biosphere", "desc": "A UNESCO World Heritage site covering over a million acres of jungle, mangrove and reef. Boat tours through the canals reveal a Caribbean completely untouched by development."},
+    {"icon": "🏖️", "name": "Tulum Beach Road", "desc": "The strip of boutique hotels, beach clubs and restaurants facing the Caribbean — the aesthetic heart of modern Tulum and the most photographed coastline in Mexico."},
+    {"icon": "🤿", "name": "Mesoamerican Reef", "desc": "The second largest barrier reef on earth runs along the entire coast — Akumal for sea turtles, Banco Chinchorro for the most remote diving in the region."},
+    {"icon": "🌅", "name": "Holbox Island", "desc": "Two hours north — a car-free island of sand streets and shallow turquoise water where whale sharks gather June through September."}
+  ],
+  "beaches": [
+    {"name": "Tulum Beach", "type": "Boutique", "desc": "White sand backed by jungle and eco-hotels — the most aesthetically curated beach in the Caribbean, best experienced at sunrise before the day crowd arrives."},
+    {"name": "Akumal Bay", "type": "Wildlife", "desc": "Swim with sea turtles in their natural habitat — one of the most reliably accessible wildlife experiences in the Caribbean."},
+    {"name": "Holbox Beach", "type": "Remote", "desc": "Shallow, warm and utterly peaceful — Holbox's beach feels like wading into a painting. No cars, no high-rises, no rush."},
+    {"name": "Playa del Carmen", "type": "Urban", "desc": "45 minutes north — the social hub of the Riviera Maya with beaches, nightlife and the famous Fifth Avenue pedestrian corridor."}
+  ],
+  "food": [
+    {"name": "Cochinita Pibil", "desc": "Slow-roasted pork marinated in achiote and sour orange, wrapped in banana leaves and cooked underground. The defining dish of Yucatecan cuisine."},
+    {"name": "Ceviche", "desc": "The Caribbean coast version — fresh fish or shrimp cured in lime juice with tomato, cilantro and habanero. Eaten on the beach with tostadas."},
+    {"name": "Tacos de Pescado", "desc": "Battered fish tacos with shredded cabbage and chipotle crema — a Mexican beach staple that reached its highest form along the Caribbean coast."},
+    {"name": "Agua de Jamaica", "desc": "Hibiscus flower water — the deep red, tart and refreshing drink that keeps the Yucatán cool. Found at every taco stand and market."}
+  ],
+  "culture": "Tulum sits at the intersection of two powerful cultural forces — the ancient Mayan civilization that built it and the contemporary international wellness culture that has claimed it. The Maya left behind not just ruins but a living indigenous culture that persists in the villages surrounding Tulum, in the food, in the cenote traditions and in the craftsmanship found in every market.\n\nModern Tulum culture is harder to define — it is a global village of yoga practitioners, digital nomads, chefs and artists who have created a style that is distinctly Tulum: natural materials, minimal design, conscious living. It is aspirational and sometimes performative, but beneath it there is a genuine beauty to the intention.",
+  "bestTime": "November through April is ideal — dry season, comfortable temperatures and clear visibility for diving and cenotes. December and January are peak with highest prices. May through October brings heat and humidity but also lower rates, greener jungle and the whale shark season at Holbox (June-September).",
+  "practical": {
+    "currency": "Mexican Peso (MXN) · USD widely accepted",
+    "language": "Spanish · English widely spoken in tourist areas",
+    "howToGet": "Fly into Cancún (CUN) — 90 minutes by car or bus to Tulum. Direct international flights from US, Europe and Latin America.",
+    "budget": "$80-160/day mid-range · $40-70 budget · $300+ eco-luxury"
+  }
+}

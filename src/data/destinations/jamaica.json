@@ -1,0 +1,39 @@
+{
+  "slug": "jamaica",
+  "name": "Jamaica",
+  "flag": "🇯🇲",
+  "tagline": "One Love, One Rhythm, One Island",
+  "region": "Greater Antilles",
+  "country": "Jamaica",
+  "gradient": "linear-gradient(135deg, #1B4332 0%, #40916C 100%)",
+  "bestFor": ["Culture", "Beach", "Music", "Adventure"],
+  "overview": "Jamaica is the Caribbean's most iconic island — the birthplace of reggae, the home of Bob Marley, and a place where the phrase 'no problem' is a genuine philosophy of life. It is an island of extraordinary contrasts: pristine beaches and lush mountain interiors, world-class resorts and raw local villages, international fame and deeply intimate culture.\n\nBeyond the resort corridors of Montego Bay and Negril lies a Jamaica that most tourists never see — the Blue Mountains where the world's finest coffee grows, the waterfalls of Ocho Rios, the fishing communities of Port Antonio and the street food culture of Kingston that fuels an island that never seems to sleep.\n\nJamaica's energy is unmistakable. The music never stops, the food is bold and unapologetic, and the people carry a confidence and warmth that makes every visitor feel like they've arrived somewhere genuinely special.",
+  "topExperiences": [
+    {"icon": "🎵", "name": "Bob Marley Museum", "desc": "The legendary musician's Kingston home turned museum — a pilgrimage for music lovers and a window into Jamaican culture at its most authentic."},
+    {"icon": "💧", "name": "Dunn's River Falls", "desc": "Climb the terraced waterfalls in Ocho Rios hand-in-hand with strangers — one of the Caribbean's most joyful and iconic experiences."},
+    {"icon": "☕", "name": "Blue Mountains", "desc": "Hike through the misty peaks where the world's most prized coffee grows. Sunrise from Blue Mountain Peak at 7,402 feet is unforgettable."},
+    {"icon": "🏖️", "name": "Seven Mile Beach", "desc": "Negril's legendary stretch of white sand and turquoise water — the most beautiful beach in Jamaica and one of the finest in the Caribbean."},
+    {"icon": "🚣", "name": "Black River Safari", "desc": "A boat journey through Jamaica's largest river — crocodiles sunning on the banks, mangroves overhead and a Jamaica completely off the tourist trail."},
+    {"icon": "🍗", "name": "Jerk Everything", "desc": "Boston Bay in Portland is the birthplace of jerk seasoning. Eating jerk chicken straight from the pit here is a Jamaican rite of passage."}
+  ],
+  "beaches": [
+    {"name": "Seven Mile Beach", "type": "Iconic", "desc": "Negril's crown jewel — soft white sand, warm shallow water and the most spectacular sunsets in the Caribbean."},
+    {"name": "Doctor's Cave Beach", "type": "Urban", "desc": "Montego Bay's most beloved beach — clear water, good facilities and the social heart of Jamaica's second city."},
+    {"name": "Frenchman's Cove", "type": "Luxury", "desc": "Port Antonio's hidden gem — a private cove where a freshwater river meets the Caribbean Sea in a setting of extraordinary natural beauty."},
+    {"name": "Treasure Beach", "type": "Local", "desc": "The authentic Jamaica — fishing boats, local restaurants and visitors who come to escape rather than party. The island's best-kept secret."}
+  ],
+  "food": [
+    {"name": "Jerk Chicken", "desc": "Marinated in scotch bonnet peppers, allspice and thyme, then slow-cooked over pimento wood. Jamaica's greatest culinary contribution to the world."},
+    {"name": "Ackee & Saltfish", "desc": "Jamaica's national dish — the yellow ackee fruit sautéed with salted cod, peppers and onions. Eaten at breakfast, it tastes like nothing else on earth."},
+    {"name": "Festival", "desc": "Sweet fried cornmeal dumplings served alongside jerk and fish. The perfect contrast to the heat of Jamaican spices."},
+    {"name": "Blue Mountain Coffee", "desc": "One of the world's most prized coffees — smooth, mild and complex. A cup in the mountains where it grows is a completely different experience."}
+  ],
+  "culture": "Jamaica punches far above its weight culturally. An island of less than 3 million people has produced reggae, dancehall, ska, rocksteady and some of the most influential music of the 20th century. Bob Marley alone changed how the world thinks about music, resistance and spirituality. The Rastafari movement, born in Jamaica, spread a philosophy of peace and unity that resonates globally.\n\nJamaicans are proud, expressive and fiercely independent. The patois language, the food, the music and the attitude toward life are all distinctly Jamaican — borrowed from no one. Visitors often arrive expecting a tropical resort experience and leave having felt something deeper: a culture that is fully, unapologetically itself.",
+  "bestTime": "December through April offers the driest and most pleasant weather — peak season with higher prices but ideal conditions. Summer months June through August bring more rain but also lower rates and the authentic local summer experience. Hurricane season peaks in September and October.",
+  "practical": {
+    "currency": "Jamaican Dollar (JMD) · USD widely accepted",
+    "language": "English & Jamaican Patois",
+    "howToGet": "Direct flights from US, UK and Canada to Montego Bay (MBJ) or Kingston (KIN).",
+    "budget": "$80-150/day mid-range · $40-70 budget · $250+ luxury"
+  }
+}

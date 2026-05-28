@@ -1,0 +1,39 @@
+{
+  "slug": "puerto-rico",
+  "name": "Puerto Rico",
+  "flag": "🇵🇷",
+  "tagline": "Where the Caribbean Comes Alive",
+  "region": "Greater Antilles",
+  "country": "USA Territory",
+  "gradient": "linear-gradient(135deg, #006994 0%, #00A8CC 100%)",
+  "bestFor": ["Beach", "Culture", "Food", "History"],
+  "overview": "Puerto Rico is the island where the Caribbean fully expresses itself — in its music, its food, its colonial architecture and its people. It is the only place in the world where you can walk through a 500-year-old Spanish fort in the morning, swim in a bioluminescent bay at night, and eat some of the most complex and soulful food in the Americas in between.\n\nUnlike many Caribbean islands that feel like resort bubbles disconnected from local life, Puerto Rico has a living, breathing culture that welcomes visitors into it. San Juan pulses with energy — salsa spilling out of open doors, the smell of lechón in the streets, and the sound of conversation that never seems to stop.\n\nBeyond the capital, Puerto Rico reveals itself in layers — the rainforest canopy of El Yunque, the fishing villages of the west coast, the quiet beauty of Vieques and Culebra, and the warmth of a people who treat every visitor like family.",
+  "topExperiences": [
+    {"icon": "🏰", "name": "Old San Juan", "desc": "Walk the cobblestone streets of one of the oldest cities in the Americas. Colorful colonial buildings, 16th-century forts and a cultural energy unlike anywhere else in the Caribbean."},
+    {"icon": "🌿", "name": "El Yunque Rainforest", "desc": "The only tropical rainforest in the US National Forest system. Hiking trails through ancient trees, hidden waterfalls and the sound of the coquí frog filling the air."},
+    {"icon": "✨", "name": "Bioluminescent Bay", "desc": "Mosquito Bay in Vieques is the brightest bioluminescent bay on earth. Kayak through water that glows electric blue with every stroke — an experience that feels like magic."},
+    {"icon": "🎵", "name": "Salsa & Bomba", "desc": "Puerto Rico is the birthplace of salsa and the home of bomba and plena. Live music fills the streets every night — you don't watch it, you join it."},
+    {"icon": "🏖️", "name": "Flamenco Beach", "desc": "Consistently ranked among the best beaches in the world, Flamenco in Culebra offers powdery white sand and water so clear it looks artificial."},
+    {"icon": "🍽️", "name": "Mofongo & Lechón", "desc": "Puerto Rican food is a revelation — mofongo, lechón asado, tostones and alcapurrias. La Ruta del Lechón in Guavate is a pilgrimage every food lover must make."}
+  ],
+  "beaches": [
+    {"name": "Flamenco Beach", "type": "Remote", "desc": "Culebra island's crown jewel — horseshoe-shaped bay with turquoise water and white sand. Reached by ferry, which keeps it beautifully uncrowded."},
+    {"name": "Condado Beach", "type": "Urban", "desc": "San Juan's most accessible beach — backed by hotels, restaurants and nightlife. Perfect for those who want beach and city in one."},
+    {"name": "Crash Boat Beach", "type": "Local", "desc": "Aguadilla's beloved local beach — colorful fishing boats, weekend energy and some of the best sunset views on the island."},
+    {"name": "Seven Seas Beach", "type": "Natural", "desc": "Fajardo's calm, family-friendly bay with snorkeling reefs just offshore and the lush green hills of the northeast as backdrop."}
+  ],
+  "food": [
+    {"name": "Mofongo", "desc": "Fried green plantains mashed with garlic and pork crackling, then filled with seafood, meat or vegetables. The definitive Puerto Rican dish."},
+    {"name": "Lechón Asado", "desc": "Whole roasted pig cooked over open wood fire for hours. La Ruta del Lechón in Guavate is the pilgrimage — weekends only, worth the drive."},
+    {"name": "Tostones", "desc": "Twice-fried green plantain slices — crispy, salty and served with everything. The Caribbean's answer to french fries, and infinitely better."},
+    {"name": "Tembleque", "desc": "Coconut milk pudding dusted with cinnamon — silky, delicate and unmistakably Puerto Rican. The dessert that ends every proper meal."}
+  ],
+  "culture": "Puerto Rico's culture is a living fusion — Taíno indigenous roots, Spanish colonial history and African traditions woven together over five centuries into something entirely its own. The island gave the world salsa, reggaetón and some of the most influential Latin artists of the 20th century. Music here is not entertainment — it is identity.\n\nThe Puerto Rican people, Boricuas, carry a fierce pride in their island that is immediately felt by visitors. Hospitality is genuine and generous — strangers become friends quickly, and the concept of a quiet, reserved Caribbean vacation doesn't quite apply here. Puerto Rico is alive, loud in the best way, and impossible to forget.",
+  "bestTime": "December through April is the ideal time to visit — dry season, comfortable temperatures and the island at its most festive. The famous San Sebastián Street Festival in January draws hundreds of thousands. Summer brings rain but also lower prices and a more local experience — hurricane season runs June through November, with September being the peak risk month.",
+  "practical": {
+    "currency": "US Dollar (USD)",
+    "language": "Spanish & English",
+    "howToGet": "Direct flights from most major US cities — no passport required for US citizens. Luis Muñoz Marín International Airport in San Juan.",
+    "budget": "$100-180/day mid-range · $50-80 budget · $300+ luxury"
+  }
+}

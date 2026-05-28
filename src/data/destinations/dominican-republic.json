@@ -1,0 +1,39 @@
+{
+  "slug": "dominican-republic",
+  "name": "Dominican Republic",
+  "flag": "🇩🇴",
+  "tagline": "Where Merengue Meets the Sea",
+  "region": "Greater Antilles",
+  "country": "Dominican Republic",
+  "gradient": "linear-gradient(135deg, #003087 0%, #CF142B 100%)",
+  "bestFor": ["Beach", "Culture", "Food", "Nightlife"],
+  "overview": "The Dominican Republic is the Caribbean's most diverse destination — an island of extraordinary geographical variety that ranges from the highest peak in the Caribbean (Pico Duarte at 10,164 feet) to the lowest point (Lake Enriquillo, below sea level), from the Atlantic beaches of the north to the Caribbean coast of the south.\n\nPunta Cana may be what the world knows, but the Dominican Republic is so much more. Santo Domingo's Colonial Zone is the oldest European city in the Americas — a UNESCO World Heritage site where every cobblestone street holds 500 years of history. The Samaná Peninsula offers whale watching and some of the most beautiful unspoiled beaches in the region.\n\nDominican culture is warm, loud and generous — merengue and bachata rhythms fill every space, the food is deeply satisfying and the people treat hospitality as a point of national pride. It is an island that rewards those who go beyond the resort.",
+  "topExperiences": [
+    {"icon": "🏛️", "name": "Colonial Zone Santo Domingo", "desc": "Walk the oldest European streets in the Americas — the first cathedral, hospital and university built in the New World, all within walking distance."},
+    {"icon": "🐳", "name": "Whale Watching Samaná", "desc": "January through March, thousands of humpback whales gather in Samaná Bay to breed — one of the most spectacular wildlife events in the Caribbean."},
+    {"icon": "🏖️", "name": "Punta Cana Beaches", "desc": "The postcard Caribbean — 32 kilometers of white sand and turquoise water, lined with world-class resorts and the most consistent beach weather in the region."},
+    {"icon": "🎵", "name": "Merengue & Bachata", "desc": "The Dominican Republic gave the world two of its most beloved dance forms. Any night in Santo Domingo or Santiago, you will dance whether you planned to or not."},
+    {"icon": "🌊", "name": "Los Haitises National Park", "desc": "Ancient mangroves, limestone karst formations, cave paintings and an extraordinary diversity of birds — the untouched Dominican Republic at its most dramatic."},
+    {"icon": "🏄", "name": "Cabarete Kitesurfing", "desc": "The kite and windsurf capital of the Caribbean — consistent trade winds, beautiful beaches and an international community of water sports enthusiasts."}
+  ],
+  "beaches": [
+    {"name": "Bahía Príncipe Beach", "type": "Resort", "desc": "The classic Punta Cana experience — endless white sand, turquoise water and a full range of resort amenities."},
+    {"name": "Playa Rincón", "type": "Remote", "desc": "Consistently rated among the best beaches in the Caribbean — accessible only by boat, no development, just extraordinary natural beauty near Samaná."},
+    {"name": "Cabarete Beach", "type": "Active", "desc": "The adventure beach — kitesurfing, windsurfing, nightlife and an international energy that makes it feel like no other place in the Dominican Republic."},
+    {"name": "Playa Grande", "type": "Natural", "desc": "A wild, undeveloped Atlantic beach on the north coast — dramatic waves, amber sand and the feeling of having discovered something the world hasn't found yet."}
+  ],
+  "food": [
+    {"name": "La Bandera", "desc": "The Dominican national dish — rice, beans and meat. Simple, deeply satisfying and eaten at lunch every day by most Dominicans."},
+    {"name": "Sancocho", "desc": "A rich seven-meat stew that is the country's ultimate comfort food — served at celebrations, Sunday lunches and any occasion worth marking."},
+    {"name": "Mangú", "desc": "Mashed green plantains topped with sautéed onions, fried cheese and salami. The Dominican breakfast that fuels an entire nation."},
+    {"name": "Tostones", "desc": "Twice-fried green plantain slices — the Caribbean's universal side dish, done with particular skill in the Dominican Republic."}
+  ],
+  "culture": "Dominican culture is an exuberant fusion of Spanish, African and Taíno influences that has produced two of the world's most beloved musical forms — merengue and bachata. Both are national treasures, recognized by UNESCO, and both are impossible to resist. Music here is not background — it is the main event, playing in homes, cars, restaurants and the street simultaneously.\n\nDominicans are passionate, expressive and deeply family-oriented. The concept of 'la familia' extends to neighbors, friends and visitors. Hospitality is genuine and abundant — a Dominican home always has room for one more at the table, and the table is always full.",
+  "bestTime": "November through April is peak season — dry, warm and ideal. The north and east coasts have different weather patterns, so Punta Cana is good year-round while the north coast is best October through April. July and August bring crowds and heat but also the most vibrant local summer atmosphere.",
+  "practical": {
+    "currency": "Dominican Peso (DOP) · USD widely accepted",
+    "language": "Spanish",
+    "howToGet": "Direct flights from US, Europe and Latin America to Punta Cana (PUJ) or Santo Domingo (SDQ).",
+    "budget": "$70-140/day mid-range · $35-65 budget · $200+ luxury resort"
+  }
+}

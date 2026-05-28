@@ -110,6 +110,22 @@ app.get("/terminos", (req, res) => res.send(layout({ title: "Términos de Servic
 app.get("/privacidad", (req, res) => res.send(layout({ title: "Política de Privacidad — Ivamar AI", body: privacyES })));
 app.get("/demo-dealers", (req, res) => res.send(demoDealers));
 app.get("/demo-dealers-es", (req, res) => res.send(demoDealersES));
+
+// ==========================================
+// CARIBEX DESTINATION PAGES
+// ==========================================
+const renderDestination = require("./views/caribex/destination-template");
+
+app.get("/caribex/:slug", (req, res) => {
+  const slug = req.params.slug;
+  try {
+    const dest = JSON.parse(fs.readFileSync(`${__dirname}/data/destinations/${slug}.json`, 'utf8'));
+    res.send(renderDestination(dest));
+  } catch(e) {
+    res.redirect("/caribex");
+  }
+});
+
 app.get("/caribex", (req, res) => res.send(caribex));
 app.get("/", (req, res, next) => {
   if (req.hostname === "yourcaribbeanexpert.com" || req.hostname === "www.yourcaribbeanexpert.com") {
