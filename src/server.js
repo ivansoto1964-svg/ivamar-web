@@ -16,14 +16,9 @@ const privacy = require("./views/privacy");
 const terms = require("./views/terms");
 const termsES = require("./views/terms-es");
 const privacyES = require("./views/privacy-es");
-const demo = require("./views/demo");
-const demos = require("./views/demos");
-const demosES = require("./views/demos-es");
 
 const quote = require("./views/quote");
 const quoteES = require("./views/quote-es");
-const esAsistente = require("./views/es-asistente");
-const enAssistant = require("./views/en-assistant");
 const adminLogin = require("./views/admin-login");
 const adminDashboard = require("./views/admin-dashboard");
 const adminEdit = require("./views/admin-edit");
@@ -112,9 +107,6 @@ app.get("/privacy", (req, res) => res.send(layout({  lang: "en", title: "Privacy
 app.get("/terms", (req, res) => res.send(layout({  lang: "en", title: "Terms of Service — Ivamar AI LLC", body: terms })));
 app.get("/terminos", (req, res) => res.send(layout({ title: "Términos de Servicio — Ivamar AI", body: termsES })));
 app.get("/privacidad", (req, res) => res.send(layout({ title: "Política de Privacidad — Ivamar AI", body: privacyES })));
-app.get("/demo", (req, res) => res.send(layout({  lang: "en", title: "Demo — El Rincón Boricua", body: demo })));
-app.get("/demos", (req, res) => res.send(layout({  lang: "en", title: "Demos — Ivamar AI", body: demos })));
-app.get("/demos-es", (req, res) => res.send(layout({ title: "Demos — Ivamar AI", body: demosES })));
 app.get("/demo-dealers", (req, res) => res.send(demoDealers));
 app.get("/demo-dealers-es", (req, res) => res.send(demoDealersES));
 app.get("/adis", (req, res) => res.send(adis));
@@ -180,8 +172,6 @@ app.post("/api/log-agreement", express.json(), (req, res) => {
   }
 });
 
-app.get("/es/asistente", (req, res) => res.send(esAsistente));
-app.get("/en/assistant", (req, res) => res.send(enAssistant));
 app.get("/cotizar", (req, res) => res.send(layout({ title: "Empezar — Ivamar AI", body: quoteES })));
 app.get("/pricing", (req, res) => res.redirect("/quote"));
 
