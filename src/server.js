@@ -111,6 +111,12 @@ app.get("/privacidad", (req, res) => res.send(layout({ title: "Política de Priv
 app.get("/demo-dealers", (req, res) => res.send(demoDealers));
 app.get("/demo-dealers-es", (req, res) => res.send(demoDealersES));
 app.get("/caribex", (req, res) => res.send(caribex));
+app.get("/", (req, res, next) => {
+  if (req.hostname === "yourcaribbeanexpert.com" || req.hostname === "www.yourcaribbeanexpert.com") {
+    return res.send(caribex);
+  }
+  next();
+});
 app.get("/adis", (req, res) => res.send(adis));
 app.get("/dyerkia", (req, res) => res.send(dyerKia));
 app.get("/demo-autos", (req, res) => res.send(demoDealers));
