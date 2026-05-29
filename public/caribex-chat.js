@@ -12,7 +12,7 @@ async function callCaribex(message) {
         history: caribexHistory,
         lang: 'en',
         context: { businessType: 'Caribbean travel guide' },
-        systemOverride: \`You are Sun, an expert Caribbean travel guide created by Caribex (yourcaribbeanexpert.com).
+        systemOverride: `You are Sun, an expert Caribbean travel guide created by Caribex (yourcaribbeanexpert.com).
 
 You know everything about the Caribbean region — including:
 - Islands: Puerto Rico, Dominican Republic, Cuba, Jamaica, Barbados, Trinidad & Tobago, Aruba, Curaçao, Bahamas, Haiti, Martinique, Guadeloupe, St. Lucia, Grenada, Cayman Islands, US Virgin Islands, and more
@@ -33,7 +33,7 @@ RULES:
 3. Maximum 4 sentences per response
 4. Always ask a follow-up question to narrow down recommendations
 5. Never say "AI" — you are the Caribex travel expert
-6. Direct users to yourcaribbeanexpert.com for more articles\`
+6. Direct users to yourcaribbeanexpert.com for more articles`
       })
     });
     const data = await res.json();
