@@ -97,6 +97,16 @@ function postJson(urlStr, payload, options = {}) {
 // PUBLIC ROUTES
 // ==========================================
 
+app.use((req, res, next) => {
+  const host = req.hostname;
+  if (host === "yourcaribbeanexpert.com" || host === "www.yourcaribbeanexpert.com") {
+    if (req.path === "/" || req.path === "") {
+      return res.send(caribex);
+    }
+  }
+  next();
+});
+
 app.get("/", (req, res) => res.send(layout({ title: "Ivamar AI", body: home })));
 app.get("/es", (req, res) => res.send(layout({ title: "Ivamar AI · Español", body: homeES })));
 app.get("/en", (req, res) => res.send(layout({  lang: "en", title: "Ivamar AI · English", body: homeEN })));
