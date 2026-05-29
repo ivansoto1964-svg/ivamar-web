@@ -356,7 +356,7 @@ nav{padding:0 1rem;}.nav-links{display:none;}
         <li>Budget and luxury travel guidance</li>
         <li>Responds in English and Spanish</li>
       </ul>
-      <a href="https://chatgpt.com/g/g-6920ae7344a88191bac385443bc46a64-caribex-ai-your-caribbean-expert" target="_blank" class="btn-teal">Talk to Sun →</a>
+      <a href="https://#assistant" target="_blank" class="btn-teal">Talk to Sun →</a>
     </div>
     <div class="chat-box">
       <div class="chat-header">

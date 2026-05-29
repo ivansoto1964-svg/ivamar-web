@@ -223,9 +223,9 @@ nav{padding:0 1rem;}
 <section class="assist-strip">
   <div class="assist-strip-inner">
     <div>
-      <h2>Ask Caribex AI About ${dest.name}</h2>
+      <h2>Ask Sun About ${dest.name}</h2>
       <p>Get personalized recommendations, insider tips and travel advice about ${dest.name} — from someone who knows every corner of the Caribbean.</p>
-      <a href="/caribex#assistant" class="btn-white">🌴 Talk to Caribex AI →</a>
+      <a href="/caribex#assistant" class="btn-white">🌴 Talk to Sun ☀️ →</a>
     </div>
     <div style="background:rgba(255,255,255,0.1);border-radius:16px;padding:1.5rem;border:1px solid rgba(255,255,255,0.2);">
       <div style="font-size:0.75rem;color:rgba(255,255,255,0.6);margin-bottom:0.8rem;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;">Ask anything like:</div>
