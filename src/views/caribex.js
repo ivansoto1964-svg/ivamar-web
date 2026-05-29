@@ -448,13 +448,14 @@ nav{padding:0 1rem;}.nav-links{display:none;}
       <div class="footer-col">
         <h4>Explore</h4>
         <a href="https://www.yourcaribbeanexpert.com" target="_blank">Blog</a>
-        <a href="https://www.yourcaribbeanexpert.com/p/about-caribex.html" target="_blank">About</a>
-        <a href="https://www.yourcaribbeanexpert.com/p/contact_17.html" target="_blank">Contact</a>
+        <a href="https://blog.yourcaribbeanexpert.com/p/about-caribex.html" target="_blank">About</a>
+        <a href="https://blog.yourcaribbeanexpert.com/p/contact_17.html" target="_blank">Contact</a>
       </div>
       <div class="footer-col">
         <h4>Legal</h4>
-        <a href="https://www.yourcaribbeanexpert.com/p/terms-of-service.html" target="_blank">Terms</a>
-        <a href="https://www.yourcaribbeanexpert.com/p/privacy-policy_01097434756.html" target="_blank">Privacy</a>
+        <a href="https://blog.yourcaribbeanexpert.com/p/terms-of-service.html" target="_blank">Terms</a>
+        <a href="https://blog.yourcaribbeanexpert.com/p/privacy-policy_01097434756.html" target="_blank">Privacy
+        <a href="https://blog.yourcaribbeanexpert.com/p/affiliate-disclosure.html" target="_blank">Affiliates</a></a>
       </div>
     </div>
     <div class="footer-bottom">
