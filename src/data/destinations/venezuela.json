@@ -1,0 +1,39 @@
+{
+  "slug": "venezuela",
+  "name": "Venezuela Caribbean",
+  "flag": "🇻🇪",
+  "tagline": "The Caribbean's Last Unspoiled Secret",
+  "region": "South American Caribbean",
+  "country": "Venezuela",
+  "gradient": "linear-gradient(135deg, #CF0A2C 0%, #003893 60%, #FFD700 100%)",
+  "bestFor": ["Nature", "Diving", "Beach", "Adventure"],
+  "overview": "Venezuela's Caribbean coast and islands represent some of the most pristine and beautiful destinations in the entire region — and among the least visited by international tourists. Los Roques Archipelago, a national park of 350 islands and cays, offers perhaps the most extraordinary combination of white sand, clear water and coral reef in the Caribbean, with almost no development to compromise the natural beauty.\n\nIsla Margarita, Venezuela's most developed island, has long been a favorite of South American travelers — duty-free shopping, beautiful beaches and a lively Venezuelan culture that makes it feel like a Caribbean destination with Latin American soul. The beaches of Playa El Agua and Playa Caribe rival anything in the Caribbean for natural beauty.\n\nThe situation in Venezuela requires careful research before visiting — the country has faced serious political and economic challenges in recent years. However, for travelers who prepare properly, the natural beauty and cultural warmth of the Venezuelan Caribbean remain extraordinary. Los Roques in particular continues to welcome visitors through established tour operators from Caracas.",
+  "topExperiences": [
+    {"icon": "🏝️", "name": "Los Roques Archipelago", "desc": "350 islands and cays of extraordinary natural beauty — uninhabited white sand beaches, world-class bonefishing and coral reef among the most pristine in the Caribbean."},
+    {"icon": "🤿", "name": "Diving Los Roques", "desc": "Some of the Caribbean's finest diving — walls, tunnels and coral gardens of extraordinary health, with visibility that regularly exceeds 30 meters."},
+    {"icon": "🏖️", "name": "Playa El Agua", "desc": "Margarita's most famous beach — a long stretch of open Atlantic coast with consistent waves, beach bars and the social energy of Venezuelan beach culture."},
+    {"icon": "🦋", "name": "Henri Pittier National Park", "desc": "Venezuela's oldest national park on the Caribbean coast — extraordinary biodiversity with over 500 bird species in a mountain-to-sea landscape."},
+    {"icon": "🌊", "name": "Mochima National Park", "desc": "A protected coastal park of turquoise bays, deserted beaches and coral islands — accessible by boat from Puerto La Cruz, largely unknown to international travelers."},
+    {"icon": "🎵", "name": "Venezuelan Caribbean Culture", "desc": "Gaita music, hallacas at Christmas, arepas on every corner and a warmth toward visitors that reflects the best of Caribbean and Latin American hospitality."}
+  ],
+  "beaches": [
+    {"name": "Los Roques Beaches", "type": "Pristine", "desc": "Uninhabited cays of white powdery sand surrounded by turquoise water — the most pristine beach environment in the southern Caribbean."},
+    {"name": "Playa El Agua", "type": "Lively", "desc": "Margarita's most popular beach — open Atlantic waves, beach bars, kite surfing and the full Venezuelan beach experience."},
+    {"name": "Playa Caribe", "type": "Natural", "desc": "One of Margarita's most beautiful beaches — calm water, white sand and a natural setting that rivals anywhere in the Caribbean."},
+    {"name": "Mochima Beaches", "type": "Remote", "desc": "Secluded bays accessible only by boat in the Mochima National Park — completely undeveloped and of extraordinary natural beauty."}
+  ],
+  "food": [
+    {"name": "Arepas", "desc": "Grilled or fried corn cakes split open and filled with everything imaginable — the foundation of Venezuelan cuisine and the snack that fuels an entire nation."},
+    {"name": "Pabellón Criollo", "desc": "Venezuela's national dish — shredded beef, black beans, white rice and sweet plantains on one plate. The Caribbean and South American influences in perfect balance."},
+    {"name": "Fresh Seafood", "desc": "On the coast and islands, fresh fish, lobster, shrimp and octopus are abundant — grilled simply with garlic and lime in the Caribbean tradition."},
+    {"name": "Hallacas", "desc": "Venezuela's Christmas dish — cornmeal dough filled with stewed meat and wrapped in banana leaves. The most labor-intensive and beloved food in Venezuelan culture."}
+  ],
+  "culture": "The Venezuelan Caribbean coast has a culture that blends Caribbean warmth with the passionate Latin American character of Venezuela — generous, musical, proud and deeply family-oriented. The Caribbean coast, with its African and indigenous Wayuu heritage alongside the Spanish colonial tradition, has a character somewhat distinct from the Andean interior.\n\nVenezuelans are known throughout Latin America for their warmth toward visitors — a hospitality that survives the country's difficulties and remains one of its defining characteristics. The music of the coast — gaita zuliana from Maracaibo, joropo from the interior — reflects a cultural richness that is genuinely extraordinary.",
+  "bestTime": "December through April is the dry season and best time for Los Roques and the coast. The Christmas and New Year period brings the country's greatest cultural celebrations. Research current travel conditions carefully before planning a trip to Venezuela.",
+  "practical": {
+    "currency": "Venezuelan Bolívar (VES) · USD preferred in tourist areas",
+    "language": "Spanish",
+    "howToGet": "Fly into Caracas (CCS) then small plane to Los Roques (LPJ). Ferries and flights to Margarita (PMV) from Caracas.",
+    "budget": "$80-150/day for Los Roques packages · Research current conditions"
+  }
+}

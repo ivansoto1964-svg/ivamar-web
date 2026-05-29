@@ -1,0 +1,39 @@
+{
+  "slug": "barbados",
+  "name": "Barbados",
+  "flag": "🇧🇧",
+  "tagline": "The Refined Side of the Caribbean",
+  "region": "Lesser Antilles",
+  "country": "Barbados",
+  "gradient": "linear-gradient(135deg, #F4A261 0%, #E76F51 100%)",
+  "bestFor": ["Luxury", "Beach", "Food", "Culture"],
+  "overview": "Barbados is the Caribbean at its most refined — an island that has developed a sophisticated food scene, a world-class rum culture and a hospitality tradition that feels genuinely gracious rather than merely professional. It sits at the eastern edge of the Caribbean, facing the Atlantic, which gives it a different energy from the sheltered islands to the west.\n\nThe island divides naturally between the calm Caribbean west coast — the Platinum Coast of luxury hotels and calm turquoise water — and the wilder Atlantic east coast, where the surf crashes against dramatic cliffs and the Scotland District feels like a different island entirely. Between them, the interior reveals rum distilleries, chattel houses painted in vivid colors and the remnants of a plantation history that shaped everything.\n\nBajan culture is proud and warm — Rihanna is the island's most famous daughter and national hero, Mount Gay is the world's oldest rum brand, and flying fish with cou-cou is the national dish. Barbados does everything with a certain elegance that is entirely its own.",
+  "topExperiences": [
+    {"icon": "🥃", "name": "Rum Distillery Tours", "desc": "Mount Gay, founded in 1703, is the world's oldest rum brand. Tours through the distillery reveal the history of Caribbean rum and end with the best tasting on the island."},
+    {"icon": "🏖️", "name": "Platinum Coast", "desc": "The west coast's calm turquoise water and white sand beaches — Paynes Bay, Sandy Lane and Mullins Beach represent the Caribbean at its most luxurious."},
+    {"icon": "🐢", "name": "Sea Turtle Snorkeling", "desc": "Hawksbill and leatherback turtles gather along the west coast year-round — snorkeling with them in their natural habitat is one of Barbados's most magical experiences."},
+    {"icon": "🏄", "name": "Soup Bowl Surfing", "desc": "Bathsheba on the Atlantic coast hosts the soup bowl — one of the Caribbean's most powerful waves, drawing serious surfers and spectacular to watch even from shore."},
+    {"icon": "🌺", "name": "Hunte's Gardens", "desc": "Hidden in a gully in the island's interior — a stunning private garden of extraordinary tropical beauty created by one man over decades."},
+    {"icon": "🎉", "name": "Crop Over Festival", "desc": "Barbados's carnival equivalent — July and August bring weeks of music, costume and the Grand Kadooment parade that rivals Trinidad Carnival in its exuberance."}
+  ],
+  "beaches": [
+    {"name": "Crane Beach", "type": "Dramatic", "desc": "A pink-tinged sand beach backed by dramatic cliffs on the Atlantic south coast — consistently ranked among the world's most beautiful beaches."},
+    {"name": "Paynes Bay", "type": "Luxury", "desc": "The Platinum Coast's finest — calm turquoise water, sea turtles and the most elegant stretch of beach on the island."},
+    {"name": "Bathsheba Beach", "type": "Wild", "desc": "The Atlantic coast's wild beauty — dramatic rock formations, powerful surf and a completely different Barbados from the west coast resorts."},
+    {"name": "Bottom Bay", "type": "Hidden", "desc": "A secluded cove of white sand and turquoise water surrounded by palm trees — one of those Caribbean beaches that feels discovered rather than visited."}
+  ],
+  "food": [
+    {"name": "Flying Fish & Cou-Cou", "desc": "Barbados's national dish — steamed flying fish (the island's most important fish) served with cou-cou, a cornmeal and okra porridge. Distinctly Bajan."},
+    {"name": "Pudding & Souse", "desc": "Saturday's traditional dish — pickled pork served with sweet potato pudding. Every Bajan family has their version and Saturday mornings smell like this dish."},
+    {"name": "Macaroni Pie", "desc": "Not American mac and cheese — Bajan macaroni pie is baked firm, sliced like a cake and eaten as a side dish at every important meal."},
+    {"name": "Mount Gay Rum", "desc": "The world's oldest rum, made in Barbados since 1703. Eclipse, Black Barrel and XO — a progression of complexity that tells the story of Caribbean rum."}
+  ],
+  "culture": "Barbadian culture, Bajan culture, is one of the Caribbean's most developed and confident — shaped by a history of sugar, slavery and survival into something elegant and self-assured. The island has the highest literacy rate in the Americas outside of Canada, a deeply rooted cricket culture and a tradition of music that runs from calypso to soca to the global phenomenon of Rihanna.\n\nBajans have a saying: 'We small but we tallawah' — small but strong. The island of 285,000 people has produced more Rhodes Scholars per capita than almost any country on earth. Culture here is taken seriously — the food, the rum, the music and the conversation are all pursued with genuine passion and considerable skill.",
+  "bestTime": "December through May is the dry season and peak time — perfect weather, busy beaches and the highest prices. The Crop Over Festival in July and August brings extraordinary cultural energy despite being rainy season. Hurricane risk is lower than most Caribbean islands due to Barbados's eastern position.",
+  "practical": {
+    "currency": "Barbadian Dollar (BBD) · 2:1 with USD",
+    "language": "English · Bajan Creole dialect",
+    "howToGet": "Direct flights from US, UK and Canada to Grantley Adams International Airport (BGI).",
+    "budget": "$130-220/day mid-range · $80-120 budget · $400+ luxury"
+  }
+}

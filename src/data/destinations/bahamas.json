@@ -1,0 +1,39 @@
+{
+  "slug": "bahamas",
+  "name": "The Bahamas",
+  "flag": "🇧🇸",
+  "tagline": "700 Islands of Pure Caribbean Magic",
+  "region": "Atlantic Caribbean",
+  "country": "The Bahamas",
+  "gradient": "linear-gradient(135deg, #023E8A 0%, #00B4D8 60%, #90E0EF 100%)",
+  "bestFor": ["Beach", "Luxury", "Diving", "Nature"],
+  "overview": "The Bahamas is not one destination but an archipelago of 700 islands and 2,400 cays stretching 760 miles from Florida to Haiti — each with its own character, water color and reason to visit. The water here is the clearest on earth: shades of turquoise, aquamarine and electric blue that seem physically impossible until you see them.\n\nNassau and Paradise Island offer the full resort experience — Atlantis, cable beach, the colonial architecture of downtown Nassau and the vibrant straw market. But the real Bahamas is found in the Out Islands: the Exumas with their swimming pigs and swimming sharks, the Abacos with their loyalist colonial villages, Eleuthera's pink sand beaches and Long Island's dramatic cliffs dropping into impossibly clear water.\n\nThe Bahamas hosts the world's third largest barrier reef, some of the finest bonefishing on earth, blue holes of extraordinary depth and beauty, and a Junkanoo culture that rivals Trinidad Carnival in its creativity and energy. It is the Caribbean destination that rewards those who leave Nassau behind.",
+  "topExperiences": [
+    {"icon": "🐷", "name": "Swimming Pigs of Exuma", "desc": "The most viral wildlife experience in the Caribbean — feral pigs that swim out to boats in the crystal clear waters of the Exuma Cays. Completely surreal and genuinely wonderful."},
+    {"icon": "🦈", "name": "Shark Diving", "desc": "Stuart Cove's shark dives put you in open water with Caribbean reef sharks — one of the most thrilling diving experiences in the Caribbean."},
+    {"icon": "🟦", "name": "Dean's Blue Hole", "desc": "The world's second deepest ocean blue hole — 663 feet deep on Long Island, surrounded by a natural amphitheater of limestone and impossibly clear water."},
+    {"icon": "🏝️", "name": "Exuma Cays", "desc": "A 120-mile chain of pristine islands and sandbars with the most extraordinary water colors in the Caribbean — accessible by boat or small plane."},
+    {"icon": "🌸", "name": "Pink Sand Beach", "desc": "Harbour Island's famous pink sand beach — the pink comes from crushed coral and shells mixed with white sand, creating a color found in very few places on earth."},
+    {"icon": "🎺", "name": "Junkanoo Festival", "desc": "The Bahamas's greatest cultural celebration — Boxing Day and New Year's Day parades of extraordinary costumes and goatskin drum music through the streets of Nassau."}
+  ],
+  "beaches": [
+    {"name": "Pink Sand Beach", "type": "Unique", "desc": "Harbour Island's three-mile stretch of naturally pink sand — the most distinctive and photographed beach in the Bahamas."},
+    {"name": "Cable Beach", "type": "Resort", "desc": "Nassau's main beach — crystal clear water, convenient location and the full range of resort amenities."},
+    {"name": "Tropic of Cancer Beach", "type": "Remote", "desc": "Long Island's most famous beach — marked exactly where the Tropic of Cancer crosses, with water of extraordinary clarity."},
+    {"name": "Exuma Sandbars", "type": "Wild", "desc": "Temporary sandbars that appear at low tide in the Exumas — surrounded by water of five different shades of blue simultaneously."}
+  ],
+  "food": [
+    {"name": "Conch Salad", "desc": "Fresh conch marinated in lime juice with onion, pepper and tomato — the definitive Bahamian dish, prepared tableside at fish fry restaurants across the islands."},
+    {"name": "Cracked Conch", "desc": "Tenderized conch fried in a light batter — served at every fish fry with peas and rice, coleslaw and the hot sauce that Bahamians put on everything."},
+    {"name": "Rock Lobster", "desc": "Spiny Caribbean lobster grilled over open flame — abundantly available throughout the Bahamas and far superior to Maine lobster in its natural environment."},
+    {"name": "Souse", "desc": "A traditional Bahamian soup of slow-cooked meat in lime juice and spices — eaten for Saturday breakfast throughout the islands as a social ritual."}
+  ],
+  "culture": "Bahamian culture is a fusion of African heritage, British colonial history and a deep relationship with the sea that has shaped everything — the food, the music, the economy and the identity. Junkanoo, the Christmas and New Year street festival, is the cultural heartbeat — groups spend all year designing and building elaborate costumes for the parades, and the competition is fierce and passionate.\n\nThe 700 islands mean there is no single Bahamian identity — Nassau is cosmopolitan and connected, while the Out Islands maintain traditions and ways of life that have changed little in generations. The fishing communities, the wooden sloop builders of the Abacos and the storytellers of Andros represent a Caribbean authenticity that is increasingly rare.",
+  "bestTime": "December through April is ideal — dry, warm and with the best water clarity for diving and snorkeling. Christmas and New Year bring Junkanoo. Summer offers lower prices and the authentic local experience, though hurricane risk increases June through November.",
+  "practical": {
+    "currency": "Bahamian Dollar (BSD) · 1:1 with USD · USD universally accepted",
+    "language": "English · Bahamian Creole",
+    "howToGet": "Direct flights from US cities to Nassau (NAS). Small planes and ferries to Out Islands. 50 miles from Florida by boat.",
+    "budget": "$120-200/day mid-range · $70-100 budget · $400+ luxury"
+  }
+}

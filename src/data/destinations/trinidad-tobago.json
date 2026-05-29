@@ -1,0 +1,39 @@
+{
+  "slug": "trinidad-tobago",
+  "name": "Trinidad & Tobago",
+  "flag": "🇹🇹",
+  "tagline": "Two Islands, One Soul, Pure Energy",
+  "region": "Lesser Antilles",
+  "country": "Trinidad & Tobago",
+  "gradient": "linear-gradient(135deg, #C8102E 0%, #000000 60%, #FFD700 100%)",
+  "bestFor": ["Culture", "Carnival", "Nature", "Food"],
+  "overview": "Trinidad and Tobago are two islands with completely different personalities sharing one nation — and together they offer one of the most complete Caribbean experiences available. Trinidad is the energy capital of the Caribbean: the birthplace of the steelpan, the home of Carnival, the origin of calypso and soca, and a cultural powerhouse that has shaped music across the entire region. Tobago is its quieter twin — pristine reef, untouched rainforest and beaches of extraordinary natural beauty.\n\nTrinidad Carnival is the greatest street party on earth — two days of costumed revelry that makes Rio look restrained, preceded by weeks of fetes, pan music and the extraordinary Panorama steelband competition. The energy is genuinely overwhelming and completely unforgettable. But Trinidad offers depth beyond Carnival — the Asa Wright Nature Centre is one of the finest birdwatching destinations in the Western Hemisphere.\n\nTobago rewards those who seek tranquility. Pigeon Point beach is Caribbean perfection, the Buccoo Reef offers snorkeling of remarkable quality, and the Main Ridge Forest Reserve — the oldest protected rainforest in the Western Hemisphere — covers the island's interior with a canopy of extraordinary biodiversity.",
+  "topExperiences": [
+    {"icon": "🎉", "name": "Trinidad Carnival", "desc": "The greatest street party on earth — two days in February that concentrate more music, costume, creativity and pure human joy into one space than anywhere else on the planet."},
+    {"icon": "🥁", "name": "Steelpan Music", "desc": "The steelpan, invented in Trinidad in the 1930s, is the only acoustic instrument invented in the 20th century. Hearing a full steelband perform Panorama is a profound experience."},
+    {"icon": "🦜", "name": "Asa Wright Nature Centre", "desc": "One of the finest birdwatching destinations in the Americas — 400+ species including the extraordinary oilbird, viewed from a colonial veranda in the Trinidad rainforest."},
+    {"icon": "🏖️", "name": "Pigeon Point Beach", "desc": "Tobago's most iconic beach — a long stretch of white sand and turquoise water with the famous thatched jetty extending into the Caribbean."},
+    {"icon": "🤿", "name": "Buccoo Reef", "desc": "Tobago's living coral reef — one of the most accessible and diverse reef systems in the southern Caribbean, home to brain coral formations of extraordinary size."},
+    {"icon": "🍽️", "name": "Street Food Tour", "desc": "Doubles, bake and shark, pelau, roti — Trinidad's street food is one of the Caribbean's great culinary traditions, shaped by Indian, African and Chinese influences."}
+  ],
+  "beaches": [
+    {"name": "Pigeon Point", "type": "Iconic", "desc": "Tobago's postcard beach — white sand, turquoise water and the famous thatched jetty. The most photographed beach in the southern Caribbean."},
+    {"name": "Englishman's Bay", "type": "Remote", "desc": "A perfect crescent of white sand backed by lush vegetation on Tobago's north coast — rarely crowded and consistently stunning."},
+    {"name": "Maracas Bay", "type": "Local", "desc": "Trinidad's most beloved beach — a beautiful bay an hour from Port of Spain where every weekend Trinidadians gather for bake and shark and the social ritual of the beach lime."},
+    {"name": "No Man's Land", "type": "Wild", "desc": "A sandbar accessible only by boat off Tobago — completely undeveloped, surrounded by shallow turquoise water and frequented by leatherback turtles."}
+  ],
+  "food": [
+    {"name": "Doubles", "desc": "Two fried bara (flatbreads) filled with curried chickpeas and chutneys — Trinidad's most beloved street food, eaten at breakfast and sold from every corner."},
+    {"name": "Bake & Shark", "desc": "Fried shark in fried dough bread with every condiment imaginable — the essential Maracas Bay experience and one of the Caribbean's great sandwiches."},
+    {"name": "Pelau", "desc": "Rice, pigeon peas and chicken cooked together in caramelized sugar — the one-pot dish that defines Trinidadian home cooking and Sunday lunch culture."},
+    {"name": "Roti", "desc": "The Indian influence at its finest — curried meat or vegetables wrapped in a soft flatbread. Trinidad's roti culture rivals anything found on the Indian subcontinent."}
+  ],
+  "culture": "Trinidad and Tobago's culture is the Caribbean's most complex and layered — a fusion of African, Indian, Chinese, Syrian, Portuguese and European influences that has produced an extraordinary creative output. The steelpan, calypso, soca and chutney-soca all originated here. The annual Carnival is not just a party but a year-round artistic process involving costume design, music composition and community organization of remarkable sophistication.\n\nThe Indian community, descendants of indentured laborers who came after emancipation, makes up 35% of the population and has shaped the food, music and culture in profound ways. Divali is celebrated as enthusiastically as Carnival. This multicultural reality has created a Trinidadian identity that is genuinely plural — and genuinely proud of that complexity.",
+  "bestTime": "January through May is the dry season and the time of Carnival — the peak of cultural activity and the best weather. Carnival falls in February or March. June through December is rainier but Tobago remains beautiful. Turtle nesting season on Tobago runs March through August.",
+  "practical": {
+    "currency": "Trinidad & Tobago Dollar (TTD) · USD exchanged easily",
+    "language": "English · Trinidad Creole · Hindi · French Creole",
+    "howToGet": "Fly into Piarco International Airport (POS) in Trinidad. Ferry or short flight to Tobago (TAB).",
+    "budget": "$80-150/day mid-range · $50-80 budget · $200+ during Carnival"
+  }
+}
