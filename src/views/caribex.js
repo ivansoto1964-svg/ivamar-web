@@ -84,6 +84,8 @@ nav{background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);border-bottom:1
 .region-tab.active,.region-tab:hover{background:var(--teal);color:#fff;border-color:var(--teal);}
 
 .islands-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem;}
+.region-section{margin-bottom:3rem;}
+.region-label{font-size:0.75rem;font-weight:700;color:var(--deep);letter-spacing:0.12em;text-transform:uppercase;margin-bottom:1rem;padding:0.4rem 1rem;background:#E8F4FD;border-radius:20px;display:inline-block;border:1px solid var(--border);}
 .island-card{border-radius:16px;overflow:hidden;border:1px solid var(--border);transition:all 0.25s;cursor:pointer;text-decoration:none;}
 .island-card:hover{transform:translateY(-4px);box-shadow:0 12px 32px rgba(0,119,182,0.12);}
 .island-card-img{height:160px;display:flex;align-items:center;justify-content:center;font-size:3.5rem;position:relative;}
@@ -273,146 +275,67 @@ nav{padding:0 1rem;}.nav-links{display:none;}
   <p>The Caribbean is not a color. It is a feeling — shaped by sound, pace, food, history and the rhythm of its people. Caribex goes beyond the postcard.</p>
 </section>
 
-<!-- ISLAND DESTINATIONS -->
+<!-- ALL DESTINATIONS BY REGION -->
 <section class="destinations" id="destinations">
   <div class="dest-inner">
-    <div class="sec-tag">Caribbean Islands</div>
-    <h2 class="sec-title">Island <em>Destinations</em></h2>
-    <p class="sec-sub">Each island has its own rhythm, culture and character. Discover what makes each one unique.</p>
-    <div class="region-tabs">
-      <div class="region-tab active">All Islands</div>
-      <div class="region-tab">Greater Antilles</div>
-      <div class="region-tab">Lesser Antilles</div>
-      <div class="region-tab">Dutch Caribbean</div>
-      <div class="region-tab">Bahamas & Turks</div>
+    <div class="sec-tag">Explore the Caribbean</div>
+    <h2 class="sec-title">All <em>Destinations</em></h2>
+    <p class="sec-sub">23 destinations organized by region — from the Greater Antilles to the Caribbean mainland. Every corner of the Caribbean in one place.</p>
+    <!-- GREATER ANTILLES -->
+    <div class="region-section">
+      <div class="region-label">🏝️ Greater Antilles</div>
+      <div class="islands-grid">
+        <a href="/caribex/puerto-rico" class="island-card"><div class="island-card-img" style="background:linear-gradient(135deg,#006994,#00A8CC);">🇵🇷</div><div class="island-card-body"><div class="island-card-region">Greater Antilles</div><div class="island-card-name">Puerto Rico</div><div class="island-card-desc">Old San Juan, El Yunque rainforest, bioluminescent bays and the soul of the Caribbean.</div><span class="island-tag tag-culture">Culture</span><span class="island-tag tag-beach">Beach</span></div></a>
+        <a href="/caribex/dominican-republic" class="island-card"><div class="island-card-img" style="background:linear-gradient(135deg,#1B4332,#40916C);">🇩🇴</div><div class="island-card-body"><div class="island-card-region">Greater Antilles</div><div class="island-card-name">Dominican Republic</div><div class="island-card-desc">Punta Cana, Santo Domingo's colonial zone and merengue nights.</div><span class="island-tag tag-beach">Beach</span><span class="island-tag tag-culture">Culture</span></div></a>
+        <a href="/caribex/cuba" class="island-card"><div class="island-card-img" style="background:linear-gradient(135deg,#003049,#C1121F);">🇨🇺</div><div class="island-card-body"><div class="island-card-region">Greater Antilles</div><div class="island-card-name">Cuba</div><div class="island-card-desc">Havana's vintage cars, Viñales tobacco fields and salsa rhythms.</div><span class="island-tag tag-culture">Culture</span><span class="island-tag tag-nature">Nature</span></div></a>
+        <a href="/caribex/jamaica" class="island-card"><div class="island-card-img" style="background:linear-gradient(135deg,#5C4033,#8D6E63);">🇯🇲</div><div class="island-card-body"><div class="island-card-region">Greater Antilles</div><div class="island-card-name">Jamaica</div><div class="island-card-desc">Reggae birthplace, Blue Mountains coffee and Dunn's River Falls.</div><span class="island-tag tag-culture">Culture</span><span class="island-tag tag-beach">Beach</span></div></a>
+        <a href="/caribex/grand-cayman" class="island-card"><div class="island-card-img" style="background:linear-gradient(135deg,#012169,#00B4D8);">🇰🇾</div><div class="island-card-body"><div class="island-card-region">Greater Antilles</div><div class="island-card-name">Grand Cayman</div><div class="island-card-desc">Seven Mile Beach, Stingray City and world-class wall diving.</div><span class="island-tag tag-beach">Beach</span><span class="island-tag tag-luxury">Luxury</span></div></a>
+      </div>
     </div>
-    <div class="islands-grid">
-      <a href="/caribex/puerto-rico" class="island-card">
-        <div class="island-card-img" style="background:linear-gradient(135deg,#006994,#00A8CC);">🇵🇷</div>
-        <div class="island-card-body">
-          <div class="island-card-region">Greater Antilles</div>
-          <div class="island-card-name">Puerto Rico</div>
-          <div class="island-card-desc">Old San Juan, El Yunque rainforest, bioluminescent bays and the soul of the Caribbean in one island.</div>
-          <span class="island-tag tag-culture">Culture</span>
-          <span class="island-tag tag-beach">Beach</span>
-        </div>
-      </a>
-      <a href="/caribex/dominican-republic" class="island-card">
-        <div class="island-card-img" style="background:linear-gradient(135deg,#1B4332,#40916C);">🇩🇴</div>
-        <div class="island-card-body">
-          <div class="island-card-region">Greater Antilles</div>
-          <div class="island-card-name">Dominican Republic</div>
-          <div class="island-card-desc">Punta Cana, Santo Domingo's colonial zone, merengue nights and the warmest hospitality in the Caribbean.</div>
-          <span class="island-tag tag-beach">Beach</span>
-          <span class="island-tag tag-culture">Culture</span>
-        </div>
-      </a>
-      <a href="/caribex/cuba" class="island-card">
-        <div class="island-card-img" style="background:linear-gradient(135deg,#003049,#0077B6);">🇨🇺</div>
-        <div class="island-card-body">
-          <div class="island-card-region">Greater Antilles</div>
-          <div class="island-card-name">Cuba</div>
-          <div class="island-card-desc">Havana's vintage cars, Viñales tobacco fields, salsa rhythms and a history unlike anywhere else on earth.</div>
-          <span class="island-tag tag-culture">Culture</span>
-          <span class="island-tag tag-nature">Nature</span>
-        </div>
-      </a>
-      <a href="/caribex/jamaica" class="island-card">
-        <div class="island-card-img" style="background:linear-gradient(135deg,#5C4033,#8D6E63);">🇯🇲</div>
-        <div class="island-card-body">
-          <div class="island-card-region">Greater Antilles</div>
-          <div class="island-card-name">Jamaica</div>
-          <div class="island-card-desc">Reggae birthplace, Blue Mountains coffee, Dunn's River Falls and the most laid-back Caribbean vibes.</div>
-          <span class="island-tag tag-culture">Culture</span>
-          <span class="island-tag tag-beach">Beach</span>
-        </div>
-      </a>
-      <a href="/caribex/barbados" class="island-card">
-        <div class="island-card-img" style="background:linear-gradient(135deg,#F4A261,#E76F51);">🇧🇧</div>
-        <div class="island-card-body">
-          <div class="island-card-region">Lesser Antilles</div>
-          <div class="island-card-name">Barbados</div>
-          <div class="island-card-desc">Elegant and refined, rum distilleries, coral reefs and the sophisticated side of the Caribbean.</div>
-          <span class="island-tag tag-luxury">Luxury</span>
-          <span class="island-tag tag-beach">Beach</span>
-        </div>
-      </a>
-      <a href="/caribex/aruba" class="island-card">
-        <div class="island-card-img" style="background:linear-gradient(135deg,#0096C7,#48CAE4);">🇦🇼</div>
-        <div class="island-card-body">
-          <div class="island-card-region">Dutch Caribbean</div>
-          <div class="island-card-name">Aruba</div>
-          <div class="island-card-desc">Perpetual sunshine, Eagle Beach, windsurfing paradise and the most consistently beautiful weather in the Caribbean.</div>
-          <span class="island-tag tag-beach">Beach</span>
-          <span class="island-tag tag-luxury">Luxury</span>
-        </div>
-      </a>
-      <a href="/caribex/trinidad-tobago" class="island-card">
-        <div class="island-card-img" style="background:linear-gradient(135deg,#2D6A4F,#52B788);">🇹🇹</div>
-        <div class="island-card-body">
-          <div class="island-card-region">Lesser Antilles</div>
-          <div class="island-card-name">Trinidad & Tobago</div>
-          <div class="island-card-desc">Carnival capital, steelpan birthplace, Asa Wright bird sanctuary and two completely different island personalities.</div>
-          <span class="island-tag tag-culture">Culture</span>
-          <span class="island-tag tag-nature">Nature</span>
-        </div>
-      </a>
-      <a href="/caribex/bahamas" class="island-card">
-        <div class="island-card-img" style="background:linear-gradient(135deg,#023E8A,#0096C7);">🇧🇸</div>
-        <div class="island-card-body">
-          <div class="island-card-region">Bahamas</div>
-          <div class="island-card-name">The Bahamas</div>
-          <div class="island-card-desc">700 islands, the clearest water on the planet, swimming pigs and the closest thing to paradise you'll find.</div>
-          <span class="island-tag tag-beach">Beach</span>
-          <span class="island-tag tag-luxury">Luxury</span>
-        </div>
-      </a>
-    </div>
-  </div>
-</section>
 
-<!-- MAINLAND CARIBBEAN -->
-<section class="mainland" id="mainland">
-  <div class="mainland-inner">
-    <div class="sec-tag">Mainland Caribbean</div>
-    <h2 class="sec-title">The Caribbean <em>Beyond the Islands</em></h2>
-    <p class="sec-sub">The Caribbean region extends far beyond the sea. These mainland destinations share the same soul — tropical, vibrant and deeply cultural.</p>
-    <div class="mainland-grid">
-      <a href="/caribex/tulum" class="mainland-card" style="text-decoration:none;display:block;">
-        <div class="mainland-flag">🇲🇽</div>
-        <div class="mainland-country">Mexico</div>
-        <div class="mainland-city">Tulum · Cancún · Holbox · Cozumel</div>
-        <div class="mainland-desc">Mayan ruins meet Caribbean waters. Tulum's bohemian cenotes, Cancún's vibrant energy, Holbox's barefoot beaches and Cozumel's world-class diving.</div>
+    <!-- LESSER ANTILLES -->
+    <div class="region-section">
+      <div class="region-label">🌊 Lesser Antilles</div>
+      <div class="islands-grid">
+        <a href="/caribex/barbados" class="island-card"><div class="island-card-img" style="background:linear-gradient(135deg,#F4A261,#E76F51);">🇧🇧</div><div class="island-card-body"><div class="island-card-region">Lesser Antilles</div><div class="island-card-name">Barbados</div><div class="island-card-desc">Rum distilleries, coral reefs and the sophisticated side of the Caribbean.</div><span class="island-tag tag-luxury">Luxury</span><span class="island-tag tag-beach">Beach</span></div></a>
+        <a href="/caribex/santa-lucia" class="island-card"><div class="island-card-img" style="background:linear-gradient(135deg,#65B741,#1A5276);">🇱🇨</div><div class="island-card-body"><div class="island-card-region">Lesser Antilles</div><div class="island-card-name">Saint Lucia</div><div class="island-card-desc">Twin Piton peaks, volcanic springs and the most dramatic scenery in the Eastern Caribbean.</div><span class="island-tag tag-nature">Nature</span><span class="island-tag tag-luxury">Luxury</span></div></a>
+        <a href="/caribex/trinidad-tobago" class="island-card"><div class="island-card-img" style="background:linear-gradient(135deg,#C8102E,#000000);">🇹🇹</div><div class="island-card-body"><div class="island-card-region">Lesser Antilles</div><div class="island-card-name">Trinidad & Tobago</div><div class="island-card-desc">Carnival capital, steelpan birthplace and two completely different island personalities.</div><span class="island-tag tag-culture">Culture</span><span class="island-tag tag-nature">Nature</span></div></a>
+        <a href="/caribex/sint-maarten" class="island-card"><div class="island-card-img" style="background:linear-gradient(135deg,#003087,#EF4135);">🇸🇽</div><div class="island-card-body"><div class="island-card-region">Lesser Antilles</div><div class="island-card-name">Sint Maarten / Saint Martin</div><div class="island-card-desc">Two nations, one island — plane spotting at Maho Beach and French cuisine.</div><span class="island-tag tag-beach">Beach</span><span class="island-tag tag-culture">Culture</span></div></a>
       </div>
-      <a href="/caribex/cartagena" class="mainland-card" style="text-decoration:none;display:block;">
-        <div class="mainland-flag">🇨🇴</div>
-        <div class="mainland-country">Colombia</div>
-        <div class="mainland-city">Cartagena · Santa Marta · San Andrés</div>
-        <div class="mainland-desc">Colonial Cartagena's walled city, Santa Marta's Tayrona National Park, and San Andrés — a Caribbean island that belongs to Colombia.</div>
+    </div>
+
+    <!-- DUTCH CARIBBEAN -->
+    <div class="region-section">
+      <div class="region-label">🇳🇱 Dutch Caribbean</div>
+      <div class="islands-grid">
+        <a href="/caribex/aruba" class="island-card"><div class="island-card-img" style="background:linear-gradient(135deg,#0096C7,#48CAE4);">🇦🇼</div><div class="island-card-body"><div class="island-card-region">Dutch Caribbean</div><div class="island-card-name">Aruba</div><div class="island-card-desc">360 days of sunshine, Eagle Beach and the most consistent weather in the Caribbean.</div><span class="island-tag tag-beach">Beach</span><span class="island-tag tag-luxury">Luxury</span></div></a>
+        <a href="/caribex/curacao" class="island-card"><div class="island-card-img" style="background:linear-gradient(135deg,#003087,#FF6B35);">🇨🇼</div><div class="island-card-body"><div class="island-card-region">Dutch Caribbean</div><div class="island-card-name">Curaçao</div><div class="island-card-desc">UNESCO colonial Willemstad, world-class wall diving and the most colorful island in the Caribbean.</div><span class="island-tag tag-culture">Culture</span><span class="island-tag tag-beach">Beach</span></div></a>
       </div>
-      <a href="/caribex/costa-rica" class="mainland-card" style="text-decoration:none;display:block;">
-        <div class="mainland-flag">🇨🇷</div>
-        <div class="mainland-country">Costa Rica</div>
-        <div class="mainland-city">Puerto Viejo · Tortuguero · Limón</div>
-        <div class="mainland-desc">The Caribbean coast of Costa Rica is a world apart — Afro-Caribbean culture, sea turtle nesting and jungle rivers flowing to the sea.</div>
+    </div>
+
+    <!-- TERRITORIES -->
+    <div class="region-section">
+      <div class="region-label">🏛️ Island Territories</div>
+      <div class="islands-grid">
+        <a href="/caribex/usvi" class="island-card"><div class="island-card-img" style="background:linear-gradient(135deg,#002868,#BF0A30);">🇻🇮</div><div class="island-card-body"><div class="island-card-region">US Territory</div><div class="island-card-name">US Virgin Islands</div><div class="island-card-desc">No passport needed — Magens Bay and Virgin Islands National Park.</div><span class="island-tag tag-beach">Beach</span><span class="island-tag tag-nature">Nature</span></div></a>
+        <a href="/caribex/bvi" class="island-card"><div class="island-card-img" style="background:linear-gradient(135deg,#012169,#00B4D8);">🇻🇬</div><div class="island-card-body"><div class="island-card-region">UK Territory</div><div class="island-card-name">British Virgin Islands</div><div class="island-card-desc">Sailing capital of the Caribbean — The Baths and the legendary Soggy Dollar Bar.</div><span class="island-tag tag-beach">Beach</span><span class="island-tag tag-luxury">Luxury</span></div></a>
+        <a href="/caribex/turks-caicos" class="island-card"><div class="island-card-img" style="background:linear-gradient(135deg,#00B4D8,#0077B6);">🇹🇨</div><div class="island-card-body"><div class="island-card-region">UK Territory</div><div class="island-card-name">Turks & Caicos</div><div class="island-card-desc">Grace Bay — the world's best beach — and the clearest water in the Caribbean.</div><span class="island-tag tag-beach">Beach</span><span class="island-tag tag-luxury">Luxury</span></div></a>
+        <a href="/caribex/bahamas" class="island-card"><div class="island-card-img" style="background:linear-gradient(135deg,#023E8A,#0096C7);">🇧🇸</div><div class="island-card-body"><div class="island-card-region">Commonwealth</div><div class="island-card-name">The Bahamas</div><div class="island-card-desc">700 islands, swimming pigs in the Exumas and the clearest water on earth.</div><span class="island-tag tag-beach">Beach</span><span class="island-tag tag-luxury">Luxury</span></div></a>
       </div>
-      <a href="/caribex/belize" class="mainland-card" style="text-decoration:none;display:block;">
-        <div class="mainland-flag">🇧🇿</div>
-        <div class="mainland-country">Belize</div>
-        <div class="mainland-city">Ambergris Caye · Placencia · Hopkins</div>
-        <div class="mainland-desc">The second largest barrier reef on earth, Mayan ruins, jungle rivers and a laid-back Caribbean culture unlike anywhere else in Central America.</div>
-      </div>
-      <a href="/caribex/venezuela" class="mainland-card" style="text-decoration:none;display:block;">
-        <div class="mainland-flag">🇻🇪</div>
-        <div class="mainland-country">Venezuela</div>
-        <div class="mainland-city">Isla Margarita · Los Roques · Mochima</div>
-        <div class="mainland-desc">Los Roques archipelago — one of the most pristine Caribbean destinations — plus Margarita's beaches and Mochima's turquoise bays.</div>
-      </div>
-      <a href="/caribex/panama" class="mainland-card" style="text-decoration:none;display:block;">
-        <div class="mainland-flag">🇵🇦</div>
-        <div class="mainland-country">Panama</div>
-        <div class="mainland-city">Bocas del Toro · San Blas · Colón</div>
-        <div class="mainland-desc">Bocas del Toro's colorful water bungalows, the pristine Guna Yala (San Blas) islands and the historic Canal connecting two oceans.</div>
+    </div>
+
+    <!-- MAINLAND CARIBBEAN -->
+    <div class="region-section">
+      <div class="region-label">🌎 Mainland Caribbean</div>
+      <div class="islands-grid">
+        <a href="/caribex/tulum" class="island-card"><div class="island-card-img" style="background:linear-gradient(135deg,#2D6A4F,#52B788);">🇲🇽</div><div class="island-card-body"><div class="island-card-region">Mexico</div><div class="island-card-name">Tulum · Cancún · Holbox</div><div class="island-card-desc">Mayan ruins above Caribbean water, cenotes and bohemian beach culture.</div><span class="island-tag tag-culture">Culture</span><span class="island-tag tag-nature">Nature</span></div></a>
+        <a href="/caribex/cartagena" class="island-card"><div class="island-card-img" style="background:linear-gradient(135deg,#FFD700,#C8102E);">🇨🇴</div><div class="island-card-body"><div class="island-card-region">Colombia</div><div class="island-card-name">Cartagena · Santa Marta</div><div class="island-card-desc">Colombia's walled colonial city — one of the most beautiful in the Americas.</div><span class="island-tag tag-culture">Culture</span><span class="island-tag tag-beach">Beach</span></div></a>
+        <a href="/caribex/san-andres" class="island-card"><div class="island-card-img" style="background:linear-gradient(135deg,#FFD700,#003893);">🇨🇴</div><div class="island-card-body"><div class="island-card-region">Colombia</div><div class="island-card-name">San Andrés · Providencia</div><div class="island-card-desc">Colombia's Caribbean jewel — the Sea of Seven Colors and pristine coral reef.</div><span class="island-tag tag-beach">Beach</span><span class="island-tag tag-nature">Nature</span></div></a>
+        <a href="/caribex/costa-rica" class="island-card"><div class="island-card-img" style="background:linear-gradient(135deg,#1B4332,#52B788);">🇨🇷</div><div class="island-card-body"><div class="island-card-region">Costa Rica</div><div class="island-card-name">Puerto Viejo · Tortuguero</div><div class="island-card-desc">Where the jungle meets the sea — sea turtles and Afro-Caribbean culture.</div><span class="island-tag tag-nature">Nature</span><span class="island-tag tag-culture">Culture</span></div></a>
+        <a href="/caribex/belize" class="island-card"><div class="island-card-img" style="background:linear-gradient(135deg,#003F5C,#00B4D8);">🇧🇿</div><div class="island-card-body"><div class="island-card-region">Belize</div><div class="island-card-name">Ambergris Caye · Blue Hole</div><div class="island-card-desc">The Great Blue Hole and the second largest barrier reef on earth.</div><span class="island-tag tag-nature">Nature</span><span class="island-tag tag-beach">Beach</span></div></a>
+        <a href="/caribex/panama" class="island-card"><div class="island-card-img" style="background:linear-gradient(135deg,#003F88,#00B4D8);">🇵🇦</div><div class="island-card-body"><div class="island-card-region">Panama</div><div class="island-card-name">Bocas del Toro · San Blas</div><div class="island-card-desc">Pristine Guna Yala islands and Bocas del Toro water bungalows.</div><span class="island-tag tag-nature">Nature</span><span class="island-tag tag-culture">Culture</span></div></a>
+        <a href="/caribex/roatan" class="island-card"><div class="island-card-img" style="background:linear-gradient(135deg,#0F4C81,#00B4D8);">🇭🇳</div><div class="island-card-body"><div class="island-card-region">Honduras</div><div class="island-card-name">Roatán · Bay Islands</div><div class="island-card-desc">World-class diving at the Caribbean's best value prices.</div><span class="island-tag tag-nature">Nature</span><span class="island-tag tag-beach">Beach</span></div></a>
+        <a href="/caribex/venezuela" class="island-card"><div class="island-card-img" style="background:linear-gradient(135deg,#CF0A2C,#003893);">🇻🇪</div><div class="island-card-body"><div class="island-card-region">Venezuela</div><div class="island-card-name">Los Roques · Margarita</div><div class="island-card-desc">The Caribbean's last unspoiled secret — pristine natural archipelagos.</div><span class="island-tag tag-nature">Nature</span><span class="island-tag tag-beach">Beach</span></div></a>
       </div>
     </div>
   </div>

@@ -1,0 +1,39 @@
+{
+  "slug": "grand-cayman",
+  "name": "Grand Cayman",
+  "flag": "🇰🇾",
+  "tagline": "Seven Mile Beach and Stingray City",
+  "region": "Greater Antilles",
+  "country": "Cayman Islands (UK Territory)",
+  "gradient": "linear-gradient(135deg, #012169 0%, #00B4D8 100%)",
+  "bestFor": ["Beach", "Diving", "Luxury", "Family"],
+  "overview": "Grand Cayman is the Caribbean's most prosperous island — a British Overseas Territory that has parlayed its position as a global financial center into one of the region's finest tourism infrastructures. Seven Mile Beach, a continuous stretch of white sand and calm turquoise water on the west shore, is consistently ranked among the world's best and is the anchor of an island experience that combines natural beauty with cosmopolitan amenities.\n\nStingray City is Grand Cayman's most famous attraction — a shallow sandbar in the North Sound where Southern stingrays gather in extraordinary numbers, completely habituated to human interaction. Swimming and feeding these graceful creatures in crystal clear water is one of the Caribbean's most unique wildlife experiences, accessible to all ages and swimming abilities.\n\nBeyond the beach and the stingrays, Grand Cayman offers world-class wall diving — the Cayman Wall drops from shallow reef to depths of 6,000 feet just minutes from shore. The culinary scene is exceptional by Caribbean standards, George Town's duty-free shopping draws cruise passengers in enormous numbers and the island's infrastructure and safety record make it one of the Caribbean's most family-friendly destinations.",
+  "topExperiences": [
+    {"icon": "🦈", "name": "Stingray City", "desc": "A shallow sandbar in the North Sound where dozens of Southern stingrays can be hand-fed and touched — one of the most unique wildlife interactions in the Caribbean."},
+    {"icon": "🏖️", "name": "Seven Mile Beach", "desc": "One of the world's finest beaches — calm turquoise water, soft white sand and a consistent quality that has made it the Caribbean standard for beach perfection."},
+    {"icon": "🤿", "name": "Cayman Wall Diving", "desc": "The famous Cayman Wall drops dramatically from 30 feet to 6,000 — world-class wall diving with extraordinary visibility and healthy coral formations."},
+    {"icon": "🐢", "name": "Cayman Turtle Centre", "desc": "A sea turtle conservation and breeding facility — watch green sea turtles at every life stage and understand the conservation efforts protecting these ancient creatures."},
+    {"icon": "🦜", "name": "Queen Elizabeth II Botanic Park", "desc": "A beautiful garden featuring the rare Grand Cayman Blue Iguana — the endemic iguana species found only on this island, recovering from near extinction."},
+    {"icon": "🍽️", "name": "Fine Dining Scene", "desc": "Grand Cayman has the Caribbean's most sophisticated restaurant culture — world-class chefs, excellent ingredients and a dining scene that rivals major cities."}
+  ],
+  "beaches": [
+    {"name": "Seven Mile Beach", "type": "World Class", "desc": "The Caribbean standard — calm, clear, consistent. Seven miles of white sand with every amenity and the most reliably beautiful water on the island."},
+    {"name": "Rum Point Beach", "type": "Relaxed", "desc": "The north shore's most beloved beach — shallow, calm water, excellent snorkeling and the famous Wreck Bar serving mudslides in the shade."},
+    {"name": "Starfish Point", "type": "Unique", "desc": "A shallow wading area where dozens of cushion sea stars rest on the sandy bottom — a completely gentle and photogenic experience."},
+    {"name": "Smith Cove", "type": "Local", "desc": "A small protected cove near George Town — popular with locals for its calm water, good snorkeling and the natural rock formations that create natural pools."}
+  ],
+  "food": [
+    {"name": "Cayman Style Fish", "desc": "Fresh snapper or grouper marinated in Cayman spices and fried or grilled — the island's definitive dish, served at every local restaurant from beach shacks to fine dining."},
+    {"name": "Turtle Stew", "desc": "A traditional Caymanian dish made from farmed green turtle — a cultural legacy of the island's historic turtle industry, now served only from farmed sources."},
+    {"name": "Heavy Cake", "desc": "A dense, sweet cake made from cassava, coconut and spices — Cayman's most traditional dessert, baked for celebrations and still found at local markets."},
+    {"name": "Mudslide", "desc": "Invented at the Wreck Bar on Rum Point — Kahlúa, Baileys and vodka over ice. The definitive Grand Cayman cocktail and worth the trip to Rum Point alone."}
+  ],
+  "culture": "Grand Cayman's culture reflects its unique position as a Caribbean island that has embraced financial services as its primary industry — the result is a prosperity and infrastructure unusual in the region, combined with a genuine Caribbean warmth that persists beneath the cosmopolitan surface. The Caymanian people, a blend of European, African and Caribbean heritage, maintain traditions of seamanship, turtle-keeping and a deep connection to the sea.\n\nThe island's safety, cleanliness and reliability have made it the Caribbean's most popular family destination — and a place where visitors return repeatedly rather than exploring elsewhere. Pirate Week in November celebrates the island's colorful maritime history with costumed parades and the kind of Caribbean festival spirit that reminds visitors this is, at heart, a Caribbean island.",
+  "bestTime": "November through April is the dry season and peak time — calm seas, consistent sunshine and the best diving visibility. December through March is peak season with highest prices. Hurricane season June through November, though the Caymans have relatively low hurricane frequency.",
+  "practical": {
+    "currency": "Cayman Islands Dollar (KYD) · USD widely accepted · 1 KYD = 1.20 USD",
+    "language": "English",
+    "howToGet": "Direct flights from US cities to Owen Roberts International Airport (GCM). Short flight to Little Cayman and Cayman Brac.",
+    "budget": "$150-280/day mid-range · $100-150 budget · $400+ luxury Seven Mile"
+  }
+}

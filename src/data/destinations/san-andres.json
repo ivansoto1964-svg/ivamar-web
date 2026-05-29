@@ -1,0 +1,39 @@
+{
+  "slug": "san-andres",
+  "name": "San Andrés",
+  "flag": "🇨🇴",
+  "tagline": "Colombia's Caribbean Jewel",
+  "region": "Western Caribbean",
+  "country": "Colombia",
+  "gradient": "linear-gradient(135deg, #FFD700 0%, #003893 100%)",
+  "bestFor": ["Beach", "Diving", "Culture", "Value"],
+  "overview": "San Andrés is Colombia's Caribbean secret — a coral island closer to Nicaragua than to the Colombian mainland, with water that achieves the impossible color known locally as the 'Sea of Seven Colors.' The coral reef surrounding the island is part of the Seaflower Biosphere Reserve, and the diving and snorkeling here rival anything in the Caribbean at a fraction of the cost of comparable destinations.\n\nThe island has a fascinating cultural identity — the Raizal people, descendants of English Puritans and African slaves, speak a Creole English dialect and maintain a culture distinct from both mainland Colombia and the Spanish Caribbean. Their food, music and traditions reflect a heritage that is genuinely unique in the region, and the island's Creole culture sits alongside the Colombian culture that has grown with tourism and migration from the mainland.\n\nJohnny Cay, a tiny uninhabited coral island just offshore, is surrounded by the clearest and most spectacularly colored water in the Colombian Caribbean — a day trip by boat delivers the classic Caribbean fantasy of white sand, turquoise water and nothing else for miles. Providencia, a larger island 90 kilometers north, is even more pristine and less visited — a destination of extraordinary natural beauty for those willing to make the additional journey.",
+  "topExperiences": [
+    {"icon": "🌊", "name": "Sea of Seven Colors", "desc": "The extraordinary water around San Andrés — turquoise, aquamarine, navy and every shade between, shifting with the depth and light in one of the Caribbean's most beautiful seascapes."},
+    {"icon": "🏝️", "name": "Johnny Cay", "desc": "A tiny coral island just offshore — white sand, palm trees and water so clear it looks painted. The classic Caribbean day trip experience at Colombian prices."},
+    {"icon": "🤿", "name": "Seaflower Biosphere Reserve", "desc": "One of the largest marine protected areas in the world — the coral reef surrounding San Andrés offers world-class diving at prices that make other Caribbean islands seem expensive."},
+    {"icon": "🚲", "name": "Island Exploration by Bike", "desc": "San Andrés is small enough to circle by bicycle — the perimeter road passes fishing villages, viewpoints and the freshest ceviche you'll find on the island."},
+    {"icon": "✈️", "name": "Providencia Island", "desc": "90 kilometers north — a larger, even more pristine island with no cruise ships, excellent diving and the most authentic Raizal culture in the Colombian Caribbean."},
+    {"icon": "🥁", "name": "Raizal Culture", "desc": "The indigenous Raizal people maintain a unique Creole English culture — their music, food and language create a Caribbean identity found nowhere else in Colombia."}
+  ],
+  "beaches": [
+    {"name": "Spratt Bight Beach", "type": "Main", "desc": "The main beach of San Andrés town — calm water, beach chairs and the social center of the island's tourism activity."},
+    {"name": "Johnny Cay", "type": "Iconic", "desc": "The tiny offshore island with the most spectacular water colors on the island — reached by short boat ride and completely worth it."},
+    {"name": "Bahía Sardinas", "type": "Local", "desc": "A calm bay on the southern end of the island — favorite of locals for its clear water and the excellent ceviche stands along the road."},
+    {"name": "Rocky Cay", "type": "Natural", "desc": "A small rock island accessible by wading — surrounded by shallow turquoise water and excellent for snorkeling with minimal crowds."}
+  ],
+  "food": [
+    {"name": "Rondón", "desc": "The Raizal signature dish — a rich stew of fish, conch, crab and breadfruit in coconut milk. Eaten on Sunday and cooked by those who still know the old recipe."},
+    {"name": "Ceviche Isleño", "desc": "San Andrés style ceviche — fresh fish or conch with lime, peppers and the Colombian coastal spices that distinguish it from Pacific ceviche."},
+    {"name": "Pabellón Isleño", "desc": "The island version of the Venezuelan classic — rice, beans, fried plantain and fresh fish rather than beef, reflecting the Caribbean rather than continental influences."},
+    {"name": "Coconut Rice", "desc": "Rice cooked in coconut milk — the Raizal staple that accompanies every meal and is prepared differently in every kitchen on the island."}
+  ],
+  "culture": "San Andrés's culture is a fascinating three-way conversation between the indigenous Raizal people, Colombian mainland culture and the broader Caribbean world. The Raizal, with their Creole English language and Protestant heritage, are the original inhabitants — and their culture is increasingly recognized as a vital part of Colombia's national heritage despite years of marginalization.\n\nThe island's position as a duty-free zone has brought Colombian mainland culture in force, creating a tension between the original character of the island and its development as a mass tourism destination. Those who look beneath the surface find a Raizal culture of extraordinary depth — music traditions, food knowledge and a relationship with the sea that has survived five centuries of colonial history.",
+  "bestTime": "December through April is the driest period and peak tourism season. The water is warm year-round. January through March offers the calmest conditions for diving. Colombians vacation heavily in July and the year-end holidays, making those periods more crowded and expensive.",
+  "practical": {
+    "currency": "Colombian Peso (COP) · USD exchanged easily",
+    "language": "Spanish · Creole English (Raizal community)",
+    "howToGet": "Direct flights from Bogotá, Medellín, Cali and other Colombian cities to Gustavo Rojas Pinilla Airport (ADZ). Short flight to Providencia.",
+    "budget": "$50-100/day mid-range · $30-55 budget — exceptional Caribbean value"
+  }
+}
