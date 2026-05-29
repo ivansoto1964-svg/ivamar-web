@@ -1,0 +1,39 @@
+{
+  "slug": "martinique",
+  "name": "Martinique",
+  "flag": "🇲🇶",
+  "tagline": "France in the Heart of the Caribbean",
+  "region": "Lesser Antilles",
+  "country": "France (French Caribbean)",
+  "gradient": "linear-gradient(135deg, #002395 0%, #ED2939 100%)",
+  "bestFor": ["Culture", "Food", "Nature", "Beach"],
+  "overview": "Martinique is the Caribbean at its most French — an island where the boulangerie opens at dawn, the markets smell of spices and fresh fish, the beaches are extraordinary and the rum agricole is the finest in the world. It is simultaneously a French department with European infrastructure and a deeply Caribbean island with African roots, Creole culture and a landscape of volcanic drama.\n\nMount Pelée, the volcano that destroyed the city of Saint-Pierre in 1902 — killing 30,000 people in minutes — dominates the northern landscape with a brooding presence that reminds visitors of the island's geological power. The southern coast offers the finest beaches — Grande Anse des Salines is consistently ranked among the world's best — while the east coast faces the Atlantic with wild surf and the dramatic Caravelle Peninsula.\n\nThe Creole culture of Martinique is expressed everywhere — in the madras fabric of traditional dress, in the zouk music that drifts from open windows at night, in the fish markets of Le François and in the extraordinary rum distilleries that produce agricole rum from fresh sugarcane juice rather than molasses. This is a Caribbean island where the pleasures of French civilization and the warmth of Caribbean life exist in genuine harmony.",
+  "topExperiences": [
+    {"icon": "🌋", "name": "Mount Pelée Hike", "desc": "The volcano that destroyed Saint-Pierre in 1902 — hiking to the summit rewards with panoramic views across the island and a sobering encounter with Caribbean geological history."},
+    {"icon": "🏖️", "name": "Grande Anse des Salines", "desc": "Martinique's most beautiful beach and one of the finest in the Caribbean — a long crescent of white sand with calm, clear water and the natural landscape completely intact."},
+    {"icon": "🥃", "name": "Rhum Agricole Distilleries", "desc": "Martinique's AOC rum, made from fresh sugarcane juice rather than molasses, is the world's finest. Distilleries like Clément, Saint James and J.M. offer tours of extraordinary quality."},
+    {"icon": "🏙️", "name": "Saint-Pierre Ghost City", "desc": "The former 'Paris of the Caribbean' destroyed by Pelée in 1902 — ruins of theaters, cathedrals and distilleries rise from the jungle, the most atmospheric site in the Lesser Antilles."},
+    {"icon": "🦋", "name": "Caravelle Peninsula", "desc": "A protected nature reserve jutting into the Atlantic — dramatic coastal scenery, hiking trails through dry forest and the ruins of a 17th-century plantation on the headland."},
+    {"icon": "🐢", "name": "Les Salines Marine Area", "desc": "The reef and seagrass beds around Sainte-Anne shelter sea turtles, rays and tropical fish — snorkeling here is among the finest in the French Caribbean."}
+  ],
+  "beaches": [
+    {"name": "Grande Anse des Salines", "type": "World Class", "desc": "The most beautiful beach in Martinique and one of the finest in the Caribbean — white sand, turquoise water and a natural setting of complete perfection."},
+    {"name": "Anse Noire", "type": "Unique", "desc": "A black sand beach between two cliffs near Anses-d'Arlet — dramatic, beautiful and accessible only by foot or boat, with excellent snorkeling."},
+    {"name": "Plage des Surfeurs", "type": "Active", "desc": "Le Diamant's surf beach facing the iconic Diamond Rock — consistent Atlantic waves and the most dramatic coastal scenery on the island's southern coast."},
+    {"name": "Anse Céron", "type": "Remote", "desc": "The most isolated beach in northern Martinique — surrounded by rainforest, accessible by a dirt road and completely undeveloped."}
+  ],
+  "food": [
+    {"name": "Accras de Morue", "desc": "Salt cod fritters — the essential Martinican appetizer, eaten at every gathering, at the beach on Sunday mornings and as street food throughout the island."},
+    {"name": "Colombo", "desc": "A curry brought by Indian indentured workers in the 19th century, adapted to the Caribbean with local spices — the most distinctive dish in Martinican cuisine."},
+    {"name": "Boudin Créole", "desc": "A spiced blood sausage unique to the French Caribbean — heavily seasoned with local peppers and herbs, grilled and eaten as street food at markets throughout the island."},
+    {"name": "Ti Punch", "desc": "White rhum agricole, lime and cane syrup — the national drink of Martinique. Each person makes their own to their exact specification. Never ask for ice."}
+  ],
+  "culture": "Martinican culture is a Creole synthesis of French colonial heritage, African traditions brought through slavery, and the indigenous Carib legacy — expressed through the Créole language spoken alongside French, the zouk music that originated here and spread across the Caribbean, the madras fabric of traditional dress and a cuisine of extraordinary depth and complexity.\n\nThe island's intellectual and artistic heritage is remarkable for its size — Aimé Césaire, the poet and politician who founded the Négritude movement, was born in Martinique and shaped Black consciousness across the entire French-speaking world. Frantz Fanon, whose work on colonialism influenced independence movements globally, was also Martinican. The island produces writers, artists and thinkers with a frequency that reflects a deep cultural confidence.",
+  "bestTime": "December through May is the dry season — the best weather for beaches and hiking. The summer months bring more rain but also the most vibrant local life. Hurricane season runs June through November, with August through October being highest risk. The Tour des Yoles Rondes sailing race in August is a spectacular cultural event despite the season.",
+  "practical": {
+    "currency": "Euro (EUR) — Martinique is a French department",
+    "language": "French · Martinican Creole",
+    "howToGet": "Direct flights from Paris (CDG/ORY) and Air France connections from major cities. Flights from other Caribbean islands. Aimé Césaire International Airport (FDF).",
+    "budget": "€100-180/day mid-range · €60-100 budget · €250+ luxury — European pricing"
+  }
+}
