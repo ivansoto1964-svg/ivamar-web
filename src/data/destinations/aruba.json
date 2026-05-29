@@ -1,0 +1,39 @@
+{
+  "slug": "aruba",
+  "name": "Aruba",
+  "flag": "🇦🇼",
+  "tagline": "One Happy Island, Always Sunny",
+  "region": "Dutch Caribbean",
+  "country": "Aruba (Kingdom of the Netherlands)",
+  "gradient": "linear-gradient(135deg, #0096C7 0%, #48CAE4 100%)",
+  "bestFor": ["Beach", "Windsurfing", "Luxury", "Couples"],
+  "overview": "Aruba sits outside the hurricane belt — a geographic fact that makes it one of the most reliable year-round destinations in the Caribbean. With 360 days of sunshine annually, consistent trade winds and water temperatures that never dip below 80°F, it is the Caribbean destination for those who want guaranteed perfection.\n\nEagle Beach, consistently ranked among the world's best, is Aruba's crown jewel — wide, uncrowded and impossibly beautiful. But Aruba offers more than sand: the rugged Arikok National Park covers 20% of the island and reveals a surprisingly dramatic landscape of cacti, natural pools and gold mill ruins that tell the story of the island's Dutch colonial and indigenous Arawak heritage.\n\nAruba is small — 19 miles long and 6 miles wide — which means everything is accessible, the vibe is relaxed and the island has developed a hospitality culture that is genuinely warm. Oranjestad, the capital, is a charming Dutch colonial city with excellent restaurants and a waterfront that buzzes every evening.",
+  "topExperiences": [
+    {"icon": "🏖️", "name": "Eagle Beach", "desc": "Consistently ranked among the world's best beaches — wide, white and uncrowded with the famous Fofoti trees leaning over the water as natural landmarks."},
+    {"icon": "🏄", "name": "Windsurfing & Kitesurfing", "desc": "Aruba's consistent trade winds make it one of the world's premier windsurfing destinations. Hadicurari Beach hosts international competitions annually."},
+    {"icon": "🌵", "name": "Arikok National Park", "desc": "20% of the island protected — dramatic desert landscape of cacti, natural pools, caves with Arawak petroglyphs and the rugged natural Aruba most visitors never see."},
+    {"icon": "🚗", "name": "Off-Road Tour", "desc": "Jeep or UTV tours through the rugged northern coast — natural bridge formations, the California Lighthouse and the wild side of One Happy Island."},
+    {"icon": "🛥️", "name": "Catamaran Snorkel", "desc": "Sail to the Antilla shipwreck — the largest in the Caribbean — and two reef sites of extraordinary clarity. The standard Aruba day trip and worth every minute."},
+    {"icon": "🌅", "name": "California Lighthouse Sunset", "desc": "The northwestern point of the island offers the most dramatic sunset views in Aruba — the lighthouse glowing gold while the trade winds cool everything down."}
+  ],
+  "beaches": [
+    {"name": "Eagle Beach", "type": "World Class", "desc": "The best beach in Aruba and one of the finest in the Caribbean — wide, white and never overcrowded. The Fofoti trees are iconic."},
+    {"name": "Palm Beach", "type": "Resort", "desc": "Aruba's most active beach — lined with high-rise hotels, water sports operators and the social energy of the island's tourist hub."},
+    {"name": "Baby Beach", "type": "Family", "desc": "A protected lagoon of extraordinary calm and clarity — shallow, warm and perfect for children and snorkelers."},
+    {"name": "Arashi Beach", "type": "Local", "desc": "The northwestern beach near the California Lighthouse — beloved by locals, excellent snorkeling and away from the resort crowds."}
+  ],
+  "food": [
+    {"name": "Keshi Yena", "desc": "A whole Edam cheese shell stuffed with spiced meat, olives and raisins — Aruba's most distinctive dish, a direct product of Dutch colonial history."},
+    {"name": "Fresh Fish", "desc": "Mahi mahi, wahoo and red snapper caught daily — served grilled with local spices at the waterfront restaurants of Oranjestad."},
+    {"name": "Pan Bati", "desc": "A slightly sweet cornmeal pancake — the local bread that accompanies almost every meal in Aruba, slightly crispy at the edges."},
+    {"name": "Balashi Beer", "desc": "Aruba's local lager — light, crisp and perfectly suited to the climate. The unofficial official drink of One Happy Island."}
+  ],
+  "culture": "Aruba's culture is a blend of Arawak indigenous heritage, Dutch colonial influence and the Caribbean warmth that defines the region. The local language, Papiamento, is a creole that incorporates Spanish, Portuguese, Dutch, English and African elements — a linguistic expression of the island's extraordinary multicultural history.\n\nArubans are famously hospitable — the 'One Happy Island' motto is not marketing, it reflects a genuine local attitude. The population of 110,000 welcomes over 2 million visitors annually with a warmth that feels authentic rather than performed. Carnival in February is the cultural highlight — weeks of parades, music and costumes that reveal the deepest layers of Aruban identity.",
+  "bestTime": "Aruba is a year-round destination — outside the hurricane belt with consistent sunshine and trade winds every month. December through April is peak season with slightly higher prices. The summer months offer lower rates with virtually identical weather.",
+  "practical": {
+    "currency": "Aruban Florin (AWG) · USD widely accepted",
+    "language": "Papiamento, Dutch, English & Spanish",
+    "howToGet": "Direct flights from US, Canada, Europe and Latin America to Queen Beatrix Airport (AUA).",
+    "budget": "$120-200/day mid-range · $80-110 budget · $300+ luxury"
+  }
+}

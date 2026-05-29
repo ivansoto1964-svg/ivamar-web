@@ -287,7 +287,7 @@ nav{padding:0 1rem;}.nav-links{display:none;}
       <div class="region-tab">Bahamas & Turks</div>
     </div>
     <div class="islands-grid">
-      <a href="https://www.yourcaribbeanexpert.com" target="_blank" class="island-card">
+      <a href="/caribex/puerto-rico" class="island-card">
         <div class="island-card-img" style="background:linear-gradient(135deg,#006994,#00A8CC);">🇵🇷</div>
         <div class="island-card-body">
           <div class="island-card-region">Greater Antilles</div>
@@ -297,7 +297,7 @@ nav{padding:0 1rem;}.nav-links{display:none;}
           <span class="island-tag tag-beach">Beach</span>
         </div>
       </a>
-      <a href="https://www.yourcaribbeanexpert.com" target="_blank" class="island-card">
+      <a href="/caribex/dominican-republic" class="island-card">
         <div class="island-card-img" style="background:linear-gradient(135deg,#1B4332,#40916C);">🇩🇴</div>
         <div class="island-card-body">
           <div class="island-card-region">Greater Antilles</div>
@@ -307,7 +307,7 @@ nav{padding:0 1rem;}.nav-links{display:none;}
           <span class="island-tag tag-culture">Culture</span>
         </div>
       </a>
-      <a href="https://www.yourcaribbeanexpert.com" target="_blank" class="island-card">
+      <a href="/caribex/cuba" class="island-card">
         <div class="island-card-img" style="background:linear-gradient(135deg,#003049,#0077B6);">🇨🇺</div>
         <div class="island-card-body">
           <div class="island-card-region">Greater Antilles</div>
@@ -317,7 +317,7 @@ nav{padding:0 1rem;}.nav-links{display:none;}
           <span class="island-tag tag-nature">Nature</span>
         </div>
       </a>
-      <a href="https://www.yourcaribbeanexpert.com" target="_blank" class="island-card">
+      <a href="/caribex/jamaica" class="island-card">
         <div class="island-card-img" style="background:linear-gradient(135deg,#5C4033,#8D6E63);">🇯🇲</div>
         <div class="island-card-body">
           <div class="island-card-region">Greater Antilles</div>
@@ -327,7 +327,7 @@ nav{padding:0 1rem;}.nav-links{display:none;}
           <span class="island-tag tag-beach">Beach</span>
         </div>
       </a>
-      <a href="https://www.yourcaribbeanexpert.com" target="_blank" class="island-card">
+      <a href="/caribex/barbados" class="island-card">
         <div class="island-card-img" style="background:linear-gradient(135deg,#F4A261,#E76F51);">🇧🇧</div>
         <div class="island-card-body">
           <div class="island-card-region">Lesser Antilles</div>
@@ -337,7 +337,7 @@ nav{padding:0 1rem;}.nav-links{display:none;}
           <span class="island-tag tag-beach">Beach</span>
         </div>
       </a>
-      <a href="https://www.yourcaribbeanexpert.com" target="_blank" class="island-card">
+      <a href="/caribex/aruba" class="island-card">
         <div class="island-card-img" style="background:linear-gradient(135deg,#0096C7,#48CAE4);">🇦🇼</div>
         <div class="island-card-body">
           <div class="island-card-region">Dutch Caribbean</div>
@@ -347,7 +347,7 @@ nav{padding:0 1rem;}.nav-links{display:none;}
           <span class="island-tag tag-luxury">Luxury</span>
         </div>
       </a>
-      <a href="https://www.yourcaribbeanexpert.com" target="_blank" class="island-card">
+      <a href="/caribex/trinidad-tobago" class="island-card">
         <div class="island-card-img" style="background:linear-gradient(135deg,#2D6A4F,#52B788);">🇹🇹</div>
         <div class="island-card-body">
           <div class="island-card-region">Lesser Antilles</div>
@@ -357,7 +357,7 @@ nav{padding:0 1rem;}.nav-links{display:none;}
           <span class="island-tag tag-nature">Nature</span>
         </div>
       </a>
-      <a href="https://www.yourcaribbeanexpert.com" target="_blank" class="island-card">
+      <a href="/caribex/bahamas" class="island-card">
         <div class="island-card-img" style="background:linear-gradient(135deg,#023E8A,#0096C7);">🇧🇸</div>
         <div class="island-card-body">
           <div class="island-card-region">Bahamas</div>
@@ -378,37 +378,37 @@ nav{padding:0 1rem;}.nav-links{display:none;}
     <h2 class="sec-title">The Caribbean <em>Beyond the Islands</em></h2>
     <p class="sec-sub">The Caribbean region extends far beyond the sea. These mainland destinations share the same soul — tropical, vibrant and deeply cultural.</p>
     <div class="mainland-grid">
-      <div class="mainland-card">
+      <a href="/caribex/tulum" class="mainland-card" style="text-decoration:none;display:block;">
         <div class="mainland-flag">🇲🇽</div>
         <div class="mainland-country">Mexico</div>
         <div class="mainland-city">Tulum · Cancún · Holbox · Cozumel</div>
         <div class="mainland-desc">Mayan ruins meet Caribbean waters. Tulum's bohemian cenotes, Cancún's vibrant energy, Holbox's barefoot beaches and Cozumel's world-class diving.</div>
       </div>
-      <div class="mainland-card">
+      <a href="/caribex/cartagena" class="mainland-card" style="text-decoration:none;display:block;">
         <div class="mainland-flag">🇨🇴</div>
         <div class="mainland-country">Colombia</div>
         <div class="mainland-city">Cartagena · Santa Marta · San Andrés</div>
         <div class="mainland-desc">Colonial Cartagena's walled city, Santa Marta's Tayrona National Park, and San Andrés — a Caribbean island that belongs to Colombia.</div>
       </div>
-      <div class="mainland-card">
+      <a href="/caribex/costa-rica" class="mainland-card" style="text-decoration:none;display:block;">
         <div class="mainland-flag">🇨🇷</div>
         <div class="mainland-country">Costa Rica</div>
         <div class="mainland-city">Puerto Viejo · Tortuguero · Limón</div>
         <div class="mainland-desc">The Caribbean coast of Costa Rica is a world apart — Afro-Caribbean culture, sea turtle nesting and jungle rivers flowing to the sea.</div>
       </div>
-      <div class="mainland-card">
+      <a href="/caribex/belize" class="mainland-card" style="text-decoration:none;display:block;">
         <div class="mainland-flag">🇧🇿</div>
         <div class="mainland-country">Belize</div>
         <div class="mainland-city">Ambergris Caye · Placencia · Hopkins</div>
         <div class="mainland-desc">The second largest barrier reef on earth, Mayan ruins, jungle rivers and a laid-back Caribbean culture unlike anywhere else in Central America.</div>
       </div>
-      <div class="mainland-card">
+      <a href="/caribex/venezuela" class="mainland-card" style="text-decoration:none;display:block;">
         <div class="mainland-flag">🇻🇪</div>
         <div class="mainland-country">Venezuela</div>
         <div class="mainland-city">Isla Margarita · Los Roques · Mochima</div>
         <div class="mainland-desc">Los Roques archipelago — one of the most pristine Caribbean destinations — plus Margarita's beaches and Mochima's turquoise bays.</div>
       </div>
-      <div class="mainland-card">
+      <a href="/caribex/panama" class="mainland-card" style="text-decoration:none;display:block;">
         <div class="mainland-flag">🇵🇦</div>
         <div class="mainland-country">Panama</div>
         <div class="mainland-city">Bocas del Toro · San Blas · Colón</div>

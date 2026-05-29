@@ -1,0 +1,39 @@
+{
+  "slug": "belize",
+  "name": "Belize",
+  "flag": "🇧🇿",
+  "tagline": "Reef, Jungle and the Quiet Caribbean",
+  "region": "Central American Caribbean",
+  "country": "Belize",
+  "gradient": "linear-gradient(135deg, #003F5C 0%, #00B4D8 100%)",
+  "bestFor": ["Diving", "Nature", "Adventure", "Relaxation"],
+  "overview": "Belize is the Caribbean's best-kept secret — a small English-speaking country on the Central American coast with the second largest barrier reef on earth, ancient Maya ruins rising from jungle, and a cultural diversity that makes it one of the most fascinating destinations in the region. It feels like the Caribbean that existed before tourism arrived.\n\nThe Belize Barrier Reef, a UNESCO World Heritage site stretching 190 miles, offers some of the finest diving and snorkeling in the Western Hemisphere. The Great Blue Hole — a 300-meter wide, 125-meter deep underwater sinkhole visible from space — is one of the most iconic dive sites on earth. Ambergris Caye, the largest island, has developed a relaxed Caribbean town in San Pedro that manages to be simultaneously lively and laid-back.\n\nInland, Belize surprises visitors expecting only beaches — ancient Maya cities emerge from jungle, jaguars prowl the protected reserves, and the cave network of the Cayo District contains some of the most remarkable archaeological sites in the Maya world. Belize is the rare destination that genuinely rewards those who explore.",
+  "topExperiences": [
+    {"icon": "🔵", "name": "The Great Blue Hole", "desc": "One of the world's most famous dive sites — a perfectly circular blue hole 300 meters wide, formed 150,000 years ago. Diving into its depths is a bucket list experience."},
+    {"icon": "🤿", "name": "Hol Chan Marine Reserve", "desc": "The most accessible and spectacular snorkeling in Belize — swim with nurse sharks and rays at Shark Ray Alley and explore pristine reef at the marine reserve."},
+    {"icon": "🏛️", "name": "Lamanai Maya Ruins", "desc": "Ancient Maya temples rising from jungle on the banks of the New River Lagoon — accessible only by boat, with howler monkeys in the trees above the ruins."},
+    {"icon": "🚣", "name": "Cave Tubing", "desc": "Float through underground Maya cave systems on an inner tube — the staple adventure activity of Belize and genuinely extraordinary."},
+    {"icon": "🐆", "name": "Cockscomb Jaguar Reserve", "desc": "The world's first jaguar sanctuary — though jaguars are rarely seen, the biodiversity of this rainforest reserve is extraordinary."},
+    {"icon": "🏝️", "name": "Caye Caulker", "desc": "The barefoot Caribbean — a tiny island of sand streets, hammocks over the water and the 'Go Slow' philosophy that defines life on this perfect little island."}
+  ],
+  "beaches": [
+    {"name": "Ambergris Caye", "type": "Island Town", "desc": "San Pedro's beach — not a white-sand postcard but a lively Caribbean town beach with water sports, restaurants and the social heart of Belize tourism."},
+    {"name": "Caye Caulker Split", "desc": "The Split", "type": "Unique", "desc": "Where a hurricane split the island in two — a channel of calm clear water where everyone swims, floats and watches the days pass."},
+    {"name": "Laughing Bird Caye", "type": "Remote", "desc": "A tiny protected atoll of extraordinary natural beauty — pristine reef, white sand and the most isolated Caribbean experience in Belize."},
+    {"name": "Placencia Beach", "type": "Village", "desc": "A peninsula village with the longest continuous sidewalk in the world and a Caribbean beach culture that remains genuinely local."}
+  ],
+  "food": [
+    {"name": "Stew Chicken & Rice", "desc": "Belize's national dish — chicken slow-cooked in recado spice paste with rice and beans. Every family has their version and every version is different."},
+    {"name": "Fry Jacks", "desc": "Deep-fried dough pillows served at breakfast with eggs, beans and cheese — the morning staple of Belize and impossible to resist."},
+    {"name": "Garnache", "desc": "Crispy tortillas topped with beans, cabbage, cheese and hot sauce — the street food of Belize, sold everywhere and always satisfying."},
+    {"name": "Belikin Beer", "desc": "Belize's only local beer — a mild lager that works perfectly with the heat and the seafood. Finding a cold Belikin is finding happiness."}
+  ],
+  "culture": "Belize is remarkable for its cultural diversity — Maya, Garifuna, Creole, Mestizo, Mennonite and expat communities all coexist in a country of fewer than 400,000 people. The Garifuna people, descendants of escaped African slaves and indigenous Caribs who were exiled to Central America by the British, maintain one of the Caribbean's most distinctive cultures — with their own language, food, music (punta rock) and spiritual traditions.\n\nEnglish as an official language makes Belize uniquely accessible for travelers from the US and UK, while the cultural richness beneath the surface ensures that visitors who go looking for more than beaches find extraordinary depth.",
+  "bestTime": "February through May is the dry season and best time to visit — clear water for diving, minimal rain and the most comfortable temperatures. December and January are also excellent. Hurricane season runs June through November, with September and October being highest risk.",
+  "practical": {
+    "currency": "Belize Dollar (BZD) · 2:1 with USD · USD widely accepted",
+    "language": "English (official) · Spanish, Kriol, Maya, Garifuna",
+    "howToGet": "Fly into Philip Goldson International Airport (BZE) near Belize City. Water taxis to the cayes depart from the city.",
+    "budget": "$80-150/day mid-range · $45-75 budget · $250+ dive resort"
+  }
+}

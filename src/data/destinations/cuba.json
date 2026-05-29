@@ -1,0 +1,39 @@
+{
+  "slug": "cuba",
+  "name": "Cuba",
+  "flag": "🇨🇺",
+  "tagline": "Frozen in Time, Alive in Soul",
+  "region": "Greater Antilles",
+  "country": "Cuba",
+  "gradient": "linear-gradient(135deg, #003049 0%, #C1121F 100%)",
+  "bestFor": ["Culture", "Music", "History", "Architecture"],
+  "overview": "Cuba is unlike any other destination on earth — a country that feels simultaneously frozen in time and vibrantly alive, where 1950s American cars share streets with colonial architecture, revolutionary murals and the most infectious music ever created. It is the Caribbean's most complex and compelling island.\n\nHavana is the undisputed heart — a city of extraordinary beauty and melancholy, where crumbling facades reveal 500 years of layered history and every corner has a story. The Malecón seawall at sunset, the jazz spilling from open doorways in Centro Habana, the rumba in Callejón de Hamel on Sunday mornings — Havana demands to be experienced slowly.\n\nBeyond the capital, Cuba reveals extraordinary diversity — the tobacco fields of Viñales Valley, the colonial jewel of Trinidad, the pristine beaches of Varadero and Cayo Coco, and the Afro-Cuban culture of Santiago de Cuba. It is an island that rewards the curious traveler above all others.",
+  "topExperiences": [
+    {"icon": "🏙️", "name": "Old Havana", "desc": "A UNESCO World Heritage site — the most complete colonial city in the Caribbean, where every plaza, cathedral and fortress tells a story five centuries deep."},
+    {"icon": "🎵", "name": "Live Cuban Music", "desc": "Son, salsa, jazz, rumba and bolero performed by musicians of extraordinary talent in every bar, plaza and casa particular. The soundtrack of Cuba never stops."},
+    {"icon": "🌿", "name": "Viñales Valley", "desc": "A UNESCO landscape of dramatic limestone mogotes rising from tobacco fields — the most beautiful countryside in the Caribbean and the source of the world's finest cigars."},
+    {"icon": "🏘️", "name": "Trinidad Colonial Town", "desc": "Cuba's best-preserved colonial city — cobblestone streets, pastel buildings and a time-capsule quality that makes it feel like the 18th century never ended."},
+    {"icon": "🚗", "name": "Classic Car Tours", "desc": "Ride through Havana in a 1955 Chevrolet convertible — the most iconic experience in Cuba and a window into the extraordinary story of the island's relationship with America."},
+    {"icon": "🥃", "name": "Rum & Cigars", "desc": "Cuba produces the world's finest rum and cigars. A Cohiba cigar rolled by hand in a Havana factory and a glass of Havana Club 7 años is a Cuban rite of passage."}
+  ],
+  "beaches": [
+    {"name": "Varadero", "type": "Resort", "desc": "Cuba's most famous beach — 20km of white sand and turquoise water, lined with all-inclusive resorts and the most consistent beach experience on the island."},
+    {"name": "Cayo Coco", "type": "Remote", "desc": "A pristine coral key with flamingos, clear water and a natural beauty that feels completely removed from the rest of Cuba."},
+    {"name": "Playa Ancón", "type": "Local", "desc": "The beach of Trinidad — a beautiful stretch of white sand with Caribbean water just 20 minutes from the colonial city."},
+    {"name": "Guardalavaca", "type": "Natural", "desc": "Holguín province's gem — dramatic red cliffs, clear water and some of the best snorkeling in Cuba."}
+  ],
+  "food": [
+    {"name": "Ropa Vieja", "desc": "Shredded slow-cooked beef in tomato and pepper sauce — Cuba's most beloved dish, served with rice and black beans at every table that matters."},
+    {"name": "Moros y Cristianos", "desc": "Black beans and white rice cooked together — the foundation of Cuban cuisine, named for the Moors and Christians of Spanish history."},
+    {"name": "Cuban Sandwich", "desc": "Ham, roasted pork, Swiss cheese, pickles and mustard pressed in Cuban bread — invented in Tampa but perfected in Havana."},
+    {"name": "Mojito", "desc": "White rum, lime, sugar, mint and soda — invented in Havana's La Bodeguita del Medio and still best experienced there."}
+  ],
+  "culture": "Cuba's culture is an extraordinary fusion of Spanish colonial heritage and African Yoruba traditions, distilled through a revolutionary history that makes it unlike any other Caribbean nation. The music alone — son, mambo, cha-cha-chá, salsa, bolero — has shaped the soundtrack of the entire world. Celia Cruz, Ibrahim Ferrer, Compay Segundo and the Buena Vista Social Club brought Cuba's musical soul to a global audience.\n\nCubans are among the most educated, creative and resilient people in the Caribbean. Despite the limitations of the political system, there is an extraordinary cultural vitality — in the art, the music, the literature and the daily inventiveness that Cubans call 'resolver.' Visitors consistently leave Cuba moved in ways they didn't anticipate.",
+  "bestTime": "November through April is the dry season and ideal for visiting — comfortable temperatures and minimal rainfall. December through February is peak tourist season with the best weather. The summer months bring heat and humidity, while hurricane season runs June through November with October being highest risk.",
+  "practical": {
+    "currency": "Cuban Peso (CUP) · Bring cash — US cards don't work",
+    "language": "Spanish",
+    "howToGet": "Flights from Canada, Mexico, Panama and European cities. US travelers have specific requirements — check current regulations.",
+    "budget": "$60-120/day · Stay in casas particulares for authentic experience"
+  }
+}

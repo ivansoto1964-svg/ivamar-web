@@ -1,0 +1,39 @@
+{
+  "slug": "costa-rica",
+  "name": "Costa Rica Caribbean",
+  "flag": "🇨🇷",
+  "tagline": "Where the Jungle Meets the Sea",
+  "region": "Central American Caribbean",
+  "country": "Costa Rica",
+  "gradient": "linear-gradient(135deg, #1B4332 0%, #52B788 100%)",
+  "bestFor": ["Nature", "Wildlife", "Adventure", "Culture"],
+  "overview": "Costa Rica's Caribbean coast is a world completely apart from the Pacific side that most visitors know — wilder, greener, more Afro-Caribbean in culture and character, and home to some of the most extraordinary wildlife experiences in Central America. It is the Caribbean that adventurous travelers discover when they go looking for something beyond the ordinary.\n\nThe town of Puerto Viejo de Talamanca has developed into a vibrant hub of Afro-Caribbean culture, surf, yoga and some of the best food in Central America — all against a backdrop of jungle that comes directly to the water's edge. Tortuguero National Park, accessible only by boat or plane, is one of the most important sea turtle nesting sites on earth.\n\nThe Afro-Costa Rican culture of the Caribbean coast is distinct from the rest of the country — rooted in the Jamaican and Caribbean communities that came to build the railroad in the 19th century and stayed to create something entirely their own. The food, the music, the pace and the feeling here are genuinely Caribbean.",
+  "topExperiences": [
+    {"icon": "🐢", "name": "Tortuguero Sea Turtles", "desc": "One of the world's most important green turtle nesting sites — July through October, thousands of turtles come ashore at night in one of nature's most emotional spectacles."},
+    {"icon": "🦥", "name": "Wildlife Watching", "desc": "Sloths in the trees above Puerto Viejo, poison dart frogs on the jungle floor, toucans overhead and howler monkeys at dawn — the Caribbean coast is alive."},
+    {"icon": "🏄", "name": "Surfing at Salsa Brava", "desc": "One of the most powerful reef breaks in Central America — Puerto Viejo's famous wave draws surfers from around the world for its raw Caribbean power."},
+    {"icon": "🌿", "name": "Cahuita National Park", "desc": "A protected coral reef and jungle reserve just steps from the beach — snorkeling through the reef and hiking the coastal trail are the essential Cahuita experiences."},
+    {"icon": "🚣", "name": "Tortuguero Canal", "desc": "Boat through a network of jungle canals — caimans sunning on banks, river otters playing in the water and a biodiversity that overwhelms the senses."},
+    {"icon": "🍽️", "name": "Afro-Caribbean Food", "desc": "Rice and beans cooked in coconut milk, jerk chicken, patacones with pico de gallo — the Caribbean coast of Costa Rica has a food culture unlike anywhere else in Central America."}
+  ],
+  "beaches": [
+    {"name": "Playa Cocles", "type": "Surf", "desc": "Puerto Viejo's most beautiful beach — palm-lined, relatively uncrowded and with the jungle right behind. The archetypal Caribbean coast experience."},
+    {"name": "Playa Punta Uva", "type": "Remote", "desc": "A curved bay of extraordinary natural beauty south of Puerto Viejo — calm water for swimming and snorkeling in a setting of complete tropical perfection."},
+    {"name": "Cahuita Beach", "type": "Natural", "desc": "The beach of Cahuita National Park — walk through jungle to reach it, snorkel the reef just offshore and share the sand with almost no one."},
+    {"name": "Tortuguero Beach", "type": "Wildlife", "desc": "Not for swimming — for experiencing one of the most powerful wildlife events on earth. The beach where thousands of sea turtles nest every year."}
+  ],
+  "food": [
+    {"name": "Rice & Beans", "desc": "Not gallo pinto — Caribbean-style rice and beans cooked together in coconut milk with culantro and spices. A different dish entirely from the Pacific version."},
+    {"name": "Rondon", "desc": "A Caribbean coast stew of fish, breadfruit, yuca and plantain in coconut milk — the soul food of Afro-Costa Rican culture."},
+    {"name": "Jerk Chicken", "desc": "The Jamaican influence is strong in Puerto Viejo's jerk chicken — marinated in scotch bonnet peppers and allspice, grilled over open fire."},
+    {"name": "Patacones", "desc": "Twice-fried green plantain slices served with black bean dip, pico de gallo or guacamole — the universal Caribbean coast snack."}
+  ],
+  "culture": "The Caribbean coast of Costa Rica has a cultural identity entirely distinct from the rest of the country. The descendants of Jamaican workers who came in the 1870s to build the Atlantic railroad created a community with its own language (Creole English alongside Spanish), its own food, its own music and its own relationship with the land and sea.\n\nThis Afro-Caribbean culture is most alive in Puerto Viejo and Cahuita — in the music that drifts from open doorways at night, in the food that combines Caribbean and Central American influences, and in the easy, unhurried pace of a community that has lived alongside extraordinary natural beauty for five generations.",
+  "bestTime": "The Caribbean coast has different weather patterns from Pacific Costa Rica. September and October are the driest months — paradoxically the rainy season on the Pacific side. February and March also offer good weather. July brings the 'Little Summer' — a dry spell within the rainy season.",
+  "practical": {
+    "currency": "Costa Rican Colón (CRC) · USD widely accepted",
+    "language": "Spanish · Caribbean Creole English in coastal communities",
+    "howToGet": "Fly into San José (SJO) then 4-hour bus to Puerto Viejo. Or fly to Limón (LIO). Tortuguero is boat or small plane only.",
+    "budget": "$70-130/day mid-range · $40-65 budget · $200+ eco-lodge luxury"
+  }
+}
