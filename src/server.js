@@ -127,9 +127,11 @@ app.get("/caribex/:slug", (req, res) => {
 });
 
 app.get("/caribex", (req, res) => res.send(caribex));
-app.get("/", (req, res, next) => {
+app.use((req, res, next) => {
   if (req.hostname === "yourcaribbeanexpert.com" || req.hostname === "www.yourcaribbeanexpert.com") {
-    return res.send(caribex);
+    if (req.path === "/" || req.path === "") {
+      return res.send(caribex);
+    }
   }
   next();
 });
