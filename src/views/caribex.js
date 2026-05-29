@@ -197,8 +197,8 @@ nav{padding:0 1rem;}.nav-links{display:none;}
   <div class="nav-links">
     <a href="#destinations">Destinations</a>
     <a href="#mainland">Mainland Caribbean</a>
-    <a href="#assistant">Caribex AI</a>
-    <a href="https://www.yourcaribbeanexpert.com" target="_blank">Blog</a>
+    <a href="#assistant">Sun</a>
+    <a href="https://blog.yourcaribbeanexpert.com" target="_blank">Blog</a>
     <a href="#assistant" class="nav-cta">Plan My Trip →</a>
   </div>
 </nav>
@@ -345,9 +345,9 @@ nav{padding:0 1rem;}.nav-links{display:none;}
 <section class="assist-sec" id="assistant">
   <div class="assist-inner">
     <div>
-      <div class="assist-tag">Caribex AI</div>
+      <div class="assist-tag">Sun</div>
       <h2 class="assist-title">Your Personal<br><em>Caribbean Guide</em></h2>
-      <p class="assist-sub">Talk to Caribex AI — our expert assistant knows every corner of the Caribbean. Ask anything about destinations, culture, travel tips or the best time to visit.</p>
+      <p class="assist-sub">Talk to Sun — our expert assistant knows every corner of the Caribbean. Ask anything about destinations, culture, travel tips or the best time to visit.</p>
       <ul class="assist-features">
         <li>Personalized destination recommendations</li>
         <li>Best time to visit each destination</li>
@@ -356,18 +356,18 @@ nav{padding:0 1rem;}.nav-links{display:none;}
         <li>Budget and luxury travel guidance</li>
         <li>Responds in English and Spanish</li>
       </ul>
-      <a href="https://chatgpt.com/g/g-6920ae7344a88191bac385443bc46a64-caribex-ai-your-caribbean-expert" target="_blank" class="btn-teal">Talk to Caribex AI →</a>
+      <a href="https://chatgpt.com/g/g-6920ae7344a88191bac385443bc46a64-caribex-ai-your-caribbean-expert" target="_blank" class="btn-teal">Talk to Sun →</a>
     </div>
     <div class="chat-box">
       <div class="chat-header">
         <div class="chat-avatar">🌴</div>
         <div>
-          <div class="chat-name">Caribex AI — Your Caribbean Expert</div>
+          <div class="chat-name">Sun — Your Caribbean Expert</div>
           <div class="chat-status">● Online · Knows every corner of the Caribbean</div>
         </div>
       </div>
       <div class="chat-msgs" id="caribexMsgs">
-        <div class="c-bot">Hi! 🌴 I'm Caribex AI, your personal Caribbean guide.<br><br>I can help you find the perfect Caribbean destination based on your travel style — beach, culture, adventure or luxury.<br><br>What kind of Caribbean experience are you looking for?</div>
+        <div class="c-bot">Hi! 🌴 I'm Sun, your personal Caribbean guide.<br><br>I can help you find the perfect Caribbean destination based on your travel style — beach, culture, adventure or luxury.<br><br>What kind of Caribbean experience are you looking for?</div>
       </div>
       <div class="chat-suggs">
         <button class="chat-sugg" onclick="caribexReply(this)">Best beach destination</button>
@@ -390,7 +390,7 @@ nav{padding:0 1rem;}.nav-links{display:none;}
     <h2 class="sec-title">Caribbean <em>Insights</em></h2>
     <p class="sec-sub">Thoughtful stories about Caribbean culture, travel and regional insight — beyond the surface.</p>
     <div class="blog-grid">
-      <a href="https://www.yourcaribbeanexpert.com/2026/03/not-all-turquoise-beaches-mean-same.html" target="_blank" class="blog-card">
+      <a href="https://blog.yourcaribbeanexpert.com/2026/03/not-all-turquoise-beaches-mean-same.html" target="_blank" class="blog-card">
         <div class="blog-card-img">🏖️</div>
         <div class="blog-card-body">
           <div class="blog-card-tag">Caribbean Travel</div>
@@ -398,7 +398,7 @@ nav{padding:0 1rem;}.nav-links{display:none;}
           <div class="blog-card-desc">Two beaches may share the same shade of blue and offer completely different experiences.</div>
         </div>
       </a>
-      <a href="https://www.yourcaribbeanexpert.com/2026/02/choosing-caribbean-is-not-choosing.html" target="_blank" class="blog-card">
+      <a href="https://blog.yourcaribbeanexpert.com/2026/02/choosing-caribbean-is-not-choosing.html" target="_blank" class="blog-card">
         <div class="blog-card-img">🌊</div>
         <div class="blog-card-body">
           <div class="blog-card-tag">Travel Mindset</div>
@@ -406,7 +406,7 @@ nav{padding:0 1rem;}.nav-links{display:none;}
           <div class="blog-card-desc">It's choosing a rhythm, a culture and a context that shapes the entire experience.</div>
         </div>
       </a>
-      <a href="https://www.yourcaribbeanexpert.com/2025/12/the-caribbean-is-not-one-destination_30.html" target="_blank" class="blog-card">
+      <a href="https://blog.yourcaribbeanexpert.com/2025/12/the-caribbean-is-not-one-destination_30.html" target="_blank" class="blog-card">
         <div class="blog-card-img">🌴</div>
         <div class="blog-card-body">
           <div class="blog-card-tag">Caribbean Insights</div>
@@ -464,107 +464,7 @@ nav{padding:0 1rem;}.nav-links{display:none;}
   </div>
 </footer>
 
-<script>
-let caribexHistory = [];
-let caribexTyping = false;
-
-async function callCaribex(message) {
-  try {
-    const res = await fetch('/api/iva-sales', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        message,
-        history: caribexHistory,
-        lang: 'en',
-        context: { businessType: 'Caribbean travel guide' },
-        systemOverride: \`You are Caribex AI, an expert Caribbean travel guide created by Caribex (yourcaribbeanexpert.com).
-
-You know everything about the Caribbean region — including:
-- Islands: Puerto Rico, Dominican Republic, Cuba, Jamaica, Barbados, Trinidad & Tobago, Aruba, Curaçao, Bahamas, Haiti, Martinique, Guadeloupe, St. Lucia, Grenada, Cayman Islands, US Virgin Islands, and more
-- Mainland Caribbean: Mexico (Tulum, Cancún, Holbox, Cozumel), Colombia (Cartagena, Santa Marta, San Andrés), Costa Rica (Caribbean coast), Belize, Venezuela (Los Roques, Margarita), Panama (Bocas del Toro, San Blas), Guatemala (Livingston), Honduras (Roatán)
-
-Your expertise includes:
-- Best time to visit each destination
-- Culture, food, music and history
-- Beach types — resort, boutique, remote, cultural
-- Adventure vs relaxation travel
-- Budget vs luxury options
-- Hidden gems and off the beaten path
-- Comparison between destinations
-
-RULES:
-1. Be warm, knowledgeable and passionate about the Caribbean
-2. Give specific, useful recommendations
-3. Maximum 4 sentences per response
-4. Always ask a follow-up question to narrow down recommendations
-5. Never say "AI" — you are the Caribex travel expert
-6. Direct users to yourcaribbeanexpert.com for more articles\`
-      })
-    });
-    const data = await res.json();
-    const reply = data.reply || "I'm having a quick issue. Visit yourcaribbeanexpert.com for more Caribbean insights!";
-    caribexHistory.push({ role: 'user', content: message });
-    caribexHistory.push({ role: 'assistant', content: reply });
-    if (caribexHistory.length > 20) caribexHistory = caribexHistory.slice(-20);
-    return reply;
-  } catch(e) {
-    return "I'm having a quick issue. Visit yourcaribbeanexpert.com for more Caribbean insights!";
-  }
-}
-
-function showTyping() {
-  const msgs = document.getElementById('caribexMsgs');
-  const div = document.createElement('div');
-  div.className = 'c-bot';
-  div.id = 'caribexTyping';
-  div.innerHTML = '<span style="opacity:0.5">Caribex is typing...</span>';
-  msgs.appendChild(div);
-  msgs.scrollTop = msgs.scrollHeight;
-}
-
-function removeTyping() {
-  const el = document.getElementById('caribexTyping');
-  if (el) el.remove();
-}
-
-function addMsg(text, type) {
-  const msgs = document.getElementById('caribexMsgs');
-  const div = document.createElement('div');
-  div.className = type === 'user' ? 'c-user' : 'c-bot';
-  div.innerHTML = text.replace(/\*\*/g, '').split('\n').join('<br>');
-  msgs.appendChild(div);
-  msgs.scrollTop = msgs.scrollHeight;
-}
-
-async function caribexReply(el) {
-  if (caribexTyping) return;
-  const text = el.textContent;
-  document.querySelectorAll('.chat-sugg').forEach(b => b.disabled = true);
-  addMsg(text, 'user');
-  caribexTyping = true;
-  showTyping();
-  const reply = await callCaribex(text);
-  removeTyping();
-  addMsg(reply, 'bot');
-  caribexTyping = false;
-}
-
-async function caribexSend() {
-  if (caribexTyping) return;
-  const input = document.getElementById('caribexInput');
-  const text = input.value.trim();
-  if (!text) return;
-  input.value = '';
-  addMsg(text, 'user');
-  caribexTyping = true;
-  showTyping();
-  const reply = await callCaribex(text);
-  removeTyping();
-  addMsg(reply, 'bot');
-  caribexTyping = false;
-}
-</script>
+<script src="/caribex-chat.js"></script>
 </body>
 </html>
 `;
