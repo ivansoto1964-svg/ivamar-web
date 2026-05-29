@@ -1,0 +1,39 @@
+{
+  "slug": "bvi",
+  "name": "British Virgin Islands",
+  "flag": "🇻🇬",
+  "tagline": "The Sailing Capital of the Caribbean",
+  "region": "Lesser Antilles",
+  "country": "British Virgin Islands (UK Territory)",
+  "gradient": "linear-gradient(135deg, #012169 0%, #00B4D8 100%)",
+  "bestFor": ["Sailing", "Diving", "Beach", "Nature"],
+  "overview": "The British Virgin Islands are the sailing capital of the Caribbean — an archipelago of over 60 islands, islets and cays with consistent trade winds, protected anchorages and a cruising ground that has been drawing sailors for generations. The Norman Island legend inspired Robert Louis Stevenson's Treasure Island, and the spirit of adventure is still very much alive in these waters.\n\nTortola is the main island — a lush green mountain rising from the sea with Road Town as the capital and a series of beautiful beaches on the north shore. Virgin Gorda offers the Baths — a geological wonder of enormous granite boulders creating grottos, pools and passages of extraordinary natural beauty. Jost Van Dyke is legendary among sailors for the Foxy's Bar and the Soggy Dollar Bar at White Bay, where the Painkiller cocktail was invented.\n\nThe BVI were severely impacted by Hurricane Irma in 2017 but have rebuilt with remarkable resilience. The sailing infrastructure has been restored, the beaches are beautiful and the island atmosphere of easy living and natural splendor remains completely intact.",
+  "topExperiences": [
+    {"icon": "⛵", "name": "Sailing the BVI", "desc": "The finest sailing in the Caribbean — consistent trade winds, protected anchorages between islands and a cruising ground that rewards both experienced sailors and bareboat beginners."},
+    {"icon": "🪨", "name": "The Baths, Virgin Gorda", "desc": "Ancient granite boulders the size of houses create a labyrinth of grottos, pools and passages at sea level — one of the most extraordinary natural formations in the Caribbean."},
+    {"icon": "🍹", "name": "Soggy Dollar Bar", "desc": "The birthplace of the Painkiller cocktail on White Bay, Jost Van Dyke — arrive by dinghy, swim ashore and drink the drink that made this tiny island famous."},
+    {"icon": "🤿", "name": "RMS Rhone Wreck", "desc": "The Royal Mail Ship Rhone, sunk in an 1867 hurricane, is the Caribbean's most famous wreck dive — encrusted in coral and home to extraordinary marine life."},
+    {"icon": "🏖️", "name": "White Bay Beach", "desc": "Jost Van Dyke's impossibly beautiful beach — calm turquoise water, white sand and the legendary beach bars that have made this tiny island world famous."},
+    {"icon": "🐢", "name": "Anegada", "desc": "The flat coral island at the edge of the BVI — famous for lobster, flamingos and beaches of extraordinary pristine beauty accessible only by boat or small plane."}
+  ],
+  "beaches": [
+    {"name": "White Bay", "type": "Iconic", "desc": "Jost Van Dyke's legendary beach — calm, beautiful and home to the Soggy Dollar Bar where the Painkiller was invented."},
+    {"name": "The Baths Beach", "type": "Unique", "desc": "The beach at Virgin Gorda's famous granite boulder formation — snorkeling, swimming and exploring the grottos between the massive stones."},
+    {"name": "Cane Garden Bay", "type": "Village", "desc": "Tortola's most beautiful bay — a curved beach with beach bars, restaurants and the social heart of BVI beach culture."},
+    {"name": "Loblolly Bay", "type": "Remote", "desc": "Anegada's finest beach — miles of pink-tinged sand completely undeveloped, with the best snorkeling reef in the BVI just offshore."}
+  ],
+  "food": [
+    {"name": "Anegada Lobster", "desc": "The BVI's most famous food experience — whole spiny lobster grilled over open coals on Anegada island, where they are caught fresh daily from the surrounding reef."},
+    {"name": "Painkiller Cocktail", "desc": "The BVI's signature drink — Pusser's rum, pineapple juice, cream of coconut and orange juice, invented at the Soggy Dollar Bar and imitated everywhere."},
+    {"name": "Fresh Fish", "desc": "Mahi mahi, wahoo and tuna caught daily by local fishermen — served grilled at every harbor restaurant with local sides and the BVI's remarkable rum sauce."},
+    {"name": "Pates", "desc": "Fried pastry pockets filled with spiced meat or fish — the BVI street food found at every market and local gathering, eaten hot from the fryer."}
+  ],
+  "culture": "The British Virgin Islands have a culture shaped by their position as a British territory at the heart of the Caribbean sailing world — a blend of West Indian warmth, British institutional heritage and the international sailing community that has been coming here for generations. The islands have a population of just 30,000 but host thousands of sailors, divers and travelers annually.\n\nThe recovery from Hurricane Irma demonstrated the resilience and community spirit of BVI residents — the islands rebuilt with a determination that reflected a deep attachment to their home. The sailing culture here is not just tourism but a way of life — the BVI Spring Regatta each April is one of the Caribbean's premier sailing events.",
+  "bestTime": "December through April is peak season — the trade winds are consistent, the weather is dry and the sailing conditions are ideal. The Spring Regatta in April is the sailing highlight. Hurricane season June through November — the BVI was severely affected by Irma in 2017.",
+  "practical": {
+    "currency": "US Dollar (USD)",
+    "language": "English",
+    "howToGet": "Ferry from St. Thomas USVI to Road Town or Virgin Gorda (45-90 minutes). Direct flights to Beef Island Airport (EIS) from Puerto Rico and other islands.",
+    "budget": "$150-250/day mid-range · $100-150 budget · $400+ sailing charter"
+  }
+}

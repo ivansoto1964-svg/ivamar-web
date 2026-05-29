@@ -1,0 +1,39 @@
+{
+  "slug": "turks-caicos",
+  "name": "Turks & Caicos",
+  "flag": "🇹🇨",
+  "tagline": "Where the Water is Always Perfect",
+  "region": "Atlantic Caribbean",
+  "country": "Turks & Caicos Islands (UK Territory)",
+  "gradient": "linear-gradient(135deg, #00B4D8 0%, #0077B6 100%)",
+  "bestFor": ["Beach", "Luxury", "Diving", "Couples"],
+  "overview": "Turks & Caicos Islands possess what many consider the finest beach water in the entire Caribbean — Grace Bay Beach on Providenciales consistently wins best beach awards not just in the Caribbean but globally, and the water's color, clarity and temperature justify every superlative. The archipelago sits at the northern edge of the Caribbean, between the Bahamas and Hispaniola, with a barrier reef that is the third largest in the world.\n\nProvidenciales, known as Provo, is the main island and the center of tourism development — a beautiful island of luxury resorts, excellent restaurants and the extraordinary Grace Bay. But the true magic of Turks & Caicos is found in the outer islands: Grand Turk, the historic capital with its salt industry heritage and whale-watching season; Salt Cay, a tiny island of extraordinary tranquility; and the uninhabited cays of the Caicos Bank where the water achieves colors that seem digitally enhanced.\n\nHumpback whales pass through the Turks Island Passage January through April on their migration — the whale-watching season on Grand Turk and Salt Cay is one of the Caribbean's most remarkable wildlife experiences, with whales visible from shore.",
+  "topExperiences": [
+    {"icon": "🏖️", "name": "Grace Bay Beach", "desc": "Consistently ranked the world's best beach — 12 miles of powdery white sand and water so perfectly turquoise it looks like a screensaver. The standard by which other beaches are judged."},
+    {"icon": "🐋", "name": "Humpback Whale Watching", "desc": "January through April, thousands of humpback whales pass through the Turks Island Passage — viewable from shore on Salt Cay and by boat from Grand Turk."},
+    {"icon": "🤿", "name": "Wall Diving", "desc": "The third largest barrier reef drops dramatically from shallow water to 2,000+ meters just offshore — some of the most dramatic wall diving in the Atlantic."},
+    {"icon": "🚣", "name": "Kayaking the Caicos Bank", "desc": "Paddle through shallow turquoise water over white sand flats — the Caicos Bank offers water of extraordinary clarity in a setting of complete natural perfection."},
+    {"icon": "🦐", "name": "Conch Farm", "desc": "The world's only conch farm operates on Providenciales — a fascinating tour that explains the life cycle of the queen conch and ends with the freshest conch salad imaginable."},
+    {"icon": "🏘️", "name": "Grand Turk Heritage", "desc": "The historic capital — Victorian salt merchant houses, the first permanent European settlement in the region and a charm completely different from the Provo resort scene."}
+  ],
+  "beaches": [
+    {"name": "Grace Bay Beach", "type": "World's Best", "desc": "12 miles of perfect white sand and the clearest turquoise water on earth — consistently voted the world's best beach and genuinely deserving of the title."},
+    {"name": "Taylor Bay Beach", "type": "Shallow", "desc": "A shallow tidal flat of extraordinary calm — perfect for children and those who want to walk hundreds of meters in knee-deep turquoise water."},
+    {"name": "Malcolm's Road Beach", "type": "Remote", "desc": "The deserted western shore of Providenciales — no development, no crowds, just the raw beauty of one of the finest beaches in the Atlantic."},
+    {"name": "Pillory Beach", "type": "Natural", "desc": "Grand Turk's most beautiful beach — facing the wall dive site with pink and white sand and the historic town just behind."}
+  ],
+  "food": [
+    {"name": "Conch Salad", "desc": "The freshest conch salad in the Caribbean — diced queen conch marinated in lime with pepper, onion and tomato. The definitive Turks & Caicos dish."},
+    {"name": "Grilled Lobster", "desc": "Spiny Caribbean lobster is abundant and affordable by Caribbean standards — grilled simply with butter and lime at the Grace Bay beach restaurants."},
+    {"name": "Cracked Conch", "desc": "Tenderized conch in a light batter, fried golden and served with peas and rice — the Turks & Caicos comfort food found at every local restaurant."},
+    {"name": "Rum Punch", "desc": "The Caribbean standard elevated with local passion — every beachside bar has their version and the competition for the best rum punch on Grace Bay is fierce."}
+  ],
+  "culture": "Turks & Caicos culture is a blend of Afro-Caribbean heritage, British colonial institutions and the American influence that comes with decades of tourism from the US. The islands were largely uninhabited until salt production brought workers in the 17th and 18th centuries, and the culture reflects this relatively recent settlement — proudly Caribbean but without the deep pre-colonial indigenous heritage of larger islands.\n\nThe Belonger community — the local Turks and Caicos Islanders — maintain traditions of boat building, fishing and a hospitality that feels genuine despite the luxury resort veneer. The Maskanoo parade at Christmas, the boat races and the ripsaw music tradition connect the islands to a broader Caribbean cultural heritage.",
+  "bestTime": "November through April is peak season — dry, warm and with the calmest seas. December through March is whale watching season on Grand Turk and Salt Cay. The summer months offer lower prices and the local experience, with hurricane risk June through November.",
+  "practical": {
+    "currency": "US Dollar (USD)",
+    "language": "English",
+    "howToGet": "Direct flights from US cities to Providenciales International Airport (PLS). Short flight to Grand Turk (GDT).",
+    "budget": "$150-280/day mid-range · $100-150 budget · $500+ luxury Grace Bay resort"
+  }
+}

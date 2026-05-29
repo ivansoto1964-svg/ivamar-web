@@ -1,0 +1,39 @@
+{
+  "slug": "curacao",
+  "name": "Curaçao",
+  "flag": "🇨🇼",
+  "tagline": "The Caribbean's Most Colorful Island",
+  "region": "Dutch Caribbean",
+  "country": "Curaçao (Kingdom of the Netherlands)",
+  "gradient": "linear-gradient(135deg, #003087 0%, #FF6B35 100%)",
+  "bestFor": ["Culture", "Diving", "Beach", "Architecture"],
+  "overview": "Curaçao is the Caribbean's most surprising island — a destination that combines world-class diving with a UNESCO-listed capital city of extraordinary colorful Dutch colonial architecture, a vibrant Afro-Caribbean culture and a food scene shaped by influences from across the Atlantic world. It sits outside the hurricane belt, receives less rain than most Caribbean islands and offers a consistency of experience that rewards visitors who come seeking more than a beach vacation.\n\nWillemstad, the capital, is one of the most photogenic cities in the Caribbean — the Handelskade waterfront of pastel Dutch colonial buildings reflected in Sint Anna Bay is the most iconic image in the southern Caribbean. The city is divided by the bay into Punda and Otrobanda, connected by the famous Queen Emma Bridge — a pontoon bridge that swings open for ships, requiring pedestrians to cross by ferry.\n\nBelow the water, Curaçao reveals its greatest secret — a wall diving destination of the first order, where the reef drops dramatically within swimming distance of shore, offering some of the most accessible and spectacular diving in the Caribbean without the crowds of more famous destinations.",
+  "topExperiences": [
+    {"icon": "🏙️", "name": "Willemstad Colonial City", "desc": "The UNESCO-listed capital — a waterfront of pastel Dutch colonial buildings, floating markets and the famous Queen Emma pontoon bridge."},
+    {"icon": "🤿", "name": "Wall Diving", "desc": "Curaçao's reef drops from 5 to 40+ meters within easy swimming distance of shore — some of the most accessible and spectacular wall diving in the Caribbean."},
+    {"icon": "🦜", "name": "Christoffel National Park", "desc": "The highest point on the island offers panoramic views and hiking through dry tropical forest — with deer, iguanas and over 200 bird species."},
+    {"icon": "🌊", "name": "Blue Room Cave", "desc": "A sea cave accessible only by swimming through an underwater entrance — inside, the light refracts creating an extraordinary blue glow throughout the cave."},
+    {"icon": "🥃", "name": "Curaçao Liqueur Distillery", "desc": "The original blue Curaçao liqueur is made here from the dried peel of the laraha orange — tours of the historic Landhuis distillery explain the island's most famous export."},
+    {"icon": "🎨", "name": "Pietermaai District", "desc": "Willemstad's trendiest neighborhood — restored colonial buildings now housing boutique hotels, galleries and the best restaurants on the island."}
+  ],
+  "beaches": [
+    {"name": "Cas Abao Beach", "type": "Natural", "desc": "Consistently ranked among Curaçao's best — white sand, crystal water and a reef just offshore in a protected bay of great natural beauty."},
+    {"name": "Playa Knip", "type": "Scenic", "desc": "A dramatic crescent bay of turquoise water with cliffs on either side — the most photographed beach in Curaçao and justifiably so."},
+    {"name": "Jan Thiel Beach", "type": "Lively", "desc": "The most developed beach near Willemstad — beach clubs, restaurants and water sports in a beautiful bay popular with locals and visitors alike."},
+    {"name": "Kleine Knip", "type": "Secluded", "desc": "The smaller version of Playa Knip — more secluded, just as beautiful and with better snorkeling right from shore."}
+  ],
+  "food": [
+    {"name": "Keshi Yena", "desc": "Curaçao's signature dish — a whole Edam cheese shell stuffed with spiced meat, raisins and olives. A direct product of Dutch colonial history and a genuinely unique flavor."},
+    {"name": "Stobá", "desc": "A slow-cooked stew of goat or iguana — the traditional dish of Curaçao that reflects the island's Afro-Caribbean roots and the ingenuity of Caribbean cooking."},
+    {"name": "Funchi", "desc": "Cornmeal porridge — the Curaçaoan equivalent of polenta, served as a side dish at every traditional meal and eaten throughout the Dutch Caribbean."},
+    {"name": "Blue Curaçao Cocktails", "desc": "The electric blue liqueur that gives the island its fame mixed into cocktails at every bar — the Blue Lagoon and the Blue Margarita are the island standards."}
+  ],
+  "culture": "Curaçao's culture is one of the Caribbean's most complex — shaped by Dutch colonialism, African slavery, South American proximity and a trading history that brought people from across the Atlantic world to this small island. Papiamentu, the local creole language, is a remarkable linguistic fusion of Portuguese, Spanish, Dutch, English and African languages — and it is the everyday language that defines Curaçaoan identity above all else.\n\nThe Afro-Curaçaoan culture, rooted in the Sephardic Jewish communities that established the first synagogue in the Americas, the African slave traditions and the Dutch colonial institutions, has produced a distinctly multiethnic society that celebrates Carnival with extraordinary intensity. The Tula Revolt of 1795, one of the earliest slave revolts in the Caribbean, is commemorated as a foundational moment of Curaçaoan identity.",
+  "bestTime": "Curaçao sits outside the hurricane belt and receives less than 600mm of rain annually — one of the driest islands in the Caribbean. This makes it a genuine year-round destination with consistently good weather. January through August offers the calmest seas for diving. The Carnival in February is the cultural highlight of the year.",
+  "practical": {
+    "currency": "Netherlands Antillean Guilder (ANG) · USD widely accepted",
+    "language": "Papiamentu · Dutch · English · Spanish all widely spoken",
+    "howToGet": "Direct flights from US, Netherlands and Latin America to Hato International Airport (CUR).",
+    "budget": "$100-170/day mid-range · $70-100 budget · $250+ luxury"
+  }
+}

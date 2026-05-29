@@ -1,0 +1,39 @@
+{
+  "slug": "sint-maarten",
+  "name": "Sint Maarten / Saint Martin",
+  "flag": "🇸🇽",
+  "tagline": "Two Nations, One Island, Zero Borders",
+  "region": "Lesser Antilles",
+  "country": "Sint Maarten (Netherlands) / Saint Martin (France)",
+  "gradient": "linear-gradient(135deg, #003087 0%, #EF4135 100%)",
+  "bestFor": ["Beach", "Nightlife", "Food", "Shopping"],
+  "overview": "Sint Maarten / Saint Martin is the smallest island in the world shared by two sovereign nations — the Dutch Sint Maarten in the south and the French Saint Martin in the north. The border is completely open, marked only by a small monument, and crossing between French baguettes and Dutch Gouda, between French bistros and Dutch-Caribbean beach bars, is one of the Caribbean's most unique experiences.\n\nThe island is famous for Maho Beach — where commercial jets from Princess Juliana Airport pass so low overhead that passengers on the beach can reach up and touch the landing gear. It is one of the most photographed aviation spectacles on earth and a genuine adrenaline experience. But Sint Maarten offers far more than plane-watching — Orient Bay on the French side is one of the Caribbean's most beautiful and lively beaches, Philipsburg's boardwalk buzzes with cruise ship energy, and Marigot's French market sells the best cheese in the Caribbean.\n\nThe island was devastated by Hurricane Irma in 2017 but has rebuilt with remarkable resilience — and in many ways emerged more vibrant than before.",
+  "topExperiences": [
+    {"icon": "✈️", "name": "Maho Beach Plane Spotting", "desc": "Jets from Princess Juliana Airport pass 20 meters overhead on final approach — the most dramatic aviation experience in the world and genuinely unmissable."},
+    {"icon": "🏖️", "name": "Orient Bay Beach", "desc": "The French side's crown jewel — a long crescent of white sand with beach restaurants, water sports and a European-Caribbean atmosphere unlike anywhere else."},
+    {"icon": "🛥️", "name": "Island Hopping", "desc": "Sint Maarten is the gateway to Anguilla, St. Barths, Saba and St. Eustatius — all reachable by ferry or small plane for extraordinary day trips."},
+    {"icon": "🍽️", "name": "French Cuisine", "desc": "Saint Martin has the highest concentration of excellent restaurants per capita in the Caribbean — from beachside bistros to Michelin-quality fine dining."},
+    {"icon": "🏊", "name": "Happy Bay Beach", "desc": "A hidden beach on the French side accessible only by a short hike — completely undeveloped, calm and one of the most beautiful stretches of sand on the island."},
+    {"icon": "🛍️", "name": "Duty-Free Shopping", "desc": "Philipsburg's Front Street is the Caribbean's premier duty-free shopping destination — jewelry, electronics and liquor at prices that draw cruise passengers by the thousands."}
+  ],
+  "beaches": [
+    {"name": "Orient Bay", "type": "Lively", "desc": "The French Caribbean at its finest — beautiful water, beach restaurants, water sports and an atmosphere that feels like St. Tropez went tropical."},
+    {"name": "Maho Beach", "type": "Unique", "desc": "The plane-spotting beach — not the prettiest but the most exciting, where jumbo jets pass meters overhead on approach to Princess Juliana Airport."},
+    {"name": "Happy Bay", "type": "Hidden", "desc": "A secluded bay accessible by a short jungle hike — calm, beautiful and almost entirely free of crowds."},
+    {"name": "Dawn Beach", "type": "Natural", "desc": "The Dutch side's most beautiful natural beach — facing the Atlantic with a reef just offshore and a natural energy the resort beaches lack."}
+  ],
+  "food": [
+    {"name": "Lobster at Grand Case", "desc": "The small French village of Grand Case is the Caribbean's food capital — lobster grilled over open coals at the informal lolos (BBQ stands) on the beach road."},
+    {"name": "French Pastries", "desc": "The French side's boulangeries produce croissants and pain au chocolat that rival anything in Paris — a genuinely surreal Caribbean breakfast experience."},
+    {"name": "Johnny Cake", "desc": "The Dutch-Caribbean staple — a slightly sweet cornmeal cake fried or baked, served with saltfish or at breakfast throughout Sint Maarten."},
+    {"name": "Guavaberry Liqueur", "desc": "Sint Maarten's signature spirit — a sweet-tart liqueur made from the local guavaberry fruit, sold only on the island and the definitive souvenir."}
+  ],
+  "culture": "Sint Maarten / Saint Martin's culture is a fascinating blend of Dutch and French colonial heritage layered over a Caribbean base — and the result is an island that somehow manages to be simultaneously cosmopolitan and genuinely Caribbean. The division of the island has created a unique cultural conversation across an invisible border, where French and Dutch traditions mix with the Afro-Caribbean heritage of the majority population.\n\nThe island's recovery from Hurricane Irma demonstrated a resilience and community spirit that impressed the entire Caribbean. The population, drawn from over 100 nationalities, rebuilt not just buildings but a sense of shared identity that makes Sint Maarten one of the most genuinely multicultural societies in the region.",
+  "bestTime": "December through April is peak season — dry, warm and with the best conditions. The island sits in the hurricane belt and was severely affected by Irma in 2017. Hurricane season June through November carries risk, with August through October being highest.",
+  "practical": {
+    "currency": "Dutch side: US Dollar · French side: Euro · USD accepted everywhere",
+    "language": "Dutch & English (Sint Maarten) · French (Saint Martin) · Papiamento & Creole widely spoken",
+    "howToGet": "Direct flights from US, Canada and Europe to Princess Juliana Airport (SXM). Ferry connections to Anguilla, St. Barths and other islands.",
+    "budget": "$120-200/day mid-range · $80-120 budget · $300+ luxury"
+  }
+}

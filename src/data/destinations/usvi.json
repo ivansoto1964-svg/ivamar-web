@@ -1,0 +1,39 @@
+{
+  "slug": "usvi",
+  "name": "US Virgin Islands",
+  "flag": "🇻🇮",
+  "tagline": "America's Paradise in the Caribbean",
+  "region": "Greater Antilles",
+  "country": "US Virgin Islands (US Territory)",
+  "gradient": "linear-gradient(135deg, #002868 0%, #BF0A30 60%, #FFD700 100%)",
+  "bestFor": ["Beach", "Nature", "Sailing", "Culture"],
+  "overview": "The US Virgin Islands offer something unique in the Caribbean — the combination of American convenience and infrastructure with genuine Caribbean beauty and character. No passport required for US citizens, the dollar as currency and familiar banking and phone service, yet the moment you arrive you are unmistakably in the Caribbean.\n\nThe three main islands each have a completely different personality. St. Thomas is the most developed — its harbor at Charlotte Amalie is one of the Caribbean's great duty-free shopping destinations and its beaches, particularly Magens Bay, are among the region's finest. St. John, where two-thirds of the island is protected as Virgin Islands National Park, offers the most pristine nature in the USVI — hiking trails through jungle to hidden beaches of extraordinary beauty. St. Croix, the largest island, is the most authentically Caribbean — with a thriving food and arts scene, deep cultural roots and the famous Buck Island Reef National Monument.\n\nThe USVI also serves as the gateway to the British Virgin Islands — accessible by ferry and offering some of the finest sailing in the world.",
+  "topExperiences": [
+    {"icon": "🏖️", "name": "Magens Bay Beach", "desc": "Consistently ranked among the world's most beautiful beaches — a protected heart-shaped bay of calm water and white sand on St. Thomas."},
+    {"icon": "🌿", "name": "Virgin Islands National Park", "desc": "Two-thirds of St. John protected as national park — hiking trails to hidden beaches, snorkeling at Trunk Bay and a natural beauty of extraordinary quality."},
+    {"icon": "⛵", "name": "Sailing the BVI", "desc": "Take a day sail or bare boat charter from St. Thomas or St. John to the British Virgin Islands — some of the finest sailing waters in the world."},
+    {"icon": "🤿", "name": "Buck Island Reef", "desc": "A national monument off St. Croix — an underwater snorkel trail through elkhorn coral of extraordinary health and clarity."},
+    {"icon": "🏙️", "name": "Charlotte Amalie", "desc": "St. Thomas's capital — a harbor town of Danish colonial architecture, duty-free shopping and a history that includes a significant role in the Caribbean slave trade."},
+    {"icon": "🍽️", "name": "St. Croix Food Scene", "desc": "The most developed restaurant culture in the USVI — farm-to-table cuisine, the annual Food & Wine Experience and chefs who have made St. Croix a culinary destination."}
+  ],
+  "beaches": [
+    {"name": "Magens Bay", "type": "World Class", "desc": "St. Thomas's iconic heart-shaped bay — one of the world's most beautiful beaches, calm, clear and consistently stunning."},
+    {"name": "Trunk Bay", "type": "Snorkeling", "desc": "St. John's most famous beach with an underwater snorkel trail — part of the national park and one of the most photographed beaches in the Caribbean."},
+    {"name": "Cinnamon Bay", "type": "Natural", "desc": "A long natural beach within the national park on St. John — camping available, excellent snorkeling and a wild beauty that resort beaches can't replicate."},
+    {"name": "Sandy Point", "type": "Remote", "desc": "St. Croix's most beautiful beach — a long, deserted stretch where leatherback turtles nest and the water is the color of the best Caribbean dreams."}
+  ],
+  "food": [
+    {"name": "Conch Fritters", "desc": "The Caribbean staple at its USVI finest — conch beaten, battered and fried with peppers and spices. Found at every beach bar and served with hot sauce."},
+    {"name": "Roti", "desc": "The Indian-Caribbean influence is strong in the USVI — curried chicken or goat wrapped in a soft flatbread, sold at roadside stands throughout the islands."},
+    {"name": "Kallaloo", "desc": "A rich green soup of leafy vegetables, okra and seafood — the traditional dish that connects the USVI to its West African culinary roots."},
+    {"name": "Cruzan Rum", "desc": "St. Croix's famous rum, distilled since 1760 — light, smooth and best mixed in the painkillers that are the USVI's signature cocktail."}
+  ],
+  "culture": "The US Virgin Islands have a cultural identity that is distinctly Caribbean despite — or perhaps because of — the American political connection. The islands were Danish colonies until 1917, which gives them a historical character different from British and Spanish Caribbean islands. The Virgin Islands Creole language, local music traditions and the Transfer Day holiday (marking the purchase from Denmark) reflect a unique cultural position.\n\nThe Carnival celebrations, particularly in St. Thomas in April and St. Croix in January, are major events that draw visitors from across the Caribbean and the US. The arts scene in St. Croix has produced painters, sculptors and musicians of significant talent who draw on both Caribbean traditions and American cultural connections.",
+  "bestTime": "December through April is the dry season and peak time — excellent weather, higher prices and the most visitors. January brings the St. Croix Carnival. April brings the St. Thomas Carnival. Hurricane season June through November with September and October being highest risk.",
+  "practical": {
+    "currency": "US Dollar (USD)",
+    "language": "English · Virgin Islands Creole · Spanish",
+    "howToGet": "Direct flights from US cities to St. Thomas (STT) or St. Croix (STX). Ferry between islands and to the BVI.",
+    "budget": "$130-220/day mid-range · $80-120 budget · $350+ luxury"
+  }
+}

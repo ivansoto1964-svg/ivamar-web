@@ -1,0 +1,39 @@
+{
+  "slug": "roatan",
+  "name": "Roatán",
+  "flag": "🇭🇳",
+  "tagline": "The Caribbean's Affordable Paradise",
+  "region": "Central American Caribbean",
+  "country": "Honduras",
+  "gradient": "linear-gradient(135deg, #0F4C81 0%, #00B4D8 100%)",
+  "bestFor": ["Diving", "Beach", "Nature", "Value"],
+  "overview": "Roatán is the Caribbean's best value destination — an island of extraordinary natural beauty with world-class diving, beautiful beaches and a laid-back Caribbean atmosphere, all at prices significantly lower than comparable islands to the north. It sits on the Mesoamerican Barrier Reef, the second largest barrier reef on earth, which gives it a marine environment of spectacular quality.\n\nThe island is 77 kilometers long and never more than 8 kilometers wide — a strip of lush green jungle ridge with Caribbean beach communities strung along the southern shore. West Bay Beach, consistently ranked among Central America's finest, offers the combination of white sand, turquoise water and easy reef access that makes Roatán a destination of genuine excellence. West End, just around the headland, is the social heart — a street of dive shops, restaurants and bars where the Caribbean pace is fully in evidence.\n\nBeyond the beaches, Roatán offers a Garifuna culture of extraordinary depth — the Garifuna people of the Caribbean coast of Central America maintain one of the region's most distinctive musical and culinary traditions. The interior jungle hides monkeys, tropical birds and the Carambola Botanical Gardens. The reef offers encounters with whale sharks, dolphins and extraordinary coral formations.",
+  "topExperiences": [
+    {"icon": "🤿", "name": "Mesoamerican Reef Diving", "desc": "World-class diving at prices a fraction of other Caribbean destinations — the second largest barrier reef, whale sharks, dolphins and coral walls of extraordinary health."},
+    {"icon": "🏖️", "name": "West Bay Beach", "desc": "Consistently ranked among Central America's finest beaches — white sand, turquoise water and the reef accessible directly from shore for snorkeling."},
+    {"icon": "🦈", "name": "Whale Shark Encounters", "desc": "Roatán sits on the migration route of whale sharks — encounters with these gentle giants are among the most extraordinary wildlife experiences in the Caribbean."},
+    {"icon": "🌿", "name": "Carambola Botanical Gardens", "desc": "A jungle garden of extraordinary tropical beauty — iguanas, birds and plant species from across the Caribbean in a hillside setting above the sea."},
+    {"icon": "🥁", "name": "Garifuna Culture", "desc": "The Garifuna communities of Punta Gorda maintain their language, drumming traditions and punta music — a living culture of African and Caribbean indigenous heritage."},
+    {"icon": "🐒", "name": "Monkey & Sloth Sanctuary", "desc": "A rescue center for local wildlife where spider monkeys and three-toed sloths can be encountered at close range in a jungle setting."}
+  ],
+  "beaches": [
+    {"name": "West Bay Beach", "type": "World Class", "desc": "Roatán's finest — white sand, turquoise water and the reef just meters offshore. One of the best beaches in Central America by any measure."},
+    {"name": "West End Beach", "type": "Village", "desc": "The social center of Roatán — a beach village with dive shops, restaurants and the most relaxed Caribbean atmosphere on the island."},
+    {"name": "Half Moon Bay", "type": "Calm", "desc": "A protected crescent of calm water between West End and West Bay — excellent snorkeling and the most sheltered swimming on the island."},
+    {"name": "Camp Bay Beach", "type": "Remote", "desc": "The east end of the island — completely undeveloped, wild Atlantic surf and the Roatán that existed before tourism arrived."}
+  ],
+  "food": [
+    {"name": "Baleada", "desc": "Honduras's national street food — a thick flour tortilla filled with refried beans, cheese and cream. Found everywhere on the island and impossible to eat just one."},
+    {"name": "Sopa de Caracol", "desc": "Conch soup with coconut milk and vegetables — the Garifuna dish that defines Caribbean coastal Honduras and one of the finest soups in the region."},
+    {"name": "Fresh Grilled Fish", "desc": "Red snapper and grouper caught daily and grilled over open coals with lime and local spices — the essential Roatán dinner at any beachside restaurant."},
+    {"name": "Coconut Bread", "desc": "The Garifuna staple — sweet coconut bread baked fresh and served warm with every meal along the Caribbean coast."}
+  ],
+  "culture": "Roatán's culture reflects its position at the intersection of the Caribbean and Central America — the Garifuna people, the Bay Islanders (descendants of English pirates and settlers), Spanish-speaking Hondurans from the mainland and a growing expat community all share a small island in a generally harmonious coexistence.\n\nThe Garifuna, recognized by UNESCO for their intangible cultural heritage, bring the most distinctive cultural element — their punta music, with its hypnotic percussion, is the heartbeat of the Caribbean coast of Central America. Settling disputes with music rather than violence is a Garifuna tradition that has made them one of the Caribbean's most admired peoples.",
+  "bestTime": "March through September offers the calmest Caribbean conditions and best diving visibility. October through February brings more wind and rain from the north, though diving remains possible. Hurricane risk exists June through November — the island was severely affected by Hurricane Mitch in 1998.",
+  "practical": {
+    "currency": "Honduran Lempira (HNL) · USD widely accepted",
+    "language": "Spanish · English · Garifuna",
+    "howToGet": "Direct flights from US cities (Houston, Miami, Atlanta) to Juan Manuel Gálvez Airport (RTB). Also accessible via ferry from La Ceiba on the mainland.",
+    "budget": "$60-110/day mid-range · $35-60 budget · $150+ dive resort — exceptional value"
+  }
+}

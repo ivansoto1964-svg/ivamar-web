@@ -1,0 +1,39 @@
+{
+  "slug": "santa-lucia",
+  "name": "Saint Lucia",
+  "flag": "🇱🇨",
+  "tagline": "The Helen of the West Indies",
+  "region": "Lesser Antilles",
+  "country": "Saint Lucia",
+  "gradient": "linear-gradient(135deg, #65B741 0%, #1A5276 100%)",
+  "bestFor": ["Nature", "Romance", "Luxury", "Adventure"],
+  "overview": "Saint Lucia is the Caribbean's most dramatically beautiful island — a volcanic landscape of twin Piton peaks rising from the sea, dense rainforest covering the interior, sulphur springs still bubbling from ancient volcanic activity and beaches of both white and black sand framing it all. It has been called the Helen of the West Indies, fought over by the French and British 14 times in its colonial history, and it remains an island worth fighting for.\n\nThe Pitons — Gros Piton and Petit Piton, UNESCO World Heritage twin volcanic spires — are the most iconic image in the Eastern Caribbean. Hiking Gros Piton rewards with views that encompass the entire island and stretches of ocean in every direction. Below, the Soufrière area offers the world's only drive-in volcano, botanical gardens and hot spring baths that have been used since the 18th century.\n\nSaint Lucia has developed a reputation as the Caribbean's most romantic island — and the landscape makes the case effortlessly. Couples come for the intimate resorts, the candlelit dinners overlooking the Pitons and the dramatic scenery that makes every photograph look like a painting.",
+  "topExperiences": [
+    {"icon": "⛰️", "name": "Hiking the Pitons", "desc": "Climbing Gros Piton rewards with the most dramatic views in the Eastern Caribbean — a guided hike through jungle to the summit of an ancient volcanic peak."},
+    {"icon": "🌋", "name": "Drive-In Volcano", "desc": "The world's only drive-in volcano — Soufrière's sulphur springs bubble and hiss in a landscape of extraordinary geological drama, just minutes from town."},
+    {"icon": "🛥️", "name": "Catamaran Piton Sail", "desc": "Sailing along the west coast with the Pitons growing larger as you approach Soufrière is one of the most spectacular boat journeys in the Caribbean."},
+    {"icon": "🌿", "name": "Rainforest Adventures", "desc": "Zip-lining through the forest canopy, hiking to hidden waterfalls and ATV tours through the jungle interior — Saint Lucia's interior is a genuine adventure destination."},
+    {"icon": "🐠", "name": "Anse Chastanet Diving", "desc": "One of the Caribbean's finest dive sites — the wall off Anse Chastanet drops through extraordinary coral formations to depths of volcanic origin."},
+    {"icon": "🍫", "name": "Chocolate Tour", "desc": "Saint Lucia is a premium cacao producer — tours through working cocoa estates explain the bean-to-bar process and end with tastings of world-class chocolate."}
+  ],
+  "beaches": [
+    {"name": "Anse Chastanet", "type": "Dive", "desc": "A black and grey sand beach beneath the Pitons — not for sunbathing but for some of the finest snorkeling and diving in the Eastern Caribbean."},
+    {"name": "Reduit Beach", "type": "Resort", "desc": "Rodney Bay's beautiful beach — the social center of northern Saint Lucia, with the island's best beach bars and water sports."},
+    {"name": "Sugar Beach", "type": "Luxury", "desc": "A white sand beach set between the two Pitons — accessible via the Viceroy resort, it is one of the most dramatically beautiful beach settings in the world."},
+    {"name": "Anse des Pitons", "type": "Iconic", "desc": "The beach directly between the Pitons — black volcanic sand, extraordinary scenery and snorkeling in waters of remarkable clarity."}
+  ],
+  "food": [
+    {"name": "Green Fig & Saltfish", "desc": "Saint Lucia's national dish — green bananas (called figs locally) boiled and served with salted codfish sautéed with peppers and onions."},
+    {"name": "Bouyon", "desc": "A hearty stew of ground provisions — yam, dasheen, breadfruit, plantain and whatever meat is available, simmered together in a broth of Caribbean depth."},
+    {"name": "Cocoa Tea", "desc": "Hot chocolate made from locally grown cacao, grated and simmered with spices — the morning drink of Saint Lucia and infinitely superior to any commercial cocoa."},
+    {"name": "Creole Seafood", "desc": "Fresh catch of the day — mahi mahi, snapper and flying fish prepared in the Creole style with tomatoes, peppers, onions and local spices."}
+  ],
+  "culture": "Saint Lucia's culture bears the marks of its extraordinary colonial history — fought over 14 times by France and Britain, the island has absorbed both influences into a Creole culture that is distinctly its own. The Kwéyòl Creole language, derived from French, is still spoken widely alongside English. French place names sit next to English institutions. The food, music and festivals reflect this dual heritage.\n\nSaint Lucia's greatest cultural pride is its Nobel laureates — two winners from a single small island. Derek Walcott won the Nobel Prize for Literature in 1992, and Arthur Lewis won the Nobel Prize for Economics in 1979. The island produces artists, writers and musicians with a frequency that belies its size of 180,000 people.",
+  "bestTime": "December through May is the dry season and peak time — the Pitons are clear, the seas are calm and the weather is ideal. The Saint Lucia Jazz Festival in May is the island's premier cultural event. Hurricane season June through November, with the island's mountainous terrain providing some protection.",
+  "practical": {
+    "currency": "Eastern Caribbean Dollar (XCD) · USD widely accepted",
+    "language": "English · Kwéyòl Creole French",
+    "howToGet": "Direct flights from US, UK and Canada to Hewanorra International Airport (UVF) near Soufrière, or George Charles Airport (SLU) near Castries.",
+    "budget": "$120-200/day mid-range · $80-120 budget · $400+ luxury Piton resort"
+  }
+}
