@@ -519,6 +519,36 @@ nav{padding:0 1rem;}.nav-links{display:none;}
 </footer>
 
 <script src="/caribex-chat.js"></script>
+
+<script>
+// Load Google Photos for destination cards
+async function loadDestinationPhotos() {
+  try {
+    const res = await fetch('/api/caribex-photos');
+    const photos = await res.json();
+    
+    document.querySelectorAll('.island-card').forEach(card => {
+      const href = card.getAttribute('href');
+      if (!href) return;
+      const slug = href.replace('/caribex/', '');
+      if (photos[slug]) {
+        const imgDiv = card.querySelector('.island-card-img');
+        if (imgDiv) {
+          const flag = imgDiv.textContent.trim();
+          imgDiv.innerHTML = '<img src="' + photos[slug] + '" alt="' + slug + '" style="width:100%;height:100%;object-fit:cover;" loading="lazy"><span style="position:absolute;bottom:8px;left:8px;font-size:1.4rem;background:rgba(0,0,0,0.4);border-radius:6px;padding:2px 6px;">' + flag + '</span>';
+          imgDiv.style.position = 'relative';
+          imgDiv.style.overflow = 'hidden';
+          imgDiv.style.fontSize = '0';
+        }
+      }
+    });
+  } catch(e) {
+    console.log('Photos not loaded:', e);
+  }
+}
+
+document.addEventListener('DOMContentLoaded', loadDestinationPhotos);
+</script>
 </body>
 </html>
 `;

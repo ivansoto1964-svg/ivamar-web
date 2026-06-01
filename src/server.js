@@ -199,6 +199,58 @@ CONVERSATION RULES:
   }
 });
 
+
+// ==========================================
+// CARIBEX DESTINATION PHOTOS API
+// ==========================================
+app.get("/api/caribex-photos", async (req, res) => {
+  const destinations = [
+    { slug: 'puerto-rico', query: 'Old San Juan Puerto Rico beach' },
+    { slug: 'dominican-republic', query: 'Punta Cana Dominican Republic beach' },
+    { slug: 'cuba', query: 'Havana Cuba colorful colonial' },
+    { slug: 'jamaica', query: 'Jamaica Seven Mile Beach' },
+    { slug: 'grand-cayman', query: 'Grand Cayman Seven Mile Beach' },
+    { slug: 'haiti', query: 'Haiti Citadelle Laferriere' },
+    { slug: 'vieques-culebra', query: 'Flamenco Beach Culebra Puerto Rico' },
+    { slug: 'barbados', query: 'Barbados platinum coast beach' },
+    { slug: 'santa-lucia', query: 'Saint Lucia Pitons' },
+    { slug: 'trinidad-tobago', query: 'Trinidad Tobago carnival beach' },
+    { slug: 'sint-maarten', query: 'Sint Maarten Maho Beach' },
+    { slug: 'martinique', query: 'Martinique French Caribbean beach' },
+    { slug: 'guadeloupe', query: 'Guadeloupe Caribbean beach' },
+    { slug: 'st-barths', query: 'Saint Barths luxury beach' },
+    { slug: 'grenada', query: 'Grenada Grand Anse beach spice island' },
+    { slug: 'antigua', query: 'Antigua Half Moon Bay beach' },
+    { slug: 'dominica', query: 'Dominica nature island rainforest' },
+    { slug: 'st-kitts-nevis', query: 'St Kitts Brimstone Hill beach' },
+    { slug: 'aruba', query: 'Aruba Eagle Beach' },
+    { slug: 'curacao', query: 'Curacao Willemstad colorful' },
+    { slug: 'bonaire', query: 'Bonaire diving reef flamingos' },
+    { slug: 'usvi', query: 'US Virgin Islands Magens Bay' },
+    { slug: 'bvi', query: 'British Virgin Islands beach sailing' },
+    { slug: 'turks-caicos', query: 'Turks Caicos Grace Bay Beach' },
+    { slug: 'bahamas', query: 'Bahamas Exuma swimming pigs' },
+    { slug: 'tulum', query: 'Tulum Mexico ruins beach' },
+    { slug: 'cartagena', query: 'Cartagena Colombia walled city' },
+    { slug: 'san-andres', query: 'San Andres Colombia sea seven colors' },
+    { slug: 'costa-rica', query: 'Costa Rica Caribbean Puerto Viejo beach' },
+    { slug: 'belize', query: 'Belize Blue Hole diving' },
+    { slug: 'panama', query: 'Bocas del Toro Panama turquoise water' },
+    { slug: 'roatan', query: 'Roatan Honduras West Bay Beach' },
+    { slug: 'venezuela', query: 'Los Roques Venezuela beach' },
+    { slug: 'corn-islands', query: 'Corn Islands Nicaragua beach' },
+    { slug: 'guatemala-caribbean', query: 'Rio Dulce Guatemala jungle river' },
+  ];
+
+  const photos = {};
+  await Promise.all(destinations.map(async ({ slug, query }) => {
+    const photo = await getPlacePhoto(query, 400);
+    if (photo) photos[slug] = photo;
+  }));
+
+  res.json(photos);
+});
+
 // ==========================================
 // CARIBEX DESTINATION PAGES
 // ==========================================
