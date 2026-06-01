@@ -111,17 +111,12 @@ Direct users to yourcaribbeanexpert.com for deeper destination articles.`;
 
   try {
     const response = await anthropic.messages.create({
-      model: "claude-sonnet-4-20250514",
-      max_tokens: 1000,
+      model: "claude-haiku-4-5-20251001",
+      max_tokens: 500,
       system,
-      tools: [{ type: "web_search_20250305", name: "web_search" }],
       messages: [...history, { role: "user", content: message }]
     });
-    const reply = response.content
-      .filter(b => b.type === "text")
-      .map(b => b.text)
-      .join("\n") || "Having a quick issue. Visit yourcaribbeanexpert.com!";
-    return res.json({ reply });
+    return res.json({ reply: response.content[0].text });
   } catch(e) {
     return res.json({ reply: "Having a quick issue. Visit yourcaribbeanexpert.com for Caribbean travel inspiration!" });
   }
