@@ -437,42 +437,7 @@ nav{padding:0 1rem;}.nav-links{display:none;}
 
 
 <!-- BLOG -->
-<section class="blog-sec">
-  <div class="blog-inner">
-    <div class="sec-tag">From the Blog</div>
-    <h2 class="sec-title">Caribbean <em>Insights</em></h2>
-    <p class="sec-sub">Thoughtful stories about Caribbean culture, travel and regional insight — beyond the surface.</p>
-    <div class="blog-grid">
-      <a href="https://blog.yourcaribbeanexpert.com/2026/03/not-all-turquoise-beaches-mean-same.html" target="_blank" class="blog-card">
-        <div class="blog-card-img">🏖️</div>
-        <div class="blog-card-body">
-          <div class="blog-card-tag">Caribbean Travel</div>
-          <div class="blog-card-title">Not All Turquoise Beaches Mean the Same Thing</div>
-          <div class="blog-card-desc">Two beaches may share the same shade of blue and offer completely different experiences.</div>
-        </div>
-      </a>
-      <a href="https://blog.yourcaribbeanexpert.com/2026/02/choosing-caribbean-is-not-choosing.html" target="_blank" class="blog-card">
-        <div class="blog-card-img">🌊</div>
-        <div class="blog-card-body">
-          <div class="blog-card-tag">Travel Mindset</div>
-          <div class="blog-card-title">Choosing the Caribbean Is Not Choosing a Beach</div>
-          <div class="blog-card-desc">It's choosing a rhythm, a culture and a context that shapes the entire experience.</div>
-        </div>
-      </a>
-      <a href="https://blog.yourcaribbeanexpert.com/2025/12/the-caribbean-is-not-one-destination_30.html" target="_blank" class="blog-card">
-        <div class="blog-card-img">🌴</div>
-        <div class="blog-card-body">
-          <div class="blog-card-tag">Caribbean Insights</div>
-          <div class="blog-card-title">The Caribbean Is Not One Destination</div>
-          <div class="blog-card-desc">The first thing every traveler should understand before planning their Caribbean trip.</div>
-        </div>
-      </a>
-    </div>
-    <div style="text-align:center;margin-top:2rem;">
-      <a href="https://blog.yourcaribbeanexpert.com" target="_blank" class="btn-teal">Read All Articles →</a>
-    </div>
-  </div>
-</section>
+
 
 <!-- NEWSLETTER -->
 <section class="newsletter">
