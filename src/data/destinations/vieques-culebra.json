@@ -1,0 +1,39 @@
+{
+  "slug": "vieques-culebra",
+  "name": "Vieques & Culebra",
+  "flag": "🇵🇷",
+  "tagline": "Puerto Rico's Hidden Island Treasures",
+  "region": "Greater Antilles",
+  "country": "Puerto Rico (US Territory)",
+  "gradient": "linear-gradient(135deg, #006994 0%, #52B788 100%)",
+  "bestFor": ["Beach", "Nature", "Bioluminescence", "Escape"],
+  "overview": "Vieques and Culebra are Puerto Rico's offshore islands — and they offer some of the finest natural experiences in the entire Caribbean. Both islands spent decades as US military bases, which paradoxically preserved their natural environment from the resort development that changed the main island. The result is two Caribbean islands of extraordinary, almost accidental, pristine beauty.\n\nVieques is most famous for Mosquito Bay — the brightest bioluminescent bay on earth. On moonless nights, every movement through the water creates an explosion of electric blue light caused by dinoflagellates — microscopic organisms that produce light when disturbed. Kayaking through Mosquito Bay in darkness is one of the most magical experiences available anywhere in the natural world. Vieques also has some of the finest beaches in the Caribbean — Sun Bay, Media Luna and Navio are largely empty stretches of extraordinary natural beauty within the Vieques National Wildlife Refuge.\n\nCulebra is even smaller and even more beautiful. Flamenco Beach, a perfect horseshoe of white sand and turquoise water, consistently ranks among the world's finest beaches. The island's small town of Dewey has a backpacker-friendly charm, and the reef around the island offers excellent snorkeling and diving.",
+  "topExperiences": [
+    {"icon": "✨", "name": "Bioluminescent Bay Vieques", "desc": "Mosquito Bay — the brightest bioluminescent bay on earth. Kayak through water that glows electric blue on moonless nights in an experience of complete natural magic."},
+    {"icon": "🏖️", "name": "Flamenco Beach Culebra", "desc": "Consistently ranked among the world's top beaches — a perfect horseshoe of white sand and turquoise water that represents the Caribbean at its most idealized."},
+    {"icon": "🐢", "name": "Sea Turtle Nesting", "desc": "Both islands have protected sea turtle nesting beaches — leatherback and hawksbill turtles nest on the beaches of Vieques and Culebra from spring through summer."},
+    {"icon": "🤿", "name": "Tamarindo Reef Culebra", "desc": "Some of the finest snorkeling in Puerto Rico — the reefs around Culebra have escaped the development pressure of the main island and remain in remarkable health."},
+    {"icon": "🌿", "name": "Vieques Wildlife Refuge", "desc": "14,000 acres of former military land now protected as a wildlife refuge — secluded beaches, wild horses, deer and a natural landscape of extraordinary beauty."},
+    {"icon": "🐎", "name": "Wild Horses of Vieques", "desc": "Hundreds of wild horses roam the beaches and countryside of Vieques — descended from Spanish colonial horses, they are one of the island's most iconic and moving sights."}
+  ],
+  "beaches": [
+    {"name": "Flamenco Beach", "type": "World Class", "desc": "Culebra's perfect horseshoe bay — white sand, turquoise water and consistently rated among the world's best beaches."},
+    {"name": "Sun Bay Vieques", "type": "Natural", "desc": "A long arc of natural beach within the wildlife refuge — wild horses sometimes graze at the edge, and the water is extraordinarily clear."},
+    {"name": "Zoni Beach Culebra", "type": "Remote", "desc": "The northeastern beach of Culebra — facing the Atlantic with dramatic views of the British Virgin Islands on clear days."},
+    {"name": "Media Luna Vieques", "type": "Secluded", "desc": "A half-moon shaped beach within the wildlife refuge — one of the most beautiful and most secluded beaches on Vieques."}
+  ],
+  "food": [
+    {"name": "Seafood", "desc": "Fresh fish, lobster and conch caught daily by local fishermen — the restaurants of Isabela Segunda on Vieques and Dewey on Culebra serve the freshest seafood in Puerto Rico."},
+    {"name": "Mofongo", "desc": "Puerto Rican soul food follows the ferry from the main island — fried plantains mashed with garlic and pork crackling, served with fresh seafood on the islands."},
+    {"name": "Local Fish Shacks", "desc": "The informal fish restaurants of both islands represent Puerto Rican coastal cooking at its most authentic — simple, fresh and prepared with local knowledge."},
+    {"name": "Cold Medalla", "desc": "Puerto Rico's local beer, ice cold — the only appropriate accompaniment to a day on Flamenco Beach or a night watching the bioluminescent bay."}
+  ],
+  "culture": "Vieques and Culebra have a distinct identity within Puerto Rico — island communities that spent decades fighting the US military presence that occupied most of their land. The activism of Viequenses and Culebrans in forcing the Navy's departure in 2003 is one of the most celebrated environmental and community struggles in Caribbean history.\n\nThe wild horses of Vieques, the bioluminescent bay and the pristine beaches are the direct result of that struggle — the military occupation that locals fought against also accidentally preserved a natural environment that commercial development would have destroyed. It is one of the Caribbean's most complex and hopeful environmental stories.",
+  "bestTime": "December through May is the dry season and best for beaches and the bioluminescent bay. The bay is best on moonless nights year-round. Summer brings some rain but the islands remain beautiful. Hurricane season June through November with Maria in 2017 serving as a devastating reminder.",
+  "practical": {
+    "currency": "US Dollar (USD)",
+    "language": "Spanish · English",
+    "howToGet": "Ferry from Ceiba, Puerto Rico to Vieques (1 hour) or Culebra (1.5 hours). Small planes from San Juan (15-20 minutes). Book ferries in advance.",
+    "budget": "$80-150/day mid-range · $50-80 budget · $200+ eco-resort"
+  }
+}

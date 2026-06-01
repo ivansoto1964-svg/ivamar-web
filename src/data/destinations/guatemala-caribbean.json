@@ -1,0 +1,39 @@
+{
+  "slug": "guatemala-caribbean",
+  "name": "Guatemala Caribbean",
+  "flag": "🇬🇹",
+  "tagline": "Where the Maya Meet the Caribbean",
+  "region": "Central American Caribbean",
+  "country": "Guatemala",
+  "gradient": "linear-gradient(135deg, #4997D0 0%, #FFFFFF 50%, #4997D0 100%)",
+  "bestFor": ["Culture", "Nature", "Adventure", "Value"],
+  "overview": "Guatemala's Caribbean coast is the country's most overlooked and most surprising destination — a narrow strip of coastline where the Maya civilization, Garifuna culture and Caribbean nature converge in ways found nowhere else in the region. It is not the postcard Caribbean of white sand and turquoise water — it is something more interesting and more complex.\n\nLivingston is the most distinctive town in Guatemala — accessible only by boat, inhabited primarily by the Garifuna people, and possessing a culture that combines African Caribbean heritage with the surrounding Mayan and Spanish-speaking world. The Caribbean Creole English of Livingston, the punta music that fills the evenings and the seafood cuisine that blends Caribbean and Central American traditions make it unlike any other place in Guatemala or Central America.\n\nThe Rio Dulce, the river that connects Lake Izabal to the Caribbean, is one of Central America's most spectacular waterways — a narrow gorge of dramatic limestone cliffs draped with jungle, hot springs flowing directly from the canyon walls into the river, and the remarkable Castillo de San Felipe fortress at the lake entrance. The journey by boat from Livingston to the lake is one of the most beautiful river passages in the Americas.",
+  "topExperiences": [
+    {"icon": "🚣", "name": "Rio Dulce Journey", "desc": "Boat from Livingston through the dramatic limestone gorge to Lake Izabal — jungle cliffs, hot springs and one of the most beautiful river journeys in Central America."},
+    {"icon": "🥁", "name": "Garifuna Culture Livingston", "desc": "The most authentic Garifuna community in Guatemala — punta music, traditional food and a Caribbean culture completely distinct from the Spanish-speaking country surrounding it."},
+    {"icon": "🏰", "name": "Castillo de San Felipe", "desc": "A 17th-century Spanish fortress on the narrows between Lake Izabal and Rio Dulce — built to defend against British pirates and offering views of extraordinary natural beauty."},
+    {"icon": "🐬", "name": "Manatee River Watching", "desc": "Lake Izabal and Rio Dulce are home to a population of West Indian manatees — early morning boat trips offer rare encounters with these gentle giants."},
+    {"icon": "♨️", "name": "Rio Dulce Hot Springs", "desc": "Natural hot springs flow from the canyon walls directly into the river — swimming where sulphurous hot water meets the cool river current is a completely unique experience."},
+    {"icon": "🌊", "name": "Siete Altares Waterfalls", "desc": "A series of waterfalls and natural pools 7 kilometers from Livingston — reached by boat or beach walk and offering beautiful swimming in Caribbean jungle."}
+  ],
+  "beaches": [
+    {"name": "Playa Blanca", "type": "Remote", "desc": "A white sand beach accessible only by boat from Livingston — calm water and the only white sand beach on Guatemala's Caribbean coast."},
+    {"name": "Siete Altares Beach", "type": "Natural", "desc": "The black sand beach near the waterfalls north of Livingston — dramatic, undeveloped and reached by a coastal walk through jungle."},
+    {"name": "Punta de Palmas", "type": "Local", "desc": "A beach community near Livingston with local Garifuna fishing villages and the authentic coastal life of the Guatemalan Caribbean."},
+    {"name": "Playa Quehueche", "type": "Village", "desc": "A Garifuna community beach just outside Livingston — local atmosphere, simple seafood restaurants and the most authentic beach experience on the coast."}
+  ],
+  "food": [
+    {"name": "Tapado", "desc": "Livingston's signature dish — a rich coconut milk seafood soup with plantain, yuca and whatever fresh catch the fishermen brought in. Found only in Livingston."},
+    {"name": "Pan de Coco", "desc": "Coconut bread — the Garifuna staple, baked fresh and served warm with every meal along the Caribbean coast of Guatemala."},
+    {"name": "Hudutu", "desc": "A Garifuna dish of mashed plantain served with fish in coconut milk broth — the most traditional dish in Livingston's Garifuna culinary heritage."},
+    {"name": "Seafood", "desc": "Fresh shrimp, snapper and river fish caught daily — the freshest seafood in Central America at prices that make the Caribbean coast extraordinary value."}
+  ],
+  "culture": "Guatemala's Caribbean coast is home to the country's most culturally distinctive communities — the Garifuna people of Livingston and surroundings, whose ancestors were exiled from St. Vincent by the British in 1797 and settled across the Central American Caribbean coast. Their language, music, food and spiritual traditions represent one of the Caribbean's most remarkable stories of cultural survival.\n\nThe Q'eqchi' Maya communities along Rio Dulce and Lake Izabal add another dimension — indigenous villages accessible by boat that have maintained their language and traditions while adapting to the river economy. The combination of Garifuna, Maya and mestizo cultures in such a small geographic area makes Guatemala's Caribbean coast one of the most culturally rich destinations in all of Central America.",
+  "bestTime": "February through May is the driest period on the Caribbean coast. The Garifuna Settlement Day on November 26th celebrates the arrival of the Garifuna people and is the most important cultural event of the year. Research safety conditions before traveling to this region.",
+  "practical": {
+    "currency": "Guatemalan Quetzal (GTQ) · USD exchanged easily · exceptional value",
+    "language": "Spanish · Garifuna · Q'eqchi' Maya",
+    "howToGet": "Bus or shuttle from Guatemala City to Rio Dulce (4-5 hours). Boat from Puerto Barrios to Livingston (30 minutes) or from Rio Dulce (2 hours).",
+    "budget": "$35-70/day mid-range · $20-40 budget — extraordinary value"
+  }
+}

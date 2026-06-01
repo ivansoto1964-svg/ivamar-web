@@ -1,0 +1,39 @@
+{
+  "slug": "guadeloupe",
+  "name": "Guadeloupe",
+  "flag": "🇬🇵",
+  "tagline": "The Butterfly Island of the Caribbean",
+  "region": "Lesser Antilles",
+  "country": "France (French Caribbean)",
+  "gradient": "linear-gradient(135deg, #009A44 0%, #002395 100%)",
+  "bestFor": ["Nature", "Beach", "Culture", "Food"],
+  "overview": "Guadeloupe is shaped like a butterfly — two main islands connected by a bridge, each with a completely different character. Grande-Terre to the east is flat, lined with white sand beaches and resort hotels, with Pointe-à-Pitre as the commercial capital. Basse-Terre to the west is mountainous, volcanic and covered in rainforest — dominated by La Soufrière, an active volcano rising to 1,467 meters and offering some of the finest hiking in the Caribbean.\n\nThe island is a French overseas department — meaning it is, legally, part of France and the European Union. The euro, French law and French standards of infrastructure apply, giving Guadeloupe an accessibility and reliability that many Caribbean islands lack. Yet the culture is deeply Caribbean — Creole food, zouk music, Mardi Gras celebrations and a warmth that feels entirely of the region.\n\nThe outer islands — Les Saintes, Marie-Galante and La Désirade — add further dimensions to the Guadeloupe experience. Les Saintes is one of the most beautiful village settings in the Caribbean. Marie-Galante is known for its rum distilleries and unspoiled beaches. Together they make Guadeloupe one of the most diverse and rewarding destinations in the French Caribbean.",
+  "topExperiences": [
+    {"icon": "🌋", "name": "La Soufrière Volcano", "desc": "Hike to the summit of the Caribbean's most active volcano — sulphur vents, dramatic clouds and views across both islands when the weather clears."},
+    {"icon": "🏝️", "name": "Les Saintes Islands", "desc": "A tiny archipelago 15km from Guadeloupe — the village of Terre-de-Haut is one of the most beautiful in the Caribbean, with a bay that rivals anything in the region."},
+    {"icon": "🏖️", "name": "Grande Anse de Deshaies", "desc": "The most beautiful beach in Basse-Terre — a long curve of golden sand with jungle right behind and the clear Caribbean in front."},
+    {"icon": "🌿", "name": "Guadeloupe National Park", "desc": "Covers most of Basse-Terre — waterfalls, hot springs, volcanic landscapes and rainforest trails through one of the finest protected areas in the Caribbean."},
+    {"icon": "🥃", "name": "Rum Distilleries", "desc": "Guadeloupe produces exceptional rhum agricole — distilleries like Reimonenq and Bielle on Marie-Galante offer tours through extraordinary sugarcane landscapes."},
+    {"icon": "🎭", "name": "Mardi Gras Carnival", "desc": "One of the Caribbean's most elaborate carnivals — weeks of costumes, music and street celebration that rivals Trinidad in its creativity and energy."}
+  ],
+  "beaches": [
+    {"name": "Grande Anse de Deshaies", "type": "Natural", "desc": "Basse-Terre's finest beach — golden sand, clear water and jungle backdrop in a setting of complete natural beauty."},
+    {"name": "Plage de la Caravelle", "type": "Resort", "desc": "Grande-Terre's most famous beach — long, white and lined with the island's resort infrastructure."},
+    {"name": "Petite Anse Les Saintes", "type": "Village", "desc": "The beach of Terre-de-Haut in Les Saintes — calm, beautiful and set against one of the most picturesque village backdrops in the Caribbean."},
+    {"name": "Marie-Galante Beaches", "type": "Remote", "desc": "The unspoiled beaches of Marie-Galante — white sand, clear water and almost no development on this sugar island offshore."}
+  ],
+  "food": [
+    {"name": "Accras de Morue", "desc": "Salt cod fritters — the essential appetizer of the French Caribbean, eaten everywhere from beach bars to fine dining restaurants."},
+    {"name": "Colombo de Poulet", "desc": "Chicken colombo — the Indian-influenced curry that defines Guadeloupean cuisine, seasoned with the colombo spice blend unique to the French Antilles."},
+    {"name": "Boudins Créoles", "desc": "Spiced blood sausages of the French Caribbean — grilled and served as street food at every market, seasoned with local peppers and herbs."},
+    {"name": "Rhum Agricole", "desc": "Guadeloupe's AOC rum from fresh sugarcane juice — drunk as ti punch with lime and cane syrup in the French Caribbean tradition."}
+  ],
+  "culture": "Guadeloupe's culture is a Creole synthesis of French, African, Indian and indigenous Caribbean influences — expressed through the Creole language spoken alongside French, the zouk music that originated in the French Caribbean, the elaborate Mardi Gras carnival and a cuisine of extraordinary complexity. The Indian community, descendants of indentured workers, has contributed a culinary and cultural dimension that makes Guadeloupe distinct from other French Caribbean islands.\n\nThe island's dual identity — simultaneously French and Caribbean — creates fascinating cultural tensions and combinations. The boulangerie and the Creole market exist side by side. French bureaucracy and Caribbean pace coexist with varying degrees of harmony. For visitors, this duality is part of the island's appeal.",
+  "bestTime": "December through May is the dry season and best time to visit. Mardi Gras in February or March is the cultural highlight. Hurricane season June through November with August through October being highest risk.",
+  "practical": {
+    "currency": "Euro (EUR) — French overseas department",
+    "language": "French · Guadeloupean Creole",
+    "howToGet": "Direct flights from Paris and Air France connections. Flights from other Caribbean islands. Pôle Caraïbes Airport (PTP).",
+    "budget": "€80-160/day mid-range · €50-80 budget · €250+ luxury"
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "slug": "grenada",
+  "name": "Grenada",
+  "flag": "🇬🇩",
+  "tagline": "The Spice Island of the Caribbean",
+  "region": "Lesser Antilles",
+  "country": "Grenada",
+  "gradient": "linear-gradient(135deg, #CE1126 0%, #009E60 100%)",
+  "bestFor": ["Nature", "Beach", "Diving", "Culture"],
+  "overview": "Grenada is the Spice Island — the world's second largest producer of nutmeg, and an island whose interior smells of cinnamon, cloves and mace from the plantations that cover the mountainous terrain. It is one of the Caribbean's most authentic destinations — less developed than its neighbors, genuinely warm in its hospitality and possessed of a natural beauty that ranges from the extraordinary pink sand of Horseshoe Bay to the rainforest waterfalls of the interior.\n\nSt. George's, the capital, is consistently cited as the most beautiful harbor town in the Caribbean — a horseshoe bay surrounded by hills of pastel houses, a French and British colonial fort, and a market that sells the island's famous spices in every form imaginable. The underwater world around Grenada is equally spectacular — the Bianca C wreck, the largest in the Caribbean, rests in 50 meters of water off St. George's and has become an extraordinary artificial reef.\n\nGrenada was invaded by the United States in 1983 in one of the most unusual episodes in Caribbean history — an event that the Grenadian people discuss with a complex mixture of emotions that reveals much about the island's relationship with its own identity and the larger world.",
+  "topExperiences": [
+    {"icon": "🌿", "name": "Spice Plantation Tours", "desc": "Visit the nutmeg and cocoa estates that made Grenada famous — the smell of drying spices and the knowledge of how these ingredients reach the world's kitchens."},
+    {"icon": "🏙️", "name": "St. George's Harbor", "desc": "The most beautiful harbor town in the Caribbean — a horseshoe bay of extraordinary charm with colonial forts, a spice market and views that stop visitors in their tracks."},
+    {"icon": "🤿", "name": "Bianca C Wreck", "desc": "The largest wreck in the Caribbean — a 184-meter Italian ocean liner that sank in 1961 and now hosts an extraordinary ecosystem of coral and marine life."},
+    {"icon": "💧", "name": "Seven Sisters Waterfalls", "desc": "A series of seven waterfalls in the Grand Etang rainforest — hiking to them through jungle and swimming in the natural pools below is the essential Grenada interior experience."},
+    {"icon": "🏖️", "name": "Grand Anse Beach", "desc": "A three-kilometer arc of white sand just south of St. George's — one of the finest beaches in the Eastern Caribbean with calm water and extraordinary views."},
+    {"icon": "🍫", "name": "Chocolate Tour", "desc": "Grenada produces world-class cacao — the Belmont Estate and other plantations offer tours from bean to bar, ending with tastings of extraordinary single-origin chocolate."}
+  ],
+  "beaches": [
+    {"name": "Grand Anse Beach", "type": "Main", "desc": "The most famous beach in Grenada — a three-kilometer arc of white sand with calm water and the capital visible at the northern end."},
+    {"name": "Morne Rouge Bay", "type": "Calm", "desc": "Just south of Grand Anse — smaller, more sheltered and with the clearest water on the island's west coast."},
+    {"name": "Horseshoe Bay", "type": "Unique", "desc": "A pink sand beach on Carriacou, Grenada's sister island — one of the finest and most unusual beaches in the Lesser Antilles."},
+    {"name": "La Sagesse Beach", "type": "Remote", "desc": "A secluded bay on the southeast coast — nature reserve, mangrove estuary and one of the most peaceful beaches in Grenada."}
+  ],
+  "food": [
+    {"name": "Oil Down", "desc": "Grenada's national dish — breadfruit, callaloo, meat and vegetables slow-cooked in coconut milk and turmeric. The ultimate one-pot Caribbean comfort food."},
+    {"name": "Nutmeg Everything", "desc": "Grenada's signature spice appears in everything — nutmeg jam, nutmeg ice cream, nutmeg rum punch. The flavor of the island in edible form."},
+    {"name": "Lambie", "desc": "Conch — stewed, curried or fried. The sea's contribution to Grenadian cuisine, eaten at every beach bar and local restaurant."},
+    {"name": "Rum Punch", "desc": "The Grenadian version follows the local recipe: one of sour, two of sweet, three of strong, four of weak — lime, sugar syrup, rum and water with a grating of fresh nutmeg."}
+  ],
+  "culture": "Grenada's culture reflects the island's history as a former French and British colony with a significant African heritage and smaller East Indian community. The Creole patois, still spoken among older Grenadians, the Big Drum tradition of African percussion on the outer island of Carriacou and the elaborate Carnival celebrations are the most visible expressions of a cultural identity that is proudly and specifically Grenadian.\n\nThe nutmeg industry, which once made Grenada among the wealthiest islands per capita in the Caribbean, was devastated by Hurricane Ivan in 2004. The island's recovery — economic, social and psychological — is a story of Caribbean resilience. The smell of drying nutmeg, returning to the plantations, is the smell of Grenada finding itself again.",
+  "bestTime": "January through May is the dry season and ideal for beaches and hiking. The Grand Etang rainforest is accessible year-round. Hurricane season June through November — Hurricane Ivan in 2004 was devastating. August through October is highest risk.",
+  "practical": {
+    "currency": "Eastern Caribbean Dollar (XCD) · USD widely accepted",
+    "language": "English · Grenadian Creole",
+    "howToGet": "Direct flights from US and UK to Maurice Bishop International Airport (GND). Ferry connections to St. Vincent and Trinidad.",
+    "budget": "$80-140/day mid-range · $50-80 budget · $200+ luxury"
+  }
+}

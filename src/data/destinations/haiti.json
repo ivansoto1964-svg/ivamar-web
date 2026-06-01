@@ -1,0 +1,39 @@
+{
+  "slug": "haiti",
+  "name": "Haiti",
+  "flag": "🇭🇹",
+  "tagline": "The First Free Black Republic",
+  "region": "Greater Antilles",
+  "country": "Haiti",
+  "gradient": "linear-gradient(135deg, #00209F 0%, #D21034 100%)",
+  "bestFor": ["Culture", "History", "Art", "Adventure"],
+  "overview": "Haiti is the Caribbean's most misunderstood destination — a country of extraordinary historical significance, remarkable artistic culture and breathtaking natural beauty that has been obscured by decades of political instability and natural disasters. It was the first country in the world to be founded by formerly enslaved people, the first Black republic in history, and the site of the only successful slave revolution in human history. That story alone makes it one of the most important places on earth.\n\nPetionville, the hillside suburb of Port-au-Prince, has developed a vibrant arts scene, restaurant culture and hotel infrastructure that offers a genuine entry point for adventurous travelers. The iron market, the remarkable Haitian visual art tradition and the voodoo ceremonies that connect the island to its African spiritual heritage are experiences of profound cultural depth.\n\nThe north of Haiti holds some of the Caribbean's most extraordinary historical monuments — the Citadelle Laferrière, a massive mountaintop fortress built by Henri Christophe after independence, and the Sans-Souci Palace in nearby Milot are UNESCO World Heritage sites of staggering ambition. Travel to Haiti requires research and preparation, but for those who go, the experience is unlike anything else in the Caribbean.",
+  "topExperiences": [
+    {"icon": "🏰", "name": "Citadelle Laferrière", "desc": "A UNESCO World Heritage mountaintop fortress — built after independence to defend against French reinvasion, it is one of the most ambitious and moving historical monuments in the Americas."},
+    {"icon": "🎨", "name": "Haitian Art", "desc": "Haiti has one of the most vibrant visual art traditions in the Caribbean — bold colors, intricate patterns and a style of naive art that has influenced artists worldwide."},
+    {"icon": "🌊", "name": "Labadee Beach", "desc": "A private beach on Haiti's north coast leased to Royal Caribbean — regardless of the circumstances, the natural beauty of this bay is extraordinary."},
+    {"icon": "🥁", "name": "Vodou Ceremony", "desc": "Haitian Vodou is a living spiritual tradition of African origin — ceremonies of extraordinary energy and ritual significance that connect the island to its West African roots."},
+    {"icon": "🏔️", "name": "Pic Macaya", "desc": "The highest peak in the southern peninsula — a cloud forest of extraordinary biodiversity that harbors species found nowhere else on earth."},
+    {"icon": "🏖️", "name": "Jacmel", "desc": "A colonial port town on the south coast — beautiful gingerbread architecture, a vibrant arts scene and beaches that give glimpses of what Haiti's tourism could become."}
+  ],
+  "beaches": [
+    {"name": "Cormier Plage", "type": "Resort", "desc": "A beautiful beach near Cap-Haïtien in the north — one of the most accessible and safe beach experiences in Haiti."},
+    {"name": "Moulin Sur Mer", "type": "Historic", "desc": "A former sugar plantation converted to a beach resort — the plantation history and Caribbean beauty create a complex and compelling setting."},
+    {"name": "Jacmel Beaches", "type": "Local", "desc": "The beaches around Jacmel on the south coast — Raymond les Bains and Ti Mouillage offer beautiful Caribbean water with minimal tourist infrastructure."},
+    {"name": "Île à Vache", "type": "Remote", "desc": "A small island off the south coast with pristine beaches, no development and a peace that contrasts completely with the mainland reality."}
+  ],
+  "food": [
+    {"name": "Griot", "desc": "Crispy fried pork marinated in sour orange and spices — Haiti's national dish, served with rice and pikliz (spicy pickled vegetables) at every important meal."},
+    {"name": "Pikliz", "desc": "Spicy pickled cabbage, carrots and scotch bonnet peppers in vinegar — the condiment without which no Haitian meal is complete."},
+    {"name": "Soup Joumou", "desc": "Squash soup eaten on January 1st to celebrate independence — the dish that enslaved people were forbidden from eating, now the symbol of Haitian freedom."},
+    {"name": "Rhum Barbancourt", "desc": "Haiti's extraordinary rum, aged in French Limousin oak barrels — one of the finest rums in the Caribbean, made since 1862 with a quality that has survived everything Haiti has endured."}
+  ],
+  "culture": "Haiti's culture is the most African-rooted in the Caribbean — the Haitian Revolution of 1791-1804 preserved African spiritual, linguistic and cultural traditions that were systematically destroyed elsewhere in the region. Haitian Creole, the national language, is spoken by all 11 million Haitians. Vodou is practiced by the majority alongside Christianity. The visual arts tradition is among the most distinctive in the world.\n\nHaiti's history is the Caribbean's most profound story — the only successful slave revolution in human history, followed by 200 years of economic punishment, political instability and natural disaster. Understanding Haiti requires understanding that the country's difficulties are not accidental but were systematically engineered by the powers that feared what a free Black republic represented. Despite everything, Haitian culture and Haitian people endure with a dignity and creativity that commands genuine admiration.",
+  "bestTime": "November through March offers the most stable conditions for travel. Research current security situation carefully before planning a trip — conditions change rapidly. The north of Haiti around Cap-Haïtien and the south around Jacmel are generally more accessible than Port-au-Prince.",
+  "practical": {
+    "currency": "Haitian Gourde (HTG) · USD widely accepted",
+    "language": "Haitian Creole · French",
+    "howToGet": "Flights to Toussaint Louverture Airport (PAP) in Port-au-Prince or Cap-Haïtien (CAP). Research current conditions carefully.",
+    "budget": "$60-100/day · Research extensively before traveling"
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "slug": "corn-islands",
+  "name": "Corn Islands",
+  "flag": "🇳🇮",
+  "tagline": "Nicaragua's Undiscovered Caribbean Paradise",
+  "region": "Central American Caribbean",
+  "country": "Nicaragua",
+  "gradient": "linear-gradient(135deg, #003F7F 0%, #FFFFFF 50%, #D21034 100%)",
+  "bestFor": ["Diving", "Beach", "Nature", "Value"],
+  "overview": "The Corn Islands are Nicaragua's Caribbean secret — two small islands off the east coast that offer world-class diving, beautiful beaches and a completely authentic Caribbean atmosphere at prices that make comparable destinations seem extravagant. Big Corn Island and Little Corn Island have different personalities but share the same extraordinary water clarity, healthy reef and the laid-back Creole English culture of the Caribbean coast.\n\nLittle Corn Island is one of the most genuinely remote and beautiful islands in Central America — no cars, no ATMs, electricity only part of the day and beaches of extraordinary natural beauty. Getting there requires a ferry from Big Corn that can be rough, but the reward is an island that exists at a pace and in a state of nature that larger, more developed Caribbean islands have lost forever.\n\nBig Corn has more infrastructure — hotels, restaurants, ATMs and a small airport — but maintains a Caribbean authenticity that feels genuinely untouched. The reef around both islands is healthy and accessible, and the Nicaraguan Caribbean Creole culture — distinct from both mainland Nicaragua and other Caribbean nations — adds a fascinating cultural dimension to the natural beauty.",
+  "topExperiences": [
+    {"icon": "🤿", "name": "Reef Diving", "desc": "Healthy Caribbean reef accessible from both islands — wall dives, coral gardens and extraordinary marine biodiversity at some of the best prices in the Caribbean."},
+    {"icon": "🏝️", "name": "Little Corn Island", "desc": "One of the most genuinely remote Caribbean islands — no cars, rustic accommodation, beaches of extraordinary natural beauty and a pace of life from another era."},
+    {"icon": "🏖️", "name": "Long Bay Beach", "desc": "Big Corn's finest beach — a long stretch of white sand with calm Caribbean water and the authentic atmosphere of a Creole Caribbean fishing community."},
+    {"icon": "🦀", "name": "Lobster Season", "desc": "Lobster season brings the freshest and most affordable spiny Caribbean lobster available anywhere in the region — eaten grilled at beach restaurants for a fraction of resort prices."},
+    {"icon": "🚶", "name": "Little Corn Walking Tour", "desc": "Circumnavigate Little Corn Island on foot in two hours — a walk that reveals beaches, fishing communities, jungle paths and the full beauty of this tiny island."},
+    {"icon": "🌅", "name": "Sunrise Beach", "desc": "The Atlantic-facing beach on Little Corn — watch the sun rise over the Caribbean Sea in complete solitude on one of Central America's most beautiful beaches."}
+  ],
+  "beaches": [
+    {"name": "Long Bay Beach", "type": "Main", "desc": "Big Corn's best beach — white sand, calm water and the most developed tourist infrastructure on the island."},
+    {"name": "Southwest Bay Little Corn", "type": "Remote", "desc": "The most beautiful beach on Little Corn — white sand, turquoise water and the extraordinary reef just offshore."},
+    {"name": "Brig Bay Beach", "type": "Local", "desc": "Big Corn's local beach — the social center of the island's community life, with the freshest lobster at the beachside restaurants."},
+    {"name": "Sunrise Beach", "type": "Wild", "desc": "Little Corn's Atlantic-facing beach — rougher water but dramatic scenery and one of the most beautiful sunrise settings in Central America."}
+  ],
+  "food": [
+    {"name": "Grilled Lobster", "desc": "The definitive Corn Islands experience — fresh spiny lobster grilled over open coals for prices that will seem impossible to anyone who has paid resort Caribbean prices."},
+    {"name": "Rondon", "desc": "The Creole English coast's signature stew — fish, coconut milk, breadfruit and root vegetables in a fragrant broth that connects the Corn Islands to the broader Caribbean Creole tradition."},
+    {"name": "Rice & Beans", "desc": "Caribbean-style rice and beans cooked in coconut milk — the daily staple of the Corn Islands, prepared with the Creole seasoning that distinguishes it from mainland Nicaraguan cooking."},
+    {"name": "Fresh Fish", "desc": "Wahoo, snapper and grouper caught daily by local fishermen — served grilled or fried at the beach restaurants of both islands for remarkably affordable prices."}
+  ],
+  "culture": "The Corn Islands have a Creole English culture that connects them more to Jamaica and the broader Caribbean than to the Spanish-speaking Nicaraguan mainland. The descendants of African slaves and European settlers developed a community with their own English-based Creole language, their own religious traditions and a way of life organized around the sea.\n\nThis Creole Caribbean identity exists in tension with the Spanish-speaking Nicaraguan state — a tension that has been part of the Caribbean coast's relationship with the Pacific coast throughout Nicaraguan history. For visitors, the result is an island community of distinctive character whose warmth and authenticity reflect a culture that has maintained its identity through centuries of challenge.",
+  "bestTime": "March through May and September through October are the driest months. The sea is calmest in these periods, making the ferry crossing to Little Corn more manageable. Lobster season September through February is the culinary highlight. Research current travel conditions for Nicaragua.",
+  "practical": {
+    "currency": "Nicaraguan Córdoba (NIO) · USD accepted · exceptional value",
+    "language": "Spanish · Caribbean Creole English",
+    "howToGet": "Fly from Managua to Big Corn Island (BEF). Ferry from Big Corn to Little Corn (30-45 minutes, can be rough).",
+    "budget": "$40-80/day mid-range · $25-45 budget — some of the best Caribbean value available"
+  }
+}

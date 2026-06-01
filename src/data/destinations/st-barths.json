@@ -1,0 +1,39 @@
+{
+  "slug": "st-barths",
+  "name": "St. Barths",
+  "flag": "🇧🇱",
+  "tagline": "The Caribbean's Most Exclusive Island",
+  "region": "Lesser Antilles",
+  "country": "Saint Barthélemy (France)",
+  "gradient": "linear-gradient(135deg, #002395 0%, #F4A261 100%)",
+  "bestFor": ["Luxury", "Beach", "Food", "Privacy"],
+  "overview": "St. Barths is the Caribbean's most exclusive island — a tiny French collectivity of 25 square kilometers where celebrity yachts anchor in Gustavia harbor, the restaurants rival Paris, and the beaches achieve a natural perfection that justifies every superlative. It is the island where the world's wealthy come to disappear, and it does discretion and luxury better than anywhere in the Caribbean.\n\nThe island has no mass tourism — no cruise ships dock, the airport runway is famously short and dramatic, and the accommodation is almost entirely private villas rather than large hotels. This deliberate limitation on scale has preserved a quality of experience that larger islands inevitably lose. St. Barths feels like a private club where the membership fee is simply the cost of getting there.\n\nBeneath the luxury, St. Barths has genuine character — a Swedish colonial history that left distinctive architecture, a Breton fishing community heritage visible in the white-washed buildings of Corossol, and a French culinary tradition that has made the island's restaurant scene one of the finest in the Caribbean. The beaches — Shell Beach, Gouverneur, Saline, Flamands — are among the most beautiful in the world.",
+  "topExperiences": [
+    {"icon": "🏖️", "name": "Saline Beach", "desc": "The most beautiful beach in St. Barths — a remote crescent of white sand accessible only by a short walk over a hill, with no development and extraordinary natural beauty."},
+    {"icon": "⛵", "name": "Gustavia Harbor", "desc": "The harbor filled with superyachts — the most concentrated display of floating luxury in the Caribbean, surrounded by duty-free boutiques and exceptional restaurants."},
+    {"icon": "🍽️", "name": "Restaurant Scene", "desc": "St. Barths has more excellent restaurants per square kilometer than almost any place on earth — from beachside grills to Michelin-quality fine dining."},
+    {"icon": "✈️", "name": "Gustaf III Airport Landing", "desc": "The most dramatic airport approach in the world — planes descend steeply over a hill and land on a 650-meter runway. The experience alone is worth the trip."},
+    {"icon": "🛥️", "name": "Island Boat Tour", "desc": "Circumnavigate the island by boat — hidden coves, dramatic cliffs and the perspective of St. Barths from the water that reveals its extraordinary topography."},
+    {"icon": "🎉", "name": "New Year's Eve", "desc": "The most glamorous New Year's Eve in the Caribbean — the harbor fills with superyachts, the parties are legendary and the fireworks reflect off the water."}
+  ],
+  "beaches": [
+    {"name": "Saline Beach", "type": "Remote", "desc": "The finest beach in St. Barths — clothing optional, no development, accessible by foot and of extraordinary natural beauty."},
+    {"name": "Gouverneur Beach", "type": "Secluded", "desc": "A deep crescent of white sand surrounded by hills — calm, beautiful and one of the most private beaches on the island."},
+    {"name": "Shell Beach", "type": "Unique", "desc": "A beach of crushed shells rather than sand in Gustavia — unusual, beautiful and steps from the harbor restaurants."},
+    {"name": "Flamands Beach", "type": "Luxury", "desc": "The longest beach on the island — calm water, lined with luxury villas and the most accessible swimming on St. Barths."}
+  ],
+  "food": [
+    {"name": "Lobster & Champagne", "desc": "The St. Barths dining experience at its most iconic — fresh spiny lobster with a glass of Krug at a harbor restaurant while watching the yachts. Worth every euro."},
+    {"name": "French Bakeries", "desc": "Croissants and pain au chocolat of genuine Parisian quality — the morning ritual of St. Barths, eaten on a terrace with the Caribbean visible below."},
+    {"name": "Ti Punch", "desc": "White rum, lime and cane syrup — the French Caribbean ritual drink, made to personal specification and never with ice according to tradition."},
+    {"name": "Creole Seafood", "desc": "The local Creole restaurants serve the freshest fish on the island — mahi mahi, wahoo and snapper at prices significantly below the luxury establishments."}
+  ],
+  "culture": "St. Barths has a cultural identity unlike any other Caribbean island — shaped by its Swedish colonial period (1784-1878), its French heritage, its Breton fishing community roots and the contemporary luxury culture that has defined it since the 1970s. The original white Creole population of St. Barths, descendants of Breton and Norman settlers, maintain traditions of lace-making and boat-building that connect the island to an unlikely Norman heritage.\n\nThe island operates at a pace entirely its own — unhurried, elegant and confident. There is no hustle, no aggressive tourism and no sense that the island needs anything from visitors beyond their appreciation of its beauty. St. Barths knows exactly what it is and makes no apologies for it.",
+  "bestTime": "December through April is peak season — the most glamorous period, highest prices and the best weather. New Year's Eve is the absolute peak. The summer months offer dramatically lower prices with almost identical weather — the best value window for experiencing St. Barths.",
+  "practical": {
+    "currency": "Euro (EUR) — French collectivity",
+    "language": "French · English widely spoken",
+    "howToGet": "Fly into Sint Maarten (SXM) then short flight or ferry to St. Barths (SBH). Direct flights from some US cities seasonally.",
+    "budget": "€300-600/day mid-range · No real budget option · €800+ luxury villa"
+  }
+}

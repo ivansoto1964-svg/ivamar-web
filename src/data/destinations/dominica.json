@@ -1,0 +1,39 @@
+{
+  "slug": "dominica",
+  "name": "Dominica",
+  "flag": "🇩🇲",
+  "tagline": "The Nature Island of the Caribbean",
+  "region": "Lesser Antilles",
+  "country": "Dominica",
+  "gradient": "linear-gradient(135deg, #006B3F 0%, #141414 100%)",
+  "bestFor": ["Nature", "Diving", "Adventure", "Wellness"],
+  "overview": "Dominica is the Caribbean's most dramatic natural destination — an island so mountainous and volcanic that it was the last to be colonized by Europeans, with a volcanic interior of boiling lakes, sulphur vents, hot springs and 365 rivers that make it the most watered island in the Caribbean. It is not a beach destination — it is a nature destination of the first order, and those who come seeking wilderness find something extraordinary.\n\nThe Boiling Lake, accessible only by a challenging hike through the Valley of Desolation, is the second largest boiling lake in the world — a crater filled with grey-blue water that bubbles and churns at the center, surrounded by fumaroles and sulphur deposits. The hike to reach it is one of the most dramatic natural experiences in the Caribbean.\n\nDominica's underwater world matches its terrestrial drama — the island sits on active volcanic geology that creates warm water vents, dramatic walls and a marine biodiversity of extraordinary richness. The sperm whale population that lives in the waters off Dominica's west coast is one of the most studied in the world, and whale watching here offers encounters of remarkable intimacy.",
+  "topExperiences": [
+    {"icon": "🌋", "name": "Boiling Lake Hike", "desc": "A challenging 6-hour hike through the Valley of Desolation to the world's second largest boiling lake — the most dramatic natural experience in the Eastern Caribbean."},
+    {"icon": "🐋", "name": "Sperm Whale Watching", "desc": "A resident population of sperm whales lives year-round in the waters off Dominica — encounters with these giants of the deep are among the most profound wildlife experiences in the Caribbean."},
+    {"icon": "🤿", "name": "Champagne Reef", "desc": "A volcanic reef where warm water bubbles up through the coral like champagne — snorkeling through the effervescence in crystal clear water is completely unique."},
+    {"icon": "💧", "name": "Emerald Pool", "desc": "A beautiful natural pool in the rainforest fed by a waterfall — accessible by a short hike through old-growth tropical forest and one of the island's most visited natural sites."},
+    {"icon": "🌿", "name": "Morne Trois Pitons Park", "desc": "A UNESCO World Heritage rainforest — the most pristine tropical rainforest in the Eastern Caribbean, with an extraordinary diversity of plant and animal life."},
+    {"icon": "♨️", "name": "Hot Spring Bathing", "desc": "Natural hot springs throughout the island — Wotten Waven near Roseau has a cluster of therapeutic sulphur pools set in the rainforest, one of the Caribbean's best wellness experiences."}
+  ],
+  "beaches": [
+    {"name": "Champagne Beach", "type": "Volcanic", "desc": "The beach above Champagne Reef — black volcanic sand and the warm bubbling water of the reef just offshore."},
+    {"name": "Soufrière Bay Beach", "type": "Natural", "desc": "A dark sand beach in a volcanic bay on the southwest coast — dramatic scenery and excellent diving just offshore."},
+    {"name": "Batibou Beach", "type": "Remote", "desc": "A secluded golden sand beach in the northeast — accessible only by boat or a challenging trail through coconut groves."},
+    {"name": "Purple Turtle Beach", "type": "Local", "desc": "The main beach near Roseau — dark sand, local atmosphere and the most accessible swimming near the capital."}
+  ],
+  "food": [
+    {"name": "Mountain Chicken", "desc": "Crapaud — a large frog unique to Dominica and Montserrat, once the island's most prized delicacy. Now critically endangered, it appears rarely on menus."},
+    {"name": "Callaloo Soup", "desc": "A thick soup of callaloo leaves, coconut milk and seafood — the daily comfort food of Dominica, eaten for lunch throughout the island."},
+    {"name": "Provision Ground Food", "desc": "Dasheen, breadfruit, plantain and yam grown in the volcanic soil — the freshest and most nutritious root vegetables in the Caribbean, available at every market."},
+    {"name": "Bello Rum", "desc": "Dominica's local rum — rougher and more characterful than the smooth agricole rums of the French islands, and authentically Dominican."}
+  ],
+  "culture": "Dominica is home to the last surviving community of pre-Columbian Kalinago (Carib) people in the Caribbean — the Kalinago Territory on the northeast coast is a living indigenous community that welcomes visitors to learn about a culture that survived five centuries of colonization. The Kalinago Heritage Village offers an extraordinary window into pre-colonial Caribbean life.\n\nDominican culture also reflects African, French and British influences accumulated through a complex colonial history — the Creole language, the Carnival celebrations and the music all reflect this layered heritage. The island's small size and isolation have preserved a cultural authenticity that larger, more developed islands have lost.",
+  "bestTime": "February through June is the dry season and best time for hiking and diving. The Boiling Lake trail is best in dry conditions. The World Creole Music Festival in October brings extraordinary musicians from across the Creole world. Hurricane season June through November with significant risk.",
+  "practical": {
+    "currency": "Eastern Caribbean Dollar (XCD) · USD accepted",
+    "language": "English · Dominican Creole French",
+    "howToGet": "Fly into Douglas-Charles Airport (DOM) via Barbados, Antigua or Sint Maarten connections. Small planes only — no direct US flights.",
+    "budget": "$70-130/day mid-range · $40-70 budget · $200+ eco-lodge"
+  }
+}

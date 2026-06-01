@@ -1,0 +1,39 @@
+{
+  "slug": "st-kitts-nevis",
+  "name": "St. Kitts & Nevis",
+  "flag": "🇰🇳",
+  "tagline": "The Mother Colony of the Caribbean",
+  "region": "Lesser Antilles",
+  "country": "St. Kitts & Nevis",
+  "gradient": "linear-gradient(135deg, #009E49 0%, #000000 50%, #CE1126 100%)",
+  "bestFor": ["History", "Nature", "Beach", "Luxury"],
+  "overview": "St. Kitts & Nevis holds a unique place in Caribbean history — St. Kitts was Britain's first Caribbean colony, founded in 1623, and the template for the sugar plantation system that would define the region for centuries. The island's historical legacy is visible everywhere, from the extraordinary Brimstone Hill Fortress to the plantation great houses that now operate as some of the most atmospheric hotels in the Caribbean.\n\nSt. Kitts is dominated by Mount Liamuiga, a dormant volcano rising to 1,156 meters at the center of the island. The narrow-gauge railway that once transported sugar around the island now carries tourists, offering one of the most scenic rail journeys in the Caribbean. The southeastern peninsula has beautiful beaches and the island's most active tourism development.\n\nNevis, across the Narrows channel, is even smaller and even more dramatically beautiful — a single volcanic cone rising from the sea, often cloud-capped, surrounded by elegant plantation houses and some of the most serene beaches in the Eastern Caribbean. It is the birthplace of Alexander Hamilton, the American Founding Father whose story is now known to a new generation through the Broadway musical.",
+  "topExperiences": [
+    {"icon": "🏰", "name": "Brimstone Hill Fortress", "desc": "A UNESCO World Heritage site — the Gibraltar of the Caribbean, a massive British fortress built by enslaved labor on a volcanic plug with panoramic views across five islands."},
+    {"icon": "🚂", "name": "St. Kitts Scenic Railway", "desc": "The last remaining railway in the Caribbean — a narrow-gauge line that circumnavigates St. Kitts through sugarcane fields and coastal scenery."},
+    {"icon": "🌋", "name": "Mount Liamuiga Hike", "desc": "A challenging hike to the crater rim of St. Kitts's dormant volcano — through rainforest to the rim overlooking a deep jungle-filled crater."},
+    {"icon": "🏛️", "name": "Hamilton Museum Nevis", "desc": "The birthplace of Alexander Hamilton — a museum exploring the life of the Founding Father who was born in Nevis before becoming an American icon."},
+    {"icon": "🏨", "name": "Plantation Hotels", "desc": "Former sugar plantation great houses converted to intimate hotels — Ottley's, Golden Rock, Nisbet Plantation on Nevis — the most atmospheric accommodation in the Eastern Caribbean."},
+    {"icon": "🐒", "name": "Green Vervet Monkeys", "desc": "More monkeys than people on St. Kitts — the vervet monkey population, descended from 17th-century escapees, is one of the island's most charming natural features."}
+  ],
+  "beaches": [
+    {"name": "Cockleshell Bay", "type": "Scenic", "desc": "St. Kitts's southeastern peninsula beach — calm water, views of Nevis across the channel and the most spectacular beach setting on the island."},
+    {"name": "Pinney's Beach Nevis", "desc": "A long golden beach on Nevis's Caribbean coast — calm, beautiful and home to the legendary Sunshine's Bar where the Killer Bee cocktail was invented.", "type": "Local"},
+    {"name": "South Friar's Bay", "type": "Active", "desc": "A popular beach on St. Kitts's southeast peninsula — beach bars, calm water and the most social beach scene on the island."},
+    {"name": "Newcastle Bay Nevis", "type": "Natural", "desc": "A quiet golden sand bay near the northern tip of Nevis — calm, beautiful and away from the tourist infrastructure."}
+  ],
+  "food": [
+    {"name": "Stewed Salt Fish", "desc": "Salt cod stewed with onions, peppers and tomatoes — the national breakfast dish of St. Kitts & Nevis, eaten with johnnycakes and fried plantain."},
+    {"name": "Killer Bee", "desc": "Sunshine's Bar's legendary cocktail on Nevis — rum, passion fruit, honey and secret ingredients. One is enough. Two is too many. Three and you can't remember."},
+    {"name": "Goat Water", "desc": "A rich goat meat stew — the national dish of Nevis, eaten on Sundays and at celebrations throughout the island."},
+    {"name": "Sugar Cake", "desc": "Coconut and sugar candy — the traditional sweet of St. Kitts, a direct remnant of the sugar plantation era."}
+  ],
+  "culture": "St. Kitts & Nevis's culture carries the weight of its colonial history — as Britain's first Caribbean colony, it was the laboratory for the plantation system. The emancipation of enslaved people in 1834 created a society that has spent nearly two centuries working through the implications of that history.\n\nThe Carnival celebrations, the steel pan music and the cricket culture are all expressions of an Afro-Caribbean identity that emerged from enslavement. The plantation hotel culture, where former great houses have been lovingly restored, creates a complex dynamic between tourism and historical memory that the islands navigate with varying degrees of success.",
+  "bestTime": "December through April is the dry season and peak time — the most comfortable weather and the highest prices. August brings Carnival. Hurricane season June through November with significant risk in September and October.",
+  "practical": {
+    "currency": "Eastern Caribbean Dollar (XCD) · USD widely accepted",
+    "language": "English",
+    "howToGet": "Direct flights from US and UK to Robert L. Bradshaw Airport (SKB) on St. Kitts. Ferry to Nevis (45 minutes).",
+    "budget": "$100-170/day mid-range · $70-100 budget · $300+ plantation hotel"
+  }
+}

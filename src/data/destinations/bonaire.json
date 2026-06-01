@@ -1,0 +1,39 @@
+{
+  "slug": "bonaire",
+  "name": "Bonaire",
+  "flag": "🇧🇶",
+  "tagline": "The Diver's Paradise of the Caribbean",
+  "region": "Dutch Caribbean",
+  "country": "Bonaire (Netherlands)",
+  "gradient": "linear-gradient(135deg, #003087 0%, #00B4D8 60%, #FF6B35 100%)",
+  "bestFor": ["Diving", "Snorkeling", "Nature", "Relaxation"],
+  "overview": "Bonaire is the Caribbean's diving capital — an island that has organized its entire identity around the protection of its extraordinary reef system. The Bonaire National Marine Park surrounds the entire island and its offshore nature reserve Klein Bonaire, protecting one of the healthiest reef systems in the Caribbean. Dive sites are marked with yellow painted stones along the entire coast — visitors can shore dive independently without a boat at over 60 sites, making it the most accessible world-class diving on earth.\n\nThe island is flat, dry and covered in cactus and salt flats — not the lush tropical Caribbean of popular imagination, but a landscape of spare, dramatic beauty. The pink flamingos that feed in the salt pans near the slave huts are among the most photographed images in the Dutch Caribbean. Washington Slagbaai National Park in the north preserves the island's wild interior.\n\nBonaire sits outside the hurricane belt, receives less than 500mm of rain annually and has warm, clear water year-round — making it the most reliably excellent diving destination in the Caribbean across all seasons. It attracts serious divers and underwater photographers from across the world who return again and again to the same sites.",
+  "topExperiences": [
+    {"icon": "🤿", "name": "Shore Diving", "desc": "60+ marked dive sites accessible directly from shore — the world's most accessible world-class diving, with visibility regularly exceeding 30 meters."},
+    {"icon": "🦩", "name": "Flamingo Watching", "desc": "Hundreds of pink flamingos feed in the island's salt pans near the historic slave huts — one of the most striking natural spectacles in the Dutch Caribbean."},
+    {"icon": "🏝️", "name": "Klein Bonaire", "desc": "An uninhabited nature reserve island just offshore — boat trips to its pristine beaches and extraordinary surrounding reef are the island's most popular excursion."},
+    {"icon": "🚲", "name": "Washington Slagbaai Park", "desc": "A national park covering 13% of the island — hiking, mountain biking and birdwatching through a cactus desert landscape with dramatic coastal scenery."},
+    {"icon": "🌅", "name": "Sunset Sailing", "desc": "The evening trade winds, salt flat reflections and Caribbean light at sunset make Bonaire's evenings extraordinary — catamaran tours are the perfect way to experience them."},
+    {"icon": "🪸", "name": "Night Diving", "desc": "Bonaire's reef comes alive after dark — octopus hunting, sleeping fish, bioluminescence and creatures that hide during the day. Among the finest night diving in the world."}
+  ],
+  "beaches": [
+    {"name": "Pink Beach", "type": "Unique", "desc": "A pink-tinged sand beach on the southern coast — the color comes from crushed coral and shells, and the snorkeling directly offshore is excellent."},
+    {"name": "Klein Bonaire", "type": "Natural", "desc": "The beaches of the uninhabited offshore island — white sand, turtle nesting sites and the clearest water in Bonaire's immediate vicinity."},
+    {"name": "Sorobon Beach", "type": "Windsurfing", "desc": "A protected lagoon on the east coast — shallow, flat water and consistent winds make it the windsurfing and kitesurfing capital of the island."},
+    {"name": "Lac Bay", "type": "Mangrove", "desc": "A sheltered bay of shallow turquoise water surrounded by mangroves — excellent for paddleboarding, kayaking and snorkeling in calm conditions."}
+  ],
+  "food": [
+    {"name": "Keshi Yena", "desc": "The Dutch Caribbean signature — a whole Edam cheese shell stuffed with spiced meat, raisins and olives. Found throughout Bonaire at local restaurants."},
+    {"name": "Fresh Fish", "desc": "Wahoo, mahi mahi and grouper caught daily — grilled simply at the harbor restaurants with local spices and the freshest lime on the island."},
+    {"name": "Funchi", "desc": "Cornmeal porridge — the Dutch Caribbean staple served as a side dish at every traditional meal, with a consistency between polenta and grits."},
+    {"name": "Sopi di Pisca", "desc": "Fish soup — a fragrant broth of the day's catch with vegetables and local herbs. The lunchtime staple at Bonaire's local restaurants."}
+  ],
+  "culture": "Bonaire's culture reflects its Dutch colonial heritage combined with the Afro-Caribbean identity of the majority population and the Papiamentu language shared with Aruba and Curaçao. The island is small — 20,000 people — and the diving culture has created an international community of underwater enthusiasts alongside the local Bonairean population.\n\nThe slave huts near the salt pans are the most powerful historical site on the island — tiny stone shelters where enslaved workers lived during the salt harvesting season, a stark reminder of the labor that built the Dutch Caribbean economy. The flamingos that now feed peacefully in these same salt pans create a complex image of beauty and historical memory.",
+  "bestTime": "Bonaire is outside the hurricane belt and has excellent weather year-round — truly one of the Caribbean's most consistent destinations. The trade winds blow strongest January through August, making it peak season for windsurfers. Diving is excellent every month.",
+  "practical": {
+    "currency": "US Dollar (USD) — Bonaire uses the dollar",
+    "language": "Papiamentu · Dutch · English widely spoken",
+    "howToGet": "Fly via Curaçao, Aruba or direct from Amsterdam. Flamingo Airport (BON). No cruise ships.",
+    "budget": "$90-160/day mid-range · $60-90 budget · $200+ dive resort"
+  }
+}
