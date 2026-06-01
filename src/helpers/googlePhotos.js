@@ -1,7 +1,7 @@
 
 const https = require('https');
 
-const photoCache = {};
+const photoCache = {}; // Cache cleared on restart
 
 async function getPlacePhoto(placeName, width = 400, searchQuery = null) {
   if (photoCache[placeName]) return photoCache[placeName];

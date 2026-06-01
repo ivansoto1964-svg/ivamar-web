@@ -430,7 +430,7 @@ nav{padding:0 1rem;}.nav-links{display:none;}
       </a>
     </div>
     <div style="text-align:center;margin-top:2rem;">
-      <a href="https://www.yourcaribbeanexpert.com" target="_blank" class="btn-teal">Read All Articles →</a>
+      <a href="https://blog.yourcaribbeanexpert.com" target="_blank" class="btn-teal">Read All Articles →</a>
     </div>
   </div>
 </section>
