@@ -109,7 +109,7 @@ nav{padding:0 1rem;}
 </nav>
 
 <section class="hero">
-  <img class="hero-img" src="https://source.unsplash.com/1600x900/?${encodeURIComponent(dest.name + ' caribbean')}" alt="${dest.name}" loading="eager" onerror="this.style.display='none'">
+  <img class="hero-img" src="https://api.unsplash.com/photos/random?query=${encodeURIComponent(dest.name + ' caribbean')}&client_id=UNSPLASH_KEY&w=1600&h=900" alt="${dest.name}" loading="eager" onerror="this.style.display='none'">
   <div class="hero-bg"></div>
   <div class="hero-overlay"></div>
   <div class="hero-content">
