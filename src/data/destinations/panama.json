@@ -6,27 +6,84 @@
   "region": "Central American Caribbean",
   "country": "Panama",
   "gradient": "linear-gradient(135deg, #003F88 0%, #00B4D8 100%)",
-  "bestFor": ["Nature", "Culture", "Diving", "Adventure"],
+  "bestFor": [
+    "Nature",
+    "Culture",
+    "Diving",
+    "Adventure"
+  ],
   "overview": "Panama's Caribbean coast is one of Central America's most rewarding destinations — and one of its least visited. Bocas del Toro, an archipelago of tropical islands in the northwest, offers colorful over-water bungalows, excellent surfing and snorkeling, and a Caribbean atmosphere that feels genuinely untouched. The San Blas islands, home to the Guna Yala indigenous people, offer perhaps the most authentic Caribbean experience remaining anywhere in the region.\n\nThe Guna people have maintained sovereignty over their 365 islands and surrounding sea for centuries — one island for every day of the year, according to local legend. They control their own territory, their own laws and their own tourism, welcoming visitors into a way of life that has remained largely unchanged for generations. Sleeping in a simple thatched hut, eating freshly caught lobster and watching the stars over the Caribbean without light pollution is an experience of profound simplicity.\n\nBeyond the islands, Panama City's Casco Viejo — the colonial old town — is one of the most beautiful and vibrant neighborhoods in Central America, and the Panama Canal remains one of the greatest engineering achievements in human history.",
   "topExperiences": [
-    {"icon": "🏝️", "name": "San Blas Islands", "desc": "365 pristine islands governed by the Guna Yala people — no hotels, no electricity, no development. Just white sand, palm trees and Caribbean water of extraordinary clarity."},
-    {"icon": "🌊", "name": "Bocas del Toro", "desc": "An archipelago of colorful water bungalows, surf breaks, mangrove channels and Caribbean nightlife — the most accessible Caribbean experience on Panama's coast."},
-    {"icon": "🚢", "name": "Panama Canal", "desc": "Watch ships transit between oceans at the Miraflores Locks — one of the greatest engineering achievements in human history and genuinely awe-inspiring."},
-    {"icon": "🤿", "name": "Coiba National Park", "desc": "A UNESCO World Heritage site — one of the last pristine Pacific reef systems in the Americas, with whale sharks, hammerheads and extraordinary biodiversity."},
-    {"icon": "🏘️", "name": "Casco Viejo", "desc": "Panama City's UNESCO colonial quarter — one of the most beautifully restored neighborhoods in Latin America, with rooftop bars overlooking the canal entrance."},
-    {"icon": "🦜", "name": "Darien Gap", "desc": "The legendary jungle that breaks the Pan-American Highway — one of the most biodiverse places on earth and the ultimate adventure for experienced travelers."}
+    {
+      "icon": "🏝️",
+      "name": "San Blas Islands",
+      "desc": "365 pristine islands governed by the Guna Yala people — no hotels, no electricity, no development. Just white sand, palm trees and Caribbean water of extraordinary clarity."
+    },
+    {
+      "icon": "🌊",
+      "name": "Bocas del Toro",
+      "desc": "An archipelago of colorful water bungalows, surf breaks, mangrove channels and Caribbean nightlife — the most accessible Caribbean experience on Panama's coast."
+    },
+    {
+      "icon": "🚢",
+      "name": "Panama Canal",
+      "desc": "Watch ships transit between oceans at the Miraflores Locks — one of the greatest engineering achievements in human history and genuinely awe-inspiring."
+    },
+    {
+      "icon": "🤿",
+      "name": "Coiba National Park",
+      "desc": "A UNESCO World Heritage site — one of the last pristine Pacific reef systems in the Americas, with whale sharks, hammerheads and extraordinary biodiversity."
+    },
+    {
+      "icon": "🏘️",
+      "name": "Casco Viejo",
+      "desc": "Panama City's UNESCO colonial quarter — one of the most beautifully restored neighborhoods in Latin America, with rooftop bars overlooking the canal entrance."
+    },
+    {
+      "icon": "🦜",
+      "name": "Darien Gap",
+      "desc": "The legendary jungle that breaks the Pan-American Highway — one of the most biodiverse places on earth and the ultimate adventure for experienced travelers."
+    }
   ],
   "beaches": [
-    {"name": "San Blas Beaches", "type": "Pristine", "desc": "Undeveloped white sand beaches on the Guna Yala islands — no development, no crowds, just the purest Caribbean experience remaining anywhere."},
-    {"name": "Red Frog Beach", "type": "Accessible", "desc": "Bocas del Toro's most famous beach — named for the poison dart frogs found in the jungle behind the sand, with excellent snorkeling just offshore."},
-    {"name": "Starfish Beach", "type": "Unique", "desc": "A shallow bay near Bocas town where hundreds of giant sea stars rest on the sandy bottom — an otherworldly experience in warm, clear water."},
-    {"name": "Bluff Beach", "type": "Wild", "desc": "Isla Colón's Atlantic-facing beach — long, wild and uncrowded, with leatherback turtles nesting March through October."}
+    {
+      "name": "San Blas Beaches",
+      "type": "Pristine",
+      "desc": "Undeveloped white sand beaches on the Guna Yala islands — no development, no crowds, just the purest Caribbean experience remaining anywhere."
+    },
+    {
+      "name": "Red Frog Beach",
+      "type": "Accessible",
+      "desc": "Bocas del Toro's most famous beach — named for the poison dart frogs found in the jungle behind the sand, with excellent snorkeling just offshore."
+    },
+    {
+      "name": "Starfish Beach",
+      "type": "Unique",
+      "desc": "A shallow bay near Bocas town where hundreds of giant sea stars rest on the sandy bottom — an otherworldly experience in warm, clear water."
+    },
+    {
+      "name": "Bluff Beach",
+      "type": "Wild",
+      "desc": "Isla Colón's Atlantic-facing beach — long, wild and uncrowded, with leatherback turtles nesting March through October."
+    }
   ],
   "food": [
-    {"name": "Sancocho", "desc": "Panama's national soup — chicken with yuca, corn and culantro in a deeply flavored broth. Every Panamanian grandmother's recipe is the definitive version."},
-    {"name": "Carimañola", "desc": "Yuca fritters stuffed with spiced meat — Panama's beloved street food, found at every bus stop and market in the country."},
-    {"name": "Ceviche Panameño", "desc": "Fresh fish or shrimp cured in lime with ají chombo (Panamanian hot pepper) — served in plastic cups with crackers as the ultimate street snack."},
-    {"name": "Guna Lobster", "desc": "In the San Blas islands, fresh spiny lobster is available for almost nothing — grilled simply over open fire and eaten on the beach as the sun sets."}
+    {
+      "name": "Sancocho",
+      "desc": "Panama's national soup — chicken with yuca, corn and culantro in a deeply flavored broth. Every Panamanian grandmother's recipe is the definitive version."
+    },
+    {
+      "name": "Carimañola",
+      "desc": "Yuca fritters stuffed with spiced meat — Panama's beloved street food, found at every bus stop and market in the country."
+    },
+    {
+      "name": "Ceviche Panameño",
+      "desc": "Fresh fish or shrimp cured in lime with ají chombo (Panamanian hot pepper) — served in plastic cups with crackers as the ultimate street snack."
+    },
+    {
+      "name": "Guna Lobster",
+      "desc": "In the San Blas islands, fresh spiny lobster is available for almost nothing — grilled simply over open fire and eaten on the beach as the sun sets."
+    }
   ],
   "culture": "Panama's Caribbean coast has a cultural complexity that reflects its position as a crossroads of the world — Guna, Ngäbe, Afro-Antillean, Spanish colonial and North American influences all coexist in a country that has been shaped by its geography above all else. The canal brought workers from the Caribbean, Europe and Asia, creating one of the most diverse nations in the Americas.\n\nThe Guna Yala people of the San Blas islands represent one of the most successful examples of indigenous sovereignty in the Americas — maintaining their language, traditions, mola textile art and governance while selectively engaging with the outside world. A visit to the Guna islands is not just a beach experience but an encounter with a culture of extraordinary resilience and beauty.",
   "bestTime": "January through April is the dry season on the Caribbean coast and the best time for San Blas. Bocas del Toro has a drier spell in September and October despite being the rainy season elsewhere. The Caribbean coast receives more rain than the Pacific, but showers are typically brief.",
@@ -35,5 +92,6 @@
     "language": "Spanish · English widely spoken · Guna in San Blas",
     "howToGet": "Fly into Tocumen International Airport (PTY) in Panama City. Small planes or boat to San Blas. Bus or plane to Bocas del Toro.",
     "budget": "$70-130/day mid-range · $40-70 budget · $200+ in Bocas resorts"
-  }
+  },
+  "searchQuery": "Bocas del Toro Panama turquoise water"
 }

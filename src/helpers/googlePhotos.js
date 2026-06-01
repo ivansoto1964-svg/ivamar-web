@@ -3,11 +3,11 @@ const https = require('https');
 
 const photoCache = {};
 
-async function getPlacePhoto(placeName, width = 400) {
+async function getPlacePhoto(placeName, width = 400, searchQuery = null) {
   if (photoCache[placeName]) return photoCache[placeName];
   
   return new Promise((resolve) => {
-    const query = encodeURIComponent(placeName + ' caribbean beach');
+    const query = encodeURIComponent(searchQuery || placeName + ' caribbean beach');
     const url = `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${query}&inputtype=textquery&fields=photos&key=${process.env.GOOGLE_PLACES_KEY}`;
     
     https.get(url, (res) => {

@@ -208,7 +208,7 @@ app.get("/caribex/:slug", async (req, res) => {
   const slug = req.params.slug;
   try {
     const dest = JSON.parse(fs.readFileSync(`${__dirname}/data/destinations/${slug}.json`, 'utf8'));
-    const heroPhoto = await getPlacePhoto(dest.name + ' ' + dest.country, 1600);
+    const heroPhoto = await getPlacePhoto(dest.name + ' ' + dest.country, 1600, dest.searchQuery);
     dest.heroPhoto = heroPhoto;
     res.send(renderDestination(dest));
   } catch(e) {
