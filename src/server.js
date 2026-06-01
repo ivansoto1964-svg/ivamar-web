@@ -207,7 +207,7 @@ app.get("/api/caribex-photos", async (req, res) => {
   const destinations = [
     { slug: 'puerto-rico', query: 'Old San Juan Puerto Rico beach' },
     { slug: 'dominican-republic', query: 'Punta Cana Dominican Republic beach' },
-    { slug: 'cuba', query: 'Havana Cuba colorful colonial' },
+    { slug: 'cuba', query: 'Cuba beach Caribbean sea' },
     { slug: 'jamaica', query: 'Jamaica Seven Mile Beach' },
     { slug: 'grand-cayman', query: 'Grand Cayman Seven Mile Beach' },
     { slug: 'haiti', query: 'Haiti Citadelle Laferriere' },
