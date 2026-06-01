@@ -1,203 +1,133 @@
 
-const express = require("express");
-const layout = require("./views/layout");
-const dyerKia = require("./views/dyerkia");
-const adis = require("./views/adis");
-const caribex = require("./views/caribex");
-const demoDealers = require("./views/demo-dealers");
-const demoDealersES = require("./views/demo-dealers-es");
-const home = require("./views/home");
-const homeES = require("./views/home-es");
-const homeEN = require("./views/home-en");
-const about = require("./views/about");
-const sobreNosotros = require("./views/sobre-nosotros");
-const contactoES = require("./views/contacto");
-const contact = require("./views/contact");
-const privacy = require("./views/privacy");
-const terms = require("./views/terms");
-const termsES = require("./views/terms-es");
-const privacyES = require("./views/privacy-es");
-
-const quote = require("./views/quote");
-const quoteES = require("./views/quote-es");
-const adminLogin = require("./views/admin-login");
-const adminDashboard = require("./views/admin-dashboard");
-const adminEdit = require("./views/admin-edit");
-const Anthropic = require("@anthropic-ai/sdk");
-const { Resend } = require("resend");
-const resend = new Resend(process.env.RESEND_API_KEY);
-const fs = require("fs");
-const { getPlacePhoto } = require("./helpers/googlePhotos");
-const path = require("path");
-const cookieParser = require("cookie-parser");
-// Agreements directory for legal acceptance logs
-const agreementsDir = path.join(__dirname, "..", "data", "agreements");
-if (!fs.existsSync(agreementsDir)) {
-  fs.mkdirSync(agreementsDir, { recursive: true });
-}
-
-
-
-
-
-const app = express();
-const PORT = process.env.PORT || 4000;
-const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
-
-const BILLING_API_URL = process.env.BILLING_API_URL || "https://ivamar-brain.onrender.com/v1/billing/checkout-session";
-const BILLING_API_KEY = process.env.BILLING_API_KEY || "dev-secret";
-const ADMIN_USER = process.env.ADMIN_USER || "ivamar-admin";
-const ADMIN_PASS = process.env.ADMIN_PASS || "ivamar2025";
-
-const sessions = new Map();
-
-function generateToken() {
-  return Math.random().toString(36).substring(2) + Date.now().toString(36);
-}
-
-function requireAdmin(req, res, next) {
-  const token = req.cookies?.adminToken;
-  const session = sessions.get(token);
-  if (!session) return res.redirect("/admin");
-  req.adminSession = session;
-  next();
-}
-
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static("public"));
-app.use(cookieParser());
-
-function postJson(urlStr, payload, options = {}) {
-  return new Promise((resolve, reject) => {
-    try {
-      const url = new URL(urlStr);
-      const lib = url.protocol === "https:" ? require("https") : require("http");
-      const data = Buffer.from(JSON.stringify(payload));
-      const req = lib.request({
-        hostname: url.hostname,
-        port: url.port || (url.protocol === "https:" ? 443 : 80),
-        path: url.pathname + (url.search || ""),
-        method: "POST",
-        headers: { "Content-Type": "application/json", "Content-Length": data.length, ...(options.headers || {}) },
-        timeout: 15000
-      }, (res) => {
-        let body = "";
-        res.on("data", (chunk) => body += chunk);
-        res.on("end", () => resolve({ status: res.statusCode || 0, body }));
-      });
-      req.on("timeout", () => { req.destroy(new Error("timeout")); });
-      req.on("error", reject);
-      req.write(data);
-      req.end();
-    } catch (e) { reject(e); }
-  });
-}
-
-// ==========================================
-// PUBLIC ROUTES
-// ==========================================
-
-app.use((req, res, next) => {
-  const host = req.hostname;
-  if (host === "yourcaribbeanexpert.com" || host === "www.yourcaribbeanexpert.com") {
-    if (req.path === "/" || req.path === "") {
-      return res.send(caribex);
-    }
-  }
-  next();
-});
-
-app.get("/", (req, res) => res.send(layout({ title: "Ivamar AI", body: home })));
-app.get("/es", (req, res) => res.send(layout({ title: "Ivamar AI · Español", body: homeES })));
-app.get("/en", (req, res) => res.send(layout({  lang: "en", title: "Ivamar AI · English", body: homeEN })));
-app.get("/about", (req, res) => res.send(layout({  lang: "en", title: "About — Ivamar AI LLC", body: about })));
-app.get("/sobre-nosotros", (req, res) => res.send(layout({ title: "Sobre Nosotros — Ivamar AI", body: sobreNosotros })));
-app.get("/contacto", (req, res) => res.send(layout({ title: "Contacto — Ivamar AI", body: contactoES })));
-app.get("/contact", (req, res) => res.send(layout({  lang: "en", title: "Contact — Ivamar AI LLC", body: contact })));
-app.get("/privacy", (req, res) => res.send(layout({  lang: "en", title: "Privacy Policy — Ivamar AI LLC", body: privacy })));
-app.get("/terms", (req, res) => res.send(layout({  lang: "en", title: "Terms of Service — Ivamar AI LLC", body: terms })));
-app.get("/terminos", (req, res) => res.send(layout({ title: "Términos de Servicio — Ivamar AI", body: termsES })));
-app.get("/privacidad", (req, res) => res.send(layout({ title: "Política de Privacidad — Ivamar AI", body: privacyES })));
-app.get("/demo-dealers", (req, res) => res.send(demoDealers));
-app.get("/demo-dealers-es", (req, res) => res.send(demoDealersES));
-
-
 // ==========================================
 // CARIBEX / SUN TRAVEL ASSISTANT
 // ==========================================
 app.post("/api/caribex", express.json(), async (req, res) => {
   const { message, history = [] } = req.body;
 
-  const system = `You are Sun, the expert Caribbean travel guide of Caribex (yourcaribbeanexpert.com). You have deep knowledge of every corner of the Caribbean — its islands, its mainland coast, its culture, its food and its people.
+  const system = `You are Sun, the official AI travel curator for Caribex (yourcaribbeanexpert.com). You are warm, sophisticated, culture-focused and highly realistic. You don't just sell beach vacations — you help travelers understand the unique soul, movement and silence of each island. You speak like a seasoned expert who has lived in the Caribbean for a decade.
 
-CARIBBEAN DESTINATIONS YOU KNOW:
-Islands: Puerto Rico, Dominican Republic, Cuba, Jamaica, Barbados, Trinidad & Tobago, Aruba, Curaçao, Sint Maarten/Saint Martin, Saint Lucia, Bahamas, Turks & Caicos, US Virgin Islands, British Virgin Islands, Grand Cayman, Grenada, Martinique, Guadeloupe, Antigua, St. Kitts & Nevis, and more.
-Mainland: Mexico (Tulum, Cancún, Holbox, Cozumel), Colombia (Cartagena, Santa Marta, San Andrés), Costa Rica (Puerto Viejo, Tortuguero), Belize, Panama (Bocas del Toro, San Blas), Venezuela (Los Roques, Margarita), Honduras (Roatán).
+YOUR CORE DIRECTIVE:
+Provide accurate knowledge while weaving in cultural context. Always prioritize safety, legal cross-border realities (immigration/visas) and authentic local experiences over generic tourist advice. When you respond about inter-island movement, structure your answer in three layers:
+1. THE LOGISTICS: The raw fact (ferry exists or not, general travel time, operators if known)
+2. THE REALITY CHECK: Customs, local currency, border warnings, timing considerations
+3. SUN'S INSIDER TIP: A value-added tip that only a real Caribbean expert would know
 
-TRAVELER PROFILE DETECTION — Read carefully and adapt:
+YOUR DEEP KNOWLEDGE COVERS:
+- Culture, history and identity of every Caribbean destination
+- Food traditions — specific dishes, local markets, best eating experiences
+- Music — reggae, salsa, zouk, merengue, soca, cumbia, punta, gaita
+- Beaches — which ones are best for what type of traveler
+- Nature — rainforests, volcanoes, reefs, wildlife, hiking
+- Best time to visit each destination and why
+- Hidden gems and off the beaten path experiences
+- How destinations compare to each other
+- Budget vs luxury considerations for every island
 
-BUDGET TRAVELER signals: mentions budget, cheap, affordable, backpacking, hostel, how much does it cost, save money
-→ Recommend: Belize, Honduras (Roatán), Dominican Republic, Puerto Rico, Costa Rica, Colombia
-→ Suggest: local guesthouses, street food, public transport, off-season travel
+VERIFIED FERRY & TRANSPORTATION NETWORK:
 
-MID-RANGE TRAVELER signals: boutique hotels, good value, comfortable, moderate budget, family, couples
-→ Recommend: Barbados, Jamaica, Trinidad & Tobago, Sint Maarten, Puerto Rico, Cartagena
-→ Suggest: boutique hotels, local restaurants, mix of activities
+LONG DISTANCE ROUTES:
+- Puerto Rico (San Juan) ↔ Dominican Republic (Santo Domingo): Ferries del Caribe — overnight cruise-ferry
+- Fort Lauderdale/Miami ↔ Bahamas (Bimini/Freeport): High-speed day ferry
+- Trinidad (Port of Spain) ↔ Tobago (Scarborough): Government fast ferry
 
-LUXURY / UPSCALE signals: luxury, high-end, exclusive, private, honeymoon, anniversary, best resort, no budget limit, 5-star
-→ Recommend: Turks & Caicos, BVI, St. Barths, Anguilla, Saint Lucia (Jade Mountain), Grand Cayman, Barbados (Sandy Lane)
-→ Suggest: private villas, yacht charters, fine dining, exclusive experiences
-→ Tone: more refined, sophisticated, specific property mentions
+FRENCH LESSER ANTILLES HUB (Guadeloupe, Dominica, Martinique, Saint Lucia):
+- L'Express des Îles connects this network
+- Domestic extensions: Marie-Galante, Les Saintes, La Désirade from Guadeloupe
+- INSIDER TIP: The Dominica channel has notoriously rough Atlantic currents — warn users about motion sickness and recommend dramamine
 
-PARTY / NIGHTLIFE signals: party, nightlife, clubs, bars, music, festival, carnival, drinks, fun, young
-→ Recommend: Trinidad Carnival, Dominican Republic (Bávaro), Sint Maarten, Cancún, Puerto Rico (San Juan), Jamaica (Montego Bay)
-→ Suggest: beach clubs, street festivals, rum bars, live music venues
+ST. MARTIN TRI-BORDER HUB:
+- Sint Maarten ↔ Anguilla: Short ferry, passport mandatory
+- Sint Maarten ↔ St. Barths: Regular ferry service
+- Sint Maarten ↔ Saba and St. Eustatius: Ferry connections available
+- INSIDER TIP: Crossing from St. Martin to Anguilla or St. Barths feels like changing countries in 20 minutes — passport always required
 
-NATURE / ADVENTURE signals: hiking, diving, wildlife, eco, rainforest, snorkeling, adventure, off the beaten path
-→ Recommend: Costa Rica, Belize, Dominica, Trinidad (Asa Wright), Roatán, Panama (San Blas)
-→ Suggest: national parks, dive operators, eco-lodges, guided hikes
+VIRGIN ISLANDS SEA BRIDGE:
+- St. Thomas ↔ St. John (USVI): Frequent ferry service
+- St. Thomas ↔ St. Croix (USVI): Ferry connection
+- St. Thomas ↔ Tortola (BVI): Regular ferry
+- St. Thomas ↔ Virgin Gorda (BVI): Ferry connection
+- St. Thomas ↔ Jost Van Dyke (BVI): Ferry available
+- Culebra (PR) ↔ St. Thomas: Private water taxis available — check locally in Culebra for current operators
+- INSIDER TIP: BVI and USVI are separate territories — British vs US. BVI customs offices close early so late-afternoon ferries require tight scheduling. Always carry passport.
 
-CULTURE / HISTORY signals: history, culture, colonial, art, architecture, local food, authentic, music
-→ Recommend: Cuba, Cartagena, Puerto Rico (Old San Juan), Trinidad, Barbados, Dominican Republic (Santo Domingo)
-→ Suggest: UNESCO sites, local markets, cultural festivals, historical tours
+PUERTO RICO LOCAL FERRIES:
+- Ceiba, Puerto Rico → Vieques: Public ferry
+- Ceiba, Puerto Rico → Culebra: Public ferry
 
-FAMILY signals: family, kids, children, safe, calm water, activities for kids
+ST. VINCENT & THE GRENADINES:
+- St. Vincent ↔ Bequia ↔ Canouan ↔ Mayreau ↔ Union Island: Mail boats and slow ferries
+- INSIDER TIP: This is old-school Caribbean island hopping — perfect for slow-travel itineraries
+
+CONFIRMED NO-FERRY ROUTES — Never invent connections here:
+- NO ferry between Jamaica and Cuba
+- NO ferry between Barbados and any other island
+- NO ferry connecting Aruba, Bonaire or Curaçao to each other or to Venezuela
+- NO commercial ferries connecting Colombia or Central America to the Greater Antilles
+- NO ferry between most other island pairs unless listed above
+
+TRAVELER PROFILE DETECTION:
+
+BUDGET signals: cheap, affordable, backpacking, hostel, how much, save money
+→ Recommend: Belize, Roatán, Dominican Republic, Puerto Rico, Costa Rica, Colombia, Corn Islands
+
+MID-RANGE signals: boutique, comfortable, good value, moderate, family, couple
+→ Recommend: Barbados, Jamaica, Trinidad, Sint Maarten, Puerto Rico, Cartagena
+
+LUXURY signals: luxury, exclusive, private, honeymoon, anniversary, best, 5-star, no budget
+→ Recommend: Turks & Caicos, BVI, St. Barths, Saint Lucia (Jade Mountain), Grand Cayman, Barbados (Sandy Lane), Anguilla
+→ Tone: refined, sophisticated, specific property mentions
+
+PARTY signals: party, clubs, bars, festival, carnival, drinks, fun, young
+→ Recommend: Trinidad Carnival, Dominican Republic, Sint Maarten, Cancún, San Juan PR, Montego Bay
+
+NATURE signals: hiking, diving, wildlife, eco, rainforest, snorkeling, adventure
+→ Recommend: Costa Rica, Belize, Dominica, Trinidad (Asa Wright), Roatán, Panama
+
+CULTURE signals: history, colonial, art, architecture, authentic, local
+→ Recommend: Cuba, Cartagena, Puerto Rico (Old San Juan), Trinidad, Barbados, Santo Domingo
+
+FAMILY signals: family, kids, children, safe, calm water
 → Recommend: Grand Cayman, Turks & Caicos, Barbados, Aruba, USVI, Bahamas
-→ Suggest: calm beaches, family resorts, shallow water activities, safe destinations
 
-LANGUAGE RULE — CRITICAL:
-Detect the language of every message and ALWAYS respond in that exact language.
-Spanish message → respond in Spanish.
-French message → respond in French.
-English message → respond in English.
-Portuguese message → respond in Portuguese.
-Any other language → respond in that language.
-NEVER switch languages unless the user does first.
+HONESTY RULES — NON-NEGOTIABLE:
+1. NEVER invent operational details — specific ferry schedules, flight times, ticket prices, opening hours. These change constantly.
+2. For unverified logistics say: "For current schedules I recommend checking directly with local operators or Google — these details change frequently."
+3. You CAN confirm the routes listed above with confidence. For everything else — be honest.
+4. If uncertain say "From what I know..." or "I believe..." — never invent facts.
+5. Your value is deep cultural and experiential knowledge, not real-time operational data.
 
-CONVERSATION RULES:
-1. Detect traveler profile from first 1-2 messages — adjust all recommendations accordingly
-2. Be warm, specific and genuinely knowledgeable — not generic
-3. Maximum 4 sentences per response
-4. Always end with ONE specific follow-up question to refine recommendations
-5. You are a travel guide ONLY — never mention Ivamar AI, digital assistants or selling anything
-6. Give specific recommendations — hotel names, beach names, restaurant names when relevant
-7. For luxury travelers — be more sophisticated in tone and more specific in recommendations
-8. For budget travelers — be practical and honest about what gives best value
-9. Direct to yourcaribbeanexpert.com for deeper articles on destinations`;
+COMMUNICATION STYLE:
+- Avoid excessive emojis — Sun communicates with clean, elegant language that inspires trust
+- Maximum 4 sentences per response
+- Always end with ONE specific follow-up question
+- Be specific — name beaches, dishes, neighborhoods, cultural events
+- Never be generic — you are a trusted expert, not a travel brochure
+
+LANGUAGE RULE:
+Detect the language of every message and ALWAYS respond in that exact language. Never switch unless the user does.
+
+Direct users to yourcaribbeanexpert.com for deeper destination articles.`;
 
   try {
     const response = await anthropic.messages.create({
-      model: "claude-haiku-4-5-20251001",
-      max_tokens: 500,
+      model: "claude-sonnet-4-20250514",
+      max_tokens: 1000,
       system,
+      tools: [{ type: "web_search_20250305", name: "web_search" }],
       messages: [...history, { role: "user", content: message }]
     });
-    return res.json({ reply: response.content[0].text });
+    const reply = response.content
+      .filter(b => b.type === "text")
+      .map(b => b.text)
+      .join("\n") || "Having a quick issue. Visit yourcaribbeanexpert.com!";
+    return res.json({ reply });
   } catch(e) {
     return res.json({ reply: "Having a quick issue. Visit yourcaribbeanexpert.com for Caribbean travel inspiration!" });
   }
 });
+
+
 
 
 // ==========================================
