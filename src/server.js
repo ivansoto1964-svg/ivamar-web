@@ -27,6 +27,7 @@ const Anthropic = require("@anthropic-ai/sdk");
 const { Resend } = require("resend");
 const resend = new Resend(process.env.RESEND_API_KEY);
 const fs = require("fs");
+const { getPlacePhoto } = require("./helpers/googlePhotos");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 // Agreements directory for legal acceptance logs
@@ -203,10 +204,12 @@ CONVERSATION RULES:
 // ==========================================
 const renderDestination = require("./views/caribex/destination-template");
 
-app.get("/caribex/:slug", (req, res) => {
+app.get("/caribex/:slug", async (req, res) => {
   const slug = req.params.slug;
   try {
     const dest = JSON.parse(fs.readFileSync(`${__dirname}/data/destinations/${slug}.json`, 'utf8'));
+    const heroPhoto = await getPlacePhoto(dest.name + ' ' + dest.country, 1600);
+    dest.heroPhoto = heroPhoto;
     res.send(renderDestination(dest));
   } catch(e) {
     res.redirect("/caribex");
