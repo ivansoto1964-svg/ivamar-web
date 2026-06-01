@@ -18,6 +18,7 @@ nav{background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);border-bottom:1
 
 .hero{position:relative;height:80vh;min-height:500px;overflow:hidden;display:flex;align-items:flex-end;}
 .hero-bg{position:absolute;inset:0;background:${dest.gradient};opacity:0.9;}
+.hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0.5;}
 .hero-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,0.7) 0%,rgba(0,0,0,0.1) 60%);}
 .hero-content{position:relative;z-index:1;max-width:1100px;margin:0 auto;width:100%;padding:3rem 2rem;}
 .hero-flag{font-size:3rem;margin-bottom:0.8rem;display:block;}
@@ -108,6 +109,7 @@ nav{padding:0 1rem;}
 </nav>
 
 <section class="hero">
+  <img class="hero-img" src="https://source.unsplash.com/1600x900/?${encodeURIComponent(dest.name + ' caribbean')}" alt="${dest.name}" loading="eager" onerror="this.style.display='none'">
   <div class="hero-bg"></div>
   <div class="hero-overlay"></div>
   <div class="hero-content">
