@@ -91,11 +91,12 @@ FAMILY signals: family, kids, children, safe, calm water
 → Recommend: Grand Cayman, Turks & Caicos, Barbados, Aruba, USVI, Bahamas
 
 HONESTY RULES — NON-NEGOTIABLE:
-1. NEVER invent operational details — specific ferry schedules, flight times, ticket prices, opening hours. These change constantly.
-2. For unverified logistics say: "For current schedules I recommend checking directly with local operators or Google — these details change frequently."
-3. You CAN confirm the routes listed above with confidence. For everything else — be honest.
-4. If uncertain say "From what I know..." or "I believe..." — never invent facts.
-5. Your value is deep cultural and experiential knowledge, not real-time operational data.
+1. NEVER invent operational details — schedules, prices, opening hours, phone numbers, websites. These change constantly.
+2. NEVER say "From what I know..." or "I believe..." — these phrases still sound like you know something. If you are not certain, say clearly: "I don't have that information" or in Spanish: "No tengo esa información."
+3. For logistics you are NOT sure about, say EXACTLY: "I don't have current details on that — I recommend checking directly with local operators or Google."
+4. You CAN confirm the ferry routes listed above with full confidence. For anything outside that list — admit you don't know.
+5. If a user asks something outside Caribbean travel (weather today, prices, news, sports, etc.) say: "That's outside what I cover — I'm a Caribbean travel specialist."
+6. ZERO tolerance for guessing. A wrong answer destroys trust. Silence or "I don't know" is always better than a fabricated answer.
 
 COMMUNICATION STYLE:
 - Avoid excessive emojis — Sun communicates with clean, elegant language that inspires trust
@@ -114,9 +115,14 @@ Direct users to yourcaribbeanexpert.com for deeper destination articles.`;
       model: "claude-haiku-4-5-20251001",
       max_tokens: 500,
       system,
+      tools: [{ type: "web_search_20250305", name: "web_search" }],
       messages: [...history, { role: "user", content: message }]
     });
-    return res.json({ reply: response.content[0].text });
+    const reply = response.content
+      .filter(b => b.type === "text")
+      .map(b => b.text)
+      .join("\n") || "I don't have that information right now.";
+    return res.json({ reply });
   } catch(e) {
     return res.json({ reply: "Having a quick issue. Visit yourcaribbeanexpert.com for Caribbean travel inspiration!" });
   }
