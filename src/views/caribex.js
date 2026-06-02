@@ -141,6 +141,22 @@ nav{background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);border-bottom:1
 
 /* BLOG */
 .blog-sec{padding:5rem 2rem;background:#fff;}
+.hero-featured-post{width:100%;}
+.hero-post-card{display:block;border-radius:16px;overflow:hidden;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);text-decoration:none;transition:all 0.2s;}
+.hero-post-card:hover{background:rgba(255,255,255,0.14);border-color:var(--teal);transform:translateY(-2px);}
+.hero-post-img{width:100%;height:200px;object-fit:cover;display:block;}
+.hero-post-body{padding:1.2rem;}
+.hero-post-tag{font-size:0.62rem;font-weight:700;color:var(--teal);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:0.5rem;}
+.hero-post-title{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:#fff;line-height:1.4;margin-bottom:0.5rem;}
+.hero-post-desc{font-size:0.78rem;color:rgba(255,255,255,0.6);line-height:1.5;}
+.hero-post-read{display:inline-block;margin-top:0.8rem;font-size:0.72rem;font-weight:700;color:var(--teal);letter-spacing:0.05em;}
+.skeleton-img{height:200px;background:rgba(255,255,255,0.08);border-radius:12px 12px 0 0;animation:shimmer 1.5s infinite;}
+.skeleton-tag{height:10px;width:80px;background:rgba(255,255,255,0.08);border-radius:4px;margin:1rem 1rem 0.5rem;animation:shimmer 1.5s infinite;}
+.skeleton-title{height:16px;width:90%;background:rgba(255,255,255,0.08);border-radius:4px;margin:0 1rem 0.5rem;animation:shimmer 1.5s infinite;}
+.skeleton-desc{height:12px;width:70%;background:rgba(255,255,255,0.08);border-radius:4px;margin:0 1rem;animation:shimmer 1.5s infinite;}
+.blog-card-skeleton{border-radius:14px;border:1px solid var(--border);height:220px;background:var(--light);animation:shimmer 1.5s infinite;}
+@keyframes shimmer{0%{opacity:0.5;}50%{opacity:1;}100%{opacity:0.5;}}
+
 .blog-inner{max-width:1100px;margin:0 auto;}
 .blog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:2.5rem;}
 .blog-card{border-radius:14px;overflow:hidden;border:1px solid var(--border);transition:all 0.2s;text-decoration:none;}
@@ -235,36 +251,12 @@ nav{padding:0 1rem;}.nav-links{display:none;}
       </div>
     </div>
     <div class="hero-visual">
-      <div class="dest-grid">
-        <div class="dest-card featured">
-          <div class="dest-card-flag">🇵🇷</div>
-          <div class="dest-card-name">Puerto Rico</div>
-          <div class="dest-card-type">Island · Culture · History</div>
-        </div>
-        <div class="dest-card">
-          <div class="dest-card-flag">🇩🇴</div>
-          <div class="dest-card-name">Dominican Rep.</div>
-          <div class="dest-card-type">Island · Beach · Music</div>
-        </div>
-        <div class="dest-card">
-          <div class="dest-card-flag">🇨🇴</div>
-          <div class="dest-card-name">Cartagena</div>
-          <div class="dest-card-type">Mainland · Colonial · Art</div>
-        </div>
-        <div class="dest-card">
-          <div class="dest-card-flag">🇲🇽</div>
-          <div class="dest-card-name">Tulum</div>
-          <div class="dest-card-type">Mexico · Ruins · Nature</div>
-        </div>
-        <div class="dest-card">
-          <div class="dest-card-flag">🇯🇲</div>
-          <div class="dest-card-name">Jamaica</div>
-          <div class="dest-card-type">Island · Music · Vibes</div>
-        </div>
-        <div class="dest-card">
-          <div class="dest-card-flag">🇧🇿</div>
-          <div class="dest-card-name">Belize</div>
-          <div class="dest-card-type">Mainland · Reef · Jungle</div>
+      <div id="hero-featured-post" class="hero-featured-post">
+        <div class="hero-post-skeleton">
+          <div class="skeleton-img"></div>
+          <div class="skeleton-tag"></div>
+          <div class="skeleton-title"></div>
+          <div class="skeleton-desc"></div>
         </div>
       </div>
     </div>
@@ -403,31 +395,10 @@ nav{padding:0 1rem;}.nav-links{display:none;}
     <div class="sec-tag">From the Blog</div>
     <h2 class="sec-title">Caribbean <em>Insights</em></h2>
     <p class="sec-sub">Thoughtful stories about Caribbean culture, travel and regional insight — beyond the surface.</p>
-    <div class="blog-grid">
-      <a href="https://blog.yourcaribbeanexpert.com/2026/03/not-all-turquoise-beaches-mean-same.html" target="_blank" class="blog-card">
-        <div class="blog-card-img">🏖️</div>
-        <div class="blog-card-body">
-          <div class="blog-card-tag">Caribbean Travel</div>
-          <div class="blog-card-title">Not All Turquoise Beaches Mean the Same Thing</div>
-          <div class="blog-card-desc">Two beaches may share the same shade of blue and offer completely different experiences.</div>
-        </div>
-      </a>
-      <a href="https://blog.yourcaribbeanexpert.com/2026/02/choosing-caribbean-is-not-choosing.html" target="_blank" class="blog-card">
-        <div class="blog-card-img">🌊</div>
-        <div class="blog-card-body">
-          <div class="blog-card-tag">Travel Mindset</div>
-          <div class="blog-card-title">Choosing the Caribbean Is Not Choosing a Beach</div>
-          <div class="blog-card-desc">It's choosing a rhythm, a culture and a context that shapes the entire experience.</div>
-        </div>
-      </a>
-      <a href="https://blog.yourcaribbeanexpert.com/2025/12/the-caribbean-is-not-one-destination_30.html" target="_blank" class="blog-card">
-        <div class="blog-card-img">🌴</div>
-        <div class="blog-card-body">
-          <div class="blog-card-tag">Caribbean Insights</div>
-          <div class="blog-card-title">The Caribbean Is Not One Destination</div>
-          <div class="blog-card-desc">The first thing every traveler should understand before planning their Caribbean trip.</div>
-        </div>
-      </a>
+    <div id="blog-grid" class="blog-grid">
+      <div class="blog-card-skeleton"></div>
+      <div class="blog-card-skeleton"></div>
+      <div class="blog-card-skeleton"></div>
     </div>
     <div style="text-align:center;margin-top:2rem;">
       <a href="https://blog.yourcaribbeanexpert.com" target="_blank" class="btn-teal">Read All Articles →</a>
@@ -513,6 +484,74 @@ async function loadDestinationPhotos() {
 }
 
 document.addEventListener('DOMContentLoaded', loadDestinationPhotos);
+</script>
+
+<script>
+(function(){
+  const FEED = 'https://blog.yourcaribbeanexpert.com/feeds/posts/default?alt=json&max-results=4';
+  fetch(FEED)
+    .then(r => r.json())
+    .then(data => {
+      const entries = data.feed.entry || [];
+
+      function getImg(entry) {
+        if (entry.media$thumbnail) return entry.media$thumbnail.url.replace('/s72-c/', '/s600-c/');
+        const m = (entry.content && entry.content.$t || '').match(/src="([^"]+)"/);
+        return m ? m[1] : 'https://yourcaribbeanexpert.com/img/caribex-default.jpg';
+      }
+
+      function getLink(entry) {
+        const l = entry.link.find(x => x.rel === 'alternate');
+        return l ? l.href : 'https://blog.yourcaribbeanexpert.com';
+      }
+
+      function getDesc(entry) {
+        const raw = entry.summary ? entry.summary.$t : (entry.content ? entry.content.$t : '');
+        return raw.replace(/<[^>]+>/g, '').substring(0, 120) + '...';
+      }
+
+      function getTag(entry) {
+        return entry.category && entry.category[0] ? entry.category[0].term : 'Caribbean Travel';
+      }
+
+      // Hero featured post (first)
+      if (entries[0]) {
+        const e = entries[0];
+        document.getElementById('hero-featured-post').innerHTML =
+          '<a href="' + getLink(e) + '" target="_blank" class="hero-post-card">' +
+          '<img class="hero-post-img" src="' + getImg(e) + '" alt="' + e.title.$t + '" onerror="this.style.display=\'none\'">' +
+          '<div class="hero-post-body">' +
+          '<div class="hero-post-tag">' + getTag(e) + '</div>' +
+          '<div class="hero-post-title">' + e.title.$t + '</div>' +
+          '<div class="hero-post-desc">' + getDesc(e) + '</div>' +
+          '<span class="hero-post-read">Read article →</span>' +
+          '</div></a>';
+      }
+
+      // Blog grid (next 3)
+      const grid = document.getElementById('blog-grid');
+      if (grid) {
+        const posts = entries.slice(1, 4);
+        if (posts.length === 0) return;
+        grid.innerHTML = posts.map(e =>
+          '<a href="' + getLink(e) + '" target="_blank" class="blog-card">' +
+          '<div class="blog-card-img" style="background:linear-gradient(135deg,#E0F7FA,#B3E5FC);height:140px;overflow:hidden;">' +
+          '<img src="' + getImg(e) + '" alt="" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display=\'none\'">' +
+          '</div>' +
+          '<div class="blog-card-body">' +
+          '<div class="blog-card-tag">' + getTag(e) + '</div>' +
+          '<div class="blog-card-title">' + e.title.$t + '</div>' +
+          '<div class="blog-card-desc">' + getDesc(e) + '</div>' +
+          '</div></a>'
+        ).join('');
+      }
+    })
+    .catch(() => {
+      // Fallback — keep skeletons hidden, show nothing
+      const grid = document.getElementById('blog-grid');
+      if (grid) grid.innerHTML = '';
+    });
+})();
 </script>
 </body>
 </html>
