@@ -1147,6 +1147,46 @@ app.post("/start", async (req, res) => {
 // DYNAMIC BUSINESS PAGES
 // ==========================================
 
+// ==========================================
+// SEO — SITEMAP & ROBOTS
+// ==========================================
+app.get("/sitemap.xml", (req, res) => {
+  const base = "https://yourcaribbeanexpert.com";
+  const destinations = [
+    'puerto-rico','dominican-republic','cuba','jamaica','grand-cayman',
+    'haiti','vieques-culebra','barbados','santa-lucia','trinidad-tobago',
+    'sint-maarten','martinique','guadeloupe','st-barths','grenada',
+    'antigua','dominica','st-kitts-nevis','aruba','curacao','bonaire',
+    'usvi','bvi','turks-caicos','bahamas','tulum','cartagena','san-andres',
+    'costa-rica','belize','panama','roatan','venezuela','corn-islands',
+    'guatemala-caribbean'
+  ];
+
+  const urls = [
+    `<url><loc>${base}/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>`,
+    `<url><loc>${base}/caribex</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>`,
+    ...destinations.map(slug =>
+      `<url><loc>${base}/caribex/${slug}</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>`
+    )
+  ].join("\n  ");
+
+  res.header("Content-Type", "application/xml");
+  res.send(`<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  ${urls}
+</urlset>`);
+});
+
+app.get("/robots.txt", (req, res) => {
+  res.header("Content-Type", "text/plain");
+  res.send(`User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /api/
+
+Sitemap: https://yourcaribbeanexpert.com/sitemap.xml`);
+});
+
 app.get("/:slug", (req, res) => {
   const slug = req.params.slug;
   const businessFile = path.join(__dirname, "..", "data", "businesses", `${slug}.json`);
