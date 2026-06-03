@@ -72,6 +72,19 @@ nav{background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);border-bottom:1
 .prac-value{font-size:0.82rem;color:var(--dark);line-height:1.5;font-weight:500;}
 
 .best-time{padding:3rem 2rem;background:#F0F8FF;text-align:center;}
+.local-cta{padding:5rem 2rem;background:linear-gradient(160deg,#0D1B2A 0%,#023E8A 100%);}
+.local-cta-inner{max-width:800px;margin:0 auto;text-align:center;}
+.local-cta-tag{font-size:0.68rem;font-weight:700;color:var(--teal);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:1rem;}
+.local-cta-title{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:700;color:#fff;line-height:1.2;margin-bottom:1.5rem;}
+.local-cta-text{font-size:0.95rem;color:rgba(255,255,255,0.75);line-height:1.9;margin-bottom:1rem;max-width:680px;margin-left:auto;margin-right:auto;}
+.local-cta-sub{font-size:0.82rem;color:rgba(255,255,255,0.5);margin-bottom:2rem;font-style:italic;}
+.local-cta-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
+.btn-list{display:inline-flex;align-items:center;background:var(--teal);color:#fff;padding:0.9rem 1.8rem;border-radius:6px;font-size:0.88rem;font-weight:700;text-decoration:none;transition:all 0.2s;}
+.btn-list:hover{background:#0096B4;transform:translateY(-1px);}
+.btn-share{display:inline-flex;align-items:center;background:rgba(255,255,255,0.1);color:#fff;padding:0.9rem 1.8rem;border-radius:6px;font-size:0.88rem;font-weight:700;text-decoration:none;border:1px solid rgba(255,255,255,0.2);transition:all 0.2s;}
+.btn-share:hover{background:rgba(255,255,255,0.18);}
+@media(max-width:768px){.local-cta{padding:3rem 1rem;}.local-cta-btns{flex-direction:column;align-items:center;}}
+
 .best-time-inner{max-width:700px;margin:0 auto;}
 .best-time p{font-size:0.92rem;color:var(--mid);line-height:1.8;}
 
@@ -223,6 +236,28 @@ nav{padding:0 1rem;}
     </div>
   </div>
 </section>
+
+
+<section class="local-cta">
+  <div class="local-cta-inner">
+    <div class="local-cta-tag">🌴 For Local Business Owners</div>
+    <h2 class="local-cta-title">You know this island better than any travel guide ever will.</h2>
+    <p class="local-cta-text">The best Caribbean experiences aren't on the big booking sites — they're the hidden gems, the family restaurants, the tours run by people who actually grew up here. Help us change that. List your business on Caribex for free and let travelers discover ${dest.name} through the people who actually live it.</p>
+    <p class="local-cta-sub">No commissions. No fees. No contracts. Just your slice of paradise, shared with the world.</p>
+    <div class="local-cta-btns">
+      <a href="/caribex/list-your-business" class="btn-list">List Your Business Free →</a>
+      <a id="share-btn" href="#" class="btn-share" onclick="shareCaribex(event)">📲 Share with Someone Who Should</a>
+    </div>
+  </div>
+</section>
+
+<script>
+function shareCaribex(e) {
+  e.preventDefault();
+  const msg = encodeURIComponent("Hey! I found this Caribbean travel site that lists hotels, tours and restaurants for free — no commissions, no fees. Thought you or someone you know might be interested: https://yourcaribbeanexpert.com/caribex/list-your-business 🌴");
+  window.open("https://wa.me/?text=" + msg, "_blank");
+}
+</script>
 
 <section class="assist-strip">
   <div class="assist-strip-inner">
