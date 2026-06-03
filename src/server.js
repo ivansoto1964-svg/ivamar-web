@@ -1,5 +1,9 @@
 
 const express = require("express");
+const sanitizeHtml = require('sanitize-html');
+const sanitize = (str) => str ? sanitizeHtml(str, { allowedTags: [], allowedAttributes: {} }) : '';
+
+
 
 // ==========================================
 // RATE LIMITING
@@ -1320,7 +1324,16 @@ app.post("/start", async (req, res) => {
 // CARIBEX DIRECTORY — LISTING SUBMISSION
 // ==========================================
 app.post("/api/listing-submit", formLimiter, express.json(), async (req, res) => {
-  const { name, category, destination, desc, fullDesc, email, whatsapp, website, photo, price } = req.body;
+  const name = sanitize(req.body.name);
+  const category = sanitize(req.body.category);
+  const destination = sanitize(req.body.destination);
+  const desc = sanitize(req.body.desc);
+  const fullDesc = sanitize(req.body.fullDesc);
+  const email = sanitize(req.body.email);
+  const whatsapp = sanitize(req.body.whatsapp);
+  const website = sanitize(req.body.website);
+  const photo = sanitize(req.body.photo);
+  const price = sanitize(req.body.price);
 
   if (!name || !category || !destination || !desc || !fullDesc || !email || !photo) {
     return res.json({ ok: false, error: "Missing required fields" });
