@@ -495,7 +495,7 @@ document.addEventListener('DOMContentLoaded', loadDestinationPhotos);
       const entries = data.feed.entry || [];
 
       function getImg(entry) {
-        if (entry.media$thumbnail) return entry.media$thumbnail.url.replace('/s72-c/', '/s600-c/');
+        if (entry.media$thumbnail) return entry.media$thumbnail.url.replace(/\/s\d+(-c)?\//g, '/s1600/');
         const m = (entry.content && entry.content.$t || '').match(/src="([^"]+)"/);
         return m ? m[1] : 'https://yourcaribbeanexpert.com/img/caribex-default.jpg';
       }
