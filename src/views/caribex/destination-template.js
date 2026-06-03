@@ -335,7 +335,10 @@ nav{padding:0 1rem;}
 <script>
 const DEST_SLUG = '${dest.slug}';
 const DEST_NAME = '${dest.name}';
-const CAT_NAMES = { hotels: 'Where to Stay', tours: 'Tours & Experiences', transport: 'Transportation', restaurants: 'Where to Eat' };
+const CAT_NAMES = { hotels: 'Where to Stay', tours: 'Tours & Experiences', transport: 'Transportation', restaurants: 'Where to Eat' </body>
+</html>
+`;
+};
 
 async function loadCounts() {
   const cats = ['hotels','tours','transport','restaurants'];
