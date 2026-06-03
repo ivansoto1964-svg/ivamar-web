@@ -443,5 +443,7 @@ function shareCaribex(e) {
   <div class="footer-logo">Carib<span>ex</span></div>
   <div class="footer-info">© 2026 Caribex — Your Caribbean Expert · A project by Ivamar AI LLC</div>
 </footer>
+</body>
+</html>
 `;
 };
