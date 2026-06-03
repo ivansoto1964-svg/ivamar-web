@@ -4,6 +4,8 @@ const layout = require("./views/layout");
 const dyerKia = require("./views/dyerkia");
 const adis = require("./views/adis");
 const caribex = require("./views/caribex");
+const directoryTerms = require("./views/caribex/directory-terms");
+const listYourBusiness = require("./views/caribex/list-your-business");
 const demoDealers = require("./views/demo-dealers");
 const demoDealersES = require("./views/demo-dealers-es");
 const home = require("./views/home");
@@ -318,6 +320,136 @@ app.get("/api/caribex-photos", async (req, res) => {
 // CARIBEX DESTINATION PAGES
 // ==========================================
 const renderDestination = require("./views/caribex/destination-template");
+
+app.get("/caribex/directory-terms", (req, res) => res.send(directoryTerms));
+app.get("/caribex/list-your-business", (req, res) => res.send(listYourBusiness));
+
+// CARIBEX DIRECTORY — APPROVE LISTING (Admin)
+app.post("/admin/listings/approve/:id", requireAdmin, async (req, res) => {
+  try {
+    const fs2 = require('fs');
+    const path = require('path');
+    const pendingFile = path.join(__dirname, '../data/listings/pending.json');
+    const approvedDir = path.join(__dirname, '../data/listings');
+
+    let pending = JSON.parse(fs2.readFileSync(pendingFile, 'utf8'));
+    const listing = pending.find(l => l.id === req.params.id);
+
+    if (!listing) return res.json({ ok: false, error: 'Listing not found' });
+
+    // Move to approved file for that destination
+    const approvedFile = path.join(approvedDir, listing.destination + '.json');
+    let approved = [];
+    if (fs2.existsSync(approvedFile)) {
+      approved = JSON.parse(fs2.readFileSync(approvedFile, 'utf8'));
+    }
+    listing.status = 'approved';
+    listing.approvedAt = new Date().toISOString();
+    approved.push(listing);
+    fs2.writeFileSync(approvedFile, JSON.stringify(approved, null, 2));
+
+    // Remove from pending
+    pending = pending.filter(l => l.id !== req.params.id);
+    fs2.writeFileSync(pendingFile, JSON.stringify(pending, null, 2));
+
+    return res.json({ ok: true });
+  } catch(e) {
+    return res.json({ ok: false, error: e.message });
+  }
+});
+
+// CARIBEX DIRECTORY — REJECT LISTING (Admin)
+app.post("/admin/listings/reject/:id", requireAdmin, async (req, res) => {
+  try {
+    const fs2 = require('fs');
+    const path = require('path');
+    const pendingFile = path.join(__dirname, '../data/listings/pending.json');
+    let pending = JSON.parse(fs2.readFileSync(pendingFile, 'utf8'));
+    pending = pending.filter(l => l.id !== req.params.id);
+    fs2.writeFileSync(pendingFile, JSON.stringify(pending, null, 2));
+    return res.json({ ok: true });
+  } catch(e) {
+    return res.json({ ok: false, error: e.message });
+  }
+});
+
+// CARIBEX DIRECTORY — GET LISTINGS FOR DESTINATION+CATEGORY
+app.get("/api/listings/:destination/:category", (req, res) => {
+  try {
+    const fs2 = require('fs');
+    const path = require('path');
+    const approvedFile = path.join(__dirname, '../data/listings', req.params.destination + '.json');
+    if (!fs2.existsSync(approvedFile)) return res.json({ listings: [] });
+    const all = JSON.parse(fs2.readFileSync(approvedFile, 'utf8'));
+    const filtered = all.filter(l => l.category === req.params.category && l.status === 'approved');
+    return res.json({ listings: filtered });
+  } catch(e) {
+    return res.json({ listings: [] });
+  }
+});
+
+// CARIBEX DIRECTORY — ADMIN PENDING LISTINGS VIEW
+app.get("/admin/listings", requireAdmin, (req, res) => {
+  try {
+    const fs2 = require('fs');
+    const path = require('path');
+    const pendingFile = path.join(__dirname, '../data/listings/pending.json');
+    const pending = fs2.existsSync(pendingFile) ? JSON.parse(fs2.readFileSync(pendingFile, 'utf8')) : [];
+
+    const cards = pending.length === 0
+      ? '<p style="color:#888;text-align:center;padding:3rem">No pending listings.</p>'
+      : pending.map(l => `
+        <div style="background:#fff;border:1px solid #E0EEF4;border-radius:12px;padding:1.5rem;margin-bottom:1rem;">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;flex-wrap:wrap;">
+            <div style="flex:1">
+              <div style="font-size:0.65rem;font-weight:700;color:#00B4D8;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.3rem">${l.category} · ${l.destination}</div>
+              <div style="font-size:1.1rem;font-weight:700;color:#0D1B2A;margin-bottom:0.3rem">${l.name}</div>
+              <div style="font-size:0.82rem;color:#555;margin-bottom:0.5rem">${l.desc}</div>
+              <div style="font-size:0.75rem;color:#888">📧 ${l.email} ${l.whatsapp ? '· 📱 ' + l.whatsapp : ''} ${l.website ? '· 🌐 ' + l.website : ''}</div>
+              <div style="font-size:0.75rem;color:#888;margin-top:0.3rem">Submitted: ${new Date(l.submittedAt).toLocaleDateString()}</div>
+            </div>
+            ${l.photo ? `<img src="${l.photo}" style="width:100px;height:70px;object-fit:cover;border-radius:8px;flex-shrink:0">` : ''}
+          </div>
+          <div style="margin-top:1rem;display:flex;gap:0.8rem;">
+            <button onclick="approveListing('${l.id}')" style="background:#00B4D8;color:#fff;border:none;padding:0.6rem 1.2rem;border-radius:6px;font-weight:700;cursor:pointer;font-size:0.82rem">✅ Approve</button>
+            <button onclick="rejectListing('${l.id}')" style="background:#fff;color:#e53e3e;border:1px solid #e53e3e;padding:0.6rem 1.2rem;border-radius:6px;font-weight:700;cursor:pointer;font-size:0.82rem">❌ Reject</button>
+          </div>
+        </div>
+      `).join('');
+
+    res.send(`
+      <!DOCTYPE html>
+      <html>
+      <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+      <title>Pending Listings — Caribex Admin</title>
+      <style>body{font-family:sans-serif;background:#F0F8FF;padding:2rem;max-width:900px;margin:0 auto;}h1{color:#0D1B2A;margin-bottom:0.3rem;}p.sub{color:#888;font-size:0.85rem;margin-bottom:2rem;}</style>
+      </head>
+      <body>
+      <h1>🌴 Caribex — Pending Listings</h1>
+      <p class="sub"><a href="/admin/dashboard">← Back to Dashboard</a></p>
+      ${cards}
+      <script>
+      async function approveListing(id) {
+        if (!confirm('Approve this listing?')) return;
+        const r = await fetch('/admin/listings/approve/' + id, { method: 'POST' });
+        const d = await r.json();
+        if (d.ok) { alert('✅ Approved!'); location.reload(); }
+        else alert('Error: ' + d.error);
+      }
+      async function rejectListing(id) {
+        if (!confirm('Reject and delete this listing?')) return;
+        const r = await fetch('/admin/listings/reject/' + id, { method: 'POST' });
+        const d = await r.json();
+        if (d.ok) { alert('Rejected.'); location.reload(); }
+        else alert('Error: ' + d.error);
+      }
+      </script>
+      </body></html>
+    `);
+  } catch(e) {
+    res.send('Error: ' + e.message);
+  }
+});
 
 app.get("/caribex/:slug", async (req, res) => {
   const slug = req.params.slug;
@@ -1147,6 +1279,73 @@ app.post("/start", async (req, res) => {
 // DYNAMIC BUSINESS PAGES
 // ==========================================
 
+
+
+// ==========================================
+// CARIBEX DIRECTORY — LISTING SUBMISSION
+// ==========================================
+app.post("/api/listing-submit", express.json(), async (req, res) => {
+  const { name, category, destination, desc, fullDesc, email, whatsapp, website, photo, price } = req.body;
+
+  if (!name || !category || !destination || !desc || !fullDesc || !email || !photo) {
+    return res.json({ ok: false, error: "Missing required fields" });
+  }
+
+  try {
+    // Save to pending listings file
+    const fs2 = require('fs');
+    const path = require('path');
+    const pendingFile = path.join(__dirname, '../data/listings/pending.json');
+    
+    let pending = [];
+    if (fs2.existsSync(pendingFile)) {
+      pending = JSON.parse(fs2.readFileSync(pendingFile, 'utf8'));
+    }
+    
+    const listing = {
+      id: Date.now().toString(),
+      status: 'pending',
+      submittedAt: new Date().toISOString(),
+      name, category, destination, desc, fullDesc, email, whatsapp, website, photo, price
+    };
+    
+    pending.push(listing);
+    fs2.writeFileSync(pendingFile, JSON.stringify(pending, null, 2));
+
+    // Send email notification via Resend
+    const { Resend } = require('resend');
+    const resend = new Resend(process.env.RESEND_API_KEY);
+    
+    await resend.emails.send({
+      from: 'Caribex <connect@ivamarai.com>',
+      to: 'connect@ivamarai.com',
+      subject: 'New Caribex Listing: ' + name,
+      html: `
+        <h2>New Business Listing Submission</h2>
+        <table style="border-collapse:collapse;width:100%">
+          <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold">Business</td><td style="padding:8px;border:1px solid #ddd">${name}</td></tr>
+          <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold">Category</td><td style="padding:8px;border:1px solid #ddd">${category}</td></tr>
+          <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold">Destination</td><td style="padding:8px;border:1px solid #ddd">${destination}</td></tr>
+          <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold">Email</td><td style="padding:8px;border:1px solid #ddd">${email}</td></tr>
+          <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold">WhatsApp</td><td style="padding:8px;border:1px solid #ddd">${whatsapp || 'N/A'}</td></tr>
+          <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold">Website</td><td style="padding:8px;border:1px solid #ddd">${website || 'N/A'}</td></tr>
+          <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold">Price Range</td><td style="padding:8px;border:1px solid #ddd">${price || 'N/A'}</td></tr>
+          <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold">Short Desc</td><td style="padding:8px;border:1px solid #ddd">${desc}</td></tr>
+          <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold">Full Desc</td><td style="padding:8px;border:1px solid #ddd">${fullDesc}</td></tr>
+          <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold">Photo</td><td style="padding:8px;border:1px solid #ddd"><img src="${photo}" style="max-width:200px"></td></tr>
+        </table>
+        <br>
+        <p><strong>Listing ID:</strong> ${listing.id}</p>
+        <p><a href="https://ivamarai.com/admin/listings" style="background:#00B4D8;color:#fff;padding:10px 20px;text-decoration:none;border-radius:6px;font-weight:bold">Review in Admin →</a></p>
+      `
+    });
+
+    return res.json({ ok: true });
+  } catch(e) {
+    console.error('Listing submit error:', e);
+    return res.json({ ok: false, error: e.message });
+  }
+});
 
 // ==========================================
 // BLOGGER RSS PROXY
