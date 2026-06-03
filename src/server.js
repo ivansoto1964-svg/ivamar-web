@@ -1,5 +1,15 @@
 
 const express = require("express");
+
+// ==========================================
+// ENSURE PERSISTENT DATA DIRECTORIES EXIST
+// ==========================================
+['businesses','listings','agreements','destinations'].forEach(dir => {
+  const p = require('path').join('/data', dir);
+  if (!require('fs').existsSync(p)) require('fs').mkdirSync(p, { recursive: true });
+});
+
+
 const layout = require("./views/layout");
 const dyerKia = require("./views/dyerkia");
 const adis = require("./views/adis");
@@ -329,8 +339,8 @@ app.post("/admin/listings/approve/:id", requireAdmin, async (req, res) => {
   try {
     const fs2 = require('fs');
     const path = require('path');
-    const pendingFile = path.join(__dirname, '../data/listings/pending.json');
-    const approvedDir = path.join(__dirname, '../data/listings');
+    const pendingFile = path.join('/data/listings/pending.json');
+    const approvedDir = path.join('/data/listings');
 
     let pending = JSON.parse(fs2.readFileSync(pendingFile, 'utf8'));
     const listing = pending.find(l => l.id === req.params.id);
@@ -363,7 +373,7 @@ app.post("/admin/listings/reject/:id", requireAdmin, async (req, res) => {
   try {
     const fs2 = require('fs');
     const path = require('path');
-    const pendingFile = path.join(__dirname, '../data/listings/pending.json');
+    const pendingFile = path.join('/data/listings/pending.json');
     let pending = JSON.parse(fs2.readFileSync(pendingFile, 'utf8'));
     pending = pending.filter(l => l.id !== req.params.id);
     fs2.writeFileSync(pendingFile, JSON.stringify(pending, null, 2));
@@ -378,7 +388,7 @@ app.get("/api/listings/:destination/:category", (req, res) => {
   try {
     const fs2 = require('fs');
     const path = require('path');
-    const approvedFile = path.join(__dirname, '../data/listings', req.params.destination + '.json');
+    const approvedFile = path.join('/data/listings', req.params.destination + '.json');
     if (!fs2.existsSync(approvedFile)) return res.json({ listings: [] });
     const all = JSON.parse(fs2.readFileSync(approvedFile, 'utf8'));
     const filtered = all.filter(l => l.category === req.params.category && l.status === 'approved');
@@ -393,7 +403,7 @@ app.get("/admin/listings", requireAdmin, (req, res) => {
   try {
     const fs2 = require('fs');
     const path = require('path');
-    const pendingFile = path.join(__dirname, '../data/listings/pending.json');
+    const pendingFile = path.join('/data/listings/pending.json');
     const pending = fs2.existsSync(pendingFile) ? JSON.parse(fs2.readFileSync(pendingFile, 'utf8')) : [];
 
     const cards = pending.length === 0
@@ -454,7 +464,7 @@ app.get("/admin/listings", requireAdmin, (req, res) => {
 app.get("/caribex/:slug", async (req, res) => {
   const slug = req.params.slug;
   try {
-    const dest = JSON.parse(fs.readFileSync(`${__dirname}/data/destinations/${slug}.json`, 'utf8'));
+    const dest = JSON.parse(fs.readFileSync(`/data/destinations/${slug}.json`, 'utf8'));
     const heroPhoto = await getPlacePhoto(dest.name + ' ' + dest.country, 1600, dest.searchQuery);
     dest.heroPhoto = heroPhoto;
     res.send(renderDestination(dest));
@@ -1295,7 +1305,7 @@ app.post("/api/listing-submit", express.json(), async (req, res) => {
     // Save to pending listings file
     const fs2 = require('fs');
     const path = require('path');
-    const pendingFile = path.join(__dirname, '../data/listings/pending.json');
+    const pendingFile = path.join('/data/listings/pending.json');
     
     let pending = [];
     if (fs2.existsSync(pendingFile)) {
