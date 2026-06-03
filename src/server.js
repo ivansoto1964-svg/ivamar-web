@@ -1147,6 +1147,36 @@ app.post("/start", async (req, res) => {
 // DYNAMIC BUSINESS PAGES
 // ==========================================
 
+
+// ==========================================
+// BLOGGER RSS PROXY
+// ==========================================
+app.get("/api/blog-feed", async (req, res) => {
+  try {
+    const r = await fetch("https://blog.yourcaribbeanexpert.com/feeds/posts/default?alt=json&max-results=4");
+    const data = await r.json();
+    res.set("Access-Control-Allow-Origin", "*");
+    res.json(data);
+  } catch(e) {
+    res.status(500).json({ error: "Feed unavailable" });
+  }
+});
+
+
+// ==========================================
+// BLOGGER RSS PROXY
+// ==========================================
+app.get("/api/blog-feed", async (req, res) => {
+  try {
+    const r = await fetch("https://blog.yourcaribbeanexpert.com/feeds/posts/default?alt=json&max-results=4");
+    const data = await r.json();
+    res.set("Access-Control-Allow-Origin", "*");
+    res.json(data);
+  } catch(e) {
+    res.status(500).json({ error: "Feed unavailable" });
+  }
+});
+
 // ==========================================
 // SEO — SITEMAP & ROBOTS
 // ==========================================

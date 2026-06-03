@@ -488,7 +488,7 @@ document.addEventListener('DOMContentLoaded', loadDestinationPhotos);
 
 <script>
 (function(){
-  const FEED = 'https://blog.yourcaribbeanexpert.com/feeds/posts/default?alt=json&max-results=4';
+  const FEED = '/api/blog-feed';
   fetch(FEED)
     .then(r => r.json())
     .then(data => {
