@@ -346,20 +346,19 @@ async function loadCategory(cat) {
       return;
     }
 
-    content.innerHTML = listings.map(l => `
-      <div class="dir-listing">
-        <div class="dir-listing-img"><img src="${l.photo}" alt="${l.name}"></div>
-        <div class="dir-listing-body">
-          <div class="dir-listing-name">${l.name}</div>
-          <div class="dir-listing-desc">${l.desc}</div>
-          ${l.price ? '<div class="dir-listing-price">' + l.price + '</div>' : ''}
-          <div class="dir-listing-contact">
-            ${l.whatsapp ? '<a href="https://wa.me/' + l.whatsapp.replace(/[^0-9]/g,'') + '" target="_blank" class="dir-contact-btn dir-contact-wa">💬 WhatsApp</a>' : ''}
-            ${l.website ? '<a href="' + l.website + '" target="_blank" class="dir-contact-btn dir-contact-web">🌐 Website</a>' : ''}
-          </div>
-        </div>
-      </div>
-    `).join('');
+    content.innerHTML = listings.map(function(l) {
+      var html = '<div class="dir-listing">';
+      html += '<div class="dir-listing-img"><img src="' + l.photo + '" alt="' + l.name + '"></div>';
+      html += '<div class="dir-listing-body">';
+      html += '<div class="dir-listing-name">' + l.name + '</div>';
+      html += '<div class="dir-listing-desc">' + l.desc + '</div>';
+      if (l.price) html += '<div class="dir-listing-price">' + l.price + '</div>';
+      html += '<div class="dir-listing-contact">';
+      if (l.whatsapp) html += '<a href="https://wa.me/' + l.whatsapp.replace(/[^0-9]/g,'') + '" target="_blank" class="dir-contact-btn dir-contact-wa">💬 WhatsApp</a>';
+      if (l.website) html += '<a href="' + l.website + '" target="_blank" class="dir-contact-btn dir-contact-web">🌐 Website</a>';
+      html += '</div></div></div>';
+      return html;
+    }).join('');
   } catch(e) {
     content.innerHTML = '<div class="dir-empty"><p>Could not load listings. Please try again.</p></div>';
   }
