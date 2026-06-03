@@ -519,7 +519,7 @@ document.addEventListener('DOMContentLoaded', loadDestinationPhotos);
         const e = entries[0];
         document.getElementById('hero-featured-post').innerHTML =
           '<a href="' + getLink(e) + '" target="_blank" class="hero-post-card">' +
-          '<img class="hero-post-img" src="' + getImg(e) + '" alt="' + e.title.$t + '" onerror="this.style.display=\'none\'">' +
+          '<img class="hero-post-img" src="' + getImg(e) + '" alt="' + e.title.$t + '" onerror="this.style.display='none'">' +
           '<div class="hero-post-body">' +
           '<div class="hero-post-tag">' + getTag(e) + '</div>' +
           '<div class="hero-post-title">' + e.title.$t + '</div>' +
@@ -536,7 +536,7 @@ document.addEventListener('DOMContentLoaded', loadDestinationPhotos);
         grid.innerHTML = posts.map(e =>
           '<a href="' + getLink(e) + '" target="_blank" class="blog-card">' +
           '<div class="blog-card-img" style="background:linear-gradient(135deg,#E0F7FA,#B3E5FC);height:140px;overflow:hidden;">' +
-          '<img src="' + getImg(e) + '" alt="" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display=\'none\'">' +
+          '<img src="' + getImg(e) + '" alt="" style="width:100%;height:100%;object-fit:cover;" onerror="this.style.display='none'">' +
           '</div>' +
           '<div class="blog-card-body">' +
           '<div class="blog-card-tag">' + getTag(e) + '</div>' +
