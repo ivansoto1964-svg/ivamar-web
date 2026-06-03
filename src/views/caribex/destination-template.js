@@ -134,22 +134,28 @@ footer{background:var(--dark);padding:2rem;text-align:center;}
 
 
 @media(max-width:768px){
-.sec-tag{font-size:0.75rem;}
-.exp-name{font-size:1.05rem;}
-.exp-desc{font-size:0.85rem;}
-.beach-type{font-size:0.72rem;}
-.beach-name{font-size:1.05rem;}
-.beach-desc{font-size:0.85rem;}
-.food-name{font-size:1.05rem;}
-.food-desc{font-size:0.85rem;}
-.prac-label{font-size:0.72rem;}
-.prac-value{font-size:0.88rem;}
-.bf-tag{font-size:0.78rem;}
-.hero-region{font-size:0.75rem;}
-.dir-cat-name{font-size:1rem;}
-.dir-cat-count{font-size:0.78rem;}
-.dir-listing-name{font-size:1rem;}
-.dir-listing-desc{font-size:0.82rem;}
+.sec-tag{font-size:0.9rem;}
+.exp-name{font-size:1.15rem;}
+.exp-desc{font-size:0.95rem;}
+.beach-type{font-size:0.85rem;}
+.beach-name{font-size:1.15rem;}
+.beach-desc{font-size:0.95rem;}
+.food-name{font-size:1.15rem;}
+.food-desc{font-size:0.95rem;}
+.prac-label{font-size:0.85rem;}
+.prac-value{font-size:1rem;}
+.bf-tag{font-size:0.88rem;}
+.hero-region{font-size:0.85rem;}
+.hero-tagline{font-size:1rem;}
+.overview-text p{font-size:1rem;}
+.culture-text p{font-size:1rem;}
+.best-time p{font-size:1rem;}
+.dir-cat-name{font-size:1.05rem;}
+.dir-cat-count{font-size:0.88rem;}
+.dir-listing-name{font-size:1.05rem;}
+.dir-listing-desc{font-size:0.92rem;}
+.local-cta-text{font-size:1rem;}
+.local-cta-sub{font-size:0.9rem;}
 }
 @media(max-width:768px){
 nav{padding:0 1rem;}
