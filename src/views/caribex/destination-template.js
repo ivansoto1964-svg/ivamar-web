@@ -72,6 +72,38 @@ nav{background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);border-bottom:1
 .prac-value{font-size:0.82rem;color:var(--dark);line-height:1.5;font-weight:500;}
 
 .best-time{padding:3rem 2rem;background:#F0F8FF;text-align:center;}
+
+.directory-sec{padding:5rem 2rem;background:#fff;}
+.directory-inner{max-width:1100px;margin:0 auto;}
+.dir-cats{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem;margin-top:2rem;}
+.dir-cat{background:#F0F8FF;border:1px solid var(--border);border-radius:16px;padding:1.8rem 1.2rem;text-align:center;text-decoration:none;transition:all 0.2s;cursor:pointer;}
+.dir-cat:hover{border-color:var(--teal);transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,180,216,0.1);}
+.dir-cat-icon{font-size:2.2rem;margin-bottom:0.8rem;}
+.dir-cat-name{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--dark);margin-bottom:0.3rem;}
+.dir-cat-count{font-size:0.72rem;color:var(--teal);font-weight:700;}
+.dir-panel{display:none;margin-top:2rem;}
+.dir-panel.active{display:block;}
+.dir-panel-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;}
+.dir-panel-title{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--dark);}
+.dir-panel-close{font-size:0.82rem;color:var(--mid);cursor:pointer;text-decoration:none;}
+.dir-panel-close:hover{color:var(--teal);}
+.dir-listings{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;}
+.dir-listing{background:#fff;border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:all 0.2s;}
+.dir-listing:hover{border-color:var(--teal);transform:translateY(-2px);}
+.dir-listing-img{height:140px;background:linear-gradient(135deg,#E0F7FA,#B3E5FC);overflow:hidden;}
+.dir-listing-img img{width:100%;height:100%;object-fit:cover;}
+.dir-listing-body{padding:1.2rem;}
+.dir-listing-name{font-family:'Playfair Display',serif;font-size:0.95rem;font-weight:700;color:var(--dark);margin-bottom:0.3rem;}
+.dir-listing-desc{font-size:0.75rem;color:var(--mid);line-height:1.5;margin-bottom:0.8rem;}
+.dir-listing-price{font-size:0.68rem;font-weight:700;color:var(--teal);}
+.dir-listing-contact{display:flex;gap:0.5rem;margin-top:0.8rem;flex-wrap:wrap;}
+.dir-contact-btn{font-size:0.7rem;font-weight:700;padding:0.3rem 0.7rem;border-radius:4px;text-decoration:none;transition:all 0.2s;}
+.dir-contact-wa{background:#25D366;color:#fff;}
+.dir-contact-web{background:#F0F8FF;color:var(--deep);border:1px solid var(--border);}
+.dir-empty{text-align:center;padding:3rem;background:#F0F8FF;border-radius:14px;border:1px solid var(--border);}
+.dir-empty p{font-size:0.88rem;color:var(--mid);margin-bottom:1rem;}
+.dir-empty a{color:var(--teal);font-weight:700;text-decoration:none;}
+@media(max-width:768px){.directory-sec{padding:3rem 1rem;}.dir-cats{grid-template-columns:repeat(2,1fr);}.dir-listings{grid-template-columns:1fr;}}
 .local-cta{padding:5rem 2rem;background:linear-gradient(160deg,#0D1B2A 0%,#023E8A 100%);}
 .local-cta-inner{max-width:800px;margin:0 auto;text-align:center;}
 .local-cta-tag{font-size:0.68rem;font-weight:700;color:var(--teal);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:1rem;}
@@ -237,6 +269,108 @@ nav{padding:0 1rem;}
   </div>
 </section>
 
+
+
+<section class="directory-sec">
+  <div class="directory-inner">
+    <div class="sec-tag">Local Directory</div>
+    <h2 class="sec-title">Explore ${dest.name}</h2>
+    <div class="dir-cats">
+      <div class="dir-cat" onclick="loadCategory('hotels')">
+        <div class="dir-cat-icon">🏨</div>
+        <div class="dir-cat-name">Where to Stay</div>
+        <div class="dir-cat-count" id="count-hotels">Loading...</div>
+      </div>
+      <div class="dir-cat" onclick="loadCategory('tours')">
+        <div class="dir-cat-icon">🧭</div>
+        <div class="dir-cat-name">Tours & Experiences</div>
+        <div class="dir-cat-count" id="count-tours">Loading...</div>
+      </div>
+      <div class="dir-cat" onclick="loadCategory('transport')">
+        <div class="dir-cat-icon">🚗</div>
+        <div class="dir-cat-name">Transportation</div>
+        <div class="dir-cat-count" id="count-transport">Loading...</div>
+      </div>
+      <div class="dir-cat" onclick="loadCategory('restaurants')">
+        <div class="dir-cat-icon">🍽️</div>
+        <div class="dir-cat-name">Where to Eat</div>
+        <div class="dir-cat-count" id="count-restaurants">Loading...</div>
+      </div>
+    </div>
+    <div id="dir-panel" class="dir-panel">
+      <div class="dir-panel-header">
+        <div class="dir-panel-title" id="dir-panel-title"></div>
+        <a class="dir-panel-close" onclick="closePanel()">✕ Close</a>
+      </div>
+      <div id="dir-panel-content" class="dir-listings"></div>
+    </div>
+  </div>
+</section>
+
+<script>
+const DEST_SLUG = '${dest.slug}';
+const DEST_NAME = '${dest.name}';
+const CAT_NAMES = { hotels: 'Where to Stay', tours: 'Tours & Experiences', transport: 'Transportation', restaurants: 'Where to Eat' };
+
+async function loadCounts() {
+  const cats = ['hotels','tours','transport','restaurants'];
+  for (const cat of cats) {
+    try {
+      const r = await fetch('/api/listings/' + DEST_SLUG + '/' + cat);
+      const d = await r.json();
+      const count = d.listings ? d.listings.length : 0;
+      document.getElementById('count-' + cat).textContent = count > 0 ? count + ' listed' : 'Be the first →';
+    } catch(e) {
+      document.getElementById('count-' + cat).textContent = 'Be the first →';
+    }
+  }
+}
+
+async function loadCategory(cat) {
+  const panel = document.getElementById('dir-panel');
+  const title = document.getElementById('dir-panel-title');
+  const content = document.getElementById('dir-panel-content');
+  
+  title.textContent = CAT_NAMES[cat] + ' in ' + DEST_NAME;
+  content.innerHTML = '<p style="color:#888;text-align:center;padding:2rem">Loading...</p>';
+  panel.classList.add('active');
+  panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+  try {
+    const r = await fetch('/api/listings/' + DEST_SLUG + '/' + cat);
+    const d = await r.json();
+    const listings = d.listings || [];
+
+    if (listings.length === 0) {
+      content.innerHTML = '<div class="dir-empty"><p>No listings yet for this category in ' + DEST_NAME + '.</p><a href="/caribex/list-your-business">Be the first to list your business →</a></div>';
+      return;
+    }
+
+    content.innerHTML = listings.map(l => `
+      <div class="dir-listing">
+        <div class="dir-listing-img"><img src="${l.photo}" alt="${l.name}"></div>
+        <div class="dir-listing-body">
+          <div class="dir-listing-name">${l.name}</div>
+          <div class="dir-listing-desc">${l.desc}</div>
+          ${l.price ? '<div class="dir-listing-price">' + l.price + '</div>' : ''}
+          <div class="dir-listing-contact">
+            ${l.whatsapp ? '<a href="https://wa.me/' + l.whatsapp.replace(/[^0-9]/g,'') + '" target="_blank" class="dir-contact-btn dir-contact-wa">💬 WhatsApp</a>' : ''}
+            ${l.website ? '<a href="' + l.website + '" target="_blank" class="dir-contact-btn dir-contact-web">🌐 Website</a>' : ''}
+          </div>
+        </div>
+      </div>
+    `).join('');
+  } catch(e) {
+    content.innerHTML = '<div class="dir-empty"><p>Could not load listings. Please try again.</p></div>';
+  }
+}
+
+function closePanel() {
+  document.getElementById('dir-panel').classList.remove('active');
+}
+
+loadCounts();
+</script>
 
 <section class="local-cta">
   <div class="local-cta-inner">
