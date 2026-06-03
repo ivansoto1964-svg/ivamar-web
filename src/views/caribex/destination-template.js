@@ -132,6 +132,25 @@ footer{background:var(--dark);padding:2rem;text-align:center;}
 .footer-logo span{color:var(--teal);}
 .footer-info{font-size:0.68rem;color:rgba(255,255,255,0.3);margin-top:0.3rem;}
 
+
+@media(max-width:768px){
+.sec-tag{font-size:0.75rem;}
+.exp-name{font-size:1.05rem;}
+.exp-desc{font-size:0.85rem;}
+.beach-type{font-size:0.72rem;}
+.beach-name{font-size:1.05rem;}
+.beach-desc{font-size:0.85rem;}
+.food-name{font-size:1.05rem;}
+.food-desc{font-size:0.85rem;}
+.prac-label{font-size:0.72rem;}
+.prac-value{font-size:0.88rem;}
+.bf-tag{font-size:0.78rem;}
+.hero-region{font-size:0.75rem;}
+.dir-cat-name{font-size:1rem;}
+.dir-cat-count{font-size:0.78rem;}
+.dir-listing-name{font-size:1rem;}
+.dir-listing-desc{font-size:0.82rem;}
+}
 @media(max-width:768px){
 nav{padding:0 1rem;}
 .hero{height:65vh;}

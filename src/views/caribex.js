@@ -193,7 +193,7 @@ footer{background:var(--dark);padding:3rem 2rem 1.5rem;}
 
 @media(max-width:768px){
 nav{padding:0 1rem;}.nav-links{display:none;}
-.hero-inner{grid-template-columns:1fr;gap:2rem;padding:3rem 1.2rem;}.hero-visual{display:none;}
+.hero-inner{grid-template-columns:1fr;gap:2rem;padding:3rem 1.2rem;}.hero-visual{display:block;margin-top:1.5rem;}
 .hero-stats{gap:1.2rem;}
 .tagline{padding:3rem 1rem;}
 .destinations{padding:3rem 1rem;}.islands-grid{grid-template-columns:1fr 1fr;}
