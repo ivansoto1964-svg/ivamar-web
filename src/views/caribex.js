@@ -362,7 +362,7 @@ nav{padding:0 1rem;}.nav-links{display:none;}
         <li>Budget and luxury travel guidance</li>
         <li>Responds in English and Spanish</li>
       </ul>
-      <a href="https://#assistant" target="_blank" class="btn-teal">Talk to Sun →</a>
+
     </div>
     <div class="chat-box">
       <div class="chat-header">
