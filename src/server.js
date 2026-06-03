@@ -2,6 +2,31 @@
 const express = require("express");
 
 // ==========================================
+// RATE LIMITING
+// ==========================================
+const rateLimit = require('express-rate-limit');
+
+// AI endpoints — max 20 requests per 10 minutes per IP
+const aiLimiter = rateLimit({
+  windowMs: 10 * 60 * 1000,
+  max: 20,
+  message: { error: 'Too many requests. Please wait a few minutes before trying again.' },
+  standardHeaders: true,
+  legacyHeaders: false
+});
+
+// Form submissions — max 5 per hour per IP
+const formLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 5,
+  message: { error: 'Too many submissions. Please try again later.' },
+  standardHeaders: true,
+  legacyHeaders: false
+});
+
+
+
+// ==========================================
 // ENSURE PERSISTENT DATA DIRECTORIES EXIST
 // ==========================================
 ['businesses','listings','agreements','destinations'].forEach(dir => {
@@ -139,7 +164,7 @@ app.get("/demo-dealers-es", (req, res) => res.send(demoDealersES));
 // ==========================================
 // CARIBEX / SUN TRAVEL ASSISTANT
 // ==========================================
-app.post("/api/caribex", express.json(), async (req, res) => {
+app.post("/api/caribex", aiLimiter, express.json(), async (req, res) => {
   const { message, history = [] } = req.body;
 
   const system = `You are Sun, the official AI travel curator for Caribex (yourcaribbeanexpert.com), a product and brand of Ivamar AI LLC based in Delaware, USA. You are warm, sophisticated, culture-focused, and highly realistic. You speak like a seasoned expert who has lived in the Caribbean for a decade.
@@ -641,7 +666,7 @@ app.post("/admin/delete/:slug", requireAdmin, (req, res) => {
 // IVA ASSISTANT API — CLAUDE
 // ==========================================
 
-app.post("/api/demo", async (req, res) => {
+app.post("/api/demo", aiLimiter, async (req, res) => {
   const message = (req.body?.message || "").toString();
   try {
     const response = await anthropic.messages.create({
@@ -700,7 +725,7 @@ app.post("/api/demo-autos", async (req, res) => {
 // ==========================================
 // IvA SALES ASSISTANT - Conversational AI
 // ==========================================
-app.post("/api/iva-sales", express.json(), async (req, res) => {
+app.post("/api/iva-sales", aiLimiter, express.json(), async (req, res) => {
   const { message, history = [], lang = "es", context = {} } = req.body;
 
   const systemES = `Eres IvA, el asistente de ventas de Ivamar AI.
@@ -1163,7 +1188,7 @@ RULES:
   }
 });
 
-app.post("/api/assistant", async (req, res) => {
+app.post("/api/assistant", aiLimiter, async (req, res) => {
   const message = (req.body?.message || "").toString();
   const businessSlug = req.body?.businessSlug || null;
 
@@ -1294,7 +1319,7 @@ app.post("/start", async (req, res) => {
 // ==========================================
 // CARIBEX DIRECTORY — LISTING SUBMISSION
 // ==========================================
-app.post("/api/listing-submit", express.json(), async (req, res) => {
+app.post("/api/listing-submit", formLimiter, express.json(), async (req, res) => {
   const { name, category, destination, desc, fullDesc, email, whatsapp, website, photo, price } = req.body;
 
   if (!name || !category || !destination || !desc || !fullDesc || !email || !photo) {
