@@ -1,3 +1,5 @@
+const _sc = '<' + '/script>';
+
 module.exports = function renderDestination(dest) {
   return `<!DOCTYPE html>
 <html lang="en">
@@ -5,16 +7,14 @@ module.exports = function renderDestination(dest) {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>${dest.name} — Caribex Caribbean Expert</title>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4181903530685744" crossorigin="anonymous"></script>
-</head>
-<body>
+<meta name="description" content="${dest.tagline} — Caribex Caribbean Travel Guide">
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4181903530685744" crossorigin="anonymous">${_sc}
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap');
 *{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
 body{font-family:'DM Sans',sans-serif;background:#fff;color:#1a1a1a;overflow-x:hidden;}
 :root{--teal:#00B4D8;--deep:#0077B6;--sand:#F4E8D0;--dark:#0D1B2A;--mid:#555;--border:#E0EEF4;}
-
 nav{background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);border-bottom:1px solid var(--border);padding:0 2rem;display:flex;align-items:center;justify-content:space-between;height:64px;position:sticky;top:0;z-index:100;}
 .nav-logo{display:flex;align-items:center;gap:0.6rem;text-decoration:none;}
 .nav-logo img{height:32px;}
@@ -22,7 +22,6 @@ nav{background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);border-bottom:1
 .nav-logo-text span{color:var(--teal);}
 .nav-back{font-size:0.82rem;color:var(--mid);text-decoration:none;display:flex;align-items:center;gap:0.4rem;}
 .nav-back:hover{color:var(--teal);}
-
 .hero{position:relative;height:80vh;min-height:500px;overflow:hidden;display:flex;align-items:flex-end;}
 .hero-bg{position:absolute;inset:0;background:${dest.gradient};opacity:${dest.heroPhoto ? '0.55' : '1'};}
 .hero-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:1;}
@@ -34,13 +33,11 @@ nav{background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);border-bottom:1
 .hero-tagline{font-size:1.1rem;color:rgba(255,255,255,0.75);margin-bottom:1.5rem;font-style:italic;}
 .best-for{display:flex;gap:0.5rem;flex-wrap:wrap;}
 .bf-tag{font-size:0.7rem;font-weight:700;color:#fff;background:rgba(255,255,255,0.15);border:1px solid rgba(255,255,255,0.3);padding:0.3rem 0.8rem;border-radius:20px;}
-
 .overview{padding:5rem 2rem;background:#fff;}
 .overview-inner{max-width:800px;margin:0 auto;}
 .sec-tag{font-size:0.65rem;font-weight:700;color:var(--teal);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem;}
 .sec-title{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3.5vw,2.6rem);font-weight:700;color:var(--dark);margin-bottom:1.5rem;line-height:1.15;}
 .overview-text p{font-size:1rem;color:#444;line-height:1.9;margin-bottom:1.2rem;}
-
 .experiences{padding:5rem 2rem;background:#F0F8FF;}
 .exp-inner{max-width:1100px;margin:0 auto;}
 .exp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-top:2rem;}
@@ -49,7 +46,6 @@ nav{background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);border-bottom:1
 .exp-icon{font-size:2rem;margin-bottom:0.8rem;}
 .exp-name{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--dark);margin-bottom:0.5rem;}
 .exp-desc{font-size:0.78rem;color:var(--mid);line-height:1.6;}
-
 .beaches{padding:5rem 2rem;background:#fff;}
 .beaches-inner{max-width:1100px;margin:0 auto;}
 .beach-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem;margin-top:2rem;}
@@ -59,31 +55,28 @@ nav{background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);border-bottom:1
 .beach-type{font-size:0.62rem;font-weight:700;color:var(--teal);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.3rem;}
 .beach-name{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--dark);margin-bottom:0.4rem;}
 .beach-desc{font-size:0.78rem;color:var(--mid);line-height:1.5;}
-
 .food-sec{padding:5rem 2rem;background:var(--sand);}
 .food-inner{max-width:1100px;margin:0 auto;}
 .food-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.2rem;margin-top:2rem;}
 .food-card{background:#fff;border-radius:14px;padding:1.5rem;border:1px solid #E8DCC8;}
 .food-name{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--dark);margin-bottom:0.5rem;}
 .food-desc{font-size:0.78rem;color:var(--mid);line-height:1.6;}
-
 .culture-sec{padding:5rem 2rem;background:var(--dark);}
 .culture-inner{max-width:800px;margin:0 auto;text-align:center;}
 .culture-text p{font-size:1rem;color:rgba(255,255,255,0.7);line-height:1.9;margin-bottom:1.2rem;}
-
 .practical{padding:5rem 2rem;background:#fff;}
 .practical-inner{max-width:1100px;margin:0 auto;}
 .practical-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem;margin-top:2rem;}
 .prac-card{background:#F0F8FF;border-radius:12px;padding:1.5rem;border:1px solid var(--border);}
 .prac-label{font-size:0.62rem;font-weight:700;color:var(--teal);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem;}
 .prac-value{font-size:0.82rem;color:var(--dark);line-height:1.5;font-weight:500;}
-
 .best-time{padding:3rem 2rem;background:#F0F8FF;text-align:center;}
-
+.best-time-inner{max-width:700px;margin:0 auto;}
+.best-time p{font-size:0.92rem;color:var(--mid);line-height:1.8;}
 .directory-sec{padding:5rem 2rem;background:#fff;}
 .directory-inner{max-width:1100px;margin:0 auto;}
 .dir-cats{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem;margin-top:2rem;}
-.dir-cat{background:#F0F8FF;border:1px solid var(--border);border-radius:16px;padding:1.8rem 1.2rem;text-align:center;text-decoration:none;transition:all 0.2s;cursor:pointer;}
+.dir-cat{background:#F0F8FF;border:1px solid var(--border);border-radius:16px;padding:1.8rem 1.2rem;text-align:center;cursor:pointer;transition:all 0.2s;}
 .dir-cat:hover{border-color:var(--teal);transform:translateY(-3px);box-shadow:0 8px 24px rgba(0,180,216,0.1);}
 .dir-cat-icon{font-size:2.2rem;margin-bottom:0.8rem;}
 .dir-cat-name{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--dark);margin-bottom:0.3rem;}
@@ -92,25 +85,22 @@ nav{background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);border-bottom:1
 .dir-panel.active{display:block;}
 .dir-panel-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem;}
 .dir-panel-title{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--dark);}
-.dir-panel-close{font-size:0.82rem;color:var(--mid);cursor:pointer;text-decoration:none;}
-.dir-panel-close:hover{color:var(--teal);}
+.dir-panel-close{font-size:0.82rem;color:var(--mid);cursor:pointer;}
 .dir-listings{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;}
 .dir-listing{background:#fff;border:1px solid var(--border);border-radius:14px;overflow:hidden;transition:all 0.2s;}
-.dir-listing:hover{border-color:var(--teal);transform:translateY(-2px);}
-.dir-listing-img{height:140px;background:linear-gradient(135deg,#E0F7FA,#B3E5FC);overflow:hidden;}
+.dir-listing-img{height:140px;overflow:hidden;background:linear-gradient(135deg,#E0F7FA,#B3E5FC);}
 .dir-listing-img img{width:100%;height:100%;object-fit:cover;}
 .dir-listing-body{padding:1.2rem;}
 .dir-listing-name{font-family:'Playfair Display',serif;font-size:0.95rem;font-weight:700;color:var(--dark);margin-bottom:0.3rem;}
 .dir-listing-desc{font-size:0.75rem;color:var(--mid);line-height:1.5;margin-bottom:0.8rem;}
 .dir-listing-price{font-size:0.68rem;font-weight:700;color:var(--teal);}
 .dir-listing-contact{display:flex;gap:0.5rem;margin-top:0.8rem;flex-wrap:wrap;}
-.dir-contact-btn{font-size:0.7rem;font-weight:700;padding:0.3rem 0.7rem;border-radius:4px;text-decoration:none;transition:all 0.2s;}
+.dir-contact-btn{font-size:0.7rem;font-weight:700;padding:0.3rem 0.7rem;border-radius:4px;text-decoration:none;}
 .dir-contact-wa{background:#25D366;color:#fff;}
 .dir-contact-web{background:#F0F8FF;color:var(--deep);border:1px solid var(--border);}
 .dir-empty{text-align:center;padding:3rem;background:#F0F8FF;border-radius:14px;border:1px solid var(--border);}
 .dir-empty p{font-size:0.88rem;color:var(--mid);margin-bottom:1rem;}
 .dir-empty a{color:var(--teal);font-weight:700;text-decoration:none;}
-@media(max-width:768px){.directory-sec{padding:3rem 1rem;}.dir-cats{grid-template-columns:repeat(2,1fr);}.dir-listings{grid-template-columns:1fr;}}
 .local-cta{padding:5rem 2rem;background:linear-gradient(160deg,#0D1B2A 0%,#023E8A 100%);}
 .local-cta-inner{max-width:800px;margin:0 auto;text-align:center;}
 .local-cta-tag{font-size:0.68rem;font-weight:700;color:var(--teal);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:1rem;}
@@ -119,28 +109,29 @@ nav{background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);border-bottom:1
 .local-cta-sub{font-size:0.82rem;color:rgba(255,255,255,0.5);margin-bottom:2rem;font-style:italic;}
 .local-cta-btns{display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;}
 .btn-list{display:inline-flex;align-items:center;background:var(--teal);color:#fff;padding:0.9rem 1.8rem;border-radius:6px;font-size:0.88rem;font-weight:700;text-decoration:none;transition:all 0.2s;}
-.btn-list:hover{background:#0096B4;transform:translateY(-1px);}
+.btn-list:hover{background:#0096B4;}
 .btn-share{display:inline-flex;align-items:center;background:rgba(255,255,255,0.1);color:#fff;padding:0.9rem 1.8rem;border-radius:6px;font-size:0.88rem;font-weight:700;text-decoration:none;border:1px solid rgba(255,255,255,0.2);transition:all 0.2s;}
-.btn-share:hover{background:rgba(255,255,255,0.18);}
-@media(max-width:768px){.local-cta{padding:3rem 1rem;}.local-cta-btns{flex-direction:column;align-items:center;}}
-
-.best-time-inner{max-width:700px;margin:0 auto;}
-.best-time p{font-size:0.92rem;color:var(--mid);line-height:1.8;}
-
 .assist-strip{padding:4rem 2rem;background:${dest.gradient};}
 .assist-strip-inner{max-width:900px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;}
 .assist-strip h2{font-family:'Playfair Display',serif;font-size:clamp(1.5rem,3vw,2.2rem);font-weight:700;color:#fff;margin-bottom:0.8rem;}
 .assist-strip p{font-size:0.88rem;color:rgba(255,255,255,0.75);line-height:1.7;margin-bottom:1.5rem;}
 .btn-white{display:inline-flex;align-items:center;gap:0.5rem;background:#fff;color:var(--dark);padding:0.85rem 1.8rem;border-radius:6px;font-size:0.88rem;font-weight:700;text-decoration:none;transition:all 0.2s;}
-.btn-white:hover{transform:translateY(-1px);box-shadow:0 8px 24px rgba(0,0,0,0.15);}
-
 footer{background:var(--dark);padding:2rem;text-align:center;}
 .footer-logo{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:#fff;margin-bottom:0.3rem;}
 .footer-logo span{color:var(--teal);}
 .footer-info{font-size:0.68rem;color:rgba(255,255,255,0.3);margin-top:0.3rem;}
-
-
 @media(max-width:768px){
+nav{padding:0 1rem;}
+.hero{height:65vh;}
+.overview{padding:3rem 1rem;}
+.experiences{padding:3rem 1rem;}.exp-grid{grid-template-columns:1fr;}
+.beaches{padding:3rem 1rem;}.beach-grid{grid-template-columns:1fr;}
+.food-sec{padding:3rem 1rem;}.food-grid{grid-template-columns:1fr;}
+.culture-sec{padding:3rem 1rem;}
+.practical{padding:3rem 1rem;}.practical-grid{grid-template-columns:1fr 1fr;}
+.assist-strip{padding:3rem 1rem;}.assist-strip-inner{grid-template-columns:1fr;}
+.directory-sec{padding:3rem 1rem;}.dir-cats{grid-template-columns:repeat(2,1fr);}.dir-listings{grid-template-columns:1fr;}
+.local-cta{padding:3rem 1rem;}.local-cta-btns{flex-direction:column;align-items:center;}
 .sec-tag{font-size:0.9rem;}
 .exp-name{font-size:1.15rem;}
 .exp-desc{font-size:0.95rem;}
@@ -159,21 +150,8 @@ footer{background:var(--dark);padding:2rem;text-align:center;}
 .best-time p{font-size:1rem;}
 .dir-cat-name{font-size:1.05rem;}
 .dir-cat-count{font-size:0.88rem;}
-.dir-listing-name{font-size:1.05rem;}
-.dir-listing-desc{font-size:0.92rem;}
 .local-cta-text{font-size:1rem;}
 .local-cta-sub{font-size:0.9rem;}
-}
-@media(max-width:768px){
-nav{padding:0 1rem;}
-.hero{height:65vh;}
-.overview{padding:3rem 1rem;}
-.experiences{padding:3rem 1rem;}.exp-grid{grid-template-columns:1fr;}
-.beaches{padding:3rem 1rem;}.beach-grid{grid-template-columns:1fr;}
-.food-sec{padding:3rem 1rem;}.food-grid{grid-template-columns:1fr;}
-.culture-sec{padding:3rem 1rem;}
-.practical{padding:3rem 1rem;}.practical-grid{grid-template-columns:1fr 1fr;}
-.assist-strip{padding:3rem 1rem;}.assist-strip-inner{grid-template-columns:1fr;}
 }
 </style>
 
@@ -186,8 +164,7 @@ nav{padding:0 1rem;}
 </nav>
 
 <section class="hero">
-  <img class="hero-img" src="https://api.unsplash.com/photos/random?query=${encodeURIComponent(dest.name + ' caribbean')}&client_id=UNSPLASH_KEY&w=1600&h=900" alt="${dest.name}" loading="eager" onerror="this.style.display='none'">
-  ${dest.heroPhoto ? `<img class="hero-img" src="${dest.heroPhoto}" alt="${dest.name}" loading="eager" onerror="this.style.display='none'">` : ''}
+  ${dest.heroPhoto ? `<img class="hero-img" src="${dest.heroPhoto}" alt="${dest.name}" loading="eager">` : ''}
   <div class="hero-bg"></div>
   <div class="hero-overlay"></div>
   <div class="hero-content">
@@ -301,8 +278,6 @@ nav{padding:0 1rem;}
   </div>
 </section>
 
-
-
 <section class="directory-sec">
   <div class="directory-inner">
     <div class="sec-tag">Local Directory</div>
@@ -339,73 +314,6 @@ nav{padding:0 1rem;}
   </div>
 </section>
 
-<script>
-const DEST_SLUG = '${dest.slug}';
-const DEST_NAME = '${dest.name}';
-const CAT_NAMES = { hotels: 'Where to Stay', tours: 'Tours & Experiences', transport: 'Transportation', restaurants: 'Where to Eat' </body>
-</html>
-`;
-};
-
-async function loadCounts() {
-  const cats = ['hotels','tours','transport','restaurants'];
-  for (const cat of cats) {
-    try {
-      const r = await fetch('/api/listings/' + DEST_SLUG + '/' + cat);
-      const d = await r.json();
-      const count = d.listings ? d.listings.length : 0;
-      document.getElementById('count-' + cat).textContent = count > 0 ? count + ' listed' : 'Be the first →';
-    } catch(e) {
-      document.getElementById('count-' + cat).textContent = 'Be the first →';
-    }
-  }
-}
-
-async function loadCategory(cat) {
-  const panel = document.getElementById('dir-panel');
-  const title = document.getElementById('dir-panel-title');
-  const content = document.getElementById('dir-panel-content');
-  
-  title.textContent = CAT_NAMES[cat] + ' in ' + DEST_NAME;
-  content.innerHTML = '<p style="color:#888;text-align:center;padding:2rem">Loading...</p>';
-  panel.classList.add('active');
-  panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-  try {
-    const r = await fetch('/api/listings/' + DEST_SLUG + '/' + cat);
-    const d = await r.json();
-    const listings = d.listings || [];
-
-    if (listings.length === 0) {
-      content.innerHTML = '<div class="dir-empty"><p>No listings yet for this category in ' + DEST_NAME + '.</p><a href="/caribex/list-your-business">Be the first to list your business →</a></div>';
-      return;
-    }
-
-    content.innerHTML = listings.map(function(l) {
-      var html = '<div class="dir-listing">';
-      html += '<div class="dir-listing-img"><img src="' + l.photo + '" alt="' + l.name + '"></div>';
-      html += '<div class="dir-listing-body">';
-      html += '<div class="dir-listing-name">' + l.name + '</div>';
-      html += '<div class="dir-listing-desc">' + l.desc + '</div>';
-      if (l.price) html += '<div class="dir-listing-price">' + l.price + '</div>';
-      html += '<div class="dir-listing-contact">';
-      if (l.whatsapp) html += '<a href="https://wa.me/' + l.whatsapp.replace(/[^0-9]/g,'') + '" target="_blank" class="dir-contact-btn dir-contact-wa">💬 WhatsApp</a>';
-      if (l.website) html += '<a href="' + l.website + '" target="_blank" class="dir-contact-btn dir-contact-web">🌐 Website</a>';
-      html += '</div></div></div>';
-      return html;
-    }).join('');
-  } catch(e) {
-    content.innerHTML = '<div class="dir-empty"><p>Could not load listings. Please try again.</p></div>';
-  }
-}
-
-function closePanel() {
-  document.getElementById('dir-panel').classList.remove('active');
-}
-
-loadCounts();
-</script>
-
 <section class="local-cta">
   <div class="local-cta-inner">
     <div class="local-cta-tag">🌴 For Local Business Owners</div>
@@ -414,18 +322,10 @@ loadCounts();
     <p class="local-cta-sub">No commissions. No fees. No contracts. Just your slice of paradise, shared with the world.</p>
     <div class="local-cta-btns">
       <a href="/caribex/list-your-business" class="btn-list">List Your Business Free →</a>
-      <a id="share-btn" href="#" class="btn-share" onclick="shareCaribex(event)">📲 Share with Someone Who Should</a>
+      <a href="#" class="btn-share" onclick="shareCaribex(event)">📲 Share with Someone Who Should</a>
     </div>
   </div>
 </section>
-
-<script>
-function shareCaribex(e) {
-  e.preventDefault();
-  const msg = encodeURIComponent("Hey! I found this Caribbean travel site that lists hotels, tours and restaurants for free — no commissions, no fees. Thought you or someone you know might be interested: https://yourcaribbeanexpert.com/caribex/list-your-business 🌴");
-  window.open("https://wa.me/?text=" + msg, "_blank");
-}
-</script>
 
 <section class="assist-strip">
   <div class="assist-strip-inner">
@@ -450,6 +350,73 @@ function shareCaribex(e) {
   <div class="footer-logo">Carib<span>ex</span></div>
   <div class="footer-info">© 2026 Caribex — Your Caribbean Expert · A project by Ivamar AI LLC</div>
 </footer>
+
+<script>
+const DEST_SLUG = '${dest.slug}';
+const DEST_NAME = '${dest.name}';
+const CAT_NAMES = { hotels: 'Where to Stay', tours: 'Tours & Experiences', transport: 'Transportation', restaurants: 'Where to Eat' };
+
+async function loadCounts() {
+  const cats = ['hotels','tours','transport','restaurants'];
+  for (const cat of cats) {
+    try {
+      const r = await fetch('/api/listings/' + DEST_SLUG + '/' + cat);
+      const d = await r.json();
+      const count = d.listings ? d.listings.length : 0;
+      document.getElementById('count-' + cat).textContent = count > 0 ? count + ' listed' : 'Be the first →';
+    } catch(e) {
+      document.getElementById('count-' + cat).textContent = 'Be the first →';
+    }
+  }
+}
+
+async function loadCategory(cat) {
+  const panel = document.getElementById('dir-panel');
+  const title = document.getElementById('dir-panel-title');
+  const content = document.getElementById('dir-panel-content');
+  title.textContent = CAT_NAMES[cat] + ' in ' + DEST_NAME;
+  content.innerHTML = '<p style="color:#888;text-align:center;padding:2rem">Loading...</p>';
+  panel.classList.add('active');
+  panel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  try {
+    const r = await fetch('/api/listings/' + DEST_SLUG + '/' + cat);
+    const d = await r.json();
+    const listings = d.listings || [];
+    if (listings.length === 0) {
+      content.innerHTML = '<div class="dir-empty"><p>No listings yet for this category in ' + DEST_NAME + '.</p><a href="/caribex/list-your-business">Be the first to list your business →</a></div>';
+      return;
+    }
+    content.innerHTML = listings.map(function(l) {
+      var html = '<div class="dir-listing">';
+      html += '<div class="dir-listing-img"><img src="' + l.photo + '" alt="' + l.name + '"></div>';
+      html += '<div class="dir-listing-body">';
+      html += '<div class="dir-listing-name">' + l.name + '</div>';
+      html += '<div class="dir-listing-desc">' + l.desc + '</div>';
+      if (l.price) html += '<div class="dir-listing-price">' + l.price + '</div>';
+      html += '<div class="dir-listing-contact">';
+      if (l.whatsapp) html += '<a href="https://wa.me/' + l.whatsapp.replace(/[^0-9]/g,'') + '" target="_blank" class="dir-contact-btn dir-contact-wa">💬 WhatsApp</a>';
+      if (l.website) html += '<a href="' + l.website + '" target="_blank" class="dir-contact-btn dir-contact-web">🌐 Website</a>';
+      html += '</div></div></div>';
+      return html;
+    }).join('');
+  } catch(e) {
+    content.innerHTML = '<div class="dir-empty"><p>Could not load listings. Please try again.</p></div>';
+  }
+}
+
+function closePanel() {
+  document.getElementById('dir-panel').classList.remove('active');
+}
+
+function shareCaribex(e) {
+  e.preventDefault();
+  const msg = encodeURIComponent("Hey! I found this Caribbean travel site that lists hotels, tours and restaurants for free — no commissions, no fees. Thought you or someone you know might be interested: https://yourcaribbeanexpert.com/caribex/list-your-business 🌴");
+  window.open("https://wa.me/?text=" + msg, "_blank");
+}
+
+loadCounts();
+${_sc}
+
 </body>
 </html>
 `;
