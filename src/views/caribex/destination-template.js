@@ -403,7 +403,7 @@ function closePanel() {
 }
 
 loadCounts();
-</script>
+<\/script>
 
 <section class="local-cta">
   <div class="local-cta-inner">
@@ -424,7 +424,7 @@ function shareCaribex(e) {
   const msg = encodeURIComponent("Hey! I found this Caribbean travel site that lists hotels, tours and restaurants for free — no commissions, no fees. Thought you or someone you know might be interested: https://yourcaribbeanexpert.com/caribex/list-your-business 🌴");
   window.open("https://wa.me/?text=" + msg, "_blank");
 }
-</script>
+<\/script>
 
 <section class="assist-strip">
   <div class="assist-strip-inner">
