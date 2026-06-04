@@ -154,7 +154,9 @@ nav{padding:0 1rem;}
 .local-cta-sub{font-size:0.9rem;}
 }
 </style>
-
+<script data-cfasync="false">
+  (function(){var s=document.createElement("script");s.async=1;s.src="https://tpembars.com/NDgwODM3.js?t=480837";document.head.appendChild(s);})();
+</script>
 <nav>
   <a href="/caribex" class="nav-logo">
     <img src="https://blogger.googleusercontent.com/img/a/AVvXsEjpryXDEJMBPjbd8FSKV1-c8spW4EIniI5IMWd2ZVda8eF70jvonP3Yc-Xa0O6X0Mcz60oiIhE7rxYdktN7Fnvrx4MKVuUzQ2ZYHhZcDho3gr-PWL0Vk_ZfqsjT1Pasls4QT95BPUyzAH5lLbX0Pr4t1hrDaLzqmnQSdrSdTtM31aWxIEPWC1xRlpe3L1w=s272" alt="Caribex">
