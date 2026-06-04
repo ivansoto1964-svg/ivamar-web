@@ -393,7 +393,7 @@ nav{padding:0 1rem;}.nav-links{display:none;}
 <section class="blog-sec">
   <div class="blog-inner">
     <div class="sec-tag">Island Reads</div>
-    <h2 class="sec-title">Caribbean <em>Insights</em></h2>
+    <h2 class="sec-title">Caribex <em>Insights</em></h2>
     <p class="sec-sub">Real Caribbean knowledge — culture, travel and what the guidebooks miss.</p>
     <div id="blog-grid" class="blog-grid">
       <div class="blog-card-skeleton"></div>
