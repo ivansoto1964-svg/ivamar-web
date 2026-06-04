@@ -6,8 +6,6 @@ module.exports = function renderDestination(dest) {
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>${dest.name} — Caribex Caribbean Expert</title>
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4181903530685744" crossorigin="anonymous"></script>
-</head>
-<body>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap');
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -176,7 +174,8 @@ nav{padding:0 1rem;}
 .assist-strip{padding:3rem 1rem;}.assist-strip-inner{grid-template-columns:1fr;}
 }
 </style>
-
+</head>
+<body>
 <nav>
   <a href="/caribex" class="nav-logo">
     <img src="https://blogger.googleusercontent.com/img/a/AVvXsEjpryXDEJMBPjbd8FSKV1-c8spW4EIniI5IMWd2ZVda8eF70jvonP3Yc-Xa0O6X0Mcz60oiIhE7rxYdktN7Fnvrx4MKVuUzQ2ZYHhZcDho3gr-PWL0Vk_ZfqsjT1Pasls4QT95BPUyzAH5lLbX0Pr4t1hrDaLzqmnQSdrSdTtM31aWxIEPWC1xRlpe3L1w=s272" alt="Caribex">

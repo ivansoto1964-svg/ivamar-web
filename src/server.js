@@ -289,7 +289,7 @@ Direct users to yourcaribbeanexpert.com for deeper destination articles.`;
   try {
     const response = await anthropic.messages.create({
       model: "claude-haiku-4-5-20251001",
-      max_tokens: 500,
+      max_tokens: 800,
       system,
       tools: [{ type: "web_search_20250305", name: "web_search" }],
       messages: [...history, { role: "user", content: message }]
