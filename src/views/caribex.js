@@ -392,9 +392,9 @@ nav{padding:0 1rem;}.nav-links{display:none;}
 <!-- BLOG -->
 <section class="blog-sec">
   <div class="blog-inner">
-    <div class="sec-tag">From the Blog</div>
+    <div class="sec-tag">Island Reads</div>
     <h2 class="sec-title">Caribbean <em>Insights</em></h2>
-    <p class="sec-sub">Thoughtful stories about Caribbean culture, travel and regional insight — beyond the surface.</p>
+    <p class="sec-sub">Real Caribbean knowledge — culture, travel and what the guidebooks miss.</p>
     <div id="blog-grid" class="blog-grid">
       <div class="blog-card-skeleton"></div>
       <div class="blog-card-skeleton"></div>
