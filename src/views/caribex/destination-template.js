@@ -5,7 +5,9 @@ module.exports = function renderDestination(dest) {
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>${dest.name} — Caribex Caribbean Expert</title>
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4181903530685744" crossorigin="anonymous"><\/script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4181903530685744" crossorigin="anonymous"></script>
+</head>
+<body>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap');
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -174,8 +176,7 @@ nav{padding:0 1rem;}
 .assist-strip{padding:3rem 1rem;}.assist-strip-inner{grid-template-columns:1fr;}
 }
 </style>
-</head>
-<body>
+
 <nav>
   <a href="/caribex" class="nav-logo">
     <img src="https://blogger.googleusercontent.com/img/a/AVvXsEjpryXDEJMBPjbd8FSKV1-c8spW4EIniI5IMWd2ZVda8eF70jvonP3Yc-Xa0O6X0Mcz60oiIhE7rxYdktN7Fnvrx4MKVuUzQ2ZYHhZcDho3gr-PWL0Vk_ZfqsjT1Pasls4QT95BPUyzAH5lLbX0Pr4t1hrDaLzqmnQSdrSdTtM31aWxIEPWC1xRlpe3L1w=s272" alt="Caribex">
@@ -403,7 +404,7 @@ function closePanel() {
 }
 
 loadCounts();
-<\/script>
+</script>
 
 <section class="local-cta">
   <div class="local-cta-inner">
@@ -424,7 +425,7 @@ function shareCaribex(e) {
   const msg = encodeURIComponent("Hey! I found this Caribbean travel site that lists hotels, tours and restaurants for free — no commissions, no fees. Thought you or someone you know might be interested: https://yourcaribbeanexpert.com/caribex/list-your-business 🌴");
   window.open("https://wa.me/?text=" + msg, "_blank");
 }
-<\/script>
+</script>
 
 <section class="assist-strip">
   <div class="assist-strip-inner">
