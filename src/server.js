@@ -525,21 +525,21 @@ app.get("/admin/listings", requireAdmin, (req, res) => {
       <script>
       async function approveListing(id) {
         if (!confirm('Approve this listing?')) return;
-        const r = await fetch('/admin/listings/approve/' + id, { method: 'POST' });
+        const r = await fetch('/admin/listings/approve/' + id, { method: 'POST', credentials: 'include' });
         const d = await r.json();
         if (d.ok) { alert('✅ Approved!'); location.reload(); }
         else alert('Error: ' + d.error);
       }
       async function rejectListing(id) {
         if (!confirm('Reject and delete this listing?')) return;
-        const r = await fetch('/admin/listings/reject/' + id, { method: 'POST' });
+        const r = await fetch('/admin/listings/reject/' + id, { method: 'POST', credentials: 'include' });
         const d = await r.json();
         if (d.ok) { alert('Rejected.'); location.reload(); }
         else alert('Error: ' + d.error);
       }
       async function removeListing(destination, id) {
         if (!confirm('Remove this approved listing?')) return;
-        const r = await fetch('/admin/listings/remove/' + destination + '/' + id, { method: 'POST' });
+        const r = await fetch('/admin/listings/remove/' + destination + '/' + id, { method: 'POST', credentials: 'include' });
         const d = await r.json();
         if (d.ok) { alert('✅ Removed!'); location.reload(); }
         else alert('Error: ' + d.error);
