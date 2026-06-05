@@ -499,7 +499,7 @@ app.get("/admin/listings", requireAdmin, (req, res) => {
               <div style="font-size:0.75rem;color:#888">📧 ${l.email} ${l.whatsapp ? '· 📱 ' + l.whatsapp : ''} ${l.website ? '· 🌐 ' + l.website : ''}</div>
               <div style="font-size:0.75rem;color:#888;margin-top:0.3rem">Submitted: ${new Date(l.submittedAt).toLocaleDateString()}</div>
             </div>
-            " + (l.photo ? '<img src="' + l.photo + '" style="width:100px;height:70px;object-fit:cover;border-radius:8px;flex-shrink:0">' : '') + "
+            ${l.photo ? '<img src="' + l.photo + '" style="width:100px;height:70px;object-fit:cover;border-radius:8px;flex-shrink:0">' : ''}
           </div>
           <div style="margin-top:1rem;display:flex;gap:0.8rem;">
             <button onclick="approveListing('${l.id}')" style="background:#00B4D8;color:#fff;border:none;padding:0.6rem 1.2rem;border-radius:6px;font-weight:700;cursor:pointer;font-size:0.82rem">✅ Approve</button>
