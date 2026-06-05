@@ -438,6 +438,40 @@ app.get("/admin/listings", requireAdmin, (req, res) => {
     const pendingFile = path.join('/data/listings/pending.json');
     const pending = fs2.existsSync(pendingFile) ? JSON.parse(fs2.readFileSync(pendingFile, 'utf8')) : [];
 
+    const catNames = { hotels: '🏨 Where to Stay', tours: '🧭 Tours & Experiences', transport: '🚗 Transportation', restaurants: '🍽️ Where to Eat' };
+    const approvedByDest = {};
+    allApproved.forEach(l => {
+      if (!approvedByDest[l.destination]) approvedByDest[l.destination] = {};
+      if (!approvedByDest[l.destination][l.category]) approvedByDest[l.destination][l.category] = [];
+      approvedByDest[l.destination][l.category].push(l);
+    });
+
+    const approvedHTML = allApproved.length === 0
+      ? '<p style="color:#888;text-align:center;padding:2rem">No approved listings yet.</p>'
+      : Object.entries(approvedByDest).map(([dest, cats]) => `
+        <div style="margin-bottom:2rem;">
+          <h3 style="color:#0077B6;font-size:1rem;text-transform:capitalize;margin-bottom:1rem;border-bottom:2px solid #E0EEF4;padding-bottom:0.5rem">${dest.replace(/-/g,' ')}</h3>
+          ${Object.entries(cats).map(([cat, listings]) => `
+            <div style="margin-bottom:1rem;">
+              <div style="font-size:0.75rem;font-weight:700;color:#00B4D8;text-transform:uppercase;margin-bottom:0.5rem">${catNames[cat] || cat}</div>
+              ${listings.map(l => `
+                <div style="background:#fff;border:1px solid #E0EEF4;border-radius:8px;padding:1rem;margin-bottom:0.5rem;display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;">
+                  <div style="display:flex;align-items:center;gap:1rem;">
+                    ${l.photo ? `<img src="${l.photo}" style="width:60px;height:45px;object-fit:cover;border-radius:6px;">` : ''}
+                    <div>
+                      <div style="font-weight:700;color:#0D1B2A">${l.name}</div>
+                      <div style="font-size:0.75rem;color:#555">${l.desc}</div>
+                      ${l.price ? `<div style="font-size:0.7rem;color:#00B4D8;font-weight:700">${l.price}</div>` : ''}
+                    </div>
+                  </div>
+                  <button onclick="removeListing('${dest}','${l.id}')" style="background:#fff;color:#e53e3e;border:1px solid #e53e3e;padding:0.4rem 0.8rem;border-radius:6px;font-weight:700;cursor:pointer;font-size:0.75rem;white-space:nowrap;">🗑 Remove</button>
+                </div>
+              `).join('')}
+            </div>
+          `).join('')}
+        </div>
+      `).join('');
+
     const cards = pending.length === 0
       ? '<p style="color:#888;text-align:center;padding:3rem">No pending listings.</p>'
       : pending.map(l => `
@@ -467,9 +501,12 @@ app.get("/admin/listings", requireAdmin, (req, res) => {
       <style>body{font-family:sans-serif;background:#F0F8FF;padding:2rem;max-width:900px;margin:0 auto;}h1{color:#0D1B2A;margin-bottom:0.3rem;}p.sub{color:#888;font-size:0.85rem;margin-bottom:2rem;}</style>
       </head>
       <body>
-      <h1>🌴 Caribex — Pending Listings</h1>
+      <h1>🌴 Caribex — Directory Admin</h1>
       <p class="sub"><a href="/admin/dashboard">← Back to Dashboard</a></p>
+      <h2 style="font-size:1.1rem;color:#0D1B2A;margin-bottom:1rem;">⏳ Pending Approval (${pending.length})</h2>
       ${cards}
+      <h2 style="font-size:1.1rem;color:#0D1B2A;margin:2rem 0 1rem;">✅ Approved Listings (${allApproved.length})</h2>
+      ${approvedHTML}
       <script>
       async function approveListing(id) {
         if (!confirm('Approve this listing?')) return;
@@ -483,6 +520,13 @@ app.get("/admin/listings", requireAdmin, (req, res) => {
         const r = await fetch('/admin/listings/reject/' + id, { method: 'POST' });
         const d = await r.json();
         if (d.ok) { alert('Rejected.'); location.reload(); }
+        else alert('Error: ' + d.error);
+      }
+      async function removeListing(destination, id) {
+        if (!confirm('Remove this approved listing?')) return;
+        const r = await fetch('/admin/listings/remove/' + destination + '/' + id, { method: 'POST' });
+        const d = await r.json();
+        if (d.ok) { alert('✅ Removed!'); location.reload(); }
         else alert('Error: ' + d.error);
       }
       </script>
