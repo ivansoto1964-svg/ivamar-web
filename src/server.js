@@ -1358,6 +1358,7 @@ app.post("/api/upload-photo", express.json({ limit: '10mb' }), async (req, res) 
 // CARIBEX DIRECTORY — LISTING SUBMISSION
 // ==========================================
 app.post("/api/listing-submit", formLimiter, express.json(), async (req, res) => {
+  console.log("📋 Listing submit received:", req.body?.name);
   const name = sanitize(req.body.name);
   const category = sanitize(req.body.category);
   const destination = sanitize(req.body.destination);
