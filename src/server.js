@@ -1520,6 +1520,64 @@ app.get("/api/listings-count", requireAdmin, (req, res) => {
   }
 });
 
+
+// ==========================================
+// CARIBEX NEWSLETTER SUBSCRIBE
+// ==========================================
+app.post("/api/caribex-subscribe", express.json(), async (req, res) => {
+  try {
+    const { email } = req.body;
+    if (!email || !email.includes('@')) return res.json({ ok: false });
+
+    // Save to subscribers file
+    const subscribersFile = '/data/caribex-subscribers.json';
+    let subscribers = [];
+    if (require('fs').existsSync(subscribersFile)) {
+      subscribers = JSON.parse(require('fs').readFileSync(subscribersFile, 'utf8'));
+    }
+    if (subscribers.find(s => s.email === email)) return res.json({ ok: true }); // already subscribed
+    subscribers.push({ email, subscribedAt: new Date().toISOString() });
+    require('fs').writeFileSync(subscribersFile, JSON.stringify(subscribers, null, 2));
+
+    // Notify Ivan
+    const { Resend } = require('resend');
+    const resend = new Resend(process.env.RESEND_API_KEY);
+    await resend.emails.send({
+      from: 'Caribex <connect@ivamarai.com>',
+      to: 'connect@ivamarai.com',
+      subject: 'New Caribex Subscriber: ' + email,
+      html: '<p>New subscriber: <strong>' + email + '</strong></p><p>Total subscribers: ' + subscribers.length + '</p>'
+    });
+
+    // Welcome email to subscriber
+    await resend.emails.send({
+      from: 'Caribex <connect@ivamarai.com>',
+      to: email,
+      subject: '🌴 Welcome to Caribex!',
+      html: `<div style="font-family:sans-serif;max-width:600px;margin:0 auto;">
+        <div style="background:linear-gradient(135deg,#0D1B2A,#0077B6);padding:2rem;text-align:center;border-radius:12px 12px 0 0;">
+          <h1 style="color:#fff;font-size:1.5rem;margin:0">🌴 Welcome to Caribex!</h1>
+        </div>
+        <div style="padding:2rem;background:#fff;border:1px solid #E0EEF4;">
+          <p style="font-size:1rem;color:#333">You're now part of the Caribex community — the Caribbean travel guide built by people who actually know the islands.</p>
+          <p style="font-size:0.9rem;color:#555">Expect travel insights, destination guides and hidden gems delivered to your inbox.</p>
+          <div style="text-align:center;margin:2rem 0;">
+            <a href="https://yourcaribbeanexpert.com" style="background:#00B4D8;color:#fff;padding:12px 24px;border-radius:6px;text-decoration:none;font-weight:700;">Explore the Caribbean →</a>
+          </div>
+        </div>
+        <div style="padding:1rem;text-align:center;background:#F0F8FF;border-radius:0 0 12px 12px;">
+          <p style="font-size:0.75rem;color:#888;">© 2026 Caribex — yourcaribbeanexpert.com · A project by Ivamar AI LLC</p>
+        </div>
+      </div>`
+    });
+
+    return res.json({ ok: true });
+  } catch(e) {
+    console.error('Subscribe error:', e.message);
+    return res.json({ ok: false });
+  }
+});
+
 // ==========================================
 // BLOGGER RSS PROXY
 // ==========================================

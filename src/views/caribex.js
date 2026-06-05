@@ -415,9 +415,23 @@ nav{padding:0 1rem;}.nav-links{display:none;}
   <h2>Stay Ahead of the Caribbean</h2>
   <p>Travel insights, destination guides and hidden gems — delivered to your inbox.</p>
   <div class="nl-form">
-    <input class="nl-input" type="email" placeholder="your@email.com">
-    <button class="nl-btn">Subscribe</button>
+    <input class="nl-input" type="email" id="nl-email" placeholder="your@email.com">
+    <button class="nl-btn" onclick="subscribeNewsletter()">Subscribe</button>
   </div>
+  <div id="nl-msg" style="margin-top:0.8rem;font-size:0.85rem;"></div>
+  <script>
+  async function subscribeNewsletter() {
+    const email = document.getElementById('nl-email').value.trim();
+    const msg = document.getElementById('nl-msg');
+    if (!email || !email.includes('@')) { msg.style.color='red'; msg.textContent='Please enter a valid email.'; return; }
+    try {
+      const r = await fetch('/api/caribex-subscribe', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ email }) });
+      const d = await r.json();
+      if (d.ok) { msg.style.color='green'; msg.textContent='✅ You\'re subscribed! Welcome to Caribex.'; document.getElementById('nl-email').value=''; }
+      else { msg.style.color='red'; msg.textContent='Something went wrong. Please try again.'; }
+    } catch(e) { msg.style.color='red'; msg.textContent='Connection error. Please try again.'; }
+  }
+  </script>
 </section>
 
 <!-- FOOTER -->
