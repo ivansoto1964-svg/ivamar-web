@@ -9,6 +9,8 @@ const sanitize = (str) => str ? sanitizeHtml(str, { allowedTags: [], allowedAttr
 // RATE LIMITING
 // ==========================================
 const rateLimit = require('express-rate-limit');
+const app = express();
+app.set('trust proxy', 1);
 
 // AI endpoints — max 20 requests per 10 minutes per IP
 const aiLimiter = rateLimit({
@@ -81,8 +83,6 @@ if (!fs.existsSync(agreementsDir)) {
 
 
 
-const app = express();
-app.set('trust proxy', 1);
 app.use(express.json({ limit: '15mb' }));
 app.use(express.urlencoded({ limit: '15mb', extended: true }));
 const PORT = process.env.PORT || 4000;
