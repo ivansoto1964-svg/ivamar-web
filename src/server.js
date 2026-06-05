@@ -1399,6 +1399,7 @@ app.post("/api/listing-submit", formLimiter, express.json(), async (req, res) =>
     const { Resend } = require('resend');
     const resend = new Resend(process.env.RESEND_API_KEY);
     
+    console.log("📧 Sending email via Resend...");
     await resend.emails.send({
       from: 'Caribex <connect@ivamarai.com>',
       to: 'connect@ivamarai.com',
@@ -1423,9 +1424,10 @@ app.post("/api/listing-submit", formLimiter, express.json(), async (req, res) =>
       `
     });
 
+    console.log("✅ Email sent successfully");
     return res.json({ ok: true });
   } catch(e) {
-    console.error('Listing submit error:', e);
+    console.error('❌ Listing submit error:', e.message);
     return res.json({ ok: false, error: e.message });
   }
 });
