@@ -438,6 +438,21 @@ app.get("/admin/listings", requireAdmin, (req, res) => {
     const pendingFile = path.join('/data/listings/pending.json');
     const pending = fs2.existsSync(pendingFile) ? JSON.parse(fs2.readFileSync(pendingFile, 'utf8')) : [];
 
+    // Load all approved listings
+    const listingsDir = '/data/listings';
+    const allApproved = [];
+    if (fs2.existsSync(listingsDir)) {
+      fs2.readdirSync(listingsDir).forEach(file => {
+        if (file !== 'pending.json' && file.endsWith('.json')) {
+          const destination = file.replace('.json', '');
+          try {
+            const listings = JSON.parse(fs2.readFileSync(require('path').join(listingsDir, file), 'utf8'));
+            listings.forEach(l => allApproved.push({ ...l, destination }));
+          } catch(e) {}
+        }
+      });
+    }
+
     const catNames = { hotels: '🏨 Where to Stay', tours: '🧭 Tours & Experiences', transport: '🚗 Transportation', restaurants: '🍽️ Where to Eat' };
     const approvedByDest = {};
     allApproved.forEach(l => {
