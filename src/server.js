@@ -82,6 +82,8 @@ if (!fs.existsSync(agreementsDir)) {
 
 
 const app = express();
+app.use(express.json({ limit: '15mb' }));
+app.use(express.urlencoded({ limit: '15mb', extended: true }));
 const PORT = process.env.PORT || 4000;
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
