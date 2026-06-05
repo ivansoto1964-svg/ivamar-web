@@ -133,9 +133,39 @@ module.exports = function(businesses) {
       </div>
     </div>
   </div>
+
+  <div style="margin-top:2rem;background:#fff;border-radius:16px;border:1px solid #E0EEF4;overflow:hidden;">
+    <div style="padding:1.5rem;border-bottom:1px solid #E0EEF4;display:flex;justify-content:space-between;align-items:center;">
+      <div>
+        <div style="font-size:0.65rem;font-weight:700;color:#00B4D8;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.3rem;">Caribex Directory</div>
+        <div style="font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:#0D1B2A;">yourcaribbeanexpert.com</div>
+      </div>
+      <a href="/admin/listings" style="background:#00B4D8;color:#fff;padding:0.6rem 1.2rem;border-radius:6px;font-size:0.82rem;font-weight:700;text-decoration:none;">Manage Listings →</a>
+    </div>
+    <div style="padding:1.5rem;display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;">
+      <div style="text-align:center;padding:1rem;background:#F0F8FF;border-radius:10px;">
+        <div style="font-size:1.5rem;font-weight:700;color:#0077B6;" id="pendingCount">—</div>
+        <div style="font-size:0.72rem;color:#555;margin-top:0.3rem;">Pending Review</div>
+      </div>
+      <div style="text-align:center;padding:1rem;background:#F0F8FF;border-radius:10px;">
+        <div style="font-size:1.5rem;font-weight:700;color:#00B4D8;" id="approvedCount">—</div>
+        <div style="font-size:0.72rem;color:#555;margin-top:0.3rem;">Approved Listings</div>
+      </div>
+      <div style="text-align:center;padding:1rem;background:#F0F8FF;border-radius:10px;">
+        <div style="font-size:1.5rem;font-weight:700;color:#2D6A4F;" id="featuredCount">—</div>
+        <div style="font-size:0.72rem;color:#555;margin-top:0.3rem;">Featured</div>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>
+// Load Caribex listing counts
+fetch('/api/listings-count').then(r => r.json()).then(d => {
+  document.getElementById('pendingCount').textContent = d.pending || 0;
+  document.getElementById('approvedCount').textContent = d.approved || 0;
+  document.getElementById('featuredCount').textContent = d.featured || 0;
+}).catch(() => {});
 function filterRows() {
   const q = document.getElementById('searchInput').value.toLowerCase();
   document.querySelectorAll('.iva-dash-row').forEach(row => {

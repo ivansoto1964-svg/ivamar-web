@@ -1491,6 +1491,35 @@ app.post("/api/listing-submit", formLimiter, express.json(), async (req, res) =>
   }
 });
 
+
+// CARIBEX DIRECTORY — LISTINGS COUNT FOR ADMIN DASHBOARD
+app.get("/api/listings-count", requireAdmin, (req, res) => {
+  try {
+    const fs2 = require('fs');
+    const pendingFile = '/data/listings/pending.json';
+    const pending = fs2.existsSync(pendingFile) ? JSON.parse(fs2.readFileSync(pendingFile, 'utf8')) : [];
+    
+    const listingsDir = '/data/listings';
+    let approved = 0;
+    let featured = 0;
+    if (fs2.existsSync(listingsDir)) {
+      fs2.readdirSync(listingsDir).forEach(file => {
+        if (file !== 'pending.json' && file.endsWith('.json')) {
+          try {
+            const listings = JSON.parse(fs2.readFileSync(require('path').join(listingsDir, file), 'utf8'));
+            approved += listings.length;
+            featured += listings.filter(l => l.featured).length;
+          } catch(e) {}
+        }
+      });
+    }
+    
+    return res.json({ pending: pending.length, approved, featured });
+  } catch(e) {
+    return res.json({ pending: 0, approved: 0, featured: 0 });
+  }
+});
+
 // ==========================================
 // BLOGGER RSS PROXY
 // ==========================================
