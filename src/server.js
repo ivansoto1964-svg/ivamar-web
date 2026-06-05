@@ -1320,6 +1320,37 @@ app.post("/start", async (req, res) => {
 
 
 
+
+// ==========================================
+// CLOUDINARY PHOTO UPLOAD
+// ==========================================
+const cloudinary = require('cloudinary').v2;
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
+
+app.post("/api/upload-photo", express.json({ limit: '10mb' }), async (req, res) => {
+  try {
+    const { data } = req.body; // base64 image
+    if (!data) return res.json({ ok: false, error: 'No image data' });
+    
+    const result = await cloudinary.uploader.upload(data, {
+      folder: 'caribex-listings',
+      transformation: [
+        { width: 800, height: 600, crop: 'fill', gravity: 'auto' },
+        { fetch_format: 'auto', quality: 'auto' }
+      ]
+    });
+    
+    return res.json({ ok: true, url: result.secure_url });
+  } catch(e) {
+    console.error('Upload error:', e);
+    return res.json({ ok: false, error: e.message });
+  }
+});
+
 // ==========================================
 // CARIBEX DIRECTORY — LISTING SUBMISSION
 // ==========================================

@@ -142,8 +142,20 @@ footer{background:var(--dark);padding:2rem;text-align:center;}
           <input type="url" id="biz-website" placeholder="https://yourbusiness.com">
         </div>
         <div class="form-group">
-          <label>Photo URL *</label>
-          <input type="url" id="biz-photo" placeholder="https://... (link to your business photo)">
+          <label>Business Photo *</label>
+          <div id="photo-upload-area" style="border:2px dashed var(--border);border-radius:8px;padding:2rem;text-align:center;cursor:pointer;transition:all 0.2s;" onclick="document.getElementById('photo-file').click()">
+            <div id="photo-preview" style="display:none;margin-bottom:1rem;">
+              <img id="preview-img" style="max-width:100%;max-height:200px;border-radius:8px;object-fit:cover;">
+            </div>
+            <div id="photo-placeholder">
+              <div style="font-size:2rem;margin-bottom:0.5rem;">📷</div>
+              <div style="font-size:0.88rem;color:var(--mid);font-weight:600;">Tap to upload a photo</div>
+              <div style="font-size:0.75rem;color:#aaa;margin-top:0.3rem;">JPG, PNG — max 5MB</div>
+            </div>
+          </div>
+          <input type="file" id="photo-file" accept="image/*" style="display:none" onchange="handlePhotoUpload(this)">
+          <input type="hidden" id="biz-photo" value="">
+          <div id="upload-status" style="font-size:0.78rem;margin-top:0.5rem;"></div>
         </div>
       </div>
       <div class="form-group">
@@ -180,6 +192,49 @@ footer{background:var(--dark);padding:2rem;text-align:center;}
 </footer>
 
 <script>
+async function handlePhotoUpload(input) {
+  const file = input.files[0];
+  if (!file) return;
+  if (file.size > 5 * 1024 * 1024) {
+    alert('Photo must be under 5MB');
+    return;
+  }
+  
+  const status = document.getElementById('upload-status');
+  const area = document.getElementById('photo-upload-area');
+  status.textContent = '⏳ Uploading photo...';
+  status.style.color = 'var(--teal)';
+  area.style.borderColor = 'var(--teal)';
+  
+  const reader = new FileReader();
+  reader.onload = async function(e) {
+    try {
+      const res = await fetch('/api/upload-photo', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ data: e.target.result })
+      });
+      const data = await res.json();
+      if (data.ok) {
+        document.getElementById('biz-photo').value = data.url;
+        document.getElementById('preview-img').src = data.url;
+        document.getElementById('photo-preview').style.display = 'block';
+        document.getElementById('photo-placeholder').style.display = 'none';
+        status.textContent = '✅ Photo uploaded successfully';
+        status.style.color = 'green';
+      } else {
+        status.textContent = '❌ Upload failed. Please try again.';
+        status.style.color = 'red';
+        area.style.borderColor = 'red';
+      }
+    } catch(e) {
+      status.textContent = '❌ Connection error. Please try again.';
+      status.style.color = 'red';
+    }
+  };
+  reader.readAsDataURL(file);
+}
+
 async function submitListing() {
   const name = document.getElementById('biz-name').value.trim();
   const category = document.getElementById('biz-category').value;
@@ -194,7 +249,7 @@ async function submitListing() {
   const agreed = document.getElementById('terms-agree').checked;
 
   if (!name || !category || !destination || !desc || !fullDesc || !email || !photo) {
-    alert('Please fill in all required fields.');
+    alert('Please fill in all required fields including a photo.');
     return;
   }
   if (!agreed) {
