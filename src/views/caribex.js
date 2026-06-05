@@ -427,7 +427,7 @@ nav{padding:0 1rem;}.nav-links{display:none;}
     try {
       const r = await fetch('/api/caribex-subscribe', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ email }) });
       const d = await r.json();
-      if (d.ok) { msg.style.color='green'; msg.textContent='✅ You\'re subscribed! Welcome to Caribex.'; document.getElementById('nl-email').value=''; }
+      if (d.ok) { msg.style.color='green'; msg.textContent="✅ You are subscribed! Welcome to Caribex."; document.getElementById('nl-email').value=''; }
       else { msg.style.color='red'; msg.textContent='Something went wrong. Please try again.'; }
     } catch(e) { msg.style.color='red'; msg.textContent='Connection error. Please try again.'; }
   }
