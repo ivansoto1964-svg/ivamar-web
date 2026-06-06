@@ -350,6 +350,10 @@ nav{padding:0 1rem;}
 
 <footer>
   <div class="footer-logo">Carib<span>ex</span></div>
+  <div style="margin-bottom:1rem;display:flex;gap:1rem;justify-content:center;">
+    <a href="https://www.instagram.com/caribex2026/" target="_blank" style="color:rgba(255,255,255,0.6);text-decoration:none;font-size:0.82rem;font-weight:700;">📷 Instagram</a>
+    <a href="https://www.facebook.com/profile.php?id=61586089233617" target="_blank" style="color:rgba(255,255,255,0.6);text-decoration:none;font-size:0.82rem;font-weight:700;">👍 Facebook</a>
+  </div>
   <div class="footer-info">© 2026 Caribex — Your Caribbean Expert · A project by Ivamar AI LLC</div>
 </footer>
 
