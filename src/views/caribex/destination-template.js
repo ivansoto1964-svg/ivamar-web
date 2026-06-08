@@ -320,10 +320,10 @@ nav{padding:0 1rem;}
   <div class="local-cta-inner">
     <div class="local-cta-tag">🌴 For Local Business Owners</div>
     <h2 class="local-cta-title">You know this island better than any travel guide ever will.</h2>
-    <p class="local-cta-text">The best Caribbean experiences aren't on the big booking sites — they're the hidden gems, the family restaurants, the tours run by people who actually grew up here. Help us change that. List your business on Caribex for free and let travelers discover ${dest.name} through the people who actually live it.</p>
+    <p class="local-cta-text">The best Caribbean experiences aren't on the big booking sites — they're the hidden gems, the family restaurants, the tours run by people who actually grew up here. Help us change that. Add your listing on Caribex for free and let travelers discover ${dest.name} through the people who actually live it.</p>
     <p class="local-cta-sub">No commissions. No fees. No contracts. Just your slice of paradise, shared with the world.</p>
     <div class="local-cta-btns">
-      <a href="/caribex/list-your-business" class="btn-list">List Your Business Free →</a>
+      <a href="/caribex/list-your-business" class="btn-list">Add Your Listing Free →</a>
       <a href="#" class="btn-share" onclick="shareCaribex(event)">📲 Share with Someone Who Should</a>
     </div>
   </div>

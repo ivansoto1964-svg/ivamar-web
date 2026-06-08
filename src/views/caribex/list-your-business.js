@@ -49,7 +49,7 @@ footer{background:var(--dark);padding:2rem;text-align:center;}
 </nav>
 
 <section class="hero">
-  <h1>List Your Business</h1>
+  <h1>Add Your Listing</h1>
   <p>Reach thousands of Caribbean travelers every month. Free to get started.</p>
 </section>
 
