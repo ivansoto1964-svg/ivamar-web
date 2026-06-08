@@ -1,4 +1,11 @@
-module.exports = `
+module.exports = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Directory Terms — Caribex</title>
+</head>
+<body>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap');
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -120,4 +127,6 @@ footer{background:var(--dark);padding:2rem;text-align:center;}
   <div class="footer-logo">Carib<span>ex</span></div>
   <div class="footer-info">© 2026 Caribex — Your Caribbean Expert · A project by Ivamar AI LLC</div>
 </footer>
+</body>
+</html>
 `;
