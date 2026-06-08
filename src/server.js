@@ -1524,6 +1524,7 @@ app.get("/admin/approve/:token", async (req, res) => {
     fs2.writeFileSync(approvedFile, JSON.stringify(approved, null, 2));
     pending = pending.filter(l => l.id !== listing.id);
     fs2.writeFileSync(pendingFile, JSON.stringify(pending, null, 2));
+    console.log('📧 Sending approval email to:', listing.email);
     try {
       const { Resend } = require('resend');
       const resend = new Resend(process.env.RESEND_API_KEY);
