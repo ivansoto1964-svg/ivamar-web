@@ -1619,6 +1619,22 @@ app.get("/admin/reject/:token", async (req, res) => {
   }
 });
 
+
+// CARIBEX DIRECTORY — REMOVE APPROVED LISTING
+app.post("/admin/listings/remove/:destination/:id", requireAdmin, async (req, res) => {
+  try {
+    const fs2 = require('fs');
+    const approvedFile = '/data/listings/' + req.params.destination + '.json';
+    if (!fs2.existsSync(approvedFile)) return res.json({ ok: false, error: 'File not found' });
+    let approved = JSON.parse(fs2.readFileSync(approvedFile, 'utf8'));
+    approved = approved.filter(l => l.id !== req.params.id);
+    fs2.writeFileSync(approvedFile, JSON.stringify(approved, null, 2));
+    return res.json({ ok: true });
+  } catch(e) {
+    return res.json({ ok: false, error: e.message });
+  }
+});
+
 // CARIBEX DIRECTORY — LISTINGS COUNT FOR ADMIN DASHBOARD
 app.get("/api/listings-count", requireAdmin, (req, res) => {
   try {
