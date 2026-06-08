@@ -463,6 +463,10 @@ nav{padding:0 1rem;}.nav-links{display:none;}
     </div>
     <div class="footer-bottom">
       <div class="footer-copy">© 2026 Caribex — Your Caribbean Expert. All rights reserved.</div>
+      <div style="display:flex;gap:1rem;justify-content:center;margin:0.5rem 0;">
+        <a href="https://www.instagram.com/caribex2026/" target="_blank" style="color:rgba(255,255,255,0.6);text-decoration:none;font-size:0.82rem;font-weight:700;">📷 Instagram</a>
+        <a href="https://www.facebook.com/profile.php?id=61586089233617" target="_blank" style="color:rgba(255,255,255,0.6);text-decoration:none;font-size:0.82rem;font-weight:700;">👍 Facebook</a>
+      </div>
       <div class="footer-powered">A project by <a href="https://ivamarai.com" target="_blank">Ivamar AI LLC</a> · Delaware, USA</div>
     </div>
   </div>
