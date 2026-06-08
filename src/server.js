@@ -1451,12 +1451,19 @@ app.post("/api/listing-submit", formLimiter, express.json(), async (req, res) =>
       name, category, destination, desc, fullDesc, email, whatsapp, website, photo, price
     };
     
+    // Generate approval tokens
+    const crypto = require('crypto');
+    listing.approveToken = crypto.randomBytes(32).toString('hex');
+    listing.rejectToken = crypto.randomBytes(32).toString('hex');
+
     pending.push(listing);
     fs2.writeFileSync(pendingFile, JSON.stringify(pending, null, 2));
 
     // Send email notification via Resend
     const { Resend } = require('resend');
     const resend = new Resend(process.env.RESEND_API_KEY);
+    const approveUrl = 'https://ivamarai.com/admin/approve/' + listing.approveToken;
+    const rejectUrl = 'https://ivamarai.com/admin/reject/' + listing.rejectToken;
     
     console.log("📧 Sending email via Resend...");
     await resend.emails.send({
@@ -1479,7 +1486,10 @@ app.post("/api/listing-submit", formLimiter, express.json(), async (req, res) =>
         </table>
         <br>
         <p><strong>Listing ID:</strong> ${listing.id}</p>
-        <p><a href="https://ivamarai.com/admin/listings" style="background:#00B4D8;color:#fff;padding:10px 20px;text-decoration:none;border-radius:6px;font-weight:bold">Review in Admin →</a></p>
+        <p style="margin-top:2rem;">
+            <a href="${approveUrl}" style="background:#00B4D8;color:#fff;padding:12px 24px;text-decoration:none;border-radius:6px;font-weight:bold;margin-right:10px">✅ Approve Listing</a>
+            <a href="${rejectUrl}" style="background:#fff;color:#e53e3e;padding:12px 24px;text-decoration:none;border-radius:6px;font-weight:bold;border:1px solid #e53e3e">❌ Reject Listing</a>
+          </p>
       `
     });
 
@@ -1491,6 +1501,122 @@ app.post("/api/listing-submit", formLimiter, express.json(), async (req, res) =>
   }
 });
 
+
+// ==========================================
+// CARIBEX DIRECTORY — APPROVE BY TOKEN
+// ==========================================
+app.get("/admin/approve/:token", async (req, res) => {
+  try {
+    const fs2 = require('fs');
+    const pendingFile = '/data/listings/pending.json';
+    if (!fs2.existsSync(pendingFile)) return res.send('<h2>Listing not found.</h2>');
+    let pending = JSON.parse(fs2.readFileSync(pendingFile, 'utf8'));
+    const listing = pending.find(l => l.approveToken === req.params.token);
+    if (!listing) return res.send('<h2 style="font-family:sans-serif;color:#e53e3e;padding:2rem">Token invalid or already used.</h2>');
+    const approvedFile = '/data/listings/' + listing.destination + '.json';
+    let approved = [];
+    if (fs2.existsSync(approvedFile)) approved = JSON.parse(fs2.readFileSync(approvedFile, 'utf8'));
+    listing.status = 'approved';
+    listing.approvedAt = new Date().toISOString();
+    delete listing.approveToken;
+    delete listing.rejectToken;
+    approved.push(listing);
+    fs2.writeFileSync(approvedFile, JSON.stringify(approved, null, 2));
+    pending = pending.filter(l => l.id !== listing.id);
+    fs2.writeFileSync(pendingFile, JSON.stringify(pending, null, 2));
+    try {
+      const { Resend } = require('resend');
+      const resend = new Resend(process.env.RESEND_API_KEY);
+      const destUrl = 'https://yourcaribbeanexpert.com/caribex/' + listing.destination;
+      await resend.emails.send({
+        from: 'Caribex <connect@ivamarai.com>',
+        to: listing.email,
+        subject: '🎉 Your business is live on Caribex!',
+        html: `<div style="font-family:sans-serif;max-width:600px;margin:0 auto;">
+          <div style="background:linear-gradient(135deg,#0D1B2A,#0077B6);padding:2rem;text-align:center;border-radius:12px 12px 0 0;">
+            <h1 style="color:#fff;font-size:1.5rem;margin:0">🌴 You're live on Caribex!</h1>
+          </div>
+          <div style="padding:2rem;background:#fff;border:1px solid #E0EEF4;">
+            <p>Hi there,</p>
+            <p><strong>${listing.name}</strong> is now live on Caribex!</p>
+            <div style="text-align:center;margin:2rem 0;">
+              <a href="${destUrl}" style="background:#00B4D8;color:#fff;padding:12px 24px;border-radius:6px;text-decoration:none;font-weight:700;">View Your Listing →</a>
+            </div>
+            <hr style="border:none;border-top:1px solid #E0EEF4;margin:2rem 0;">
+            <h2 style="font-size:1.1rem;color:#0D1B2A;">⭐ Upgrade to Featured — $19/month</h2>
+            <ul style="font-size:0.9rem;color:#555;line-height:1.8;"><li>🔝 Top position</li><li>✅ Verified badge</li><li>📸 Larger photo</li></ul>
+            <div style="text-align:center;margin:1.5rem 0;">
+              <a href="https://buy.stripe.com/bJe5kDdmaaKG4Jy7vyf3a07" style="background:#0077B6;color:#fff;padding:12px 24px;border-radius:6px;text-decoration:none;font-weight:700;">Upgrade to Featured →</a>
+            </div>
+            <hr style="border:none;border-top:1px solid #E0EEF4;margin:2rem 0;">
+            <h2 style="font-size:1.1rem;color:#0D1B2A;">🤖 Want an AI assistant?</h2>
+            <p style="font-size:0.9rem;color:#555;">Give your customers instant answers 24/7 with Ivamar AI.</p>
+            <div style="text-align:center;margin:1.5rem 0;">
+              <a href="https://ivamarai.com/quote" style="background:#0D1B2A;color:#fff;padding:12px 24px;border-radius:6px;text-decoration:none;font-weight:700;">Get Your AI Assistant →</a>
+            </div>
+          </div>
+          <div style="padding:1rem;text-align:center;background:#F0F8FF;border-radius:0 0 12px 12px;">
+            <p style="font-size:0.75rem;color:#888;">© 2026 Caribex — yourcaribbeanexpert.com</p>
+          </div>
+        </div>`
+      });
+    } catch(e) { console.error('Approval email error:', e.message); }
+    return res.send(`<div style="font-family:sans-serif;text-align:center;padding:3rem;max-width:500px;margin:0 auto;">
+      <div style="font-size:3rem;margin-bottom:1rem">🌴</div>
+      <h2 style="color:#0D1B2A">Listing Approved!</h2>
+      <p style="color:#555;margin:1rem 0">${listing.name} is now live on Caribex.</p>
+      <a href="https://ivamarai.com/admin/listings" style="background:#00B4D8;color:#fff;padding:10px 20px;border-radius:6px;text-decoration:none;font-weight:700">View All Listings →</a>
+    </div>`);
+  } catch(e) {
+    return res.send('<h2 style="font-family:sans-serif;color:#e53e3e;padding:2rem">Error: ' + e.message + '</h2>');
+  }
+});
+
+// CARIBEX DIRECTORY — REJECT BY TOKEN
+app.get("/admin/reject/:token", async (req, res) => {
+  try {
+    const fs2 = require('fs');
+    const pendingFile = '/data/listings/pending.json';
+    if (!fs2.existsSync(pendingFile)) return res.send('<h2>Listing not found.</h2>');
+    let pending = JSON.parse(fs2.readFileSync(pendingFile, 'utf8'));
+    const listing = pending.find(l => l.rejectToken === req.params.token);
+    if (!listing) return res.send('<h2 style="font-family:sans-serif;color:#e53e3e;padding:2rem">Token invalid or already used.</h2>');
+    pending = pending.filter(l => l.id !== listing.id);
+    fs2.writeFileSync(pendingFile, JSON.stringify(pending, null, 2));
+    try {
+      const { Resend } = require('resend');
+      const resend = new Resend(process.env.RESEND_API_KEY);
+      await resend.emails.send({
+        from: 'Caribex <connect@ivamarai.com>',
+        to: listing.email,
+        subject: 'Your Caribex listing submission',
+        html: `<div style="font-family:sans-serif;max-width:600px;margin:0 auto;">
+          <div style="background:linear-gradient(135deg,#0D1B2A,#0077B6);padding:2rem;text-align:center;border-radius:12px 12px 0 0;">
+            <h1 style="color:#fff;font-size:1.5rem;margin:0">🌴 Caribex Directory</h1>
+          </div>
+          <div style="padding:2rem;background:#fff;border:1px solid #E0EEF4;">
+            <p>Hi there,</p>
+            <p>Thank you for submitting <strong>${listing.name}</strong>. After review, we were unable to approve your listing at this time.</p>
+            <p style="font-size:0.9rem;color:#555;">Questions? Contact us at <a href="mailto:connect@ivamarai.com" style="color:#00B4D8;">connect@ivamarai.com</a></p>
+            <div style="text-align:center;margin:2rem 0;">
+              <a href="https://yourcaribbeanexpert.com/caribex/list-your-business" style="background:#00B4D8;color:#fff;padding:12px 24px;border-radius:6px;text-decoration:none;font-weight:700;">Resubmit →</a>
+            </div>
+          </div>
+          <div style="padding:1rem;text-align:center;background:#F0F8FF;border-radius:0 0 12px 12px;">
+            <p style="font-size:0.75rem;color:#888;">© 2026 Caribex — yourcaribbeanexpert.com</p>
+          </div>
+        </div>`
+      });
+    } catch(e) { console.error('Rejection email error:', e.message); }
+    return res.send(`<div style="font-family:sans-serif;text-align:center;padding:3rem;max-width:500px;margin:0 auto;">
+      <h2 style="color:#0D1B2A">Listing Rejected</h2>
+      <p style="color:#555;margin:1rem 0">${listing.name} has been removed.</p>
+      <a href="https://ivamarai.com/admin/listings" style="background:#00B4D8;color:#fff;padding:10px 20px;border-radius:6px;text-decoration:none;font-weight:700">View All Listings →</a>
+    </div>`);
+  } catch(e) {
+    return res.send('<h2 style="font-family:sans-serif;color:#e53e3e;padding:2rem">Error: ' + e.message + '</h2>');
+  }
+});
 
 // CARIBEX DIRECTORY — LISTINGS COUNT FOR ADMIN DASHBOARD
 app.get("/api/listings-count", requireAdmin, (req, res) => {
