@@ -1676,6 +1676,25 @@ app.post("/api/caribex-subscribe", express.json(), async (req, res) => {
       html: '<p>New subscriber: <strong>' + email + '</strong></p><p>Total subscribers: ' + subscribers.length + '</p>'
     });
 
+    // Add to Brevo list
+    try {
+      const brevoRes = await fetch('https://api.brevo.com/v3/contacts', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'api-key': process.env.BREVO_API_KEY
+        },
+        body: JSON.stringify({
+          email: email,
+          listIds: [3],
+          updateEnabled: true
+        })
+      });
+      console.log('📋 Brevo response:', brevoRes.status);
+    } catch(brevoErr) {
+      console.error('Brevo error:', brevoErr.message);
+    }
+
     // Welcome email to subscriber
     await resend.emails.send({
       from: 'Caribex <connect@ivamarai.com>',
