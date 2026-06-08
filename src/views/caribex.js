@@ -216,7 +216,7 @@ nav{padding:0 1rem;}.nav-links{display:none;}
     <a href="#destinations">Destinations</a>
     <a href="#mainland">Mainland Caribbean</a>
     <a href="#assistant">Sun</a>
-    <a href="https://blog.yourcaribbeanexpert.com" target="_blank">Blog</a>
+    <a href="https://blog.yourcaribbeanexpert.com" target="_blank">Insights</a>
     <a href="#assistant" class="nav-cta">Plan My Trip →</a>
   </div>
 </nav>
@@ -450,7 +450,7 @@ nav{padding:0 1rem;}.nav-links{display:none;}
       </div>
       <div class="footer-col">
         <h4>Explore</h4>
-        <a href="https://www.yourcaribbeanexpert.com" target="_blank">Blog</a>
+        <a href="https://blog.yourcaribbeanexpert.com" target="_blank">Caribex Insights</a>
         <a href="https://blog.yourcaribbeanexpert.com/p/about-caribex.html" target="_blank">About</a>
         <a href="https://blog.yourcaribbeanexpert.com/p/contact_17.html" target="_blank">Contact</a>
       </div>
