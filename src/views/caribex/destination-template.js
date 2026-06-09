@@ -101,6 +101,16 @@ nav{background:rgba(255,255,255,0.95);backdrop-filter:blur(12px);border-bottom:1
 .dir-empty{text-align:center;padding:3rem;background:#F0F8FF;border-radius:14px;border:1px solid var(--border);}
 .dir-empty p{font-size:0.88rem;color:var(--mid);margin-bottom:1rem;}
 .dir-empty a{color:var(--teal);font-weight:700;text-decoration:none;}
+
+.plan-trip{padding:4rem 2rem;background:#F0F8FF;}
+.plan-trip-inner{max-width:1100px;margin:0 auto;}
+.plan-trip-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem;margin-top:2rem;}
+.plan-trip-card{background:#fff;border-radius:14px;padding:1.5rem;border:1px solid var(--border);}
+.plan-trip-cat{font-size:0.65rem;font-weight:700;color:var(--teal);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:1rem;}
+.plan-trip-links{display:flex;flex-direction:column;gap:0.6rem;}
+.plan-trip-link{display:flex;align-items:center;gap:0.5rem;text-decoration:none;color:var(--dark);font-size:0.82rem;font-weight:500;padding:0.5rem 0.8rem;border-radius:8px;border:1px solid var(--border);transition:all 0.2s;}
+.plan-trip-link:hover{border-color:var(--teal);color:var(--teal);}
+@media(max-width:768px){.plan-trip{padding:3rem 1rem;}.plan-trip-grid{grid-template-columns:repeat(2,1fr);}}
 .local-cta{padding:5rem 2rem;background:linear-gradient(160deg,#0D1B2A 0%,#023E8A 100%);}
 .local-cta-inner{max-width:800px;margin:0 auto;text-align:center;}
 .local-cta-tag{font-size:0.68rem;font-weight:700;color:var(--teal);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:1rem;}
@@ -312,6 +322,49 @@ nav{padding:0 1rem;}
         <a class="dir-panel-close" onclick="closePanel()">✕ Close</a>
       </div>
       <div id="dir-panel-content" class="dir-listings"></div>
+    </div>
+  </div>
+</section>
+
+
+<section class="plan-trip">
+  <div class="plan-trip-inner">
+    <div class="sec-tag">Plan Your Trip</div>
+    <h2 class="sec-title">Book Your ${dest.name} Adventure</h2>
+    <div class="plan-trip-grid">
+      <div class="plan-trip-card">
+        <div class="plan-trip-cat">✈️ Flights</div>
+        <div class="plan-trip-links">
+          <a href="https://aviasales.tpo.lu/aKl7hWzz" target="_blank" class="plan-trip-link">🔍 Aviasales</a>
+          <a href="https://cheapoair.tpo.lu/oVzDnpo9" target="_blank" class="plan-trip-link">💸 CheapOair</a>
+          <a href="https://trip.tpo.lu/tOQAQ2WQ" target="_blank" class="plan-trip-link">🌍 Trip.com</a>
+        </div>
+      </div>
+      <div class="plan-trip-card">
+        <div class="plan-trip-cat">🏨 Hotels</div>
+        <div class="plan-trip-links">
+          <a href="https://booking.tpo.lu/OcdV3VzY" target="_blank" class="plan-trip-link">🏨 Booking.com</a>
+          <a href="https://agoda.tpo.lu/vv7Jhln0" target="_blank" class="plan-trip-link">🌺 Agoda</a>
+          <a href="https://expedia.tpo.lu/CgKszVA3" target="_blank" class="plan-trip-link">✈️ Expedia</a>
+          <a href="https://hostelworld.tpo.lu/NesOTknC" target="_blank" class="plan-trip-link">🎒 Hostelworld</a>
+        </div>
+      </div>
+      <div class="plan-trip-card">
+        <div class="plan-trip-cat">🎯 Tours & Activities</div>
+        <div class="plan-trip-links">
+          <a href="https://klook.tpo.lu/CqpbC7mj" target="_blank" class="plan-trip-link">🎡 Klook</a>
+          <a href="https://viator.tpo.lu/ZrcFpdKy" target="_blank" class="plan-trip-link">🗺️ Viator</a>
+          <a href="https://tripadvisor.tpo.lu/jmUAb3Nt" target="_blank" class="plan-trip-link">⭐ TripAdvisor</a>
+        </div>
+      </div>
+      <div class="plan-trip-card">
+        <div class="plan-trip-cat">🌍 All in One</div>
+        <div class="plan-trip-links">
+          <a href="https://trip.tpo.lu/tOQAQ2WQ" target="_blank" class="plan-trip-link">🌍 Trip.com</a>
+          <a href="https://expedia.tpo.lu/CgKszVA3" target="_blank" class="plan-trip-link">✈️ Expedia</a>
+          <a href="https://tripadvisor.tpo.lu/jmUAb3Nt" target="_blank" class="plan-trip-link">⭐ TripAdvisor</a>
+        </div>
+      </div>
     </div>
   </div>
 </section>
