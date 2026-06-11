@@ -2097,14 +2097,14 @@ app.get('/api/noticias-pr', async (req, res) => {
       const r = await fetch(feed.url, { headers: { 'User-Agent': 'Mozilla/5.0' } });
       const xml = await r.text();
       const items = [];
-      const itemRegex = /<item>([sS]*?)</item>/g;
+      const itemRegex = /<item>([\s\S]*?)<\/item>/g;
       let match;
       while ((match = itemRegex.exec(xml)) !== null && items.length < 3) {
         const item = match[1];
-        const title = (item.match(/<title><![CDATA[(.*?)]]></title>/) || item.match(/<title>(.*?)</title>/))?.[1] || '';
-        const link = (item.match(/<link>(.*?)</link>/) || item.match(/<link[^>]*href="([^"]*)"/))?.[1] || '#';
-        const pubDate = (item.match(/<pubDate>(.*?)</pubDate>/))?.[1] || '';
-        const desc = (item.match(/<description><![CDATA[(.*?)]]></description>/) || item.match(/<description>(.*?)</description>/))?.[1] || '';
+        const title = (item.match(/<title><!\[CDATA\[(.*?)\]\]><\/title>/) || item.match(/<title>(.*?)<\/title>/))?.[1] || '';
+        const link = (item.match(/<link>(.*?)<\/link>/) || item.match(/<link[^>]*href="([^"]*)"/)) ?.[1] || '#';
+        const pubDate = (item.match(/<pubDate>(.*?)<\/pubDate>/))?.[1] || '';
+        const desc = (item.match(/<description><!\[CDATA\[(.*?)\]\]><\/description>/) || item.match(/<description>(.*?)<\/description>/))?.[1] || '';
         const summary = desc.replace(/<[^>]+>/g, '').trim().slice(0, 120) + '...';
         const date = pubDate ? new Date(pubDate).toLocaleDateString('es-PR', { year: 'numeric', month: 'long', day: 'numeric' }) : '';
         if (title) items.push({ title: title.trim(), link: link.trim(), date, summary, source: feed.source, categoria: feed.categoria });
