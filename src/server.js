@@ -2052,14 +2052,16 @@ Planeta Boricua es un producto de Ivamar AI LLC (ivamarai.com).`;
 
 app.get('/api/planetaboricua-blog', async (req, res) => {
   try {
-    const r = await fetch('https://masboricuaqueunmofongo.blogspot.com/feeds/posts/default?alt=json&max-results=4');
+    const r = await fetch('https://blog.masboricuaqueunmofongo.com/feeds/posts/default?alt=json&max-results=4');
     const data = await r.json();
     const posts = (data.feed.entry || []).map(e => ({
       title: e.title.$t,
       link: e.link.find(l => l.rel === 'alternate')?.href || '#',
       date: new Date(e.published.$t).toLocaleDateString('es-PR', { year: 'numeric', month: 'long', day: 'numeric' }),
-      summary: e.summary ? e.summary.$t.replace(/<[^>]+>/g, '').slice(0, 120) + '...' : ''
+      summary: e.summary ? e.summary.$t.replace(/<[^>]+>/g, '').slice(0, 120) + '...' : '',
+      tag: e.category && e.category[0] ? e.category[0].term : 'Cultura Boricua'
     }));
+    res.set('Access-Control-Allow-Origin', '*');
     res.json(posts);
   } catch (err) {
     res.json([]);

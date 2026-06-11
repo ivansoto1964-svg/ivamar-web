@@ -249,7 +249,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,10,10,0.92);backdrop-fi
         </div>
       </div>
     </div>
-    <div class="hero-visual">
+    <div class="hero-visual" id="hero-blog-cards">
       <div class="hero-card">
         <div class="hero-card-tag">🔥 Tendencia</div>
         <div class="hero-card-title">Puerto Rico y el debate sobre el status: lo que debes saber en 2026</div>
@@ -292,7 +292,7 @@ nav{position:sticky;top:0;z-index:100;background:rgba(10,10,10,0.92);backdrop-fi
   <div class="section-eyebrow">Cultura & Noticias</div>
   <h2 class="section-title">Lo Último de <span class="accent">Puerto Rico</span></h2>
   <p class="section-sub">Noticias, cultura, política y orgullo — todo desde la perspectiva boricua.</p>
-  <div class="cultura-grid">
+  <div class="cultura-grid" id="cultura-grid">
     <a href="#" class="cultura-main">
       <div class="cultura-img">🌴</div>
       <div class="cultura-body">
@@ -594,6 +594,56 @@ async function nlSubscribe() {
 }
 </script>
 
+
+<script>
+(function(){
+  fetch('/api/planetaboricua-blog')
+    .then(r => r.json())
+    .then(posts => {
+      if (!posts || !posts.length) return;
+
+      const heroEl = document.getElementById('hero-blog-cards');
+      if (heroEl) {
+        heroEl.innerHTML = posts.slice(0, 3).map(p =>
+          '<a href="' + p.link + '" target="_blank" class="hero-card" style="text-decoration:none;color:inherit;">' +
+          '<div class="hero-card-tag">🔥 ' + p.tag + '</div>' +
+          '<div class="hero-card-title">' + p.title + '</div>' +
+          '<div class="hero-card-sub">' + p.summary + '</div>' +
+          '<div class="hero-card-footer">' +
+          '<span class="hero-card-time">' + p.date + '</span>' +
+          '<span class="hero-card-arrow">Leer →</span>' +
+          '</div></a>'
+        ).join('');
+      }
+
+      const grid = document.getElementById('cultura-grid');
+      if (grid) {
+        const featured = posts[0];
+        const featuredHtml =
+          '<a href="' + featured.link + '" target="_blank" class="cultura-main">' +
+          '<div class="cultura-img">🇵🇷</div>' +
+          '<div class="cultura-body">' +
+          '<div class="cultura-tag">🔥 Destacado</div>' +
+          '<div class="cultura-title">' + featured.title + '</div>' +
+          '<div class="cultura-excerpt">' + featured.summary + '</div>' +
+          '<div class="cultura-footer">' +
+          '<span class="cultura-date">' + featured.date + '</span>' +
+          '<span class="cultura-read">Leer artículo →</span>' +
+          '</div></div></a>';
+        const cardsHtml = posts.slice(1, 5).map(p =>
+          '<a href="' + p.link + '" target="_blank" class="cultura-card">' +
+          '<div class="cultura-card-icon">📰</div>' +
+          '<div class="cultura-card-tag">' + p.tag + '</div>' +
+          '<div class="cultura-card-title">' + p.title + '</div>' +
+          '<div class="cultura-card-sub">' + p.summary + '</div>' +
+          '</a>'
+        ).join('');
+        grid.innerHTML = featuredHtml + cardsHtml;
+      }
+    })
+    .catch(e => console.log('Blog error:', e));
+})();
+</script>
 </body>
 </html>
 `;
