@@ -2024,3 +2024,28 @@ function ivaSendSugg(el){document.getElementById('ivaInput').value=el.textConten
 });
 
 app.listen(PORT, () => console.log("Servidor corriendo en puerto " + PORT));
+
+app.post('/api/nayeli', aiLimiter, express.json(), async (req, res) => {
+  const { message } = req.body;
+
+  const system = `Eres Nayeli, la asistente de IA de Planeta Boricua (masboricuaqueunmofongo.com), un portal cultural puertorriqueño.
+Hablas en español boricua — natural, cálido, con algo de wepa, bendición, ay bendito cuando encaja, pero sin exagerar.
+Eres experta en: cultura puertorriqueña, noticias de PR, la diáspora boricua en USA, gastronomía PR, música (salsa, reggaetón, trap), política de la isla, viajes a Puerto Rico, y negocios boricuas en Estados Unidos.
+Eres directa, simpática y orgullosa de ser boricua. Respuestas cortas y útiles — máximo 3 párrafos.
+Planeta Boricua es un producto de Ivamar AI LLC (ivamarai.com).`;
+
+  try {
+    const Anthropic = require('@anthropic-ai/sdk');
+    const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+    const response = await client.messages.create({
+      model: 'claude-haiku-4-5-20251001',
+      max_tokens: 400,
+      system,
+      messages: [{ role: 'user', content: message }]
+    });
+    res.json({ reply: response.content[0].text });
+  } catch (err) {
+    console.error('Nayeli error:', err.message);
+    res.json({ reply: '¡Ay bendito! Tuve un problemita técnico. ¡Inténtalo de nuevo!' });
+  }
+});
