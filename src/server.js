@@ -2052,7 +2052,7 @@ Planeta Boricua es un producto de Ivamar AI LLC (ivamarai.com).`;
 
 app.get('/api/planetaboricua-blog', async (req, res) => {
   try {
-    const r = await fetch('https://blog.masboricuaqueunmofongo.com/feeds/posts/default?alt=json&max-results=4');
+    const r = await fetch('https://masboricuaqueunmofongo.blogspot.com/feeds/posts/default?alt=json&max-results=4');
     const data = await r.json();
     const posts = (data.feed.entry || []).map(e => ({
       title: e.title.$t,
