@@ -100,6 +100,19 @@ nav{position:sticky;top:0;z-index:100;background:rgba(255,255,255,0.95);backdrop
 .feat-card p{font-size:0.82rem;color:#666;line-height:1.6;}
 .feat-tag{display:inline-block;font-size:0.65rem;font-weight:700;color:#00C896;background:#f0fdf9;border:1px solid #a7f3d0;padding:0.2rem 0.6rem;border-radius:20px;margin-top:0.8rem;letter-spacing:0.05em;text-transform:uppercase;}
 
+/* PLATFORMS SECTION */
+.platforms-section{padding:5rem 2rem;background:#fff;}
+.platforms-inner{max-width:1100px;margin:0 auto;}
+.platforms-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem;margin-top:3rem;}
+.platform-card{border:1px solid #f0f0f0;border-radius:20px;padding:2rem;transition:all 0.25s;text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:1rem;position:relative;overflow:hidden;}
+.platform-card:hover{transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,0.08);border-color:#00C896;}
+.platform-card-icon{font-size:2.4rem;}
+.platform-card-tag{font-size:0.65rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:#00C896;}
+.platform-card h3{font-size:1.1rem;font-weight:800;color:#1a1a2e;letter-spacing:-0.02em;}
+.platform-card p{font-size:0.82rem;color:#666;line-height:1.6;flex:1;}
+.platform-card-link{font-size:0.78rem;font-weight:700;color:#00C896;display:flex;align-items:center;gap:0.3rem;}
+.platform-card-url{font-size:0.7rem;color:#bbb;margin-top:0.2rem;}
+
 /* PRICING */
 .price-strip{padding:5rem 2rem;max-width:1100px;margin:0 auto;text-align:center;}
 .price-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:3rem;}
@@ -175,6 +188,8 @@ nav{padding:0.8rem 1rem;}
 .for-section{padding:3rem 1.2rem;}
 .features-section{padding:3rem 1.2rem;}
 .features-grid{grid-template-columns:1fr;}
+.platforms-section{padding:3rem 1.2rem;}
+.platforms-grid{grid-template-columns:1fr;}
 .price-strip{padding:3rem 1.2rem;}
 .price-cards{grid-template-columns:1fr;}
 .iva-section{padding:3rem 1.2rem;}
@@ -192,6 +207,7 @@ footer{padding:2rem 1.2rem;flex-direction:column;text-align:center;}
   <div class="nav-links">
     <a href="#how">How It Works</a>
     <a href="#for">Who It's For</a>
+    <a href="#platforms">Our Work</a>
     <a href="#pricing">Pricing</a>
     <a href="#iva">Meet IvA</a>
     <a href="/quote" class="nav-cta">Get Started →</a>
@@ -203,19 +219,19 @@ footer{padding:2rem 1.2rem;flex-direction:column;text-align:center;}
   <div>
     <div class="hero-badge">
       <div class="hero-badge-dot"></div>
-      <span class="hero-badge-text">AI Assistants for Local Businesses</span>
+      <span class="hero-badge-text">Digital Agency · AI · Web · Growth</span>
     </div>
-    <h1>We Build AI Assistants<br>for <em>Your Business.</em></h1>
-    <p class="hero-sub">A smart assistant with your name, your personality, your language — available 24/7 through a simple link or QR code. Your customers get instant answers. You capture more leads automatically.</p>
+    <h1>We Build Digital<br><em>Products That Work.</em></h1>
+    <p class="hero-sub">From AI-powered assistants to full web platforms — we design, build, and grow digital products for businesses that want real results. Not just a website. A system that works for you 24/7.</p>
     <div class="hero-btns">
       <a href="#pricing" class="btn-primary">See Pricing →</a>
-      <a href="#how" class="btn-ghost">How It Works</a>
+      <a href="#platforms" class="btn-ghost">Our Work</a>
     </div>
     <div class="hero-trust">
-      <div class="trust-item"><span class="trust-icon">✦</span> Works 24/7</div>
+      <div class="trust-item"><span class="trust-icon">✦</span> AI Assistants</div>
+      <div class="trust-item"><span class="trust-icon">✦</span> Web Platforms</div>
       <div class="trust-item"><span class="trust-icon">✦</span> Any language</div>
-      <div class="trust-item"><span class="trust-icon">✦</span> No contracts</div>
-      <div class="trust-item"><span class="trust-icon">✦</span> Setup in 48hrs</div>
+      <div class="trust-item"><span class="trust-icon">✦</span> Fast delivery</div>
     </div>
   </div>
   <div class="hero-visual">
@@ -279,26 +295,26 @@ footer{padding:2rem 1.2rem;flex-direction:column;text-align:center;}
     <div class="steps">
       <div class="step">
         <div class="step-num">🎯</div>
-        <h3>We Build Your Assistant</h3>
-        <p>We train your assistant with your business info, services, prices, hours and personality.</p>
+        <h3>We Learn Your Business</h3>
+        <p>We start with your goals, your audience, and your offer — then build the right digital solution for you.</p>
         <div class="step-arrow">›</div>
       </div>
       <div class="step">
-        <div class="step-num">🔗</div>
-        <h3>You Get a Link & QR</h3>
-        <p>Share it on your flyers, social media, website, signs or WhatsApp bio.</p>
+        <div class="step-num">🔧</div>
+        <h3>We Build It</h3>
+        <p>Whether it's an AI assistant, a web platform, or a full product — we design and develop it fast.</p>
         <div class="step-arrow">›</div>
       </div>
       <div class="step">
-        <div class="step-num">💬</div>
-        <h3>Customers Chat Instantly</h3>
-        <p>Your assistant responds naturally 24/7 — answering questions, guiding and capturing leads.</p>
+        <div class="step-num">🚀</div>
+        <h3>We Launch Together</h3>
+        <p>Your product goes live with a QR code, link, or full domain — ready to share and start working.</p>
         <div class="step-arrow">›</div>
       </div>
       <div class="step">
-        <div class="step-num">📲</div>
-        <h3>You Get the Leads</h3>
-        <p>Every inquiry is captured and sent to you — ready for follow-up when you want.</p>
+        <div class="step-num">📈</div>
+        <h3>We Grow It</h3>
+        <p>Ongoing support, updates, and strategy so your digital presence keeps delivering results.</p>
       </div>
     </div>
   </div>
@@ -308,7 +324,7 @@ footer{padding:2rem 1.2rem;flex-direction:column;text-align:center;}
 <section class="for-section" id="for">
   <div class="section-tag">Industries</div>
   <h2 class="section-title">Perfect <em>For</em></h2>
-  <p class="section-sub">Any local business that wants to respond faster and capture more leads automatically.</p>
+  <p class="section-sub">Any business that wants to grow online, respond faster, and capture more customers automatically.</p>
   <div class="biz-grid">
     <div class="biz-card"><div class="biz-icon">🏠</div><div class="biz-name">Realtors</div></div>
     <div class="biz-card"><div class="biz-icon">🍽️</div><div class="biz-name">Restaurants</div></div>
@@ -319,7 +335,7 @@ footer{padding:2rem 1.2rem;flex-direction:column;text-align:center;}
     <div class="biz-card"><div class="biz-icon">💅</div><div class="biz-name">Salons & Spas</div></div>
     <div class="biz-card"><div class="biz-icon">🚗</div><div class="biz-name">Car Dealers</div></div>
     <div class="biz-card"><div class="biz-icon">❄️</div><div class="biz-name">AC & HVAC</div></div>
-    <div class="biz-card"><div class="biz-icon">💰</div><div class="biz-name">Financial</div></div>
+    <div class="biz-card"><div class="biz-icon">✈️</div><div class="biz-name">Travel & Tourism</div></div>
     <div class="biz-card"><div class="biz-icon">🐾</div><div class="biz-name">Pet Shops</div></div>
     <div class="biz-card"><div class="biz-icon">✨</div><div class="biz-name">Any Business</div></div>
   </div>
@@ -329,45 +345,80 @@ footer{padding:2rem 1.2rem;flex-direction:column;text-align:center;}
 <section class="features-section">
   <div class="features-inner">
     <div class="section-tag">What's Included</div>
-    <h2 class="section-title">Everything Your Assistant <em>Can Do</em></h2>
-    <p class="section-sub">Your assistant is fully trained on your business and ready to work from day one.</p>
+    <h2 class="section-title">Everything We <em>Deliver</em></h2>
+    <p class="section-sub">Full-service digital solutions — from strategy to launch to growth.</p>
     <div class="features-grid">
       <div class="feat-card">
-        <div class="feat-icon">💬</div>
-        <h3>Answers Questions 24/7</h3>
-        <p>Responds to customer questions about your services, prices, hours and availability — instantly, any time of day.</p>
+        <div class="feat-icon">🤖</div>
+        <h3>AI Assistants</h3>
+        <p>Custom AI chatbots trained on your business — answering questions, capturing leads, and working 24/7 under your brand.</p>
         <span class="feat-tag">Always On</span>
       </div>
       <div class="feat-card">
+        <div class="feat-icon">🌐</div>
+        <h3>Web Platforms</h3>
+        <p>Full-stack web applications built with modern tech — directories, booking systems, affiliate platforms, portals and more.</p>
+        <span class="feat-tag">Custom Built</span>
+      </div>
+      <div class="feat-card">
         <div class="feat-icon">🌍</div>
-        <h3>Any Language</h3>
-        <p>Automatically responds in English, Spanish, Portuguese, French or any language your customer writes in.</p>
+        <h3>Multilingual by Default</h3>
+        <p>Every product we build works in any language — English, Spanish, Portuguese, French. Your audience, anywhere.</p>
         <span class="feat-tag">Multilingual</span>
       </div>
       <div class="feat-card">
-        <div class="feat-icon">📲</div>
-        <h3>Captures Leads Automatically</h3>
-        <p>Asks for name, phone and email naturally during the conversation. Every lead sent to you instantly.</p>
-        <span class="feat-tag">Lead Generation</span>
+        <div class="feat-icon">💰</div>
+        <h3>Monetization Built In</h3>
+        <p>Stripe payments, affiliate links, featured listings, subscriptions — we build revenue streams into your platform from day one.</p>
+        <span class="feat-tag">Revenue Ready</span>
       </div>
       <div class="feat-card">
-        <div class="feat-icon">🔗</div>
+        <div class="feat-icon">📲</div>
         <h3>Works Everywhere</h3>
-        <p>Share via link, QR code, website embed, Instagram bio, Facebook or WhatsApp. One assistant, everywhere.</p>
+        <p>Share via link, QR code, embed, social bio, or a full domain. One product that reaches customers on any device.</p>
         <span class="feat-tag">Multi-Channel</span>
       </div>
       <div class="feat-card">
-        <div class="feat-icon">🎭</div>
-        <h3>Your Name & Personality</h3>
-        <p>Your assistant gets the name and style you choose. Customers interact with your brand, not a generic bot.</p>
-        <span class="feat-tag">Fully Custom</span>
-      </div>
-      <div class="feat-card">
         <div class="feat-icon">⚡</div>
-        <h3>Ready in 48 Hours</h3>
-        <p>Send us your business info and we build, train and launch your assistant within 48 hours.</p>
+        <h3>Fast Delivery</h3>
+        <p>AI assistants live in 48 hours. Full platforms in weeks, not months. We move fast without cutting corners.</p>
         <span class="feat-tag">Fast Setup</span>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- OUR PLATFORMS -->
+<section class="platforms-section" id="platforms">
+  <div class="platforms-inner">
+    <div class="section-tag">Our Work</div>
+    <h2 class="section-title">Platforms We've <em>Built</em></h2>
+    <p class="section-sub">We don't just build for clients — we build and operate our own platforms. This is what we're capable of.</p>
+    <div class="platforms-grid">
+      <a href="https://ivamarai.com" target="_blank" class="platform-card">
+        <div class="platform-card-icon">🤖</div>
+        <div class="platform-card-tag">AI Assistants</div>
+        <h3>Ivamar AI</h3>
+        <p>Our flagship product — custom AI assistants for local businesses. Built, trained, and deployed in 48 hours with full lead capture and multilingual support.</p>
+        <div class="platform-card-link">Visit platform →</div>
+        <div class="platform-card-url">ivamarai.com</div>
+      </a>
+      <a href="https://yourcaribbeanexpert.com" target="_blank" class="platform-card">
+        <div class="platform-card-icon">🌴</div>
+        <div class="platform-card-tag">Travel Platform</div>
+        <h3>Caribex</h3>
+        <p>A full Caribbean travel platform with 35 destination pages, an AI travel assistant (Sun), affiliate integrations, a business directory, and newsletter — built from scratch.</p>
+        <div class="platform-card-link">Visit platform →</div>
+        <div class="platform-card-url">yourcaribbeanexpert.com</div>
+      </a>
+      <a href="https://masboricuaqueunmofongo.com" target="_blank" class="platform-card">
+        <div class="platform-card-icon">🇵🇷</div>
+        <div class="platform-card-tag">Cultural Portal</div>
+        <h3>Planeta Boricua</h3>
+        <p>A Puerto Rican culture and community portal — content, commentary, and connection for a passionate audience. Growing presence across TikTok and web.</p>
+        <div class="platform-card-link">Visit platform →</div>
+        <div class="platform-card-url">masboricuaqueunmofongo.com</div>
+      </a>
     </div>
   </div>
 </section>
@@ -407,18 +458,18 @@ footer{padding:2rem 1.2rem;flex-direction:column;text-align:center;}
       <button class="p-btn" onclick="window.location.href='/quote'">Get Started →</button>
     </div>
     <div class="p-card">
-      <div class="p-name">Premium</div>
+      <div class="p-name">Custom Platform</div>
       <div class="p-price" style="font-size:1.6rem;">Custom</div>
-      <div class="p-setup">Based on your needs</div>
+      <div class="p-setup">Based on your project</div>
       <ul class="p-features">
-        <li>Law firms & clinics</li>
-        <li>Financial services</li>
-        <li>Hotels & chains</li>
-        <li>Advanced integrations</li>
+        <li>Full web platform build</li>
+        <li>AI integrations</li>
+        <li>Affiliate & payment setup</li>
         <li>Custom workflows</li>
+        <li>Ongoing support</li>
         <li>Premium onboarding</li>
       </ul>
-      <button class="p-btn" onclick="window.open('https://wa.me/18635216708','_blank')">Contact Us →</button>
+      <button class="p-btn" onclick="window.open('https://wa.me/18635216708','_blank')">Let's Talk →</button>
     </div>
   </div>
 </section>
@@ -468,9 +519,9 @@ footer{padding:2rem 1.2rem;flex-direction:column;text-align:center;}
 
 <!-- CTA FINAL -->
 <section class="cta-final">
-  <h2>Ready to Stop <em>Losing Leads?</em></h2>
-  <p>Get your AI assistant set up in 48 hours. No contracts. Cancel anytime.</p>
-  <a href="/quote" class="btn-green">Get Started Today →</a>
+  <h2>Ready to Build Something <em>Real?</em></h2>
+  <p>AI assistant, web platform, or full digital product — let's make it happen.</p>
+  <a href="/quote" class="btn-green">Start Your Project →</a>
 </section>
 
 <!-- FOOTER -->
@@ -486,8 +537,6 @@ footer{padding:2rem 1.2rem;flex-direction:column;text-align:center;}
     <a href="/contact">Contact</a>
     <a href="/es">Español</a>
   </div>
-  <div class="footer-copy">© 2025 Ivamar AI LLC · All rights reserved</div>
+  <div class="footer-copy">© 2026 Ivamar AI LLC · All rights reserved</div>
 </footer>
-
-
 `;
