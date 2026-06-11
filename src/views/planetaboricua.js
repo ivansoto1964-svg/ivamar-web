@@ -621,7 +621,7 @@ async function nlSubscribe() {
         const featured = posts[0];
         const featuredHtml =
           '<a href="' + featured.link + '" target="_blank" class="cultura-main">' +
-          '<div class="cultura-img">🇵🇷</div>' +
+          (featured.img ? '<div class="cultura-img" style="padding:0;"><img src="' + featured.img + '" alt="" style="width:100%;height:220px;object-fit:cover;"></div>' : '<div class="cultura-img">🇵🇷</div>') +
           '<div class="cultura-body">' +
           '<div class="cultura-tag">🔥 Destacado</div>' +
           '<div class="cultura-title">' + featured.title + '</div>' +

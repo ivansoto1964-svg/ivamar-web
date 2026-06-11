@@ -2054,13 +2054,25 @@ app.get('/api/planetaboricua-blog', async (req, res) => {
   try {
     const r = await fetch('https://masboricuaqueunmofongo.blogspot.com/feeds/posts/default?alt=json&max-results=4');
     const data = await r.json();
-    const posts = (data.feed.entry || []).map(e => ({
-      title: e.title.$t,
-      link: e.link.find(l => l.rel === 'alternate')?.href || '#',
-      date: new Date(e.published.$t).toLocaleDateString('es-PR', { year: 'numeric', month: 'long', day: 'numeric' }),
-      summary: e.summary ? e.summary.$t.replace(/<[^>]+>/g, '').slice(0, 120) + '...' : '',
-      tag: e.category && e.category[0] ? e.category[0].term : 'Cultura Boricua'
-    }));
+    const posts = (data.feed.entry || []).map(e => {
+      const rawContent = e.content ? e.content.$t : (e.summary ? e.summary.$t : '');
+      const summary = rawContent.replace(/<[^>]+>/g, '').trim().slice(0, 120) + '...';
+      let img = null;
+      if (e.media$thumbnail) {
+        const u = e.media$thumbnail.url;
+        const i = u.lastIndexOf('/s');
+        img = i > -1 ? u.substring(0, i) + '/s800/' : u;
+      }
+      const tag = e.category && e.category[0] ? e.category[0].term.replace(/\n/g, ' ').trim() : 'Cultura Boricua';
+      return {
+        title: e.title.$t.trim(),
+        link: e.link.find(l => l.rel === 'alternate')?.href || '#',
+        date: new Date(e.published.$t).toLocaleDateString('es-PR', { year: 'numeric', month: 'long', day: 'numeric' }),
+        summary,
+        img,
+        tag
+      };
+    });
     res.set('Access-Control-Allow-Origin', '*');
     res.json(posts);
   } catch (err) {
