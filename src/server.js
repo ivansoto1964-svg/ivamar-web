@@ -2062,6 +2062,10 @@ app.get('/api/planetaboricua-blog', async (req, res) => {
         const u = e.media$thumbnail.url;
         const i = u.lastIndexOf('/s');
         img = i > -1 ? u.substring(0, i) + '/s800/' : u;
+      } else {
+        const content = e.content ? e.content.$t : '';
+        const match = content.match(/<img[^>]+src=["']([^"']+)["']/i);
+        if (match) img = match[1];
       }
       const tag = e.category && e.category[0] ? e.category[0].term.replace(/\n/g, ' ').trim() : 'Cultura Boricua';
       return {
