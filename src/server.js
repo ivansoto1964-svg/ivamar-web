@@ -53,6 +53,7 @@ const home = require("./views/home");
 const homeES = require("./views/home-es");
 const homeEN = require("./views/home-en");
 const about = require("./views/about");
+const planetaboricua = require("./views/planetaboricua");
 const sobreNosotros = require("./views/sobre-nosotros");
 const contactoES = require("./views/contacto");
 const contact = require("./views/contact");
@@ -147,6 +148,11 @@ app.use((req, res, next) => {
   if (host === "yourcaribbeanexpert.com" || host === "www.yourcaribbeanexpert.com") {
     if (req.path === "/" || req.path === "") {
       return res.send(caribex);
+    }
+  }
+  if (host === 'masboricuaqueunmofongo.com' || host === 'www.masboricuaqueunmofongo.com') {
+    if (req.path === '/' || req.path === '') {
+      return res.send(planetaboricua);
     }
   }
   next();
