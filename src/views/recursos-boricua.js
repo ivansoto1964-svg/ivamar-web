@@ -609,38 +609,105 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
     <div class="resource-section" id="section-salud">
       <div class="resource-header">
         <h2 class="resource-title">🏥 Salud y Seguros Médicos</h2>
-        <p class="resource-sub">Hospitales principales, seguro médico y cómo transferir tu cobertura entre PR y USA.</p>
+        <p class="resource-sub">Cómo transferir tu seguro médico, hospitales principales en PR y cómo conseguir cobertura al llegar a los estados.</p>
       </div>
+
       <div class="info-box warning">
-        <div class="info-box-title">⚠ Importante sobre Medicare en PR</div>
-        <div class="info-box-text">Los residentes de Puerto Rico reciben beneficios de Medicare diferentes a los de los estados continentales. Al mudarte entre PR y un estado, tu cobertura cambia. Llama a Medicare al 1-800-633-4227 para actualizar.</div>
+        <div class="info-box-title">⚠ Importante — Mudanza activa un Período Especial de Inscripción</div>
+        <div class="info-box-text">Mudarte a un nuevo estado o a PR activa un Período Especial de Inscripción (SEP) de 60 días. Puedes cambiar o inscribirte en un nuevo seguro médico aunque no sea temporada de inscripción abierta. No pierdas ese plazo.</div>
       </div>
-      <div class="states-grid">
-        <div class="state-card">
-          <div class="state-card-header"><span class="state-name">🏥 Hospitales Principales PR</span></div>
-          <div class="state-card-body">
-            <div class="state-detail"><strong>Centro Médico:</strong> (787) 777-3535</div>
-            <div class="state-detail"><strong>Auxilio Mutuo:</strong> (787) 758-2000</div>
-            <div class="state-detail"><strong>Ashford:</strong> (787) 721-2160</div>
-            <div class="state-detail"><strong>HIMA San Pablo:</strong> (787) 653-3434</div>
+
+      <div class="direction-panels">
+        <div class="dir-panel">
+          <div class="dir-panel-header pr-usa">
+            <div class="dir-panel-icon">🇵🇷→🇺🇸</div>
+            <div>
+              <div class="dir-panel-title">Seguro médico al llegar a USA</div>
+              <div class="dir-panel-sub">Opciones y pasos</div>
+            </div>
+          </div>
+          <div class="dir-panel-body">
+            <ul class="steps-list">
+              <li class="step-item">
+                <div class="step-num">1</div>
+                <div class="step-content">
+                  <div class="step-title">Si tienes trabajo con beneficios</div>
+                  <div class="step-desc">Tu empleador puede ofrecerte seguro médico. Puede haber un período de espera de hasta 90 días. Mientras tanto, considera COBRA o el Mercado de Salud.</div>
+                </div>
+              </li>
+              <li class="step-item">
+                <div class="step-num">2</div>
+                <div class="step-content">
+                  <div class="step-title">Healthcare.gov — Mercado de Seguros</div>
+                  <div class="step-desc">La mudanza activa un SEP de 60 días. Entra a healthcare.gov o llama al 1-800-318-2596 (en español disponible). Puedes calificar para subsidios según tu ingreso.</div>
+                  <div class="step-note">💡 healthcare.gov · 1-800-318-2596</div>
+                </div>
+              </li>
+              <li class="step-item">
+                <div class="step-num">3</div>
+                <div class="step-content">
+                  <div class="step-title">Medicaid — seguro gratis o bajo costo</div>
+                  <div class="step-desc">Si tu ingreso es bajo, puedes calificar para Medicaid. Cada estado tiene su propio programa. En Florida se llama Florida Medicaid · 1-877-711-3662.</div>
+                </div>
+              </li>
+              <li class="step-item">
+                <div class="step-num">4</div>
+                <div class="step-content">
+                  <div class="step-title">COBRA — continuar tu seguro de PR</div>
+                  <div class="step-desc">Si tenías seguro de empleador en PR, puedes continuar esa cobertura por hasta 18 meses bajo COBRA. Tienes 60 días para decidir. Es caro pero te cubre mientras consigues otro.</div>
+                </div>
+              </li>
+              <li class="step-item">
+                <div class="step-num">5</div>
+                <div class="step-content">
+                  <div class="step-title">Transferir récords médicos</div>
+                  <div class="step-desc">Solicita copias de tus récords médicos antes de salir de PR. Los hospitales y médicos están obligados a dártelos. Pide también récords de vacunas para toda la familia.</div>
+                </div>
+              </li>
+            </ul>
           </div>
         </div>
-        <div class="state-card">
-          <div class="state-card-header"><span class="state-name">💊 Seguro Médico PR</span></div>
-          <div class="state-card-body">
-            <div class="state-detail"><strong>Mi Salud (Medicaid):</strong> (787) 765-2929</div>
-            <div class="state-detail"><strong>Triple-S:</strong> (787) 774-6900</div>
-            <div class="state-detail"><strong>MCS:</strong> (787) 758-0505</div>
-            <div class="state-detail"><strong>First Medical:</strong> (787) 620-3344</div>
+        <div class="dir-panel">
+          <div class="dir-panel-header usa-pr">
+            <div class="dir-panel-icon">🇺🇸→🇵🇷</div>
+            <div>
+              <div class="dir-panel-title">Seguro médico al regresar a PR</div>
+              <div class="dir-panel-sub">Opciones en la isla</div>
+            </div>
           </div>
-        </div>
-        <div class="state-card">
-          <div class="state-card-header"><span class="state-name">🇺🇸 Seguro en USA</span></div>
-          <div class="state-card-body">
-            <div class="state-detail"><strong>Healthcare.gov:</strong> 1-800-318-2596</div>
-            <div class="state-detail"><strong>Medicaid:</strong> Por cada estado</div>
-            <div class="state-detail"><strong>Medicare:</strong> 1-800-633-4227</div>
-            <div class="state-detail"><strong>CHIP (niños):</strong> 1-877-543-7669</div>
+          <div class="dir-panel-body">
+            <ul class="steps-list">
+              <li class="step-item">
+                <div class="step-num">1</div>
+                <div class="step-content">
+                  <div class="step-title">Mi Salud — Medicaid de PR</div>
+                  <div class="step-desc">Si calificas por ingreso, puedes inscribirte en Mi Salud, el programa de Medicaid de PR. Cubre servicios médicos básicos sin costo o con copago mínimo.</div>
+                  <div class="step-note">💡 Mi Salud: (787) 765-2929</div>
+                </div>
+              </li>
+              <li class="step-item">
+                <div class="step-num">2</div>
+                <div class="step-content">
+                  <div class="step-title">Seguros privados en PR</div>
+                  <div class="step-desc">Triple-S, MCS, First Medical y Humana operan en PR. Compara planes en tu trabajo o directamente con cada aseguradora.</div>
+                </div>
+              </li>
+              <li class="step-item">
+                <div class="step-num">3</div>
+                <div class="step-content">
+                  <div class="step-title">Medicare en PR — diferente a USA</div>
+                  <div class="step-desc">Medicare en PR tiene cobertura diferente. Medicare Part A (hospital) aplica igual, pero Part B (médico) y Part D (recetas) tienen diferencias importantes. Llama a Medicare para actualizar tu dirección.</div>
+                  <div class="step-note">💡 Medicare: 1-800-633-4227</div>
+                </div>
+              </li>
+              <li class="step-item">
+                <div class="step-num">4</div>
+                <div class="step-content">
+                  <div class="step-title">Hospitales principales en PR</div>
+                  <div class="step-desc">Centro Médico (787) 777-3535 · Hospital Auxilio Mutuo (787) 758-2000 · Ashford Presbyterian (787) 721-2160 · HIMA San Pablo (787) 653-3434</div>
+                </div>
+              </li>
+            </ul>
           </div>
         </div>
       </div>
@@ -650,20 +717,116 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
     <div class="resource-section" id="section-bancos">
       <div class="resource-header">
         <h2 class="resource-title">🏦 Bancos y Finanzas</h2>
-        <p class="resource-sub">Bancos que operan en PR y USA, transferencias y cómo manejar tus finanzas en la transición.</p>
+        <p class="resource-sub">Bancos que operan en PR y USA, cómo construir crédito al llegar a los estados, y cómo manejar tus finanzas en la transición.</p>
       </div>
+
       <div class="info-box blue">
         <div class="info-box-title">💡 La ventaja de los bancos que operan en ambos</div>
         <div class="info-box-text">Banco Popular y Oriental Bank tienen presencia en PR y en estados como Florida y Nueva York. Puedes mantener tu cuenta y simplemente actualizar tu dirección sin abrir una cuenta nueva.</div>
       </div>
-      <div class="states-grid">
+
+      <div class="direction-panels">
+        <div class="dir-panel">
+          <div class="dir-panel-header pr-usa">
+            <div class="dir-panel-icon">🇵🇷→🇺🇸</div>
+            <div>
+              <div class="dir-panel-title">Finanzas al llegar a USA</div>
+              <div class="dir-panel-sub">Crédito, bancos y más</div>
+            </div>
+          </div>
+          <div class="dir-panel-body">
+            <ul class="steps-list">
+              <li class="step-item">
+                <div class="step-num">1</div>
+                <div class="step-content">
+                  <div class="step-title">El problema del crédito al llegar</div>
+                  <div class="step-desc">Aunque vengas de PR con historial de crédito, el sistema de crédito de USA no lo reconoce. Comienzas desde cero — sin score, es difícil rentar apartamento, conseguir auto o tarjeta de crédito.</div>
+                </div>
+              </li>
+              <li class="step-item">
+                <div class="step-num">2</div>
+                <div class="step-content">
+                  <div class="step-title">Abre una cuenta bancaria primero</div>
+                  <div class="step-desc">Bank of America, Wells Fargo o Banco Popular en Florida aceptan tu ID de PR y Social Security. Sin cuenta bancaria es casi imposible construir crédito.</div>
+                </div>
+              </li>
+              <li class="step-item">
+                <div class="step-num">3</div>
+                <div class="step-content">
+                  <div class="step-title">Tarjeta de crédito asegurada (secured card)</div>
+                  <div class="step-desc">Das un depósito de $200-500 que se convierte en tu límite. Discover it Secured y Capital One Secured son las mejores para empezar. Úsala para compras pequeñas y paga el balance completo cada mes.</div>
+                  <div class="step-note">💡 En 6-12 meses puedes tener score de 650+</div>
+                </div>
+              </li>
+              <li class="step-item">
+                <div class="step-num">4</div>
+                <div class="step-content">
+                  <div class="step-title">Experian Boost — sube el score gratis</div>
+                  <div class="step-desc">Conecta tu cuenta bancaria a Experian Boost. Agrega pagos de Netflix, Spotify, teléfono y luz a tu historial. Puede subir tu score 10-20 puntos inmediatamente.</div>
+                  <div class="step-note">💡 experian.com/boost — completamente gratis</div>
+                </div>
+              </li>
+              <li class="step-item">
+                <div class="step-num">5</div>
+                <div class="step-content">
+                  <div class="step-title">Lo que NUNCA debes hacer</div>
+                  <div class="step-desc">Pagar tarde (baja el score 50-100 puntos y queda 7 años en el historial). Usar más del 30% de tu límite. Cerrar tarjetas viejas. Solicitar muchas tarjetas a la vez.</div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="dir-panel">
+          <div class="dir-panel-header usa-pr">
+            <div class="dir-panel-icon">🇺🇸→🇵🇷</div>
+            <div>
+              <div class="dir-panel-title">Finanzas al regresar a PR</div>
+              <div class="dir-panel-sub">Bancos y transferencias</div>
+            </div>
+          </div>
+          <div class="dir-panel-body">
+            <ul class="steps-list">
+              <li class="step-item">
+                <div class="step-num">1</div>
+                <div class="step-content">
+                  <div class="step-title">Mantén tu cuenta en USA</div>
+                  <div class="step-desc">No cierres tu cuenta bancaria en USA al regresar. Es útil para compras en línea, recibir pagos de trabajo remoto y transferencias. Solo actualiza la dirección.</div>
+                </div>
+              </li>
+              <li class="step-item">
+                <div class="step-num">2</div>
+                <div class="step-content">
+                  <div class="step-title">Banco Popular — el puente ideal</div>
+                  <div class="step-desc">Banco Popular opera en PR, Florida, Nueva York y otros estados. Puedes tener cuentas en ambos lados y transferir dinero sin cargo entre ellas.</div>
+                  <div class="step-note">💡 popular.com · PR: (787) 724-3659</div>
+                </div>
+              </li>
+              <li class="step-item">
+                <div class="step-num">3</div>
+                <div class="step-content">
+                  <div class="step-title">Envío de dinero PR ↔ USA</div>
+                  <div class="step-desc">Wise es la opción más económica para transferencias internacionales. Zelle funciona entre bancos que lo soportan en ambos lados. ACH directo entre cuentas del mismo banco es gratis.</div>
+                </div>
+              </li>
+              <li class="step-item">
+                <div class="step-num">4</div>
+                <div class="step-content">
+                  <div class="step-title">Cooperativas de crédito en PR</div>
+                  <div class="step-desc">Las cooperativas (credit unions) de PR son excelentes — tasas de interés más bajas que los bancos. CoopAmérica, CoopAEE y otras ofrecen préstamos personales y de auto a mejores tasas.</div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="states-grid" style="margin-top:1.5rem;">
         <div class="state-card">
           <div class="state-card-header"><span class="state-name">🏦 Banco Popular</span></div>
           <div class="state-card-body">
             <div class="state-detail"><strong>PR:</strong> (787) 724-3659</div>
             <div class="state-detail"><strong>USA:</strong> 1-800-981-7700</div>
             <div class="state-detail"><strong>Estados:</strong> FL, NY, NJ, IL, CA, TX</div>
-            <div class="state-detail"><strong>Web:</strong> popular.com</div>
             <a href="https://www.popular.com" target="_blank" class="state-link">popular.com →</a>
           </div>
         </div>
@@ -672,17 +835,15 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
           <div class="state-card-body">
             <div class="state-detail"><strong>PR:</strong> (787) 620-0000</div>
             <div class="state-detail"><strong>Estados:</strong> FL, NY</div>
-            <div class="state-detail"><strong>Web:</strong> orientalbank.com</div>
             <a href="https://www.orientalbank.com" target="_blank" class="state-link">orientalbank.com →</a>
           </div>
         </div>
         <div class="state-card">
-          <div class="state-card-header"><span class="state-name">💸 Envío de Dinero PR↔USA</span></div>
+          <div class="state-card-header"><span class="state-name">💳 Tarjetas para empezar crédito</span></div>
           <div class="state-card-body">
-            <div class="state-detail"><strong>Wise:</strong> Sin comisión alta · wise.com</div>
-            <div class="state-detail"><strong>Zelle:</strong> Entre bancos que lo soporten</div>
-            <div class="state-detail"><strong>ACH:</strong> Transferencia directa entre cuentas</div>
-            <div class="state-detail"><strong>Tip:</strong> Wise es el más económico para envíos</div>
+            <div class="state-detail"><strong>Discover it Secured:</strong> Sin cargo anual</div>
+            <div class="state-detail"><strong>Capital One Secured:</strong> Depósito desde $49</div>
+            <div class="state-detail"><strong>Chime Credit Builder:</strong> Sin verificación</div>
           </div>
         </div>
       </div>
