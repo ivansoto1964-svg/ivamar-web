@@ -562,6 +562,7 @@ fetch('/api/noticias-pr')
       '<span class="noticia-vivo-source">' + n.source + '</span>' +
       '<span class="noticia-vivo-cat">' + n.categoria + '</span>' +
       '</div>' +
+      (n.img ? '<img src="' + n.img + '" alt="" style="width:100%;height:120px;object-fit:cover;border-radius:3px;margin-bottom:0.5rem;">' : '') +
       '<div class="noticia-vivo-title">' + n.title + '</div>' +
       (n.summary && n.summary !== '...' ? '<div class="noticia-vivo-summary">' + n.summary + '</div>' : '') +
       '<div class="noticia-vivo-date">' + n.date + '</div>' +

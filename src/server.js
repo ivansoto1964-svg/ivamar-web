@@ -2116,7 +2116,9 @@ app.get('/api/noticias-pr', async (req, res) => {
         const desc = (item.match(/<description><!\[CDATA\[(.*?)\]\]><\/description>/) || item.match(/<description>(.*?)<\/description>/))?.[1] || '';
         const summary = desc.replace(/<[^>]+>/g, '').trim().slice(0, 120) + '...';
         const date = pubDate ? new Date(pubDate).toLocaleDateString('es-PR', { year: 'numeric', month: 'long', day: 'numeric' }) : '';
-        if (title) items.push({ title: title.trim(), link: link.trim(), date, summary, source: feed.source, categoria: feed.categoria });
+        const imgMatch = item.match(/<img[^>]+src=["']([^"']+)["']/i);
+        const img = imgMatch ? imgMatch[1] : null;
+        if (title) items.push({ title: title.trim(), link: link.trim(), date, summary, img, source: feed.source, categoria: feed.categoria });
       }
       return items;
     }));
