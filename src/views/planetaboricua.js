@@ -262,13 +262,29 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 </div>
 
+<!-- NOTICIAS EN VIVO -->
+<section class="noticias-vivo">
+  <div class="noticias-vivo-inner">
+    <div class="sec-divider-inner">
+      <span class="sec-divider-label">Noticias en Vivo</span>
+      <div style="flex:1;height:2px;background:var(--red);margin:0 1rem;"></div>
+      <span style="font-size:0.65rem;color:#999;">Actualizado automáticamente</span>
+    </div>
+    <div class="noticias-vivo-grid" id="noticias-vivo-grid">
+      <div style="background:#fff;border-radius:4px;height:120px;border-left:3px solid #eee;"></div>
+      <div style="background:#fff;border-radius:4px;height:120px;border-left:3px solid #eee;"></div>
+      <div style="background:#fff;border-radius:4px;height:120px;border-left:3px solid #eee;"></div>
+    </div>
+  </div>
+</section>
+
 <!-- NOTICIAS -->
 <section class="noticias" id="noticias">
   <div class="noticias-inner">
     <div class="sec-divider-inner">
-      <span class="sec-divider-label">Nuestro Blog</span>
+      <span class="sec-divider-label">Los Temas del Balcón</span>
       <div style="flex:1;height:2px;background:var(--red);margin:0 1rem;"></div>
-      <a href="https://blog.masboricuaqueunmofongo.com" target="_blank" class="sec-divider-link">Ver todas →</a>
+      <a href="https://blog.masboricuaqueunmofongo.com" target="_blank" class="sec-divider-link">Ver todos →</a>
     </div>
     <div class="noticias-grid" id="noticias-grid">
       <div style="background:#fff;border-radius:4px;height:280px;display:flex;align-items:center;justify-content:center;color:#ccc;font-size:0.82rem;">Cargando...</div>
@@ -352,22 +368,6 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 </div>
 
-
-<!-- NOTICIAS EN VIVO -->
-<section class="noticias-vivo">
-  <div class="noticias-vivo-inner">
-    <div class="sec-divider-inner">
-      <span class="sec-divider-label">Noticias en Vivo</span>
-      <div style="flex:1;height:2px;background:var(--red);margin:0 1rem;"></div>
-      <span style="font-size:0.65rem;color:#999;">Actualizado automáticamente</span>
-    </div>
-    <div class="noticias-vivo-grid" id="noticias-vivo-grid">
-      <div style="background:#fff;border-radius:4px;height:120px;border-left:3px solid #eee;"></div>
-      <div style="background:#fff;border-radius:4px;height:120px;border-left:3px solid #eee;"></div>
-      <div style="background:#fff;border-radius:4px;height:120px;border-left:3px solid #eee;"></div>
-    </div>
-  </div>
-</section>
 
 <!-- NAYELI -->
 <section class="nayeli-section" id="nayeli">
@@ -636,4 +636,3 @@ async function nlSubscribe() {
 
 </body>
 </html>
-`;
