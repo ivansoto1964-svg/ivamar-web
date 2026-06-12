@@ -161,8 +161,14 @@ app.use((req, res, next) => {
     }
   }
   if (host === 'masboricuaqueunmofongo.com' || host === 'www.masboricuaqueunmofongo.com') {
-    if (req.path === '/sitemap.xml') {
-      return res.redirect('/sitemap-boricua.xml');
+    if (req.path === '/sitemap.xml' || req.path === '/sitemap-boricua.xml') {
+      const base = 'https://www.masboricuaqueunmofongo.com';
+      const urls = [
+        `<url><loc>${base}/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>`,
+        `<url><loc>${base}/recursos</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>`
+      ].join('\n  ');
+      res.header('Content-Type', 'application/xml');
+      return res.send(`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${urls}</urlset>`);
     }
     if (req.path === '/robots.txt') {
       res.header('Content-Type', 'text/plain');
