@@ -4,7 +4,27 @@ module.exports = `<!DOCTYPE html>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Planeta Boricua — Más Boricua Que Un Mofongo</title>
-<meta name="description" content="Tu portal de cultura, noticias y comunidad puertorriqueña. Directorio de negocios boricuas en USA, noticias de PR, y más.">
+<meta name="description" content="Tu portal de cultura, noticias y comunidad puertorriqueña. Directorio de negocios boricuas en USA, recursos para mudanzas PR↔USA, Nayeli AI y más.">
+<meta name="keywords" content="Puerto Rico, boricua, noticias Puerto Rico, cultura puertorriqueña, diáspora boricua, negocios boricuas, mudarse de Puerto Rico, boricuas en Florida, boricuas en Nueva York, recursos boricuas">
+<meta name="author" content="Planeta Boricua — Ivamar AI LLC">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://www.masboricuaqueunmofongo.com/">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.masboricuaqueunmofongo.com/">
+<meta property="og:title" content="Planeta Boricua — Más Boricua Que Un Mofongo">
+<meta property="og:description" content="Tu portal de cultura, noticias y comunidad puertorriqueña. Directorio de negocios boricuas en USA, recursos para mudanzas PR↔USA, Nayeli AI y más.">
+<meta property="og:image" content="https://www.masboricuaqueunmofongo.com/img/og-planetaboricua.jpg">
+<meta property="og:locale" content="es_PR">
+<meta property="og:site_name" content="Planeta Boricua">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:url" content="https://www.masboricuaqueunmofongo.com/">
+<meta name="twitter:title" content="Planeta Boricua — Más Boricua Que Un Mofongo">
+<meta name="twitter:description" content="Tu portal de cultura, noticias y comunidad puertorriqueña. Directorio de negocios boricuas en USA, recursos para mudanzas PR↔USA y Nayeli AI.">
+<meta name="twitter:image" content="https://www.masboricuaqueunmofongo.com/img/og-planetaboricua.jpg">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4181903530685744" crossorigin="anonymous"></script>
 <style>

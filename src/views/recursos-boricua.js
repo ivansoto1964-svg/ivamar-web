@@ -5,6 +5,24 @@ module.exports = `<!DOCTYPE html>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Centro de Recursos Boricua — Tu Guía PR ↔ USA | Planeta Boricua</title>
 <meta name="description" content="Guía completa para boricuas que se mudan entre Puerto Rico y Estados Unidos. Licencias, mudanzas, escuelas, servicios públicos, bancos y más.">
+<meta name="keywords" content="mudarse de Puerto Rico a Florida, licencia de conducir Puerto Rico a USA, recursos boricuas, mudanza PR USA, boricuas diáspora, seguro médico Puerto Rico, banco Puerto Rico USA, escuelas Puerto Rico">
+<meta name="author" content="Planeta Boricua — Ivamar AI LLC">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://www.masboricuaqueunmofongo.com/recursos">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://www.masboricuaqueunmofongo.com/recursos">
+<meta property="og:title" content="Centro de Recursos Boricua — Guía Completa PR ↔ USA">
+<meta property="og:description" content="Guía completa para boricuas que se mudan entre Puerto Rico y Estados Unidos. Licencias, mudanzas, escuelas, servicios públicos, bancos y más.">
+<meta property="og:image" content="https://www.masboricuaqueunmofongo.com/img/og-planetaboricua.jpg">
+<meta property="og:locale" content="es_PR">
+<meta property="og:site_name" content="Planeta Boricua">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Centro de Recursos Boricua — Guía Completa PR ↔ USA">
+<meta name="twitter:description" content="Licencias de conducir por estado, mudanzas PR↔USA, escuelas, seguros médicos, bancos y crédito — todo en español boricua.">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4181903530685744" crossorigin="anonymous"></script>
 <style>
