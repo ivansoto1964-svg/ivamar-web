@@ -205,6 +205,7 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
 .noticia-vivo-title{font-family:'Playfair Display',serif;font-size:0.9rem;font-weight:700;color:var(--dark);line-height:1.3;}
 .noticia-vivo-summary{font-size:0.75rem;color:var(--mid);line-height:1.5;}
 .noticia-vivo-date{font-size:0.65rem;color:#999;margin-top:0.3rem;}
+.noticia-vivo-body{padding:1rem;display:flex;flex-direction:column;gap:0.4rem;border-left:3px solid var(--red);}
 @media(max-width:768px){.noticias-vivo-grid{grid-template-columns:1fr;}}
 </style>
 </head>
@@ -562,11 +563,12 @@ fetch('/api/noticias-pr')
       '<span class="noticia-vivo-source">' + n.source + '</span>' +
       '<span class="noticia-vivo-cat">' + n.categoria + '</span>' +
       '</div>' +
-      (n.img ? '<img src="' + n.img + '" alt="" style="width:100%;height:120px;object-fit:cover;border-radius:3px;margin-bottom:0.5rem;">' : '') +
+      (n.img ? '<img src="' + n.img + '" alt="" style="width:100%;height:160px;object-fit:cover;display:block;">' : '') +
+      '<div class="noticia-vivo-body">' +
       '<div class="noticia-vivo-title">' + n.title + '</div>' +
       (n.summary && n.summary !== '...' ? '<div class="noticia-vivo-summary">' + n.summary + '</div>' : '') +
       '<div class="noticia-vivo-date">' + n.date + '</div>' +
-      '</a>'
+      '</div></a>'
     ).join('');
   })
   .catch(e => console.log('Noticias error:', e));
