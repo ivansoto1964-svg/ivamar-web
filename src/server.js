@@ -2070,7 +2070,7 @@ app.get('/api/planetaboricua-blog', async (req, res) => {
       if (e.media$thumbnail) {
         const u = e.media$thumbnail.url;
         const i = u.lastIndexOf('/s');
-        img = u;
+        img = u.replace('/s72-', '/s1200-').replace('/s72/', '/s1200/');
       } else {
         const content = e.content ? e.content.$t : '';
         const match = content.match(/<img[^>]+src=["']([^"']+)["']/i);
