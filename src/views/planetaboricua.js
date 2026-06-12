@@ -556,7 +556,7 @@ fetch('/api/noticias-pr')
   .then(noticias => {
     const grid = document.getElementById('noticias-vivo-grid');
     if (!grid || !noticias.length) return;
-    grid.innerHTML = noticias.slice(0, 9).map(n =>
+    grid.innerHTML = noticias.slice(0, 12).map(n =>
       '<a href="' + n.link + '" target="_blank" rel="noopener" class="noticia-vivo-card">' +
       '<div style="display:flex;justify-content:space-between;align-items:center;">' +
       '<span class="noticia-vivo-source">' + n.source + '</span>' +

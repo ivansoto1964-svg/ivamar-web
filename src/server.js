@@ -2127,7 +2127,7 @@ app.get('/api/noticias-pr', async (req, res) => {
     const noticias = results
       .filter(r => r.status === 'fulfilled')
       .flatMap(r => r.value)
-      .slice(0, 12);
+      .slice(0, 15);
 
     res.set('Access-Control-Allow-Origin', '*');
     res.json(noticias);
