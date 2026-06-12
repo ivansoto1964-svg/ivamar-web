@@ -161,6 +161,17 @@ app.use((req, res, next) => {
     }
   }
   if (host === 'masboricuaqueunmofongo.com' || host === 'www.masboricuaqueunmofongo.com') {
+    if (req.path === '/sitemap.xml') {
+      return res.redirect('/sitemap-boricua.xml');
+    }
+    if (req.path === '/robots.txt') {
+      res.header('Content-Type', 'text/plain');
+      return res.send('User-agent: *
+Allow: /
+Disallow: /api/
+
+Sitemap: https://www.masboricuaqueunmofongo.com/sitemap.xml');
+    }
     if (req.path === '/' || req.path === '') {
       return res.send(planetaboricua);
     }
@@ -2157,4 +2168,25 @@ app.post('/api/colaboracion-boricua', express.json(), formLimiter, async (req, r
     console.error('Colaboracion error:', err.message);
     res.status(500).json({ error: 'Error enviando' });
   }
+});
+
+app.get("/sitemap-boricua.xml", (req, res) => {
+  const base = "https://www.masboricuaqueunmofongo.com";
+  const urls = [
+    `<url><loc>${base}/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>`,
+    `<url><loc>${base}/recursos</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>`,
+    `<url><loc>${base}/recursos#mudanzas</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>`,
+    `<url><loc>${base}/recursos#licencias</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>`,
+    `<url><loc>${base}/recursos#escuelas</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>`,
+    `<url><loc>${base}/recursos#servicios</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>`,
+    `<url><loc>${base}/recursos#salud</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>`,
+    `<url><loc>${base}/recursos#bancos</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>`,
+    `<url><loc>${base}/recursos#gobierno</loc><changefreq>weekly</changefreq><priority>0.8</priority></url>`
+  ].join("\n  ");
+
+  res.header("Content-Type", "application/xml");
+  res.send(`<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  ${urls}
+</urlset>`);
 });
