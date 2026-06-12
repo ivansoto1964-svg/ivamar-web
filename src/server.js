@@ -172,11 +172,7 @@ app.use((req, res, next) => {
     }
     if (req.path === '/robots.txt') {
       res.header('Content-Type', 'text/plain');
-      return res.send('User-agent: *
-Allow: /
-Disallow: /api/
-
-Sitemap: https://www.masboricuaqueunmofongo.com/sitemap.xml');
+      return res.send('User-agent: *\nAllow: /\nDisallow: /api/\n\nSitemap: https://www.masboricuaqueunmofongo.com/sitemap.xml');
     }
     if (req.path === '/' || req.path === '') {
       return res.send(planetaboricua);
