@@ -523,9 +523,9 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
       <div class="pb-footer-logo">🇵🇷 Planeta Boricua</div>
       <div class="pb-footer-tagline">Más Boricua Que Un Mofongo</div>
       <div class="pb-footer-social">
-        <a href="https://tiktok.com/@planetaboricua" target="_blank">📱</a>
-        <a href="https://instagram.com/planetaboricua" target="_blank">📸</a>
-        <a href="https://facebook.com/planetaboricua" target="_blank">👍</a>
+        <a href="https://www.tiktok.com/@planetaboricua4" target="_blank">📱</a>
+        <a href="https://www.instagram.com/miplanetaboricua" target="_blank">📸</a>
+        <a href="https://www.facebook.com/elplanetaboricua" target="_blank">👍</a>
       </div>
     </div>
     <div class="pb-footer-col">

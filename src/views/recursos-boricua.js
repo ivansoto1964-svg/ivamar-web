@@ -980,6 +980,11 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
 
 <!-- FOOTER -->
 <footer class="page-footer">
+  <div style="display:flex;justify-content:center;gap:1rem;margin-bottom:1rem;">
+    <a href="https://www.facebook.com/elplanetaboricua" target="_blank" style="font-size:0.8rem;color:#CE1126;text-decoration:none;font-weight:600;">📘 Facebook</a>
+    <a href="https://www.instagram.com/miplanetaboricua" target="_blank" style="font-size:0.8rem;color:#CE1126;text-decoration:none;font-weight:600;">📸 Instagram</a>
+    <a href="https://www.tiktok.com/@planetaboricua4" target="_blank" style="font-size:0.8rem;color:#CE1126;text-decoration:none;font-weight:600;">📱 TikTok</a>
+  </div>
   <div class="page-footer-text">
     © 2026 <a href="/">Planeta Boricua</a> · masboricuaqueunmofongo.com · Un producto de <a href="https://ivamarai.com">Ivamar AI LLC</a><br>
     <span style="margin-top:0.3rem;display:block;">La información en esta página es orientativa. Verifica siempre con las agencias oficiales correspondientes.</span>
