@@ -225,7 +225,6 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
       <a href="#noticias">Noticias</a>
       <a href="/recursos">Recursos PR↔USA</a>
       <a href="#directorio">Directorio</a>
-      <a href="/recursos">Recursos PR↔USA</a>
       <a href="#nayeli">Nayeli AI</a>
       <a href="#viajes">Viajes</a>
       <a href="#newsletter" class="nav-cta">Newsletter →</a>
@@ -511,6 +510,7 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
       <h4>Portal</h4>
       <a href="#noticias">Noticias</a>
       <a href="#directorio">Directorio Boricua</a>
+      <a href="/recursos">Recursos PR↔USA</a>
       <a href="#nayeli">Nayeli AI</a>
       <a href="#viajes">Viajes a PR</a>
     </div>
