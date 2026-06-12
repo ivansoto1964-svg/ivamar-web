@@ -2098,8 +2098,7 @@ app.get('/api/noticias-pr', async (req, res) => {
     { url: 'https://periodismoinvestigativo.com/feed/', source: 'Periodismo Investigativo', categoria: 'Investigación' },
     { url: 'https://remezcla.com/feed/', source: 'Remezcla', categoria: 'Cultura' },
     { url: 'https://www.caribbeanbusiness.com/feed/', source: 'Caribbean Business', categoria: 'Economía' },
-    { url: 'https://feeds.bbci.co.uk/mundo/rss.xml', source: 'BBC Mundo', categoria: 'Internacional' },
-    { url: 'https://news.google.com/rss/search?q=puerto+rico&hl=es-419&gl=US&ceid=US:es-419', source: 'Google News', categoria: 'Puerto Rico' }
+    { url: 'https://feeds.bbci.co.uk/mundo/rss.xml', source: 'BBC Mundo', categoria: 'Internacional' }
   ];
 
   try {
