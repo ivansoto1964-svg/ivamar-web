@@ -12,6 +12,15 @@ const rateLimit = require('express-rate-limit');
 const app = express();
 app.set('trust proxy', 1);
 
+// Handle malformed URI errors from bots/scanners
+app.use((err, req, res, next) => {
+  if (err instanceof URIError) {
+    return res.status(400).send('Bad Request');
+  }
+  next(err);
+});
+
+
 // AI endpoints — max 20 requests per 10 minutes per IP
 const aiLimiter = rateLimit({
   windowMs: 10 * 60 * 1000,
