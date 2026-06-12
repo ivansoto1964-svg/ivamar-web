@@ -265,7 +265,7 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
 <section class="noticias" id="noticias">
   <div class="noticias-inner">
     <div class="sec-divider-inner">
-      <span class="sec-divider-label">Últimas Noticias</span>
+      <span class="sec-divider-label">Nuestro Blog</span>
       <div style="flex:1;height:2px;background:var(--red);margin:0 1rem;"></div>
       <a href="https://blog.masboricuaqueunmofongo.com" target="_blank" class="sec-divider-link">Ver todas →</a>
     </div>
@@ -506,36 +506,37 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
     .then(posts => {
       if (!posts || !posts.length) return;
 
-      // Hero main — first post
-      const p = posts[0];
+      // Hero main — first post WITH image, fallback to first post
+      const heroPost = posts.find(p => p.img) || posts[0];
       const heroImg = document.getElementById('hero-main-img');
-      if (p.img) {
-        heroImg.outerHTML = '<img id="hero-main-img" src="' + p.img + '" alt="' + p.title + '" style="width:100%;height:320px;object-fit:cover;border-radius:4px;margin-bottom:1rem;">';
+      if (heroPost.img) {
+        heroImg.outerHTML = '<img id="hero-main-img" src="' + heroPost.img + '" alt="' + heroPost.title + '" style="width:100%;height:320px;object-fit:cover;border-radius:4px;margin-bottom:1rem;">';
       }
-      document.getElementById('hero-main-cat').textContent = p.tag;
-      document.getElementById('hero-main-title').textContent = p.title;
-      document.getElementById('hero-main-excerpt').textContent = p.summary;
-      document.getElementById('hero-main-date').textContent = p.date;
-      document.getElementById('hero-main-link').href = p.link;
+      document.getElementById('hero-main-cat').textContent = heroPost.tag;
+      document.getElementById('hero-main-title').textContent = heroPost.title;
+      document.getElementById('hero-main-excerpt').textContent = heroPost.summary;
+      document.getElementById('hero-main-date').textContent = heroPost.date;
+      document.getElementById('hero-main-link').href = heroPost.link;
 
-      // Hero sidebar — posts 1-4
+      // Hero sidebar — remaining posts excluding hero
+      const sidebarPosts = posts.filter(p => p.link !== heroPost.link).slice(0, 4);
       const sidebar = document.getElementById('hero-sidebar');
-      sidebar.innerHTML = posts.slice(1, 5).map((p, i) =>
+      sidebar.innerHTML = sidebarPosts.map((p, i) =>
         '<a href="' + p.link + '" target="_blank" class="hero-side-card">' +
-        '<div class="hero-side-num">0' + (i + 2) + '</div>' +
+        '<div class="hero-side-num">0' + (i + 1) + '</div>' +
         '<div class="hero-side-cat">' + p.tag + '</div>' +
         '<div class="hero-side-title">' + p.title + '</div>' +
         '<div class="hero-side-date">' + p.date + '</div>' +
         '</a>'
       ).join('');
 
-      // Noticias grid — posts 1-3 (or 0-2 if not enough)
+      // Noticias grid — blog posts (all except hero)
       const grid = document.getElementById('noticias-grid');
-      const noticiaPosts = posts.length > 3 ? posts.slice(1, 4) : posts.slice(0, 3);
+      const noticiaPosts = posts.filter(p => p.link !== heroPost.link).slice(0, 3);
       grid.innerHTML = noticiaPosts.map(p =>
         '<a href="' + p.link + '" target="_blank" class="noticia-card">' +
         '<div class="noticia-img">' +
-        (p.img ? '<img src="' + p.img + '" alt="' + p.title + '">' : '') +
+        (p.img ? '<img src="' + p.img + '" alt="' + p.title + '">' : '<div style="width:100%;height:100%;background:linear-gradient(135deg,var(--blue),var(--red));display:flex;align-items:center;justify-content:center;font-size:2.5rem;">🇵🇷</div>') +
         '</div>' +
         '<div class="noticia-body">' +
         '<div class="noticia-cat">' + p.tag + '</div>' +
