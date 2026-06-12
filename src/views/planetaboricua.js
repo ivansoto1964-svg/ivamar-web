@@ -180,6 +180,8 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
 .ad-strip{max-width:1200px;margin:0 auto;padding:1rem 2rem;text-align:center;}
 
 @media(max-width:768px){
+.recursos-inner{grid-template-columns:1fr!important;}
+
   .nav-links{display:none;}
   .nav-top{padding:0.8rem 1rem;}
   .hero-inner{grid-template-columns:1fr;gap:1.5rem;padding:0 1rem;}
@@ -373,7 +375,7 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
 
 <!-- RECURSOS -->
 <section style="background:linear-gradient(135deg,var(--blue),#001a4d);padding:2rem 0;">
-  <div style="max-width:1200px;margin:0 auto;padding:0 2rem;display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:center;">
+  <div style="max-width:1200px;margin:0 auto;padding:0 2rem;display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:center;" class="recursos-inner">
     <div>
       <div style="font-size:0.65rem;font-weight:800;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:0.6rem;">Centro de Recursos</div>
       <h2 style="font-family:'Playfair Display',serif;font-size:clamp(1.5rem,2.5vw,2rem);font-weight:800;color:#fff;margin-bottom:0.8rem;line-height:1.2;">¿Te mudas entre PR y USA? <span style="color:#f5c842;">Tenemos tu guía.</span></h2>
