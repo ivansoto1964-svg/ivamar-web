@@ -63,6 +63,7 @@ const homeES = require("./views/home-es");
 const homeEN = require("./views/home-en");
 const about = require("./views/about");
 const planetaboricua = require("./views/planetaboricua");
+const recursosBoriuca = require("./views/recursos-boricua");
 const sobreNosotros = require("./views/sobre-nosotros");
 const contactoES = require("./views/contacto");
 const contact = require("./views/contact");
@@ -162,6 +163,9 @@ app.use((req, res, next) => {
   if (host === 'masboricuaqueunmofongo.com' || host === 'www.masboricuaqueunmofongo.com') {
     if (req.path === '/' || req.path === '') {
       return res.send(planetaboricua);
+    }
+    if (req.path === '/recursos' || req.path === '/centro-de-recursos') {
+      return res.send(recursosBoriuca);
     }
   }
   next();
@@ -2133,5 +2137,24 @@ app.get('/api/noticias-pr', async (req, res) => {
     res.json(noticias);
   } catch (err) {
     res.json([]);
+  }
+});
+
+app.post('/api/colaboracion-boricua', express.json(), formLimiter, async (req, res) => {
+  const { nombre, email, tema, info } = req.body;
+  if (!nombre || !email || !tema || !info) return res.status(400).json({ error: 'Faltan campos' });
+  try {
+    const { Resend } = require('resend');
+    const resend = new Resend(process.env.RESEND_API_KEY);
+    await resend.emails.send({
+      from: 'Planeta Boricua <connect@ivamarai.com>',
+      to: 'connect@ivamarai.com',
+      subject: 'Nueva colaboración: ' + tema,
+      html: '<h2>Nueva colaboración del Centro de Recursos</h2><p><strong>Nombre:</strong> ' + nombre + '</p><p><strong>Email:</strong> ' + email + '</p><p><strong>Tema:</strong> ' + tema + '</p><p><strong>Información:</strong></p><p>' + info + '</p>'
+    });
+    res.json({ ok: true });
+  } catch (err) {
+    console.error('Colaboracion error:', err.message);
+    res.status(500).json({ error: 'Error enviando' });
   }
 });
