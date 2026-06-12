@@ -2115,7 +2115,8 @@ app.get('/api/noticias-pr', async (req, res) => {
         const link = (item.match(/<link>(.*?)<\/link>/) || item.match(/<link[^>]*href="([^"]*)"/)) ?.[1] || '#';
         const pubDate = (item.match(/<pubDate>(.*?)<\/pubDate>/))?.[1] || '';
         const desc = (item.match(/<description><!\[CDATA\[(.*?)\]\]><\/description>/) || item.match(/<description>(.*?)<\/description>/))?.[1] || '';
-        const summary = desc.replace(/<[^>]+>/g, '').trim().slice(0, 120) + '...';
+        const cleanDesc = desc.replace(/<[^>]+>/g, '').replace(/https?:\/\/\S+/g, '').trim();
+        const summary = cleanDesc.length > 10 ? cleanDesc.slice(0, 120) + '...' : '';
         const date = pubDate ? new Date(pubDate).toLocaleDateString('es-PR', { year: 'numeric', month: 'long', day: 'numeric' }) : '';
         const imgMatch = item.match(/<img[^>]+src=["']([^"']+)["']/i);
         const img = imgMatch ? imgMatch[1] : null;
