@@ -237,7 +237,7 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
 <nav>
   <div class="nav-top">
     <a href="/" class="nav-logo">
-      <div class="nav-flag">🇵🇷</div>
+      <img src="/img/pb-logo.png" alt="Planeta Boricua" style="height:40px;width:auto;">
       <div>
         <div class="nav-logo-text">Planeta Boricua</div>
         <div class="nav-logo-sub">Más Boricua Que Un Mofongo</div>
