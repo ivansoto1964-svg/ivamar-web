@@ -193,6 +193,19 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
   .pb-footer-main{grid-template-columns:1fr 1fr;padding:2rem 1rem;}
   .pb-footer-bottom{padding:1rem;}
 }
+
+/* NOTICIAS EN VIVO */
+.noticias-vivo{background:var(--light);padding:3rem 0;border-top:1px solid var(--border);}
+.noticias-vivo-inner{max-width:1200px;margin:0 auto;padding:0 2rem;}
+.noticias-vivo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;margin-top:1.5rem;}
+.noticia-vivo-card{background:var(--white);border-radius:4px;padding:1.2rem;text-decoration:none;color:inherit;display:flex;flex-direction:column;gap:0.4rem;border-left:3px solid var(--red);transition:box-shadow 0.2s;}
+.noticia-vivo-card:hover{box-shadow:0 4px 16px rgba(0,0,0,0.08);}
+.noticia-vivo-source{font-size:0.6rem;font-weight:800;color:var(--red);text-transform:uppercase;letter-spacing:0.1em;}
+.noticia-vivo-cat{font-size:0.6rem;font-weight:600;color:#999;text-transform:uppercase;letter-spacing:0.08em;}
+.noticia-vivo-title{font-family:'Playfair Display',serif;font-size:0.9rem;font-weight:700;color:var(--dark);line-height:1.3;}
+.noticia-vivo-summary{font-size:0.75rem;color:var(--mid);line-height:1.5;}
+.noticia-vivo-date{font-size:0.65rem;color:#999;margin-top:0.3rem;}
+@media(max-width:768px){.noticias-vivo-grid{grid-template-columns:1fr;}}
 </style>
 </head>
 <body>
@@ -337,6 +350,23 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
   <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-4181903530685744" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 </div>
+
+
+<!-- NOTICIAS EN VIVO -->
+<section class="noticias-vivo">
+  <div class="noticias-vivo-inner">
+    <div class="sec-divider-inner">
+      <span class="sec-divider-label">Noticias en Vivo</span>
+      <div style="flex:1;height:2px;background:var(--red);margin:0 1rem;"></div>
+      <span style="font-size:0.65rem;color:#999;">Actualizado automáticamente</span>
+    </div>
+    <div class="noticias-vivo-grid" id="noticias-vivo-grid">
+      <div style="background:#fff;border-radius:4px;height:120px;border-left:3px solid #eee;"></div>
+      <div style="background:#fff;border-radius:4px;height:120px;border-left:3px solid #eee;"></div>
+      <div style="background:#fff;border-radius:4px;height:120px;border-left:3px solid #eee;"></div>
+    </div>
+  </div>
+</section>
 
 <!-- NAYELI -->
 <section class="nayeli-section" id="nayeli">
@@ -517,6 +547,27 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
     })
     .catch(e => console.log('Blog error:', e));
 })();
+
+
+// Noticias en Vivo
+fetch('/api/noticias-pr')
+  .then(r => r.json())
+  .then(noticias => {
+    const grid = document.getElementById('noticias-vivo-grid');
+    if (!grid || !noticias.length) return;
+    grid.innerHTML = noticias.slice(0, 9).map(n =>
+      '<a href="' + n.link + '" target="_blank" rel="noopener" class="noticia-vivo-card">' +
+      '<div style="display:flex;justify-content:space-between;align-items:center;">' +
+      '<span class="noticia-vivo-source">' + n.source + '</span>' +
+      '<span class="noticia-vivo-cat">' + n.categoria + '</span>' +
+      '</div>' +
+      '<div class="noticia-vivo-title">' + n.title + '</div>' +
+      (n.summary && n.summary !== '...' ? '<div class="noticia-vivo-summary">' + n.summary + '</div>' : '') +
+      '<div class="noticia-vivo-date">' + n.date + '</div>' +
+      '</a>'
+    ).join('');
+  })
+  .catch(e => console.log('Noticias error:', e));
 
 // Nayeli Chat
 async function nayeliSend() {
