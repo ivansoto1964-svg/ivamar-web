@@ -459,20 +459,25 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
     <div class="resource-section" id="section-licencias">
       <div class="resource-header">
         <h2 class="resource-title">🚗 Licencia de Conducir en PR</h2>
-        <p class="resource-sub">Cómo canjear tu licencia de USA por una de Puerto Rico en el DTOP.</p>
+        <p class="resource-sub">Cómo canjear tu licencia de USA por una de Puerto Rico en el DTOP/CESCO. Bienvenido al calentón. 🇵🇷</p>
+      </div>
+
+      <div class="info-box red">
+        <div class="info-box-title">🔥 Bienvenido al calentón — esto es PR</div>
+        <div class="info-box-text">El proceso de canjear la licencia parece simple pero tiene más requisitos de lo que uno espera. Tarjeta del Social laminada → no sirve. Acta de nacimiento antes del 2010 → no sirve. Multas pendientes → no puedes tramitar. Cita disponible → en 3 semanas si tienes suerte. ¡Prepárate con todo antes de ir!</div>
       </div>
 
       <div class="info-box blue">
         <div class="info-box-title">📋 Lo básico</div>
-        <div class="info-box-text">Al establecer residencia en PR, tienes 90 días para canjear tu licencia de USA por una de PR. El DTOP requiere cita previa — sácala con anticipación porque se agotan rápido.</div>
+        <div class="info-box-text">Al establecer residencia en PR, tienes 90 días para canjear tu licencia de USA por una de PR. Desde mayo 2025 necesitas REAL ID para volar dentro de USA — asegúrate de pedirla al hacer el canje.</div>
       </div>
 
       <div class="steps-card">
         <div class="steps-card-header">
           <div class="steps-card-icon">🪪</div>
           <div>
-            <div class="steps-card-title">Canjear licencia USA → DTOP Puerto Rico</div>
-            <div class="steps-card-sub">Departamento de Transportación y Obras Públicas</div>
+            <div class="steps-card-title">Canjear licencia USA → PR en el CESCO</div>
+            <div class="steps-card-sub">Proceso completo verificado — 7 pasos que nadie te cuenta</div>
           </div>
         </div>
         <div class="steps-card-body">
@@ -480,39 +485,89 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
             <li class="step-item">
               <div class="step-num">1</div>
               <div class="step-content">
-                <div class="step-title">Documentos necesarios</div>
-                <div class="step-desc">Licencia de conducir del estado (original), acta de nacimiento de PR o pasaporte americano, tarjeta de Social Security, y dos pruebas de residencia en PR (factura de LUMA, AAA, banco o contrato de renta).</div>
+                <div class="step-title">Verifica que no tienes multas pendientes PRIMERO</div>
+                <div class="step-desc">Si tienes multas de tránsito sin pagar en PR, no puedes tramitar la licencia. Verifica en CESCO Digital antes de ir. Si tienes deudas con ACAA (accidentes de autos) o ASUME (manutención), también te bloquean — necesitas certificación de pago o plan de pago activo.</div>
+                <div class="step-note">💡 Verifica multas: web.cescodigital.pr.gov</div>
+                <div class="step-warning">⚠ Una sola multa sin pagar y el viaje al CESCO fue en balde</div>
               </div>
             </li>
             <li class="step-item">
               <div class="step-num">2</div>
               <div class="step-content">
-                <div class="step-title">Sacar cita en DTOP</div>
-                <div class="step-desc">Cita obligatoria en dtop.pr.gov o llamando al (787) 294-0101. Las citas se agotan — sácala lo antes posible después de llegar a PR.</div>
-                <div class="step-note">💡 dtop.pr.gov · (787) 294-0101</div>
+                <div class="step-title">Verifica tu Acta de Nacimiento — debe ser post-julio 2010</div>
+                <div class="step-desc">Las actas de nacimiento de PR emitidas ANTES del 1 de julio de 2010 fueron invalidadas por ley. Si la tuya es antigua, no sirve para ningún trámite. Solicita una nueva en el Registro Demográfico — puedes hacerlo en línea.</div>
+                <div class="step-note">💡 Registro Demográfico: vitalrecords.pr.gov · (787) 767-9120</div>
+                <div class="step-warning">⚠ Muchos boricuas llegan al CESCO con el acta vieja y se tienen que ir sin tramitar</div>
               </div>
             </li>
             <li class="step-item">
               <div class="step-num">3</div>
               <div class="step-content">
-                <div class="step-title">Examen de conocimiento</div>
-                <div class="step-desc">Puede que tengas que tomar el examen de conocimiento del tránsito de PR. Prepárate con el manual oficial disponible en el portal del DTOP.</div>
+                <div class="step-title">Tarjeta de Social Security — sin laminar, en original</div>
+                <div class="step-desc">El CESCO requiere la tarjeta de Social Security en original y sin laminar. Si está laminada o no la tienes, puedes presentar alternativas: Forma W-2 original del año en curso o anterior, o Forma SSA-1099, ambas con tu nombre y número completo.</div>
+                <div class="step-warning">⚠ Tarjeta laminada = no aceptada. Sí, en serio. Bienvenido al calentón 🇵🇷</div>
               </div>
             </li>
             <li class="step-item">
               <div class="step-num">4</div>
               <div class="step-content">
-                <div class="step-title">Costo y tiempo</div>
-                <div class="step-desc">Costo aproximado: $10-25. Recibes una licencia temporal el mismo día y la permanente por correo en 2-3 semanas.</div>
+                <div class="step-title">Certificación Médica — DTOP-DIS-260</div>
+                <div class="step-desc">El CESCO puede requerir una certificación médica completada por un médico licenciado en Puerto Rico confirmando que puedes conducir de forma segura. Esta tiene vigencia de 6 meses. Si tu médico está en USA, necesitas conseguir uno en PR antes del trámite.</div>
+                <div class="step-warning">⚠ Esto sorprende a muchos — prepárala con anticipación</div>
+              </div>
+            </li>
+            <li class="step-item">
+              <div class="step-num">5</div>
+              <div class="step-content">
+                <div class="step-title">Lista completa de documentos</div>
+                <div class="step-desc" style="line-height:1.8;">
+                  ✅ Licencia de conducir del estado (original y vigente)<br>
+                  ✅ Acta de nacimiento de PR (post-julio 2010) o Pasaporte americano vigente<br>
+                  ✅ Tarjeta de Social Security (original, sin laminar)<br>
+                  ✅ Dos pruebas de residencia en PR — factura de LUMA, AAA, banco o contrato de renta<br>
+                  ✅ Certificación Médica DTOP-DIS-260 (si se requiere)<br>
+                  ✅ Sin multas pendientes<br>
+                  ✅ Sin deudas con ACAA o ASUME (o plan de pago activo)
+                </div>
+              </div>
+            </li>
+            <li class="step-item">
+              <div class="step-num">6</div>
+              <div class="step-content">
+                <div class="step-title">Sacar cita en CESCO Digital</div>
+                <div class="step-desc">Las citas son obligatorias y se agotan con semanas de anticipación. Sácala en cesco.turnospr.com o web.cescodigital.pr.gov lo antes posible después de llegar a PR. Hay 15 CESCO en la isla — busca el más cercano a ti.</div>
+                <div class="step-note">💡 Citas: cesco.turnospr.com · CESCO Digital: web.cescodigital.pr.gov · (787) 294-0101</div>
+                <div class="step-warning">⚠ Las citas pueden estar ocupadas por 2-3 semanas. Sácala el primer día que llegues</div>
+              </div>
+            </li>
+            <li class="step-item">
+              <div class="step-num">7</div>
+              <div class="step-content">
+                <div class="step-title">Examen de conocimiento — puede ser requerido</div>
+                <div class="step-desc">El CESCO puede requerir que tomes el examen de conocimiento del tránsito de PR. No es garantizado pero pasa. Prepárate estudiando el manual oficial en dtop.pr.gov. El examen cubre señales de tránsito, leyes de PR y conducción segura.</div>
               </div>
             </li>
           </ul>
+
+          <div style="margin-top:1rem;padding:1rem;background:#fff8e1;border:1px solid #ffe082;border-radius:8px;">
+            <div style="font-weight:700;font-size:0.82rem;color:#111;margin-bottom:0.5rem;">💰 Costo y tiempo</div>
+            <div style="font-size:0.78rem;color:#444;line-height:1.6;">
+              Costo aproximado: <strong>$10-25</strong><br>
+              Licencia temporal: recibes el mismo día<br>
+              Licencia permanente: por correo en <strong>2-3 semanas</strong>
+            </div>
+          </div>
         </div>
       </div>
 
       <div class="info-box warning">
-        <div class="info-box-title">⚠ REAL ID en PR</div>
-        <div class="info-box-text">Las licencias de PR son REAL ID compliant desde 2022. Sin embargo, para vuelos domésticos dentro de USA necesitas asegurarte que tu nueva licencia de PR tenga el símbolo de estrella REAL ID. Pregúntalo en el DTOP al hacer el canje.</div>
+        <div class="info-box-title">⭐ REAL ID — obligatorio para volar dentro de USA desde mayo 2025</div>
+        <div class="info-box-text">Desde el 7 de mayo de 2025, necesitas REAL ID para abordar vuelos domésticos dentro de USA y entrar a instalaciones federales. Tu nueva licencia de PR debe tener el símbolo de estrella ⭐ en la esquina superior derecha para ser REAL ID. <strong>Pídela específicamente al hacer el canje</strong> — si no lo pides puede que te den la regular sin estrella. Si tienes pasaporte americano vigente, ese también sirve como alternativa.</div>
+      </div>
+
+      <div class="info-box">
+        <div class="info-box-title">⚠ Consulta directamente con el CESCO</div>
+        <div class="info-box-text">Los requisitos pueden variar y actualizarse. Verifica en cesco.pr.gov o llama al (787) 294-0101 antes de ir para confirmar que tienes todo en orden. Un viaje con documentos incompletos al CESCO es tiempo perdido.</div>
       </div>
     </div>
 
