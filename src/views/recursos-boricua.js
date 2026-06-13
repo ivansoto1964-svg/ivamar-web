@@ -979,15 +979,41 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
 </section>
 
 <!-- FOOTER -->
-<footer class="page-footer">
-  <div style="display:flex;justify-content:center;gap:1rem;margin-bottom:1rem;">
-    <a href="https://www.facebook.com/elplanetaboricua" target="_blank" style="font-size:0.8rem;color:#CE1126;text-decoration:none;font-weight:600;">📘 Facebook</a>
-    <a href="https://www.instagram.com/miplanetaboricua" target="_blank" style="font-size:0.8rem;color:#CE1126;text-decoration:none;font-weight:600;">📸 Instagram</a>
-    <a href="https://www.tiktok.com/@planetaboricua4" target="_blank" style="font-size:0.8rem;color:#CE1126;text-decoration:none;font-weight:600;">📱 TikTok</a>
+<footer style="background:#fff;border-top:3px solid #CE1126;">
+  <div style="max-width:1200px;margin:0 auto;padding:2rem;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:2rem;flex-wrap:wrap;">
+    <div>
+      <div style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:800;color:#111;margin-bottom:0.3rem;">🇵🇷 Planeta Boricua</div>
+      <div style="font-size:0.72rem;color:#666;margin-bottom:1rem;">Más Boricua Que Un Mofongo</div>
+      <div style="display:flex;gap:0.6rem;">
+        <a href="https://www.tiktok.com/@planetaboricua4" target="_blank" style="font-size:0.8rem;color:#CE1126;text-decoration:none;">📱 TikTok</a>
+        <a href="https://www.instagram.com/miplanetaboricua" target="_blank" style="font-size:0.8rem;color:#CE1126;text-decoration:none;">📸 IG</a>
+        <a href="https://www.facebook.com/elplanetaboricua" target="_blank" style="font-size:0.8rem;color:#CE1126;text-decoration:none;">👍 FB</a>
+      </div>
+    </div>
+    <div>
+      <h4 style="font-size:0.65rem;font-weight:800;color:#111;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.8rem;padding-bottom:0.4rem;border-bottom:2px solid #CE1126;">Portal</h4>
+      <a href="/" style="display:block;font-size:0.78rem;color:#666;text-decoration:none;margin-bottom:0.4rem;">Inicio</a>
+      <a href="/#noticias" style="display:block;font-size:0.78rem;color:#666;text-decoration:none;margin-bottom:0.4rem;">Noticias</a>
+      <a href="/#directorio" style="display:block;font-size:0.78rem;color:#666;text-decoration:none;margin-bottom:0.4rem;">Directorio Boricua</a>
+      <a href="/recursos" style="display:block;font-size:0.78rem;color:#666;text-decoration:none;margin-bottom:0.4rem;">Recursos PR↔USA</a>
+      <a href="/#nayeli" style="display:block;font-size:0.78rem;color:#666;text-decoration:none;margin-bottom:0.4rem;">Nayeli AI</a>
+    </div>
+    <div>
+      <h4 style="font-size:0.65rem;font-weight:800;color:#111;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.8rem;padding-bottom:0.4rem;border-bottom:2px solid #CE1126;">Comunidad</h4>
+      <a href="/#directorio" style="display:block;font-size:0.78rem;color:#666;text-decoration:none;margin-bottom:0.4rem;">Añadir Mi Negocio</a>
+      <a href="/#newsletter" style="display:block;font-size:0.78rem;color:#666;text-decoration:none;margin-bottom:0.4rem;">Newsletter</a>
+      <a href="mailto:connect@ivamarai.com" style="display:block;font-size:0.78rem;color:#666;text-decoration:none;margin-bottom:0.4rem;">Contacto</a>
+    </div>
+    <div>
+      <h4 style="font-size:0.65rem;font-weight:800;color:#111;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.8rem;padding-bottom:0.4rem;border-bottom:2px solid #CE1126;">Legal</h4>
+      <a href="/privacidad-boricua" style="display:block;font-size:0.78rem;color:#666;text-decoration:none;margin-bottom:0.4rem;">Privacidad</a>
+      <a href="/terminos-boricua" style="display:block;font-size:0.78rem;color:#666;text-decoration:none;margin-bottom:0.4rem;">Términos</a>
+      <a href="/afiliados-boricua" style="display:block;font-size:0.78rem;color:#666;text-decoration:none;margin-bottom:0.4rem;">Aviso de Afiliados</a>
+    </div>
   </div>
-  <div class="page-footer-text">
-    © 2026 <a href="/">Planeta Boricua</a> · masboricuaqueunmofongo.com · Un producto de <a href="https://ivamarai.com">Ivamar AI LLC</a><br>
-    <span style="margin-top:0.3rem;display:block;">La información en esta página es orientativa. Verifica siempre con las agencias oficiales correspondientes.</span>
+  <div style="background:#f5f5f0;border-top:1px solid #e5e5e0;padding:1rem 2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.5rem;">
+    <span style="font-size:0.68rem;color:#999;">© 2026 Planeta Boricua · masboricuaqueunmofongo.com · Todos los derechos reservados</span>
+    <span style="font-size:0.68rem;color:#999;">Un producto de <a href="https://ivamarai.com" target="_blank" style="color:#CE1126;text-decoration:none;">Ivamar AI LLC</a></span>
   </div>
 </footer>
 
