@@ -446,14 +446,14 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
     </div>
     <div class="nayeli-chat">
       <div class="nayeli-chat-header">
-        <div class="nayeli-avatar">🇵🇷</div>
+        <img src="/img/nayeli.jpg" alt="Nayeli" style="width:44px;height:44px;border-radius:50%;object-fit:cover;object-position:top;border:2px solid rgba(255,255,255,0.3);flex-shrink:0;">
         <div>
           <div class="nayeli-name">Nayeli — Asistente Boricua</div>
-          <div class="nayeli-online">● En línea · Wepa, ¿en qué te ayudo?</div>
+          <div class="nayeli-online">● En línea · Tu asistente boricua 🇵🇷</div>
         </div>
       </div>
       <div class="nayeli-msgs" id="nayeliMsgs">
-        <div class="n-msg n-bot">¡Wepa! 🇵🇷 Soy Nayeli, tu asistente boricua.<br><br>Puedo ayudarte con noticias de PR, encontrar negocios boricuas en USA, planificar un viaje a la isla, o simplemente charlar sobre lo nuestro. ¿Qué necesitas hoy? 😊</div>
+        <div class="n-msg n-bot">¡Wepa! 🇵🇷 Soy Nayeli, tu asistente boricua.<br><br>Puedo ayudarte con mudanzas PR↔USA, licencias, registrar tu vehículo, servicios públicos, cultura boricua, negocios y mucho más. ¿En qué te ayudo hoy?</div>
       </div>
       <div class="nayeli-input-row">
         <input class="nayeli-input" id="nayeliInput" placeholder="Pregúntame lo que quieras..." onkeydown="if(event.key==='Enter')nayeliSend()">
@@ -635,6 +635,8 @@ fetch('/api/noticias-pr')
   .catch(e => console.log('Noticias error:', e));
 
 // Nayeli Chat
+let nayeliHistory = [];
+let nayeliEmailCaptured = false;
 async function nayeliSend() {
   const input = document.getElementById('nayeliInput');
   const msgs = document.getElementById('nayeliMsgs');
@@ -655,10 +657,31 @@ async function nayeliSend() {
     const res = await fetch('/api/nayeli', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: text })
+      body: JSON.stringify({ message: text, history: nayeliHistory })
     });
     const data = await res.json();
-    typing.textContent = data.reply || '¡Ay bendito! Intenta de nuevo.';
+    const reply = data.reply || '¡Ay bendito! Intenta de nuevo.';
+    typing.innerHTML = reply.replace(/\n/g, '<br>');
+
+    // Save to history
+    nayeliHistory.push({ role: 'user', content: text });
+    nayeliHistory.push({ role: 'assistant', content: reply });
+
+    // Keep history manageable (last 10 exchanges)
+    if (nayeliHistory.length > 20) nayeliHistory = nayeliHistory.slice(-20);
+
+    // Email capture after 2+ exchanges - check if reply mentions email
+    if (nayeliHistory.length >= 4 && !nayeliEmailCaptured) {
+      const emailMatch = text.match(/[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}/);
+      if (emailMatch) {
+        nayeliEmailCaptured = true;
+        await fetch('/api/nayeli', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email: emailMatch[0] })
+        });
+      }
+    }
   } catch {
     typing.textContent = '¡Wepa! Algo salió mal. Intenta de nuevo 🇵🇷';
   }
