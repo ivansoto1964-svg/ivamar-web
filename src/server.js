@@ -65,6 +65,7 @@ const about = require("./views/about");
 const planetaboricua = require("./views/planetaboricua");
 const recursosBoriuca = require("./views/recursos-boricua");
 const { terminos: terminosBoricua, privacidad: privacidadBoricua, afiliados: afiliadosBoricua } = require("./views/legal-boricua");
+const regresarAPR = require("./views/regresar-a-pr");
 const sobreNosotros = require("./views/sobre-nosotros");
 const contactoES = require("./views/contacto");
 const contact = require("./views/contact");
@@ -189,6 +190,9 @@ app.use((req, res, next) => {
     }
     if (req.path === '/afiliados-boricua') {
       return res.send(afiliadosBoricua);
+    }
+    if (req.path === '/regresar-a-pr') {
+      return res.send(regresarAPR);
     }
   }
   next();
