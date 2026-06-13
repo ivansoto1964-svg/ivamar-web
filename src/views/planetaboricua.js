@@ -246,6 +246,7 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
     <div class="nav-links">
       <a href="#noticias">Noticias</a>
       <a href="/recursos">Recursos PR↔USA</a>
+      <a href="/regresar-a-pr">Regresar a PR</a>
       <a href="#directorio">Directorio</a>
       <a href="#nayeli">Nayeli AI</a>
       <a href="#viajes">Viajes</a>
@@ -400,7 +401,7 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
       <div style="font-size:0.65rem;font-weight:800;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:0.6rem;">Centro de Recursos</div>
       <h2 style="font-family:'Playfair Display',serif;font-size:clamp(1.5rem,2.5vw,2rem);font-weight:800;color:#fff;margin-bottom:0.8rem;line-height:1.2;">¿Te mudas entre PR y USA? <span style="color:#f5c842;">Tenemos tu guía.</span></h2>
       <p style="font-size:0.88rem;color:rgba(255,255,255,0.65);line-height:1.7;margin-bottom:1.5rem;">Licencias de conducir por estado, mudanzas, escuelas, servicios públicos, bancos, crédito y más — todo en español boricua y verificado.</p>
-      <a href="/recursos" style="display:inline-flex;align-items:center;gap:0.5rem;background:#CE1126;color:#fff;padding:0.75rem 1.5rem;border-radius:4px;font-size:0.88rem;font-weight:700;text-decoration:none;">Ver Centro de Recursos 🇵🇷</a>
+      <a href="/recursos" style="display:inline-flex;align-items:center;gap:0.5rem;background:#CE1126;color:#fff;padding:0.75rem 1.5rem;border-radius:4px;font-size:0.88rem;font-weight:700;text-decoration:none;margin-right:0.8rem;">PR → USA 🇺🇸</a><a href="/regresar-a-pr" style="display:inline-flex;align-items:center;gap:0.5rem;background:#002D62;color:#fff;padding:0.75rem 1.5rem;border-radius:4px;font-size:0.88rem;font-weight:700;text-decoration:none;">USA → PR 🇵🇷</a>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;">
       <div style="background:rgba(255,255,255,0.08);border-radius:6px;padding:1rem;text-align:center;">
@@ -533,6 +534,7 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
       <a href="#noticias">Noticias</a>
       <a href="#directorio">Directorio Boricua</a>
       <a href="/recursos">Recursos PR↔USA</a>
+      <a href="/regresar-a-pr">Regresar a PR</a>
       <a href="#nayeli">Nayeli AI</a>
       <a href="#viajes">Viajes a PR</a>
     </div>
