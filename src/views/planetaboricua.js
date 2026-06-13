@@ -661,7 +661,7 @@ async function nayeliSend() {
     });
     const data = await res.json();
     const reply = data.reply || '¡Ay bendito! Intenta de nuevo.';
-    typing.innerHTML = reply.replace(/\n/g, '<br>');
+    typing.innerHTML = reply.split('\n').join('<br>');
 
     // Save to history
     nayeliHistory.push({ role: 'user', content: text });
