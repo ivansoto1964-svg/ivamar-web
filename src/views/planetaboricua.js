@@ -672,7 +672,7 @@ async function nayeliSend() {
 
     // Email capture after 2+ exchanges - check if reply mentions email
     if (nayeliHistory.length >= 4 && !nayeliEmailCaptured) {
-      const emailMatch = text.match(/[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}/);
+      const emailMatch = text.includes("@") ? [text.trim()] : null;
       if (emailMatch) {
         nayeliEmailCaptured = true;
         await fetch('/api/nayeli', {
