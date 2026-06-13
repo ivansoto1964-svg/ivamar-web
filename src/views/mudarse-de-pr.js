@@ -392,51 +392,264 @@ nav{background:var(--white);border-bottom:3px solid var(--blue);padding:0;positi
 
     <!-- SERVICIOS USA -->
     <div class="resource-section" id="section-servicios">
-      <h2 class="resource-title">💧 Servicios Públicos en USA</h2>
-      <p class="resource-sub">Cómo conectar agua, luz, gas e internet al llegar a un estado de USA.</p>
+      <h2 class="resource-title">💧 Servicios Públicos en USA por Estado</h2>
+      <p class="resource-sub">Proveedores de luz, agua e internet en los estados con más boricuas. Los servicios en USA son más fáciles de conectar que en PR — la mayoría en línea en 1-2 días.</p>
 
       <div class="info-box blue">
-        <div class="info-box-title">💡 Los servicios en USA son más fáciles de conectar que en PR</div>
-        <div class="info-box-text">En los estados la infraestructura es más confiable y los proveedores más variados. La mayoría se puede contratar en línea o por teléfono en 1-2 días hábiles. No hay navieras ni arbitrios — todo es más directo.</div>
+        <div class="info-box-title">💡 Lo que necesitas para conectar cualquier servicio en USA</div>
+        <div class="info-box-text">En todos los estados generalmente necesitas: ID válida, número de Social Security, dirección del nuevo hogar y método de pago. Algunos pueden pedir un depósito si no tienes historial de crédito en USA. Notifica a los proveedores 1-2 semanas antes de mudarte.</div>
       </div>
 
-      <div class="steps-card">
+      <!-- FLORIDA -->
+      <div class="steps-card" style="margin-bottom:1.5rem;">
         <div class="steps-card-header">
-          <div class="steps-card-icon">⚡</div>
-          <div><div class="steps-card-title">Cómo conectar servicios al llegar</div></div>
+          <div class="steps-card-icon">🌴</div>
+          <div>
+            <div class="steps-card-title">Florida — Orlando, Tampa, Miami, Jacksonville</div>
+            <div class="steps-card-sub">El estado con más boricuas fuera de PR</div>
+          </div>
         </div>
         <div class="steps-card-body">
-          <ul class="steps-list">
-            <li class="step-item">
-              <div class="step-num">1</div>
-              <div class="step-content">
-                <div class="step-title">Electricidad y gas</div>
-                <div class="step-desc">Cada ciudad tiene su proveedor — Florida Power & Light (FPL) en FL, Con Edison en NYC, ComEd en Chicago. Busca "[tu ciudad] electric utility" para encontrar el proveedor local. Generalmente necesitas ID y número de Social Security.</div>
+          <div class="cards-grid">
+            <div class="info-card">
+              <div class="info-card-header"><span class="info-card-name">⚡ Luz — por área</span></div>
+              <div class="info-card-body">
+                <div class="info-card-detail"><strong>Miami/Sur FL:</strong> FPL (Florida Power & Light) · fpl.com · 1-800-226-3545</div>
+                <div class="info-card-detail"><strong>Orlando:</strong> Duke Energy FL · duke-energy.com · 1-800-700-8744</div>
+                <div class="info-card-detail"><strong>Tampa:</strong> Tampa Electric (TECO) · tampaelectric.com · (813) 223-0800</div>
+                <div class="info-card-detail"><strong>Jacksonville:</strong> JEA · jea.com · (904) 665-6000</div>
+                <div class="info-card-detail"><strong>Costo promedio:</strong> $145-175/mes (~1,000 kWh)</div>
+                <div class="info-card-detail"><strong>Nota:</strong> Florida es mercado regulado — el proveedor depende de tu dirección, no puedes escoger</div>
               </div>
-            </li>
-            <li class="step-item">
-              <div class="step-num">2</div>
-              <div class="step-content">
-                <div class="step-title">Agua</div>
-                <div class="step-desc">El agua en USA es manejada por cada municipio. Llama a la alcaldía de tu ciudad o busca "[tu ciudad] water utility" para contactar al proveedor local.</div>
+            </div>
+            <div class="info-card">
+              <div class="info-card-header"><span class="info-card-name">💧 Agua — por ciudad</span></div>
+              <div class="info-card-body">
+                <div class="info-card-detail"><strong>Orlando:</strong> OUC Water · ouc.com · (407) 423-9018</div>
+                <div class="info-card-detail"><strong>Tampa:</strong> Tampa Water · tampagov.net · (813) 274-8811</div>
+                <div class="info-card-detail"><strong>Miami:</strong> Miami-Dade Water · (305) 665-7477</div>
+                <div class="info-card-detail"><strong>Nota:</strong> Busca "[tu ciudad] water utility" para encontrar el proveedor local</div>
               </div>
-            </li>
-            <li class="step-item">
-              <div class="step-num">3</div>
-              <div class="step-content">
-                <div class="step-title">Internet</div>
-                <div class="step-desc">Xfinity (Comcast), AT&T, Spectrum y Verizon Fios son los principales. Compara en broadbandnow.com o allconnect.com ingresando tu código postal para ver qué hay disponible en tu área.</div>
-                <div class="step-note">💡 Compara precios en broadbandnow.com antes de contratar</div>
+            </div>
+            <div class="info-card">
+              <div class="info-card-header"><span class="info-card-name">📶 Internet Florida</span></div>
+              <div class="info-card-body">
+                <div class="info-card-detail"><strong>Spectrum:</strong> spectrum.com · 1-833-267-6094</div>
+                <div class="info-card-detail"><strong>Xfinity:</strong> xfinity.com · 1-800-934-6489</div>
+                <div class="info-card-detail"><strong>AT&T Fiber:</strong> att.com · 1-800-288-2020</div>
+                <div class="info-card-detail"><strong>Compara:</strong> broadbandnow.com con tu ZIP</div>
               </div>
-            </li>
-            <li class="step-item">
-              <div class="step-num">4</div>
-              <div class="step-content">
-                <div class="step-title">¿No puedes pagar? Programas de asistencia</div>
-                <div class="step-desc">El programa LIHEAP ayuda con facturas de energía para familias de bajos ingresos. El programa ACP (Affordable Connectivity Program) del gobierno federal ofrece hasta $30/mes de descuento en internet.</div>
+            </div>
+          </div>
+          <div class="info-box" style="margin-top:0.5rem;">
+            <div class="info-box-title">💡 Programa de asistencia en FL</div>
+            <div class="info-box-text">LIHEAP ayuda con facturas de energía. Llama al 1-866-762-2237 o visita myfloridaaccess.com para aplicar si calificas por ingreso.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- NEW YORK -->
+      <div class="steps-card" style="margin-bottom:1.5rem;">
+        <div class="steps-card-header">
+          <div class="steps-card-icon">🗽</div>
+          <div>
+            <div class="steps-card-title">New York — NYC, Buffalo, Rochester</div>
+            <div class="steps-card-sub">La comunidad boricua más antigua en USA</div>
+          </div>
+        </div>
+        <div class="steps-card-body">
+          <div class="cards-grid">
+            <div class="info-card">
+              <div class="info-card-header"><span class="info-card-name">⚡ Luz — NYC</span></div>
+              <div class="info-card-body">
+                <div class="info-card-detail"><strong>Manhattan/Bronx/Queens/Brooklyn/SI:</strong> Con Edison (ConEd)</div>
+                <div class="info-card-detail"><strong>Teléfono:</strong> 1-800-752-6633</div>
+                <div class="info-card-detail"><strong>Web:</strong> coned.com</div>
+                <div class="info-card-detail"><strong>Partes de Brooklyn:</strong> National Grid · 1-718-643-4050</div>
+                <div class="info-card-detail"><strong>Nota:</strong> Si rentas, la luz generalmente está incluida en la renta. Confirma con el landlord.</div>
               </div>
-            </li>
-          </ul>
+            </div>
+            <div class="info-card">
+              <div class="info-card-header"><span class="info-card-name">💧 Agua — NYC</span></div>
+              <div class="info-card-body">
+                <div class="info-card-detail"><strong>Proveedor:</strong> NYC DEP (Dept. of Environmental Protection)</div>
+                <div class="info-card-detail"><strong>Nota importante:</strong> En NYC el agua casi siempre se incluye en la renta — el landlord paga directamente. Confirma antes de contactar al DEP.</div>
+                <div class="info-card-detail"><strong>Teléfono:</strong> (718) 595-7000</div>
+              </div>
+            </div>
+            <div class="info-card">
+              <div class="info-card-header"><span class="info-card-name">📶 Internet NYC</span></div>
+              <div class="info-card-body">
+                <div class="info-card-detail"><strong>Verizon Fios:</strong> verizon.com · 1-800-837-4966</div>
+                <div class="info-card-detail"><strong>Optimum:</strong> optimum.com · 1-866-200-7273</div>
+                <div class="info-card-detail"><strong>Spectrum:</strong> spectrum.com</div>
+                <div class="info-card-detail"><strong>NYC ACP:</strong> nyc.gov/aca — internet gratis o $15/mes si calificas</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- NEW JERSEY -->
+      <div class="steps-card" style="margin-bottom:1.5rem;">
+        <div class="steps-card-header">
+          <div class="steps-card-icon">🌿</div>
+          <div>
+            <div class="steps-card-title">New Jersey — Newark, Jersey City, Paterson</div>
+            <div class="steps-card-sub">Mercado de energía desregulado — puedes escoger tu proveedor</div>
+          </div>
+        </div>
+        <div class="steps-card-body">
+          <div class="cards-grid">
+            <div class="info-card">
+              <div class="info-card-header"><span class="info-card-name">⚡ Luz — NJ</span></div>
+              <div class="info-card-body">
+                <div class="info-card-detail"><strong>PSE&G:</strong> La utility principal del norte y centro · pseg.com · 1-800-436-7734</div>
+                <div class="info-card-detail"><strong>JCP&L:</strong> Centro y sur de NJ · jcp-l.com · 1-800-662-3115</div>
+                <div class="info-card-detail"><strong>Atlantic City Electric:</strong> Sur de NJ · atlanticcityelectric.com</div>
+                <div class="info-card-detail"><strong>Nota:</strong> NJ es desregulado — puedes comparar proveedores en njpowerswitch.com</div>
+              </div>
+            </div>
+            <div class="info-card">
+              <div class="info-card-header"><span class="info-card-name">💧 Agua — NJ</span></div>
+              <div class="info-card-body">
+                <div class="info-card-detail"><strong>Newark:</strong> Newark Water · (973) 733-6373</div>
+                <div class="info-card-detail"><strong>Jersey City:</strong> Jersey City Water · (201) 547-5040</div>
+                <div class="info-card-detail"><strong>Nota:</strong> Busca "[tu ciudad] NJ water department"</div>
+              </div>
+            </div>
+            <div class="info-card">
+              <div class="info-card-header"><span class="info-card-name">📶 Internet NJ</span></div>
+              <div class="info-card-body">
+                <div class="info-card-detail"><strong>Optimum:</strong> optimum.com</div>
+                <div class="info-card-detail"><strong>Xfinity:</strong> xfinity.com</div>
+                <div class="info-card-detail"><strong>Verizon Fios:</strong> verizon.com (fibra óptica)</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CONNECTICUT -->
+      <div class="steps-card" style="margin-bottom:1.5rem;">
+        <div class="steps-card-header">
+          <div class="steps-card-icon">🏛️</div>
+          <div>
+            <div class="steps-card-title">Connecticut — Hartford, Bridgeport, New Haven</div>
+            <div class="steps-card-sub">Alta concentración de boricuas en Hartford y Bridgeport</div>
+          </div>
+        </div>
+        <div class="steps-card-body">
+          <div class="cards-grid">
+            <div class="info-card">
+              <div class="info-card-header"><span class="info-card-name">⚡ Luz — CT</span></div>
+              <div class="info-card-body">
+                <div class="info-card-detail"><strong>Eversource:</strong> Sirve la mayoría del estado · eversource.com · 1-800-286-2000</div>
+                <div class="info-card-detail"><strong>United Illuminating:</strong> Bridgeport y New Haven · uinet.com · 1-800-722-5584</div>
+                <div class="info-card-detail"><strong>Nota:</strong> CT es mercado desregulado — puedes escoger tu proveedor en energizect.com</div>
+              </div>
+            </div>
+            <div class="info-card">
+              <div class="info-card-header"><span class="info-card-name">💧📶 Agua e Internet CT</span></div>
+              <div class="info-card-body">
+                <div class="info-card-detail"><strong>Agua Hartford:</strong> MDC (Metropolitan District) · themdc.com · (860) 278-7850</div>
+                <div class="info-card-detail"><strong>Internet:</strong> Xfinity · xfinity.com · 1-800-934-6489</div>
+                <div class="info-card-detail"><strong>Internet:</strong> Frontier Fiber · frontier.com · 1-888-211-1316</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ILLINOIS -->
+      <div class="steps-card" style="margin-bottom:1.5rem;">
+        <div class="steps-card-header">
+          <div class="steps-card-icon">🌆</div>
+          <div>
+            <div class="steps-card-title">Illinois — Chicago, Aurora, Joliet</div>
+            <div class="steps-card-sub">Chicago tiene una de las comunidades boricuas más grandes del país</div>
+          </div>
+        </div>
+        <div class="steps-card-body">
+          <div class="cards-grid">
+            <div class="info-card">
+              <div class="info-card-header"><span class="info-card-name">⚡ Luz — Chicago</span></div>
+              <div class="info-card-body">
+                <div class="info-card-detail"><strong>ComEd:</strong> Proveedor principal de Chicago y norte IL · comed.com · 1-800-334-7661</div>
+                <div class="info-card-detail"><strong>Ameren IL:</strong> Centro y sur de IL · ameren.com · 1-800-755-5000</div>
+                <div class="info-card-detail"><strong>Nota:</strong> IL es desregulado — compara en pluginillinois.org</div>
+                <div class="info-card-detail"><strong>Costo promedio Chicago:</strong> ~$110-130/mes</div>
+              </div>
+            </div>
+            <div class="info-card">
+              <div class="info-card-header"><span class="info-card-name">💧📶 Agua e Internet Chicago</span></div>
+              <div class="info-card-body">
+                <div class="info-card-detail"><strong>Agua:</strong> City of Chicago Water · chicago.gov · (312) 744-4426</div>
+                <div class="info-card-detail"><strong>Xfinity:</strong> xfinity.com · 1-800-934-6489</div>
+                <div class="info-card-detail"><strong>AT&T:</strong> att.com · 1-800-288-2020</div>
+                <div class="info-card-detail"><strong>RCN:</strong> rcn.com (fibra en algunas áreas)</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TEXAS -->
+      <div class="steps-card" style="margin-bottom:1.5rem;">
+        <div class="steps-card-header">
+          <div class="steps-card-icon">⭐</div>
+          <div>
+            <div class="steps-card-title">Texas — Houston, San Antonio, Dallas</div>
+            <div class="steps-card-sub">Texas tiene mercado desregulado — puedes escoger tu compañía de luz</div>
+          </div>
+        </div>
+        <div class="steps-card-body">
+          <div class="info-box blue" style="margin-bottom:1rem;">
+            <div class="info-box-title">💡 Texas es diferente — puedes escoger tu proveedor de luz</div>
+            <div class="info-box-text">En Houston y Dallas puedes comparar decenas de compañías de electricidad y escoger la más barata. Visita <strong>powertochoose.org</strong> — el portal oficial del estado — e ingresa tu ZIP code para comparar planes. Excepción: Austin y San Antonio tienen un solo proveedor municipal.</div>
+          </div>
+          <div class="cards-grid">
+            <div class="info-card">
+              <div class="info-card-header"><span class="info-card-name">⚡ Luz — Texas</span></div>
+              <div class="info-card-body">
+                <div class="info-card-detail"><strong>Houston:</strong> CenterPoint Energy (infraestructura) · escoge tu REP en powertochoose.org</div>
+                <div class="info-card-detail"><strong>Dallas/DFW:</strong> Oncor (infraestructura) · escoge tu REP en powertochoose.org</div>
+                <div class="info-card-detail"><strong>San Antonio:</strong> CPS Energy · cpsenergy.com · (210) 353-2222</div>
+                <div class="info-card-detail"><strong>Austin:</strong> Austin Energy · austinenergy.com · (512) 494-9400</div>
+                <div class="info-card-detail"><strong>Costo promedio:</strong> 9-16¢/kWh dependiendo del plan</div>
+                <div class="info-card-detail"><strong>Compara en:</strong> powertochoose.org</div>
+              </div>
+            </div>
+            <div class="info-card">
+              <div class="info-card-header"><span class="info-card-name">💧 Agua — Texas</span></div>
+              <div class="info-card-body">
+                <div class="info-card-detail"><strong>Houston:</strong> Houston Water · houstonwater.net · (713) 371-1400</div>
+                <div class="info-card-detail"><strong>San Antonio:</strong> SAWS · saws.org · (210) 704-7297</div>
+                <div class="info-card-detail"><strong>Dallas:</strong> Dallas Water Utilities · (214) 651-1441</div>
+              </div>
+            </div>
+            <div class="info-card">
+              <div class="info-card-header"><span class="info-card-name">📶 Internet Texas</span></div>
+              <div class="info-card-body">
+                <div class="info-card-detail"><strong>Xfinity:</strong> xfinity.com (Houston, San Antonio)</div>
+                <div class="info-card-detail"><strong>AT&T Fiber:</strong> att.com (Dallas, Houston)</div>
+                <div class="info-card-detail"><strong>Spectrum:</strong> spectrum.com</div>
+                <div class="info-card-detail"><strong>Frontier Fiber:</strong> frontier.com</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PROGRAMS -->
+      <div class="info-box" style="margin-top:0.5rem;">
+        <div class="info-box-title">🆓 Programas de asistencia disponibles en todos los estados</div>
+        <div class="info-box-text">
+          <strong>LIHEAP</strong> — Ayuda con facturas de energía · liheap.acf.hhs.gov · 1-866-674-6327<br>
+          <strong>ACP</strong> — Hasta $30/mes de descuento en internet · fcc.gov/acp<br>
+          <strong>Lifeline</strong> — Descuento en teléfono e internet para ingresos bajos · lifelinesupport.org<br>
+          <strong>WIC</strong> — Asistencia alimentaria para madres y niños · fns.usda.gov/wic<br><br>
+          ⚠ <em>Esta información es orientativa. Los proveedores y programas pueden cambiar. Verifica siempre con el proveedor directamente o en el portal oficial de tu estado.</em>
         </div>
       </div>
     </div>
