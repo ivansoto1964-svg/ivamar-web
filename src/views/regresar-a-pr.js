@@ -329,43 +329,128 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
         <div class="steps-card-header">
           <div class="steps-card-icon">🚗</div>
           <div>
-            <div class="steps-card-title">Enviar tu vehículo a PR</div>
-            <div class="steps-card-sub">Requisitos y proceso</div>
+            <div class="steps-card-title">Registrar tu vehículo en PR — Proceso Completo</div>
+            <div class="steps-card-sub">Arbitrios → Inspección → Seguro Compulsorio → CESCO</div>
           </div>
         </div>
         <div class="steps-card-body">
+
+          <div class="info-box warning" style="margin-bottom:1.2rem;">
+            <div class="info-box-title">⚠ El orden importa — sigue estos pasos en secuencia</div>
+            <div class="info-box-text">No puedes ir al CESCO sin antes pagar arbitrios, inspeccionar el vehículo y tener el seguro compulsorio. Hazlo en orden o perderás tiempo y dinero.</div>
+          </div>
+
           <ul class="steps-list">
             <li class="step-item">
               <div class="step-num">1</div>
               <div class="step-content">
-                <div class="step-title">Documentos necesarios</div>
-                <div class="step-desc">Título del vehículo limpio (sin liens), seguro de auto activo, y el vehículo debe estar limpio (lavado) antes de embarcarse.</div>
+                <div class="step-title">Calcula y paga los Arbitrios — Hacienda PR</div>
+                <div class="step-desc">Si tu vehículo fue comprado fuera de PR, debe pagar arbitrios (impuesto de importación). Usa el VIN del vehículo para estimar el monto en SURI de Hacienda. El pago genera la <strong>Hoja de Arbitrios (Forma SC-2042)</strong> — sin esto no puedes registrar.</div>
+                <div class="step-note">💡 Estima tus arbitrios en: hacienda.pr.gov/arbitrios → Servicios → Buscar información de un vehículo</div>
+                <div class="step-warning">⚠ Los arbitrios pueden ser significativos. Infórmate ANTES de enviar el vehículo.</div>
               </div>
             </li>
             <li class="step-item">
               <div class="step-num">2</div>
               <div class="step-content">
-                <div class="step-title">Arbitrios al llegar a PR</div>
-                <div class="step-desc">Si el vehículo fue comprado fuera de PR, puede estar sujeto al pago de arbitrios (impuesto de importación) al registrarlo en PR. Consulta con Hacienda PR antes de enviarlo.</div>
-                <div class="step-warning">⚠ Los arbitrios pueden ser significativos — infórmate antes</div>
+                <div class="step-title">Inspección Vehicular — Estación Oficial</div>
+                <div class="step-desc">Lleva el vehículo a una Estación Oficial de Inspección. Se inspecciona: luces, frenos, bocina, cristales, dirección, suspensión, gomas, mofle (emanación de gases), carrocería y más. Costo: <strong>$20</strong> (subió de $11). Si falla, debes reparar y reinspeccionar.</div>
+                <div class="step-note">💡 Lleva la licencia del vehículo impresa desde CESCO Digital para la inspección</div>
+                <div class="step-warning">⚠ Sin pasar la inspección no puedes obtener el marbete ni registrar</div>
               </div>
             </li>
             <li class="step-item">
               <div class="step-num">3</div>
               <div class="step-content">
-                <div class="step-title">Registrar el vehículo en DTOP</div>
-                <div class="step-desc">Tienes 90 días para registrar tu vehículo en PR. Necesitas: título, arbitrios pagados (si aplica), inspección vehicular, seguro de PR y pago de tablillas.</div>
-                <div class="step-note">💡 DTOP: (787) 294-0101 · dtop.pr.gov</div>
+                <div class="step-title">Seguro Compulsorio (Obligatorio) — Escoge tu aseguradora</div>
+                <div class="step-desc">El Seguro de Responsabilidad Obligatorio (SRO) es requerido por ley. Cubre hasta <strong>$4,500 por accidente</strong> a terceros. Costo fijo: <strong>$99 para vehículos personales</strong> (no ha cambiado en 25 años). Se obtiene al momento de la inspección o en colecturías, bancos y cooperativas.</div>
+                <div class="step-note">💡 Puedes escoger tu aseguradora — tienes derecho a elegir. Si te dan el formulario con una ya marcada, es ilegal. Denúncialo a la OCS.</div>
               </div>
             </li>
             <li class="step-item">
               <div class="step-num">4</div>
               <div class="step-content">
-                <div class="step-title">Seguro de auto en PR</div>
-                <div class="step-desc">Necesitas seguro de PR antes de registrar el vehículo. Tu seguro de USA no es válido en PR. Contacta compañías como Triple-S, MAPFRE o State Farm PR.</div>
+                <div class="step-title">Documentos para llevar al CESCO</div>
+                <div class="step-desc">Reúne <strong>todo</strong> antes de ir — el CESCO no trabaja transacciones con documentación incompleta:</div>
+                <div style="margin-top:0.5rem;">
+                  <div style="font-size:0.75rem;color:#444;line-height:1.8;">
+                    ✅ Formulario DTOP-776 "Solicitud para Registración de Vehículos de Motor"<br>
+                    ✅ Título de propiedad del vehículo (original del estado de USA)<br>
+                    ✅ Hoja de Arbitrios (Forma SC-2042) emitida por Hacienda PR<br>
+                    ✅ Certificado de Inspección Vehicular<br>
+                    ✅ Seguro Compulsorio vigente<br>
+                    ✅ Comprobante de Rentas Internas código 2024 ($11) — por registro<br>
+                    ✅ Comprobante de Rentas Internas código 0842 ($2)<br>
+                    ✅ ID válida con foto<br>
+                    ✅ Pago de derechos anuales (tablillas)<br>
+                    ✅ Sin multas pendientes (verifica en CESCO Digital antes de ir)<br>
+                    ✅ Sin deudas con ASUME o ACAA (o plan de pago activo)
+                  </div>
+                </div>
+              </div>
+            </li>
+            <li class="step-item">
+              <div class="step-num">5</div>
+              <div class="step-content">
+                <div class="step-title">Sacar cita en CESCO</div>
+                <div class="step-desc">Las citas son obligatorias y se agotan rápido. Sácala en CESCO Digital o en cesco.turnospr.com. Hay 15 CESCO en toda la isla. También puedes hacer muchos trámites en línea a través de CESCO Digital.</div>
+                <div class="step-note">💡 CESCO Digital: web.cescodigital.pr.gov · cesco.pr.gov</div>
+              </div>
+            </li>
+            <li class="step-item">
+              <div class="step-num">6</div>
+              <div class="step-content">
+                <div class="step-title">Seguro adicional (recomendado)</div>
+                <div class="step-desc">El compulsorio solo cubre $4,500 a terceros — NO cubre tu vehículo. Para cubrir tu auto, contrata una póliza adicional con compañías como MAPFRE PR, Triple-S, Multinational Insurance u otras aseguradoras en la isla.</div>
               </div>
             </li>
           </ul>
+
+          <div style="margin-top:1.5rem;">
+            <h4 style="font-size:0.82rem;font-weight:700;color:#111;margin-bottom:0.8rem;padding-bottom:0.4rem;border-bottom:1px solid #e5e5e0;">🛡️ Compañías de Seguro Compulsorio en PR</h4>
+            <div class="cards-grid">
+              <div class="info-card">
+                <div class="info-card-header"><span class="info-card-name">ASC — Mi Compulsorio</span><span style="font-size:0.65rem;color:#CE1126;font-weight:700;">Especialista #1</span></div>
+                <div class="info-card-body">
+                  <div class="info-card-detail"><strong>Especialidad:</strong> Solo seguro compulsorio</div>
+                  <div class="info-card-detail"><strong>Ventaja:</strong> 24+ años de experiencia</div>
+                  <div class="info-card-detail"><strong>Inspección:</strong> Remota disponible</div>
+                  <a href="https://www.ascmicompulsorio.com" target="_blank" class="info-card-link">ascmicompulsorio.com →</a>
+                </div>
+              </div>
+              <div class="info-card">
+                <div class="info-card-header"><span class="info-card-name">MAPFRE Puerto Rico</span></div>
+                <div class="info-card-body">
+                  <div class="info-card-detail"><strong>Cobertura:</strong> Hasta $4,500</div>
+                  <div class="info-card-detail"><strong>Extra:</strong> $100 compensación adicional</div>
+                  <div class="info-card-detail"><strong>Teléfono:</strong> (787) 772-8400</div>
+                  <a href="https://www.mapfre.pr/seguros-autos/compulsorio/" target="_blank" class="info-card-link">mapfre.pr →</a>
+                </div>
+              </div>
+              <div class="info-card">
+                <div class="info-card-header"><span class="info-card-name">SODA Compulsorio</span></div>
+                <div class="info-card-body">
+                  <div class="info-card-detail"><strong>Ventaja:</strong> Pago por ATH Móvil</div>
+                  <div class="info-card-detail"><strong>Grúa:</strong> Incluida 24/7</div>
+                  <div class="info-card-detail"><strong>WhatsApp:</strong> (787) 999-5050</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="info-box blue" style="margin-top:1rem;">
+            <div class="info-box-title">💡 Calcula tus arbitrios antes de enviar el auto</div>
+            <div class="info-box-text">Usa el VIN de tu vehículo para estimar el monto de arbitrios en SURI de Hacienda PR. Así sabes cuánto vas a pagar antes de enviar el carro desde USA.<br><br>
+            <a href="https://suri.hacienda.pr.gov" target="_blank" style="color:#002D62;font-weight:700;">Estimar arbitrios en SURI → suri.hacienda.pr.gov</a><br>
+            <a href="https://hacienda.pr.gov/arbitrios/arbitrios-en-el-caso-de-vehiculos" target="_blank" style="color:#002D62;font-weight:700;">Tabla de arbitrios → hacienda.pr.gov</a></div>
+          </div>
+
+          <div class="info-box" style="margin-top:1rem;">
+            <div class="info-box-title">⚠ Consulta directamente con las agencias oficiales</div>
+            <div class="info-box-text">Esta información es orientativa. Los requisitos y costos pueden cambiar. Verifica siempre en:<br>
+            CESCO: <strong>cesco.pr.gov</strong> · Hacienda: <strong>hacienda.pr.gov</strong> · OCS (seguros): <strong>ocs.pr.gov</strong></div>
+          </div>
+
         </div>
       </div>
     </div>
@@ -617,52 +702,206 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
     <div class="resource-section" id="section-servicios">
       <div class="resource-header">
         <h2 class="resource-title">💧 Servicios Públicos en PR</h2>
-        <p class="resource-sub">Cómo conectar agua, luz e internet al llegar a Puerto Rico.</p>
+        <p class="resource-sub">Cómo conectar agua, luz, internet y cable al llegar a Puerto Rico — requisitos, costos y contactos verificados.</p>
       </div>
 
       <div class="info-box warning">
         <div class="info-box-title">⚠ Prepárate para la realidad de los servicios en PR</div>
-        <div class="info-box-text">La infraestructura de servicios en PR, especialmente la electricidad (LUMA Energy), puede ser menos confiable que en los estados. Los apagones son frecuentes. Muchas familias invierten en panel solar e inversor como respaldo.</div>
+        <div class="info-box-text">La infraestructura eléctrica de PR (LUMA Energy) puede ser menos confiable que en los estados. Los apagones son frecuentes. Muchas familias invierten en panel solar e inversor como respaldo. Planifica con anticipación.</div>
       </div>
 
-      <div class="cards-grid">
-        <div class="info-card">
-          <div class="info-card-header"><span class="info-card-name">⚡ Luz — LUMA Energy</span></div>
-          <div class="info-card-body">
-            <div class="info-card-detail"><strong>Teléfono:</strong> (787) 521-1028</div>
-            <div class="info-card-detail"><strong>Documentos:</strong> Escritura o contrato de renta + ID + NIM del medidor</div>
-            <div class="info-card-detail"><strong>Proceso:</strong> En línea preferiblemente</div>
-            <div class="info-card-detail"><strong>Tiempo:</strong> 3-5 días hábiles</div>
-            <a href="https://www.lumapr.com" target="_blank" class="info-card-link">lumapr.com →</a>
+      <!-- LUMA -->
+      <div class="steps-card" style="margin-bottom:1.5rem;">
+        <div class="steps-card-header">
+          <div class="steps-card-icon">⚡</div>
+          <div>
+            <div class="steps-card-title">Luz — LUMA Energy</div>
+            <div class="steps-card-sub">Servicio eléctrico residencial en Puerto Rico</div>
           </div>
         </div>
-        <div class="info-card">
-          <div class="info-card-header"><span class="info-card-name">💧 Agua — AAA</span></div>
-          <div class="info-card-body">
-            <div class="info-card-detail"><strong>Teléfono:</strong> (787) 620-2277</div>
-            <div class="info-card-detail"><strong>Documentos:</strong> Escritura o contrato + ID</div>
-            <div class="info-card-detail"><strong>Proceso:</strong> En persona o en línea</div>
-            <div class="info-card-detail"><strong>Tiempo:</strong> 2-3 días hábiles</div>
-            <a href="https://www.acueductospr.com" target="_blank" class="info-card-link">acueductospr.com →</a>
+        <div class="steps-card-body">
+          <ul class="steps-list">
+            <li class="step-item">
+              <div class="step-num">1</div>
+              <div class="step-content">
+                <div class="step-title">Documentos necesarios</div>
+                <div class="step-desc">
+                  ✅ Identificación válida con foto emitida por el gobierno<br>
+                  ✅ Número de Social Security<br>
+                  ✅ Número de Contador (NIM) si lo tienes disponible<br>
+                  ✅ Si rentas: contrato de alquiler o arrendamiento
+                </div>
+              </div>
+            </li>
+            <li class="step-item">
+              <div class="step-num">2</div>
+              <div class="step-content">
+                <div class="step-title">Cómo solicitar el servicio</div>
+                <div class="step-desc">Tres opciones: (A) En línea en lumapr.com → Solicita Un Servicio, (B) Por la app Mi LUMA → Ayuda → Solicitudes, (C) En persona en cualquier Centro de Servicio al Cliente LUMA.</div>
+                <div class="step-note">💡 Se recomienda hacerlo en línea — más rápido y sin esperar en fila</div>
+              </div>
+            </li>
+            <li class="step-item">
+              <div class="step-num">3</div>
+              <div class="step-content">
+                <div class="step-title">Tiempo de activación y costo</div>
+                <div class="step-desc">3-5 días hábiles para activación de servicio nuevo. Se requiere un depósito de garantía dependiendo del historial de crédito.</div>
+              </div>
+            </li>
+            <li class="step-item">
+              <div class="step-num">4</div>
+              <div class="step-content">
+                <div class="step-title">Registrar planta eléctrica o solar</div>
+                <div class="step-desc">Si tienes planta o sistema solar, debes registrarlo con LUMA llamando al 1-844-888-5862 o en persona en un Centro de Servicio.</div>
+              </div>
+            </li>
+          </ul>
+          <div class="info-box" style="margin-top:1rem;">
+            <div class="info-box-title">📞 Contacto LUMA Energy</div>
+            <div class="info-box-text">
+              Teléfono 24/7: <strong>1-844-888-5862 (LUMA)</strong><br>
+              Web: <strong>lumapr.com</strong> · App: Mi LUMA<br>
+              ⚠ <em>Consulta directamente en lumapr.com/residencial/solicita-un-servicio para requisitos actualizados</em>
+            </div>
           </div>
         </div>
-        <div class="info-card">
-          <div class="info-card-header"><span class="info-card-name">📶 Internet y Cable</span></div>
-          <div class="info-card-body">
-            <div class="info-card-detail"><strong>Liberty PR:</strong> (787) 355-2222</div>
-            <div class="info-card-detail"><strong>Claro PR:</strong> (787) 792-3000</div>
-            <div class="info-card-detail"><strong>Choice Cable:</strong> (787) 751-6200</div>
-            <div class="info-card-detail"><strong>Starlink:</strong> starlink.com (rural)</div>
+      </div>
+
+      <!-- AAA -->
+      <div class="steps-card" style="margin-bottom:1.5rem;">
+        <div class="steps-card-header">
+          <div class="steps-card-icon">💧</div>
+          <div>
+            <div class="steps-card-title">Agua — Autoridad de Acueductos y Alcantarillados (AAA)</div>
+            <div class="steps-card-sub">Servicio de agua potable en Puerto Rico</div>
           </div>
         </div>
-        <div class="info-card">
-          <div class="info-card-header"><span class="info-card-name">☀️ Solar e Inversor</span></div>
-          <div class="info-card-body">
-            <div class="info-card-detail"><strong>Costo aprox:</strong> $15,000-25,000</div>
-            <div class="info-card-detail"><strong>Incentivos:</strong> Crédito federal 30%</div>
-            <div class="info-card-detail"><strong>Retorno:</strong> 5-8 años</div>
-            <div class="info-card-detail"><strong>Recomendado:</strong> Fuera de áreas urbanas</div>
+        <div class="steps-card-body">
+          <ul class="steps-list">
+            <li class="step-item">
+              <div class="step-num">1</div>
+              <div class="step-content">
+                <div class="step-title">Documentos necesarios</div>
+                <div class="step-desc">
+                  ✅ Identificación válida con foto<br>
+                  ✅ Escritura de propiedad o contrato de alquiler<br>
+                  ✅ Fianza requerida al abrir cuenta nueva (monto varía)
+                </div>
+              </div>
+            </li>
+            <li class="step-item">
+              <div class="step-num">2</div>
+              <div class="step-content">
+                <div class="step-title">Cómo solicitar</div>
+                <div class="step-desc">En persona en la oficina regional AAA más cercana o a través del portal Mi AAA en acueductos.pr.gov. Horario: lunes a viernes 7:30am - 4:00pm.</div>
+                <div class="step-note">💡 Llama antes de visitar — algunos horarios cambiaron en 2025</div>
+              </div>
+            </li>
+            <li class="step-item">
+              <div class="step-num">3</div>
+              <div class="step-content">
+                <div class="step-title">Tarifas 2026</div>
+                <div class="step-desc">Cargo fijo mensual: <strong>$11.84</strong> + consumo por galón (escala progresiva) + alcantarillado (113% del consumo de agua) + cargo CCCE (promedio $8-15/mes). Si tienes ingresos limitados, aplica al programa LIRA para reducción de hasta 33%.</div>
+              </div>
+            </li>
+          </ul>
+          <div class="info-box" style="margin-top:1rem;">
+            <div class="info-box-title">📞 Contacto AAA</div>
+            <div class="info-box-text">
+              Teléfono: <strong>1-787-620-2482</strong><br>
+              Web: <strong>acueductos.pr.gov</strong> · Portal: Mi AAA<br>
+              ⚠ <em>Consulta directamente en acueductos.pr.gov para requisitos actualizados</em>
+            </div>
           </div>
+        </div>
+      </div>
+
+      <!-- INTERNET -->
+      <div class="steps-card" style="margin-bottom:1.5rem;">
+        <div class="steps-card-header">
+          <div class="steps-card-icon">📶</div>
+          <div>
+            <div class="steps-card-title">Internet y Cable en PR</div>
+            <div class="steps-card-sub">Proveedores principales y cómo contratar</div>
+          </div>
+        </div>
+        <div class="steps-card-body">
+          <div class="cards-grid">
+            <div class="info-card">
+              <div class="info-card-header"><span class="info-card-name">📶 Liberty PR</span><span style="font-size:0.65rem;color:#CE1126;font-weight:700;">Principal</span></div>
+              <div class="info-card-body">
+                <div class="info-card-detail"><strong>Teléfono:</strong> (787) 355-2222</div>
+                <div class="info-card-detail"><strong>Internet desde:</strong> $52.99/mes (300Mbps)</div>
+                <div class="info-card-detail"><strong>Requisitos:</strong> Solo ID vigente + verificar cobertura</div>
+                <div class="info-card-detail"><strong>Tecnología:</strong> Fibra óptica disponible</div>
+                <div class="info-card-detail"><strong>Garantía:</strong> 30 días para clientes nuevos</div>
+                <a href="https://www.libertypr.com" target="_blank" class="info-card-link">libertypr.com →</a>
+              </div>
+            </div>
+            <div class="info-card">
+              <div class="info-card-header"><span class="info-card-name">📶 Claro PR</span></div>
+              <div class="info-card-body">
+                <div class="info-card-detail"><strong>Teléfono:</strong> (787) 792-3000</div>
+                <div class="info-card-detail"><strong>Servicios:</strong> Internet + TV + Telefonía</div>
+                <div class="info-card-detail"><strong>Tecnología:</strong> Fibra óptica en áreas seleccionadas</div>
+                <a href="https://www.claropr.com" target="_blank" class="info-card-link">claropr.com →</a>
+              </div>
+            </div>
+            <div class="info-card">
+              <div class="info-card-header"><span class="info-card-name">📶 Choice Cable</span></div>
+              <div class="info-card-body">
+                <div class="info-card-detail"><strong>Teléfono:</strong> (787) 751-6200</div>
+                <div class="info-card-detail"><strong>Servicios:</strong> Cable + Internet</div>
+                <div class="info-card-detail"><strong>Área:</strong> Principalmente metro San Juan</div>
+              </div>
+            </div>
+            <div class="info-card">
+              <div class="info-card-header"><span class="info-card-name">🛸 Starlink</span></div>
+              <div class="info-card-body">
+                <div class="info-card-detail"><strong>Ideal para:</strong> Áreas rurales sin fibra</div>
+                <div class="info-card-detail"><strong>Velocidad:</strong> 25-220 Mbps</div>
+                <div class="info-card-detail"><strong>Costo:</strong> ~$120/mes + equipo</div>
+                <a href="https://www.starlink.com" target="_blank" class="info-card-link">starlink.com →</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SOLAR -->
+      <div class="steps-card">
+        <div class="steps-card-header">
+          <div class="steps-card-icon">☀️</div>
+          <div>
+            <div class="steps-card-title">Solar e Inversor — ¿Vale la pena en PR?</div>
+            <div class="steps-card-sub">La alternativa a los apagones frecuentes</div>
+          </div>
+        </div>
+        <div class="steps-card-body">
+          <ul class="steps-list">
+            <li class="step-item">
+              <div class="step-num">1</div>
+              <div class="step-content">
+                <div class="step-title">¿Por qué muchos boricuas instalan solar?</div>
+                <div class="step-desc">Los apagones de LUMA son frecuentes, especialmente en áreas rurales y después de tormentas. Un sistema solar + inversor/batería te da independencia energética y reduce la factura de luz significativamente.</div>
+              </div>
+            </li>
+            <li class="step-item">
+              <div class="step-num">2</div>
+              <div class="step-content">
+                <div class="step-title">Costo aproximado</div>
+                <div class="step-desc">Sistema residencial completo: <strong>$15,000-25,000</strong>. Con el crédito federal del 30% (ITC), el costo efectivo baja a $10,500-17,500. Retorno de inversión: 5-8 años dependiendo del consumo.</div>
+                <div class="step-note">💡 Crédito federal del 30% aplica en PR igual que en los estados</div>
+              </div>
+            </li>
+            <li class="step-item">
+              <div class="step-num">3</div>
+              <div class="step-content">
+                <div class="step-title">Registrar con LUMA</div>
+                <div class="step-desc">Si instalas solar, debes registrar el sistema con LUMA Energy antes de conectarlo a la red. Llama al 1-844-888-5862 o visita un Centro de Servicio al Cliente.</div>
+              </div>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
