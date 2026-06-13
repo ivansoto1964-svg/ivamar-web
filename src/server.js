@@ -64,6 +64,7 @@ const homeEN = require("./views/home-en");
 const about = require("./views/about");
 const planetaboricua = require("./views/planetaboricua");
 const recursosBoriuca = require("./views/recursos-boricua");
+const { terminos: terminosBoricua, privacidad: privacidadBoricua, afiliados: afiliadosBoricua } = require("./views/legal-boricua");
 const sobreNosotros = require("./views/sobre-nosotros");
 const contactoES = require("./views/contacto");
 const contact = require("./views/contact");
@@ -179,6 +180,15 @@ app.use((req, res, next) => {
     }
     if (req.path === '/recursos' || req.path === '/centro-de-recursos') {
       return res.send(recursosBoriuca);
+    }
+    if (req.path === '/terminos-boricua') {
+      return res.send(terminosBoricua);
+    }
+    if (req.path === '/privacidad-boricua') {
+      return res.send(privacidadBoricua);
+    }
+    if (req.path === '/afiliados-boricua') {
+      return res.send(afiliadosBoricua);
     }
   }
   next();
