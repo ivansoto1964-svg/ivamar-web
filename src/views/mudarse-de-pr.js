@@ -250,6 +250,363 @@ nav{background:var(--white);border-bottom:3px solid var(--blue);padding:0;positi
           </div>
         </div>
       </div>
+
+      <!-- CAR REGISTRATION BY STATE -->
+      <div class="steps-card" style="margin-bottom:1.5rem;">
+        <div class="steps-card-header">
+          <div class="steps-card-icon">🚗</div>
+          <div>
+            <div class="steps-card-title">Registrar tu Vehículo de PR en USA — Por Estado</div>
+            <div class="steps-card-sub">Proceso completo verificado · Tienes 10-60 días según el estado para registrar</div>
+          </div>
+        </div>
+        <div class="steps-card-body">
+
+          <div class="info-box blue" style="margin-bottom:1.2rem;">
+            <div class="info-box-title">💡 Lo que necesitas en TODOS los estados</div>
+            <div class="info-box-text">
+              ✅ Título del vehículo de PR (original)<br>
+              ✅ Seguro de auto del nuevo estado (obligatorio antes de registrar)<br>
+              ✅ ID válida (licencia del estado o pasaporte)<br>
+              ✅ Prueba de residencia en el estado<br>
+              ✅ Pago de impuestos/fees de registro<br><br>
+              ⚠ Tu seguro de PR NO es válido en los estados. Debes comprar seguro del nuevo estado ANTES de ir al DMV.
+            </div>
+          </div>
+
+          <!-- FLORIDA -->
+          <div style="margin-bottom:1.5rem;">
+            <h4 style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:800;color:var(--dark);margin-bottom:0.8rem;padding-bottom:0.3rem;border-bottom:2px solid var(--blue);">🌴 Florida — 10 días para registrar</h4>
+            <div class="info-box warning" style="margin-bottom:0.8rem;">
+              <div class="info-box-title">⚠ Florida tiene un paso único — verificación del VIN</div>
+              <div class="info-box-text">Todo vehículo con título de fuera de Florida (incluyendo PR) requiere verificación física del VIN antes de registrar. Un policía, notario, dealer o inspector del DMV debe ver el carro en persona y completar el formulario HSMV 82042.</div>
+            </div>
+            <ul class="steps-list">
+              <li class="step-item">
+                <div class="step-num">1</div>
+                <div class="step-content">
+                  <div class="step-title">Compra seguro de Florida PRIMERO</div>
+                  <div class="step-desc">Necesitas una tarjeta de seguro de Florida (Florida insurance card) antes de poder registrar. Llama a tu aseguradora actual y pide cambiar a cobertura de Florida, o busca una nueva. Compañías como GEICO, Progressive, State Farm operan en FL.</div>
+                </div>
+              </li>
+              <li class="step-item">
+                <div class="step-num">2</div>
+                <div class="step-content">
+                  <div class="step-title">Verificación del VIN — Formulario HSMV 82042</div>
+                  <div class="step-desc">Un oficial autorizado debe inspeccionar el vehículo físicamente — ver el VIN en el tablero, verificar el color, las millas y que el carro coincide con el título. Quién puede hacerlo: cualquier oficial de policía, notario certificado, dealer de autos licenciado en FL, o inspector del Tax Collector's Office. El policía completa el formulario HSMV 82042 con el VIN, odómetro, color y marca del vehículo.</div>
+                  <div class="step-note">💡 Opción más fácil: lleva el carro al Tax Collector's Office — hacen la verificación en el mismo lugar donde registras</div>
+                </div>
+              </li>
+              <li class="step-item">
+                <div class="step-num">3</div>
+                <div class="step-content">
+                  <div class="step-title">Ve al Tax Collector's Office (no al DMV)</div>
+                  <div class="step-desc">En Florida el registro de vehículos se hace en el Tax Collector's Office de tu condado — NO en el DHSMV (DMV). Busca "[tu condado] tax collector" para encontrar la oficina más cercana.</div>
+                  <div class="step-note">💡 Ejemplo: Orange County (Orlando): octaxcol.com · Hillsborough (Tampa): hillstax.org · Miami-Dade: miamidade.gov/taxcollector</div>
+                </div>
+              </li>
+              <li class="step-item">
+                <div class="step-num">4</div>
+                <div class="step-content">
+                  <div class="step-title">Documentos para llevar al Tax Collector's Office</div>
+                  <div class="step-desc" style="line-height:1.8;">
+                    ✅ Título de PR (original)<br>
+                    ✅ Formulario HSMV 82040 (Application for Certificate of Title) — disponible en la oficina<br>
+                    ✅ Formulario HSMV 82042 (VIN Verification) — completado por oficial autorizado<br>
+                    ✅ Tarjeta de seguro de Florida (Florida insurance card)<br>
+                    ✅ ID válida (licencia o pasaporte)<br>
+                    ✅ Prueba de residencia en Florida
+                  </div>
+                </div>
+              </li>
+              <li class="step-item">
+                <div class="step-num">5</div>
+                <div class="step-content">
+                  <div class="step-title">Costos aproximados en Florida</div>
+                  <div class="step-desc">$225 registration fee inicial (si no tienes tablilla de FL para transferir) + $28.10-$48.10 basado en el peso del vehículo + sales tax si aplica. Total aproximado: $250-$300+ para la primera vez.</div>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <!-- NEW YORK -->
+          <div style="margin-bottom:1.5rem;">
+            <h4 style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:800;color:var(--dark);margin-bottom:0.8rem;padding-bottom:0.3rem;border-bottom:2px solid var(--blue);">🗽 New York — 30 días para registrar</h4>
+            <ul class="steps-list">
+              <li class="step-item">
+                <div class="step-num">1</div>
+                <div class="step-content">
+                  <div class="step-title">Consigue seguro de NY primero</div>
+                  <div class="step-desc">NY requiere New York State Insurance ID Card (Form FS-20). Tu aseguradora te da dos tarjetas con código de barras y notifica electrónicamente al DMV. Sin esto no puedes registrar.</div>
+                </div>
+              </li>
+              <li class="step-item">
+                <div class="step-num">2</div>
+                <div class="step-content">
+                  <div class="step-title">Documentos para el NY DMV</div>
+                  <div class="step-desc" style="line-height:1.8;">
+                    ✅ Título de PR (original)<br>
+                    ✅ Formulario MV-82 (Vehicle Registration/Title Application)<br>
+                    ✅ NYS Insurance ID Card (Form FS-20)<br>
+                    ✅ ID válida<br>
+                    ✅ Pago de sales tax (si aplica — NY puede eximir a residentes nuevos que pagaron impuesto en PR)
+                  </div>
+                  <div class="step-note">💡 NY DMV: dmv.ny.gov · 1-800-698-2931</div>
+                </div>
+              </li>
+              <li class="step-item">
+                <div class="step-num">3</div>
+                <div class="step-content">
+                  <div class="step-title">Inspección vehicular obligatoria en NY</div>
+                  <div class="step-desc">NY requiere una inspección anual del vehículo. Al registrar un carro de fuera, tendrás 10 días (con un sticker temporal) para pasar la inspección en una estación certificada.</div>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <!-- NEW JERSEY -->
+          <div style="margin-bottom:1.5rem;">
+            <h4 style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:800;color:var(--dark);margin-bottom:0.8rem;padding-bottom:0.3rem;border-bottom:2px solid var(--blue);">🌿 New Jersey — 60 días para registrar</h4>
+            <ul class="steps-list">
+              <li class="step-item">
+                <div class="step-num">1</div>
+                <div class="step-content">
+                  <div class="step-title">Puedes transferir licencia y registro en una sola visita</div>
+                  <div class="step-desc">NJ te permite hacer el transfer de licencia y el registro del vehículo en la misma cita en el MVC (Motor Vehicle Commission). Ahorra tiempo — hazlo todo junto.</div>
+                  <div class="step-note">💡 MVC NJ: nj.gov/mvc · saca cita en njtaxiandlimousine.com o directamente en NJ MVC</div>
+                </div>
+              </li>
+              <li class="step-item">
+                <div class="step-num">2</div>
+                <div class="step-content">
+                  <div class="step-title">Documentos para el MVC de NJ</div>
+                  <div class="step-desc" style="line-height:1.8;">
+                    ✅ Título original de PR<br>
+                    ✅ Seguro de NJ<br>
+                    ✅ ID válida<br>
+                    ✅ $60 para vehículo sin financiamiento · $85 si tiene un lien · $110 si tiene dos liens
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <!-- TEXAS -->
+          <div style="margin-bottom:1.5rem;">
+            <h4 style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:800;color:var(--dark);margin-bottom:0.8rem;padding-bottom:0.3rem;border-bottom:2px solid var(--blue);">⭐ Texas — 30 días para registrar</h4>
+            <ul class="steps-list">
+              <li class="step-item">
+                <div class="step-num">1</div>
+                <div class="step-content">
+                  <div class="step-title">Texas requiere inspección vehicular primero</div>
+                  <div class="step-desc">Antes de registrar en Texas, el vehículo debe pasar una inspección de seguridad (safety inspection) en una estación certificada. Costo aproximado: $7-$40 según el tipo de vehículo y condado.</div>
+                </div>
+              </li>
+              <li class="step-item">
+                <div class="step-num">2</div>
+                <div class="step-content">
+                  <div class="step-title">Ve al Tax Assessor-Collector de tu condado</div>
+                  <div class="step-desc">En Texas el registro también se hace en el Tax Assessor-Collector, no en el DMV (TxDMV maneja los títulos). Busca "[tu condado] TX tax assessor" para la oficina local.</div>
+                  <div class="step-note">💡 TxDMV: txdmv.gov · 1-888-368-4689</div>
+                </div>
+              </li>
+              <li class="step-item">
+                <div class="step-num">3</div>
+                <div class="step-content">
+                  <div class="step-title">Documentos para Texas</div>
+                  <div class="step-desc" style="line-height:1.8;">
+                    ✅ Título de PR<br>
+                    ✅ Formulario 130-U (Application for Texas Title)<br>
+                    ✅ Seguro de Texas<br>
+                    ✅ Certificado de inspección<br>
+                    ✅ ID válida<br>
+                    ✅ Pago de sales tax (6.25%) sobre el valor del vehículo si no se pagó impuesto equivalente antes
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <!-- ILLINOIS Y CONNECTICUT -->
+          <div style="margin-bottom:1rem;">
+            <h4 style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:800;color:var(--dark);margin-bottom:0.8rem;padding-bottom:0.3rem;border-bottom:2px solid var(--blue);">🌆 Illinois — 30 días · 🏛️ Connecticut — 60 días</h4>
+            <div class="cards-grid">
+              <div class="info-card">
+                <div class="info-card-header"><span class="info-card-name">🌆 Illinois (IL SOS)</span></div>
+                <div class="info-card-body">
+                  <div class="info-card-detail"><strong>Formulario:</strong> VSD 190 (Application for Vehicle Transactions)</div>
+                  <div class="info-card-detail"><strong>Inspección:</strong> Emisiones cada 2 años (Chicago)</div>
+                  <div class="info-card-detail"><strong>Seguro:</strong> Illinois auto insurance obligatorio</div>
+                  <div class="info-card-detail"><strong>Agencia:</strong> IL Secretary of State</div>
+                  <a href="https://www.ilsos.gov" target="_blank" class="info-card-link">ilsos.gov →</a>
+                </div>
+              </div>
+              <div class="info-card">
+                <div class="info-card-header"><span class="info-card-name">🏛️ Connecticut (CT DMV)</span></div>
+                <div class="info-card-body">
+                  <div class="info-card-detail"><strong>Plazo:</strong> 60 días para transferir</div>
+                  <div class="info-card-detail"><strong>Seguro:</strong> CT auto insurance obligatorio</div>
+                  <div class="info-card-detail"><strong>Inspección:</strong> Requerida al registrar</div>
+                  <div class="info-card-detail"><strong>Agencia:</strong> CT DMV</div>
+                  <a href="https://portal.ct.gov/DMV" target="_blank" class="info-card-link">portal.ct.gov/DMV →</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="info-box" style="margin-top:0.5rem;">
+            <div class="info-box-title">⚠ Consulta directamente con el DMV de tu estado</div>
+            <div class="info-box-text">Los requisitos y costos pueden cambiar. Esta información es orientativa. Siempre verifica en el portal oficial del DMV de tu estado antes de ir. Si tienes dudas, llama antes para evitar hacer el viaje con documentos incompletos.</div>
+          </div>
+
+        </div>
+      </div>
+
+
+      <!-- VEHICLE EXPORT GUIDE -->
+      <div class="steps-card" style="margin-bottom:1.5rem;">
+        <div class="steps-card-header">
+          <div class="steps-card-icon">🚗</div>
+          <div>
+            <div class="steps-card-title">Guía Completa — Exportar tu Vehículo de PR a USA</div>
+            <div class="steps-card-sub">Proceso verificado con Crowley · Todos los documentos tienen vigencia corta — planifica con cuidado</div>
+          </div>
+        </div>
+        <div class="steps-card-body">
+
+          <div class="info-box red" style="margin-bottom:1.2rem;">
+            <div class="info-box-title">⚠ Esto es lo más complicado de la mudanza — lee todo antes de empezar</div>
+            <div class="info-box-text">Los documentos tienen vigencias de 3 y 5 días que incluyen fines de semana. Si uno vence, tienes que empezar de nuevo. Los sellos físicos son obligatorios — no se aceptan digitales. Planifica con al menos 2 semanas de anticipación y reserva espacio en la naviera primero.</div>
+          </div>
+
+          <div style="margin-bottom:1.2rem;padding:0.8rem 1rem;background:#f0f4ff;border-radius:6px;border:1px solid #dde4ff;">
+            <div style="font-weight:700;font-size:0.82rem;color:var(--dark);margin-bottom:0.5rem;">🗓️ Orden sugerido de tramitar (todo en 1-2 días antes de entregar en el puerto):</div>
+            <div style="font-size:0.75rem;color:#444;line-height:1.8;">
+              Día 1 mañana: Comprar sellos en la Colecturía → DTOP/CESCO (Certificado de No Deudas) → ACAA (Certificado de No Gravamen)<br>
+              Día 1 tarde: Lavado a presión completo del vehículo<br>
+              Día 2 mañana: Preinspección Policía de PR (División de Vehículos Hurtados) → llevar al puerto Crowley
+            </div>
+          </div>
+
+          <ul class="steps-list">
+            <li class="step-item">
+              <div class="step-num">1</div>
+              <div class="step-content">
+                <div class="step-title">Reserva espacio en la naviera PRIMERO</div>
+                <div class="step-desc">Llama a Crowley o PRCT para reservar antes de empezar a tramitar documentos. Los cupos se llenan rápido en temporada alta. Necesitas la fecha de reservación para planificar la vigencia de los documentos.</div>
+                <div class="step-note">💡 Crowley Car Division: (787) 729-1129 · Dirección: Calle Lindbergh, Isla Grande, PR 00907 (frente al Aeropuerto de Isla Grande)</div>
+                <div class="step-note">💡 Horario de entrega: Lunes a viernes 8:00am-11:00am y 1:00pm-2:00pm</div>
+              </div>
+            </li>
+            <li class="step-item">
+              <div class="step-num">2</div>
+              <div class="step-content">
+                <div class="step-title">Obtén tu EIN — número de identificación federal</div>
+                <div class="step-desc">Como requisito federal, todos los clientes deben proveer un número EIN al momento de la exportación. Puedes obtenerlo gratis en el IRS EIN Assistant en irs.gov. Esto reemplaza el Social Security en los formularios de exportación.</div>
+                <div class="step-note">💡 IRS EIN Assistant: irs.gov/businesses/small-businesses-self-employed/apply-for-an-employer-identification-number-ein-online</div>
+              </div>
+            </li>
+            <li class="step-item">
+              <div class="step-num">3</div>
+              <div class="step-content">
+                <div class="step-title">Título de propiedad limpio (sin gravámenes)</div>
+                <div class="step-desc">El título debe estar libre de gravámenes y ventas condicionales. Si el vehículo está financiado (tiene un préstamo activo), necesitas una carta original y notariada del banco o institución financiera autorizando el envío, más copia del título.</div>
+                <div class="step-warning">⚠ Si tienes préstamo activo, contacta tu banco semanas antes — este proceso puede tomar tiempo</div>
+              </div>
+            </li>
+            <li class="step-item">
+              <div class="step-num">4</div>
+              <div class="step-content">
+                <div class="step-title">Compra los sellos de Rentas Internas en la Colecturía</div>
+                <div class="step-desc">Necesitas dos tipos de sellos físicos — no se aceptan digitales:<br>
+                • Sello de $11.00 (Código 5120) — para Certificado de No Deudas del DTOP<br>
+                • Sello de $2.00 (Código 842) — adicional para el mismo certificado<br>
+                Compra estos sellos en cualquier Colecturía del Departamento de Hacienda.</div>
+                <div class="step-warning">⚠ Los sellos digitales NO son aceptados — deben ser físicos</div>
+              </div>
+            </li>
+            <li class="step-item">
+              <div class="step-num">5</div>
+              <div class="step-content">
+                <div class="step-title">Certificado de No Deudas del DTOP — Válido 3 días ⏱️</div>
+                <div class="step-desc">Ve al CESCO u Obras Públicas con los sellos que compraste. Obtén los formularios DTOP-DIS-224 y DTOP-DIS-234 — estos certifican que el vehículo está libre de multas de tránsito. Vigencia: 3 días incluyendo el día que lo obtienes y fines de semana.</div>
+                <div class="step-warning">⚠ Si lo obtienes hoy, vence pasado mañana — planifica bien</div>
+                <div class="step-note">💡 CESCO Digital: web.cescodigital.pr.gov · (787) 294-0101</div>
+              </div>
+            </li>
+            <li class="step-item">
+              <div class="step-num">6</div>
+              <div class="step-content">
+                <div class="step-title">Certificado de No Gravamen — ACAA — Válido 30 días ✅</div>
+                <div class="step-desc">La Administración de Compensaciones por Accidentes de Autos (ACAA) emite un certificado confirmando que no tienes deudas pendientes con ellos. Este tiene vigencia de 30 días — el más fácil de manejar.</div>
+                <div class="step-note">💡 ACAA: (787) 759-8989 · Av. Chardon 249, Alto Rey, San Juan 00918</div>
+              </div>
+            </li>
+            <li class="step-item">
+              <div class="step-num">7</div>
+              <div class="step-content">
+                <div class="step-title">Lavado a Presión Completo — guardar el recibo</div>
+                <div class="step-desc">El USDA (Departamento de Agricultura de USA) inspecciona todos los vehículos para evitar importar plagas o suciedad. El lavado debe incluir: motor, exterior, chasis y guardalodos. El recibo debe ser original con el nombre de la compañía donde se hizo.</div>
+                <div class="step-warning">⚠ El recibo debe especificar que se lavó: motor, exterior, chasis y área de ruedas</div>
+                <div class="step-note">💡 No laves el vehículo días antes — hazlo el mismo día o un día antes de entregarlo</div>
+              </div>
+            </li>
+            <li class="step-item">
+              <div class="step-num">8</div>
+              <div class="step-content">
+                <div class="step-title">Preinspección Policía de PR — División de Vehículos Hurtados — Válido 5 días ⏱️</div>
+                <div class="step-desc">Es requisito de ley que todo vehículo a exportarse tenga un certificado de preinspección de la Policía de PR. Debes ir al precinto que corresponde según tu lugar de residencia. La División de Vehículos Hurtados verifica que el auto no esté reportado como robado.</div>
+                <div class="step-warning">⚠ Haz este paso de ÚLTIMO — tiene la vigencia más corta de todos los documentos (5 días)</div>
+                <div class="step-note">💡 Lleva todos los demás documentos ya listos cuando vayas a la preinspección</div>
+              </div>
+            </li>
+            <li class="step-item">
+              <div class="step-num">9</div>
+              <div class="step-content">
+                <div class="step-title">Declaración Jurada con abogado</div>
+                <div class="step-desc">Si el dueño entrega el vehículo en persona, debe firmar un afidávit (declaración jurada) con un abogado licenciado en PR autorizando a la naviera a transportar el vehículo. Si un tercero entrega por ti, el afidávit también debe incluir copia de tu ID y la ID de esa persona.</div>
+              </div>
+            </li>
+            <li class="step-item">
+              <div class="step-num">10</div>
+              <div class="step-content">
+                <div class="step-title">Al llegar al puerto — qué esperar</div>
+                <div class="step-desc">Llega temprano — el procesamiento mínimo es 45 minutos por cliente y puede extenderse. La Policía de PR, el USDA y Crowley realizarán inspecciones adicionales antes de embarcar. El combustible en el tanque no debe exceder 1/4 de tanque.</div>
+                <div class="step-note">💡 Formas de pago aceptadas: ATH, Money Order, cheque de gerente, Visa, MC, AmEx. NO se aceptan cheques personales ni efectivo.</div>
+              </div>
+            </li>
+            <li class="step-item">
+              <div class="step-num">11</div>
+              <div class="step-content">
+                <div class="step-title">Recogida en Jacksonville — inspección del USDA</div>
+                <div class="step-desc">Al llegar a Jacksonville, el USDA inspeccionará el vehículo nuevamente antes de liberarlo. Crowley te notificará por teléfono cuando esté listo. Seguro de carga disponible: $250 con cobertura hasta $25,000 o $500 hasta $50,000, ambos con cero deducible.</div>
+              </div>
+            </li>
+          </ul>
+
+          <div class="info-box" style="margin-top:1rem;">
+            <div class="info-box-title">📋 Lista completa de documentos para exportar tu vehículo PR → USA</div>
+            <div class="info-box-text" style="line-height:2;">
+              ✅ Título de propiedad limpio (sin gravámenes)<br>
+              ✅ Si financiado: carta notariada del banco autorizando envío<br>
+              ✅ Registración del vehículo (licencia del auto)<br>
+              ✅ ID del dueño (licencia de conducir) — ampliada a tamaño media página<br>
+              ✅ EIN federal<br>
+              ✅ Sellos físicos: $11.00 (Código 5120) + $2.00 (Código 842)<br>
+              ✅ Certificado No Deudas DTOP (DTOP-DIS-224 y DTOP-DIS-234) — <strong>válido 3 días</strong><br>
+              ✅ Certificado No Gravamen ACAA — <strong>válido 30 días</strong><br>
+              ✅ Recibo lavado a presión (motor, exterior, chasis, guardalodos)<br>
+              ✅ Certificado Preinspección Policía PR (División Vehículos Hurtados) — <strong>válido 5 días</strong><br>
+              ✅ Declaración jurada (afidávit) con abogado<br>
+              ✅ Máximo 1/4 de combustible en el tanque<br>
+              ✅ Si envía tercero: copia de ID del dueño + ID del gestor<br><br>
+              ⚠ <em>Consulta directamente con Crowley (787-729-1129) o tu naviera para confirmar requisitos actualizados antes de empezar el proceso.</em>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
     </div>
 
     <!-- LICENCIAS -->
