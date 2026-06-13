@@ -251,6 +251,80 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
         </div>
       </div>
 
+      <div style="margin-bottom:1.5rem;">
+        <h3 style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:800;color:#111;margin-bottom:1rem;padding-bottom:0.4rem;border-bottom:2px solid #CE1126;">🚚 Empresas de Mudanza USA → PR</h3>
+        <div class="cards-grid">
+          <div class="info-card">
+            <div class="info-card-header"><span class="info-card-name">⚓ Crowley</span><span style="font-size:0.65rem;color:#CE1126;font-weight:700;">Naviera Principal</span></div>
+            <div class="info-card-body">
+              <div class="info-card-detail"><strong>Teléfono:</strong> (904) 727-2200</div>
+              <div class="info-card-detail"><strong>Rutas:</strong> Jacksonville → San Juan</div>
+              <div class="info-card-detail"><strong>Tiempo:</strong> 3-5 días</div>
+              <div class="info-card-detail"><strong>Servicios:</strong> Contenedor completo y LCL</div>
+              <a href="https://www.crowley.com" target="_blank" class="info-card-link">crowley.com →</a>
+            </div>
+          </div>
+          <div class="info-card">
+            <div class="info-card-header"><span class="info-card-name">⚓ TOTE Maritime</span><span style="font-size:0.65rem;color:#CE1126;font-weight:700;">Naviera Principal</span></div>
+            <div class="info-card-body">
+              <div class="info-card-detail"><strong>Teléfono:</strong> (904) 855-0500</div>
+              <div class="info-card-detail"><strong>Rutas:</strong> Jacksonville → San Juan</div>
+              <div class="info-card-detail"><strong>Tiempo:</strong> 3-5 días</div>
+              <div class="info-card-detail"><strong>Servicios:</strong> Carga general y vehículos</div>
+              <a href="https://www.totemaritime.com" target="_blank" class="info-card-link">totemaritime.com →</a>
+            </div>
+          </div>
+          <div class="info-card">
+            <div class="info-card-header"><span class="info-card-name">📦 U-Pack</span></div>
+            <div class="info-card-body">
+              <div class="info-card-detail"><strong>Teléfono:</strong> 1-800-413-4799</div>
+              <div class="info-card-detail"><strong>Servicio:</strong> Tú empacas, ellos mueven</div>
+              <div class="info-card-detail"><strong>Ventaja:</strong> Más económico que mudanza completa</div>
+              <a href="https://www.upack.com" target="_blank" class="info-card-link">upack.com →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-bottom:1.5rem;">
+        <h3 style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:800;color:#111;margin-bottom:1rem;padding-bottom:0.4rem;border-bottom:2px solid #CE1126;">🚗 Empresas de Envío de Autos USA → PR</h3>
+        <div class="cards-grid">
+          <div class="info-card">
+            <div class="info-card-header"><span class="info-card-name">🚗 Puerto Rico Car Transport</span><span style="font-size:0.65rem;color:#CE1126;font-weight:700;">Especialista PR</span></div>
+            <div class="info-card-body">
+              <div class="info-card-detail"><strong>Teléfono:</strong> (904) 322-7644</div>
+              <div class="info-card-detail"><strong>Especialidad:</strong> Solo envíos a/desde PR</div>
+              <div class="info-card-detail"><strong>Servicios:</strong> Autos, motos, botes, RVs</div>
+              <a href="https://www.puertoricocartransport.com" target="_blank" class="info-card-link">puertoricocartransport.com →</a>
+            </div>
+          </div>
+          <div class="info-card">
+            <div class="info-card-header"><span class="info-card-name">🚗 AutoStar Transport</span></div>
+            <div class="info-card-body">
+              <div class="info-card-detail"><strong>Experiencia:</strong> 19+ años</div>
+              <div class="info-card-detail"><strong>Soporte:</strong> Bilingüe EN/ES</div>
+              <div class="info-card-detail"><strong>Servicios:</strong> Open y enclosed transport</div>
+              <a href="https://www.autostartransport.com" target="_blank" class="info-card-link">autostartransport.com →</a>
+            </div>
+          </div>
+          <div class="info-card">
+            <div class="info-card-header"><span class="info-card-name">🚗 RoadRunner Auto</span></div>
+            <div class="info-card-body">
+              <div class="info-card-detail"><strong>Servicio:</strong> Door-to-door disponible</div>
+              <div class="info-card-detail"><strong>Ventaja:</strong> Red amplia de carriers</div>
+              <div class="info-card-detail"><strong>Cotización:</strong> En línea instantánea</div>
+              <a href="https://www.roadrunnerautotransport.com/puerto-rico-car-shipping" target="_blank" class="info-card-link">roadrunnerautotransport.com →</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-box blue" style="margin-bottom:1.5rem;">
+        <div class="info-box-title">💰 Calcular Arbitrios de tu Vehículo</div>
+        <div class="info-box-text">Antes de enviar tu vehículo, verifica cuánto tendrás que pagar de arbitrios en Puerto Rico. El cálculo oficial se hace en SURI — el sistema de Hacienda PR.<br><br>
+        <a href="https://suri.hacienda.pr.gov" target="_blank" style="color:#002D62;font-weight:700;">Calcular arbitrios en SURI →</a></div>
+      </div>
+
       <div class="steps-card">
         <div class="steps-card-header">
           <div class="steps-card-icon">🚗</div>
