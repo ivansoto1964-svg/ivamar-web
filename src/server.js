@@ -2221,3 +2221,77 @@ app.get("/sitemap-boricua.xml", (req, res) => {
   ${urls}
 </urlset>`);
 });
+
+app.post('/api/newsletter-boricua', express.json(), formLimiter, async (req, res) => {
+  try {
+    const { email, source } = req.body;
+    if (!email || !email.includes('@')) return res.status(400).json({ error: 'Email inválido' });
+
+    // Save to file
+    const subscribersFile = '/data/pb-subscribers.json';
+    let subscribers = [];
+    if (require('fs').existsSync(subscribersFile)) {
+      subscribers = JSON.parse(require('fs').readFileSync(subscribersFile, 'utf8'));
+    }
+    if (subscribers.find(s => s.email === email)) return res.json({ ok: true });
+    subscribers.push({ email, source: source || 'landing', subscribedAt: new Date().toISOString() });
+    require('fs').writeFileSync(subscribersFile, JSON.stringify(subscribers, null, 2));
+
+    // Notify Ivan
+    await resend.emails.send({
+      from: 'Planeta Boricua <connect@ivamarai.com>',
+      to: 'connect@ivamarai.com',
+      subject: '🇵🇷 Nuevo suscriptor Planeta Boricua: ' + email,
+      html: '<p>Nuevo suscriptor: <strong>' + email + '</strong></p><p>Fuente: ' + (source || 'landing') + '</p><p>Total: ' + subscribers.length + '</p>'
+    });
+
+    // Add to Brevo list 4 (Planeta Boricua)
+    try {
+      await fetch('https://api.brevo.com/v3/contacts', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'api-key': process.env.BREVO_API_KEY },
+        body: JSON.stringify({ email, listIds: [4], updateEnabled: true })
+      });
+    } catch(brevoErr) {
+      console.error('Brevo PB error:', brevoErr.message);
+    }
+
+    // Welcome email in Spanish
+    await resend.emails.send({
+      from: 'Planeta Boricua <connect@ivamarai.com>',
+      to: email,
+      subject: '🇵🇷 ¡Bienvenido/a a Planeta Boricua!',
+      html: `<div style="font-family:sans-serif;max-width:600px;margin:0 auto;">
+        <div style="background:linear-gradient(135deg,#002D62,#CE1126);padding:2rem;text-align:center;border-radius:12px 12px 0 0;">
+          <h1 style="color:#fff;font-size:1.5rem;margin:0">🇵🇷 ¡Bienvenido/a a Planeta Boricua!</h1>
+          <p style="color:rgba(255,255,255,0.8);margin-top:0.5rem;font-size:0.9rem;">Más Boricua Que Un Mofongo</p>
+        </div>
+        <div style="padding:2rem;background:#fff;border:1px solid #e5e5e0;">
+          <p style="font-size:1rem;color:#333">¡Wepa! 🎉 Ya eres parte de la comunidad de Planeta Boricua — el portal de cultura, noticias y orgullo boricua.</p>
+          <p style="font-size:0.9rem;color:#555;margin-top:1rem;">Cada semana recibirás lo mejor de Puerto Rico directo a tu email — noticias, cultura, gastronomía, recursos para la diáspora y mucho más.</p>
+          <div style="background:#f5f5f0;border-radius:8px;padding:1.2rem;margin:1.5rem 0;">
+            <p style="font-size:0.85rem;color:#444;margin:0;"><strong>¿Sabías que tenemos?</strong></p>
+            <ul style="font-size:0.85rem;color:#555;margin:0.5rem 0 0 1.2rem;">
+              <li>🤖 Nayeli AI — tu asistente boricua</li>
+              <li>📋 Centro de Recursos PR↔USA — guías de mudanza, licencias y más</li>
+              <li>🏪 Directorio de negocios boricuas en USA y PR</li>
+              <li>📰 Noticias frescas de Puerto Rico</li>
+            </ul>
+          </div>
+          <div style="text-align:center;margin:2rem 0;">
+            <a href="https://www.masboricuaqueunmofongo.com" style="background:#CE1126;color:#fff;padding:12px 24px;border-radius:6px;text-decoration:none;font-weight:700;">Visitar Planeta Boricua →</a>
+          </div>
+        </div>
+        <div style="padding:1rem;text-align:center;background:#f5f5f0;border-radius:0 0 12px 12px;">
+          <p style="font-size:0.75rem;color:#888;">© 2026 Planeta Boricua · masboricuaqueunmofongo.com · Un proyecto de Ivamar AI LLC</p>
+          <p style="font-size:0.7rem;color:#aaa;margin-top:0.3rem;">Recibiste este email porque te suscribiste en Planeta Boricua.</p>
+        </div>
+      </div>`
+    });
+
+    return res.json({ ok: true });
+  } catch(e) {
+    console.error('PB Subscribe error:', e.message);
+    return res.json({ ok: false });
+  }
+});

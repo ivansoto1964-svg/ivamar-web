@@ -673,10 +673,10 @@ async function nlSubscribe() {
     return;
   }
   try {
-    const res = await fetch('/api/newsletter', {
+    const res = await fetch('/api/newsletter-boricua', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, source: 'planetaboricua' })
+      body: JSON.stringify({ email, source: 'landing' })
     });
     msg.style.display = 'block';
     if (res.ok) {
