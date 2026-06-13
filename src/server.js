@@ -2110,16 +2110,37 @@ app.get('/api/planetaboricua-blog', async (req, res) => {
   }
 });
 
-app.get('/api/noticias-pr', async (req, res) => {
-  const feeds = [
-    { url: 'https://periodismoinvestigativo.com/feed/', source: 'Periodismo Investigativo', categoria: 'Investigación' },
-    { url: 'https://remezcla.com/feed/', source: 'Remezcla', categoria: 'Cultura' },
-    { url: 'https://www.caribbeanbusiness.com/feed/', source: 'Caribbean Business', categoria: 'Economía' },
-    { url: 'https://feeds.bbci.co.uk/mundo/rss.xml', source: 'BBC Mundo', categoria: 'Internacional' }
-  ];
 
+app.get('/api/noticias-pr', async (req, res) => {
   try {
-    const results = await Promise.allSettled(feeds.map(async (feed) => {
+    const results = [];
+
+    // GNews API - noticias de PR en español
+    try {
+      const gnews = await fetch(`https://gnews.io/api/v4/search?q=puerto+rico&lang=es&max=6&apikey=${process.env.GNEWS_API_KEY}`);
+      const gdata = await gnews.json();
+      if (gdata.articles) {
+        gdata.articles.forEach(a => {
+          results.push({
+            title: a.title,
+            link: a.url,
+            date: new Date(a.publishedAt).toLocaleDateString('es-PR', { year: 'numeric', month: 'long', day: 'numeric' }),
+            summary: a.description ? a.description.slice(0, 120) + '...' : '',
+            img: a.image || null,
+            source: a.source.name,
+            categoria: 'Puerto Rico'
+          });
+        });
+      }
+    } catch(e) { console.log('GNews error:', e.message); }
+
+    // RSS feeds como backup
+    const feeds = [
+      { url: 'https://periodismoinvestigativo.com/feed/', source: 'Periodismo Investigativo', categoria: 'Investigación' },
+      { url: 'https://feeds.bbci.co.uk/mundo/rss.xml', source: 'BBC Mundo', categoria: 'Internacional' }
+    ];
+
+    const rssResults = await Promise.allSettled(feeds.map(async (feed) => {
       const r = await fetch(feed.url, { headers: { 'User-Agent': 'Mozilla/5.0' } });
       const xml = await r.text();
       const items = [];
@@ -2136,18 +2157,16 @@ app.get('/api/noticias-pr', async (req, res) => {
         const date = pubDate ? new Date(pubDate).toLocaleDateString('es-PR', { year: 'numeric', month: 'long', day: 'numeric' }) : '';
         const imgMatch = item.match(/<img[^>]+src=["']([^"']+)["']/i);
         const img = imgMatch ? imgMatch[1] : null;
-        if (title) items.push({ title: title.trim(), link: link.trim(), date, summary, img, source: feed.source, categoria: feed.categoria });
+        const tag = feed.categoria;
+        if (title) items.push({ title: title.trim(), link: link.trim(), date, summary, img, source: feed.source, categoria: tag });
       }
       return items;
     }));
 
-    const noticias = results
-      .filter(r => r.status === 'fulfilled')
-      .flatMap(r => r.value)
-      .slice(0, 15);
+    rssResults.filter(r => r.status === 'fulfilled').flatMap(r => r.value).forEach(item => results.push(item));
 
     res.set('Access-Control-Allow-Origin', '*');
-    res.json(noticias);
+    res.json(results.slice(0, 15));
   } catch (err) {
     res.json([]);
   }
