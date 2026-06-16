@@ -453,7 +453,7 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
         </div>
       </div>
       <div class="nayeli-msgs" id="nayeliMsgs">
-        <div class="n-msg n-bot">¡Wepa! 🇵🇷 Soy Nayeli, tu asistente boricua.<br><br>Puedo ayudarte con mudanzas PR↔USA, licencias, registrar tu vehículo, servicios públicos, cultura boricua, negocios y mucho más. ¿En qué te ayudo hoy?</div>
+        <div class="n-msg n-bot">¡Wepa! 🇵🇷 Soy Nayeli, tu asistente boricua. ¿Cómo te llamas?</div>
       </div>
       <div class="nayeli-input-row">
         <input class="nayeli-input" id="nayeliInput" placeholder="Pregúntame lo que quieras..." onkeydown="if(event.key==='Enter')nayeliSend()">
