@@ -26,7 +26,7 @@ module.exports = `<!DOCTYPE html>
 <meta name="twitter:description" content="Tu portal de cultura, noticias y comunidad puertorriqueña. Directorio de negocios boricuas en USA, recursos para mudanzas PR↔USA y Nayeli AI.">
 <meta name="twitter:image" content="https://www.masboricuaqueunmofongo.com/img/og-planetaboricua.jpg">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<!-- adsense temporarily disabled -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4181903530685744" crossorigin="anonymous"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
