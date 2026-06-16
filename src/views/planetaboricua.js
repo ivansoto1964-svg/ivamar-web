@@ -678,7 +678,7 @@ async function nayeliSend() {
         await fetch('/api/nayeli', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email: emailMatch[0] })
+          body: JSON.stringify({ email: emailMatch[0], history: nayeliHistory })
         });
       }
     }
