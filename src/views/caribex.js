@@ -518,7 +518,15 @@ document.addEventListener('DOMContentLoaded', loadDestinationPhotos);
           var i = u.lastIndexOf("/s");
           return i > -1 ? u.substring(0, i) + "/s1600/" : u;
         }
-        return "https://yourcaribbeanexpert.com/img/caribex-default.jpg";
+        // Fallback: extract first image from content or summary HTML
+        var html = entry.content ? entry.content.$t : (entry.summary ? entry.summary.$t : '');
+        var match = html.match(/<img[^>]+src=["']([^"']+)["']/i);
+        if (match) {
+          var imgUrl = match[1];
+          var idx = imgUrl.lastIndexOf("/s");
+          return idx > -1 ? imgUrl.substring(0, idx) + "/s1600/" : imgUrl;
+        }
+        return "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200&q=80";
       }
 
       function getLink(entry) {
