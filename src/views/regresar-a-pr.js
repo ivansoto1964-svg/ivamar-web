@@ -445,6 +445,11 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
             <a href="https://hacienda.pr.gov/arbitrios/arbitrios-en-el-caso-de-vehiculos" target="_blank" style="color:#002D62;font-weight:700;">Tabla de arbitrios → hacienda.pr.gov</a></div>
           </div>
 
+          <div class="info-box blue" style="margin-top:1rem;">
+            <div class="info-box-title">🧑‍💼 ¿Todo esto te parece mucho? Considera un gestor</div>
+            <div class="info-box-text">Muchos boricuas prefieren contratar un <strong>gestor</strong> para que se encargue del papeleo de CESCO y DTOP en su nombre — arbitrios, inspección, seguro compulsorio y la cita misma. Por una tarifa (varía según el gestor, usualmente entre $30-$100 dependiendo del trámite), te ahorras filas, viajes y el dolor de cabeza de coordinar todo. Busca gestores recomendados en tu pueblo a través de Facebook o pregunta en tu CESCO local — muchos trabajan directamente en o cerca de las oficinas de CESCO.</div>
+          </div>
+
           <div class="info-box" style="margin-top:1rem;">
             <div class="info-box-title">⚠ Consulta directamente con las agencias oficiales</div>
             <div class="info-box-text">Esta información es orientativa. Los requisitos y costos pueden cambiar. Verifica siempre en:<br>
@@ -538,6 +543,10 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
                 <div class="step-desc">Las citas son obligatorias y se agotan con semanas de anticipación. Sácala en cesco.turnospr.com o web.cescodigital.pr.gov lo antes posible después de llegar a PR. Hay 15 CESCO en la isla — busca el más cercano a ti.</div>
                 <div class="step-note">💡 Citas: cesco.turnospr.com · CESCO Digital: web.cescodigital.pr.gov · (787) 294-0101</div>
                 <div class="step-warning">⚠ Las citas pueden estar ocupadas por 2-3 semanas. Sácala el primer día que llegues</div>
+                <div class="info-box blue" style="margin-top:1rem;">
+                  <div class="info-box-title">🧑‍💼 Si se te complica, un gestor puede ayudarte</div>
+                  <div class="info-box-text">Coordinar acta de nacimiento, certificación médica, verificar multas y sacar cita — todo a la vez — puede ser mucho si acabas de llegar. Un <strong>gestor</strong> puede manejar el papeleo y la cita por ti a cambio de una tarifa. Pregunta en tu CESCO local o busca recomendaciones en grupos de Facebook de tu pueblo.</div>
+                </div>
               </div>
             </li>
             <li class="step-item">
