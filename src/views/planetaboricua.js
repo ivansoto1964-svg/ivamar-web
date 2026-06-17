@@ -230,6 +230,14 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
 .noticia-vivo-body{padding:1rem;display:flex;flex-direction:column;gap:0.4rem;border-left:3px solid var(--red);}
 @media(max-width:768px){.noticias-vivo-grid{grid-template-columns:1fr;}}
 </style>
+<script nowprocket data-noptimize="1" data-cfasync="false" data-wpfc-render="false" seraph-accel-crit="1" data-no-defer="1">
+  (function () {
+      var script = document.createElement("script");
+      script.async = 1;
+      script.src = 'https://tpembars.com/NDcwMTYx.js?t=470161';
+      document.head.appendChild(script);
+  })();
+</script>
 </head>
 <body>
 
@@ -471,7 +479,7 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
       <div style="flex:1;height:2px;background:var(--red);margin:0 1rem;"></div>
     </div>
     <div class="viajes-grid">
-      <a href="https://tp.media/r?marker=480837&trs=335367&p=4114&u=https%3A%2F%2Fwww.expedia.com%2FPuerto-Rico.d602408.Destination-Travel-Guides" target="_blank" rel="noopener" class="viaje-card">
+      <a href="https://tp.media/r?marker=470161&trs=335367&p=4114&u=https%3A%2F%2Fwww.expedia.com%2FPuerto-Rico.d602408.Destination-Travel-Guides" target="_blank" rel="noopener" class="viaje-card">
         <div class="viaje-img pr">🌴</div>
         <div class="viaje-body">
           <div class="viaje-cat">🇵🇷 Destino Principal</div>
@@ -480,7 +488,7 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
           <div class="viaje-cta">Buscar vuelos y hoteles →</div>
         </div>
       </a>
-      <a href="https://tp.media/r?marker=480837&trs=335367&p=4114&u=https%3A%2F%2Fwww.expedia.com%2FOrlando.d178293.Destination-Travel-Guides" target="_blank" rel="noopener" class="viaje-card">
+      <a href="https://tp.media/r?marker=470161&trs=335367&p=4114&u=https%3A%2F%2Fwww.expedia.com%2FOrlando.d178293.Destination-Travel-Guides" target="_blank" rel="noopener" class="viaje-card">
         <div class="viaje-img orlando">🎢</div>
         <div class="viaje-body">
           <div class="viaje-cat">🌴 Boricuas en Florida</div>
@@ -489,7 +497,7 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
           <div class="viaje-cta">Ver hoteles en Orlando →</div>
         </div>
       </a>
-      <a href="https://tp.media/r?marker=480837&trs=335367&p=4114&u=https%3A%2F%2Fwww.expedia.com%2FNew-York-City.d178293.Destination-Travel-Guides" target="_blank" rel="noopener" class="viaje-card">
+      <a href="https://tp.media/r?marker=470161&trs=335367&p=4114&u=https%3A%2F%2Fwww.expedia.com%2FNew-York-City.d178293.Destination-Travel-Guides" target="_blank" rel="noopener" class="viaje-card">
         <div class="viaje-img ny">🗽</div>
         <div class="viaje-body">
           <div class="viaje-cat">🏙️ La Gran Manzana</div>
