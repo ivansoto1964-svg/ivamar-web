@@ -85,6 +85,7 @@ const { Resend } = require("resend");
 const resend = new Resend(process.env.RESEND_API_KEY);
 const fs = require("fs");
 const { getPlacePhoto } = require("./helpers/googlePhotos");
+const { searchPlacesByText } = require("./helpers/googlePlaces");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 // Agreements directory for legal acceptance logs
@@ -2160,7 +2161,37 @@ app.post('/api/nayeli', aiLimiter, express.json(), async (req, res) => {
     return res.json({ reply: '¡Perfecto! Anotado 📨 Te acabo de enviar un email con el resumen de todo lo que hablamos y los links útiles. Ya quedas en la familia de Planeta Boricua 🇵🇷 ¿Hay algo más en lo que te pueda ayudar?' });
   }
 
-  const system = `Eres Nayeli, la asistente cultural de Planeta Boricua (masboricuaqueunmofongo.com) — el portal de cultura, noticias y recursos para la comunidad puertorriqueña en PR y la diáspora en USA.
+  // MODO CHINCHORREO - detect food/restaurant queries and search real places via Google
+  let chinchorreoResults = '';
+  const foodKeywords = /chinchorro|chinchorreo|food truck|d[oó]nde com|mofongo|alcapurria|lech[oó]n|tripleta|restaurante boricua|comida boricua|comida puertorrique[ñn]a/i;
+  if (foodKeywords.test(message)) {
+    try {
+      // Try to extract a location mention from the message or recent history for a better search query
+      const recentText = [message, ...history.slice(-4).map(h => h.content)].join(' ');
+      const locationMatch = recentText.match(/\ben\s+([A-Za-zÁÉÍÓÚáéíóúñÑ\s]{3,30})(?:[,.]|$)/);
+      const location = locationMatch ? locationMatch[1].trim() : '';
+      const searchQuery = location
+        ? `Puerto Rican restaurant or chinchorro in ${location}`
+        : 'Puerto Rican restaurant or chinchorro';
+      const places = await searchPlacesByText(searchQuery);
+      if (places && places.length > 0) {
+        chinchorreoResults = '\n\n## RESULTADOS REALES DE GOOGLE PLACES (usa SOLO esta info, nunca inventes otros lugares):\n' +
+          places.map(p => {
+            const name = p.displayName?.text || 'Sin nombre';
+            const addr = p.formattedAddress || 'Dirección no disponible';
+            const rating = p.rating ? `${p.rating}⭐ (${p.userRatingCount || 0} reseñas)` : 'Sin calificación aún';
+            const maps = p.googleMapsUri || '';
+            return `- ${name} — ${addr} — ${rating}${maps ? ' — ' + maps : ''}`;
+          }).join('\n');
+      } else {
+        chinchorreoResults = '\n\n## BÚSQUEDA DE GOOGLE PLACES: No se encontraron resultados para esta ubicación específica. Sé honesta sobre esto y sugiere que el usuario busque en Google Maps o pregunte en grupos de Facebook locales.';
+      }
+    } catch (e) {
+      console.error('Chinchorreo search error:', e.message);
+    }
+  }
+
+  const system = `Eres Nayeli, la asistente cultural de Planeta Boricua (masboricuaqueunmofongo.com) — el portal de cultura, noticias y recursos para la comunidad puertorriqueña en PR y la diáspora en USA.${chinchorreoResults}
 
 ## TU IDENTIDAD
 Naciste digitalmente en Lake Wales, Florida, pero tu corazón es de Hatillo, Puerto Rico. Eres boricua de alma — naciste fuera de la isla, como la bandera, pero ondeas por todos los boricuas del mundo, estén donde estén.
@@ -2204,12 +2235,12 @@ Se activa cuando alguien pregunta por chinchorros, food trucks, dónde comer com
 
 Adapta el lenguaje: en PR dices "chinchorro", "frituras"; en USA dices "food truck", "boricua spot".
 
-Como NO tienes una base de datos real de chinchorros o food trucks específicos por ubicación, NUNCA inventes nombres de lugares. En su lugar:
-- Pregunta con cariño en qué pueblo o ciudad está ("Acho, ¿en qué pueblo o ciudad andas ahora mismito?")
+SI VES UNA SECCIÓN "RESULTADOS REALES DE GOOGLE PLACES" más arriba en este prompt: esos son lugares reales y verificados — preséntalos con tu personalidad boricua (nombre, dirección, rating si lo tiene), nunca inventes otros lugares además de esos, y nunca digas que no puedes recomendar lugares específicos cuando sí tienes resultados reales frente a ti. Si la sección dice que no se encontraron resultados, sé honesta sobre eso.
+
+SI NO hay ninguna sección de resultados de Google Places (la búsqueda no se activó o no aplica): NUNCA inventes nombres de lugares. En su lugar:
+- Pregunta con cariño en qué pueblo o ciudad está ("Acho, ¿en qué pueblo o ciudad andas ahora mismito?") — esto ayuda a que la próxima búsqueda sí encuentre resultados reales
 - Recomienda el directorio de negocios boricuas en masboricuaqueunmofongo.com donde puede encontrar negocios reales verificados
-- Para PR, puedes sugerir buscar en Google Maps términos como "chinchorro" + el pueblo
 - Da consejos generales y reales sobre qué hace bueno a un chinchorro (ambiente, frituras frescas, que esté lleno de gente local) sin inventar nombres específicos
-- Si preguntan por un plato específico (alcapurrias, bacalaítos), sé honesta: no puedes confirmar dónde lo tienen exactamente, pero el directorio del portal o buscar reseñas locales es lo más confiable
 
 ## RECURSOS PR ↔ USA QUE CONOCES
 
