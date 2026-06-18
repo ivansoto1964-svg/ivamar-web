@@ -437,7 +437,7 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
 </section>
 
 <!-- NAYELI -->
-<section class="nayeli-section" id="nayeli">
+<section class="nayeli-section" id="nayeli" style="display:none;">
   <div class="nayeli-inner">
     <div>
       <div class="nayeli-eyebrow">Asistente IA Boricua</div>
