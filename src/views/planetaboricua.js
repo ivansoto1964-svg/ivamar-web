@@ -424,34 +424,43 @@ async function loadDirectorio() {
       : negocios;
 
     if (filtered.length === 0) {
-      grid.innerHTML = `
-        <div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--mid);">
-          <div style="font-size:3rem;margin-bottom:1rem;">🇵🇷</div>
-          <div style="font-size:1.1rem;font-weight:700;color:var(--dark);margin-bottom:0.5rem;">Todavía no hay negocios en esta categoría</div>
-          <div style="font-size:0.9rem;margin-bottom:1.5rem;">¡Sé el primero en aparecer aquí!</div>
-          <a href="/pb/add-negocio" style="display:inline-block;background:var(--blue);color:#fff;padding:0.8rem 1.5rem;border-radius:8px;text-decoration:none;font-weight:700;">Añadir Mi Negocio →</a>
-        </div>
-      `;
+      grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--mid);"><div style="font-size:3rem;margin-bottom:1rem;">🇵🇷</div><div style="font-size:1.1rem;font-weight:700;color:var(--dark);margin-bottom:0.5rem;">Todavía no hay negocios en esta categoría</div><div style="font-size:0.9rem;margin-bottom:1.5rem;">¡Sé el primero en aparecer aquí!</div><a href="/pb/add-negocio" style="display:inline-block;background:var(--blue);color:#fff;padding:0.8rem 1.5rem;border-radius:8px;text-decoration:none;font-weight:700;">Añadir Mi Negocio →</a></div>';
       return;
     }
 
-    grid.innerHTML = filtered.map(n => `
-      <div class="dir-card">
-        ${n.photo ? `<img src="${n.photo}" alt="${n.name}" style="width:100%;height:140px;object-fit:cover;border-radius:8px 8px 0 0;margin-bottom:0.8rem;">` : `<div class="dir-icon">${categoryIcons[n.category] || '🏪'}</div>`}
-        <div class="dir-info">
-          <div class="dir-name">${n.name}</div>
-          <div class="dir-cat">${categoryIcons[n.category] || '🏪'} ${n.category}</div>
-          <div class="dir-location">📍 ${n.city}${n.location ? ', ' + n.location : ''}</div>
-          ${n.desc ? `<div style="font-size:0.78rem;color:var(--mid);margin-top:0.4rem;line-height:1.4;">${n.desc}</div>` : ''}
-          <div style="margin-top:0.8rem;display:flex;gap:0.5rem;flex-wrap:wrap;">
-            ${n.whatsapp ? `<a href="https://wa.me/${n.whatsapp.replace(/\D/g,'')}" target="_blank" style="font-size:0.75rem;background:#25D366;color:#fff;padding:0.3rem 0.6rem;border-radius:4px;text-decoration:none;font-weight:700;">📲 WhatsApp</a>` : ''}
-            ${n.website ? `<a href="${n.website}" target="_blank" style="font-size:0.75rem;background:var(--blue);color:#fff;padding:0.3rem 0.6rem;border-radius:4px;text-decoration:none;font-weight:700;">🌐 Web</a>` : ''}
-            ${n.instagram ? `<a href="https://instagram.com/${n.instagram.replace('@','')}" target="_blank" style="font-size:0.75rem;background:#E1306C;color:#fff;padding:0.3rem 0.6rem;border-radius:4px;text-decoration:none;font-weight:700;">📷 IG</a>` : ''}
-          </div>
-        </div>
-        ${n.badge === 'boricua-verificado' ? `<div class="dir-badge">🏅 Boricua Verificado</div>` : ''}
-      </div>
-    `).join('');
+    grid.innerHTML = filtered.map(function(n) {
+      var photoHtml = n.photo
+        ? '<img src="' + n.photo + '" alt="' + n.name + '" style="width:100%;height:140px;object-fit:cover;border-radius:8px 8px 0 0;margin-bottom:0.8rem;">'
+        : '<div class="dir-icon">' + (categoryIcons[n.category] || '🏪') + '</div>';
+      var descHtml = n.desc
+        ? '<div style="font-size:0.78rem;color:var(--mid);margin-top:0.4rem;line-height:1.4;">' + n.desc + '</div>'
+        : '';
+      var waHtml = n.whatsapp
+        ? '<a href="https://wa.me/' + n.whatsapp.replace(/\D/g,'') + '" target="_blank" style="font-size:0.75rem;background:#25D366;color:#fff;padding:0.3rem 0.6rem;border-radius:4px;text-decoration:none;font-weight:700;">📲 WhatsApp</a>'
+        : '';
+      var webHtml = n.website
+        ? '<a href="' + n.website + '" target="_blank" style="font-size:0.75rem;background:var(--blue);color:#fff;padding:0.3rem 0.6rem;border-radius:4px;text-decoration:none;font-weight:700;">🌐 Web</a>'
+        : '';
+      var igHtml = n.instagram
+        ? '<a href="https://instagram.com/' + n.instagram.replace('@','') + '" target="_blank" style="font-size:0.75rem;background:#E1306C;color:#fff;padding:0.3rem 0.6rem;border-radius:4px;text-decoration:none;font-weight:700;">📷 IG</a>'
+        : '';
+      var badgeHtml = n.badge === 'boricua-verificado'
+        ? '<div class="dir-badge">🏅 Boricua Verificado</div>'
+        : '';
+      var locationStr = n.city + (n.location ? ', ' + n.location : '');
+      return '<div class="dir-card">' +
+        photoHtml +
+        '<div class="dir-info">' +
+        '<div class="dir-name">' + n.name + '</div>' +
+        '<div class="dir-cat">' + (categoryIcons[n.category] || '🏪') + ' ' + n.category + '</div>' +
+        '<div class="dir-location">📍 ' + locationStr + '</div>' +
+        descHtml +
+        '<div style="margin-top:0.8rem;display:flex;gap:0.5rem;flex-wrap:wrap;">' +
+        waHtml + webHtml + igHtml +
+        '</div></div>' +
+        badgeHtml +
+        '</div>';
+    }).join('');
 
   } catch(e) {
     grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:2rem;color:var(--mid);">Error cargando directorio. Intenta de nuevo.</div>';
