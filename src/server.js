@@ -2333,6 +2333,33 @@ app.get("/admin/pb-reject/:token", async (req, res) => {
   }
 });
 
+// API para obtener TODOS los negocios aprobados
+app.get("/api/pb-negocios/all", (req, res) => {
+  try {
+    const fs2 = require('fs');
+    const pathLib = require('path');
+    const listingsDir = '/data/pb-listings';
+    const category = req.query.category;
+    let allNegocios = [];
+
+    if (fs2.existsSync(listingsDir)) {
+      fs2.readdirSync(listingsDir).forEach(file => {
+        if (file.endsWith('.json') && file !== 'pending.json') {
+          try {
+            const negocios = JSON.parse(fs2.readFileSync(pathLib.join(listingsDir, file), 'utf8'));
+            negocios.forEach(n => allNegocios.push(n));
+          } catch(e) {}
+        }
+      });
+    }
+
+    if (category) allNegocios = allNegocios.filter(n => n.category === category);
+    return res.json({ negocios: allNegocios });
+  } catch(e) {
+    return res.json({ negocios: [] });
+  }
+});
+
 // API para obtener negocios aprobados por ubicación
 app.get("/api/pb-negocios/:location", (req, res) => {
   try {
