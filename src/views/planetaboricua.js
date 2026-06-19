@@ -332,7 +332,7 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
     <div class="sec-divider-inner">
       <span class="sec-divider-label">Directorio Boricua en USA</span>
       <div style="flex:1;height:2px;background:var(--red);margin:0 1rem;"></div>
-      <a href="#" class="sec-divider-link">Añadir negocio →</a>
+      <a href="/pb/add-negocio" class="sec-divider-link">Añadir negocio →</a>
     </div>
     <div class="directorio-grid">
       <a href="#" class="dir-card">
@@ -389,7 +389,7 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
     </div>
     <div class="directorio-cta">
       <a href="#" class="btn-red">Ver Todos los Negocios →</a>
-      <a href="#" class="btn-outline-dark">Añadir Mi Negocio</a>
+      <a href="/pb/add-negocio" class="btn-outline-dark">Añadir Mi Negocio</a>
     </div>
   </div>
 </section>
@@ -548,7 +548,7 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
     </div>
     <div class="pb-footer-col">
       <h4>Comunidad</h4>
-      <a href="#">Añadir Mi Negocio</a>
+      <a href="/pb/add-negocio">Añadir Mi Negocio</a>
       <a href="#">Enviar Noticia</a>
       <a href="#newsletter">Newsletter</a>
       <a href="#">Contacto</a>
