@@ -1905,6 +1905,12 @@ Sitemap: https://yourcaribbeanexpert.com/sitemap.xml`);
 
 app.get("/:slug", (req, res) => {
   const slug = req.params.slug;
+
+  // Ignore static file requests (let express.static handle them)
+  if (/\.(png|jpg|jpeg|gif|svg|ico|js|css|webp|mp4|pdf|txt|xml|json)$/i.test(slug)) {
+    return res.status(404).send('Not found');
+  }
+
   const businessFile = path.join(__dirname, "..", "data", "businesses", `${slug}.json`);
   const clientsFilePath = path.join(__dirname, "..", "data", "clients.json");
 
