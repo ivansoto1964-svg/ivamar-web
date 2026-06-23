@@ -182,7 +182,7 @@ function renderNoticias(noticias) {
   }
   grid.innerHTML = noticias.map(function(n) {
     var imgHtml = n.img
-      ? '<div class="noticia-img"><img src="' + n.img + '" alt="' + n.title + '" onerror="this.parentElement.innerHTML=\'📰\'"></div>'
+      ? '<div class="noticia-img"><img src="' + n.img + '" alt="" style="width:100%;height:100%;object-fit:cover;"></div>'
       : '<div class="noticia-img">📰</div>';
     return '<a href="' + n.link + '" target="_blank" rel="noopener" class="noticia-card">' +
       imgHtml +
