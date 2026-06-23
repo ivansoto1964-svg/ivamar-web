@@ -1905,6 +1905,8 @@ Disallow: /api/
 Sitemap: https://yourcaribbeanexpert.com/sitemap.xml`);
 });
 
+app.get("/autoridad-energia-criolla", (req, res) => res.send(aecDemo));
+
 app.get("/:slug", (req, res) => {
   const slug = req.params.slug;
 
@@ -2128,7 +2130,7 @@ function ivaSendSugg(el){document.getElementById('ivaInput').value=el.textConten
 // AUTORIDAD ENERGÍA CRIOLLA — DEMO
 // ==========================================
 
-app.get("/autoridad-energia-criolla", (req, res) => res.send(aecDemo));
+// AEC route moved above /:slug
 
 app.post("/api/aec-chat", aiLimiter, express.json(), async (req, res) => {
   const { message, history = [] } = req.body;
