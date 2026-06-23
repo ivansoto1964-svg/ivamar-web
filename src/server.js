@@ -1917,7 +1917,7 @@ app.get("/:slug", (req, res) => {
   }
 
   // Ignore known demo and app routes
-  const knownRoutes = ['autoridad-energia-criolla', 'pb', 'caribex', 'admin', 'api', 'start', 'demo', 'dyerkia', 'adis'];
+  const knownRoutes = ['autoridad-energia-criolla', 'pb', 'caribex', 'admin', 'api', 'start', 'demo', 'dyerkia', 'adis', 'noticias'];
   if (knownRoutes.includes(slug)) {
     return res.status(404).send('Not found');
   }
