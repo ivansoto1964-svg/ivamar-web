@@ -1913,6 +1913,12 @@ app.get("/:slug", (req, res) => {
     return res.status(404).send('Not found');
   }
 
+  // Ignore known demo and app routes
+  const knownRoutes = ['autoridad-energia-criolla', 'pb', 'caribex', 'admin', 'api', 'start', 'demo', 'dyerkia', 'adis'];
+  if (knownRoutes.includes(slug)) {
+    return res.status(404).send('Not found');
+  }
+
   const businessFile = path.join(__dirname, "..", "data", "businesses", `${slug}.json`);
   const clientsFilePath = path.join(__dirname, "..", "data", "clients.json");
 
