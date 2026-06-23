@@ -87,6 +87,7 @@ const fs = require("fs");
 const { getPlacePhoto } = require("./helpers/googlePhotos");
 const aecDemo = require("./views/autoridad-energia-criolla");
 const addNegocioPB = require("./views/planetaboricua/add-negocio");
+const pbNoticias = require("./views/planetaboricua/noticias");
 const Stripe = require("stripe");
 const stripe = process.env.STRIPE_SECRET_KEY ? Stripe(process.env.STRIPE_SECRET_KEY) : null;
 const { searchPlacesByText } = require("./helpers/googlePlaces");
@@ -2186,6 +2187,9 @@ CÓMO RESPONDER:
 // ==========================================
 // PLANETA BORICUA — DIRECTORIO DE NEGOCIOS
 // ==========================================
+
+// Página de noticias PBN
+app.get("/noticias", (req, res) => res.send(pbNoticias));
 
 // Formulario público
 app.get("/pb/add-negocio", (req, res) => res.send(addNegocioPB));

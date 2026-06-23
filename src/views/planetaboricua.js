@@ -300,9 +300,12 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
 <section class="noticias-vivo">
   <div class="noticias-vivo-inner">
     <div class="sec-divider-inner">
-      <span class="sec-divider-label">Noticias en Vivo</span>
+      <div style="display:flex;align-items:center;gap:0.6rem;">
+        <img src="/pbn-logo.webp" alt="PBN" style="height:32px;width:32px;object-fit:contain;">
+        <span class="sec-divider-label">PBN Noticias</span>
+      </div>
       <div style="flex:1;height:2px;background:var(--red);margin:0 1rem;"></div>
-      <span style="font-size:0.65rem;color:#999;">Actualizado automáticamente</span>
+      <a href="/noticias" style="font-size:0.72rem;color:var(--red);font-weight:700;text-decoration:none;">Ver todas →</a>
     </div>
     <div class="noticias-vivo-grid" id="noticias-vivo-grid">
       <div style="background:#fff;border-radius:4px;height:120px;border-left:3px solid #eee;"></div>
