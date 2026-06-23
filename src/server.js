@@ -2745,10 +2745,12 @@ app.get('/api/noticias-pr', async (req, res) => {
       }
     } catch(e) { console.log('GNews error:', e.message); }
 
-    // RSS feeds como backup
+    // RSS feeds — fuentes específicas de PR y diáspora boricua
     const feeds = [
       { url: 'https://periodismoinvestigativo.com/feed/', source: 'Periodismo Investigativo', categoria: 'Investigación' },
-      { url: 'https://feeds.bbci.co.uk/mundo/rss.xml', source: 'BBC Mundo', categoria: 'Internacional' }
+      { url: 'https://www.noticel.com/feed/', source: 'NotiCel', categoria: 'Puerto Rico' },
+      { url: 'https://www.elnuevodia.com/rss/latest.rss', source: 'El Nuevo Día', categoria: 'Puerto Rico' },
+      { url: 'https://www.diariolasamericas.com/rss/', source: 'Diario Las Américas', categoria: 'Diáspora' }
     ];
 
     const rssResults = await Promise.allSettled(feeds.map(async (feed) => {
