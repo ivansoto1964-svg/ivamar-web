@@ -1907,6 +1907,7 @@ Sitemap: https://yourcaribbeanexpert.com/sitemap.xml`);
 });
 
 app.get("/autoridad-energia-criolla", (req, res) => res.send(aecDemo));
+app.get("/noticias", (req, res) => res.send(pbNoticias));
 
 app.get("/:slug", (req, res) => {
   const slug = req.params.slug;
@@ -2189,7 +2190,7 @@ CÓMO RESPONDER:
 // ==========================================
 
 // Página de noticias PBN
-app.get("/noticias", (req, res) => res.send(pbNoticias));
+// noticias route moved above /:slug
 
 // Formulario público
 app.get("/pb/add-negocio", (req, res) => res.send(addNegocioPB));
