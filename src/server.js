@@ -2751,7 +2751,8 @@ app.get('/api/noticias-pr', async (req, res) => {
       { url: 'https://news.google.com/rss/search?q=puerto+rico&hl=es&gl=US&ceid=US:es', source: 'Google News', categoria: 'Puerto Rico' },
       { url: 'https://www.noticel.com/feed/', source: 'NotiCel', categoria: 'Puerto Rico' },
       { url: 'https://www.elnuevodia.com/rss/latest.rss', source: 'El Nuevo Día', categoria: 'Puerto Rico' },
-      { url: 'https://www.diariolasamericas.com/rss/', source: 'Diario Las Américas', categoria: 'Diáspora' }
+      { url: 'https://www.diariolasamericas.com/rss/', source: 'Diario Las Américas', categoria: 'Diáspora' },
+      { url: 'https://www.wfla.com/tampa-hoy/feed/', source: 'Tampa Hoy', categoria: 'Florida' }
     ];
 
     const rssResults = await Promise.allSettled(feeds.map(async (feed) => {
