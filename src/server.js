@@ -2748,7 +2748,6 @@ app.get('/api/noticias-pr', async (req, res) => {
     // RSS feeds — fuentes específicas de PR y diáspora boricua
     const feeds = [
       { url: 'https://periodismoinvestigativo.com/feed/', source: 'Periodismo Investigativo', categoria: 'Investigación' },
-      { url: 'https://news.google.com/rss/search?q=puerto+rico&hl=es&gl=US&ceid=US:es', source: 'Google News', categoria: 'Puerto Rico' },
       { url: 'https://www.noticel.com/feed/', source: 'NotiCel', categoria: 'Puerto Rico' },
       { url: 'https://www.elnuevodia.com/rss/latest.rss', source: 'El Nuevo Día', categoria: 'Puerto Rico' },
       { url: 'https://www.diariolasamericas.com/rss/', source: 'Diario Las Américas', categoria: 'Diáspora' },
