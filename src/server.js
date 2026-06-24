@@ -2751,11 +2751,7 @@ app.get('/api/noticias-pr', async (req, res) => {
       { url: 'https://www.noticel.com/feed/', source: 'NotiCel', categoria: 'Puerto Rico' },
       { url: 'https://www.elnuevodia.com/rss/latest.rss', source: 'El Nuevo Día', categoria: 'Puerto Rico' },
       { url: 'https://www.diariolasamericas.com/rss/', source: 'Diario Las Américas', categoria: 'Diáspora' },
-      { url: 'https://www.wfla.com/tampa-hoy/feed/', source: 'Tampa Hoy', categoria: 'Florida' },
-      { url: 'https://www.telemundo51.com/feed/', source: 'Telemundo Miami', categoria: 'Florida' },
-      { url: 'https://www.telemundo47.com/feed/', source: 'Telemundo Nueva York', categoria: 'Nueva York' },
-      { url: 'https://www.telemundochicago.com/feed/', source: 'Telemundo Chicago', categoria: 'Illinois' },
-      { url: 'https://www.telemundo52.com/feed/', source: 'Telemundo Los Angeles', categoria: 'California' }
+      { url: 'https://eldiariony.com/feed/', source: 'El Diario NY', categoria: 'Nueva York' }
     ];
 
     const rssResults = await Promise.allSettled(feeds.map(async (feed) => {
