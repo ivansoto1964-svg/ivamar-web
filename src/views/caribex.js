@@ -205,6 +205,7 @@ nav{padding:0 1rem;}.nav-links{display:none;}
 </style>
 <script data-cfasync="false">
   (function(){var s=document.createElement("script");s.async=1;s.src="https://tpembars.com/NDgwODM3.js?t=480837";document.head.appendChild(s);})();
+  (function(s,t,a,y,twenty,two){s.Stay22=s.Stay22||{};s.Stay22.params={lmaID:"6a3d432b1efec396711dff5d"};twenty=t.createElement(a);two=t.getElementsByTagName(a)[0];twenty.async=1;twenty.src=y;two.parentNode.insertBefore(twenty,two);})(window,document,"script","https://scripts.stay22.com/letmeallez.js");
 </script>
 </head>
 <body>
