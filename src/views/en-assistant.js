@@ -450,7 +450,7 @@ nav {
 <!-- NAV -->
 <nav>
   <a href="/" class="nav-logo">
-    <div class="nav-logo-mark">AI</div>
+    <img src="/ivamar-ai-logo.png" alt="Ivamar AI" style="width:36px;height:36px;object-fit:contain;">
     <span class="nav-logo-text">Ivamar <span>AI</span></span>
   </a>
   <div class="nav-right">
