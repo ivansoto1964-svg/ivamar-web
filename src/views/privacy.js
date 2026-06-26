@@ -29,7 +29,7 @@ module.exports = `
 <div class="legal-page">
   <nav class="legal-nav">
     <a href="/" class="legal-logo">
-      <img src="/logo-white.png" alt="Ivamar AI" style="height:28px;width:auto;">
+      <img src="/ivamar-ai-logo.png" alt="Ivamar AI" style="height:28px;width:auto;">
       <span class="legal-logo-text">Ivamar <span>AI</span></span>
     </a>
     <a href="/" class="legal-back">← Back</a>

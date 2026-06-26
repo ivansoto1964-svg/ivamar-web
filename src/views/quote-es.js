@@ -79,7 +79,7 @@ module.exports = `
 <div class="iva-quote">
   <nav class="iva-q-nav">
     <a href="/es" class="iva-q-logo">
-      <img src="/logo-white.png" alt="Ivamar AI" style="height:28px;width:auto;">
+      <img src="/ivamar-ai-logo.png" alt="Ivamar AI" style="height:28px;width:auto;">
       <span class="iva-q-logo-text">Ivamar <span>AI</span></span>
     </a>
     <a href="/es" class="iva-q-back">← Volver</a>

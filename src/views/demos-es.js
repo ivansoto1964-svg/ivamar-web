@@ -57,7 +57,7 @@ module.exports = `
 <div class="demos-page">
   <nav class="demos-nav">
     <a href="/es" class="demos-logo">
-      <img src="/logo-white.png" alt="Ivamar AI" style="height:28px;width:auto;">
+      <img src="/ivamar-ai-logo.png" alt="Ivamar AI" style="height:28px;width:auto;">
     </a>
     <a href="/es" class="demos-back">← Volver</a>
   </nav>

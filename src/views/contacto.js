@@ -49,7 +49,7 @@ module.exports = `
 <div class="contact-page">
   <nav class="contact-nav">
     <a href="/es" class="contact-logo">
-      <img src="/logo-white.png" alt="Ivamar AI" style="height:28px;width:auto;">
+      <img src="/ivamar-ai-logo.png" alt="Ivamar AI" style="height:28px;width:auto;">
     </a>
     <a href="/es" class="contact-back">← Volver</a>
   </nav>

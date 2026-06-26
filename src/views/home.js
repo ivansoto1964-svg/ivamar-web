@@ -27,7 +27,7 @@ module.exports = `
 <div class="home-sel">
   <div class="home-sel-inner">
     <div class="home-sel-logo">
-      <div class="home-sel-logo-mark">AI</div>
+      <img src="/ivamar-ai-logo.png" alt="Ivamar AI" style="width:40px;height:40px;object-fit:contain;">
       <span class="home-sel-logo-text">Ivamar <span>AI</span></span>
     </div>
 
