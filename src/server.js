@@ -1906,6 +1906,18 @@ Disallow: /api/
 Sitemap: https://yourcaribbeanexpert.com/sitemap.xml`);
 });
 
+
+// Generic place photo endpoint for Planeta Boricua viajes
+app.get("/api/place-photo", async (req, res) => {
+  try {
+    const q = req.query.q || 'travel destination';
+    const url = await getPlacePhoto(q, 600, q);
+    res.json({ url: url || null });
+  } catch(e) {
+    res.json({ url: null });
+  }
+});
+
 app.get("/autoridad-energia-criolla", (req, res) => res.send(aecDemo));
 app.get("/noticias", (req, res) => res.send(pbNoticias));
 
