@@ -239,6 +239,7 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
       script.src = 'https://tpembars.com/NDcwMTYx.js?t=470161';
       document.head.appendChild(script);
   })();
+  (function(s,t,a,y,twenty,two){s.Stay22=s.Stay22||{};s.Stay22.params={lmaID:"6a4026801c8b38e97c6ad9fd"};twenty=t.createElement(a);two=t.getElementsByTagName(a)[0];twenty.async=1;twenty.src=y;two.parentNode.insertBefore(twenty,two);})(window,document,"script","https://scripts.stay22.com/letmeallez.js");
 </script>
 </head>
 <body>
