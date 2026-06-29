@@ -53,6 +53,7 @@ const formLimiter = rateLimit({
 const layout = require("./views/layout");
 const dyerKia = require("./views/dyerkia");
 const adis = require("./views/adis");
+const mrFrappe = require("./views/mr-frappe");
 const caribex = require("./views/caribex");
 const directoryTerms = require("./views/caribex/directory-terms");
 const listYourBusiness = require("./views/caribex/list-your-business");
@@ -638,6 +639,7 @@ app.use((req, res, next) => {
   }
   next();
 });
+app.get("/mr-frappe", (req, res) => res.send(mrFrappe));
 app.get("/adis", (req, res) => res.send(adis));
 app.get("/dyerkia", (req, res) => res.send(dyerKia));
 app.get("/demo-autos", (req, res) => res.send(demoDealers));
