@@ -231,6 +231,7 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
 .noticia-vivo-date{font-size:0.65rem;color:#999;margin-top:0.3rem;}
 .noticia-vivo-body{padding:1rem;display:flex;flex-direction:column;gap:0.4rem;border-left:3px solid var(--red);}
 @media(max-width:768px){.noticias-vivo-grid{grid-template-columns:1fr;}}
+@media(max-width:640px){.viajes-dest-grid{grid-template-columns:repeat(2,1fr)!important;}}
 </style>
 <script nowprocket data-noptimize="1" data-cfasync="false" data-wpfc-render="false" seraph-accel-crit="1" data-no-defer="1">
   (function () {
@@ -786,6 +787,11 @@ loadDirectorio();
         <div style="font-size:2rem;margin-bottom:0.5rem;">🚗</div>
         <div style="font-size:0.82rem;font-weight:700;color:var(--dark);">Para Tu Auto</div>
         <div style="font-size:0.7rem;color:var(--mid);margin-top:0.2rem;">87 productos</div>
+      </a>
+      <a href="https://amzn.to/4gbJZVv" target="_blank" style="text-decoration:none;background:linear-gradient(135deg,#002D62,#CE1126);border-radius:8px;padding:1.2rem;text-align:center;display:block;">
+        <div style="font-size:2rem;margin-bottom:10px;">👕</div>
+        <div style="font-size:0.82rem;font-weight:700;color:#fff;">Merch Oficial 🇵🇷</div>
+        <div style="font-size:0.7rem;color:rgba(255,255,255,0.7);margin-top:0.2rem;">Mas Boricua que un Mofongo</div>
       </a>
     </div>
     <div style="text-align:center;">
