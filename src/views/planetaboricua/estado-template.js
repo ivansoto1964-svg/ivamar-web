@@ -315,7 +315,7 @@ async function buscarProfesionales() {
   grid.innerHTML = '<div class="dir-empty" style="grid-column:1/-1;">Buscando...</div>';
   try {
     const state = '${estado.codigoEstado}';
-    const url = \`https://npiregistry.cms.hhs.gov/api/?version=2.1&first_name=\${encodeURIComponent(nombre)}&state=\${state}&limit=9&pretty=on\`;
+    const url = `/api/npi-search?nombre=${encodeURIComponent(nombre)}&estado=${state}`;
     const res = await fetch(url);
     const data = await res.json();
     const results = data.results || [];
