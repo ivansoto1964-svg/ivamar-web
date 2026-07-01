@@ -1929,7 +1929,33 @@ app.get("/api/npi-search", async (req, res) => {
     let apiUrl = `https://npiregistry.cms.hhs.gov/api/?version=2.1&state=${estado || 'FL'}&limit=9&pretty=on`;
     if (apellido) apiUrl += `&last_name=${encodeURIComponent(apellido)}`;
     if (nombre) apiUrl += `&first_name=${encodeURIComponent(nombre)}`;
-    if (especialidad) apiUrl += `&taxonomy_description=${encodeURIComponent(especialidad)}`;
+    const especialidadMap = {
+      'cardiologo': 'Cardiology', 'cardiologa': 'Cardiology', 'cardiologia': 'Cardiology',
+      'pediatra': 'Pediatrics', 'pediatria': 'Pediatrics',
+      'medico': 'Family Medicine', 'medica': 'Family Medicine', 'medicina general': 'Family Medicine', 'medico de familia': 'Family Medicine',
+      'ginecologo': 'Obstetrics', 'ginecologa': 'Obstetrics', 'ginecologia': 'Obstetrics',
+      'psiquiatra': 'Psychiatry', 'psiquiatria': 'Psychiatry',
+      'dentista': 'Dentist', 'odontologo': 'Dentist', 'odontologa': 'Dentist',
+      'ortopeda': 'Orthopedic Surgery', 'ortopedista': 'Orthopedic Surgery', 'ortopedia': 'Orthopedic Surgery',
+      'dermatologo': 'Dermatology', 'dermatologa': 'Dermatology', 'dermatologia': 'Dermatology',
+      'neurologo': 'Neurology', 'neurologa': 'Neurology', 'neurologia': 'Neurology',
+      'oftalmologo': 'Ophthalmology', 'oftalmologa': 'Ophthalmology', 'oftalmologia': 'Ophthalmology',
+      'urologa': 'Urology', 'urologo': 'Urology', 'urologia': 'Urology',
+      'endocrinologo': 'Endocrinology', 'endocrinologa': 'Endocrinology', 'endocrinologia': 'Endocrinology',
+      'gastroenterologo': 'Gastroenterology', 'gastroenterologia': 'Gastroenterology',
+      'oncologo': 'Oncology', 'oncologa': 'Oncology', 'oncologia': 'Oncology',
+      'nefrologo': 'Nephrology', 'nefrologa': 'Nephrology', 'nefrologia': 'Nephrology',
+      'reumatologo': 'Rheumatology', 'reumatologia': 'Rheumatology',
+      'pulmonologo': 'Pulmonary Disease', 'pulmonologia': 'Pulmonary Disease',
+      'enfermera': 'Nurse Practitioner', 'enfermero': 'Nurse Practitioner',
+      'fisioterapeuta': 'Physical Therapist', 'fisioterapia': 'Physical Therapist',
+      'nutricionista': 'Nutritionist', 'nutricion': 'Nutritionist',
+      'psicologo': 'Psychologist', 'psicologia': 'Psychology',
+      'cirujano': 'Surgery', 'cirujana': 'Surgery', 'cirugia': 'Surgery'
+    };
+    const espKey = (especialidad || '').toLowerCase().trim();
+    const espEN = especialidadMap[espKey] || especialidad;
+    if (espEN) apiUrl += `&taxonomy_description=${encodeURIComponent(espEN)}`;
     const url = apiUrl;
     console.log("[NPI] URL:", url);
     const https = require('https');
