@@ -804,7 +804,7 @@ loadDirectorio();
       <div style="flex:1;height:2px;background:var(--red);margin:0 1rem;"></div>
       <span style="font-size:0.72rem;color:var(--mid);">Powered by Trip.com</span>
     </div>
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:1.5rem;">
+    <div class="viajes-dest-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:1.5rem;">
 
       <a href="https://us.trip.com/hotels/list?flexType=1&cityId=-1&countryId=208&destName=Puerto%20Rico&searchType=C&optionId=208&crn=1&adult=2&curr=USD&locale=es-US&SID=2209817&allianceid=1094387&utm_campaign=520530" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;background:#fff;border-radius:10px;overflow:hidden;border:1px solid var(--border);display:block;">
         <div id="vimg-pr" style="height:140px;background:linear-gradient(135deg,#002D62,#CE1126);display:flex;align-items:center;justify-content:center;font-size:3rem;background-size:cover;background-position:center;">🇵🇷</div>
