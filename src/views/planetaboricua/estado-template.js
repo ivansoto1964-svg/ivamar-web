@@ -212,11 +212,12 @@ nav{background:rgba(255,255,255,0.97);backdrop-filter:blur(12px);border-bottom:2
     <h2 class="sec-title">Médicos y Profesionales Boricuas en ${estado.nombre}</h2>
     <p style="font-size:0.88rem;color:var(--mid);margin-bottom:1rem;">Profesionales con licencia activa verificada — datos del registro federal NPI de USA.</p>
     <div class="prof-search">
-      <input class="prof-input" id="profNombre" placeholder="Nombre del médico o especialidad...">
+      <input class="prof-input" id="profEspecialidad" placeholder="Especialidad (ej: Cardiólogo, Pediatra, Dentista...)">
+      <input class="prof-input" id="profCiudad" placeholder="Ciudad (ej: Orlando, Tampa, Miami...)">
       <button class="prof-btn" onclick="buscarProfesionales()">🔍 Buscar</button>
     </div>
     <div class="prof-grid" id="profGrid">
-      <div class="dir-empty" style="grid-column:1/-1;">Escribe un nombre o especialidad para buscar.</div>
+      <div class="dir-empty" style="grid-column:1/-1;">Selecciona una especialidad o ciudad y haz clic en Buscar.</div>
     </div>
   </div>
 </section>
@@ -307,32 +308,45 @@ function buscarNegocios() {
   renderNegocios(filtrados);
 }
 
+// Hispanic last names for Spanish speaker badge
+const hispanicNames = ['garcia', 'rivera', 'rodriguez', 'martinez', 'lopez', 'gonzalez', 'hernandez', 'perez', 'sanchez', 'ramirez', 'torres', 'flores', 'diaz', 'morales', 'ortiz', 'cruz', 'reyes', 'vega', 'castillo', 'jimenez', 'vargas', 'delgado', 'espinoza', 'padilla', 'acosta', 'nieves', 'colon', 'santiago', 'rosario', 'figueroa', 'ramos', 'ayala', 'ocasio', 'velez', 'suarez', 'mendez', 'crespo', 'resto', 'negron', 'cardona', 'pagan', 'lebron', 'molina', 'serrano', 'medina', 'guerrero', 'soto', 'rojas', 'romero', 'dominguez', 'chavez', 'contreras', 'mendoza', 'aguilar', 'ruiz', 'guzman', 'silva', 'nunez', 'munoz'];
+
+function isHispanic(lastName) {
+  return hispanicNames.includes((lastName || '').toLowerCase());
+}
+
 // Load profesionales from NPI API
 async function buscarProfesionales() {
-  const nombre = document.getElementById('profNombre').value.trim();
-  if (!nombre) return;
+  const especialidad = document.getElementById('profEspecialidad').value.trim();
+  const ciudad = document.getElementById('profCiudad').value.trim();
   const grid = document.getElementById('profGrid');
   grid.innerHTML = '<div class="dir-empty" style="grid-column:1/-1;">Buscando...</div>';
   try {
     const state = '${estado.codigoEstado}';
-    const url = '/api/npi-search?nombre=' + encodeURIComponent(nombre) + '&estado=' + state;
+    let url = '/api/npi-search?estado=' + state + '&limit=12';
+    if (especialidad) url += '&especialidad=' + encodeURIComponent(especialidad);
+    if (ciudad) url += '&ciudad=' + encodeURIComponent(ciudad);
+    if (!especialidad && !ciudad) url += '&especialidad=physician';
     const res = await fetch(url);
     const data = await res.json();
     const results = data.results || [];
     if (!results.length) {
-      grid.innerHTML = '<div class="dir-empty" style="grid-column:1/-1;">No encontramos resultados. Intenta con otro nombre o especialidad.</div>';
+      grid.innerHTML = '<div class="dir-empty" style="grid-column:1/-1;">No encontramos resultados. Intenta con otra especialidad o ciudad.</div>';
       return;
     }
     grid.innerHTML = results.map(r => {
       const basic = r.basic || {};
-      const addr = (r.addresses || [])[0] || {};
+      const addrs = r.addresses || [];
+      const addr = addrs.find(a => a.address_purpose === 'LOCATION') || addrs[0] || {};
       const tax = (r.taxonomies || [])[0] || {};
-      const nombre = basic.name_prefix ? basic.name_prefix + ' ' + basic.first_name + ' ' + basic.last_name : basic.first_name + ' ' + basic.last_name;
+      const fullName = (basic.name_prefix && basic.name_prefix !== '--' ? basic.name_prefix + ' ' : '') + (basic.first_name || '') + ' ' + (basic.last_name || '');
+      const hispanic = isHispanic(basic.last_name);
+      const phone = addr.telephone_number || '';
       return \`
         <div class="prof-card">
           <div class="prof-card-spec">\${tax.desc || 'Profesional de Salud'}</div>
-          <div class="prof-card-name">\${nombre}<span class="prof-badge">✓ Licencia Activa</span></div>
-          <div class="prof-card-loc">📍 \${addr.city || ''}\${addr.city ? ', ' : ''}\${addr.state || ''}</div>
+          <div class="prof-card-name">\${fullName.trim()}<span class="prof-badge">✓ Licencia Activa</span>\${hispanic ? '<span class="prof-badge" style="background:#FFF3E0;color:#E65100;">🇵🇷 Probablemente habla español</span>' : ''}</div>
+          <div class="prof-card-loc">📍 \${addr.city || ''}\${addr.city ? ', ' : ''}\${addr.state || ''}\${phone ? ' · 📞 ' + phone : ''}</div>
         </div>
       \`;
     }).join('');
