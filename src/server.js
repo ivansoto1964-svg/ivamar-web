@@ -639,6 +639,18 @@ app.use((req, res, next) => {
   }
   next();
 });
+app.get("/florida", async (req, res) => {
+  try {
+    const estado = JSON.parse(fs.readFileSync(__dirname + "/data/estados/florida.json", "utf8"));
+    const heroPhoto = await getPlacePhoto("Florida boricua community Orlando", 1600, "Florida boricua community Orlando");
+    estado.heroPhoto = heroPhoto;
+    res.send(renderEstado(estado));
+  } catch(e) {
+    console.error(e);
+    res.status(500).send("Error loading Florida page");
+  }
+});
+
 app.get("/mr-frappe", (req, res) => res.send(mrFrappe));
 app.get("/adis", (req, res) => res.send(adis));
 app.get("/dyerkia", (req, res) => res.send(dyerKia));
