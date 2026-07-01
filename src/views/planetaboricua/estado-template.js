@@ -213,7 +213,13 @@ nav{background:rgba(255,255,255,0.97);backdrop-filter:blur(12px);border-bottom:2
     <p style="font-size:0.88rem;color:var(--mid);margin-bottom:1rem;">Profesionales con licencia activa verificada — datos del registro federal NPI de USA.</p>
     <div class="prof-search">
       <input class="prof-input" id="profEspecialidad" placeholder="Especialidad (ej: Cardiólogo, Pediatra, Dentista...)">
-      <input class="prof-input" id="profCiudad" placeholder="Ciudad (ej: Orlando, Tampa, Miami...)">
+      <input class="prof-input" id="profZip" placeholder="Código Postal (ej: 34741)" maxlength="5" style="max-width:160px;">
+      <select class="prof-input" id="profRadio" style="max-width:160px;">
+        <option value="10">📍 10 millas</option>
+        <option value="20" selected>📍 20 millas</option>
+        <option value="30">📍 30 millas</option>
+        <option value="50">📍 50 millas</option>
+      </select>
       <button class="prof-btn" onclick="buscarProfesionales()">🔍 Buscar</button>
     </div>
     <div class="prof-grid" id="profGrid">
@@ -318,15 +324,18 @@ function isHispanic(lastName) {
 // Load profesionales from NPI API
 async function buscarProfesionales() {
   const especialidad = document.getElementById('profEspecialidad').value.trim();
-  const ciudad = document.getElementById('profCiudad').value.trim();
   const grid = document.getElementById('profGrid');
   grid.innerHTML = '<div class="dir-empty" style="grid-column:1/-1;">Buscando...</div>';
   try {
     const state = '${estado.codigoEstado}';
-    let url = '/api/npi-search?estado=' + state + '&limit=12';
+    const zip = document.getElementById('profZip').value.trim();
+    const radio = document.getElementById('profRadio').value;
+    let url = '/api/npi-search?estado=' + state;
     if (especialidad) url += '&especialidad=' + encodeURIComponent(especialidad);
-    if (ciudad) url += '&ciudad=' + encodeURIComponent(ciudad);
-    if (!especialidad && !ciudad) url += '&especialidad=physician';
+    if (zip) {
+      url += '&postal_code=' + encodeURIComponent(zip) + '&radio=' + radio;
+    }
+    if (!especialidad) url += '&especialidad=Family Medicine';
     const res = await fetch(url);
     const data = await res.json();
     const results = data.results || [];
