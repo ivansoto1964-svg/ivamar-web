@@ -1986,7 +1986,6 @@ app.get("/api/npi-search", async (req, res) => {
           }));
           res.json({ result_count: total, results });
         } catch(e) { res.json({ results: [] }); }
-        catch(e) { res.json({ results: [] }); }
       });
     }).on('error', () => res.json({ results: [] }));
   } catch(e) {
