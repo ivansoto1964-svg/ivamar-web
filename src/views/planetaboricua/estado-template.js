@@ -403,7 +403,6 @@ async function buscarProfesionales() {
     }
 
     const cards = results.map(r => {
-    const cards = results.map(r => {
       const nameParts = (r.name || '').split(',');
       const lastName = (nameParts[0] || '').trim();
       const firstName = (nameParts[1] || '').trim();
@@ -412,9 +411,6 @@ async function buscarProfesionales() {
       const phone = r.phone || '';
       const address = r.address || '';
       const type = r.type || 'Profesional de Salud';
-      const addrs = r.addresses || [];
-      const addr = addrs.find(a => a.address_purpose === 'LOCATION') || addrs[0] || {};
-      const tax = (r.taxonomies || []).find(t => t.primary) || (r.taxonomies || [])[0] || {};
 
       return \`<div style="background:#fff;border-radius:10px;padding:1.2rem;border:1px solid var(--border);transition:box-shadow 0.2s;" onmouseover="this.style.boxShadow='0 4px 16px rgba(0,0,0,0.08)'" onmouseout="this.style.boxShadow='none'">
         <div style="font-size:0.65rem;font-weight:800;color:var(--blue);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.3rem;">\${type}</div>
