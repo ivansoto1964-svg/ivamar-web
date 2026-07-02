@@ -1938,7 +1938,7 @@ app.get("/api/npi-search", async (req, res) => {
     const especialidadMap = {
       'cardiologo': 'Cardiology', 'cardiologa': 'Cardiology', 'cardiologia': 'Cardiology',
       'pediatra': 'Pediatrics', 'pediatria': 'Pediatrics',
-      'medico': 'Family Medicine', 'medica': 'Family Medicine', 'medicina general': 'Family Medicine', 'medico de familia': 'Family Medicine',
+      'medico': 'Family Medicine', 'medica': 'Family Medicine', 'medicina general': 'Family Medicine', 'medico de familia': 'Family Medicine', 'generalista': 'Family Medicine', 'medico general': 'Family Medicine', 'doctor': 'Family Medicine',
       'ginecologo': 'Obstetrics', 'ginecologa': 'Obstetrics', 'ginecologia': 'Obstetrics',
       'psiquiatra': 'Psychiatry', 'psiquiatria': 'Psychiatry',
       'dentista': 'Dentist', 'odontologo': 'Dentist', 'odontologa': 'Dentist',
@@ -1992,6 +1992,7 @@ app.get("/autoridad-energia-criolla", (req, res) => res.send(aecDemo));
 app.get("/noticias", (req, res) => res.send(pbNoticias));
 
 app.get("/:slug", (req, res) => {
+  try { decodeURIComponent(req.params.slug); } catch(e) { return res.status(400).send("Invalid URL"); }
   const slug = req.params.slug;
 
   // Ignore static file requests (let express.static handle them)
