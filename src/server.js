@@ -1925,40 +1925,23 @@ Sitemap: https://yourcaribbeanexpert.com/sitemap.xml`);
 // Generic place photo endpoint for Planeta Boricua viajes
 app.get("/api/npi-search", async (req, res) => {
   try {
-    const { nombre, apellido, especialidad, estado, postal_code, radio } = req.query;
-    let apiUrl = `https://clinicaltables.nlm.nih.gov/api/npi_idv/v3/search?terms=${encodeURIComponent(espEN)}&maxList=25&q=addr_practice.state:${estado || 'FL'}${postal_code ? '+AND+addr_practice.zip:' + postal_code : ''}&ef=name.full,addr_practice.full,phone,provider_type`;
-    if (postal_code) {
-      apiUrl += `&postal_code=${encodeURIComponent(postal_code)}`;
-      if (radio) apiUrl += `&radius=${encodeURIComponent(radio)}`;
-    } else {
-      apiUrl += `&state=${estado || 'FL'}`;
-    }
-    if (apellido) apiUrl += `&last_name=${encodeURIComponent(apellido)}`;
-    if (nombre) apiUrl += `&first_name=${encodeURIComponent(nombre)}`;
+    const { especialidad, estado, postal_code, radio } = req.query;
     const especialidadMap = {
-      'cardiologo': 'Cardiology', 'cardiologa': 'Cardiology', 'cardiologia': 'Cardiology',
-      'pediatra': 'Pediatrics', 'pediatria': 'Pediatrics',
-      'medico': 'Family Medicine', 'medica': 'Family Medicine', 'medicina general': 'Family Medicine', 'medico de familia': 'Family Medicine', 'generalista': 'Family Medicine', 'medico general': 'Family Medicine', 'doctor': 'Family Medicine',
-      'ginecologo': 'Obstetrics', 'ginecologa': 'Obstetrics', 'ginecologia': 'Obstetrics',
-      'psiquiatra': 'Psychiatry', 'psiquiatria': 'Psychiatry',
-      'dentista': 'Dentist', 'odontologo': 'Dentist', 'odontologa': 'Dentist',
-      'ortopeda': 'Orthopedic Surgery', 'ortopedista': 'Orthopedic Surgery', 'ortopedia': 'Orthopedic Surgery',
-      'dermatologo': 'Dermatology', 'dermatologa': 'Dermatology', 'dermatologia': 'Dermatology',
-      'neurologo': 'Neurology', 'neurologa': 'Neurology', 'neurologia': 'Neurology',
-      'oftalmologo': 'Ophthalmology', 'oftalmologa': 'Ophthalmology', 'oftalmologia': 'Ophthalmology',
-      'urologa': 'Urology', 'urologo': 'Urology', 'urologia': 'Urology',
-      'endocrinologo': 'Endocrinology', 'endocrinologa': 'Endocrinology', 'endocrinologia': 'Endocrinology',
-      'gastroenterologo': 'Gastroenterology', 'gastroenterologia': 'Gastroenterology',
-      'oncologo': 'Oncology', 'oncologa': 'Oncology', 'oncologia': 'Oncology',
-      'nefrologo': 'Nephrology', 'nefrologa': 'Nephrology', 'nefrologia': 'Nephrology',
-      'reumatologo': 'Rheumatology', 'reumatologia': 'Rheumatology',
-      'pulmonologo': 'Pulmonary Disease', 'pulmonologia': 'Pulmonary Disease',
-      'enfermera': 'Nurse Practitioner', 'enfermero': 'Nurse Practitioner',
-      'fisioterapeuta': 'Physical Therapist', 'fisioterapia': 'Physical Therapist',
-      'nutricionista': 'Nutritionist', 'nutricion': 'Nutritionist',
-      'psicologo': 'Psychologist', 'psicologia': 'Psychology',
-      'cirujano': 'Surgery', 'cirujana': 'Surgery', 'cirugia': 'Surgery'
+      'cardiologo': 'Cardiology', 'cardiologa': 'Cardiology', 'pediatra': 'Pediatrics',
+      'medico': 'Family Medicine', 'generalista': 'Family Medicine', 'doctor': 'Family Medicine',
+      'ginecologo': 'Obstetrics', 'psiquiatra': 'Psychiatry', 'dentista': 'Dentist',
+      'ortopeda': 'Orthopedic Surgery', 'dermatologo': 'Dermatology', 'neurologo': 'Neurology',
+      'oftalmologo': 'Ophthalmology', 'urologo': 'Urology', 'endocrinologo': 'Endocrinology',
+      'gastroenterologo': 'Gastroenterology', 'oncologo': 'Oncology', 'nefrologo': 'Nephrology',
+      'reumatologo': 'Rheumatology', 'pulmonologo': 'Pulmonary Disease',
+      'enfermera': 'Nurse Practitioner', 'fisioterapeuta': 'Physical Therapist',
+      'nutricionista': 'Nutritionist', 'psicologo': 'Psychologist', 'cirujano': 'Surgery'
     };
+    const espKey = (especialidad || '').toLowerCase().trim();
+    const espEN = especialidadMap[espKey] || especialidad || 'Family Medicine';
+    const stateCode = estado || 'FL';
+    const zipFilter = postal_code ? `+AND+addr_practice.zip:${postal_code}` : '';
+    const apiUrl = `https://clinicaltables.nlm.nih.gov/api/npi_idv/v3/search?terms=${encodeURIComponent(espEN)}&maxList=25&q=addr_practice.state:${stateCode}${zipFilter}&ef=name.full,addr_practice.full,phone,provider_type`;
     const espKey = (especialidad || '').toLowerCase().trim();
     const espEN = especialidadMap[espKey] || especialidad;
     if (espEN) apiUrl += `&taxonomy_description=${encodeURIComponent(espEN)}`;
