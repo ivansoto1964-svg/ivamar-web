@@ -1923,50 +1923,6 @@ Sitemap: https://yourcaribbeanexpert.com/sitemap.xml`);
 
 
 // Generic place photo endpoint for Planeta Boricua viajes
-app.get("/api/npi-search", async (req, res) => {
-  try {
-    const { especialidad, estado, postal_code, radio } = req.query;
-    const especialidadMap = {
-      'cardiologo': 'Cardiology', 'cardiologa': 'Cardiology', 'pediatra': 'Pediatrics',
-      'medico': 'Family Medicine', 'generalista': 'Family Medicine', 'doctor': 'Family Medicine',
-      'ginecologo': 'Obstetrics', 'psiquiatra': 'Psychiatry', 'dentista': 'Dentist',
-      'ortopeda': 'Orthopedic Surgery', 'dermatologo': 'Dermatology', 'neurologo': 'Neurology',
-      'oftalmologo': 'Ophthalmology', 'urologo': 'Urology', 'endocrinologo': 'Endocrinology',
-      'gastroenterologo': 'Gastroenterology', 'oncologo': 'Oncology', 'nefrologo': 'Nephrology',
-      'reumatologo': 'Rheumatology', 'pulmonologo': 'Pulmonary Disease',
-      'enfermera': 'Nurse Practitioner', 'fisioterapeuta': 'Physical Therapist',
-      'nutricionista': 'Nutritionist', 'psicologo': 'Psychologist', 'cirujano': 'Surgery'
-    };
-    const espKey = (especialidad || '').toLowerCase().trim();
-    const espEN = especialidadMap[espKey] || especialidad || 'Family Medicine';
-    const stateCode = estado || 'FL';
-    const zipFilter = postal_code ? `+AND+addr_practice.zip:${postal_code}` : '';
-    const apiUrl = `https://clinicaltables.nlm.nih.gov/api/npi_idv/v3/search?terms=${encodeURIComponent(espEN)}&maxList=25&q=addr_practice.state:${stateCode}${zipFilter}&ef=name.full,addr_practice.full,phone,provider_type&count=25`;
-    const url = apiUrl;
-    console.log("[NPI] URL:", url);
-    const https = require('https');
-    https.get(url, (r) => {
-      let data = '';
-      r.on('data', chunk => data += chunk);
-      r.on('end', () => {
-        try {
-          const parsed = JSON.parse(data);
-          // clinicaltables format: [total, [npis], {fields}, [[display]]]
-          const total = parsed[0] || 0;
-          const fields = parsed[2] || {};
-          const names = fields['name.full'] || [];
-          const addrs = fields['addr_practice.full'] || [];
-          const phones = fields['phone'] || [];
-          const types = fields['provider_type'] || [];
-          const results = names.map((name, idx) => ({
-            name: name,
-            address: addrs[idx] || '',
-            phone: phones[idx] || '',
-            type: types[idx] || ''
-          }));
-          res.json({ result_count: total, results });
-        } catch(e) { res.json({ results: [] }); }
-      });
     }).on('error', () => res.json({ results: [] }));
   } catch(e) {
     res.json({ results: [] });
