@@ -1,0 +1,63 @@
+{
+  "slug": "florida",
+  "nombre": "Florida",
+  "bandera": "🌴",
+  "codigoEstado": "FL",
+  "tagline": "La capital boricua de la diáspora — donde la isla nunca se olvida.",
+  "descripcionSEO": "Comunidad boricua en Florida — directorio de negocios, médicos y profesionales boricuas en Orlando, Kissimmee, Tampa, Miami y Jacksonville.",
+  "poblacion": "1.2M+",
+  "ranking": "1",
+  "gradient": "linear-gradient(135deg, #002D62 0%, #CE1126 100%)",
+  "tripcomUrl": "https://us.trip.com/hotels/list?flexType=1&cityId=-1&countryId=66&destName=Florida&searchType=C&crn=1&adult=2&curr=USD&locale=es-US&SID=2209817&allianceid=1094387&utm_campaign=520530",
+  "overview": "Florida es el hogar de la comunidad boricua más grande fuera de Puerto Rico y Nueva York. Con más de 1.2 millones de puertorriqueños, el estado se ha convertido en la segunda isla — un lugar donde el español se escucha en cada esquina, el mofongo se sirve en restaurantes de cada ciudad, y la bandera de Puerto Rico ondea con orgullo.\n\nLa diáspora boricua llegó a Florida en grandes números después del Huracán María en 2017, uniendo fuerzas con las comunidades que ya llevaban décadas construyendo sus vidas en el sol de la Florida. Hoy, Florida tiene más boricuas que nunca — y una identidad cultural boricua más fuerte que nunca.\n\nDesde los barrios de Kissimmee conocidos como 'Osceola del Caribe', hasta la energía latina de Miami, pasando por la comunidad creciente de Tampa — Florida es donde Puerto Rico se reencuentra consigo mismo en tierra firme.",
+  "ciudades": [
+    {
+      "slug": "orlando",
+      "nombre": "Orlando / Kissimmee",
+      "emoji": "🎢",
+      "poblacionBoricua": "350,000+",
+      "photoQuery": "Kissimmee Florida Puerto Rican community",
+      "desc": "El corazón de la comunidad boricua en Florida. Kissimmee es conocida como 'Osceola del Caribe' — con restaurantes, bodegas y negocios boricuas en cada cuadra. La mayor concentración de puertorriqueños fuera de la isla."
+    },
+    {
+      "slug": "tampa",
+      "nombre": "Tampa / Lakeland",
+      "emoji": "⚓",
+      "poblacionBoricua": "150,000+",
+      "photoQuery": "Tampa Bay Florida skyline waterfront",
+      "desc": "Tampa tiene una de las comunidades boricuas más activas del sur de Florida. Ybor City, con su historia latina profunda, se mezcla con los nuevos barrios boricuas del área metropolitana."
+    },
+    {
+      "slug": "miami",
+      "nombre": "Miami",
+      "emoji": "🌊",
+      "poblacionBoricua": "200,000+",
+      "photoQuery": "Miami Florida Little Havana Latin community",
+      "desc": "Miami es la ciudad más latina de USA — y la comunidad boricua tiene una presencia fuerte y orgullosa. Hialeah, Doral y los barrios del noroeste son centros de la vida boricua en el sur de Florida."
+    },
+    {
+      "slug": "jacksonville",
+      "nombre": "Jacksonville",
+      "emoji": "🌉",
+      "poblacionBoricua": "80,000+",
+      "photoQuery": "Jacksonville Florida downtown bridge",
+      "desc": "Jacksonville tiene una comunidad boricua significativa, especialmente alrededor de las bases militares de la región. Una ciudad en crecimiento donde los boricuas están construyendo raíces sólidas."
+    },
+    {
+      "slug": "saint-cloud",
+      "nombre": "Saint Cloud / Osceola",
+      "emoji": "☁️",
+      "poblacionBoricua": "120,000+",
+      "photoQuery": "Saint Cloud Florida Osceola County",
+      "desc": "El condado de Osceola es el más boricua de toda la diáspora fuera de PR. Saint Cloud y sus alrededores tienen una densidad de puertorriqueños comparable a municipios de la isla."
+    },
+    {
+      "slug": "daytona",
+      "nombre": "Daytona / Volusia",
+      "emoji": "🏖️",
+      "poblacionBoricua": "50,000+",
+      "photoQuery": "Daytona Beach Florida",
+      "desc": "La costa este de Florida tiene una comunidad boricua creciente. Daytona Beach y el condado de Volusia son destinos populares para boricuas que buscan playas accesibles y vida tranquila."
+    }
+  ]
+}
