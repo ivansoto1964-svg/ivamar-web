@@ -1923,11 +1923,6 @@ Sitemap: https://yourcaribbeanexpert.com/sitemap.xml`);
 
 
 // Generic place photo endpoint for Planeta Boricua viajes
-    }).on('error', () => res.json({ results: [] }));
-  } catch(e) {
-    res.json({ results: [] });
-  }
-});
 
 app.get("/api/place-photo", async (req, res) => {
   try {
