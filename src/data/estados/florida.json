@@ -4,60 +4,145 @@
   "bandera": "🌴",
   "codigoEstado": "FL",
   "tagline": "La capital boricua de la diáspora — donde la isla nunca se olvida.",
-  "descripcionSEO": "Comunidad boricua en Florida — directorio de negocios, médicos y profesionales boricuas en Orlando, Kissimmee, Tampa, Miami y Jacksonville.",
+  "descripcionSEO": "Comunidad boricua en Florida — directorio de negocios, recursos y oficinas de gobierno en Orlando, Kissimmee, Tampa, Miami y Jacksonville.",
   "poblacion": "1.2M+",
   "ranking": "1",
   "gradient": "linear-gradient(135deg, #002D62 0%, #CE1126 100%)",
   "tripcomUrl": "https://us.trip.com/hotels/list?flexType=1&cityId=-1&countryId=66&destName=Florida&searchType=C&crn=1&adult=2&curr=USD&locale=es-US&SID=2209817&allianceid=1094387&utm_campaign=520530",
-  "overview": "Florida es el hogar de la comunidad boricua más grande fuera de Puerto Rico y Nueva York. Con más de 1.2 millones de puertorriqueños, el estado se ha convertido en la segunda isla — un lugar donde el español se escucha en cada esquina, el mofongo se sirve en restaurantes de cada ciudad, y la bandera de Puerto Rico ondea con orgullo.\n\nLa diáspora boricua llegó a Florida en grandes números después del Huracán María en 2017, uniendo fuerzas con las comunidades que ya llevaban décadas construyendo sus vidas en el sol de la Florida. Hoy, Florida tiene más boricuas que nunca — y una identidad cultural boricua más fuerte que nunca.\n\nDesde los barrios de Kissimmee conocidos como 'Osceola del Caribe', hasta la energía latina de Miami, pasando por la comunidad creciente de Tampa — Florida es donde Puerto Rico se reencuentra consigo mismo en tierra firme.",
   "ciudades": [
     {
       "slug": "orlando",
-      "nombre": "Orlando / Kissimmee",
+      "nombre": "Orlando",
       "emoji": "🎢",
       "poblacionBoricua": "350,000+",
-      "photoQuery": "Kissimmee Florida Puerto Rican community",
-      "desc": "El corazón de la comunidad boricua en Florida. Kissimmee es conocida como 'Osceola del Caribe' — con restaurantes, bodegas y negocios boricuas en cada cuadra. La mayor concentración de puertorriqueños fuera de la isla."
+      "photoQuery": "Orlando Florida downtown skyline",
+      "desc": "El corazón de la comunidad boricua en Florida. La mayor concentración de puertorriqueños fuera de la isla."
+    },
+    {
+      "slug": "kissimmee",
+      "nombre": "Kissimmee",
+      "emoji": "🌴",
+      "poblacionBoricua": "120,000+",
+      "photoQuery": "Kissimmee Florida downtown",
+      "desc": "Conocida como 'Osceola del Caribe' — con restaurantes, bodegas y negocios boricuas en cada cuadra."
     },
     {
       "slug": "tampa",
-      "nombre": "Tampa / Lakeland",
+      "nombre": "Tampa",
       "emoji": "⚓",
       "poblacionBoricua": "150,000+",
-      "photoQuery": "Tampa Bay Florida skyline waterfront",
-      "desc": "Tampa tiene una de las comunidades boricuas más activas del sur de Florida. Ybor City, con su historia latina profunda, se mezcla con los nuevos barrios boricuas del área metropolitana."
+      "photoQuery": "Tampa Bay Florida waterfront",
+      "desc": "Tampa tiene una de las comunidades boricuas más activas del sur de Florida."
     },
     {
       "slug": "miami",
       "nombre": "Miami",
       "emoji": "🌊",
       "poblacionBoricua": "200,000+",
-      "photoQuery": "Miami Florida Little Havana Latin community",
-      "desc": "Miami es la ciudad más latina de USA — y la comunidad boricua tiene una presencia fuerte y orgullosa. Hialeah, Doral y los barrios del noroeste son centros de la vida boricua en el sur de Florida."
+      "photoQuery": "Miami Florida skyline beach",
+      "desc": "Miami es la ciudad más latina de USA — con una comunidad boricua fuerte y orgullosa."
     },
     {
       "slug": "jacksonville",
       "nombre": "Jacksonville",
       "emoji": "🌉",
       "poblacionBoricua": "80,000+",
-      "photoQuery": "Jacksonville Florida downtown bridge",
-      "desc": "Jacksonville tiene una comunidad boricua significativa, especialmente alrededor de las bases militares de la región. Una ciudad en crecimiento donde los boricuas están construyendo raíces sólidas."
+      "photoQuery": "Jacksonville Florida bridge downtown",
+      "desc": "Jacksonville tiene una comunidad boricua significativa, especialmente alrededor de las bases militares."
     },
     {
       "slug": "saint-cloud",
-      "nombre": "Saint Cloud / Osceola",
+      "nombre": "Saint Cloud",
       "emoji": "☁️",
       "poblacionBoricua": "120,000+",
-      "photoQuery": "Saint Cloud Florida Osceola County",
-      "desc": "El condado de Osceola es el más boricua de toda la diáspora fuera de PR. Saint Cloud y sus alrededores tienen una densidad de puertorriqueños comparable a municipios de la isla."
+      "photoQuery": "Saint Cloud Florida Osceola",
+      "desc": "El condado de Osceola es el más boricua de toda la diáspora fuera de PR."
+    }
+  ],
+  "condados": [
+    {
+      "slug": "osceola",
+      "nombre": "Osceola County (Kissimmee / Saint Cloud)",
+      "recursos": [
+        {"icon": "⚡", "nombre": "Electricidad", "desc": "Duke Energy Florida", "url": "https://www.duke-energy.com/home/start-stop-move"},
+        {"icon": "💧", "nombre": "Agua", "desc": "Toho Water Authority", "url": "https://www.tohowater.com"},
+        {"icon": "🚗", "nombre": "DMV / Tag", "desc": "Osceola Tax Collector", "url": "https://www.osceolataxcollector.org"},
+        {"icon": "🏠", "nombre": "Property Tax", "desc": "Osceola Property Appraiser", "url": "https://www.property-appraiser.org"},
+        {"icon": "🏫", "nombre": "Escuelas", "desc": "Osceola County Schools", "url": "https://www.osceolaschools.net"},
+        {"icon": "🏥", "nombre": "Salud", "desc": "Osceola County Health Dept", "url": "https://osceola.floridahealth.gov"},
+        {"icon": "🗳️", "nombre": "Votaciones", "desc": "Osceola Supervisor of Elections", "url": "https://www.osceola.org/agencies-departments/supervisor-of-elections"},
+        {"icon": "🆘", "nombre": "Asistencia Social", "desc": "ACCESS Florida", "url": "https://www.myflorida.com/accessflorida"}
+      ]
     },
     {
-      "slug": "daytona",
-      "nombre": "Daytona / Volusia",
-      "emoji": "🏖️",
-      "poblacionBoricua": "50,000+",
-      "photoQuery": "Daytona Beach Florida",
-      "desc": "La costa este de Florida tiene una comunidad boricua creciente. Daytona Beach y el condado de Volusia son destinos populares para boricuas que buscan playas accesibles y vida tranquila."
+      "slug": "orange",
+      "nombre": "Orange County (Orlando)",
+      "recursos": [
+        {"icon": "⚡", "nombre": "Electricidad", "desc": "Duke Energy / OUC", "url": "https://www.ouc.com"},
+        {"icon": "💧", "nombre": "Agua", "desc": "Orange County Utilities", "url": "https://www.ocfl.net/EnvironmentEnergy/Utilities.aspx"},
+        {"icon": "🚗", "nombre": "DMV / Tag", "desc": "Orange County Tax Collector", "url": "https://www.octaxcol.com"},
+        {"icon": "🏠", "nombre": "Property Tax", "desc": "Orange County Property Appraiser", "url": "https://www.ocpafl.org"},
+        {"icon": "🏫", "nombre": "Escuelas", "desc": "Orange County Public Schools", "url": "https://www.ocps.net"},
+        {"icon": "🏥", "nombre": "Salud", "desc": "Orange County Health Dept", "url": "https://orange.floridahealth.gov"},
+        {"icon": "🗳️", "nombre": "Votaciones", "desc": "Orange County Supervisor of Elections", "url": "https://www.ocfelections.com"},
+        {"icon": "🆘", "nombre": "Asistencia Social", "desc": "ACCESS Florida", "url": "https://www.myflorida.com/accessflorida"}
+      ]
+    },
+    {
+      "slug": "hillsborough",
+      "nombre": "Hillsborough County (Tampa)",
+      "recursos": [
+        {"icon": "⚡", "nombre": "Electricidad", "desc": "TECO Peoples Gas", "url": "https://www.tampaelectric.com"},
+        {"icon": "💧", "nombre": "Agua", "desc": "Hillsborough County Water", "url": "https://www.hillsboroughcounty.org/utilities"},
+        {"icon": "🚗", "nombre": "DMV / Tag", "desc": "Hillsborough Tax Collector", "url": "https://www.hillstax.org"},
+        {"icon": "🏠", "nombre": "Property Tax", "desc": "Hillsborough Property Appraiser", "url": "https://www.hcpafl.org"},
+        {"icon": "🏫", "nombre": "Escuelas", "desc": "Hillsborough County Schools", "url": "https://www.sdhc.k12.fl.us"},
+        {"icon": "🏥", "nombre": "Salud", "desc": "Hillsborough Health Dept", "url": "https://hillsborough.floridahealth.gov"},
+        {"icon": "🗳️", "nombre": "Votaciones", "desc": "Hillsborough Supervisor of Elections", "url": "https://www.votehillsborough.gov"},
+        {"icon": "🆘", "nombre": "Asistencia Social", "desc": "ACCESS Florida", "url": "https://www.myflorida.com/accessflorida"}
+      ]
+    },
+    {
+      "slug": "polk",
+      "nombre": "Polk County (Lakeland / Winter Haven)",
+      "recursos": [
+        {"icon": "⚡", "nombre": "Electricidad", "desc": "Duke Energy / Lakeland Electric", "url": "https://www.lakelandelectric.com"},
+        {"icon": "💧", "nombre": "Agua", "desc": "Polk County Utilities", "url": "https://www.polk-county.net/utilities"},
+        {"icon": "🚗", "nombre": "DMV / Tag", "desc": "Polk County Tax Collector", "url": "https://www.polktaxes.com"},
+        {"icon": "🏠", "nombre": "Property Tax", "desc": "Polk County Property Appraiser", "url": "https://www.polkpa.org"},
+        {"icon": "🏫", "nombre": "Escuelas", "desc": "Polk County Schools", "url": "https://www.polkschoolsfl.com"},
+        {"icon": "🏥", "nombre": "Salud", "desc": "Polk County Health Dept", "url": "https://polk.floridahealth.gov"},
+        {"icon": "🗳️", "nombre": "Votaciones", "desc": "Polk County Supervisor of Elections", "url": "https://www.polkelections.com"},
+        {"icon": "🆘", "nombre": "Asistencia Social", "desc": "ACCESS Florida", "url": "https://www.myflorida.com/accessflorida"}
+      ]
+    },
+    {
+      "slug": "miami-dade",
+      "nombre": "Miami-Dade County (Miami)",
+      "recursos": [
+        {"icon": "⚡", "nombre": "Electricidad", "desc": "Florida Power & Light (FPL)", "url": "https://www.fpl.com"},
+        {"icon": "💧", "nombre": "Agua", "desc": "Miami-Dade Water & Sewer", "url": "https://www.miamidade.gov/water"},
+        {"icon": "🚗", "nombre": "DMV / Tag", "desc": "Miami-Dade Tax Collector", "url": "https://www.miamidade.gov/taxcollector"},
+        {"icon": "🏠", "nombre": "Property Tax", "desc": "Miami-Dade Property Appraiser", "url": "https://www.miamidade.gov/pa"},
+        {"icon": "🏫", "nombre": "Escuelas", "desc": "Miami-Dade County Schools", "url": "https://www.dadeschools.net"},
+        {"icon": "🏥", "nombre": "Salud", "desc": "Miami-Dade Health Dept", "url": "https://miamidade.floridahealth.gov"},
+        {"icon": "🗳️", "nombre": "Votaciones", "desc": "Miami-Dade Elections", "url": "https://www.miamidade.gov/elections"},
+        {"icon": "🆘", "nombre": "Asistencia Social", "desc": "ACCESS Florida", "url": "https://www.myflorida.com/accessflorida"}
+      ]
+    },
+    {
+      "slug": "duval",
+      "nombre": "Duval County (Jacksonville)",
+      "recursos": [
+        {"icon": "⚡", "nombre": "Electricidad", "desc": "JEA (Jacksonville Electric)", "url": "https://www.jea.com"},
+        {"icon": "💧", "nombre": "Agua", "desc": "JEA Water", "url": "https://www.jea.com"},
+        {"icon": "🚗", "nombre": "DMV / Tag", "desc": "Duval County Tax Collector", "url": "https://www.duvaltc.com"},
+        {"icon": "🏠", "nombre": "Property Tax", "desc": "Duval County Property Appraiser", "url": "https://www.coj.net/departments/property-appraiser"},
+        {"icon": "🏫", "nombre": "Escuelas", "desc": "Duval County Schools", "url": "https://www.duvalschools.org"},
+        {"icon": "🏥", "nombre": "Salud", "desc": "Duval County Health Dept", "url": "https://duval.floridahealth.gov"},
+        {"icon": "🗳️", "nombre": "Votaciones", "desc": "Duval County Supervisor of Elections", "url": "https://www.duvalelections.com"},
+        {"icon": "🆘", "nombre": "Asistencia Social", "desc": "ACCESS Florida", "url": "https://www.myflorida.com/accessflorida"}
+      ]
     }
   ]
 }
