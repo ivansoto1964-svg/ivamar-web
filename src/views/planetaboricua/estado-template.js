@@ -395,7 +395,7 @@ async function buscarProfesionales() {
     const url = '/api/npi-search?postal_code=' + encodeURIComponent(zip) + '&radio=' + radio + '&especialidad=' + encodeURIComponent(especialidad);
     const res = await fetch(url);
     const data = await res.json();
-    const results = (data.results || []).filter(r => r.basic && r.basic.status === 'A' && r.enumeration_type === 'NPI-1');
+    const results = data.results || [];
 
     if (!results.length) {
       grid.innerHTML = '<div class="dir-empty" style="text-align:center;padding:3rem;"><div style="font-size:2rem;margin-bottom:0.8rem;">😕</div><div style="font-weight:700;color:var(--dark);margin-bottom:0.4rem;">No encontramos resultados</div><div style="font-size:0.82rem;color:var(--mid);">Intenta con un radio mayor o una especialidad diferente.</div></div>';
@@ -403,26 +403,28 @@ async function buscarProfesionales() {
     }
 
     const cards = results.map(r => {
-      const basic = r.basic || {};
+    const cards = results.map(r => {
+      const nameParts = (r.name || '').split(',');
+      const lastName = (nameParts[0] || '').trim();
+      const firstName = (nameParts[1] || '').trim();
+      const fullName = firstName ? firstName + ' ' + lastName : lastName;
+      const hispanic = isHispanic(lastName);
+      const phone = r.phone || '';
+      const address = r.address || '';
+      const type = r.type || 'Profesional de Salud';
       const addrs = r.addresses || [];
       const addr = addrs.find(a => a.address_purpose === 'LOCATION') || addrs[0] || {};
       const tax = (r.taxonomies || []).find(t => t.primary) || (r.taxonomies || [])[0] || {};
-      const prefix = basic.name_prefix && basic.name_prefix !== '--' ? basic.name_prefix + ' ' : '';
-      const fullName = (prefix + (basic.first_name || '') + ' ' + (basic.last_name || '')).trim();
-      const hispanic = isHispanic(basic.last_name);
-      const phone = addr.telephone_number || '';
-      const city = addr.city || '';
-      const state = addr.state || '';
 
-      return \`<div class="prof-card" style="background:#fff;border-radius:10px;padding:1.2rem;border:1px solid var(--border);transition:box-shadow 0.2s;" onmouseover="this.style.boxShadow='0 4px 16px rgba(0,0,0,0.08)'" onmouseout="this.style.boxShadow='none'">
-        <div style="font-size:0.65rem;font-weight:800;color:var(--blue);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.3rem;">\${tax.desc || 'Profesional de Salud'}</div>
+      return \`<div style="background:#fff;border-radius:10px;padding:1.2rem;border:1px solid var(--border);transition:box-shadow 0.2s;" onmouseover="this.style.boxShadow='0 4px 16px rgba(0,0,0,0.08)'" onmouseout="this.style.boxShadow='none'">
+        <div style="font-size:0.65rem;font-weight:800;color:var(--blue);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.3rem;">\${type}</div>
         <div style="font-size:0.95rem;font-weight:700;color:var(--dark);margin-bottom:0.4rem;">
           \${fullName || 'Profesional Verificado'}
           <span style="display:inline-block;background:#E8F5E9;color:#2e7d32;font-size:0.6rem;font-weight:700;padding:0.15rem 0.5rem;border-radius:4px;margin-left:0.4rem;">✓ Licencia Activa</span>
           \${hispanic ? '<span style="display:inline-block;background:#FFF3E0;color:#E65100;font-size:0.6rem;font-weight:700;padding:0.15rem 0.5rem;border-radius:4px;margin-left:0.2rem;">🇵🇷 Habla español</span>' : ''}
         </div>
         <div style="font-size:0.78rem;color:var(--mid);">
-          \${city ? '📍 ' + city + (state ? ', ' + state : '') : ''}
+          \${address ? '📍 ' + address : ''}
           \${phone ? ' &nbsp;·&nbsp; 📞 ' + phone : ''}
         </div>
       </div>\`;

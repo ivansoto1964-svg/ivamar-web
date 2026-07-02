@@ -1926,7 +1926,7 @@ Sitemap: https://yourcaribbeanexpert.com/sitemap.xml`);
 app.get("/api/npi-search", async (req, res) => {
   try {
     const { nombre, apellido, especialidad, estado, postal_code, radio } = req.query;
-    let apiUrl = `https://npiregistry.cms.hhs.gov/api/?version=2.1&limit=25&pretty=on`;
+    let apiUrl = `https://clinicaltables.nlm.nih.gov/api/npi_idv/v3/search?terms=${encodeURIComponent(espEN)}&maxList=25&q=addr_practice.state:${estado || 'FL'}${postal_code ? '+AND+addr_practice.zip:' + postal_code : ''}&ef=name.full,addr_practice.full,phone,provider_type`;
     if (postal_code) {
       apiUrl += `&postal_code=${encodeURIComponent(postal_code)}`;
       if (radio) apiUrl += `&radius=${encodeURIComponent(radio)}`;
@@ -1969,7 +1969,23 @@ app.get("/api/npi-search", async (req, res) => {
       let data = '';
       r.on('data', chunk => data += chunk);
       r.on('end', () => {
-        try { res.json(JSON.parse(data)); }
+        try {
+          const parsed = JSON.parse(data);
+          // clinicaltables format: [total, [npis], {fields}, [[display]]]
+          const total = parsed[0] || 0;
+          const fields = parsed[2] || {};
+          const names = fields['name.full'] || [];
+          const addrs = fields['addr_practice.full'] || [];
+          const phones = fields['phone'] || [];
+          const types = fields['provider_type'] || [];
+          const results = names.map((name, idx) => ({
+            name: name,
+            address: addrs[idx] || '',
+            phone: phones[idx] || '',
+            type: types[idx] || ''
+          }));
+          res.json({ result_count: total, results });
+        } catch(e) { res.json({ results: [] }); }
         catch(e) { res.json({ results: [] }); }
       });
     }).on('error', () => res.json({ results: [] }));
