@@ -1942,9 +1942,6 @@ app.get("/api/npi-search", async (req, res) => {
     const stateCode = estado || 'FL';
     const zipFilter = postal_code ? `+AND+addr_practice.zip:${postal_code}` : '';
     const apiUrl = `https://clinicaltables.nlm.nih.gov/api/npi_idv/v3/search?terms=${encodeURIComponent(espEN)}&maxList=25&q=addr_practice.state:${stateCode}${zipFilter}&ef=name.full,addr_practice.full,phone,provider_type`;
-    const espKey = (especialidad || '').toLowerCase().trim();
-    const espEN = especialidadMap[espKey] || especialidad;
-    if (espEN) apiUrl += `&taxonomy_description=${encodeURIComponent(espEN)}`;
     const url = apiUrl;
     console.log("[NPI] URL:", url);
     const https = require('https');
