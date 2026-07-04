@@ -298,6 +298,22 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
   <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 </div>
 
+
+<!-- BANNER DIRECTORIO DE NEGOCIOS -->
+<section style="background:linear-gradient(135deg,#002D62,#CE1126);padding:2.5rem 2rem;">
+  <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1.5rem;">
+    <div>
+      <div style="font-size:0.68rem;font-weight:800;color:rgba(255,255,255,0.6);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem;">🌍 Planeta Boricua</div>
+      <h2 style="font-family:'Playfair Display',serif;font-size:clamp(1.4rem,3vw,2rem);font-weight:700;color:#fff;line-height:1.2;margin-bottom:0.5rem;">Apoya a los negocios boricuas 🇵🇷</h2>
+      <p style="font-size:0.9rem;color:rgba(255,255,255,0.75);max-width:500px;">No importa dónde estés — que te encuentren en el Planeta Boricua. Si tienes un negocio, regístralo gratis y llega a toda la comunidad boricua en USA y PR.</p>
+    </div>
+    <div style="display:flex;gap:1rem;flex-wrap:wrap;">
+      <a href="/pb/add-negocio" style="display:inline-flex;align-items:center;gap:0.5rem;background:#fff;color:#002D62;padding:0.85rem 1.8rem;border-radius:25px;font-size:0.88rem;font-weight:800;text-decoration:none;white-space:nowrap;">🏪 Registra tu negocio gratis →</a>
+      <a href="/#directorio" style="display:inline-flex;align-items:center;gap:0.5rem;background:rgba(255,255,255,0.15);color:#fff;padding:0.85rem 1.8rem;border-radius:25px;font-size:0.88rem;font-weight:700;text-decoration:none;border:1px solid rgba(255,255,255,0.3);white-space:nowrap;">🔍 Ver directorio</a>
+    </div>
+  </div>
+</section>
+
 <!-- NOTICIAS EN VIVO -->
 <section class="noticias-vivo">
   <div class="noticias-vivo-inner">
