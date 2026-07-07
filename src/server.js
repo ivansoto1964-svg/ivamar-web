@@ -58,6 +58,7 @@ const renderEstado = require("./views/planetaboricua/estado-template");
 const caribex = require("./views/caribex");
 const directoryTerms = require("./views/caribex/directory-terms");
 const listYourBusiness = require("./views/caribex/list-your-business");
+const caribexAbout = require("./views/caribex/about");
 const demoDealers = require("./views/demo-dealers");
 const demoDealersES = require("./views/demo-dealers-es");
 const home = require("./views/home");
@@ -430,6 +431,7 @@ app.get("/api/caribex-photos", async (req, res) => {
 // ==========================================
 const renderDestination = require("./views/caribex/destination-template");
 
+app.get("/caribex/about", (req, res) => res.send(caribexAbout));
 app.get("/caribex/directory-terms", (req, res) => res.send(directoryTerms));
 app.get("/caribex/list-your-business", (req, res) => res.send(listYourBusiness));
 
