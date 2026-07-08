@@ -2789,7 +2789,9 @@ app.get('/api/planetaboricua-blog', async (req, res) => {
     const data = await r.json();
     const posts = (data.feed.entry || []).map(e => {
       const rawContent = e.content ? e.content.$t : (e.summary ? e.summary.$t : '');
-      const summary = rawContent.replace(/<[^>]+>/g, '').trim().slice(0, 120) + '...';
+      const cleanText = rawContent.replace(/<[^>]+>/g, '').replace(/&[^;]+;/g, ' ').trim();
+      const lines = cleanText.split('\n').map(l => l.trim()).filter(l => l.length > 60);
+      const summary = (lines[0] || cleanText).slice(0, 140) + '...';
       let img = null;
       if (e.media$thumbnail) {
         const u = e.media$thumbnail.url;
