@@ -1941,17 +1941,16 @@ app.get("/noticias", (req, res) => res.send(pbNoticias));
 
 
 // Redirects for old blog URLs that Google has indexed
-app.get(['/planeta-boricua-blog', '/planeta-boricua-blog/:path'], (req, res) => {
-  res.redirect(301, 'https://blog.masboricuaqueunmofongo.com');
-});
-
-app.get('/inicio', (req, res) => {
-  res.redirect(301, 'https://blog.masboricuaqueunmofongo.com');
-});
-
-app.get('/:year(\\d{4})/:month(\\d{2})/:slug', (req, res) => {
+app.get('/planeta-boricua-blog', (req, res) => res.redirect(301, 'https://blog.masboricuaqueunmofongo.com'));
+app.get('/planeta-boricua-blog/:path', (req, res) => res.redirect(301, 'https://blog.masboricuaqueunmofongo.com'));
+app.get('/inicio', (req, res) => res.redirect(301, 'https://blog.masboricuaqueunmofongo.com'));
+app.get('/:year/:month/:slug', (req, res) => {
   const { year, month, slug } = req.params;
-  res.redirect(301, 'https://blog.masboricuaqueunmofongo.com/' + year + '/' + month + '/' + slug + '.html');
+  if (/^\d{4}$/.test(year) && /^\d{2}$/.test(month)) {
+    res.redirect(301, 'https://blog.masboricuaqueunmofongo.com/' + year + '/' + month + '/' + slug + '.html');
+  } else {
+    res.status(404).send('Not found');
+  }
 });
 
 app.get("/:slug", (req, res) => {
