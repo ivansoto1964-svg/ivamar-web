@@ -1941,7 +1941,7 @@ app.get("/noticias", (req, res) => res.send(pbNoticias));
 
 
 // Redirects for old blog URLs that Google has indexed
-app.get('/planeta-boricua-blog/:path(*)', (req, res) => {
+app.get(['/planeta-boricua-blog', '/planeta-boricua-blog/:path'], (req, res) => {
   res.redirect(301, 'https://blog.masboricuaqueunmofongo.com');
 });
 
