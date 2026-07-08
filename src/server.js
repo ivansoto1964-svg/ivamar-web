@@ -1951,7 +1951,7 @@ app.get('/inicio', (req, res) => {
 
 app.get('/:year(\\d{4})/:month(\\d{2})/:slug', (req, res) => {
   const { year, month, slug } = req.params;
-  res.redirect(301, \`https://blog.masboricuaqueunmofongo.com/\${year}/\${month}/\${slug}.html\`);
+  res.redirect(301, 'https://blog.masboricuaqueunmofongo.com/' + year + '/' + month + '/' + slug + '.html');
 });
 
 app.get("/:slug", (req, res) => {
