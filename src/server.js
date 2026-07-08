@@ -1939,6 +1939,21 @@ app.get("/api/place-photo", async (req, res) => {
 app.get("/autoridad-energia-criolla", (req, res) => res.send(aecDemo));
 app.get("/noticias", (req, res) => res.send(pbNoticias));
 
+
+// Redirects for old blog URLs that Google has indexed
+app.get('/planeta-boricua-blog*', (req, res) => {
+  res.redirect(301, 'https://blog.masboricuaqueunmofongo.com');
+});
+
+app.get('/inicio', (req, res) => {
+  res.redirect(301, 'https://blog.masboricuaqueunmofongo.com');
+});
+
+app.get('/:year(\\d{4})/:month(\\d{2})/:slug', (req, res) => {
+  const { year, month, slug } = req.params;
+  res.redirect(301, \`https://blog.masboricuaqueunmofongo.com/\${year}/\${month}/\${slug}.html\`);
+});
+
 app.get("/:slug", (req, res) => {
   try { decodeURIComponent(req.params.slug); } catch(e) { return res.status(400).send("Invalid URL"); }
   const slug = req.params.slug;
