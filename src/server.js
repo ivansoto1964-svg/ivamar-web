@@ -1947,7 +1947,7 @@ app.get('/inicio', (req, res) => res.redirect(301, 'https://blog.masboricuaqueun
 app.get('/:year/:month/:slug', (req, res) => {
   const { year, month, slug } = req.params;
   if (/^\d{4}$/.test(year) && /^\d{2}$/.test(month)) {
-    res.redirect(301, 'https://blog.masboricuaqueunmofongo.com/' + year + '/' + month + '/' + slug + '.html');
+    res.redirect(301, 'https://blog.masboricuaqueunmofongo.com/' + year + '/' + month + '/' + slug);
   } else {
     res.status(404).send('Not found');
   }
