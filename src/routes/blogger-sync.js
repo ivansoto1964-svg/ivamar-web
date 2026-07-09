@@ -22,6 +22,7 @@ function cleanHtml(html) {
     .replace(/class="[^"]*"/gi,"")
     .replace(/style="[^"]*"/gi,"")
     .replace(/<div[^>]*>/gi,"<p>").replace(/<\/div>/gi,"</p>")
+    .replace(/href="https?:\/\/blog\.masboricuaqueunmofongo\.com[^"]*"/gi,'href="#"').replace(/href="http:\/\/blog\.masboricuaqueunmofongo\.com[^"]*"/gi,'href="#"')
     .replace(/\n\s*\n/g,"\n").trim();
 }
 
