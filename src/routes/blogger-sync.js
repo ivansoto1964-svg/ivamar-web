@@ -23,8 +23,9 @@ function cleanHtml(html) {
     .replace(/style="[^"]*"/gi,"")
     .replace(/<div[^>]*>/gi,"<p>").replace(/<\/div>/gi,"</p>")
     .replace(/href="https?:\/\/blog\.masboricuaqueunmofongo\.com[^"]*"/gi,'href="#"').replace(/href="http:\/\/blog\.masboricuaqueunmofongo\.com[^"]*"/gi,'href="#"')
-    .replace(/<img[^>]+blogger\.googleusercontent\.com[^>]*>/gi,"")
-    .replace(/<img[^>]+bp\.blogspot\.com[^>]*>/gi,"")
+    .replace(/<img[^>]+(s72-c|s400|thumbnail)[^>]*>/gi,"")
+    .replace(/Descubre m[\s\S]*?<\/ul>/gi,"")
+    .replace(/En Planeta Boricua[\s\S]*?<\/ul>/gi,"")
     .replace(/\n\s*\n/g,"\n").trim();
 }
 
