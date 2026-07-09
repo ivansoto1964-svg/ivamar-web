@@ -2762,13 +2762,16 @@ app.get('/api/planetaboricua-blog', async (req, res) => {
         if (match) img = match[1];
       }
       const tag = e.category && e.category[0] ? e.category[0].term.replace(/\n/g, ' ').trim() : 'Cultura Boricua';
+      const titleText = e.title.$t.trim();
+      const slug = titleText.toLowerCase().replace(/[áàä]/g,'a').replace(/[éèë]/g,'e').replace(/[íìï]/g,'i').replace(/[óòö]/g,'o').replace(/[úùü]/g,'u').replace(/ñ/g,'n').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
       return {
-        title: e.title.$t.trim(),
-        link: e.link.find(l => l.rel === 'alternate')?.href || '#',
+        title: titleText,
+        link: '/blog/' + slug,
         date: new Date(e.published.$t).toLocaleDateString('es-PR', { year: 'numeric', month: 'long', day: 'numeric' }),
         summary,
         img,
-        tag
+        tag,
+        slug
       };
     });
     res.set('Access-Control-Allow-Origin', '*');

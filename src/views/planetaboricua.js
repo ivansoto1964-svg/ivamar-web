@@ -340,7 +340,7 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
     <div class="sec-divider-inner">
       <span class="sec-divider-label">Los Temas del Balcón</span>
       <div style="flex:1;height:2px;background:var(--red);margin:0 1rem;"></div>
-      <a href="https://blog.masboricuaqueunmofongo.com" target="_blank" class="sec-divider-link">Ver todos →</a>
+      <a href="/blog" class="sec-divider-link">Ver todos →</a>
     </div>
     <div class="noticias-grid" id="noticias-grid">
       <div style="background:#fff;border-radius:4px;height:280px;display:flex;align-items:center;justify-content:center;color:#ccc;font-size:0.82rem;">Cargando...</div>
@@ -1026,7 +1026,7 @@ loadDirectorio();
       const sidebarPosts = posts.filter(p => p.link !== heroPost.link).slice(0, 4);
       const sidebar = document.getElementById('hero-sidebar');
       sidebar.innerHTML = sidebarPosts.map((p, i) =>
-        '<a href="' + p.link + '" target="_blank" class="hero-side-card">' +
+        '<a href="' + p.link + '" class="hero-side-card">' +
         '<div class="hero-side-num">0' + (i + 1) + '</div>' +
         '<div class="hero-side-cat">' + p.tag + '</div>' +
         '<div class="hero-side-title">' + p.title + '</div>' +
