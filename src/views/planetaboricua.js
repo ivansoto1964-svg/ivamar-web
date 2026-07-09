@@ -256,6 +256,7 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
       </div>
     </a>
     <div class="nav-links">
+      <a href="/blog">El Balcón</a>
       <a href="#noticias">Noticias</a>
       <a href="/recursos">Recursos PR↔USA</a>
       <a href="/regresar-a-pr">Regresar a PR</a>
@@ -971,6 +972,7 @@ loadDirectorio();
     </div>
     <div class="pb-footer-col">
       <h4>Portal</h4>
+      <a href="/blog">El Balcón</a>
       <a href="#noticias">Noticias</a>
       <a href="#directorio">Directorio Boricua</a>
       <a href="/recursos">Recursos PR↔USA</a>
