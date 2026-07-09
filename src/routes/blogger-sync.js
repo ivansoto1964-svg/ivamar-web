@@ -26,6 +26,9 @@ function cleanHtml(html) {
     .replace(/<img[^>]+(s72-c|s400|thumbnail)[^>]*>/gi,"")
     .replace(/Descubre m[\s\S]*?<\/ul>/gi,"")
     .replace(/En Planeta Boricua[\s\S]*?<\/ul>/gi,"")
+    .replace(/Sigue explorando[\s\S]*?<\/ul>/gi,"")
+    .replace(/Continue Exploring[\s\S]*?<\/ul>/gi,"")
+    .replace(/Explora Planeta Boricua[\s\S]*?<\/ul>/gi,"")
     .replace(/\n\s*\n/g,"\n").trim();
 }
 
