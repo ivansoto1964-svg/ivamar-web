@@ -1945,6 +1945,10 @@ app.get("/noticias", (req, res) => res.send(pbNoticias));
 const pbBlogRouter = require("./routes/pb-blog");
 app.use("/blog", pbBlogRouter);
 
+// Blogger auto-sync
+const bloggerSync = require("./routes/blogger-sync");
+app.use("/api/blogger", bloggerSync);
+
 
 // Redirects for old blog URLs that Google has indexed
 app.get('/planeta-boricua-blog', (req, res) => res.redirect(301, 'https://blog.masboricuaqueunmofongo.com'));
