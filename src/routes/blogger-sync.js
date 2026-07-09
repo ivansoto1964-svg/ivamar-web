@@ -23,6 +23,8 @@ function cleanHtml(html) {
     .replace(/style="[^"]*"/gi,"")
     .replace(/<div[^>]*>/gi,"<p>").replace(/<\/div>/gi,"</p>")
     .replace(/href="https?:\/\/blog\.masboricuaqueunmofongo\.com[^"]*"/gi,'href="#"').replace(/href="http:\/\/blog\.masboricuaqueunmofongo\.com[^"]*"/gi,'href="#"')
+    .replace(/<img[^>]+blogger\.googleusercontent\.com[^>]*>/gi,"")
+    .replace(/<img[^>]+bp\.blogspot\.com[^>]*>/gi,"")
     .replace(/\n\s*\n/g,"\n").trim();
 }
 
@@ -56,7 +58,8 @@ async function syncBlogger() {
       const lines = textContent.split("\n").map(l => l.trim()).filter(l => l.length > 40 && !l.includes("?") && !l.includes("\u00bf"));
       const excerpt = (lines[0] || textContent).substring(0, 160) + "...";
 
-      const post = { slug, title, excerpt, category, date: dateStr, dateISO, readTime: Math.max(1, Math.ceil(textContent.split(/\s+/).length / 200)).toString(), image, tags, bloggerUrl: link, content };
+      const cleanImage = image && image.startsWith('http') ? image : '/img/og-planetaboricua.jpg';
+      const post = { slug, title, excerpt, category, date: dateStr, dateISO, readTime: Math.max(1, Math.ceil(textContent.split(/\s+/).length / 200)).toString(), image: cleanImage, tags, bloggerUrl: link, content };
 
       const postPath = path.join(POSTS_DIR, slug + ".json");
       fs.writeFileSync(postPath, JSON.stringify(post, null, 2));
