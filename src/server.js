@@ -1942,53 +1942,8 @@ app.get("/autoridad-energia-criolla", (req, res) => res.send(aecDemo));
 app.get("/noticias", (req, res) => res.send(pbNoticias));
 
 // PB Blog routes
-app.get("/blog", (req, res) => {
-  const fs = require("fs");
-  const path = require("path");
-  const postsDir = path.join(__dirname, "../data/pb-blog/posts");
-  try {
-    const files = fs.readdirSync(postsDir).filter(f => f.endsWith(".json"));
-    const posts = files.map(f => {
-      const data = JSON.parse(fs.readFileSync(path.join(postsDir, f), "utf8"));
-      return data;
-    }).sort((a, b) => new Date(b.date) - new Date(a.date));
-    res.send(pbBlogIndex(posts));
-  } catch(e) {
-    res.status(500).send("Error loading blog");
-  }
-});
-
-app.get("/blog/categoria/:cat", (req, res) => {
-  const fs = require("fs");
-  const path = require("path");
-  const postsDir = path.join(__dirname, "../data/pb-blog/posts");
-  try {
-    const files = fs.readdirSync(postsDir).filter(f => f.endsWith(".json"));
-    const posts = files.map(f => JSON.parse(fs.readFileSync(path.join(postsDir, f), "utf8")))
-      .filter(p => (p.category || "").toLowerCase().replace(/ /g,"-").includes(req.params.cat))
-      .sort((a, b) => new Date(b.date) - new Date(a.date));
-    res.send(pbBlogIndex(posts));
-  } catch(e) {
-    res.status(500).send("Error loading blog");
-  }
-});
-
-app.get("/blog/:slug", (req, res) => {
-  const fs = require("fs");
-  const path = require("path");
-  const postsDir = path.join(__dirname, "../data/pb-blog/posts");
-  try {
-    const postPath = path.join(postsDir, req.params.slug + ".json");
-    if (!fs.existsSync(postPath)) return res.status(404).send("Post not found");
-    const post = JSON.parse(fs.readFileSync(postPath, "utf8"));
-    const files = fs.readdirSync(postsDir).filter(f => f.endsWith(".json"));
-    const allPosts = files.map(f => JSON.parse(fs.readFileSync(path.join(postsDir, f), "utf8")));
-    const related = allPosts.filter(p => p.slug !== post.slug && p.category === post.category).slice(0, 3);
-    res.send(pbBlogPost(post, related));
-  } catch(e) {
-    res.status(500).send("Error loading post");
-  }
-});
+const pbBlogRouter = require("./routes/pb-blog");
+app.use("/blog", pbBlogRouter);
 
 
 // Redirects for old blog URLs that Google has indexed
