@@ -39,7 +39,8 @@ async function syncBlogger() {
       const date = new Date(entry.published.$t);
       const dateStr = date.toLocaleDateString("es-PR", {year:"numeric",month:"long",day:"numeric"});
       const dateISO = date.toISOString().split("T")[0];
-      const category = entry.category && entry.category[0] ? entry.category[0].term.trim() : "Cultura Boricua";
+      const cats = (entry.category || []).map(c => c.term.trim()).filter(t => t.length < 40 && !t.includes("\n") && !t.includes("?"));
+      const category = cats.length > 0 ? cats[0] : "Cultura Boricua";
       const tags = (entry.category || []).map(c => c.term.trim()).filter(Boolean);
       const link = (entry.link.find(l => l.rel === "alternate") || {}).href || "";
 
@@ -51,7 +52,8 @@ async function syncBlogger() {
 
       // Extract excerpt
       const textContent = content.replace(/<[^>]+>/g,"").trim();
-      const excerpt = textContent.substring(0, 160) + "...";
+      const lines = textContent.split("\n").map(l => l.trim()).filter(l => l.length > 40 && !l.includes("?") && !l.includes("\u00bf"));
+      const excerpt = (lines[0] || textContent).substring(0, 160) + "...";
 
       const post = { slug, title, excerpt, category, date: dateStr, dateISO, readTime: Math.max(1, Math.ceil(textContent.split(/\s+/).length / 200)).toString(), image, tags, bloggerUrl: link, content };
 
