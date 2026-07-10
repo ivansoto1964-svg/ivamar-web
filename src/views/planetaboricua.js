@@ -4,7 +4,7 @@ module.exports = `<!DOCTYPE html>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Planeta Boricua — Más Boricua Que Un Mofongo</title>
-<meta name="description" content="Tu portal de cultura, noticias y comunidad puertorriqueña. Directorio de negocios boricuas en USA, recursos para mudanzas PR↔USA, Nayeli AI y más.">
+<meta name="description" content="Tu portal de cultura, noticias y comunidad puertorriqueña. Red Mundial Boricua de Negocios, recursos para mudanzas PR↔USA, Nayeli AI y más.">
 <meta name="keywords" content="Puerto Rico, boricua, noticias Puerto Rico, cultura puertorriqueña, diáspora boricua, negocios boricuas, mudarse de Puerto Rico, boricuas en Florida, boricuas en Nueva York, recursos boricuas">
 <meta name="author" content="Planeta Boricua — Ivamar AI LLC">
 <meta name="robots" content="index, follow">
@@ -14,7 +14,7 @@ module.exports = `<!DOCTYPE html>
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://www.masboricuaqueunmofongo.com/">
 <meta property="og:title" content="Planeta Boricua — Más Boricua Que Un Mofongo">
-<meta property="og:description" content="Tu portal de cultura, noticias y comunidad puertorriqueña. Directorio de negocios boricuas en USA, recursos para mudanzas PR↔USA, Nayeli AI y más.">
+<meta property="og:description" content="Tu portal de cultura, noticias y comunidad puertorriqueña. Red Mundial Boricua de Negocios, recursos para mudanzas PR↔USA, Nayeli AI y más.">
 <meta property="og:image" content="https://www.masboricuaqueunmofongo.com/img/og-planetaboricua.jpg">
 <meta property="og:locale" content="es_PR">
 <meta property="og:site_name" content="Planeta Boricua">
@@ -23,7 +23,7 @@ module.exports = `<!DOCTYPE html>
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:url" content="https://www.masboricuaqueunmofongo.com/">
 <meta name="twitter:title" content="Planeta Boricua — Más Boricua Que Un Mofongo">
-<meta name="twitter:description" content="Tu portal de cultura, noticias y comunidad puertorriqueña. Directorio de negocios boricuas en USA, recursos para mudanzas PR↔USA y Nayeli AI.">
+<meta name="twitter:description" content="Tu portal de cultura, noticias y comunidad puertorriqueña. Red Mundial Boricua de Negocios, recursos para mudanzas PR↔USA y Nayeli AI.">
 <meta name="twitter:image" content="https://www.masboricuaqueunmofongo.com/img/og-planetaboricua.jpg">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8301223085122981" crossorigin="anonymous"></script>
@@ -260,7 +260,7 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
       <a href="#noticias">Noticias</a>
       <a href="/recursos">Recursos PR↔USA</a>
       <a href="/regresar-a-pr">Regresar a PR</a>
-      <a href="#directorio">Directorio</a>
+      <a href="#directorio">Red Mundial</a>
       <a href="#nayeli">Nayeli AI</a>
       <a href="#viajes">Viajes</a>
       <a href="#newsletter" class="nav-cta">Newsletter →</a>
@@ -310,7 +310,7 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
     </div>
     <div style="display:flex;gap:1rem;flex-wrap:wrap;">
       <a href="/pb/add-negocio" style="display:inline-flex;align-items:center;gap:0.5rem;background:#fff;color:#002D62;padding:0.85rem 1.8rem;border-radius:25px;font-size:0.88rem;font-weight:800;text-decoration:none;white-space:nowrap;">🏪 Registra tu negocio gratis →</a>
-      <a href="/#directorio" style="display:inline-flex;align-items:center;gap:0.5rem;background:rgba(255,255,255,0.15);color:#fff;padding:0.85rem 1.8rem;border-radius:25px;font-size:0.88rem;font-weight:700;text-decoration:none;border:1px solid rgba(255,255,255,0.3);white-space:nowrap;">🔍 Ver directorio</a>
+      <a href="/#directorio" style="display:inline-flex;align-items:center;gap:0.5rem;background:rgba(255,255,255,0.15);color:#fff;padding:0.85rem 1.8rem;border-radius:25px;font-size:0.88rem;font-weight:700;text-decoration:none;border:1px solid rgba(255,255,255,0.3);white-space:nowrap;">🌍 Ver la Red</a>
     </div>
   </div>
 </section>
@@ -354,7 +354,7 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
 <section class="directorio" id="directorio">
   <div class="directorio-inner">
     <div class="sec-divider-inner">
-      <span class="sec-divider-label">Directorio Boricua</span>
+      <span class="sec-divider-label">Red Mundial Boricua</span>
       <div style="flex:1;height:2px;background:var(--red);margin:0 1rem;"></div>
       <a href="/pb/add-negocio" class="sec-divider-link">Añadir negocio →</a>
     </div>
@@ -364,9 +364,9 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
       <div style="font-size:1.8rem;">🇵🇷</div>
       <div>
         <div style="font-weight:800;color:#fff;font-size:0.92rem;">Solo negocios y servicios boricuas</div>
-        <div style="font-size:0.78rem;color:rgba(255,255,255,0.65);margin-top:0.2rem;">Este directorio es exclusivo para la comunidad puertorriqueña — negocios en PR y la diáspora en USA.</div>
+        <div style="font-size:0.78rem;color:rgba(255,255,255,0.65);margin-top:0.2rem;">🌍 Próximamente anunciamos el lanzamiento oficial — los primeros 1,000 registros serán Socios Fundadores de la Red Mundial Boricua.</div>
       </div>
-      <a href="/pb/add-negocio" style="margin-left:auto;background:var(--red);color:#fff;padding:0.5rem 1rem;border-radius:6px;text-decoration:none;font-size:0.8rem;font-weight:700;white-space:nowrap;">+ Añadir Mi Negocio</a>
+      <a href="/pb/add-negocio" style="margin-left:auto;background:var(--red);color:#fff;padding:0.5rem 1rem;border-radius:6px;text-decoration:none;font-size:0.8rem;font-weight:700;white-space:nowrap;">+ Únete como Socio Fundador 🇵🇷</a>
     </div>
 
     <!-- Buscador boricua -->
@@ -538,7 +538,7 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
     </div>
 
     <div class="directorio-cta">
-      <a href="/pb/add-negocio" class="btn-outline-dark">🇵🇷 Añadir Mi Negocio</a>
+      <a href="/pb/add-negocio" class="btn-outline-dark">🇵🇷 Únete como Socio Fundador 🇵🇷</a>
     </div>
   </div>
 </section>
@@ -590,7 +590,7 @@ function searchDirectorio() {
       div.style.cssText = 'text-align:center;padding:3rem;color:var(--mid);';
       div.innerHTML = '<div style="font-size:3rem;margin-bottom:1rem;">🇵🇷</div>' +
         '<div style="font-size:1rem;color:var(--dark);margin-bottom:1.5rem;line-height:1.6;">' + emptyMsg + '</div>' +
-        '<a href="/pb/add-negocio" style="display:inline-block;background:var(--blue);color:#fff;padding:0.8rem 1.5rem;border-radius:8px;text-decoration:none;font-weight:700;font-size:0.9rem;">🇵🇷 Añadir Mi Negocio →</a>';
+        '<a href="/pb/add-negocio" style="display:inline-block;background:var(--blue);color:#fff;padding:0.8rem 1.5rem;border-radius:8px;text-decoration:none;font-weight:700;font-size:0.9rem;">🇵🇷 Únete como Socio Fundador 🇵🇷 →</a>';
       grid.appendChild(div);
     }
   } else {
@@ -628,7 +628,7 @@ async function loadDirectorio() {
       grid.innerHTML = '<div style="text-align:center;padding:3rem;color:var(--mid);">' +
         '<div style="font-size:3rem;margin-bottom:1rem;">🇵🇷</div>' +
         '<div style="font-size:1rem;color:var(--dark);margin-bottom:1.5rem;line-height:1.6;">' + emptyMsg + '</div>' +
-        '<a href="/pb/add-negocio" style="display:inline-block;background:var(--blue);color:#fff;padding:0.8rem 1.5rem;border-radius:8px;text-decoration:none;font-weight:700;font-size:0.9rem;">🇵🇷 Añadir Mi Negocio →</a>' +
+        '<a href="/pb/add-negocio" style="display:inline-block;background:var(--blue);color:#fff;padding:0.8rem 1.5rem;border-radius:8px;text-decoration:none;font-weight:700;font-size:0.9rem;">🇵🇷 Únete como Socio Fundador 🇵🇷 →</a>' +
         '</div>';
       return;
     }
@@ -974,7 +974,7 @@ loadDirectorio();
       <h4>Portal</h4>
       <a href="/blog">El Balcón</a>
       <a href="#noticias">Noticias</a>
-      <a href="#directorio">Directorio Boricua</a>
+      <a href="#directorio">Red Mundial Boricua</a>
       <a href="/recursos">Recursos PR↔USA</a>
       <a href="/regresar-a-pr">Regresar a PR</a>
       <a href="#nayeli">Nayeli AI</a>
@@ -982,7 +982,7 @@ loadDirectorio();
     </div>
     <div class="pb-footer-col">
       <h4>Comunidad</h4>
-      <a href="/pb/add-negocio">Añadir Mi Negocio</a>
+      <a href="/pb/add-negocio">Únete como Socio Fundador 🇵🇷</a>
       <a href="#">Enviar Noticia</a>
       <a href="#newsletter">Newsletter</a>
       <a href="#">Contacto</a>
