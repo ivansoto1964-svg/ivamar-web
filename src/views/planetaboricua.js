@@ -574,11 +574,7 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
       updateCountdown();
       setInterval(updateCountdown, 1000);
       </script>
-      <div style="background:rgba(255,255,255,0.1);border-radius:8px;padding:1rem;margin-bottom:1.5rem;display:inline-block;min-width:200px;">
-        <div style="font-size:0.7rem;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.3rem;">Socios Fundadores</div>
-        <div id="founder-count" style="font-size:2.5rem;font-weight:800;color:#fff;">0</div>
-        <div style="font-size:0.7rem;color:rgba(255,255,255,0.6);">de 1,000 lugares</div>
-      </div>
+
       <div>
         <a href="/pb/add-negocio" style="display:inline-flex;align-items:center;gap:0.5rem;background:#fff;color:#002D62;padding:0.85rem 2rem;border-radius:25px;font-size:0.9rem;font-weight:800;text-decoration:none;">🇵🇷 Reserva tu lugar como Socio Fundador →</a>
       </div>
