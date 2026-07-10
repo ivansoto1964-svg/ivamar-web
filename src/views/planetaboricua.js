@@ -530,15 +530,18 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
     </div>
 
     <!-- Listado dinámico compacto -->
-    <div id="directorio-grid" class="directorio-grid">
-      <div style="text-align:center;padding:2rem;color:var(--mid);">
-        <div style="font-size:2rem;margin-bottom:0.5rem;">⏳</div>
-        <div>Cargando directorio...</div>
+    <div style="text-align:center;padding:3rem 2rem;background:linear-gradient(135deg,#002D62,#CE1126);border-radius:12px;margin-top:1.5rem;">
+      <div style="font-size:3rem;margin-bottom:0.5rem;">🌍</div>
+      <h3 style="font-family:'Playfair Display',serif;color:#fff;font-size:1.5rem;margin-bottom:0.5rem;">Próximamente — Lanzamiento Oficial</h3>
+      <p style="color:rgba(255,255,255,0.8);font-size:0.9rem;margin-bottom:1.5rem;">Los primeros <strong style="color:#fff;">1,000 negocios</strong> registrados serán <strong style="color:#fff;">Socios Fundadores</strong> de la Red Mundial Boricua — con distinción especial permanente.</p>
+      <div style="background:rgba(255,255,255,0.1);border-radius:8px;padding:1rem;margin-bottom:1.5rem;display:inline-block;min-width:200px;">
+        <div style="font-size:0.7rem;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.3rem;">Socios Fundadores</div>
+        <div id="founder-count" style="font-size:2.5rem;font-weight:800;color:#fff;">0</div>
+        <div style="font-size:0.7rem;color:rgba(255,255,255,0.6);">de 1,000 lugares</div>
       </div>
-    </div>
-
-    <div class="directorio-cta">
-      <a href="/pb/add-negocio" class="btn-outline-dark">🇵🇷 Únete como Socio Fundador 🇵🇷</a>
+      <div>
+        <a href="/pb/add-negocio" style="display:inline-flex;align-items:center;gap:0.5rem;background:#fff;color:#002D62;padding:0.85rem 2rem;border-radius:25px;font-size:0.9rem;font-weight:800;text-decoration:none;">🇵🇷 Reserva tu lugar como Socio Fundador →</a>
+      </div>
     </div>
   </div>
 </section>
