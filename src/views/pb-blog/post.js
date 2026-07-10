@@ -24,8 +24,22 @@ module.exports = function(post, relatedPosts, prevPost, nextPost) {
   ${navPrevNext}
   ${related ? `<div class="post-related"><h3>🎙️ Sigue en el Balcón</h3><div class="related-grid">${related}</div></div>` : ''}
 </div>
+<div id="disqus_thread" style="max-width:800px;margin:2rem auto;padding:2rem;background:#fff;"></div>
+<script>
+var disqus_config = function () {
+  this.page.url = 'https://www.masboricuaqueunmofongo.com/blog/${post.slug}';
+  this.page.identifier = '${post.slug}';
+};
+(function() {
+  var d = document, s = d.createElement('script');
+  s.src = 'https://masboricuaqueunmofongo-com.disqus.com/embed.js';
+  s.setAttribute('data-timestamp', +new Date());
+  (d.head || d.body).appendChild(s);
+})();
+</script>
+<script id="dsq-count-scr" src="//masboricuaqueunmofongo-com.disqus.com/count.js" async></script>
 <footer><a href="/">Portal</a><a href="/blog">El Balcón</a><a href="/#directorio">Directorio</a><a href="/pb/add-negocio">Añadir Negocio</a><a href="/privacidad-boricua">Privacidad</a><p>© 2026 Planeta Boricua — Ivamar AI LLC · Más Boricua Que Un Mofongo 🇵🇷</p></footer>
-<div id="disqus_thread" style="max-width:800px;margin:2rem auto;padding:0 2rem;"></div>
+<div id="disqus_thread" style="max-width:800px;margin:2rem auto;padding:2rem;"></div>
 <script>
 var disqus_config = function () {
   this.page.url = 'https://www.masboricuaqueunmofongo.com/blog/${post.slug}';
