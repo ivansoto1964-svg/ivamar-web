@@ -531,9 +531,49 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
 
     <!-- Listado dinámico compacto -->
     <div style="text-align:center;padding:3rem 2rem;background:linear-gradient(135deg,#002D62,#CE1126);border-radius:12px;margin-top:1.5rem;">
-      <div style="font-size:3rem;margin-bottom:0.5rem;">🌍</div>
-      <h3 style="font-family:'Playfair Display',serif;color:#fff;font-size:1.5rem;margin-bottom:0.5rem;">Próximamente — Lanzamiento Oficial</h3>
-      <p style="color:rgba(255,255,255,0.8);font-size:0.9rem;margin-bottom:1.5rem;">Los primeros <strong style="color:#fff;">1,000 negocios</strong> registrados serán <strong style="color:#fff;">Socios Fundadores</strong> de la Red Mundial Boricua — con distinción especial permanente.</p>
+      <div style="font-size:3rem;margin-bottom:0.5rem;">🌍🇵🇷</div>
+      <h3 style="font-family:'Playfair Display',serif;color:#fff;font-size:1.6rem;margin-bottom:0.3rem;">Día de la Independencia del Planeta Boricua</h3>
+      <p style="color:rgba(255,255,255,0.7);font-size:0.85rem;margin-bottom:1.2rem;">23 de septiembre de 2026 — Lanzamiento oficial de la Red Mundial Boricua</p>
+      <div id="pb-countdown" style="display:flex;gap:1rem;justify-content:center;margin-bottom:1.5rem;flex-wrap:wrap;">
+        <div style="background:rgba(255,255,255,0.1);border-radius:8px;padding:0.8rem 1.2rem;min-width:70px;">
+          <div id="cd-days" style="font-size:2rem;font-weight:800;color:#fff;">--</div>
+          <div style="font-size:0.65rem;color:rgba(255,255,255,0.6);text-transform:uppercase;">Días</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.1);border-radius:8px;padding:0.8rem 1.2rem;min-width:70px;">
+          <div id="cd-hours" style="font-size:2rem;font-weight:800;color:#fff;">--</div>
+          <div style="font-size:0.65rem;color:rgba(255,255,255,0.6);text-transform:uppercase;">Horas</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.1);border-radius:8px;padding:0.8rem 1.2rem;min-width:70px;">
+          <div id="cd-mins" style="font-size:2rem;font-weight:800;color:#fff;">--</div>
+          <div style="font-size:0.65rem;color:rgba(255,255,255,0.6);text-transform:uppercase;">Minutos</div>
+        </div>
+        <div style="background:rgba(255,255,255,0.1);border-radius:8px;padding:0.8rem 1.2rem;min-width:70px;">
+          <div id="cd-secs" style="font-size:2rem;font-weight:800;color:#fff;">--</div>
+          <div style="font-size:0.65rem;color:rgba(255,255,255,0.6);text-transform:uppercase;">Segundos</div>
+        </div>
+      </div>
+      <p style="color:rgba(255,255,255,0.8);font-size:0.9rem;margin-bottom:1.5rem;">Los primeros <strong style="color:#fff;">1,000 negocios</strong> registrados serán <strong style="color:#fff;">Socios Fundadores</strong> — con distinción especial permanente en la Red.</p>
+      <script>
+      function updateCountdown() {
+        const launch = new Date('2026-09-23T00:00:00');
+        const now = new Date();
+        const diff = launch - now;
+        if (diff <= 0) {
+          document.getElementById('pb-countdown').innerHTML = '<div style="color:#fff;font-size:1.2rem;font-weight:800;">🎉 ¡Hoy es el Día de la Independencia del Planeta Boricua!</div>';
+          return;
+        }
+        const days = Math.floor(diff / (1000*60*60*24));
+        const hours = Math.floor((diff % (1000*60*60*24)) / (1000*60*60));
+        const mins = Math.floor((diff % (1000*60*60)) / (1000*60));
+        const secs = Math.floor((diff % (1000*60)) / 1000);
+        document.getElementById('cd-days').textContent = days;
+        document.getElementById('cd-hours').textContent = hours;
+        document.getElementById('cd-mins').textContent = mins;
+        document.getElementById('cd-secs').textContent = secs;
+      }
+      updateCountdown();
+      setInterval(updateCountdown, 1000);
+      </script>
       <div style="background:rgba(255,255,255,0.1);border-radius:8px;padding:1rem;margin-bottom:1.5rem;display:inline-block;min-width:200px;">
         <div style="font-size:0.7rem;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.3rem;">Socios Fundadores</div>
         <div id="founder-count" style="font-size:2.5rem;font-weight:800;color:#fff;">0</div>
