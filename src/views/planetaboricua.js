@@ -1022,15 +1022,11 @@ loadDirectorio();
     <div class="pb-footer-col">
       <h4>Comunidad</h4>
       <a href="/pb/add-negocio">Únete como Socio Fundador 🇵🇷</a>
-      <a href="#">Enviar Noticia</a>
-      <a href="#newsletter">Newsletter</a>
-      <a href="#">Contacto</a>
+      <a href="mailto:connect@ivamarai.com">Contacto</a>
     </div>
     <div class="pb-footer-col">
       <h4>Legal</h4>
       <a href="/privacidad-boricua">Privacidad</a>
-      <a href="/terminos-boricua">Términos</a>
-      <a href="/afiliados-boricua">Aviso de Afiliados</a>
     </div>
   </div>
   <div class="pb-footer-bottom">
