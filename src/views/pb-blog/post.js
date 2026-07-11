@@ -19,12 +19,7 @@ module.exports = function(post, relatedPosts, prevPost, nextPost) {
   <div class="post-body">${post.content}</div>
   ${tags ? `<div class="post-tags"><span class="post-tags-label">Tags:</span>${tags}</div>` : ''}
   <div class="post-share"><p>¿Te gustó este artículo? Compártelo con otro boricua 🇵🇷</p><div class="share-btns"><a href="https://www.facebook.com/sharer/sharer.php?u=https://www.masboricuaqueunmofongo.com/blog/${post.slug}" target="_blank" rel="noopener" class="share-btn share-fb">👍 Facebook</a><a href="https://wa.me/?text=${encodeURIComponent('https://www.masboricuaqueunmofongo.com/blog/' + post.slug)}" target="_blank" rel="noopener" class="share-btn share-wa">💬 WhatsApp</a><a href="https://twitter.com/intent/tweet?url=https://www.masboricuaqueunmofongo.com/blog/${post.slug}" target="_blank" rel="noopener" class="share-btn share-tw">𝕏 Twitter</a><button class="share-btn share-copy" onclick="navigator.clipboard.writeText(window.location.href);this.textContent='✅ Copiado!'">🔗 Copiar link</button></div></div>
-  <div class="post-affiliate"><div class="post-affiliate-title">🇵🇷 ¿Vas a viajar a Puerto Rico?</div><p>Encuentra las mejores tarifas para tu próximo viaje a la isla</p><div class="post-affiliate-links"><a href="https://booking.tpo.lu/OcdV3VzY" target="_blank" rel="noopener">🏨 Hoteles en Booking.com</a><a href="https://trip.tpo.lu/tOQAQ2WQ" target="_blank" rel="noopener">✈️ Vuelos en Trip.com</a></div></div>
-  <div class="post-amazon"><p>🛍️ Tienda Boricua — productos puertorriqueños en Amazon</p><a href="https://www.amazon.com/shop/planetaboricua" target="_blank" rel="noopener">Ver Tienda Boricua →</a></div>
-  ${navPrevNext}
-  ${related ? `<div class="post-related"><h3>🎙️ Sigue en el Balcón</h3><div class="related-grid">${related}</div></div>` : ''}
-</div>
-<div id="disqus_thread" style="max-width:800px;margin:2rem auto;padding:2rem;background:#fff;"></div>
+  <div id="disqus_thread" style="margin:2rem 0;padding:1.5rem;background:#fff;border-radius:8px;border:1px solid var(--border);"></div>
 <script>
 var disqus_config = function () {
   this.page.url = 'https://www.masboricuaqueunmofongo.com/blog/${post.slug}';
@@ -38,6 +33,11 @@ var disqus_config = function () {
 })();
 </script>
 <script id="dsq-count-scr" src="//masboricuaqueunmofongo-com.disqus.com/count.js" async></script>
+  <div class="post-affiliate"><div class="post-affiliate-title">🇵🇷 ¿Vas a viajar a Puerto Rico?</div><p>Encuentra las mejores tarifas para tu próximo viaje a la isla</p><div class="post-affiliate-links"><a href="https://booking.tpo.lu/OcdV3VzY" target="_blank" rel="noopener">🏨 Hoteles en Booking.com</a><a href="https://trip.tpo.lu/tOQAQ2WQ" target="_blank" rel="noopener">✈️ Vuelos en Trip.com</a></div></div>
+  <div class="post-amazon"><p>🛍️ Tienda Boricua — productos puertorriqueños en Amazon</p><a href="https://www.amazon.com/shop/planetaboricua" target="_blank" rel="noopener">Ver Tienda Boricua →</a></div>
+  ${navPrevNext}
+  ${related ? `<div class="post-related"><h3>🎙️ Sigue en el Balcón</h3><div class="related-grid">${related}</div></div>` : ''}
+</div>
 <footer><a href="/">Portal</a><a href="/blog">El Balcón</a><a href="/#directorio">Directorio</a><a href="/pb/add-negocio">Añadir Negocio</a><a href="/privacidad-boricua">Privacidad</a><p>© 2026 Planeta Boricua — Ivamar AI LLC · Más Boricua Que Un Mofongo 🇵🇷</p></footer>
 <div id="disqus_thread" style="max-width:800px;margin:2rem auto;padding:2rem;"></div>
 <script>
