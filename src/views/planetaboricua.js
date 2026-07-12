@@ -984,6 +984,7 @@ loadDirectorio();
     <div class="pb-footer-col">
       <h4>Legal</h4>
       <a href="/privacidad-boricua">Privacidad</a>
+      <a href="/terminos-boricua">Términos</a>
     </div>
   </div>
   <div class="pb-footer-bottom">
