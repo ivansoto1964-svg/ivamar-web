@@ -258,8 +258,7 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
     <div class="nav-links">
       <a href="/blog">El Balcón</a>
       <a href="#noticias">Noticias</a>
-      <a href="/recursos">Recursos PR↔USA</a>
-      <a href="/regresar-a-pr">Regresar a PR</a>
+
       <a href="#directorio">Red Mundial</a>
       <a href="#nayeli">Nayeli AI</a>
       <a href="#viajes">Viajes</a>
@@ -973,8 +972,7 @@ loadDirectorio();
       <a href="/blog">El Balcón</a>
       <a href="#noticias">Noticias</a>
       <a href="#directorio">Red Mundial Boricua</a>
-      <a href="/recursos">Recursos PR↔USA</a>
-      <a href="/regresar-a-pr">Regresar a PR</a>
+
       <a href="#nayeli">Nayeli AI</a>
       <a href="#viajes">Viajes a PR</a>
     </div>
