@@ -40,41 +40,36 @@ nav{background:#fff;border-bottom:3px solid #CE1126;padding:0;}
   </div>
 </nav>
 <section class="page-hero">
-  <h1>Términos de Servicio</h1>
-  <p>Última actualización: junio 2026</p>
+  <h1>Términos y Condiciones de Uso</h1>
+  <p>Última actualización: 12 de julio de 2026</p>
 </section>
 <div class="content">
-  <h2>Naturaleza del sitio</h2>
-  <p>Planeta Boricua es un medio cultural y editorial independiente. El contenido publicado tiene fines informativos, culturales y de opinión, y no constituye asesoramiento profesional, legal o comercial.</p>
-  <p>Al acceder y utilizar Planeta Boricua, aceptas los siguientes Términos del Servicio. Si no estás de acuerdo con alguno de ellos, te recomendamos no utilizar este sitio.</p>
+  <p>Bienvenido a Más Boricua Que Un Mofongo (masboricuaqueunmofongo.com), un sitio web operado por Ivamar AI LLC. Al acceder o utilizar nuestra plataforma, directorio, asistente de IA (Nayeli AI) y servicios relacionados, usted acepta cumplir y estar sujeto a los siguientes Términos y Condiciones. Si no está de acuerdo con alguna parte de estos términos, no deberá utilizar nuestro sitio web.</p>
 
-  <h2>Uso del contenido</h2>
-  <p>Todo el contenido publicado en Planeta Boricua, incluyendo textos, imágenes y otros materiales, está protegido por derechos de autor, salvo que se indique lo contrario.</p>
-  <p>No está permitido copiar, reproducir o redistribuir el contenido sin autorización previa, excepto para uso personal y no comercial, siempre que se cite la fuente correspondiente.</p>
+  <h2>1. Uso del Sitio y la Red Mundial Boricua</h2>
+  <p>Al registrar un negocio en nuestro directorio ("Red Mundial Boricua"), usted garantiza que la información proporcionada es verídica, exacta y que tiene los derechos legítimos sobre dicho negocio. Nos reservamos el derecho de remover cualquier listado que consideremos fraudulento, engañoso, ofensivo o que viole derechos de terceros sin previo aviso.</p>
 
-  <h2>Comentarios y participación</h2>
-  <p>Los comentarios en los artículos, cuando estén habilitados, deben realizarse con respeto. No se permite contenido ofensivo, spam, publicidad no solicitada o mensajes que inciten al odio o a la desinformación.</p>
-  <p>Planeta Boricua se reserva el derecho de moderar, editar o eliminar comentarios que no cumplan con estas normas.</p>
+  <h2>2. Propiedad Intelectual</h2>
+  <p>Todo el contenido original de este sitio, incluyendo textos, gráficos, logotipos, código y la personalidad de nuestra asistente de IA (Nayeli AI), es propiedad exclusiva de Ivamar AI LLC y está protegido por las leyes de propiedad intelectual internacionales y de los Estados Unidos.</p>
 
-  <h2>Directorio de Negocios</h2>
-  <p>Los negocios listados en el directorio de Planeta Boricua son añadidos por sus propietarios o la comunidad. Planeta Boricua no verifica independientemente la exactitud de toda la información proporcionada. El usuario es responsable de verificar la información antes de realizar transacciones.</p>
-  <p>Planeta Boricua se reserva el derecho de remover cualquier listado que viole estas políticas o que reciba reportes de fraude.</p>
+  <h2>3. Descargo de Responsabilidad de Afiliados y Publicidad</h2>
+  <p>Este sitio web muestra anuncios de Google AdSense y contiene enlaces de afiliados (incluyendo el Programa de Asociados de Amazon, Booking.com y Trip.com). Ivamar AI LLC no se hace responsable de las transacciones, compras, cancelaciones o disputas que ocurran entre el usuario y las plataformas de terceros vinculadas. Cualquier reclamación sobre un producto o servicio adquirido a través de un enlace de afiliado debe dirigirse al proveedor final.</p>
 
-  <h2>Calificaciones y Reseñas</h2>
-  <p>Las calificaciones y reseñas son opiniones de usuarios y no representan la posición oficial de Planeta Boricua. Nos reservamos el derecho de eliminar reseñas falsas, spam o que violen nuestras políticas.</p>
+  <h2>4. Comentarios y Participación</h2>
+  <p>Los comentarios en los artículos deben realizarse con respeto. No se permite contenido ofensivo, spam, publicidad no solicitada o mensajes que inciten al odio o a la desinformación. Planeta Boricua se reserva el derecho de moderar, editar o eliminar comentarios que no cumplan con estas normas.</p>
 
-  <h2>Enlaces externos</h2>
-  <p>Este sitio puede contener enlaces a sitios web de terceros. Planeta Boricua no se responsabiliza por el contenido, las políticas o las prácticas de dichos sitios externos. El acceso a enlaces externos se realiza bajo responsabilidad del usuario.</p>
+  <h2>5. Limitación de Responsabilidad</h2>
+  <p>Ivamar AI LLC y Más Boricua Que Un Mofongo no garantizan que el sitio web funcione de manera ininterrumpida o libre de errores. En ningún caso seremos responsables por daños directos, indirectos, incidentales o consecuentes que resulten del uso o la imposibilidad de uso de nuestra plataforma o de la información proporcionada por nuestra asistente Nayeli AI.</p>
 
-  <h2>Limitación de responsabilidad</h2>
-  <p>Planeta Boricua no garantiza que el contenido esté libre de errores o que el acceso al sitio sea ininterrumpido. El uso de la información publicada se realiza bajo responsabilidad del lector.</p>
+  <h2>6. Modificaciones</h2>
+  <p>Nos reservamos el derecho de modificar estos Términos y Condiciones en cualquier momento. Las actualizaciones serán publicadas en esta página y entrarán en vigor desde su publicación.</p>
 
-  <h2>Modificaciones</h2>
-  <p>Planeta Boricua se reserva el derecho de modificar estos Términos del Servicio en cualquier momento. Las actualizaciones serán publicadas en esta página y entrarán en vigor desde su publicación.</p>
+  <h2>7. Ley Aplicable</h2>
+  <p>Estos términos se rigen e interpretan de acuerdo con las leyes del Estado de Delaware, Estados Unidos, sin dar efecto a ningún principio de conflictos de leyes.</p>
 
-  <h2>Contacto</h2>
-  <p>Para consultas relacionadas con estos Términos del Servicio, puedes comunicarte a través de <a href="mailto:connect@ivamarai.com" style="color:#CE1126;">connect@ivamarai.com</a></p>
-  <p style="margin-top:1rem;font-size:0.82rem;color:#888;">Este sitio es operado como parte del ecosistema de proyectos de Ivamar AI LLC, Delaware, USA.</p>
+  <h2>8. Contacto</h2>
+  <p>Para consultas relacionadas con estos Términos, puedes comunicarte a través de <a href="mailto:connect@ivamarai.com" style="color:#CE1126;">connect@ivamarai.com</a></p>
+  <p style="margin-top:1rem;font-size:0.82rem;color:#888;">Empresa matriz: Ivamar AI LLC, Delaware, USA.</p>
 </div>
 <footer class="footer">
   <p>© 2026 <a href="/">Planeta Boricua</a> · <a href="/privacidad-boricua">Privacidad</a> · <a href="/terminos-boricua">Términos</a> · <a href="/afiliados-boricua">Aviso de Afiliados</a> · Un producto de <a href="https://ivamarai.com">Ivamar AI LLC</a></p>
@@ -128,44 +123,40 @@ nav{background:#fff;border-bottom:3px solid #CE1126;padding:0;}
   <p>Última actualización: junio 2026</p>
 </section>
 <div class="content">
-  <p>En Planeta Boricua respetamos la privacidad de quienes visitan este espacio. Esta Política de Privacidad explica de forma clara qué información se recopila, cómo se utiliza y cuáles son tus derechos como lector.</p>
+  <p><em>Última actualización: 12 de julio de 2026</em></p>
+  <p>En Más Boricua Que Un Mofongo (accesible a través de masboricuaqueunmofongo.com), propiedad y operado por Ivamar AI LLC, una de nuestras principales prioridades es la privacidad de nuestros visitantes. Este documento de Política de Privacidad detalla los tipos de información que recopilamos y registramos, y cómo la utilizamos.</p>
 
-  <h2>Información que recopilamos</h2>
-  <p>Planeta Boricua es un medio cultural y editorial. No solicitamos información personal de forma directa a los visitantes, excepto cuando el usuario decide suscribirse al newsletter, inscribir su negocio en el directorio, o usar el chat de Nayeli AI.</p>
-  <p>De manera automática, como ocurre en la mayoría de los sitios web, pueden recopilarse datos no identificables, tales como:</p>
-  <ul>
-    <li>Dirección IP</li>
-    <li>Tipo de dispositivo y navegador</li>
-    <li>Páginas visitadas y tiempo de navegación</li>
-    <li>Ubicación aproximada (país o región)</li>
-  </ul>
-  <p>Esta información se utiliza únicamente con fines estadísticos y para mejorar la experiencia de uso.</p>
+  <h2>1. Archivos de Registro (Log Files)</h2>
+  <p>Más Boricua Que Un Mofongo sigue un procedimiento estándar de uso de archivos de registro. Estos archivos registran a los visitantes cuando entran a los sitios web. La información recopilada incluye direcciones de protocolo de Internet (IP), tipo de navegador, proveedor de servicios de Internet (ISP), fecha y hora de la visita, páginas de referencia/salida y posiblemente el número de clics. Estos datos no están vinculados a ninguna información personalmente identificable.</p>
 
-  <h2>Newsletter y email</h2>
-  <p>Si te suscribes al newsletter de Planeta Boricua, tu dirección de email se almacena de forma segura y se usa exclusivamente para enviarte contenido de Planeta Boricua. Puedes cancelar tu suscripción en cualquier momento desde el enlace incluido en cada email.</p>
-  <p>No vendemos, alquilamos ni compartimos tu email con terceros.</p>
+  <h2>2. Cookies y Web Beacons</h2>
+  <p>Como cualquier otro sitio web, Más Boricua Que Un Mofongo utiliza "cookies". Estas cookies se utilizan para almacenar información, incluyendo las preferencias de los visitantes y las páginas del sitio web a las que el visitante accedió o visitó. La información se utiliza para optimizar la experiencia de los usuarios personalizando el contenido de nuestra página web.</p>
 
-  <h2>Nayeli AI</h2>
+  <h2>3. Políticas de Google AdSense y Publicidad de Terceros</h2>
+  <p>Nuestro sitio web utiliza Google AdSense para publicar anuncios. Google, como proveedor externo, utiliza cookies para publicar anuncios en nuestro sitio basados en las visitas anteriores de un usuario a nuestro sitio web u otros sitios web.</p>
+  <p>Los usuarios pueden inhabilitar la publicidad personalizada visitando la <a href="https://www.google.com/settings/ads" target="_blank" style="color:#CE1126;">Configuración de anuncios de Google</a>. Alternativamente, puede optar por no participar en el uso de cookies de terceros visitando <a href="http://www.aboutads.info" target="_blank" style="color:#CE1126;">www.aboutads.info</a>.</p>
+
+  <h2>4. Divulgación de Enlaces de Afiliados</h2>
+  <p>Más Boricua Que Un Mofongo se financia, en parte, a través de programas de marketing de afiliados. Cuando hace clic en ciertos enlaces de nuestro sitio web y realiza una compra, podemos recibir una pequeña comisión sin ningún costo adicional para usted.</p>
+  <p><strong>Programa de Asociados de Amazon:</strong> Participamos en el Programa de Asociados de Amazon Services LLC, un programa de publicidad de afiliados diseñado para proporcionar un medio para que los sitios ganen tarifas de publicidad mediante la colocación de enlaces a Amazon.com y sitios afiliados.</p>
+  <p><strong>Otros Socios (ej. Trip.com, Booking.com):</strong> También participamos en redes de afiliados de viajes y turismo. Los enlaces a hoteles, vuelos o servicios son enlaces de afiliados que nos ayudan a mantener esta plataforma gratuita para la comunidad.</p>
+
+  <h2>5. Recopilación de Datos del Usuario</h2>
+  <p>Al registrar su negocio en nuestra Red Mundial Boricua o al suscribirse a nuestro Newsletter, usted nos proporciona voluntariamente información como su nombre, dirección de correo electrónico e información comercial. Utilizamos esta información exclusivamente para publicar la ficha de su negocio en nuestro directorio y enviarle actualizaciones relevantes de nuestra comunidad.</p>
+  <p>Usted puede cancelar su suscripción en cualquier momento haciendo clic en el enlace "Darse de baja" incluido en todos nuestros correos electrónicos.</p>
+
+  <h2>6. Nayeli AI</h2>
   <p>Las conversaciones con Nayeli son procesadas para generar respuestas. Si decides compartir tu email durante la conversación, este se usa para enviarte el resumen de la misma. No se comparte con terceros sin tu consentimiento.</p>
 
-  <h2>Cookies</h2>
-  <p>Planeta Boricua puede utilizar cookies propias o de terceros para analizar el tráfico del sitio. Las cookies no permiten identificar personalmente a los usuarios y pueden desactivarse desde la configuración del navegador.</p>
+  <h2>7. Consentimiento</h2>
+  <p>Al utilizar nuestro sitio web, usted acepta nuestra Política de Privacidad y está de acuerdo con sus Términos y Condiciones.</p>
 
-  <h2>Google Analytics y Adsense</h2>
-  <p>Este sitio utiliza Google Analytics para recopilar información anónima sobre el uso del sitio, y Google Adsense para mostrar anuncios. Ambos servicios utilizan cookies y recopilan datos de forma agregada. Más información en <a href="https://policies.google.com/privacy" target="_blank" style="color:#CE1126;">policies.google.com/privacy</a></p>
+  <h2>8. Cambios a esta política</h2>
+  <p>Esta Política de Privacidad puede actualizarse ocasionalmente. Cualquier cambio será publicado en esta misma página con la fecha de actualización.</p>
 
-  <h2>Enlaces externos y afiliados</h2>
-  <p>Planeta Boricua puede incluir enlaces a sitios externos y enlaces de afiliados. No tenemos control sobre las políticas de privacidad de esos sitios. Ver nuestro <a href="/afiliados-boricua" style="color:#CE1126;">Aviso de Afiliados</a> para más información.</p>
-
-  <h2>Protección de la información</h2>
-  <p>No vendemos, alquilamos ni compartimos información personal de los visitantes. La información recopilada se utiliza únicamente para fines editoriales y de análisis interno.</p>
-
-  <h2>Cambios a esta política</h2>
-  <p>Esta Política de Privacidad puede actualizarse ocasionalmente. Cualquier cambio será publicado en esta misma página.</p>
-
-  <h2>Contacto</h2>
-  <p>Si tienes preguntas sobre esta Política de Privacidad, puedes comunicarte a través de <a href="mailto:connect@ivamarai.com" style="color:#CE1126;">connect@ivamarai.com</a></p>
-  <p style="margin-top:1rem;font-size:0.82rem;color:#888;">Este sitio es operado como parte del ecosistema de proyectos de Ivamar AI LLC, Delaware, USA.</p>
+  <h2>9. Contacto</h2>
+  <p>Si tiene alguna pregunta sobre esta Política de Privacidad, puede contactarnos a través de: <a href="mailto:connect@ivamarai.com" style="color:#CE1126;">connect@ivamarai.com</a></p>
+  <p style="margin-top:1rem;font-size:0.82rem;color:#888;">Empresa matriz: Ivamar AI LLC, Delaware, USA.</p>
 </div>
 <footer class="footer">
   <p>© 2026 <a href="/">Planeta Boricua</a> · <a href="/privacidad-boricua">Privacidad</a> · <a href="/terminos-boricua">Términos</a> · <a href="/afiliados-boricua">Aviso de Afiliados</a> · Un producto de <a href="https://ivamarai.com">Ivamar AI LLC</a></p>
