@@ -1154,6 +1154,23 @@ async function nlSubscribe() {
 }
 </script>
 
+
+<!-- Cookie Banner -->
+<div id="cookie-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;background:#111;color:#fff;padding:1rem 2rem;z-index:9999;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;font-family:'Inter',sans-serif;font-size:0.82rem;">
+  <p style="margin:0;color:rgba(255,255,255,0.8);">🍪 Usamos cookies para mejorar tu experiencia y mostrar anuncios relevantes. Al continuar navegando, aceptas nuestro uso de cookies. <a href="/privacidad" style="color:#CE1126;text-decoration:underline;">Ver Política de Privacidad</a></p>
+  <button onclick="acceptCookies()" style="background:#CE1126;color:#fff;border:none;padding:0.5rem 1.5rem;border-radius:4px;font-weight:700;cursor:pointer;white-space:nowrap;font-size:0.82rem;">Aceptar</button>
+</div>
+<script>
+function acceptCookies() {
+  localStorage.setItem('cookies_accepted', '1');
+  document.getElementById('cookie-banner').style.display = 'none';
+}
+window.addEventListener('DOMContentLoaded', function() {
+  if (!localStorage.getItem('cookies_accepted')) {
+    document.getElementById('cookie-banner').style.display = 'flex';
+  }
+});
+</script>
 </body>
 </html>
 `;

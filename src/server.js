@@ -10,6 +10,7 @@ const sanitize = (str) => str ? sanitizeHtml(str, { allowedTags: [], allowedAttr
 // ==========================================
 const rateLimit = require('express-rate-limit');
 const app = express();
+app.use(compression());
 app.set('trust proxy', 1);
 
 // Handle malformed URI errors from bots/scanners
