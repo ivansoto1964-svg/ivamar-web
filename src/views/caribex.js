@@ -220,7 +220,7 @@ nav{padding:0 1rem;}.nav-links{display:none;}
     <a href="#destinations">Destinations</a>
     <a href="#mainland">Mainland Caribbean</a>
     <a href="#assistant">Sun</a>
-    <a href="https://blog.yourcaribbeanexpert.com" target="_blank">Insights</a>
+    <a href="/about">About</a>
     <a href="#assistant" class="nav-cta">Plan My Trip →</a>
   </div>
 </nav>
@@ -405,7 +405,7 @@ nav{padding:0 1rem;}.nav-links{display:none;}
       <div class="blog-card-skeleton"></div>
     </div>
     <div style="text-align:center;margin-top:2rem;">
-      <a href="https://blog.yourcaribbeanexpert.com" target="_blank" class="btn-teal">Read All Articles →</a>
+      <a href="/about" class="btn-teal">Learn More →</a>
     </div>
   </div>
 </section>
@@ -454,15 +454,13 @@ nav{padding:0 1rem;}.nav-links{display:none;}
       </div>
       <div class="footer-col">
         <h4>Explore</h4>
-        <a href="https://blog.yourcaribbeanexpert.com" target="_blank">Caribex Insights</a>
-        <a href="https://blog.yourcaribbeanexpert.com/p/about-caribex.html" target="_blank">About</a>
-        <a href="https://blog.yourcaribbeanexpert.com/p/contact_17.html" target="_blank">Contact</a>
+        <a href="/about">About Caribex</a>
+        <a href="mailto:connect@ivamarai.com">Contact Us</a>
       </div>
       <div class="footer-col">
         <h4>Legal</h4>
-        <a href="https://blog.yourcaribbeanexpert.com/p/terms-of-service.html" target="_blank">Terms</a>
-        <a href="https://blog.yourcaribbeanexpert.com/p/privacy-policy_01097434756.html" target="_blank">Privacy
-        <a href="https://blog.yourcaribbeanexpert.com/p/affiliate-disclosure.html" target="_blank">Affiliates</a></a>
+        <a href="/terminos">Terms of Use</a>
+        <a href="/privacidad">Privacy Policy</a>
       </div>
     </div>
     <div class="footer-bottom">
@@ -535,7 +533,7 @@ document.addEventListener('DOMContentLoaded', loadDestinationPhotos);
 
       function getLink(entry) {
         const l = entry.link.find(x => x.rel === 'alternate');
-        return l ? l.href : 'https://blog.yourcaribbeanexpert.com';
+        return l ? l.href : '/caribex';
       }
 
       function getDesc(entry) {
