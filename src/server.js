@@ -1886,6 +1886,7 @@ app.get("/api/blog-feed", async (req, res) => {
 // ==========================================
 // SEO — SITEMAP & ROBOTS
 // ==========================================
+app.get("/quienes-somos", (req, res) => res.send(quienesSomos));
 app.get("/privacidad", (req, res) => res.redirect(301, "/privacidad-boricua"));
 app.get("/terminos", (req, res) => res.redirect(301, "/terminos-boricua"));
 
@@ -1951,6 +1952,7 @@ app.get("/noticias", (req, res) => res.send(pbNoticias));
 
 // PB Blog routes
 const pbBlogRouter = require("./routes/pb-blog");
+const quienesSomos = require("./views/quienes-somos");
 app.use("/blog", pbBlogRouter);
 
 // Blogger auto-sync
