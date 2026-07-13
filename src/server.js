@@ -1954,7 +1954,6 @@ app.get("/noticias", (req, res) => res.send(pbNoticias));
 // PB Blog routes
 const pbBlogRouter = require("./routes/pb-blog");
 const quienesSomos = require("./views/quienes-somos");
-const caribexAbout = require("./views/caribex-about");
 app.use("/blog", pbBlogRouter);
 
 // Blogger auto-sync
