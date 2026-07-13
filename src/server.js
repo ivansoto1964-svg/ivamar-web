@@ -1888,6 +1888,8 @@ app.get("/api/blog-feed", async (req, res) => {
 // ==========================================
 app.get("/quienes-somos", (req, res) => res.send(quienesSomos));
 app.get("/about", (req, res) => res.send(caribexAbout));
+app.get("/privacidad", (req, res) => res.send(caribexPrivacy));
+app.get("/terminos", (req, res) => res.send(caribexTerms));
 app.get("/privacidad", (req, res) => res.redirect(301, "/privacidad-boricua"));
 app.get("/terminos", (req, res) => res.redirect(301, "/terminos-boricua"));
 
