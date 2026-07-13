@@ -1886,6 +1886,14 @@ app.get("/api/blog-feed", async (req, res) => {
 // ==========================================
 // SEO — SITEMAP & ROBOTS
 // ==========================================
+app.get("/privacidad", (req, res) => res.redirect(301, "/privacidad-boricua"));
+app.get("/terminos", (req, res) => res.redirect(301, "/terminos-boricua"));
+
+app.get("/ads.txt", (req, res) => {
+  res.set("Content-Type", "text/plain");
+  res.send("google.com, pub-8301223085122981, DIRECT, f08c47fec0942fa0");
+});
+
 app.get("/sitemap.xml", (req, res) => {
   const base = "https://yourcaribbeanexpert.com";
   const destinations = [
@@ -2760,7 +2768,15 @@ No insistas más de dos veces total. Si no lo dan, despídete con calidez sin pr
   }
 });
 
+// Cache for blog posts
+let pbBlogCache = { posts: [], lastFetch: 0 };
+const PB_CACHE_TTL = 6 * 60 * 60 * 1000; // 6 hours
+
 app.get('/api/planetaboricua-blog', async (req, res) => {
+  // Return cache if fresh
+  if (pbBlogCache.posts.length && Date.now() - pbBlogCache.lastFetch < PB_CACHE_TTL) {
+    return res.json(pbBlogCache.posts);
+  }
   try {
     const r = await fetch('https://masboricuaqueunmofongo.blogspot.com/feeds/posts/default?alt=json&max-results=4');
     const data = await r.json();
@@ -2792,9 +2808,12 @@ app.get('/api/planetaboricua-blog', async (req, res) => {
         slug
       };
     });
+    pbBlogCache = { posts, lastFetch: Date.now() };
     res.set('Access-Control-Allow-Origin', '*');
     res.json(posts);
   } catch (err) {
+    // Return stale cache if available
+    if (pbBlogCache.posts.length) return res.json(pbBlogCache.posts);
     res.json([]);
   }
 });
