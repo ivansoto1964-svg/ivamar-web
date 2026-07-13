@@ -2787,6 +2787,16 @@ const PB_CACHE_TTL = 6 * 60 * 60 * 1000; // 6 hours
 app.get('/api/planetaboricua-blog', async (req, res) => {
   // Return cache if fresh
   if (pbBlogCache.posts.length && Date.now() - pbBlogCache.lastFetch < PB_CACHE_TTL) {
+    // Auto-sync if newest post not in blog yet
+    const newestSlug = pbBlogCache.posts[0] && pbBlogCache.posts[0].slug;
+    if (newestSlug) {
+      const fs = require('fs');
+      const path = require('path');
+      const postPath = path.join(__dirname, '../data/pb-blog/posts', newestSlug + '.json');
+      if (!fs.existsSync(postPath)) {
+        fetch('http://localhost:10000/api/blogger/sync').catch(() => {});
+      }
+    }
     return res.json(pbBlogCache.posts);
   }
   try {
