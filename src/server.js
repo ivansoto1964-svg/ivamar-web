@@ -1892,7 +1892,7 @@ app.get("/ads.txt", (req, res) => {
   res.send("google.com, pub-8301223085122981, DIRECT, f08c47fec0942fa0");
 });
 
-app.get("/sitemap.xml", (req, res) => {
+app.get("/caribex-sitemap.xml", (req, res) => {
   const base = "https://yourcaribbeanexpert.com";
   const destinations = [
     'puerto-rico','dominican-republic','cuba','jamaica','grand-cayman',
@@ -1928,7 +1928,7 @@ Allow: /
 Disallow: /admin
 Disallow: /api/
 
-Sitemap: https://yourcaribbeanexpert.com/sitemap.xml`);
+Sitemap: https://yourcaribbeanexpert.com/caribex-sitemap.xml`);
 });
 
 
