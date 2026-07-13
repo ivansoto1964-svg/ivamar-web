@@ -1976,28 +1976,21 @@ app.get('/:year/:month/:slug', (req, res) => {
   }
 });
 
-app.get("/sitemap.xml", (req, res) => {
-  const fs = require("fs");
-  const path = require("path");
-  const postsDir = path.join(__dirname, "../data/pb-blog/posts");
+app.get("/sitemap.xml", async (req, res) => {
+  // Get posts from Blogger RSS directly
   let postUrls = '';
   try {
-    const files = fs.readdirSync(postsDir).filter(f => f.endsWith(".json") && f !== '.gitkeep');
-    postUrls = files.map(f => {
-      try {
-        const p = JSON.parse(fs.readFileSync(path.join(postsDir, f), "utf8"));
-        if (!p.slug) return '';
-        return `<url><loc>https://www.masboricuaqueunmofongo.com/blog/${p.slug}</loc><lastmod>${p.dateISO||'2026-01-01'}</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>`;
-      } catch(e) { return ''; }
+    const feed = await fetch("https://blog.masboricuaqueunmofongo.com/feeds/posts/default?alt=json&max-results=50");
+    const data = await feed.json();
+    const entries = data.feed.entry || [];
+    postUrls = entries.map(e => {
+      const title = e.title.$t.trim();
+      const slug = title.toLowerCase().replace(/[áàä]/g,'a').replace(/[éèë]/g,'e').replace(/[íìï]/g,'i').replace(/[óòö]/g,'o').replace(/[úùü]/g,'u').replace(/ñ/g,'n').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+      const date = new Date(e.published.$t).toISOString().split('T')[0];
+      return `<url><loc>https://www.masboricuaqueunmofongo.com/blog/${slug}</loc><lastmod>${date}</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>`;
     }).join('');
-  } catch(e) { console.error('Sitemap error:', e.message); }
-  const staticUrls = `
-  <url><loc>https://www.masboricuaqueunmofongo.com/</loc><changefreq>daily</changefreq><priority>1.0</priority></url>
-  <url><loc>https://www.masboricuaqueunmofongo.com/blog</loc><changefreq>daily</changefreq><priority>0.9</priority></url>
-  <url><loc>https://www.masboricuaqueunmofongo.com/quienes-somos</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
-  <url><loc>https://www.masboricuaqueunmofongo.com/privacidad</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://www.masboricuaqueunmofongo.com/terminos</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>
-  <url><loc>https://www.masboricuaqueunmofongo.com/noticias</loc><changefreq>daily</changefreq><priority>0.8</priority></url>`;
+  } catch(e) { console.error('Sitemap RSS error:', e.message); }
+  const staticUrls = `<url><loc>https://www.masboricuaqueunmofongo.com/</loc><changefreq>daily</changefreq><priority>1.0</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/blog</loc><changefreq>daily</changefreq><priority>0.9</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/quienes-somos</loc><changefreq>monthly</changefreq><priority>0.7</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/privacidad</loc><changefreq>monthly</changefreq><priority>0.5</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/terminos</loc><changefreq>monthly</changefreq><priority>0.5</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/noticias</loc><changefreq>daily</changefreq><priority>0.8</priority></url>`;
   res.set('Content-Type','application/xml');
   res.send(`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${staticUrls}${postUrls}</urlset>`);
 });
