@@ -641,6 +641,7 @@ app.get("/caribex/:slug", async (req, res) => {
     dest.heroPhoto = heroPhoto;
     res.send(renderDestination(dest));
   } catch(e) {
+    console.error("Destination error:", slug, e.message);
     res.redirect("/caribex");
   }
 });
