@@ -1955,9 +1955,17 @@ const pbBlogRouter = require("./routes/pb-blog");
 const quienesSomos = require("./views/quienes-somos");
 app.use("/blog", pbBlogRouter);
 
-// Blogger auto-sync
+// Blogger auto-sync PB
 const bloggerSync = require("./routes/blogger-sync");
 app.use("/api/blogger", bloggerSync);
+
+// Caribex blog
+const caribexBlogRouter = require("./routes/caribex-blog");
+app.use("/insights", caribexBlogRouter);
+
+// Caribex sync
+const caribexSync = require("./routes/caribex-sync");
+app.use("/api/caribex-sync", caribexSync);
 
 
 // Redirects for old blog URLs that Google has indexed
