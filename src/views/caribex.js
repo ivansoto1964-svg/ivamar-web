@@ -313,6 +313,14 @@ nav{padding:0 1rem;}.nav-links{display:none;}
 
     <!-- DUTCH CARIBBEAN -->
     <div class="region-section">
+      <a href="/caribex/anguilla" class="island-card">
+        <div class="island-card-img">🇦🇮</div>
+        <div class="island-card-body">
+          <div class="island-card-region">Lesser Antilles</div>
+          <div class="island-card-name">Anguilla</div>
+          <div class="island-card-desc">Luxury beaches, crystal waters and exclusive resorts in a pristine British territory.</div>
+        </div>
+      </a>
       <div class="region-label">🇳🇱 Dutch Caribbean</div>
       <div class="islands-grid">
         <a href="/caribex/aruba" class="island-card"><div class="island-card-img" style="background:linear-gradient(135deg,#0096C7,#48CAE4);">🇦🇼</div><div class="island-card-body"><div class="island-card-region">Dutch Caribbean</div><div class="island-card-name">Aruba</div><div class="island-card-desc">360 days of sunshine, Eagle Beach and the most consistent weather in the Caribbean.</div><span class="island-tag tag-beach">Beach</span><span class="island-tag tag-luxury">Luxury</span></div></a>
