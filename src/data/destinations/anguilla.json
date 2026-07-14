@@ -1,68 +1,107 @@
 {
   "slug": "anguilla",
   "name": "Anguilla",
-  "country": "Anguilla (British Overseas Territory)",
   "flag": "🇦🇮",
+  "tagline": "The Caribbean's Most Pristine Beaches",
   "region": "Lesser Antilles",
-  "searchQuery": "Anguilla Shoal Bay beach Caribbean",
-  "hero": {
-    "tagline": "The Caribbean's Best-Kept Secret",
-    "description": "Pristine white sand beaches, crystal-clear turquoise waters, and an unhurried pace of life make Anguilla one of the most exclusive destinations in the Caribbean."
-  },
-  "highlights": [
-    { "icon": "🏖️", "title": "World-Class Beaches", "desc": "Shoal Bay East is consistently ranked among the best beaches in the world — 2 miles of powdery white sand and calm turquoise water." },
-    { "icon": "🦞", "title": "Exceptional Cuisine", "desc": "Anguilla punches above its weight with world-class restaurants, fresh lobster, and a growing culinary scene that attracts visitors from around the globe." },
-    { "icon": "🌊", "title": "Crystal Waters", "desc": "The island's shallow reef-protected waters are ideal for snorkeling, diving, and paddleboarding in stunning visibility." },
-    { "icon": "🏨", "title": "Luxury Resorts", "desc": "From ultra-luxurious resorts to boutique properties, Anguilla offers some of the finest accommodations in the Caribbean." }
+  "country": "Anguilla (British Overseas Territory)",
+  "gradient": "linear-gradient(135deg, #00B4D8 0%, #0077B6 100%)",
+  "bestFor": ["Beach", "Luxury", "Snorkeling", "Food"],
+  "overview": "Anguilla is a small, flat coral island in the northeastern Caribbean — and one of the most beautiful destinations in the entire region. It is known for having some of the finest white sand beaches in the world, crystal-clear turquoise waters, and an unhurried atmosphere that attracts discerning travelers looking for something beyond the ordinary.\n\nDespite its small size — just 16 miles long and 3 miles wide — Anguilla punches well above its weight. The island has developed a reputation for world-class cuisine, with an extraordinary number of excellent restaurants for such a small population. Lobster, fresh fish and Caribbean seafood feature prominently, often served steps from the water on beaches that seem almost too perfect to be real.\n\nAnguilla is a British Overseas Territory, which means it maintains a stable political environment and British legal system while enjoying a distinctly Caribbean character. The currency is the Eastern Caribbean Dollar, but US dollars are accepted almost everywhere. The island has no traffic lights, no fast food chains, and no high-rise hotels — and that is very much by design.",
+  "topExperiences": [
+    {
+      "icon": "🏖️",
+      "name": "Shoal Bay East",
+      "desc": "Consistently ranked among the world's best beaches — two miles of powdery white sand, calm turquoise water and a relaxed atmosphere that makes it almost impossible to leave."
+    },
+    {
+      "icon": "🦞",
+      "name": "Lobster on the Beach",
+      "desc": "Fresh Caribbean lobster grilled and served at beachfront restaurants is an Anguilla tradition. The island's culinary scene is exceptional for its size."
+    },
+    {
+      "icon": "⛵",
+      "name": "Sandy Island Day Trip",
+      "desc": "A tiny uninhabited sand bar surrounded by impossibly clear turquoise water — accessible by short boat ride from Sandy Ground. One of the Caribbean's most magical spots."
+    },
+    {
+      "icon": "🤿",
+      "name": "Snorkeling at Prickly Pear Cays",
+      "desc": "Two uninhabited cays with excellent reef snorkeling, white sand beaches and crystal-clear water. Accessible by boat from Sandy Ground or Meads Bay."
+    },
+    {
+      "icon": "🌅",
+      "name": "Sunset at Meads Bay",
+      "desc": "Long, uncrowded beach with luxury resorts, excellent restaurants and one of the most beautiful sunsets in the Caribbean — with views toward Saint Martin."
+    }
   ],
+  "beaches": [
+    {
+      "name": "Shoal Bay East",
+      "desc": "The island's most famous beach and one of the world's best — 2 miles of white sand, calm water and beach bars."
+    },
+    {
+      "name": "Meads Bay",
+      "desc": "Long and uncrowded stretch of white sand with luxury resorts and excellent dining."
+    },
+    {
+      "name": "Rendezvous Bay",
+      "desc": "Calm, protected bay ideal for families with views of Saint Martin across the water."
+    },
+    {
+      "name": "Barnes Bay",
+      "desc": "Quiet, secluded beach on the northwest coast — calm water and beautiful scenery."
+    },
+    {
+      "name": "Cove Bay",
+      "desc": "Wild and windswept on the Atlantic side — dramatic scenery and fewer visitors."
+    }
+  ],
+  "food": [
+    {
+      "name": "Blanchards",
+      "desc": "Iconic fine dining on Meads Bay — Caribbean-influenced cuisine with an exceptional wine list. Reservation essential."
+    },
+    {
+      "name": "Smokey's at the Cove",
+      "desc": "Casual beachfront spot famous for fresh grilled lobster, local fish and cold Carib beer."
+    },
+    {
+      "name": "Dolce Vita",
+      "desc": "Italian restaurant with stunning sunset views over Sandy Ground — excellent pasta and fresh seafood."
+    },
+    {
+      "name": "Geraud's Patisserie",
+      "desc": "French bakery in The Valley — perfect for breakfast pastries, sandwiches and strong coffee."
+    }
+  ],
+  "culture": [
+    {
+      "name": "Anguilla Day (May 30)",
+      "desc": "The island's national holiday commemorating the 1967 Revolution — celebrated with traditional boat races, music and cultural events."
+    },
+    {
+      "name": "Boat Racing",
+      "desc": "Traditional wooden sailboat racing is Anguilla's national sport — races are held throughout the year and draw large local crowds."
+    },
+    {
+      "name": "Heritage Collection Museum",
+      "desc": "Small but excellent museum in East End documenting Anguilla's history, from the Arawak people to the present day."
+    }
+  ],
+  "bestTime": {
+    "peak": "December to April — dry season with perfect weather, busy with visitors and higher prices.",
+    "shoulder": "May and November — fewer crowds, good weather and better value.",
+    "rainy": "June to October — hurricane season with lower prices but risk of tropical storms."
+  },
   "practical": {
     "currency": "Eastern Caribbean Dollar (XCD) — US Dollars widely accepted",
     "language": "English",
     "capital": "The Valley",
-    "population": "~18,000",
-    "timezone": "AST (UTC-4)",
-    "electricity": "110V/60Hz (US plugs)",
-    "entry": "US, Canadian, and EU citizens do not need a visa. Valid passport required. Departure tax applies."
-  },
-  "getting_there": {
-    "nearest_airport": "Clayton J. Lloyd International Airport (AXA)",
-    "from_usa": "No direct flights from most US cities. Connect through San Juan (SJU), Sint Maarten (SXM), or Antigua (ANU). Ferry from Sint Maarten is also popular.",
-    "ferry": "Regular ferry service from Marigot (Saint Martin) — approximately 25 minutes.",
-    "inter_island": "Short connections via WINAIR or other regional carriers from Sint Maarten and Antigua."
-  },
-  "best_time": {
-    "peak": "December to April — dry season with perfect weather and major events.",
-    "shoulder": "May and November — fewer crowds, good weather.",
-    "rainy": "June to October — hurricane season, lower prices but risk of storms."
-  },
-  "categories": [
-    {
-      "name": "Top Beaches",
-      "items": [
-        { "name": "Shoal Bay East", "desc": "Anguilla's most famous beach — 2 miles of stunning white sand and clear water. Beach bars and water sports available." },
-        { "name": "Meads Bay", "desc": "Long, uncrowded stretch of white sand with luxury resorts and excellent restaurants." },
-        { "name": "Rendezvous Bay", "desc": "Calm, protected bay with views of Saint Martin — ideal for families." },
-        { "name": "Sandy Ground", "desc": "Lively beach village with bars, restaurants and the island's main salt pond." }
-      ]
-    },
-    {
-      "name": "Must-Do Experiences",
-      "items": [
-        { "name": "Lobster Dinner on the Beach", "desc": "Fresh Caribbean lobster at one of Anguilla's celebrated beachfront restaurants is a must." },
-        { "name": "Snorkeling at Prickly Pear Cays", "desc": "Take a boat to these uninhabited cays for exceptional snorkeling in crystal-clear waters." },
-        { "name": "Anguilla Day (May 30)", "desc": "The island's national holiday celebrated with boat races, music, and cultural events." },
-        { "name": "Visit Sandy Island", "desc": "A tiny uninhabited sand bar surrounded by turquoise water — accessible by boat." }
-      ]
-    },
-    {
-      "name": "Where to Eat",
-      "items": [
-        { "name": "Blanchards", "desc": "Iconic fine dining restaurant with Caribbean-influenced cuisine. Reservation essential." },
-        { "name": "Smokey's at the Cove", "desc": "Casual beachfront spot famous for fresh grilled lobster and local fish." },
-        { "name": "Geraud's Patisserie", "desc": "French bakery in The Valley — perfect for breakfast pastries and coffee." },
-        { "name": "Dolce Vita", "desc": "Italian restaurant with stunning sunset views over Sandy Ground." }
-      ]
-    }
-  ],
-  "sun_context": "Anguilla is a small, flat British Overseas Territory in the northeastern Caribbean. It is known for its exceptional beaches, clear waters, and upscale tourism. The island has no mountains, no rivers, and very little fresh water — making it distinctly different from its more volcanic neighbors. It shares the Anguilla Bank with Saint Martin/Sint Maarten, visible from most beaches. The economy relies almost entirely on tourism, and the island has maintained strict development controls to preserve its natural beauty and low-key atmosphere."
+    "visa": "No visa required for US, Canadian, UK and EU citizens. Valid passport required. Departure tax applies.",
+    "airport": "Clayton J. Lloyd International Airport (AXA) — no direct flights from most US cities. Connect through Sint Maarten (SXM), San Juan (SJU) or Antigua (ANU).",
+    "ferry": "Regular ferry from Marigot, Saint Martin — approximately 25 minutes. A popular and convenient option.",
+    "electricity": "110V/60Hz — US-style plugs work without adapter.",
+    "health": "No vaccinations required. Basic medical facilities available — serious cases transferred to Sint Maarten or Puerto Rico."
+  }
 }
