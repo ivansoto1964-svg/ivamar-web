@@ -1,113 +1,39 @@
 {
-  "slug": "anguilla",
-  "name": "Anguilla",
-  "flag": "\ud83c\udde6\ud83c\uddee",
-  "tagline": "The Caribbean's Most Pristine Beaches",
+  "slug": "antigua",
+  "name": "Antigua & Barbuda",
+  "flag": "🇦🇬",
+  "tagline": "365 Beaches for Every Day of the Year",
   "region": "Lesser Antilles",
-  "country": "Anguilla (British Overseas Territory)",
-  "gradient": "linear-gradient(135deg, #00B4D8 0%, #0077B6 100%)",
-  "bestFor": [
-    "Beach",
-    "Luxury",
-    "Snorkeling",
-    "Food"
-  ],
-  "overview": "Anguilla is a small, flat coral island in the northeastern Caribbean \u2014 and one of the most beautiful destinations in the entire region. It is known for having some of the finest white sand beaches in the world, crystal-clear turquoise waters, and an unhurried atmosphere that attracts discerning travelers looking for something beyond the ordinary.\n\nDespite its small size \u2014 just 16 miles long and 3 miles wide \u2014 Anguilla punches well above its weight. The island has developed a reputation for world-class cuisine, with an extraordinary number of excellent restaurants for such a small population. Lobster, fresh fish and Caribbean seafood feature prominently, often served steps from the water on beaches that seem almost too perfect to be real.\n\nAnguilla is a British Overseas Territory, which means it maintains a stable political environment and British legal system while enjoying a distinctly Caribbean character. The currency is the Eastern Caribbean Dollar, but US dollars are accepted almost everywhere. The island has no traffic lights, no fast food chains, and no high-rise hotels \u2014 and that is very much by design.",
+  "country": "Antigua & Barbuda",
+  "gradient": "linear-gradient(135deg, #CE1126 0%, #0072C6 100%)",
+  "bestFor": ["Beach", "Sailing", "Luxury", "Nature"],
+  "overview": "Antigua claims 365 beaches — one for every day of the year — and while the number may be generous, the quality is not in question. The island has some of the finest beaches in the Eastern Caribbean, a sailing tradition of international renown and a colonial history that left behind the remarkable Nelson's Dockyard, the only remaining Georgian dockyard in the world still in use.\n\nAntigua's coastline is extraordinary — deeply indented with natural harbors, bays and coves that give it the highest ratio of coastline to land area in the Caribbean. English Harbour, the historic naval base where Horatio Nelson once served, is now a UNESCO World Heritage site and the center of one of the Caribbean's most prestigious sailing communities. The Antigua Sailing Week regatta each April draws competitors from across the world.\n\nBarbuda, the sister island 40 kilometers to the north, offers something completely different — a flat coral island with a pink sand beach 17 miles long, a frigate bird sanctuary of extraordinary size and a population of around 1,800 people living at a pace that the modern world has largely passed by. Barbuda was devastated by Hurricane Irma in 2017 and is slowly rebuilding.",
   "topExperiences": [
-    {
-      "icon": "\ud83c\udfd6\ufe0f",
-      "name": "Shoal Bay East",
-      "desc": "Consistently ranked among the world's best beaches \u2014 two miles of powdery white sand, calm turquoise water and a relaxed atmosphere that makes it almost impossible to leave."
-    },
-    {
-      "icon": "\ud83e\udd9e",
-      "name": "Lobster on the Beach",
-      "desc": "Fresh Caribbean lobster grilled and served at beachfront restaurants is an Anguilla tradition. The island's culinary scene is exceptional for its size."
-    },
-    {
-      "icon": "\u26f5",
-      "name": "Sandy Island Day Trip",
-      "desc": "A tiny uninhabited sand bar surrounded by impossibly clear turquoise water \u2014 accessible by short boat ride from Sandy Ground. One of the Caribbean's most magical spots."
-    },
-    {
-      "icon": "\ud83e\udd3f",
-      "name": "Snorkeling at Prickly Pear Cays",
-      "desc": "Two uninhabited cays with excellent reef snorkeling, white sand beaches and crystal-clear water. Accessible by boat from Sandy Ground or Meads Bay."
-    },
-    {
-      "icon": "\ud83c\udf05",
-      "name": "Sunset at Meads Bay",
-      "desc": "Long, uncrowded beach with luxury resorts, excellent restaurants and one of the most beautiful sunsets in the Caribbean \u2014 with views toward Saint Martin."
-    }
+    {"icon": "⛵", "name": "Nelson's Dockyard", "desc": "A UNESCO World Heritage Georgian naval dockyard where Horatio Nelson served — beautifully restored and still functioning as a marina, surrounded by 18th-century stone buildings."},
+    {"icon": "🏖️", "name": "Half Moon Bay", "desc": "A perfect horseshoe of pink and white sand on Antigua's Atlantic coast — protected, beautiful and consistently cited among the Caribbean's finest beaches."},
+    {"icon": "🦅", "name": "Barbuda Frigate Bird Sanctuary", "desc": "The largest frigate bird colony in the western hemisphere — thousands of birds nesting in the mangroves of Codrington Lagoon, accessible by boat from Barbuda."},
+    {"icon": "🎉", "name": "Antigua Sailing Week", "desc": "One of the world's great sailing regattas held each April — hundreds of boats racing through extraordinary Caribbean waters with parties that match the competition."},
+    {"icon": "🏰", "name": "Shirley Heights", "desc": "A former British military lookout with panoramic views over English Harbour — the famous Sunday sunset BBQ and steel pan party is one of the Caribbean's great weekly events."},
+    {"icon": "🤿", "name": "Cades Reef", "desc": "Antigua's finest snorkeling and diving — a protected reef on the southwest coast with extraordinary coral formations and abundant marine life."}
   ],
   "beaches": [
-    {
-      "name": "Shoal Bay East",
-      "desc": "The island's most famous beach and one of the world's best \u2014 2 miles of white sand, calm water and beach bars."
-    },
-    {
-      "name": "Meads Bay",
-      "desc": "Long and uncrowded stretch of white sand with luxury resorts and excellent dining."
-    },
-    {
-      "name": "Rendezvous Bay",
-      "desc": "Calm, protected bay ideal for families with views of Saint Martin across the water."
-    },
-    {
-      "name": "Barnes Bay",
-      "desc": "Quiet, secluded beach on the northwest coast \u2014 calm water and beautiful scenery."
-    },
-    {
-      "name": "Cove Bay",
-      "desc": "Wild and windswept on the Atlantic side \u2014 dramatic scenery and fewer visitors."
-    }
+    {"name": "Half Moon Bay", "type": "World Class", "desc": "A protected horseshoe bay of pink-tinged sand and calm clear water — one of the most beautiful natural beaches in the Eastern Caribbean."},
+    {"name": "Dickenson Bay", "type": "Resort", "desc": "The most developed beach on Antigua — calm, clear and lined with hotels, beach bars and water sports operators."},
+    {"name": "Pink Beach Barbuda", "type": "Remote", "desc": "17 miles of pink sand beach on Barbuda — completely undeveloped, accessible only by plane or ferry and one of the most extraordinary beach experiences in the Caribbean."},
+    {"name": "Darkwood Beach", "type": "Natural", "desc": "A long stretch of white sand on Antigua's west coast — calm water, minimal development and one of the island's most consistently beautiful beaches."}
   ],
   "food": [
-    {
-      "name": "Blanchards",
-      "desc": "Iconic fine dining on Meads Bay \u2014 Caribbean-influenced cuisine with an exceptional wine list. Reservation essential."
-    },
-    {
-      "name": "Smokey's at the Cove",
-      "desc": "Casual beachfront spot famous for fresh grilled lobster, local fish and cold Carib beer."
-    },
-    {
-      "name": "Dolce Vita",
-      "desc": "Italian restaurant with stunning sunset views over Sandy Ground \u2014 excellent pasta and fresh seafood."
-    },
-    {
-      "name": "Geraud's Patisserie",
-      "desc": "French bakery in The Valley \u2014 perfect for breakfast pastries, sandwiches and strong coffee."
-    }
+    {"name": "Fungi & Pepperpot", "desc": "Antigua's national dish — cornmeal fungi (similar to polenta) served with a rich stew of vegetables and salted meat. Simple, deeply satisfying and entirely local."},
+    {"name": "Ducana", "desc": "Sweet potato and coconut dumplings wrapped in banana leaves and steamed — the traditional Antiguan side dish that appears at every celebration."},
+    {"name": "Wadadli Beer", "desc": "Antigua's local lager, named for the island's original Arawak name — light, crisp and the unofficial official drink of the island."},
+    {"name": "Fresh Lobster", "desc": "Spiny Caribbean lobster caught daily around Antigua's reefs — grilled simply with butter and lime at the harbor restaurants of English Harbour."}
   ],
-  "culture": [
-    {
-      "name": "Anguilla Day (May 30)",
-      "desc": "The island's national holiday commemorating the 1967 Revolution \u2014 celebrated with traditional boat races, music and cultural events."
-    },
-    {
-      "name": "Boat Racing",
-      "desc": "Traditional wooden sailboat racing is Anguilla's national sport \u2014 races are held throughout the year and draw large local crowds."
-    },
-    {
-      "name": "Heritage Collection Museum",
-      "desc": "Small but excellent museum in East End documenting Anguilla's history, from the Arawak people to the present day."
-    }
-  ],
-  "bestTime": {
-    "peak": "December to April \u2014 dry season with perfect weather, busy with visitors and higher prices.",
-    "shoulder": "May and November \u2014 fewer crowds, good weather and better value.",
-    "rainy": "June to October \u2014 hurricane season with lower prices but risk of tropical storms."
-  },
+  "culture": "Antigua's culture reflects its history as a British sugar colony that achieved independence in 1981 — cricket is the national passion, the steel pan is the national instrument and the relationship with the sea defines everything from the economy to the social calendar. The Antigua Sailing Week and the Cricket World Cup matches played at the Sir Vivian Richards Stadium are the two events that most fully express Antiguan identity.\n\nThe island's African heritage, brought through slavery, lives in the music, food and spiritual traditions that persist beneath the British institutional surface. The annual Carnival in late July and early August is the Caribbean expression of that heritage — weeks of calypso, steel pan and costumed parade that represent the fullest expression of Antiguan joy.",
+  "bestTime": "December through April is the dry season — ideal weather with warm temperatures and minimal rain. April brings Sailing Week. July and August bring Carnival. Hurricane season June through November with Irma in 2017 serving as a devastating reminder of the risk.",
   "practical": {
-    "currency": "Eastern Caribbean Dollar (XCD) \u2014 US Dollars widely accepted",
-    "language": "English",
-    "capital": "The Valley",
-    "visa": "No visa required for US, Canadian, UK and EU citizens. Valid passport required. Departure tax applies.",
-    "airport": "Clayton J. Lloyd International Airport (AXA) \u2014 no direct flights from most US cities. Connect through Sint Maarten (SXM), San Juan (SJU) or Antigua (ANU).",
-    "ferry": "Regular ferry from Marigot, Saint Martin \u2014 approximately 25 minutes. A popular and convenient option.",
-    "electricity": "110V/60Hz \u2014 US-style plugs work without adapter.",
-    "health": "No vaccinations required. Basic medical facilities available \u2014 serious cases transferred to Sint Maarten or Puerto Rico."
-  },
-  "searchQuery": "Anguilla Shoal Bay beach Caribbean"
+    "currency": "Eastern Caribbean Dollar (XCD) · USD widely accepted",
+    "language": "English · Antiguan Creole",
+    "howToGet": "Direct flights from US, UK and Canada to V.C. Bird International Airport (ANU). Ferry to Barbuda (90 minutes).",
+    "budget": "$100-180/day mid-range · $70-100 budget · $300+ luxury"
+  }
 }
