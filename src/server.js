@@ -1920,16 +1920,32 @@ app.get("/caribex-sitemap.xml", (req, res) => {
     'guatemala-caribbean'
   ];
 
+  // Get Caribex blog posts
+  const fs = require("fs");
+  const path = require("path");
+  const caribexPostsDir = path.join(__dirname, "../data/caribex-blog/posts");
+  let insightUrls = '';
+  try {
+    const files = fs.readdirSync(caribexPostsDir).filter(f => f.endsWith(".json"));
+    insightUrls = files.map(f => {
+      try {
+        const p = JSON.parse(fs.readFileSync(path.join(caribexPostsDir, f), "utf8"));
+        return p.slug ? `<url><loc>${base}/insights/${p.slug}</loc><lastmod>${p.dateISO||'2026-01-01'}</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>` : '';
+      } catch(e) { return ''; }
+    }).join('');
+  } catch(e) {}
+
   const urls = [
     `<url><loc>${base}/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>`,
     `<url><loc>${base}/caribex</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>`,
+    `<url><loc>${base}/insights</loc><changefreq>daily</changefreq><priority>0.9</priority></url>`,
     `<url><loc>${base}/about</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>`,
     `<url><loc>${base}/privacidad</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>`,
     `<url><loc>${base}/terminos</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>`,
     ...destinations.map(slug =>
       `<url><loc>${base}/caribex/${slug}</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>`
     )
-  ].join("\n  ");
+  ].join("\n  ") + insightUrls;
 
   res.header("Content-Type", "application/xml");
   res.send(`<?xml version="1.0" encoding="UTF-8"?>

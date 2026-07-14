@@ -218,8 +218,8 @@ nav{padding:0 1rem;}.nav-links{display:none;}
   </a>
   <div class="nav-links">
     <a href="#destinations">Destinations</a>
-    <a href="#mainland">Mainland Caribbean</a>
-    <a href="#assistant">Sun</a>
+    <a href="#mainland">Mainland</a>
+    <a href="/insights">Insights</a>
     <a href="/about">About</a>
     <a href="#assistant" class="nav-cta">Plan My Trip →</a>
   </div>
