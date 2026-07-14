@@ -1,0 +1,68 @@
+{
+  "slug": "anguilla",
+  "name": "Anguilla",
+  "country": "Anguilla (British Overseas Territory)",
+  "flag": "🇦🇮",
+  "region": "Lesser Antilles",
+  "searchQuery": "Anguilla Shoal Bay beach Caribbean",
+  "hero": {
+    "tagline": "The Caribbean's Best-Kept Secret",
+    "description": "Pristine white sand beaches, crystal-clear turquoise waters, and an unhurried pace of life make Anguilla one of the most exclusive destinations in the Caribbean."
+  },
+  "highlights": [
+    { "icon": "🏖️", "title": "World-Class Beaches", "desc": "Shoal Bay East is consistently ranked among the best beaches in the world — 2 miles of powdery white sand and calm turquoise water." },
+    { "icon": "🦞", "title": "Exceptional Cuisine", "desc": "Anguilla punches above its weight with world-class restaurants, fresh lobster, and a growing culinary scene that attracts visitors from around the globe." },
+    { "icon": "🌊", "title": "Crystal Waters", "desc": "The island's shallow reef-protected waters are ideal for snorkeling, diving, and paddleboarding in stunning visibility." },
+    { "icon": "🏨", "title": "Luxury Resorts", "desc": "From ultra-luxurious resorts to boutique properties, Anguilla offers some of the finest accommodations in the Caribbean." }
+  ],
+  "practical": {
+    "currency": "Eastern Caribbean Dollar (XCD) — US Dollars widely accepted",
+    "language": "English",
+    "capital": "The Valley",
+    "population": "~18,000",
+    "timezone": "AST (UTC-4)",
+    "electricity": "110V/60Hz (US plugs)",
+    "entry": "US, Canadian, and EU citizens do not need a visa. Valid passport required. Departure tax applies."
+  },
+  "getting_there": {
+    "nearest_airport": "Clayton J. Lloyd International Airport (AXA)",
+    "from_usa": "No direct flights from most US cities. Connect through San Juan (SJU), Sint Maarten (SXM), or Antigua (ANU). Ferry from Sint Maarten is also popular.",
+    "ferry": "Regular ferry service from Marigot (Saint Martin) — approximately 25 minutes.",
+    "inter_island": "Short connections via WINAIR or other regional carriers from Sint Maarten and Antigua."
+  },
+  "best_time": {
+    "peak": "December to April — dry season with perfect weather and major events.",
+    "shoulder": "May and November — fewer crowds, good weather.",
+    "rainy": "June to October — hurricane season, lower prices but risk of storms."
+  },
+  "categories": [
+    {
+      "name": "Top Beaches",
+      "items": [
+        { "name": "Shoal Bay East", "desc": "Anguilla's most famous beach — 2 miles of stunning white sand and clear water. Beach bars and water sports available." },
+        { "name": "Meads Bay", "desc": "Long, uncrowded stretch of white sand with luxury resorts and excellent restaurants." },
+        { "name": "Rendezvous Bay", "desc": "Calm, protected bay with views of Saint Martin — ideal for families." },
+        { "name": "Sandy Ground", "desc": "Lively beach village with bars, restaurants and the island's main salt pond." }
+      ]
+    },
+    {
+      "name": "Must-Do Experiences",
+      "items": [
+        { "name": "Lobster Dinner on the Beach", "desc": "Fresh Caribbean lobster at one of Anguilla's celebrated beachfront restaurants is a must." },
+        { "name": "Snorkeling at Prickly Pear Cays", "desc": "Take a boat to these uninhabited cays for exceptional snorkeling in crystal-clear waters." },
+        { "name": "Anguilla Day (May 30)", "desc": "The island's national holiday celebrated with boat races, music, and cultural events." },
+        { "name": "Visit Sandy Island", "desc": "A tiny uninhabited sand bar surrounded by turquoise water — accessible by boat." }
+      ]
+    },
+    {
+      "name": "Where to Eat",
+      "items": [
+        { "name": "Blanchards", "desc": "Iconic fine dining restaurant with Caribbean-influenced cuisine. Reservation essential." },
+        { "name": "Smokey's at the Cove", "desc": "Casual beachfront spot famous for fresh grilled lobster and local fish." },
+        { "name": "Geraud's Patisserie", "desc": "French bakery in The Valley — perfect for breakfast pastries and coffee." },
+        { "name": "Dolce Vita", "desc": "Italian restaurant with stunning sunset views over Sandy Ground." }
+      ]
+    }
+  ],
+  "sun_context": "Anguilla is a small, flat British Overseas Territory in the northeastern Caribbean. It is known for its exceptional beaches, clear waters, and upscale tourism. The island has no mountains, no rivers, and very little fresh water — making it distinctly different from its more volcanic neighbors. It shares the Anguilla Bank with Saint Martin/Sint Maarten, visible from most beaches. The economy relies almost entirely on tourism, and the island has maintained strict development controls to preserve its natural beauty and low-key atmosphere."
+}
