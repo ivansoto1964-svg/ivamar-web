@@ -212,14 +212,26 @@ app.use((req, res, next) => {
 app.get("/", (req, res) => res.send(layout({ title: "Ivamar AI", body: home })));
 app.get("/es", (req, res) => res.send(layout({ title: "Ivamar AI · Español", body: homeES })));
 app.get("/en", (req, res) => res.send(layout({  lang: "en", title: "Ivamar AI · English", body: homeEN })));
-app.get("/about", (req, res) => res.send(layout({  lang: "en", title: "About — Ivamar AI LLC", body: about })));
+app.get("/about", (req, res) => {
+  const host = req.hostname;
+  if (host.includes("yourcaribbeanexpert")) return res.send(caribexAbout);
+  return res.send(layout({ lang: "en", title: "About — Ivamar AI LLC", body: about }));
+});
 app.get("/sobre-nosotros", (req, res) => res.send(layout({ title: "Sobre Nosotros — Ivamar AI", body: sobreNosotros })));
 app.get("/contacto", (req, res) => res.send(layout({ title: "Contacto — Ivamar AI", body: contactoES })));
 app.get("/contact", (req, res) => res.send(layout({  lang: "en", title: "Contact — Ivamar AI LLC", body: contact })));
 app.get("/privacy", (req, res) => res.send(layout({  lang: "en", title: "Privacy Policy — Ivamar AI LLC", body: privacy })));
 app.get("/terms", (req, res) => res.send(layout({  lang: "en", title: "Terms of Service — Ivamar AI LLC", body: terms })));
-app.get("/terminos", (req, res) => res.send(layout({ title: "Términos de Servicio — Ivamar AI", body: termsES })));
-app.get("/privacidad", (req, res) => res.send(layout({ title: "Política de Privacidad — Ivamar AI", body: privacyES })));
+app.get("/terminos", (req, res) => {
+  const host = req.hostname;
+  if (host.includes("yourcaribbeanexpert")) return res.send(caribexTerms);
+  return res.redirect(301, "/terminos-boricua");
+});
+app.get("/privacidad", (req, res) => {
+  const host = req.hostname;
+  if (host.includes("yourcaribbeanexpert")) return res.send(caribexPrivacy);
+  return res.redirect(301, "/privacidad-boricua");
+});
 app.get("/demo-dealers", (req, res) => res.send(demoDealers));
 app.get("/demo-dealers-es", (req, res) => res.send(demoDealersES));
 
@@ -1883,7 +1895,7 @@ app.get("/api/blog-feed", async (req, res) => {
 // SEO — SITEMAP & ROBOTS
 // ==========================================
 app.get("/quienes-somos", (req, res) => res.send(quienesSomos));
-app.get("/about", (req, res) => res.send(caribexAbout));
+
 app.get("/privacidad", (req, res) => res.send(caribexPrivacy));
 app.get("/terminos", (req, res) => res.send(caribexTerms));
 app.get("/privacidad", (req, res) => res.redirect(301, "/privacidad-boricua"));
