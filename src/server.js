@@ -1908,7 +1908,7 @@ app.get("/ads.txt", (req, res) => {
   res.send("google.com, pub-8301223085122981, DIRECT, f08c47fec0942fa0");
 });
 
-app.get("/caribex-sitemap.xml", (req, res) => {
+app.get("/caribex-sitemap.xml", async (req, res) => {
   const base = "https://www.yourcaribbeanexpert.com";
   const destinations = [
     'puerto-rico','dominican-republic','cuba','jamaica','grand-cayman',
@@ -1920,20 +1920,19 @@ app.get("/caribex-sitemap.xml", (req, res) => {
     'guatemala-caribbean'
   ];
 
-  // Get Caribex blog posts
-  const fs = require("fs");
-  const path = require("path");
-  const caribexPostsDir = path.join(__dirname, "../data/caribex-blog/posts");
+  // Get Caribex blog posts from RSS
   let insightUrls = '';
   try {
-    const files = fs.readdirSync(caribexPostsDir).filter(f => f.endsWith(".json"));
-    insightUrls = files.map(f => {
-      try {
-        const p = JSON.parse(fs.readFileSync(path.join(caribexPostsDir, f), "utf8"));
-        return p.slug ? `<url><loc>${base}/insights/${p.slug}</loc><lastmod>${p.dateISO||'2026-01-01'}</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>` : '';
-      } catch(e) { return ''; }
+    const rss = await fetch("https://blog.yourcaribbeanexpert.com/feeds/posts/default?alt=json&max-results=50");
+    const rssData = await rss.json();
+    const entries = rssData.feed.entry || [];
+    insightUrls = entries.map(e => {
+      const title = e.title.$t.trim();
+      const slug = title.toLowerCase().replace(/[áàä]/g,'a').replace(/[éèë]/g,'e').replace(/[íìï]/g,'i').replace(/[óòö]/g,'o').replace(/[úùü]/g,'u').replace(/ñ/g,'n').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+      const date = new Date(e.published.$t).toISOString().split('T')[0];
+      return `<url><loc>${base}/insights/${slug}</loc><lastmod>${date}</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>`;
     }).join('');
-  } catch(e) {}
+  } catch(e) { console.error('Caribex sitemap RSS error:', e.message); }
 
   const urls = [
     `<url><loc>${base}/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>`,
