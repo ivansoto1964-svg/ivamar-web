@@ -54,7 +54,7 @@ async function syncCaribex() {
       let image = "/img/og-caribex.jpg";
       const imgMatch = content.match(/<img[^>]+src=["']([^"']+)["']/i);
       if (imgMatch) image = imgMatch[1];
-      else if (entry.media$thumbnail) image = entry.media$thumbnail.url.replace("/s72-","/s1200-");
+      else if (entry.media$thumbnail) { image = entry.media$thumbnail.url.replace(/s72-[^/]*/,"s1200-c").replace(/w[0-9]+-h[0-9]+-c/,"s1200-c"); }
       if (!image.startsWith("http")) image = "/img/og-caribex.jpg";
 
       const textContent = content.replace(/<[^>]+>/g,"").trim();
