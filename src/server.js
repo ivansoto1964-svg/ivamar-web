@@ -1872,8 +1872,22 @@ app.get("/api/blog-feed", async (req, res) => {
   try {
     const r = await fetch("https://blog.yourcaribbeanexpert.com/feeds/posts/default?alt=json&max-results=4");
     const data = await r.json();
+    const entries = (data.feed && data.feed.entry) || [];
+    const posts = entries.map(e => {
+      const title = e.title.$t.trim();
+      const slug = title.toLowerCase().replace(/[áàä]/g,'a').replace(/[éèë]/g,'e').replace(/[íìï]/g,'i').replace(/[óòö]/g,'o').replace(/[úùü]/g,'u').replace(/ñ/g,'n').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+      const date = new Date(e.published.$t).toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'});
+      let image = '/img/og-caribex.jpg';
+      if (e.media$thumbnail) image = e.media$thumbnail.url.replace(/s72-[^/]*/,'s1200-c').replace(/w[0-9]+-h[0-9]+-c/,'s1200-c');
+      const content = e.content ? e.content.$t : '';
+      const imgMatch = content.match(/<img[^>]+src=["']([^"']+)["']/i);
+      if (imgMatch && !e.media$thumbnail) image = imgMatch[1];
+      const text = content.replace(/<[^>]+>/g,'').trim();
+      const excerpt = text.substring(0,150) + '...';
+      return { title, slug, date, image, excerpt, link: '/insights/' + slug };
+    });
     res.set("Access-Control-Allow-Origin", "*");
-    res.json(data);
+    res.json(posts);
   } catch(e) {
     res.status(500).json({ error: "Feed unavailable" });
   }
@@ -1887,8 +1901,22 @@ app.get("/api/blog-feed", async (req, res) => {
   try {
     const r = await fetch("https://blog.yourcaribbeanexpert.com/feeds/posts/default?alt=json&max-results=4");
     const data = await r.json();
+    const entries = (data.feed && data.feed.entry) || [];
+    const posts = entries.map(e => {
+      const title = e.title.$t.trim();
+      const slug = title.toLowerCase().replace(/[áàä]/g,'a').replace(/[éèë]/g,'e').replace(/[íìï]/g,'i').replace(/[óòö]/g,'o').replace(/[úùü]/g,'u').replace(/ñ/g,'n').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+      const date = new Date(e.published.$t).toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'});
+      let image = '/img/og-caribex.jpg';
+      if (e.media$thumbnail) image = e.media$thumbnail.url.replace(/s72-[^/]*/,'s1200-c').replace(/w[0-9]+-h[0-9]+-c/,'s1200-c');
+      const content = e.content ? e.content.$t : '';
+      const imgMatch = content.match(/<img[^>]+src=["']([^"']+)["']/i);
+      if (imgMatch && !e.media$thumbnail) image = imgMatch[1];
+      const text = content.replace(/<[^>]+>/g,'').trim();
+      const excerpt = text.substring(0,150) + '...';
+      return { title, slug, date, image, excerpt, link: '/insights/' + slug };
+    });
     res.set("Access-Control-Allow-Origin", "*");
-    res.json(data);
+    res.json(posts);
   } catch(e) {
     res.status(500).json({ error: "Feed unavailable" });
   }

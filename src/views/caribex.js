@@ -512,50 +512,17 @@ document.addEventListener('DOMContentLoaded', loadDestinationPhotos);
   const FEED = '/api/blog-feed';
   fetch(FEED)
     .then(r => r.json())
-    .then(data => {
-      const entries = data.feed.entry || [];
-
-      function getImg(entry) {
-        if (entry.media$thumbnail) {
-          var u = entry.media$thumbnail.url;
-          var i = u.lastIndexOf("/s");
-          return i > -1 ? u.substring(0, i) + "/s1600/" : u;
-        }
-        // Fallback: extract first image from content or summary HTML
-        var html = entry.content ? entry.content.$t : (entry.summary ? entry.summary.$t : '');
-        var match = html.match(/<img[^>]+src=["']([^"']+)["']/i);
-        if (match) {
-          var imgUrl = match[1];
-          var idx = imgUrl.lastIndexOf("/s");
-          return idx > -1 ? imgUrl.substring(0, idx) + "/s1600/" : imgUrl;
-        }
-        return "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200&q=80";
-      }
-
-      function getLink(entry) {
-        const l = entry.link.find(x => x.rel === 'alternate');
-        return l ? l.href : '/caribex';
-      }
-
-      function getDesc(entry) {
-        const raw = entry.summary ? entry.summary.$t : (entry.content ? entry.content.$t : '');
-        return raw.replace(/<[^>]+>/g, '').substring(0, 120) + '...';
-      }
-
-      function getTag(entry) {
-        return entry.category && entry.category[0] ? entry.category[0].term : 'Caribbean Travel';
-      }
-
+    .then(posts => {
       // Hero featured post (first)
-      if (entries[0]) {
-        const e = entries[0];
+      if (posts[0]) {
+        const p = posts[0];
         document.getElementById('hero-featured-post').innerHTML =
-          '<a href="' + getLink(e) + '" target="_blank" class="hero-post-card">' +
-          '<img class="hero-post-img" src="' + getImg(e) + '" alt="' + e.title.$t + '">' +
+          '<a href="' + p.link + '" class="hero-post-card">' +
+          '<img class="hero-post-img" src="' + p.image + '" alt="' + p.title + '">' +
           '<div class="hero-post-body">' +
-          '<div class="hero-post-tag">' + getTag(e) + '</div>' +
-          '<div class="hero-post-title">' + e.title.$t + '</div>' +
-          '<div class="hero-post-desc">' + getDesc(e) + '</div>' +
+          '<div class="hero-post-tag">Caribbean Travel</div>' +
+          '<div class="hero-post-title">' + p.title + '</div>' +
+          '<div class="hero-post-desc">' + p.excerpt + '</div>' +
           '<span class="hero-post-read">Read article →</span>' +
           '</div></a>';
       }
@@ -563,17 +530,17 @@ document.addEventListener('DOMContentLoaded', loadDestinationPhotos);
       // Blog grid (next 3)
       const grid = document.getElementById('blog-grid');
       if (grid) {
-        const posts = entries.slice(1, 4);
-        if (posts.length === 0) return;
-        grid.innerHTML = posts.map(e =>
-          '<a href="' + getLink(e) + '" target="_blank" class="blog-card">' +
+        const gridPosts = posts.slice(1, 4);
+        if (gridPosts.length === 0) return;
+        grid.innerHTML = gridPosts.map(p =>
+          '<a href="' + p.link + '" class="blog-card">' +
           '<div class="blog-card-img" style="background:linear-gradient(135deg,#E0F7FA,#B3E5FC);height:140px;overflow:hidden;">' +
-          '<img src="' + getImg(e) + '" alt="" style="width:100%;height:100%;object-fit:cover;">' +
+          '<img src="' + p.image + '" alt="" style="width:100%;height:100%;object-fit:cover;">' +
           '</div>' +
           '<div class="blog-card-body">' +
-          '<div class="blog-card-tag">' + getTag(e) + '</div>' +
-          '<div class="blog-card-title">' + e.title.$t + '</div>' +
-          '<div class="blog-card-desc">' + getDesc(e) + '</div>' +
+          '<div class="blog-card-tag">Caribbean Travel</div>' +
+          '<div class="blog-card-title">' + p.title + '</div>' +
+          '<div class="blog-card-desc">' + p.excerpt + '</div>' +
           '</div></a>'
         ).join('');
       }
