@@ -117,9 +117,10 @@ footer p{color:rgba(255,255,255,0.3);font-size:0.75rem;margin-top:0.5rem;}
 
 <footer>
   <a href="/caribex">Portal</a>
+  <a href="/insights">Insights</a>
   <a href="/about">About Us</a>
-  <a href="/privacidad">Privacy</a>
-  <a href="/terminos">Terms</a>
+  <a href="/privacidad">Privacy Policy</a>
+  <a href="/terminos">Terms of Use</a>
   <p>© 2026 Caribex — Your Caribbean Expert · Ivamar AI LLC</p>
 </footer>
 </body>

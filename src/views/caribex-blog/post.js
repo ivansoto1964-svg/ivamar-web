@@ -141,6 +141,9 @@ footer p{color:rgba(255,255,255,0.3);font-size:0.75rem;margin-top:0.5rem;}
     <span>📖 <strong>${wordCount}</strong> words</span>
   </div>
   <div class="post-body">${post.content}</div>
+  <div style="margin:1.5rem 0;padding:1rem 1.5rem;background:#f0f7ff;border-left:3px solid var(--teal);border-radius:0 6px 6px 0;font-size:0.78rem;color:var(--mid);line-height:1.6;">
+    <strong style="color:var(--dark);">Disclosure:</strong> Some links in this article are affiliate links. This means that if you make a booking through them, we may receive a small commission at no additional cost to you. This helps us keep Caribex and Sun AI running.
+  </div>
   ${tags ? `<div class="post-tags"><span class="post-tags-label">Tags:</span>${tags}</div>` : ''}
   <div id="disqus_thread" style="margin:2rem 0;padding:1.5rem;background:#fff;border-radius:8px;border:1px solid var(--border);"></div>
   <script>
@@ -177,9 +180,9 @@ footer p{color:rgba(255,255,255,0.3);font-size:0.75rem;margin-top:0.5rem;}
 <footer>
   <a href="/caribex">Portal</a>
   <a href="/insights">Insights</a>
-  <a href="/about">About</a>
-  <a href="/privacidad">Privacy</a>
-  <a href="/terminos">Terms</a>
+  <a href="/about">About Us</a>
+  <a href="/privacidad">Privacy Policy</a>
+  <a href="/terminos">Terms of Use</a>
   <p>© 2026 Caribex — Your Caribbean Expert · Ivamar AI LLC</p>
 </footer>
 </body>

@@ -290,7 +290,7 @@ nav{padding:0 1rem;}
   </div>
 </section>
 
-<section class="directory-sec">
+<section class="directory-sec" style="display:none;">
   <div class="directory-inner">
     <div class="sec-tag">Local Directory</div>
     <h2 class="sec-title">Explore ${dest.name}</h2>

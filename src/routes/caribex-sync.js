@@ -42,7 +42,10 @@ async function syncCaribex() {
     for (const entry of entries) {
       const title = entry.title.$t.trim();
       const slug = slugify(title);
-      const content = cleanHtml(entry.content ? entry.content.$t : "");
+      const rawContent = cleanHtml(entry.content ? entry.content.$t : "");
+      // Remove duplicate title from content (Blogger includes title in body)
+      const titleEscaped = title.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+      const content = rawContent.replace(new RegExp('<h[1-3][^>]*>\\s*' + titleEscaped + '\\s*<\/h[1-3]>', 'gi'), '').replace(new RegExp('<p[^>]*>\\s*' + titleEscaped + '\\s*<\/p>', 'gi'), '').trim();
       const date = new Date(entry.published.$t);
       const dateStr = date.toLocaleDateString("en-US", {year:"numeric",month:"long",day:"numeric"});
       const dateISO = date.toISOString().split("T")[0];
