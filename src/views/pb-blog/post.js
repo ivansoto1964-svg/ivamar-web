@@ -18,7 +18,14 @@ module.exports = function(post, relatedPosts, prevPost, nextPost) {
   <div class="post-meta"><span>📅 <strong>${post.date || ''}</strong></span><span>✍️ <strong>Ivan Soto</strong></span><span>⏱️ <strong>${readTime} min</strong> de lectura</span><span>📖 <strong>${wordCount}</strong> palabras</span></div>
   <div class="post-body">${post.content}</div>
   ${tags ? `<div class="post-tags"><span class="post-tags-label">Tags:</span>${tags}</div>` : ''}
-  <div class="post-share"><p>¿Te gustó este artículo? Compártelo con otro boricua 🇵🇷</p><div class="share-btns"><a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fwww.masboricuaqueunmofongo.com%2Fblog%2F${post.slug}" target="_blank" rel="noopener" class="share-btn share-fb">👍 Facebook</a><a href="https://wa.me/?text=${encodeURIComponent('https://www.masboricuaqueunmofongo.com/blog/' + post.slug)}" target="_blank" rel="noopener" class="share-btn share-wa">💬 WhatsApp</a><a href="https://twitter.com/intent/tweet?url=https://www.masboricuaqueunmofongo.com/blog/${post.slug}" target="_blank" rel="noopener" class="share-btn share-tw">𝕏 Twitter</a><button class="share-btn share-copy" onclick="navigator.clipboard.writeText(window.location.href);this.textContent='✅ Copiado!'">🔗 Copiar link</button></div></div>
+  <div class="post-share">
+  <p>¿Te gustó este artículo? Compártelo con otro boricua 🇵🇷</p>
+  <div style="display:flex;align-items:center;gap:0.8rem;justify-content:center;flex-wrap:wrap;margin-top:0.8rem;">
+    <input id="share-url" type="text" value="https://www.masboricuaqueunmofongo.com/blog/${post.slug}" readonly style="flex:1;max-width:400px;padding:0.6rem 1rem;border:2px solid var(--border);border-radius:4px;font-size:0.82rem;font-family:inherit;color:var(--dark);background:#f9f9f9;">
+    <button onclick="navigator.clipboard.writeText(document.getElementById('share-url').value);this.textContent='✅ ¡Copiado!';setTimeout(()=>this.textContent='🔗 Copiar enlace',2000)" style="background:var(--red);color:#fff;border:none;padding:0.6rem 1.2rem;border-radius:4px;font-weight:700;cursor:pointer;font-size:0.82rem;white-space:nowrap;">🔗 Copiar enlace</button>
+  </div>
+  <p style="font-size:0.75rem;color:var(--mid);margin-top:0.6rem;">Copia el enlace y compártelo en Facebook, WhatsApp, o donde quieras 🌴</p>
+</div>
   <div id="disqus_thread" style="margin:2rem 0;padding:1.5rem;background:#fff;border-radius:8px;border:1px solid var(--border);"></div>
 <script>
 var disqus_config = function () {
