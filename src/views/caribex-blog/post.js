@@ -157,12 +157,11 @@ footer p{color:rgba(255,255,255,0.3);font-size:0.75rem;margin-top:0.5rem;}
   </script>
   <div class="post-share">
     <p>Found this helpful? Share it with fellow travelers 🌴</p>
-    <div class="share-btns">
-      <a href="https://www.facebook.com/sharer/sharer.php?u=https://www.yourcaribbeanexpert.com/insights/${post.slug}" target="_blank" rel="noopener" class="share-btn share-fb">👍 Facebook</a>
-      <a href="https://wa.me/?text=${encodeURIComponent('https://www.yourcaribbeanexpert.com/insights/' + post.slug)}" target="_blank" rel="noopener" class="share-btn share-wa">💬 WhatsApp</a>
-      <a href="https://twitter.com/intent/tweet?url=https://www.yourcaribbeanexpert.com/insights/${post.slug}" target="_blank" rel="noopener" class="share-btn share-tw">𝕏 Twitter</a>
-      <button class="share-btn share-copy" onclick="navigator.clipboard.writeText(window.location.href);this.textContent='✅ Copied!'">🔗 Copy link</button>
+    <div style="display:flex;align-items:center;gap:0.8rem;justify-content:center;flex-wrap:wrap;margin-top:0.8rem;">
+      <input id="share-url" type="text" value="https://www.yourcaribbeanexpert.com/insights/${post.slug}" readonly style="flex:1;max-width:400px;padding:0.6rem 1rem;border:2px solid var(--border);border-radius:4px;font-size:0.82rem;font-family:inherit;color:var(--dark);background:#f9f9f9;">
+      <button onclick="navigator.clipboard.writeText(document.getElementById('share-url').value);this.textContent='✅ Copied!';setTimeout(()=>this.textContent='🔗 Copy link',2000)" style="background:var(--teal);color:#fff;border:none;padding:0.6rem 1.2rem;border-radius:4px;font-weight:700;cursor:pointer;font-size:0.82rem;white-space:nowrap;">🔗 Copy link</button>
     </div>
+    <p style="font-size:0.75rem;color:var(--mid);margin-top:0.6rem;">Copy the link and share it on Facebook, WhatsApp, or anywhere you like 🌴</p>
   </div>
   <div class="post-affiliate">
     <div class="post-affiliate-title">🏝️ Planning a Caribbean trip?</div>
