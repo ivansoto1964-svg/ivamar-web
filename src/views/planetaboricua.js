@@ -294,8 +294,8 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
 
 <!-- ADSENSE -->
 <div class="ad-strip">
-  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-8301223085122981" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
-  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  <div style="min-height:250px;"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-8301223085122981" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
 </div>
 
 
@@ -672,8 +672,8 @@ loadDirectorio();
 
 <!-- ADSENSE MID -->
 <div class="ad-strip">
-  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-8301223085122981" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
-  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+  <div style="min-height:250px;"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-8301223085122981" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
 </div>
 
 

@@ -1,4 +1,5 @@
 const compression = require("compression");
+const helmet = require("helmet");
 
 const express = require("express");
 const sanitizeHtml = require('sanitize-html');
@@ -12,6 +13,7 @@ const sanitize = (str) => str ? sanitizeHtml(str, { allowedTags: [], allowedAttr
 const rateLimit = require('express-rate-limit');
 const app = express();
 app.use(compression());
+app.use(helmet({ contentSecurityPolicy: false, crossOriginEmbedderPolicy: false }));
 app.set('trust proxy', 1);
 
 // Handle malformed URI errors from bots/scanners
@@ -138,7 +140,7 @@ function requireAdmin(req, res, next) {
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static("public"));
+app.use(express.static("public", { maxAge: "1y", immutable: true }));
 app.use(cookieParser());
 
 function postJson(urlStr, payload, options = {}) {
