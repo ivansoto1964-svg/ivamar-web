@@ -695,6 +695,31 @@ app.post("/api/iva-landing", express.json(), async (req, res) => {
   }
 });
 
+// IvA Landing Lead Capture
+app.post("/api/iva-lead", express.json(), async (req, res) => {
+  try {
+    const { email } = req.body;
+    if (!email) return res.status(400).json({ ok: false });
+    await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + process.env.RESEND_API_KEY
+      },
+      body: JSON.stringify({
+        from: "IvA <connect@ivamarai.com>",
+        to: ["connect@ivamarai.com"],
+        subject: "🔥 Nuevo lead Google Ads — " + email,
+        html: "<h2>Nuevo lead capturado</h2><p><strong>Email:</strong> " + email + "</p><p><strong>Fuente:</strong> Landing Page Google Ads</p><p><strong>Fecha:</strong> " + new Date().toLocaleString('es-PR') + "</p>"
+      })
+    });
+    res.json({ ok: true });
+  } catch(e) {
+    console.error("Lead error:", e.message);
+    res.json({ ok: false });
+  }
+});
+
 app.get("/mr-frappe", (req, res) => res.send(mrFrappe));
 app.get("/adis", (req, res) => res.send(adis));
 app.get("/dyerkia", (req, res) => res.send(dyerKia));
