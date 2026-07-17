@@ -332,7 +332,7 @@ async function sendMsg() {
   if (EMAIL_REGEX.test(text) && !emailCaptured) {
     emailCaptured = true;
     trackConversion(text);
-    addMsg('✅ ¡Perfecto! Recibimos tu email. Un asesor te contactará en menos de una hora. ¡Gracias! 🎉', 'success');
+    addMsg('✅ ¡Perfecto! Recibimos tu email. En menos de 48 horas te enviamos un demo personalizado para tu negocio. ¡Gracias por tu interés! 🎉', 'success');
     return;
   }
 
