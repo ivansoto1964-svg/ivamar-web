@@ -293,6 +293,12 @@ let conversationHistory = [];
 let emailCaptured = false;
 
 function trackConversion(email) {
+  // Enviar lead por email
+  fetch('/api/iva-lead', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ email })
+  });
   // =====================================================
   // CÓDIGO DE CONVERSIÓN DE GOOGLE ADS — INSERTAR AQUÍ
   // gtag('event', 'conversion', {
