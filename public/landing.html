@@ -270,20 +270,33 @@ footer { background: var(--ink); padding: 1.5rem; text-align: center; }
 <script>
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-const responses = [
-  "¡Claro! Puedo ayudarte con eso. ¿Hay algo más en lo que pueda asistirte? 😊",
-  "Nuestros planes empiezan desde $29/mes con configuración única de $125. ¿Te gustaría que un asesor te contacte hoy? 🤝",
-  "Tenemos clientes en Puerto Rico, Florida, Nueva York y Texas. ¿De dónde nos escribes? 🌎",
-  "IvA se configura en 48-72 horas. ¿Cuál es el rubro de tu negocio? Así te explico mejor cómo funciona. 🚀"
-];
-let msgCount = 0;
+const SYSTEM_PROMPT = `Eres IvA, el asistente virtual de Ivamar AI LLC. Tu trabajo es atender a personas interesadas en nuestros servicios de forma cálida, directa y sin tecnicismos.
+
+SOBRE IVAMAR AI:
+- Creamos asistentes de IA personalizados (como tú) para negocios latinos
+- Planes: Starter $29/mes + $125 setup, Growth $49/mes + $125 setup, Enterprise precio custom
+- Configuración en 48-72 horas
+- Bilingüe EN/ES
+- Clientes en Puerto Rico, Florida, Nueva York, Texas
+- Contacto: connect@ivamarai.com · WhatsApp +1 (863) 521-6708
+
+TU ESTILO:
+- Habla en español, de forma amigable y cercana
+- Sé breve — máximo 2-3 oraciones por respuesta
+- Usa emojis con moderación
+- Si preguntan por precio, dilo directo sin rodeos
+- Siempre busca que dejen su email o contacto para que un asesor los llame
+- NO uses palabras técnicas como "API", "LLM", "modelo de lenguaje"
+- Di "mi equipo" en vez de "Ivamar AI LLC"`;
+
+let conversationHistory = [];
 let emailCaptured = false;
 
 function trackConversion(email) {
   // =====================================================
-  // INSERTAR AQUÍ EL CÓDIGO DE CONVERSIÓN DE GOOGLE ADS
+  // CÓDIGO DE CONVERSIÓN DE GOOGLE ADS — INSERTAR AQUÍ
   // gtag('event', 'conversion', {
-  //   'send_to': 'AW-XXXXXXXXX/XXXXXXXXXXXXXXX',
+  //   'send_to': 'AW-16746740055/XXXXXXXXXXXXXXX',
   //   'value': 1.0,
   //   'currency': 'USD'
   // });
@@ -301,7 +314,7 @@ function addMsg(text, type) {
   return div;
 }
 
-function sendMsg() {
+async function sendMsg() {
   const input = document.getElementById('chatInput');
   const text = input.value.trim();
   if (!text) return;
@@ -309,25 +322,35 @@ function sendMsg() {
   addMsg(text, 'user');
   input.value = '';
 
+  // EMAIL DETECTION
+  if (EMAIL_REGEX.test(text) && !emailCaptured) {
+    emailCaptured = true;
+    trackConversion(text);
+    addMsg('✅ ¡Perfecto! Recibimos tu email. Un asesor te contactará en menos de una hora. ¡Gracias! 🎉', 'success');
+    return;
+  }
+
   // Typing indicator
   const typing = addMsg('', 'typing');
   typing.innerHTML = '<span></span><span></span><span></span>';
 
-  setTimeout(() => {
+  conversationHistory.push({ role: 'user', content: text });
+
+  try {
+    const response = await fetch('/api/iva-landing', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: conversationHistory, system: SYSTEM_PROMPT })
+    });
+    const data = await response.json();
+    const reply = data.reply || '¡Claro! ¿En qué puedo ayudarte? 😊';
+    conversationHistory.push({ role: 'assistant', content: reply });
     typing.remove();
-
-    // EMAIL DETECTION
-    if (EMAIL_REGEX.test(text) && !emailCaptured) {
-      emailCaptured = true;
-      trackConversion(text);
-      addMsg('✅ ¡Perfecto! Recibimos tu email. Un asesor de Ivamar AI te contactará en menos de una hora. ¡Gracias por tu interés! 🎉', 'success');
-      return;
-    }
-
-    // Normal response
-    addMsg(responses[msgCount % responses.length], 'bot');
-    msgCount++;
-  }, 1000);
+    addMsg(reply, 'bot');
+  } catch(e) {
+    typing.remove();
+    addMsg('¡Hola! Para atenderte mejor, escríbenos al WhatsApp o deja tu email aquí. 😊', 'bot');
+  }
 }
 
 document.getElementById('chatInput').addEventListener('keydown', e => {

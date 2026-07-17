@@ -669,6 +669,32 @@ app.get("/florida", async (req, res) => {
   }
 });
 
+// IvA Landing API
+app.post("/api/iva-landing", express.json(), async (req, res) => {
+  try {
+    const { messages, system } = req.body;
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": process.env.ANTHROPIC_API_KEY,
+        "anthropic-version": "2023-06-01"
+      },
+      body: JSON.stringify({
+        model: "claude-haiku-4-5-20251001",
+        max_tokens: 150,
+        system: system,
+        messages: messages.slice(-6)
+      })
+    });
+    const data = await response.json();
+    const reply = data.content && data.content[0] ? data.content[0].text : "¿En qué puedo ayudarte?";
+    res.json({ reply });
+  } catch(e) {
+    res.status(500).json({ reply: "Un momento, ya te atiendo. 😊" });
+  }
+});
+
 app.get("/mr-frappe", (req, res) => res.send(mrFrappe));
 app.get("/adis", (req, res) => res.send(adis));
 app.get("/dyerkia", (req, res) => res.send(dyerKia));
