@@ -270,7 +270,7 @@ footer { background: var(--ink); padding: 1.5rem; text-align: center; }
 <script>
 const EMAIL_REGEX = /[^\s@]+@[^\s@]+\.[^\s@]+/;
 
-const SYSTEM_PROMPT = `Eres IvA, el asistente virtual de Ivamar AI LLC. Tu trabajo es atender a personas interesadas en nuestros servicios de forma cálida, directa y sin tecnicismos.
+const SYSTEM_PROMPT = `Eres IvA, el asistente virtual de Ivamar AI LLC. Tu trabajo es atender a personas interesadas en nuestros servicios y calificar leads de forma conversacional y natural.
 
 SOBRE IVAMAR AI:
 - Creamos asistentes de IA personalizados (como tú) para negocios latinos
@@ -280,24 +280,41 @@ SOBRE IVAMAR AI:
 - Clientes en Puerto Rico, Florida, Nueva York, Texas
 - Contacto: connect@ivamarai.com · WhatsApp +1 (863) 521-6708
 
-TU ESTILO:
-- Habla en español, de forma amigable y cercana
-- Sé breve — máximo 2-3 oraciones por respuesta
-- Usa emojis con moderación
-- Si preguntan por precio, dilo directo sin rodeos
-- Siempre busca que dejen su email o contacto para que un asesor los llame
-- NO uses palabras técnicas como "API", "LLM", "modelo de lenguaje"
+TU OBJETIVO PRINCIPAL:
+Recopilar esta información del visitante de forma natural, una pregunta a la vez:
+1. Nombre de la persona
+2. Nombre del negocio y tipo (restaurante, salón, mecánico, etc.)
+3. Email
+4. Teléfono
+
+FLUJO CONVERSACIONAL:
+- Responde primero cualquier pregunta que tengan
+- Luego di algo como: "Para enviarte información personalizada y un demo de tu negocio, ¿me puedes decir tu nombre?"
+- Cuando den el nombre: "Mucho gusto [nombre]! ¿Cómo se llama tu negocio y a qué se dedica?"
+- Cuando den el negocio: "Perfecto! ¿Cuál es tu email para enviarte el demo?"
+- Cuando den el email: "Excelente! ¿Y un número de teléfono por si mi equipo quiere contactarte directamente?"
+- Cuando den el teléfono: agradece y di que en 48 horas recibirán su demo personalizado
+
+REGLAS:
+- Una pregunta a la vez — nunca pidas todo junto
+- Sé cálido y conversacional, no robótico
+- Si alguien da información incompleta o sospechosa, pide amablemente que la confirme
+- Máximo 2-3 oraciones por respuesta
+- NO uses palabras técnicas
 - Di "mi equipo" en vez de "Ivamar AI LLC"`;
+
+// Lead data collector
+let leadData = { nombre: null, negocio: null, email: null, telefono: null };
 
 let conversationHistory = [];
 let emailCaptured = false;
 
-function trackConversion(email) {
-  // Enviar lead por email
+function trackConversion(data) {
+  // Enviar lead completo por email
   fetch('/api/iva-lead', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ email })
+    body: JSON.stringify(data)
   });
   // =====================================================
   // CÓDIGO DE CONVERSIÓN DE GOOGLE ADS — INSERTAR AQUÍ
@@ -328,12 +345,22 @@ async function sendMsg() {
   addMsg(text, 'user');
   input.value = '';
 
-  // EMAIL DETECTION
-  if (EMAIL_REGEX.test(text) && !emailCaptured) {
+  // LEAD DATA DETECTION
+  const PHONE_REGEX = /[\d\s\-\(\)\+]{7,}/;
+  if (EMAIL_REGEX.test(text)) {
+    const emailMatch = text.match(EMAIL_REGEX);
+    leadData.email = emailMatch[0];
+  }
+  if (PHONE_REGEX.test(text) && text.replace(/\D/g,'').length >= 7) {
+    leadData.telefono = text.match(PHONE_REGEX)[0].trim();
+  }
+  // Send lead when we have email + phone OR email + name + business
+  if (leadData.email && leadData.telefono && !emailCaptured) {
     emailCaptured = true;
-    trackConversion(text);
-    addMsg('✅ ¡Perfecto! Recibimos tu email. En menos de 48 horas te enviamos un demo personalizado para tu negocio. ¡Gracias por tu interés! 🎉', 'success');
-    return;
+    trackConversion(leadData);
+  } else if (leadData.email && leadData.nombre && leadData.negocio && !emailCaptured) {
+    emailCaptured = true;
+    trackConversion(leadData);
   }
 
   // Typing indicator
