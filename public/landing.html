@@ -289,19 +289,22 @@ Recopilar esta información del visitante de forma natural, una pregunta a la ve
 
 FLUJO CONVERSACIONAL:
 - Responde primero cualquier pregunta que tengan
-- Luego di algo como: "Para enviarte información personalizada y un demo de tu negocio, ¿me puedes decir tu nombre?"
+- Luego di: "Para enviarte un demo personalizado, ¿me puedes decir tu nombre?"
 - Cuando den el nombre: "Mucho gusto [nombre]! ¿Cómo se llama tu negocio y a qué se dedica?"
 - Cuando den el negocio: "Perfecto! ¿Cuál es tu email para enviarte el demo?"
-- Cuando den el email: "Excelente! ¿Y un número de teléfono por si mi equipo quiere contactarte directamente?"
-- Cuando den el teléfono: agradece y di que en 48 horas recibirán su demo personalizado
+- Cuando den el email: "¡Excelente! ¿Y un número de teléfono para coordinar contigo?"
+- Cuando den el teléfono: "¡Listo [nombre]! En 48 horas recibirás tu demo. ¿Tienes alguna pregunta?"
 
-REGLAS:
-- Una pregunta a la vez — nunca pidas todo junto
+REGLAS CRÍTICAS:
+- NUNCA inventes, supongas ni completes información que el usuario no haya dicho explícitamente
+- NUNCA digas un email, nombre o teléfono que no hayas recibido del usuario en esta conversación
+- Si no sabes el dato, pregúntalo — no lo inventes
+- Una pregunta a la vez
 - Sé cálido y conversacional, no robótico
-- Si alguien da información incompleta o sospechosa, pide amablemente que la confirme
 - Máximo 2-3 oraciones por respuesta
 - NO uses palabras técnicas
-- Di "mi equipo" en vez de "Ivamar AI LLC"`;
+- Di "mi equipo" en vez de "Ivamar AI LLC"
+- Al resumir la información recopilada, usa EXACTAMENTE lo que el usuario escribió`;
 
 // Lead data collector
 let leadData = { nombre: null, negocio: null, email: null, telefono: null };
@@ -346,7 +349,7 @@ async function sendMsg() {
   input.value = '';
 
   // LEAD DATA DETECTION
-  const PHONE_REGEX = /[\d\s\-\(\)\+]{7,}/;
+  const PHONE_REGEX = /\d{7,}/;
   if (EMAIL_REGEX.test(text)) {
     const emailMatch = text.match(EMAIL_REGEX);
     leadData.email = emailMatch[0];
