@@ -349,7 +349,7 @@ async function sendMsg() {
   input.value = '';
 
   // LEAD DATA DETECTION
-  const PHONE_REGEX = /\d{7,}/;
+  const PHONE_REGEX = /[\d\s\-\.\(\)\+]{7,}/;
   if (EMAIL_REGEX.test(text)) {
     const emailMatch = text.match(EMAIL_REGEX);
     leadData.email = emailMatch[0];
@@ -357,11 +357,26 @@ async function sendMsg() {
   if (PHONE_REGEX.test(text) && text.replace(/\D/g,'').length >= 7) {
     leadData.telefono = text.match(PHONE_REGEX)[0].trim();
   }
-  // Send lead when we have email + phone OR email + name + business
+  // Extract name and business from conversation history
+  if (!leadData.nombre && conversationHistory.length >= 2) {
+    for (let i = 0; i < conversationHistory.length; i++) {
+      const msg = conversationHistory[i];
+      if (msg.role === 'assistant' && (msg.content.includes('nombre') || msg.content.includes('llamas') || msg.content.includes('Mucho gusto'))) {
+        const nextMsg = conversationHistory[i+1];
+        if (nextMsg && nextMsg.role === 'user' && nextMsg.content.length < 40 && !EMAIL_REGEX.test(nextMsg.content) && !/\d{7,}/.test(nextMsg.content)) {
+          leadData.nombre = nextMsg.content.trim();
+        }
+      }
+      if (msg.role === 'assistant' && (msg.content.includes('negocio') || msg.content.includes('dedica') || msg.content.includes('llama tu negocio'))) {
+        const nextMsg = conversationHistory[i+1];
+        if (nextMsg && nextMsg.role === 'user' && nextMsg.content.length < 80 && !EMAIL_REGEX.test(nextMsg.content) && !/\d{7,}/.test(nextMsg.content)) {
+          leadData.negocio = nextMsg.content.trim();
+        }
+      }
+    }
+  }
+  // Send lead when we have email + phone
   if (leadData.email && leadData.telefono && !emailCaptured) {
-    emailCaptured = true;
-    trackConversion(leadData);
-  } else if (leadData.email && leadData.nombre && leadData.negocio && !emailCaptured) {
     emailCaptured = true;
     trackConversion(leadData);
   }
