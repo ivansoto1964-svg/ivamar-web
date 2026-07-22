@@ -637,6 +637,7 @@ app.get("/admin/listings", requireAdmin, (req, res) => {
 
 app.get("/caribex/:slug", async (req, res) => {
   const slug = req.params.slug;
+  if (!slug || slug === 'null' || slug === 'undefined') return res.redirect('/caribex');
   try {
     const dest = JSON.parse(fs.readFileSync(`${__dirname}/data/destinations/${slug}.json`, 'utf8'));
     const heroPhoto = await getPlacePhoto(dest.name + ' ' + dest.country, 1600, dest.searchQuery);
@@ -698,8 +699,18 @@ app.post("/api/iva-landing", express.json(), async (req, res) => {
 // IvA Landing Lead Capture
 app.post("/api/iva-lead", express.json(), async (req, res) => {
   try {
-    const { email } = req.body;
+    const { email, nombre, negocio, telefono } = req.body;
     if (!email) return res.status(400).json({ ok: false });
+    const html = `
+      <h2>🔥 Nuevo lead capturado — Google Ads</h2>
+      <table style="border-collapse:collapse;width:100%">
+        <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold">Nombre</td><td style="padding:8px;border:1px solid #ddd">${nombre || 'No proporcionado'}</td></tr>
+        <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold">Negocio</td><td style="padding:8px;border:1px solid #ddd">${negocio || 'No proporcionado'}</td></tr>
+        <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold">Email</td><td style="padding:8px;border:1px solid #ddd">${email}</td></tr>
+        <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold">Teléfono</td><td style="padding:8px;border:1px solid #ddd">${telefono || 'No proporcionado'}</td></tr>
+        <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold">Fecha</td><td style="padding:8px;border:1px solid #ddd">${new Date().toLocaleString('es-PR')}</td></tr>
+      </table>
+    `;
     await fetch("https://api.resend.com/emails", {
       method: "POST",
       headers: {
@@ -709,8 +720,8 @@ app.post("/api/iva-lead", express.json(), async (req, res) => {
       body: JSON.stringify({
         from: "IvA <connect@ivamarai.com>",
         to: ["connect@ivamarai.com"],
-        subject: "🔥 Nuevo lead Google Ads — " + email,
-        html: "<h2>Nuevo lead capturado</h2><p><strong>Email:</strong> " + email + "</p><p><strong>Fuente:</strong> Landing Page Google Ads</p><p><strong>Fecha:</strong> " + new Date().toLocaleString('es-PR') + "</p>"
+        subject: `🔥 Nuevo lead — ${nombre || email} · ${negocio || 'Negocio desconocido'}`,
+        html
       })
     });
     res.json({ ok: true });
