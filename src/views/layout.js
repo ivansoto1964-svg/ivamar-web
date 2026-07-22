@@ -57,6 +57,14 @@ module.exports = function layout({ title = "Ivamar AI", body = "", lang = "es" }
     .card{ background:#fff; border:1px solid #f0f0f0; border-radius:16px; padding:20px; margin-bottom:16px; box-shadow:0 2px 12px rgba(0,0,0,0.04); }
 
   </style>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=AW-16746740055"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'AW-16746740055');
+</script>
 </head>
 
 <body>
