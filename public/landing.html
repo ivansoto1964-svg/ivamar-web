@@ -319,15 +319,13 @@ function trackConversion(data) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data)
   });
-  // =====================================================
-  // CÓDIGO DE CONVERSIÓN DE GOOGLE ADS — INSERTAR AQUÍ
-  // gtag('event', 'conversion', {
-  //   'send_to': 'AW-16746740055/XXXXXXXXXXXXXXX',
-  //   'value': 1.0,
-  //   'currency': 'USD'
-  // });
-  // =====================================================
-  console.log('Conversión registrada:', email);
+  // Google Ads Conversion Tracking
+  gtag('event', 'conversion', {
+    'send_to': 'AW-16746740055/UID8CO_ngdUcENfyu7E-',
+    'value': 1.0,
+    'currency': 'USD'
+  });
+  console.log('Conversión registrada:', data);
 }
 
 function addMsg(text, type) {
