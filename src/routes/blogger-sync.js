@@ -21,6 +21,8 @@ function cleanHtml(html) {
     .replace(/<style[^>]*>[\s\S]*?<\/style>/gi,"")
     .replace(/class="[^"]*"/gi,"")
     .replace(/style="[^"]*"/gi,"")
+    .replace(/font-size:[^;;"]*;?/gi,"")
+    .replace(/line-height:[^;;"]*;?/gi,"")
     .replace(/<div[^>]*>/gi,"<p>").replace(/<\/div>/gi,"</p>")
     .replace(/href="https?:\/\/blog\.masboricuaqueunmofongo\.com[^"]*"/gi,'href="#"').replace(/href="http:\/\/blog\.masboricuaqueunmofongo\.com[^"]*"/gi,'href="#"')
     .replace(/<img[^>]+(s72-c|s400|thumbnail)[^>]*>/gi,"")

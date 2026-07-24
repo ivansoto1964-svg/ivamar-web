@@ -2081,6 +2081,26 @@ app.use("/blog", pbBlogRouter);
 const bloggerSync = require("./routes/blogger-sync");
 app.use("/api/blogger", bloggerSync);
 
+// Blogger webhook - auto sync when new post published
+app.get("/api/blogger/ping", async (req, res) => {
+  try {
+    await fetch("http://localhost:10000/api/blogger/sync");
+    res.status(200).send("OK");
+  } catch(e) {
+    res.status(500).send("Error");
+  }
+});
+
+// Caribex webhook - auto sync when new post published  
+app.get("/api/caribex-sync/ping", async (req, res) => {
+  try {
+    await fetch("http://localhost:10000/api/caribex-sync/sync");
+    res.status(200).send("OK");
+  } catch(e) {
+    res.status(500).send("Error");
+  }
+});
+
 // Caribex blog
 const caribexBlogRouter = require("./routes/caribex-blog");
 app.use("/insights", caribexBlogRouter);

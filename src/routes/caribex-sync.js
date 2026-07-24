@@ -21,6 +21,8 @@ function cleanHtml(html) {
     .replace(/<style[^>]*>[\s\S]*?<\/style>/gi,"")
     .replace(/class="[^"]*"/gi,"")
     .replace(/style="[^"]*"/gi,"")
+    .replace(/font-size:[^;;"]*;?/gi,"")
+    .replace(/line-height:[^;;"]*;?/gi,"")
     .replace(/<div[^>]*>/gi,"<p>").replace(/<\/div>/gi,"</p>")
     .replace(/<img[^>]+blogger\.googleusercontent\.com[^>]*>/gi,"")
     .replace(/<img[^>]+bp\.blogspot\.com[^>]*>/gi,"")
