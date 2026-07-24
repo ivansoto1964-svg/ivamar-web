@@ -91,6 +91,6 @@ router.get("/sync", async (req, res) => {
 });
 
 syncCaribex().catch(e => console.error("Initial Caribex sync failed:", e.message));
-setInterval(() => syncCaribex().catch(e => console.error("Auto Caribex sync failed:", e.message)), 6 * 60 * 60 * 1000);
+setInterval(() => syncCaribex().catch(e => console.error("Auto Caribex sync failed:", e.message)), 30 * 60 * 1000);
 
 module.exports = router;
