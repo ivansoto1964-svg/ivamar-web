@@ -713,7 +713,7 @@ loadDirectorio();
 </section>
 
 <!-- NAYELI -->
-<section class="nayeli-section" id="nayeli" style="display:none;">
+<section class="nayeli-section" id="nayeli">
   <div class="nayeli-inner">
     <div>
       <div class="nayeli-eyebrow">Asistente IA Boricua</div>
