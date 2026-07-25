@@ -528,14 +528,10 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
       </select>
     </div>
 
-    <!-- Listado dinámico compacto -->
-    <div style="text-align:center;padding:3rem 2rem;background:linear-gradient(135deg,#002D62,#CE1126);border-radius:12px;margin-top:1.5rem;">
-      <div style="font-size:3rem;margin-bottom:0.5rem;">🌍🇵🇷</div>
-      <h3 style="font-family:'Playfair Display',serif;color:#fff;font-size:1.6rem;margin-bottom:0.3rem;">Día de la Independencia del Planeta Boricua</h3>
-      <p style="color:rgba(255,255,255,0.7);font-size:0.85rem;margin-bottom:1.2rem;">23 de septiembre de 2026 — Lanzamiento oficial de la Red Mundial Boricua</p>
-      <div>
-        <a href="/pb/add-negocio" style="display:inline-flex;align-items:center;gap:0.5rem;background:#fff;color:#002D62;padding:0.85rem 2rem;border-radius:25px;font-size:0.9rem;font-weight:800;text-decoration:none;">🇵🇷 Reserva tu lugar como Socio Fundador →</a>
-      </div>
+    <!-- Red Mundial Boricua - Negocios -->
+    <div id="directorio-grid" class="directorio-grid" style="margin-top:1.5rem;"></div>
+    <div class="directorio-cta" style="margin-top:1.5rem;">
+      <a href="/pb/add-negocio" class="btn-outline-dark">🇵🇷 Añade tu negocio a la Red →</a>
     </div>
   </div>
 </section>
