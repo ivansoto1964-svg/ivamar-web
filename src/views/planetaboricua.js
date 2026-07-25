@@ -105,7 +105,7 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
 /* DIRECTORIO */
 .directorio{background:var(--white);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:2rem 0;}
 .directorio-inner{max-width:1200px;margin:0 auto;padding:0 2rem;}
-.directorio-grid{display:flex;flex-direction:column;gap:0;margin-top:1.5rem;border:1px solid var(--border);border-radius:8px;overflow:hidden;}
+.directorio-grid{display:block;margin-top:1.5rem;}
 .dir-card{border-bottom:1px solid var(--border);padding:0.8rem 1rem;display:flex;gap:0.8rem;align-items:center;transition:background 0.15s;text-decoration:none;color:inherit;background:#fff;}
 .dir-card:last-child{border-bottom:none;}
 .dir-card:hover{background:#fafafa;}
