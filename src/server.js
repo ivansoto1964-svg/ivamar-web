@@ -2114,6 +2114,31 @@ app.use("/api/caribex-sync", caribexSync);
 app.get('/planeta-boricua-blog', (req, res) => res.redirect(301, 'https://blog.masboricuaqueunmofongo.com'));
 app.get('/planeta-boricua-blog/:path', (req, res) => res.redirect(301, 'https://blog.masboricuaqueunmofongo.com'));
 app.get('/inicio', (req, res) => res.redirect(301, 'https://blog.masboricuaqueunmofongo.com'));
+// Red Mundial Boricua API
+app.get("/api/pb-negocios/all", (req, res) => {
+  try {
+    const fs2 = require('fs');
+    const pathLib = require('path');
+    const listingsDir = require('path').join(__dirname, '../data/pb-listings');
+    const category = req.query.category;
+    let allNegocios = [];
+    if (fs2.existsSync(listingsDir)) {
+      fs2.readdirSync(listingsDir).forEach(file => {
+        if (file.endsWith('.json') && file !== 'pending.json') {
+          try {
+            const negocios = JSON.parse(fs2.readFileSync(pathLib.join(listingsDir, file), 'utf8'));
+            negocios.forEach(n => allNegocios.push(n));
+          } catch(e) {}
+        }
+      });
+    }
+    if (category) allNegocios = allNegocios.filter(n => n.category === category);
+    return res.json({ negocios: allNegocios });
+  } catch(e) {
+    return res.json({ negocios: [] });
+  }
+});
+
 app.get('/:year/:month/:slug', (req, res) => {
   const { year, month, slug } = req.params;
   if (/^\d{4}$/.test(year) && /^\d{2}$/.test(month)) {
