@@ -633,29 +633,46 @@ async function loadDirectorio() {
       return 0;
     });
 
-    grid.innerHTML = filtered.map(function(n) {
-      var icon = categoryIcons[n.category] || '🏪';
-      var locationStr = n.city + (n.location ? ', ' + n.location : '');
-      var contactHtml = '';
-      if (n.whatsapp) contactHtml += '<a href="https://wa.me/' + n.whatsapp.replace(/\D/g,'') + '" target="_blank" style="font-size:0.72rem;color:#25D366;text-decoration:none;font-weight:700;margin-right:0.8rem;">📲 WhatsApp</a>';
-      if (n.website) contactHtml += '<a href="' + n.website + '" target="_blank" style="font-size:0.72rem;color:var(--blue);text-decoration:none;font-weight:700;margin-right:0.8rem;">🌐 Web</a>';
-      if (n.instagram) contactHtml += '<a href="https://instagram.com/' + n.instagram.replace('@','') + '" target="_blank" style="font-size:0.72rem;color:#E1306C;text-decoration:none;font-weight:700;">📷 IG</a>';
-      var badgeHtml = n.destacado
-        ? '<span style="font-size:0.68rem;background:#f0c040;color:#7a5c00;padding:0.15rem 0.5rem;border-radius:3px;font-weight:800;text-transform:uppercase;margin-left:0.5rem;">⭐ Destacado</span>'
-        : (n.badge === 'boricua-verificado' ? '<span style="font-size:0.68rem;background:#e8f5e9;color:#2e7d32;padding:0.15rem 0.5rem;border-radius:3px;font-weight:700;margin-left:0.5rem;">🏅 Verificado</span>' : '');
-      return '<div class="dir-card' + (n.destacado ? ' destacado' : '') + '">' +
-        '<div style="font-size:1.4rem;min-width:2rem;text-align:center;">' + icon + '</div>' +
-        '<div style="flex:1;min-width:0;">' +
-        '<div style="display:flex;align-items:center;flex-wrap:wrap;">' +
-        '<span style="font-weight:700;font-size:0.9rem;color:var(--dark);">' + n.name + '</span>' +
-        badgeHtml +
-        '</div>' +
-        '<div style="font-size:0.75rem;color:var(--mid);margin-top:0.15rem;">📍 ' + locationStr + ' · ' + icon + ' ' + n.category + '</div>' +
-        (n.desc ? '<div style="font-size:0.78rem;color:#555;margin-top:0.3rem;line-height:1.4;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + n.desc + '</div>' : '') +
-        (contactHtml ? '<div style="margin-top:0.4rem;">' + contactHtml + '</div>' : '') +
-        '</div>' +
-        '</div>';
-    }).join('');
+    // Group by city
+    var byCity = {};
+    filtered.forEach(function(n) {
+      var city = n.city || 'Puerto Rico';
+      if (!byCity[city]) byCity[city] = [];
+      byCity[city].push(n);
+    });
+
+    var html = '';
+    Object.keys(byCity).sort().forEach(function(city) {
+      var negocios = byCity[city];
+      html += '<div style="margin-bottom:1.5rem;">';
+      html += '<div style="font-weight:800;font-size:0.85rem;color:var(--blue);text-transform:uppercase;letter-spacing:0.08em;padding:0.5rem 1rem;background:#f0f4ff;border-left:3px solid var(--blue);margin-bottom:0.5rem;">📍 ' + city + ' <span style="font-weight:400;color:var(--mid);font-size:0.75rem;">(' + negocios.length + ')</span></div>';
+      html += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:0.8rem;padding:0 0.5rem;">';
+      negocios.forEach(function(n) {
+        var icon = categoryIcons[n.category] || '🏪';
+        var phone = n.phone ? n.phone.replace('.0','') : '';
+        var webLink = n.website && n.website !== 'nan' && n.website !== '' 
+          ? '<a href="' + n.website + '" target="_blank" style="font-size:0.72rem;color:var(--blue);text-decoration:none;font-weight:700;">🌐 Web</a>' : '';
+        var phoneLink = phone && phone !== 'nan' 
+          ? '<a href="tel:' + phone + '" style="font-size:0.72rem;color:var(--red);text-decoration:none;font-weight:700;">📞 ' + phone + '</a>' : '';
+        var rating = n.rating && n.rating > 0 
+          ? '<span style="font-size:0.68rem;color:#f59e0b;font-weight:700;">⭐ ' + n.rating + '</span>' : '';
+        html += '<div style="background:#fff;border:1px solid var(--border);border-radius:8px;padding:0.9rem;display:flex;flex-direction:column;gap:0.4rem;">';
+        html += '<div style="display:flex;align-items:flex-start;gap:0.5rem;">';
+        html += '<span style="font-size:1.2rem;">' + icon + '</span>';
+        html += '<div style="flex:1;">';
+        html += '<div style="font-weight:700;font-size:0.88rem;color:var(--dark);line-height:1.3;">' + n.name + '</div>';
+        html += '<div style="font-size:0.72rem;color:var(--mid);margin-top:0.2rem;">' + n.category + '</div>';
+        html += '</div>';
+        if (rating) html += rating;
+        html += '</div>';
+        if (phoneLink || webLink) {
+          html += '<div style="display:flex;gap:0.8rem;flex-wrap:wrap;margin-top:0.3rem;">' + phoneLink + webLink + '</div>';
+        }
+        html += '</div>';
+      });
+      html += '</div></div>';
+    });
+    grid.innerHTML = html;
 
   } catch(e) {
     grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:2rem;color:var(--mid);">Error cargando directorio. Intenta de nuevo.</div>';
