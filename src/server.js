@@ -2648,7 +2648,7 @@ app.get("/api/pb-negocios/all", (req, res) => {
   try {
     const fs2 = require('fs');
     const pathLib = require('path');
-    const listingsDir = '/data/pb-listings';
+    const listingsDir = require('path').join(__dirname, '../data/pb-listings');
     const category = req.query.category;
     let allNegocios = [];
 
