@@ -350,7 +350,7 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
 </section>
 
 <!-- DIRECTORIO -->
-<section class="directorio" id="directorio">
+<section class="directorio" id="directorio" style="display:none;">
   <div class="directorio-inner">
     <div class="sec-divider-inner">
       <span class="sec-divider-label">Red Mundial Boricua</span>
