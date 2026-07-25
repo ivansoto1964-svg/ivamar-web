@@ -1,0 +1,54 @@
+[
+  {
+    "id": "7871298449",
+    "name": "El Tostón Criollo",
+    "category": "Puerto Rican restaurant",
+    "city": "Carolina",
+    "state": "Carolina",
+    "phone": "+1 787-757-2201",
+    "website": "https://m.facebook.com/tostoncarolina/",
+    "rating": 4.5,
+    "reviews": 3053,
+    "status": "approved",
+    "source": "google_maps"
+  },
+  {
+    "id": "1909641894",
+    "name": "Cooperativa La Puertorriqueña",
+    "category": "Financial institution",
+    "city": "Carolina",
+    "state": "Carolina",
+    "phone": "+1 787-762-2333",
+    "website": "http://lapuertorriquena.com/",
+    "rating": 3.3,
+    "reviews": 40,
+    "status": "approved",
+    "source": "google_maps"
+  },
+  {
+    "id": "1909641894",
+    "name": "Cooperativa La Puertorriqueña",
+    "category": "Financial institution",
+    "city": "Carolina",
+    "state": "Carolina",
+    "phone": "+1 787-762-2333",
+    "website": "http://lapuertorriquena.com/",
+    "rating": 3.3,
+    "reviews": 40,
+    "status": "approved",
+    "source": "google_maps"
+  },
+  {
+    "id": "1909641894",
+    "name": "Cooperativa La Puertorriqueña",
+    "category": "Financial institution",
+    "city": "Carolina",
+    "state": "Carolina",
+    "phone": "+1 787-762-2333",
+    "website": "http://lapuertorriquena.com/",
+    "rating": 3.3,
+    "reviews": 40,
+    "status": "approved",
+    "source": "google_maps"
+  }
+]

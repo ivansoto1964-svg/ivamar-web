@@ -1,0 +1,93 @@
+[
+  {
+    "id": "9155231005",
+    "name": "Negocio El Parque",
+    "category": "bars",
+    "city": "Camuy",
+    "state": "Camuy",
+    "phone": "",
+    "website": "",
+    "rating": 5.0,
+    "reviews": 22,
+    "status": "approved",
+    "source": "google_maps"
+  },
+  {
+    "id": "4420759942",
+    "name": "Potrero y Cafeteria Brisas del Mar",
+    "category": "attractions",
+    "city": "Camuy",
+    "state": "Camuy",
+    "phone": "+1 787-262-2229",
+    "website": "",
+    "rating": 4.5,
+    "reviews": 572,
+    "status": "approved",
+    "source": "google_maps"
+  },
+  {
+    "id": "2405769208",
+    "name": "La Gorra del Pelotero",
+    "category": "restaurants",
+    "city": "Camuy",
+    "state": "Camuy",
+    "phone": "+1 787-898-4864",
+    "website": "",
+    "rating": 4.4,
+    "reviews": 269,
+    "status": "approved",
+    "source": "google_maps"
+  },
+  {
+    "id": "3459576220",
+    "name": "El Rincon Del Mar Y Tierra",
+    "category": "restaurants",
+    "city": "Camuy",
+    "state": "Camuy",
+    "phone": "+1 787-517-0805",
+    "website": "https://m.facebook.com/marytierrapr/",
+    "rating": 4.7,
+    "reviews": 463,
+    "status": "approved",
+    "source": "google_maps"
+  },
+  {
+    "id": "7450968819",
+    "name": "El Fogón de Abuela",
+    "category": "restaurants",
+    "city": "Camuy",
+    "state": "Camuy",
+    "phone": "+1 787-262-0781",
+    "website": "https://www.facebook.com/FogonAbuelaCamuy",
+    "rating": 4.5,
+    "reviews": 1402,
+    "status": "approved",
+    "source": "google_maps"
+  },
+  {
+    "id": "8546462332",
+    "name": "Rococoa Brunch Bistro",
+    "category": "coffee shops",
+    "city": "Camuy",
+    "state": "Camuy",
+    "phone": "+1 787-322-2679",
+    "website": "",
+    "rating": 4.8,
+    "reviews": 163,
+    "status": "approved",
+    "source": "google_maps"
+  },
+  {
+    "id": "8233438521",
+    "name": "Negocio R. Cordero",
+    "category": "Hardware store",
+    "city": "Camuy",
+    "state": "Camuy",
+    "phone": "",
+    "website": "",
+    "rating": 0,
+    "reviews": 0,
+    "status": "approved",
+    "source": "google_maps"
+  }
+]

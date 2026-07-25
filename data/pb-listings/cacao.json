@@ -1,0 +1,41 @@
+[
+  {
+    "id": "2062418477",
+    "name": "MI GENTE 2 GO (La Familia) + Agencia Hípica 014",
+    "category": "Supermarket",
+    "city": "Cacao",
+    "state": "Quebradillas",
+    "phone": "+1 787-895-0319",
+    "website": "",
+    "rating": 4.7,
+    "reviews": 42,
+    "status": "approved",
+    "source": "google_maps"
+  },
+  {
+    "id": "4214818484",
+    "name": "San Antonio Xtra",
+    "category": "Tienda de alimentación",
+    "city": "Cacao",
+    "state": "Quebradillas",
+    "phone": "+1 787-895-1564",
+    "website": "",
+    "rating": 4.7,
+    "reviews": 59,
+    "status": "approved",
+    "source": "google_maps"
+  },
+  {
+    "id": "7870644964",
+    "name": "San Antonio Quick Lunch",
+    "category": "restaurants",
+    "city": "Cacao",
+    "state": "Quebradillas",
+    "phone": "+1 787-895-1564",
+    "website": "",
+    "rating": 4.6,
+    "reviews": 36,
+    "status": "approved",
+    "source": "google_maps"
+  }
+]

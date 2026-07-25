@@ -1,0 +1,41 @@
+[
+  {
+    "id": "2769644505",
+    "name": "Rico Sabor Juana Díaz",
+    "category": "restaurants",
+    "city": "Guayabal",
+    "state": "Juana Díaz",
+    "phone": "+1 787-432-0780",
+    "website": "https://www.facebook.com/JuanaDiazRicoSabor/",
+    "rating": 4.7,
+    "reviews": 94,
+    "status": "approved",
+    "source": "google_maps"
+  },
+  {
+    "id": "7524536897",
+    "name": "Rico Sabor La Casa Del Mofongo",
+    "category": "restaurants",
+    "city": "Guayabal",
+    "state": "Juana Díaz",
+    "phone": "+1 787-432-1055",
+    "website": "",
+    "rating": 4.2,
+    "reviews": 79,
+    "status": "approved",
+    "source": "google_maps"
+  },
+  {
+    "id": "7389794887",
+    "name": "El Kachimbo Boricua",
+    "category": "bars",
+    "city": "Guayabal",
+    "state": "Juana Díaz",
+    "phone": "+1 939-376-4084",
+    "website": "",
+    "rating": 4.7,
+    "reviews": 36,
+    "status": "approved",
+    "source": "google_maps"
+  }
+]

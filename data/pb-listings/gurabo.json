@@ -1,0 +1,67 @@
+[
+  {
+    "id": "7421400497",
+    "name": "Happy Pig Barbecue",
+    "category": "restaurants",
+    "city": "Gurabo",
+    "state": "Gurabo",
+    "phone": "+1 787-628-5590",
+    "website": "http://www.happypigbarbecue.com/",
+    "rating": 4.9,
+    "reviews": 96,
+    "status": "approved",
+    "source": "google_maps"
+  },
+  {
+    "id": "8536394400",
+    "name": "Fusion Coffee, Brunch & Restaurant",
+    "category": "restaurants",
+    "city": "Gurabo",
+    "state": "Gurabo",
+    "phone": "+1 787-407-5252",
+    "website": "https://www.facebook.com/fusionbreadcoffee",
+    "rating": 4.7,
+    "reviews": 974,
+    "status": "approved",
+    "source": "google_maps"
+  },
+  {
+    "id": "1805497303",
+    "name": "El Flamboyán",
+    "category": "restaurants",
+    "city": "Gurabo",
+    "state": "Gurabo",
+    "phone": "+1 787-737-2859",
+    "website": "",
+    "rating": 4.5,
+    "reviews": 452,
+    "status": "approved",
+    "source": "google_maps"
+  },
+  {
+    "id": "5558497134",
+    "name": "Los Tres Grandes",
+    "category": "restaurants",
+    "city": "Gurabo",
+    "state": "Gurabo",
+    "phone": "+1 787-712-3005",
+    "website": "",
+    "rating": 4.7,
+    "reviews": 430,
+    "status": "approved",
+    "source": "google_maps"
+  },
+  {
+    "id": "7742874721",
+    "name": "La Ñapa",
+    "category": "Hamburger restaurant",
+    "city": "Gurabo",
+    "state": "Gurabo",
+    "phone": "+1 939-988-2000",
+    "website": "",
+    "rating": 4.7,
+    "reviews": 136,
+    "status": "approved",
+    "source": "google_maps"
+  }
+]

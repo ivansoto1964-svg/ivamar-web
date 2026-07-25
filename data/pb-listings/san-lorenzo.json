@@ -1,0 +1,41 @@
+[
+  {
+    "id": "2027256429",
+    "name": "San Lorenzo Shopping Center",
+    "category": "Shopping mall",
+    "city": "San Lorenzo",
+    "state": "San Lorenzo",
+    "phone": "+1 787-734-6017",
+    "website": "",
+    "rating": 4.1,
+    "reviews": 2001,
+    "status": "approved",
+    "source": "google_maps"
+  },
+  {
+    "id": "7607188680",
+    "name": "San Lorenzo",
+    "category": "Negocio",
+    "city": "San Lorenzo",
+    "state": "San Lorenzo",
+    "phone": "",
+    "website": "",
+    "rating": 0,
+    "reviews": 0,
+    "status": "approved",
+    "source": "google_maps"
+  },
+  {
+    "id": "5981625864",
+    "name": "LOTE 736",
+    "category": "Centro comercial",
+    "city": "San Lorenzo",
+    "state": "San Lorenzo",
+    "phone": "+1 787-247-7948",
+    "website": "",
+    "rating": 4.8,
+    "reviews": 9,
+    "status": "approved",
+    "source": "google_maps"
+  }
+]

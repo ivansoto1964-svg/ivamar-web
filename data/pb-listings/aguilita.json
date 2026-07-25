@@ -1,0 +1,41 @@
+[
+  {
+    "id": "7039334802",
+    "name": "Johnny Cash & Carry",
+    "category": "Dollar store",
+    "city": "Aguilita",
+    "state": "Juana Díaz",
+    "phone": "+1 787-837-1872",
+    "website": "",
+    "rating": 4.4,
+    "reviews": 305,
+    "status": "approved",
+    "source": "google_maps"
+  },
+  {
+    "id": "3720094712",
+    "name": "PCC 2 INC",
+    "category": "Supermercado",
+    "city": "Aguilita",
+    "state": "Juana Díaz",
+    "phone": "+1 787-260-0716",
+    "website": "",
+    "rating": 4.4,
+    "reviews": 84,
+    "status": "approved",
+    "source": "google_maps"
+  },
+  {
+    "id": "6919383786",
+    "name": "Xiomy Salon And Braids",
+    "category": "Centro de estética",
+    "city": "Aguilita",
+    "state": "Juana Díaz",
+    "phone": "+1 787-974-7885",
+    "website": "https://www.facebook.com/profile.php%3Fid%3D100063748380856%26mibextid%3DLQQJ4d",
+    "rating": 4.8,
+    "reviews": 34,
+    "status": "approved",
+    "source": "google_maps"
+  }
+]

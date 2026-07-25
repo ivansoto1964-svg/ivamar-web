@@ -1,0 +1,67 @@
+[
+  {
+    "id": "5677023283",
+    "name": "Brisas Costeñas By Don Tery's",
+    "category": "restaurants",
+    "city": "Mercedita",
+    "state": "Juana Díaz",
+    "phone": "+1 787-987-8752",
+    "website": "",
+    "rating": 4.9,
+    "reviews": 17,
+    "status": "approved",
+    "source": "google_maps"
+  },
+  {
+    "id": "7349748084",
+    "name": "Escape Pasteleria",
+    "category": "restaurants",
+    "city": "Mercedita",
+    "state": "Juana Díaz",
+    "phone": "+1 787-906-2267",
+    "website": "https://www.escapepastryshop.com/",
+    "rating": 4.4,
+    "reviews": 32,
+    "status": "approved",
+    "source": "google_maps"
+  },
+  {
+    "id": "4837239979",
+    "name": "La Barrita De Norbert",
+    "category": "bars",
+    "city": "Mercedita",
+    "state": "Juana Díaz",
+    "phone": "",
+    "website": "",
+    "rating": 4.5,
+    "reviews": 64,
+    "status": "approved",
+    "source": "google_maps"
+  },
+  {
+    "id": "5230365137",
+    "name": "Domplines Express - Mercedita",
+    "category": "restaurants",
+    "city": "Mercedita",
+    "state": "Ponce",
+    "phone": "+1 787-503-8998",
+    "website": "http://www.domplinesexpress.net/",
+    "rating": 4.7,
+    "reviews": 252,
+    "status": "approved",
+    "source": "google_maps"
+  },
+  {
+    "id": "5230365137",
+    "name": "Domplines Express - Mercedita",
+    "category": "restaurants",
+    "city": "Mercedita",
+    "state": "Ponce",
+    "phone": "+1 787-503-8998",
+    "website": "http://www.domplinesexpress.net/",
+    "rating": 4.7,
+    "reviews": 252,
+    "status": "approved",
+    "source": "google_maps"
+  }
+]

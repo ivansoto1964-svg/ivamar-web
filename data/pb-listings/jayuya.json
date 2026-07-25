@@ -1,0 +1,54 @@
+[
+  {
+    "id": "5885874641",
+    "name": "The Buren",
+    "category": "restaurants",
+    "city": "Jayuya",
+    "state": "Jayuya",
+    "phone": "+1 787-828-2589",
+    "website": "https://www.facebook.com/Restaurant-El-Buren-218454088201640/",
+    "rating": 4.8,
+    "reviews": 258,
+    "status": "approved",
+    "source": "google_maps"
+  },
+  {
+    "id": "2236006642",
+    "name": "El Guariche",
+    "category": "Puerto Rican restaurant",
+    "city": "Jayuya",
+    "state": "Jayuya",
+    "phone": "+1 787-828-0996",
+    "website": "",
+    "rating": 4.6,
+    "reviews": 215,
+    "status": "approved",
+    "source": "google_maps"
+  },
+  {
+    "id": "6946119738",
+    "name": "Plaza Nemesio Rosario Canales Rivera",
+    "category": "attractions",
+    "city": "Jayuya",
+    "state": "Jayuya",
+    "phone": "",
+    "website": "",
+    "rating": 4.7,
+    "reviews": 384,
+    "status": "approved",
+    "source": "google_maps"
+  },
+  {
+    "id": "6357637203",
+    "name": "Azúkar y Mas by Aryta",
+    "category": "Pastry shop",
+    "city": "Jayuya",
+    "state": "Jayuya",
+    "phone": "+1 787-235-2021",
+    "website": "http://azukarymas.com/",
+    "rating": 4.9,
+    "reviews": 148,
+    "status": "approved",
+    "source": "google_maps"
+  }
+]
