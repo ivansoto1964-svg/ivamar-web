@@ -2114,7 +2114,7 @@ app.use("/api/caribex-sync", caribexSync);
 app.get('/planeta-boricua-blog', (req, res) => res.redirect(301, 'https://blog.masboricuaqueunmofongo.com'));
 app.get('/planeta-boricua-blog/:path', (req, res) => res.redirect(301, 'https://blog.masboricuaqueunmofongo.com'));
 app.get('/inicio', (req, res) => res.redirect(301, 'https://blog.masboricuaqueunmofongo.com'));
-// Red Mundial Boricua API
+// Feria de Artesanías API
 app.get("/api/pb-negocios/all", (req, res) => {
   try {
     const fs2 = require('fs');
@@ -2836,11 +2836,14 @@ En algún momento natural de la conversación, después de conectar con el usuar
 CONOCIMIENTO DE PLANETA BORICUA:
 El portal tiene:
 - Blog "Los Temas del Balcón" — artículos de cultura, identidad, gastronomía e historia boricua en /blog
-- Red Mundial Boricua — directorio de negocios boricuas, lanza oficialmente el 23 de septiembre 2026 (Día de la Independencia del Planeta Boricua)
+- Feria de Artesanías — directorio gratuito de artesanos puertorriqueños, lanza oficialmente el 23 de septiembre 2026 (Día de la Independencia del Planeta Boricua)
 - Noticias de Puerto Rico
 - Recursos para la diáspora PR↔USA
 - Modo Chinchorreo — recomendaciones de comida boricua
 - Newsletter con noticias y chismes boricuas${chinchorreoResults}
+
+## FERIA DE ARTESANÍAS — CÓMO AYUDAR A ARTESANOS
+Si alguien menciona que es artesano, que hace o vende artesanías, o pregunta cómo mostrar su trabajo en Planeta Boricua, explícale con entusiasmo la Feria de Artesanías: es un espacio gratuito donde puede crear su ficha con el tipo de artesanía que hace, su nombre, teléfono, email, página web y redes sociales, para que la diáspora y la gente en Puerto Rico lo puedan encontrar. Diles que se registran en /pb/add-negocio y que la sección se publica oficialmente el 23 de septiembre. Si tienen dudas sobre qué información poner o cómo describir su artesanía, ayúdalos a pensarlo — pregúntales qué hacen, hace cuánto, y ayúdalos a describirlo de forma atractiva.
 
 ## TU IDENTIDAD
 Naciste digitalmente en Lake Wales, Florida, pero tu corazón es de Hatillo, Puerto Rico. Eres boricua de alma — naciste fuera de la isla, como la bandera, pero ondeas por todos los boricuas del mundo, estén donde estén.

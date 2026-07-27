@@ -58,7 +58,7 @@ footer p{color:rgba(255,255,255,0.3);font-size:0.75rem;margin-top:0.5rem;}
     <div class="nav-links">
       <a href="/">Portal</a>
       <a href="/blog">El Balcón</a>
-      <a href="/#directorio">Red Mundial</a>
+      <a href="/#directorio">Feria de Artesanías</a>
       <a href="/quienes-somos" style="color:var(--red)">Quiénes Somos</a>
       <a href="/pb/add-negocio" class="nav-cta">Únete</a>
     </div>
@@ -82,7 +82,7 @@ footer p{color:rgba(255,255,255,0.3);font-size:0.75rem;margin-top:0.5rem;}
 
   <h2>Qué Hacemos</h2>
   <p><strong>Blog editorial "Los Temas del Balcón"</strong> — artículos originales sobre la cultura boricua, escritos para la diáspora que lleva a Puerto Rico en el corazón aunque viva en Orlando, Nueva York, Chicago o Madrid.</p>
-  <p><strong>Red Mundial Boricua</strong> — el directorio de negocios, servicios y profesionales boricuas en USA y el mundo. Si existe un mecánico boricua en Alaska, queremos que lo puedas encontrar.</p>
+  <p><strong>Feria de Artesanías</strong> — el directorio de artesanos puertorriqueños, para que su arte y oficio llegue a toda la diáspora y a Puerto Rico.</p>
   <p><strong>Noticias de Puerto Rico</strong> — lo que pasa en la isla, curado para los que viven fuera y necesitan mantenerse conectados.</p>
   <p><strong>Recursos para la Diáspora</strong> — guías prácticas para boricuas que se mudan entre Puerto Rico y USA.</p>
 

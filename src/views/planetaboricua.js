@@ -10,7 +10,7 @@ module.exports = `<!DOCTYPE html>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Planeta Boricua">
 <title>Planeta Boricua — Más Boricua Que Un Mofongo</title>
-<meta name="description" content="Tu portal de cultura, noticias y comunidad puertorriqueña. Red Mundial Boricua de Negocios, recursos para mudanzas PR↔USA, Nayeli AI y más.">
+<meta name="description" content="Tu portal de cultura, noticias y comunidad puertorriqueña. Feria de Artesanías, recursos para mudanzas PR↔USA, Nayeli AI y más.">
 <meta name="keywords" content="Puerto Rico, boricua, noticias Puerto Rico, cultura puertorriqueña, diáspora boricua, negocios boricuas, mudarse de Puerto Rico, boricuas en Florida, boricuas en Nueva York, recursos boricuas">
 <meta name="author" content="Planeta Boricua — Ivamar AI LLC">
 <meta name="robots" content="index, follow">
@@ -20,7 +20,7 @@ module.exports = `<!DOCTYPE html>
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://www.masboricuaqueunmofongo.com/">
 <meta property="og:title" content="Planeta Boricua — Más Boricua Que Un Mofongo">
-<meta property="og:description" content="Tu portal de cultura, noticias y comunidad puertorriqueña. Red Mundial Boricua de Negocios, recursos para mudanzas PR↔USA, Nayeli AI y más.">
+<meta property="og:description" content="Tu portal de cultura, noticias y comunidad puertorriqueña. Feria de Artesanías, recursos para mudanzas PR↔USA, Nayeli AI y más.">
 <meta property="og:image" content="https://www.masboricuaqueunmofongo.com/img/og-planetaboricua.jpg">
 <meta property="og:locale" content="es_PR">
 <meta property="og:site_name" content="Planeta Boricua">
@@ -29,7 +29,7 @@ module.exports = `<!DOCTYPE html>
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:url" content="https://www.masboricuaqueunmofongo.com/">
 <meta name="twitter:title" content="Planeta Boricua — Más Boricua Que Un Mofongo">
-<meta name="twitter:description" content="Tu portal de cultura, noticias y comunidad puertorriqueña. Red Mundial Boricua de Negocios, recursos para mudanzas PR↔USA y Nayeli AI.">
+<meta name="twitter:description" content="Tu portal de cultura, noticias y comunidad puertorriqueña. Feria de Artesanías, recursos para mudanzas PR↔USA y Nayeli AI.">
 <meta name="twitter:image" content="https://www.masboricuaqueunmofongo.com/img/og-planetaboricua.jpg">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8301223085122981" crossorigin="anonymous"></script>
@@ -265,7 +265,7 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
       <a href="/blog">El Balcón</a>
       <a href="#noticias">Noticias</a>
 
-      <a href="#directorio">Red Mundial</a>
+      <a href="#directorio">Feria de Artesanías</a>
       <a href="#nayeli">Nayeli AI</a>
       <a href="#viajes">Viajes</a>
       <a href="#newsletter" class="nav-cta">Newsletter →</a>
@@ -359,7 +359,7 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
 <section class="directorio" id="directorio" style="display:none;">
   <div class="directorio-inner">
     <div class="sec-divider-inner">
-      <span class="sec-divider-label">Red Mundial Boricua</span>
+      <span class="sec-divider-label">Feria de Artesanías</span>
       <div style="flex:1;height:2px;background:var(--red);margin:0 1rem;"></div>
       <a href="/pb/add-negocio" class="sec-divider-link">Añadir negocio →</a>
     </div>
@@ -368,10 +368,10 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
     <div style="background:linear-gradient(135deg,var(--blue),#001a4d);border-radius:8px;padding:1.2rem 1.5rem;margin:1.2rem 0;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;">
       <div style="font-size:1.8rem;">🇵🇷</div>
       <div>
-        <div style="font-weight:800;color:#fff;font-size:0.92rem;">Solo negocios y servicios boricuas</div>
-        <div style="font-size:0.78rem;color:rgba(255,255,255,0.65);margin-top:0.2rem;">🌍 Registra tu negocio hoy — los primeros 1,000 serán Socios Fundadores de la Red Mundial Boricua.</div>
+        <div style="font-weight:800;color:#fff;font-size:0.92rem;">Artesanos puertorriqueños</div>
+        <div style="font-size:0.78rem;color:rgba(255,255,255,0.65);margin-top:0.2rem;">🎨 Regístrate gratis y forma parte de la Feria de Artesanías de Planeta Boricua.</div>
       </div>
-      <a href="/pb/add-negocio" style="margin-left:auto;background:var(--red);color:#fff;padding:0.5rem 1rem;border-radius:6px;text-decoration:none;font-size:0.8rem;font-weight:700;white-space:nowrap;">+ Únete como Socio Fundador 🇵🇷</a>
+      <a href="/pb/add-negocio" style="margin-left:auto;background:var(--red);color:#fff;padding:0.5rem 1rem;border-radius:6px;text-decoration:none;font-size:0.8rem;font-weight:700;white-space:nowrap;">+ Regístrate Gratis 🇵🇷</a>
     </div>
 
     <!-- Buscador boricua -->
@@ -534,7 +534,7 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
       </select>
     </div>
 
-    <!-- Red Mundial Boricua - Negocios -->
+    <!-- Feria de Artesanías -->
     <div id="directorio-grid" class="directorio-grid" style="margin-top:1.5rem;"></div>
     <div class="directorio-cta" style="margin-top:1.5rem;">
       <a href="/pb/add-negocio" class="btn-outline-dark">🇵🇷 Añade tu negocio a la Red →</a>
@@ -990,7 +990,7 @@ loadDirectorio();
       <h4>Portal</h4>
       <a href="/blog">El Balcón</a>
       <a href="#noticias">Noticias</a>
-      <a href="#directorio">Red Mundial Boricua</a>
+      <a href="#directorio">Feria de Artesanías</a>
 
       <a href="#nayeli">Nayeli AI</a>
       <a href="#viajes">Viajes a PR</a>

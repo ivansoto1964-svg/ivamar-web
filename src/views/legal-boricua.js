@@ -46,8 +46,8 @@ nav{background:#fff;border-bottom:3px solid #CE1126;padding:0;}
 <div class="content">
   <p>Bienvenido a Más Boricua Que Un Mofongo (masboricuaqueunmofongo.com), un sitio web operado por Ivamar AI LLC. Al acceder o utilizar nuestra plataforma, directorio, asistente de IA (Nayeli AI) y servicios relacionados, usted acepta cumplir y estar sujeto a los siguientes Términos y Condiciones. Si no está de acuerdo con alguna parte de estos términos, no deberá utilizar nuestro sitio web.</p>
 
-  <h2>1. Uso del Sitio y la Red Mundial Boricua</h2>
-  <p>Al registrar un negocio en nuestro directorio ("Red Mundial Boricua"), usted garantiza que la información proporcionada es verídica, exacta y que tiene los derechos legítimos sobre dicho negocio. Nos reservamos el derecho de remover cualquier listado que consideremos fraudulento, engañoso, ofensivo o que viole derechos de terceros sin previo aviso.</p>
+  <h2>1. Uso del Sitio y la Feria de Artesanías</h2>
+  <p>Al registrarse en nuestra Feria de Artesanías, usted garantiza que la información proporcionada es verídica, exacta y que tiene los derechos legítimos sobre su oficio o negocio artesanal. Nos reservamos el derecho de remover cualquier listado que consideremos fraudulento, engañoso, ofensivo o que viole derechos de terceros sin previo aviso.</p>
 
   <h2>2. Propiedad Intelectual</h2>
   <p>Todo el contenido original de este sitio, incluyendo textos, gráficos, logotipos, código y la personalidad de nuestra asistente de IA (Nayeli AI), es propiedad exclusiva de Ivamar AI LLC y está protegido por las leyes de propiedad intelectual internacionales y de los Estados Unidos.</p>
@@ -142,7 +142,7 @@ nav{background:#fff;border-bottom:3px solid #CE1126;padding:0;}
   <p><strong>Otros Socios (ej. Trip.com, Booking.com):</strong> También participamos en redes de afiliados de viajes y turismo. Los enlaces a hoteles, vuelos o servicios son enlaces de afiliados que nos ayudan a mantener esta plataforma gratuita para la comunidad.</p>
 
   <h2>5. Recopilación de Datos del Usuario</h2>
-  <p>Al registrar su negocio en nuestra Red Mundial Boricua o al suscribirse a nuestro Newsletter, usted nos proporciona voluntariamente información como su nombre, dirección de correo electrónico e información comercial. Utilizamos esta información exclusivamente para publicar la ficha de su negocio en nuestro directorio y enviarle actualizaciones relevantes de nuestra comunidad.</p>
+  <p>Al registrarse en nuestra Feria de Artesanías o al suscribirse a nuestro Newsletter, usted nos proporciona voluntariamente información como su nombre, dirección de correo electrónico e información sobre su artesanía. Utilizamos esta información exclusivamente para publicar la ficha de su negocio en nuestro directorio y enviarle actualizaciones relevantes de nuestra comunidad.</p>
   <p>Usted puede cancelar su suscripción en cualquier momento haciendo clic en el enlace "Darse de baja" incluido en todos nuestros correos electrónicos.</p>
 
   <h2>6. Nayeli AI</h2>
