@@ -732,36 +732,17 @@ loadDirectorio();
 </section>
 
 <!-- NAYELI -->
-<section class="nayeli-section" id="nayeli">
+<section class="nayeli-section" id="feria">
   <div class="nayeli-inner">
     <div>
-      <div class="nayeli-eyebrow">Asistente IA Boricua</div>
-      <h2 class="nayeli-title">Conoce a <span class="accent">Nayeli</span> 🇵🇷</h2>
-      <p class="nayeli-sub">Nayeli es tu asistente de IA boricua — habla tu idioma, entiende tu cultura y está aquí para ayudarte con todo lo de Puerto Rico y la diáspora.</p>
-      <ul class="nayeli-features">
-        <li>Noticias y temas de Puerto Rico al instante</li>
-        <li>Encuentra negocios boricuas cerca de ti</li>
-        <li>Planifica tu viaje a la isla</li>
-        <li>Responde en español boricua naturalmente</li>
-        <li>Disponible 24/7 — como la buena gente de PR</li>
-      </ul>
-      <a href="/#nayeli" class="btn-white">Habla con Nayeli →</a>
-    </div>
-    <div class="nayeli-chat">
-      <div class="nayeli-chat-header">
-        <img src="/img/nayeli.jpg" alt="Nayeli" style="width:44px;height:44px;border-radius:50%;object-fit:cover;object-position:top;border:2px solid rgba(255,255,255,0.3);flex-shrink:0;">
-        <div>
-          <div class="nayeli-name">Nayeli — Asistente Boricua</div>
-          <div class="nayeli-online">● En línea · Tu asistente boricua 🇵🇷</div>
-        </div>
+      <div class="nayeli-eyebrow">Feria de Artesanías 🎨</div>
+      <h2 class="nayeli-title">Muestra tu <span class="accent">Arte</span> al Mundo 🇵🇷</h2>
+      <p class="nayeli-sub">Un espacio gratuito para que artesanos puertorriqueños muestren su trabajo — tu tipo de artesanía, tu historia, tus contactos — para que la diáspora y la gente en Puerto Rico te encuentren.</p>
+      <div style="background:rgba(255,255,255,0.12);border-radius:10px;padding:1rem 1.2rem;margin:1.2rem 0;display:flex;align-items:center;gap:0.8rem;">
+        <div style="font-size:1.5rem;">📅</div>
+        <div style="font-size:0.85rem;color:#fff;line-height:1.5;">El listado se comenzará a publicar el <strong>23 de septiembre de 2026</strong> — Día del Grito de Lares.</div>
       </div>
-      <div class="nayeli-msgs" id="nayeliMsgs">
-        <div class="n-msg n-bot">¡Wepa! 🇵🇷 Soy Nayeli, tu asistente boricua. ¿Cómo te llamas?</div>
-      </div>
-      <div class="nayeli-input-row">
-        <input class="nayeli-input" id="nayeliInput" placeholder="Pregúntame lo que quieras..." onkeydown="if(event.key==='Enter')nayeliSend()">
-        <button class="nayeli-send" onclick="nayeliSend()">➤</button>
-      </div>
+      <a href="/pb/add-negocio" class="btn-white">🎨 Regístrate Gratis →</a>
     </div>
   </div>
 </section>

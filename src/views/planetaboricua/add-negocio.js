@@ -74,17 +74,18 @@ footer{background:var(--blue);padding:2rem;text-align:center;}
         <div class="form-group">
           <label>Categoría *</label>
           <select id="biz-category">
-            <option value="">Selecciona categoría</option>
-            <option value="restaurante">🍽️ Restaurante</option>
-            <option value="food-truck">🚚 Food Truck</option>
-            <option value="panaderia">🥐 Panadería / Repostería</option>
-            <option value="barberia">💈 Barbería</option>
-            <option value="salon">💅 Salón de Belleza</option>
-            <option value="tienda">🛍️ Tienda / Boutique</option>
-            <option value="servicios">🔧 Servicios Profesionales</option>
-            <option value="musica">🎵 Música / Entretenimiento</option>
-            <option value="salud">🏥 Salud / Bienestar</option>
-            <option value="transporte">🚗 Transporte</option>
+            <option value="">Selecciona tipo de artesanía</option>
+            <option value="tallado-madera">🪵 Tallado en Madera</option>
+            <option value="joyeria">💍 Joyería Artesanal</option>
+            <option value="ceramica">🏺 Cerámica / Alfarería</option>
+            <option value="textiles">🧵 Textiles / Costura</option>
+            <option value="pintura">🎨 Pintura / Arte</option>
+            <option value="santos">🙏 Santos / Tallas Religiosas</option>
+            <option value="cuero">👜 Trabajo en Cuero</option>
+            <option value="vejigantes">🎭 Máscaras / Vejigantes</option>
+            <option value="instrumentos">🥁 Instrumentos Musicales</option>
+            <option value="reciclado">♻️ Arte con Material Reciclado</option>
+            <option value="velas-jabones">🕯️ Velas / Jabones Artesanales</option>
             <option value="otro">📦 Otro</option>
           </select>
         </div>
@@ -319,6 +320,14 @@ footer{background:var(--blue);padding:2rem;text-align:center;}
     <h3>¡Wepa! Solicitud Recibida</h3>
     <p>Recibimos la información de tu negocio. Lo revisaremos en 1-3 días hábiles y te avisaremos por email cuando esté aprobado.</p>
     <p style="margin-top:1rem;">¿Preguntas? Escríbenos a <strong>connect@ivamarai.com</strong></p>
+    <div style="margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid #86efac;">
+      <p style="font-weight:700;color:#166534;">¿Conoces a otro artesano? 🎨</p>
+      <p style="margin-top:0.3rem;">Comparte la Feria de Artesanías para que también se beneficie.</p>
+      <div style="display:flex;gap:0.6rem;justify-content:center;margin-top:1rem;flex-wrap:wrap;">
+        <a href="https://wa.me/?text=¡Wepa! Mira esta Feria de Artesanías gratis de Planeta Boricua para mostrar tu trabajo: https://www.masboricuaqueunmofongo.com/pb/add-negocio" target="_blank" style="background:#25D366;color:#fff;padding:0.6rem 1.2rem;border-radius:8px;text-decoration:none;font-size:0.85rem;font-weight:700;">📱 WhatsApp</a>
+        <a href="https://www.facebook.com/sharer/sharer.php?u=https://www.masboricuaqueunmofongo.com/pb/add-negocio" target="_blank" style="background:#1877F2;color:#fff;padding:0.6rem 1.2rem;border-radius:8px;text-decoration:none;font-size:0.85rem;font-weight:700;">📘 Facebook</a>
+      </div>
+    </div>
   </div>
 </div>
 
