@@ -202,6 +202,31 @@ window.addEventListener('DOMContentLoaded', function() {
   }
 });
 </script>
+
+<!-- Sun AI Floating Chat -->
+<div id="sun-float-btn" onclick="toggleSunFloat()" style="position:fixed;bottom:1.5rem;left:1.5rem;z-index:1000;cursor:pointer;display:flex;align-items:center;gap:0.6rem;background:#0077b6;border-radius:50px;padding:0.4rem 1rem 0.4rem 0.4rem;box-shadow:0 4px 20px rgba(0,119,182,0.4);transition:transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+  <img src="/img/sun-ai.png" alt="Sun AI" style="width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,0.3);">
+  <span style="color:#fff;font-size:0.82rem;font-weight:700;white-space:nowrap;">Hi! I'm Sun ☀️</span>
+</div>
+<div id="sun-float-chat" style="display:none;position:fixed;bottom:5.5rem;left:1.5rem;z-index:1000;width:340px;max-width:calc(100vw - 3rem);background:#fff;border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,0.15);overflow:hidden;border:1px solid #cce0f0;">
+  <div style="background:#0077b6;padding:0.9rem 1.2rem;display:flex;align-items:center;gap:0.8rem;">
+    <img src="/img/sun-ai.png" alt="Sun AI" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
+    <div><div style="color:#fff;font-weight:700;font-size:0.88rem;">Sun AI ☀️</div><div style="color:rgba(255,255,255,0.6);font-size:0.7rem;display:flex;align-items:center;gap:4px;"><span style="width:6px;height:6px;border-radius:50%;background:#4ade80;display:inline-block;"></span>Online now</div></div>
+    <button onclick="toggleSunFloat()" style="margin-left:auto;background:none;border:none;color:rgba(255,255,255,0.7);font-size:1.2rem;cursor:pointer;">✕</button>
+  </div>
+  <div id="sun-float-messages" style="height:280px;overflow-y:auto;padding:1rem;display:flex;flex-direction:column;gap:0.8rem;background:#f0f7ff;">
+    <div style="background:#fff;border:1px solid #cce0f0;border-radius:12px;border-bottom-left-radius:3px;padding:0.7rem 1rem;font-size:0.84rem;max-width:85%;align-self:flex-start;">Hey! I'm Sun, your Caribbean travel expert. How can I help you plan your perfect getaway? 🌴</div>
+  </div>
+  <div style="padding:0.7rem;border-top:1px solid #cce0f0;display:flex;gap:0.5rem;background:#fff;">
+    <input id="sun-float-input" type="text" placeholder="Ask me anything..." style="flex:1;border:1.5px solid #cce0f0;border-radius:8px;padding:0.5rem 0.8rem;font-size:0.82rem;font-family:Inter,sans-serif;outline:none;" onkeydown="if(event.key==='Enter')sendSunFloat()">
+    <button onclick="sendSunFloat()" style="background:#0077b6;color:#fff;border:none;border-radius:8px;padding:0 1rem;cursor:pointer;font-size:1rem;">➤</button>
+  </div>
+</div>
+<script>
+function toggleSunFloat(){var chat=document.getElementById('sun-float-chat');chat.style.display=chat.style.display==='none'?'block':'none';if(chat.style.display==='block')document.getElementById('sun-float-input').focus();}
+var sunFloatHistory=[];
+async function sendSunFloat(){var input=document.getElementById('sun-float-input');var messages=document.getElementById('sun-float-messages');var text=input.value.trim();if(!text)return;var userDiv=document.createElement('div');userDiv.style.cssText='background:#0077b6;color:#fff;border-radius:12px;border-bottom-right-radius:3px;padding:0.7rem 1rem;font-size:0.84rem;max-width:85%;align-self:flex-end;';userDiv.textContent=text;messages.appendChild(userDiv);input.value='';messages.scrollTop=messages.scrollHeight;var typing=document.createElement('div');typing.style.cssText='background:#fff;border:1px solid #cce0f0;border-radius:12px;padding:0.7rem 1rem;font-size:0.84rem;max-width:85%;align-self:flex-start;';typing.textContent='...';messages.appendChild(typing);try{var res=await fetch('/api/caribex',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:text,history:sunFloatHistory})});var data=await res.json();typing.remove();var botDiv=document.createElement('div');botDiv.style.cssText='background:#fff;border:1px solid #cce0f0;border-radius:12px;border-bottom-left-radius:3px;padding:0.7rem 1rem;font-size:0.84rem;max-width:85%;align-self:flex-start;line-height:1.5;';botDiv.textContent=data.reply||'Let me help you!';messages.appendChild(botDiv);sunFloatHistory.push({role:'user',content:text},{role:'assistant',content:data.reply||''});messages.scrollTop=messages.scrollHeight;}catch(e){typing.remove();}}
+</script>
 </body>
 </html>`;
 };
