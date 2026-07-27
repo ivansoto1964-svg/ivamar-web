@@ -27,5 +27,22 @@ module.exports = function(posts, page, totalPages, category, search) {
 <div class="blog-cats"><div class="blog-cats-inner"><a href="/blog" class="blog-cat-btn${!category ? ' active' : ''}">🇵🇷 Todo</a><a href="/blog/categoria/cultura" class="blog-cat-btn${category === 'cultura' ? ' active' : ''}">🎭 Cultura Boricua</a></div></div>
 <div class="blog-main"><div class="blog-grid">${cards || '<div class="blog-empty"><p>No se encontraron artículos.</p></div>'}</div>${pagination}</div>
 <footer><a href="/">Portal</a><a href="/blog">El Balcón</a><a href="/quienes-somos">Quiénes Somos</a><a href="/pb/add-negocio">Únete a la Red</a><a href="/privacidad-boricua">Privacidad</a><a href="/terminos-boricua">Términos</a><p>© 2026 Planeta Boricua — Ivamar AI LLC · Más Boricua Que Un Mofongo 🇵🇷</p></footer>
+
+<!-- Cookie Banner -->
+<div id="cookie-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;background:#111;color:#fff;padding:1rem 2rem;z-index:9999;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;font-family:'Inter',sans-serif;font-size:0.82rem;">
+  <p style="margin:0;color:rgba(255,255,255,0.8);">🍪 Usamos cookies para mejorar tu experiencia y mostrar anuncios relevantes. Al continuar navegando, aceptas nuestro uso de cookies. <a href="/privacidad-boricua" style="color:#CE1126;text-decoration:underline;">Ver Política de Privacidad</a></p>
+  <button onclick="acceptCookies()" style="background:#CE1126;color:#fff;border:none;padding:0.5rem 1.5rem;border-radius:4px;font-weight:700;cursor:pointer;white-space:nowrap;font-size:0.82rem;">Aceptar</button>
+</div>
+<script>
+function acceptCookies() {
+  localStorage.setItem('cookies_accepted', '1');
+  document.getElementById('cookie-banner').style.display = 'none';
+}
+window.addEventListener('DOMContentLoaded', function() {
+  if (!localStorage.getItem('cookies_accepted')) {
+    document.getElementById('cookie-banner').style.display = 'flex';
+  }
+});
+</script>
 </body></html>`;
 };
