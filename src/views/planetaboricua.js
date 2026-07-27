@@ -3,6 +3,12 @@ module.exports = `<!DOCTYPE html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="manifest" href="/manifest-pb.json">
+<link rel="apple-touch-icon" href="/icons/pb/apple-touch-icon.png">
+<meta name="theme-color" content="#0033A0">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Planeta Boricua">
 <title>Planeta Boricua — Más Boricua Que Un Mofongo</title>
 <meta name="description" content="Tu portal de cultura, noticias y comunidad puertorriqueña. Red Mundial Boricua de Negocios, recursos para mudanzas PR↔USA, Nayeli AI y más.">
 <meta name="keywords" content="Puerto Rico, boricua, noticias Puerto Rico, cultura puertorriqueña, diáspora boricua, negocios boricuas, mudarse de Puerto Rico, boricuas en Florida, boricuas en Nueva York, recursos boricuas">
