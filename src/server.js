@@ -2474,6 +2474,10 @@ app.post("/api/pb-negocio-submit", formLimiter, express.json(), async (req, res)
   const whatsapp = sanitize(req.body.whatsapp || '');
   const website = sanitize(req.body.website || '');
   const instagram = sanitize(req.body.instagram || '');
+  const facebook = sanitize(req.body.facebook || '');
+  const tiktok = sanitize(req.body.tiktok || '');
+  const etsy = sanitize(req.body.etsy || '');
+  const logo = sanitize(req.body.logo || '');
   const photo = sanitize(req.body.photo);
   const price = sanitize(req.body.price || '');
 
@@ -2499,7 +2503,7 @@ app.post("/api/pb-negocio-submit", formLimiter, express.json(), async (req, res)
       status: 'pending',
       submittedAt: new Date().toISOString(),
       name, category, location, city, zip, address, desc, fullDesc,
-      email, whatsapp, website, instagram, photo, price,
+      email, whatsapp, website, instagram, facebook, tiktok, etsy, logo, photo, price,
       approveToken: crypto.randomBytes(32).toString('hex'),
       rejectToken: crypto.randomBytes(32).toString('hex')
     };

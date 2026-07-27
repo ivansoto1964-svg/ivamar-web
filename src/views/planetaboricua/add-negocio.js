@@ -57,7 +57,7 @@ footer{background:var(--blue);padding:2rem;text-align:center;}
 </nav>
 
 <section class="hero">
-  <h1>🇵🇷 Añade Tu Negocio</h1>
+  <h1>🇵🇷 Únete a la Feria de Artesanías</h1>
   <p>Llega a miles de boricuas en USA y Puerto Rico. Gratis para comenzar. Con badge de verificación boricua.</p>
 </section>
 
@@ -65,9 +65,9 @@ footer{background:var(--blue);padding:2rem;text-align:center;}
   <div id="form-container">
 
     <div class="form-section">
-      <div class="form-section-title">Información del Negocio</div>
+      <div class="form-section-title">Información de tu Artesanía</div>
       <div class="form-group">
-        <label>Nombre del Negocio *</label>
+        <label>Nombre del Artesano / Taller *</label>
         <input type="text" id="biz-name" placeholder="ej. El Mofongo de Mamá Food Truck" required>
       </div>
       <div class="form-row">
@@ -275,8 +275,38 @@ footer{background:var(--blue);padding:2rem;text-align:center;}
           <input type="text" id="biz-instagram" placeholder="@tunegocio">
         </div>
       </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Facebook</label>
+          <input type="text" id="biz-facebook" placeholder="facebook.com/tupagina">
+        </div>
+        <div class="form-group">
+          <label>TikTok</label>
+          <input type="text" id="biz-tiktok" placeholder="@tuartesania">
+        </div>
+      </div>
       <div class="form-group">
-        <label>Foto del Negocio *</label>
+        <label>Etsy o Tienda Online</label>
+        <input type="url" id="biz-etsy" placeholder="https://etsy.com/shop/tutienda">
+      </div>
+      <div class="form-group">
+        <label>Logo (opcional)</label>
+        <div id="logo-upload-area" style="border:2px dashed var(--border);border-radius:8px;padding:1.5rem;text-align:center;cursor:pointer;transition:all 0.2s;" onclick="document.getElementById('logo-file').click()">
+          <div id="logo-preview" style="display:none;margin-bottom:1rem;">
+            <img id="preview-logo" style="max-width:100%;max-height:150px;border-radius:8px;object-fit:contain;">
+          </div>
+          <div id="logo-placeholder">
+            <div style="font-size:1.8rem;margin-bottom:0.4rem;">🏷️</div>
+            <div style="font-size:0.85rem;color:var(--mid);font-weight:600;">Toca para subir tu logo</div>
+            <div style="font-size:0.72rem;color:#aaa;margin-top:0.2rem;">JPG, PNG — máx. 5MB</div>
+          </div>
+        </div>
+        <input type="file" id="logo-file" accept="image/*" style="display:none" onchange="handleLogoUpload(this)">
+        <input type="hidden" id="biz-logo" value="">
+        <div id="logo-upload-status" style="font-size:0.78rem;margin-top:0.5rem;"></div>
+      </div>
+      <div class="form-group">
+        <label>Foto de tu Trabajo *</label>
         <div id="photo-upload-area" style="border:2px dashed var(--border);border-radius:8px;padding:2rem;text-align:center;cursor:pointer;transition:all 0.2s;" onclick="document.getElementById('photo-file').click()">
           <div id="photo-preview" style="display:none;margin-bottom:1rem;">
             <img id="preview-img" style="max-width:100%;max-height:200px;border-radius:8px;object-fit:cover;">
@@ -377,6 +407,46 @@ async function handlePhotoUpload(input) {
   reader.readAsDataURL(file);
 }
 
+async function handleLogoUpload(input) {
+  const file = input.files[0];
+  if (!file) return;
+  if (file.size > 5 * 1024 * 1024) {
+    alert('El logo debe ser menor de 5MB');
+    return;
+  }
+  const status = document.getElementById('logo-upload-status');
+  const area = document.getElementById('logo-upload-area');
+  status.textContent = '⏳ Subiendo logo...';
+  status.style.color = 'var(--blue)';
+  area.style.borderColor = 'var(--blue)';
+  const reader = new FileReader();
+  reader.onload = async function(e) {
+    try {
+      const res = await fetch('/api/upload-photo', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ data: e.target.result })
+      });
+      const data = await res.json();
+      if (data.ok) {
+        document.getElementById('biz-logo').value = data.url;
+        document.getElementById('preview-logo').src = data.url;
+        document.getElementById('logo-preview').style.display = 'block';
+        document.getElementById('logo-placeholder').style.display = 'none';
+        status.textContent = '✅ Logo subido exitosamente';
+        status.style.color = 'green';
+      } else {
+        status.textContent = '❌ Error al subir. Intenta de nuevo.';
+        status.style.color = 'red';
+      }
+    } catch(e) {
+      status.textContent = '❌ Error de conexión. Intenta de nuevo.';
+      status.style.color = 'red';
+    }
+  };
+  reader.readAsDataURL(file);
+}
+
 async function submitNegocio() {
   const name = document.getElementById('biz-name').value.trim();
   const category = document.getElementById('biz-category').value;
@@ -390,6 +460,10 @@ async function submitNegocio() {
   const whatsapp = document.getElementById('biz-whatsapp').value.trim();
   const website = document.getElementById('biz-website').value.trim();
   const instagram = document.getElementById('biz-instagram').value.trim();
+  const facebook = document.getElementById('biz-facebook').value.trim();
+  const tiktok = document.getElementById('biz-tiktok').value.trim();
+  const etsy = document.getElementById('biz-etsy').value.trim();
+  const logo = document.getElementById('biz-logo').value.trim();
   const photo = document.getElementById('biz-photo').value.trim();
   const price = document.getElementById('biz-price').value;
   const agreed = document.getElementById('terms-agree').checked;
@@ -411,7 +485,7 @@ async function submitNegocio() {
     const res = await fetch('/api/pb-negocio-submit', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, category, location, city, zip, address, desc, fullDesc, email, whatsapp, website, instagram, photo, price })
+      body: JSON.stringify({ name, category, location, city, zip, address, desc, fullDesc, email, whatsapp, website, instagram, facebook, tiktok, etsy, logo, photo, price })
     });
     const data = await res.json();
     if (data.ok) {
@@ -429,6 +503,66 @@ async function submitNegocio() {
   }
 }
 </script>
+
+<!-- Nayeli Floating Chat - ayuda a llenar el formulario -->
+<div id="nayeli-float-btn" onclick="toggleNayeliFloat()" style="position:fixed;bottom:1.5rem;left:1.5rem;z-index:1000;cursor:pointer;display:flex;align-items:center;gap:0.6rem;background:#002D62;border-radius:50px;padding:0.4rem 1rem 0.4rem 0.4rem;box-shadow:0 4px 20px rgba(0,45,98,0.4);transition:transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
+  <img src="/img/nayeli.jpg" alt="Nayeli" style="width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,0.3);">
+  <span style="color:#fff;font-size:0.82rem;font-weight:700;white-space:nowrap;">¿Necesitas ayuda? 🇵🇷</span>
+</div>
+
+<div id="nayeli-float-chat" style="display:none;position:fixed;bottom:5.5rem;left:1.5rem;z-index:1000;width:340px;max-width:calc(100vw - 3rem);background:#fff;border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,0.15);overflow:hidden;border:1px solid #e5e5e0;">
+  <div style="background:#002D62;padding:0.9rem 1.2rem;display:flex;align-items:center;gap:0.8rem;">
+    <img src="/img/nayeli.jpg" alt="Nayeli" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
+    <div>
+      <div style="color:#fff;font-weight:700;font-size:0.88rem;">Nayeli 🇵🇷</div>
+      <div style="color:rgba(255,255,255,0.6);font-size:0.7rem;display:flex;align-items:center;gap:4px;"><span style="width:6px;height:6px;border-radius:50%;background:#4ade80;display:inline-block;"></span>En línea ahora</div>
+    </div>
+    <button onclick="toggleNayeliFloat()" style="margin-left:auto;background:none;border:none;color:rgba(255,255,255,0.7);font-size:1.2rem;cursor:pointer;">✕</button>
+  </div>
+  <div id="nayeli-float-messages" style="height:280px;overflow-y:auto;padding:1rem;display:flex;flex-direction:column;gap:0.8rem;background:#f9f9f6;">
+    <div style="background:#fff;border:1px solid #e5e5e0;border-radius:12px;border-bottom-left-radius:3px;padding:0.7rem 1rem;font-size:0.84rem;max-width:85%;align-self:flex-start;">¡Wepa! 🇵🇷 Soy Nayeli. Si tienes dudas sobre cómo llenar tu ficha de artesano, o cómo describir tu trabajo, pregúntame lo que sea.</div>
+  </div>
+  <div style="padding:0.7rem;border-top:1px solid #e5e5e0;display:flex;gap:0.5rem;background:#fff;">
+    <input id="nayeli-float-input" type="text" placeholder="Escribe aquí..." style="flex:1;border:1.5px solid #e5e5e0;border-radius:8px;padding:0.5rem 0.8rem;font-size:0.82rem;font-family:Inter,sans-serif;outline:none;" onkeydown="if(event.key==='Enter')sendNayeliFloat()">
+    <button onclick="sendNayeliFloat()" style="background:#CE1126;color:#fff;border:none;border-radius:8px;padding:0 1rem;cursor:pointer;font-size:1rem;">➤</button>
+  </div>
+</div>
+<script>
+function toggleNayeliFloat() {
+  var chat = document.getElementById('nayeli-float-chat');
+  chat.style.display = chat.style.display === 'none' ? 'block' : 'none';
+  if (chat.style.display === 'block') document.getElementById('nayeli-float-input').focus();
+}
+var nayeliFloatHistory = [];
+async function sendNayeliFloat() {
+  var input = document.getElementById('nayeli-float-input');
+  var messages = document.getElementById('nayeli-float-messages');
+  var text = input.value.trim();
+  if (!text) return;
+  var userDiv = document.createElement('div');
+  userDiv.style.cssText = 'background:#CE1126;color:#fff;border-radius:12px;border-bottom-right-radius:3px;padding:0.7rem 1rem;font-size:0.84rem;max-width:85%;align-self:flex-end;';
+  userDiv.textContent = text;
+  messages.appendChild(userDiv);
+  input.value = '';
+  messages.scrollTop = messages.scrollHeight;
+  var typing = document.createElement('div');
+  typing.style.cssText = 'background:#fff;border:1px solid #e5e5e0;border-radius:12px;border-bottom-left-radius:3px;padding:0.7rem 1rem;font-size:0.84rem;max-width:85%;align-self:flex-start;';
+  typing.textContent = '...';
+  messages.appendChild(typing);
+  try {
+    var res = await fetch('/api/nayeli', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:text,history:nayeliFloatHistory})});
+    var data = await res.json();
+    typing.remove();
+    var botDiv = document.createElement('div');
+    botDiv.style.cssText = 'background:#fff;border:1px solid #e5e5e0;border-radius:12px;border-bottom-left-radius:3px;padding:0.7rem 1rem;font-size:0.84rem;max-width:85%;align-self:flex-start;line-height:1.5;';
+    botDiv.textContent = data.reply || 'Dale, cuéntame más.';
+    messages.appendChild(botDiv);
+    nayeliFloatHistory.push({role:'user',content:text},{role:'assistant',content:data.reply||''});
+    messages.scrollTop = messages.scrollHeight;
+  } catch(e) { typing.remove(); }
+}
+</script>
+
 </body>
 </html>
 `;
