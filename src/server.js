@@ -2537,8 +2537,12 @@ app.post("/api/pb-negocio-submit", formLimiter, express.json(), async (req, res)
               <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold">WhatsApp</td><td style="padding:8px;border:1px solid #ddd">${whatsapp || 'N/A'}</td></tr>
               <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold">Website</td><td style="padding:8px;border:1px solid #ddd">${website || 'N/A'}</td></tr>
               <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold">Instagram</td><td style="padding:8px;border:1px solid #ddd">${instagram || 'N/A'}</td></tr>
+              <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold">Facebook</td><td style="padding:8px;border:1px solid #ddd">${facebook || 'N/A'}</td></tr>
+              <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold">TikTok</td><td style="padding:8px;border:1px solid #ddd">${tiktok || 'N/A'}</td></tr>
+              <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold">Etsy/Tienda</td><td style="padding:8px;border:1px solid #ddd">${etsy || 'N/A'}</td></tr>
               <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold">Precio</td><td style="padding:8px;border:1px solid #ddd">${price || 'N/A'}</td></tr>
               <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold">Descripción</td><td style="padding:8px;border:1px solid #ddd">${desc}</td></tr>
+              <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold">Logo</td><td style="padding:8px;border:1px solid #ddd">${logo ? '<img src="' + logo + '" style="max-width:120px;border-radius:8px;">' : 'N/A'}</td></tr>
               <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold">Foto</td><td style="padding:8px;border:1px solid #ddd"><img src="${photo}" style="max-width:200px;border-radius:8px;"></td></tr>
             </table>
             <div style="margin-top:2rem;display:flex;gap:1rem;">
