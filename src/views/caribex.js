@@ -221,7 +221,7 @@ nav{padding:0 1rem;}.nav-links{display:none;}
     <a href="#mainland">Mainland</a>
     <a href="/insights">Insights</a>
     <a href="/about">About</a>
-    <a href="#assistant" class="nav-cta">Plan My Trip →</a>
+    <a href="javascript:void(0)" onclick="toggleSunFloat()" class="nav-cta">Plan My Trip →</a>
   </div>
 </nav>
 
@@ -236,7 +236,7 @@ nav{padding:0 1rem;}.nav-links{display:none;}
       <h1>The Caribbean Is Not<br>One Destination.<br><em>It's a World.</em></h1>
       <p class="hero-sub">From the turquoise waters of the Bahamas to the colonial streets of Cartagena, the Mayan ruins of Tulum to the rainforests of Costa Rica — Caribex guides you through the real Caribbean.</p>
       <div class="hero-btns">
-        <a href="#assistant" class="btn-teal">🌴 Plan My Caribbean Trip</a>
+        <a href="javascript:void(0)" onclick="toggleSunFloat()" class="btn-teal">🌴 Plan My Caribbean Trip</a>
         <a href="#destinations" class="btn-outline-w">Explore Destinations →</a>
       </div>
       <div class="hero-stats">
@@ -353,46 +353,6 @@ nav{padding:0 1rem;}.nav-links{display:none;}
 </section>
 
 <!-- CARIBEX AI ASSISTANT -->
-<section class="assist-sec" id="assistant">
-  <div class="assist-inner">
-    <div>
-      <div class="assist-tag">Sun</div>
-      <h2 class="assist-title">Your Personal<br><em>Caribbean Guide</em></h2>
-      <p class="assist-sub">Talk to Sun — our expert assistant knows every corner of the Caribbean. Ask anything about destinations, culture, travel tips or the best time to visit.</p>
-      <ul class="assist-features">
-        <li>Personalized destination recommendations</li>
-        <li>Best time to visit each destination</li>
-        <li>Culture, food and local insights</li>
-        <li>Island vs mainland comparison</li>
-        <li>Budget and luxury travel guidance</li>
-        <li>Responds in English and Spanish</li>
-      </ul>
-
-    </div>
-    <div class="chat-box">
-      <div class="chat-header">
-        <div class="chat-avatar">🌴</div>
-        <div>
-          <div class="chat-name">Sun — Your Caribbean Expert</div>
-          <div class="chat-status">● Online · Knows every corner of the Caribbean</div>
-        </div>
-      </div>
-      <div class="chat-msgs" id="caribexMsgs">
-        <div class="c-bot">Hi! 🌴 I'm Sun, your personal Caribbean guide.<br><br>I can help you find the perfect Caribbean destination based on your travel style — beach, culture, adventure or luxury.<br><br>What kind of Caribbean experience are you looking for?</div>
-      </div>
-      <div class="chat-suggs">
-        <button class="chat-sugg" onclick="caribexReply(this)">Best beach destination</button>
-        <button class="chat-sugg" onclick="caribexReply(this)">Cultural experience</button>
-        <button class="chat-sugg" onclick="caribexReply(this)">Off the beaten path</button>
-        <button class="chat-sugg" onclick="caribexReply(this)">Family friendly</button>
-      </div>
-      <div class="chat-footer">
-        <input class="chat-input" id="caribexInput" placeholder="Ask me anything about the Caribbean..." onkeydown="if(event.key==='Enter')caribexSend()">
-        <button class="chat-send" onclick="caribexSend()">➤</button>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- BLOG -->
 <section class="blog-sec">
@@ -451,7 +411,7 @@ nav{padding:0 1rem;}.nav-links{display:none;}
         <h4>Destinations</h4>
         <a href="#destinations">Islands</a>
         <a href="#mainland">Mainland</a>
-        <a href="#assistant">Plan a Trip</a>
+        <a href="javascript:void(0)" onclick="toggleSunFloat()">Plan a Trip</a>
       </div>
       <div class="footer-col">
         <h4>Explore</h4>
