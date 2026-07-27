@@ -98,8 +98,7 @@ footer a:hover{color:#fff;}
 
   <div class="cta-section">
     <h2>Ready to Find Your Caribbean?</h2>
-    <p>Sun AI can help you think through what you're actually looking for — before you book anything.</p>
-    <a href="https://yourcaribbeanexpert.com/#assistant" class="cta-btn">🌴 Talk to Sun AI →</a>
+
   </div>
 
 </div>
