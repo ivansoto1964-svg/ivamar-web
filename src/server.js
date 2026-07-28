@@ -2145,12 +2145,12 @@ app.get("/api/pb-negocios/all", (req, res) => {
   }
 });
 
-app.get('/:year/:month/:slug', (req, res) => {
+app.get('/:year/:month/:slug', (req, res, next) => {
   const { year, month, slug } = req.params;
   if (/^\d{4}$/.test(year) && /^\d{2}$/.test(month)) {
     res.redirect(301, 'https://blog.masboricuaqueunmofongo.com/' + year + '/' + month + '/' + slug);
   } else {
-    res.status(404).send('Not found');
+    next();
   }
 });
 
