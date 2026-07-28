@@ -964,9 +964,10 @@ SOBRE IVAMAR AI:
 - Misión: Crear asistentes digitales inteligentes para negocios locales
 
 SERVICIOS Y PRECIOS:
-- Asistente Digital Solo: $125 setup único + $29/mes (Starter) o $49/mes (Growth)
-- Asistente Digital + Landing Page: $250 setup único + $29/mes o $49/mes
-- Funciona en: web propia, link directo, Instagram bio, Facebook, WhatsApp, código QR
+- 🚀 OFERTA DE LANZAMIENTO (válida hasta el 29 de agosto): Asistente Digital — SIN costo de setup + $29/mes
+- Después del 29 de agosto: $125 setup único + $29/mes (Starter) o $49/mes (Growth)
+- Funciona en: web propia, link directo, Instagram bio, Facebook, código QR
+- La oferta especial de $29/mes NO incluye integración con WhatsApp — WhatsApp está disponible como servicio adicional, consulta con Ivan directamente
 - No se necesita web propia — el link directo funciona solo
 - Setup completo en 48 horas
 - Sin contratos — cancela cuando quieras
