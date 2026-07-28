@@ -537,7 +537,7 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
     <!-- Feria de Artesanías -->
     <div id="directorio-grid" class="directorio-grid" style="margin-top:1.5rem;"></div>
     <div class="directorio-cta" style="margin-top:1.5rem;">
-      <a href="/pb/add-negocio" class="btn-outline-dark">🇵🇷 Añade tu negocio a la Red →</a>
+      <a href="/pb/add-negocio" class="btn-outline-dark">🎨 Regístrate Gratis →</a>
     </div>
   </div>
 </section>
@@ -589,7 +589,7 @@ function searchDirectorio() {
       div.style.cssText = 'text-align:center;padding:3rem;color:var(--mid);';
       div.innerHTML = '<div style="font-size:3rem;margin-bottom:1rem;">🇵🇷</div>' +
         '<div style="font-size:1rem;color:var(--dark);margin-bottom:1.5rem;line-height:1.6;">' + emptyMsg + '</div>' +
-        '<a href="/pb/add-negocio" style="display:inline-block;background:var(--blue);color:#fff;padding:0.8rem 1.5rem;border-radius:8px;text-decoration:none;font-weight:700;font-size:0.9rem;">🇵🇷 Únete como Socio Fundador 🇵🇷 →</a>';
+        '<a href="/pb/add-negocio" style="display:inline-block;background:var(--blue);color:#fff;padding:0.8rem 1.5rem;border-radius:8px;text-decoration:none;font-weight:700;font-size:0.9rem;">🎨 Regístrate Gratis →</a>';
       grid.appendChild(div);
     }
   } else {
@@ -630,7 +630,7 @@ async function loadDirectorio() {
       grid.innerHTML = '<div style="text-align:center;padding:3rem;color:var(--mid);">' +
         '<div style="font-size:3rem;margin-bottom:1rem;">🇵🇷</div>' +
         '<div style="font-size:1rem;color:var(--dark);margin-bottom:1.5rem;line-height:1.6;">' + emptyMsg + '</div>' +
-        '<a href="/pb/add-negocio" style="display:inline-block;background:var(--blue);color:#fff;padding:0.8rem 1.5rem;border-radius:8px;text-decoration:none;font-weight:700;font-size:0.9rem;">🇵🇷 Únete como Socio Fundador 🇵🇷 →</a>' +
+        '<a href="/pb/add-negocio" style="display:inline-block;background:var(--blue);color:#fff;padding:0.8rem 1.5rem;border-radius:8px;text-decoration:none;font-weight:700;font-size:0.9rem;">🎨 Regístrate Gratis →</a>' +
         '</div>';
       return;
     }
@@ -981,7 +981,7 @@ loadDirectorio();
     </div>
     <div class="pb-footer-col">
       <h4>Comunidad</h4>
-      <a href="/pb/add-negocio">Únete como Socio Fundador 🇵🇷</a>
+      <a href="/pb/add-negocio">Feria de Artesanías 🎨</a>
       <a href="mailto:connect@ivamarai.com">Contacto</a>
     </div>
     <div class="pb-footer-col">
