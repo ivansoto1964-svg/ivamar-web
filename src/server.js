@@ -2125,7 +2125,7 @@ app.get("/api/pb-negocios/all", (req, res) => {
     }
     const fs2 = require('fs');
     const pathLib = require('path');
-    const listingsDir = require('path').join(__dirname, '../data/pb-listings');
+    const listingsDir = '/data/pb-listings';
     const category = req.query.category;
     let allNegocios = [];
     if (fs2.existsSync(listingsDir)) {
@@ -2687,7 +2687,7 @@ app.get("/api/pb-negocios/all", (req, res) => {
   try {
     const fs2 = require('fs');
     const pathLib = require('path');
-    const listingsDir = require('path').join(__dirname, '../data/pb-listings');
+    const listingsDir = '/data/pb-listings';
     const category = req.query.category;
     let allNegocios = [];
 
