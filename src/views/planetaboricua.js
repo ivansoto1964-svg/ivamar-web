@@ -606,9 +606,12 @@ async function loadDirectorio() {
   grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:2rem;color:var(--mid);"><div style="font-size:2rem;margin-bottom:0.5rem;">⏳</div><div>Buscando negocios...</div></div>';
 
   try {
+    const urlParams = new URLSearchParams(window.location.search);
+    const previewKey = urlParams.get('preview');
+    const previewParam = previewKey ? 'preview=' + encodeURIComponent(previewKey) : '';
     const url = location
-      ? '/api/pb-negocios/' + location + (category ? '?category=' + category : '')
-      : '/api/pb-negocios/all' + (category ? '?category=' + category : '');
+      ? '/api/pb-negocios/' + location + '?' + [category ? 'category=' + category : '', previewParam].filter(Boolean).join('&')
+      : '/api/pb-negocios/all' + '?' + [category ? 'category=' + category : '', previewParam].filter(Boolean).join('&');
 
     const res = await fetch(url);
     const data = await res.json();
