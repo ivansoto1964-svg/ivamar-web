@@ -1455,7 +1455,7 @@ app.post("/api/assistant", aiLimiter, async (req, res) => {
 app.get("/start", (req, res) => {
   const body = `
   <div class="card">
-    <h1>Comienza tu página con Ivamar AI</h1>
+    <h1>Tu Mini Web con Asistente de IA</h1>
     <p style="margin-bottom:20px;">En menos de 48 horas tu negocio tiene su propia página con asistente de IA.</p>
     <form method="POST" action="/start">
       <label>Nombre del negocio</label>
@@ -1486,8 +1486,8 @@ app.get("/start", (req, res) => {
       <label>Logo (link)</label>
       <input type="text" name="logoUrl" placeholder="https://..." style="margin-bottom:16px;padding:10px;" />
       <div style="margin:24px 0;padding:16px;border:1px solid #ddd;border-radius:8px;">
-        <p><b>Setup: $125</b> · <b>Mensual: $49</b></p>
-        <p style="font-size:0.85rem;margin-top:4px;">Primer mes incluido gratis</p>
+        <p><b>🚀 Oferta de Lanzamiento — Sin costo de setup + $29/mes</b></p>
+        <p style="font-size:0.85rem;margin-top:4px;">Válida hasta el 29 de agosto. Tu propia mini web con logo y asistente de IA, lista en 48 horas.</p>
       </div>
       <div class="btns">
         <button class="btn primary" type="submit">Continuar</button>
@@ -1534,6 +1534,12 @@ app.post("/start", async (req, res) => {
         ? customers.data[0]
         : await stripe.customers.create({ email, name: ownerName || undefined });
 
+      const augustPromo = new Date() <= new Date('2026-08-29T23:59:59-04:00');
+      const monthlyAmount = augustPromo ? 2900 : 4900; // $29 promo hasta 29 agosto, luego $49
+      const priceDescription = augustPromo
+        ? "Oferta de Lanzamiento — Sin costo de setup, $29/mes"
+        : "Setup + Monthly subscription";
+
       const session = await stripe.checkout.sessions.create({
         mode: "subscription",
         payment_method_types: ["card"],
@@ -1544,9 +1550,9 @@ app.post("/start", async (req, res) => {
               currency: "usd",
               product_data: {
                 name: `Ivamar AI — ${businessName}`,
-                description: "Setup + Monthly subscription"
+                description: priceDescription
               },
-              unit_amount: 4900, // $49.00/mo
+              unit_amount: monthlyAmount,
               recurring: { interval: "month" }
             },
             quantity: 1
