@@ -2125,11 +2125,6 @@ app.get('/inicio', (req, res) => res.redirect(301, 'https://blog.masboricuaqueun
 // Feria de Artesanías API
 app.get("/api/pb-negocios/all", (req, res) => {
   try {
-    const FERIA_LAUNCH = new Date('2026-09-23T00:00:00-04:00');
-    const isPreview = req.query.preview === process.env.PB_PREVIEW_SECRET;
-    if (new Date() < FERIA_LAUNCH && !isPreview) {
-      return res.json({ negocios: [] });
-    }
     const fs2 = require('fs');
     const pathLib = require('path');
     const listingsDir = '/data/pb-listings';
