@@ -2185,6 +2185,7 @@ app.get("/sitemap.xml", async (req, res) => {
   res.send(`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${staticUrls}${postUrls}</urlset>`);
 });
 
+app.get("/artesanosPR", (req, res) => res.send(feriaArtesanosPB));
 app.get("/:slug", (req, res) => {
   try { decodeURIComponent(req.params.slug); } catch(e) { return res.status(400).send("Invalid URL"); }
   const slug = req.params.slug;
@@ -2471,7 +2472,6 @@ CÓMO RESPONDER:
 
 // Formulario público
 app.get("/pb/add-negocio", (req, res) => res.send(addNegocioPB));
-app.get("/feriaartesanos", (req, res) => res.send(feriaArtesanosPB));
 
 // Submit de nuevo negocio
 app.post("/api/pb-negocio-submit", formLimiter, express.json(), async (req, res) => {
