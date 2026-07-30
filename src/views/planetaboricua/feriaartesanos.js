@@ -11,7 +11,7 @@ module.exports = `<!DOCTYPE html>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
-body{font-family:'Inter',sans-serif;background:#f5f5f0;color:#111;overflow-x:hidden;}
+body{font-family:'Inter',sans-serif;background:#f5f5f0 url('/img/artesanos-pattern-bg.png');background-size:420px;color:#111;overflow-x:hidden;}
 :root{
   --red:#CE1126;
   --blue:#002D62;
@@ -31,9 +31,9 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
 .nav-back{font-size:0.8rem;color:var(--mid);text-decoration:none;font-weight:600;}
 .nav-back:hover{color:var(--red);}
 
-.hero-feria{background:linear-gradient(135deg,var(--blue),#001a4d);padding:3rem 2rem 2.5rem;text-align:center;}
-.hero-feria h1{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:800;color:#fff;margin-bottom:0.6rem;}
-.hero-feria p{color:rgba(255,255,255,0.75);font-size:0.95rem;max-width:600px;margin:0 auto;line-height:1.6;}
+.hero-feria{background:linear-gradient(rgba(0,20,50,0.55),rgba(0,20,50,0.7)),url('/img/artesanos-hero-bg.png');background-size:cover;background-position:center;padding:4rem 2rem 3rem;text-align:center;}
+.hero-feria h1{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:800;color:#fff;margin-bottom:0.6rem;text-shadow:0 2px 12px rgba(0,0,0,0.5);}
+.hero-feria p{color:rgba(255,255,255,0.9);font-size:0.95rem;max-width:600px;margin:0 auto;line-height:1.6;text-shadow:0 1px 6px rgba(0,0,0,0.5);}
 
 .directorio-wrap{max-width:1200px;margin:0 auto;padding:2rem;}
 
@@ -71,8 +71,9 @@ footer.pb-footer a{color:rgba(255,255,255,0.8);text-decoration:none;margin:0 0.5
 </nav>
 
 <section class="hero-feria">
-  <h1>Feria de Artesanías 🎨</h1>
-  <p>Descubre el trabajo de artesanos puertorriqueños — tallado en madera, joyería, cerámica, textiles y más. Un espacio gratuito para que su arte llegue a Puerto Rico y a toda la diáspora.</p>
+  <h1>Manos Boricuas, Arte que Cuenta Nuestra Historia 🇵🇷</h1>
+  <p>Cada pieza nace de unas manos, una historia y muchas horas de dedicación. Este es un espacio para reconocer, preservar y compartir el talento de nuestros artesanos puertorriqueños.</p>
+  <p style="margin-top:0.8rem;">Una exposición gratuita y permanente que conecta su arte con Puerto Rico y con nuestra diáspora alrededor del mundo.</p>
 </section>
 
 <div class="directorio-wrap">
