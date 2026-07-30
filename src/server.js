@@ -96,6 +96,7 @@ const fs = require("fs");
 const { getPlacePhoto } = require("./helpers/googlePhotos");
 const aecDemo = require("./views/autoridad-energia-criolla");
 const addNegocioPB = require("./views/planetaboricua/add-negocio");
+const feriaArtesanosPB = require("./views/planetaboricua/feriaartesanos");
 const pbNoticias = require("./views/planetaboricua/noticias");
 const pbBlogIndex = require("./views/pb-blog/index");
 const pbBlogPost = require("./views/pb-blog/post");
@@ -2470,6 +2471,7 @@ CÓMO RESPONDER:
 
 // Formulario público
 app.get("/pb/add-negocio", (req, res) => res.send(addNegocioPB));
+app.get("/feriaartesanos", (req, res) => res.send(feriaArtesanosPB));
 
 // Submit de nuevo negocio
 app.post("/api/pb-negocio-submit", formLimiter, express.json(), async (req, res) => {
