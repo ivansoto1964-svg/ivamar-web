@@ -196,11 +196,16 @@ async function loadDirectorio() {
       return 0;
     });
 
+    var locationLabels = {
+      'adjuntas':'Adjuntas, PR','aguada':'Aguada, PR','aguadilla':'Aguadilla, PR','aguas-buenas':'Aguas Buenas, PR','aibonito':'Aibonito, PR','anasco':'Añasco, PR','arecibo':'Arecibo, PR','arroyo':'Arroyo, PR','barceloneta':'Barceloneta, PR','barranquitas':'Barranquitas, PR','bayamon':'Bayamón, PR','cabo-rojo':'Cabo Rojo, PR','caguas':'Caguas, PR','camuy':'Camuy, PR','canovanas':'Canóvanas, PR','carolina':'Carolina, PR','catano':'Cataño, PR','cayey':'Cayey, PR','ceiba':'Ceiba, PR','ciales':'Ciales, PR','cidra':'Cidra, PR','coamo':'Coamo, PR','comerio':'Comerío, PR','corozal':'Corozal, PR','culebra':'Culebra, PR','dorado':'Dorado, PR','fajardo':'Fajardo, PR','florida':'Florida, PR','guanica':'Guánica, PR','guayama':'Guayama, PR','guayanilla':'Guayanilla, PR','guaynabo':'Guaynabo, PR','gurabo':'Gurabo, PR','hatillo':'Hatillo, PR','hormigueros':'Hormigueros, PR','humacao':'Humacao, PR','isabela':'Isabela, PR','jayuya':'Jayuya, PR','juana-diaz':'Juana Díaz, PR','juncos':'Juncos, PR','lajas':'Lajas, PR','lares':'Lares, PR','las-marias':'Las Marías, PR','las-piedras':'Las Piedras, PR','loiza':'Loíza, PR','luquillo':'Luquillo, PR','manati':'Manatí, PR','maricao':'Maricao, PR','maunabo':'Maunabo, PR','mayaguez':'Mayagüez, PR','moca':'Moca, PR','morovis':'Morovis, PR','naguabo':'Naguabo, PR','naranjito':'Naranjito, PR','orocovis':'Orocovis, PR','patillas':'Patillas, PR','penuelas':'Peñuelas, PR','ponce':'Ponce, PR','quebradillas':'Quebradillas, PR','rincon':'Rincón, PR','rio-grande':'Río Grande, PR','sabana-grande':'Sabana Grande, PR','salinas':'Salinas, PR','san-german':'San Germán, PR','san-juan':'San Juan, PR','san-lorenzo':'San Lorenzo, PR','san-sebastian':'San Sebastián, PR','santa-isabel':'Santa Isabel, PR','toa-alta':'Toa Alta, PR','toa-baja':'Toa Baja, PR','trujillo-alto':'Trujillo Alto, PR','utuado':'Utuado, PR','vega-alta':'Vega Alta, PR','vega-baja':'Vega Baja, PR','vieques':'Vieques, PR','villalba':'Villalba, PR','yabucoa':'Yabucoa, PR','yauco':'Yauco, PR',
+      'alabama':'Alabama, USA','alaska':'Alaska, USA','arizona':'Arizona, USA','arkansas':'Arkansas, USA','california':'California, USA','colorado':'Colorado, USA','connecticut':'Connecticut, USA','delaware':'Delaware, USA','florida-us':'Florida, USA','georgia':'Georgia, USA','hawaii':'Hawaii, USA','idaho':'Idaho, USA','illinois':'Illinois, USA','indiana':'Indiana, USA','iowa':'Iowa, USA','kansas':'Kansas, USA','kentucky':'Kentucky, USA','louisiana':'Louisiana, USA','maine':'Maine, USA','maryland':'Maryland, USA','massachusetts':'Massachusetts, USA','michigan':'Michigan, USA','minnesota':'Minnesota, USA','mississippi':'Mississippi, USA','missouri':'Missouri, USA','montana':'Montana, USA','nebraska':'Nebraska, USA','nevada':'Nevada, USA','new-hampshire':'New Hampshire, USA','new-jersey':'New Jersey, USA','new-mexico':'New Mexico, USA','nueva-york':'Nueva York, USA','north-carolina':'North Carolina, USA','north-dakota':'North Dakota, USA','ohio':'Ohio, USA','oklahoma':'Oklahoma, USA','oregon':'Oregon, USA','pennsylvania':'Pennsylvania, USA','rhode-island':'Rhode Island, USA','south-carolina':'South Carolina, USA','south-dakota':'South Dakota, USA','tennessee':'Tennessee, USA','texas':'Texas, USA','utah':'Utah, USA','vermont':'Vermont, USA','virginia':'Virginia, USA','washington':'Washington, USA','west-virginia':'West Virginia, USA','wisconsin':'Wisconsin, USA','wyoming':'Wyoming, USA','washington-dc':'Washington D.C., USA'
+    };
+
     var byCity = {};
     negocios.forEach(function(n) {
-      var city = n.city || 'Puerto Rico';
-      if (!byCity[city]) byCity[city] = [];
-      byCity[city].push(n);
+      var cityLabel = locationLabels[n.location] || n.city || 'Puerto Rico';
+      if (!byCity[cityLabel]) byCity[cityLabel] = [];
+      byCity[cityLabel].push(n);
     });
 
     var html = '';
