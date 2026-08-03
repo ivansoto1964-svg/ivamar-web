@@ -141,6 +141,15 @@ footer p{color:rgba(255,255,255,0.3);font-size:0.75rem;margin-top:0.5rem;}
     <span>📖 <strong>${wordCount}</strong> words</span>
   </div>
   <div class="post-body">${post.content}</div>
+
+  <a href="https://www.tkqlhce.com/click-101846540-15533825" target="_top" style="text-decoration:none;">
+    <div style="background:linear-gradient(135deg,#00B4D8,#0077B6);border-radius:12px;padding:2.5rem 2rem;text-align:center;margin:2rem 0;">
+      <div style="font-size:2rem;margin-bottom:0.6rem;">🚢</div>
+      <div style="color:#fff;font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;margin-bottom:0.6rem;line-height:1.3;">¿Prefieres ver todo el Caribe en un solo viaje?</div>
+      <div style="color:rgba(255,255,255,0.85);font-size:0.9rem;margin-bottom:1.4rem;max-width:360px;margin-left:auto;margin-right:auto;line-height:1.5;">Descubre varias islas sin deshacer maletas — compara cruceros por el Caribe y reserva con las mejores tarifas.</div>
+      <div style="display:inline-block;background:#fff;color:#0077B6;padding:0.85rem 2rem;border-radius:8px;font-weight:700;font-size:0.92rem;">Ver Cruceros por el Caribe →</div>
+    </div>
+  </a>
   <div style="margin:1.5rem 0;padding:1rem 1.5rem;background:#f0f7ff;border-left:3px solid var(--teal);border-radius:0 6px 6px 0;font-size:0.78rem;color:var(--mid);line-height:1.6;">
     <strong style="color:var(--dark);">Disclosure:</strong> Some links in this article are affiliate links. This means that if you make a booking through them, we may receive a small commission at no additional cost to you. This helps us keep Caribex and Sun AI running.
   </div>
