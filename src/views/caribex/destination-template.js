@@ -290,6 +290,17 @@ nav{padding:0 1rem;}
   </div>
 </section>
 
+<section class="cruise-banner" style="padding:2rem;text-align:center;">
+  <a href="https://www.tkqlhce.com/click-101846540-15533825" target="_top" style="text-decoration:none;">
+    <div style="background:linear-gradient(135deg,#00B4D8,#0077B6);border-radius:12px;padding:2.5rem 2rem;text-align:center;max-width:500px;margin:0 auto;">
+      <div style="font-size:2rem;margin-bottom:0.6rem;">🚢</div>
+      <div style="color:#fff;font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;margin-bottom:0.6rem;line-height:1.3;">Prefer seeing the whole Caribbean in one trip?</div>
+      <div style="color:rgba(255,255,255,0.85);font-size:0.9rem;margin-bottom:1.4rem;max-width:360px;margin-left:auto;margin-right:auto;line-height:1.5;">Discover multiple islands without unpacking — compare Caribbean cruises and book the best rates.</div>
+      <div style="display:inline-block;background:#fff;color:#0077B6;padding:0.85rem 2rem;border-radius:8px;font-weight:700;font-size:0.92rem;">See Caribbean Cruises →</div>
+    </div>
+  </a>
+</section>
+
 <section class="directory-sec" style="display:none;">
   <div class="directory-inner">
     <div class="sec-tag">Local Directory</div>
