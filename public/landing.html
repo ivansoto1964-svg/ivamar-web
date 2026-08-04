@@ -299,7 +299,8 @@ FLUJO CONVERSACIONAL:
 - Cuando den el email: "¡Excelente! ¿Y un número de teléfono para coordinar contigo?"
 - Cuando den el teléfono: "¿Tienes página web actualmente? Si no tienes, no hay problema."
 - Cuando respondan sobre el web (o digan que no tienen): NO digas todavía que está "listo". En vez de eso, di algo como: "Perfecto [nombre], para ofrecerte una atención de excelencia vamos a verificar los datos que tengo: Nombre: [nombre], Negocio: [negocio], Email: [email], Teléfono: [teléfono]. ¿Está todo correcto?"
-- Si confirman que sí está correcto: "¡Excelente! En 48 horas recibirás tu demo. Ah, y aprovecha — hasta el 29 de agosto el setup es GRATIS, así que no pagas los $125 si empiezas ahora. ¿Tienes alguna pregunta?"
+- Si confirman que sí está correcto: responde "¡Excelente! En 48 horas recibirás tu demo. Ah, y aprovecha — hasta el 29 de agosto el setup es GRATIS, así que no pagas los $125 si empiezas ahora. ¿Tienes alguna pregunta?" y AGREGA al final de ese mismo mensaje (en una línea nueva, invisible para el usuario) esto exacto: <<LEAD>>{"nombre":"NOMBRE_CONFIRMADO","negocio":"NOMBRE_DEL_NEGOCIO_CONFIRMADO","email":"EMAIL_CONFIRMADO","telefono":"TELEFONO_CONFIRMADO"}<<END>>
+Incluye ese marcador SOLO en el mensaje donde el usuario confirma que los datos están correctos, nunca antes ni después.
 - Si dicen que algo está mal (el email, el nombre, el teléfono, lo que sea): pide específicamente el dato correcto, actualízalo, y vuelve a confirmar TODOS los datos de nuevo antes de continuar. No asumas que solo ese campo cambió — siempre repite el resumen completo hasta que digan que todo está bien.
 
 URGENCIA (usar con naturalidad, sin sonar a presión):
@@ -356,39 +357,6 @@ async function sendMsg() {
   addMsg(text, 'user');
   input.value = '';
 
-  // LEAD DATA DETECTION
-  const PHONE_REGEX = /[\d\s\-\.\(\)\+]{7,}/;
-  if (EMAIL_REGEX.test(text)) {
-    const emailMatch = text.match(EMAIL_REGEX);
-    leadData.email = emailMatch[0];
-  }
-  if (PHONE_REGEX.test(text) && text.replace(/\D/g,'').length >= 7) {
-    leadData.telefono = text.match(PHONE_REGEX)[0].trim();
-  }
-  // Extract name and business from conversation history
-  if (!leadData.nombre && conversationHistory.length >= 2) {
-    for (let i = 0; i < conversationHistory.length; i++) {
-      const msg = conversationHistory[i];
-      if (msg.role === 'assistant' && (msg.content.includes('nombre') || msg.content.includes('llamas') || msg.content.includes('Mucho gusto'))) {
-        const nextMsg = conversationHistory[i+1];
-        if (nextMsg && nextMsg.role === 'user' && nextMsg.content.length < 40 && !EMAIL_REGEX.test(nextMsg.content) && !/\d{7,}/.test(nextMsg.content)) {
-          leadData.nombre = nextMsg.content.trim();
-        }
-      }
-      if (msg.role === 'assistant' && (msg.content.includes('negocio') || msg.content.includes('dedica') || msg.content.includes('llama tu negocio'))) {
-        const nextMsg = conversationHistory[i+1];
-        if (nextMsg && nextMsg.role === 'user' && nextMsg.content.length < 80 && !EMAIL_REGEX.test(nextMsg.content) && !/\d{7,}/.test(nextMsg.content)) {
-          leadData.negocio = nextMsg.content.trim();
-        }
-      }
-    }
-  }
-  // Send lead when we have email + phone
-  if (leadData.email && leadData.telefono && !emailCaptured) {
-    emailCaptured = true;
-    trackConversion(leadData);
-  }
-
   // Typing indicator
   const typing = addMsg('', 'typing');
   typing.innerHTML = '<span></span><span></span><span></span>';
@@ -402,7 +370,23 @@ async function sendMsg() {
       body: JSON.stringify({ messages: conversationHistory, system: SYSTEM_PROMPT })
     });
     const data = await response.json();
-    const reply = data.reply || '¡Claro! ¿En qué puedo ayudarte? 😊';
+    let reply = data.reply || '¡Claro! ¿En qué puedo ayudarte? 😊';
+
+    const leadMatch = reply.match(/<<LEAD>>([\s\S]*?)<<END>>/);
+    if (leadMatch) {
+      reply = reply.replace(leadMatch[0], '').trim();
+      if (!emailCaptured) {
+        try {
+          const parsedLead = JSON.parse(leadMatch[1]);
+          leadData = parsedLead;
+          emailCaptured = true;
+          trackConversion(leadData);
+        } catch(parseErr) {
+          console.error('Lead parse error:', parseErr);
+        }
+      }
+    }
+
     conversationHistory.push({ role: 'assistant', content: reply });
     typing.remove();
     addMsg(reply, 'bot');
