@@ -814,7 +814,7 @@ app.post("/admin/auth", (req, res) => {
     res.cookie("adminToken", token, { httpOnly: true, maxAge: 86400000 * 7 });
     return res.json({ ok: true, redirect: "/admin/dashboard" });
   }
-  const businessFile = path.join(__dirname, "..", "data", "businesses", `${user}.json`);
+  const businessFile = path.join("/data", "businesses", `${user}.json`);
   if (fs.existsSync(businessFile)) {
     const clientPass = process.env[`CLIENT_PASS_${user.toUpperCase().replace(/-/g, "_")}`] || user + "2025";
     if (pass === clientPass) {
@@ -855,7 +855,7 @@ app.get("/admin/edit/:slug", requireAdmin, (req, res) => {
   if (req.adminSession.role === "client" && req.adminSession.slug !== slug) {
     return res.redirect(`/admin/edit/${req.adminSession.slug}`);
   }
-  const bizFile = path.join(__dirname, "..", "data", "businesses", `${slug}.json`);
+  const bizFile = path.join("/data", "businesses", `${slug}.json`);
   let biz = {};
   if (fs.existsSync(bizFile)) {
     try { biz = JSON.parse(fs.readFileSync(bizFile, "utf8")); } catch (e) {}
@@ -870,7 +870,7 @@ app.post("/admin/save", requireAdmin, (req, res) => {
     return res.json({ ok: false, error: "no autorizado" });
   }
   try {
-    const bizFile = path.join(__dirname, "..", "data", "businesses", `${data.slug}.json`);
+    const bizFile = path.join("/data", "businesses", `${data.slug}.json`);
     fs.writeFileSync(bizFile, JSON.stringify(data, null, 2), "utf8");
     res.json({ ok: true });
   } catch (e) {
@@ -881,7 +881,7 @@ app.post("/admin/save", requireAdmin, (req, res) => {
 app.post("/admin/delete/:slug", requireAdmin, (req, res) => {
   if (req.adminSession.role !== "admin") return res.json({ ok: false, error: "no autorizado" });
   try {
-    const bizFile = path.join(__dirname, "..", "data", "businesses", `${req.params.slug}.json`);
+    const bizFile = path.join("/data", "businesses", `${req.params.slug}.json`);
     if (fs.existsSync(bizFile)) fs.unlinkSync(bizFile);
     res.json({ ok: true });
   } catch (e) {
@@ -1428,7 +1428,7 @@ app.post("/api/assistant", aiLimiter, async (req, res) => {
   if (businessSlug === "demo") {
     systemPrompt = "Eres El Bori, el asistente boricua de El Rincon Boricua, un food truck en Puerto Rico. MENU: Mofongo con Camarones $14.99, Pernil Plate $13.99, Chuletas Can-Can $15.99, Alcapurrias de Pollo $8.99, Tostones con Mojo $5.99, Empanadillas x4 $7.99, Coquito Shake $5.99, Limonada Tamarindo $3.99, Malta Caribena $2.99, Tembleque $4.99, Arroz con Leche $3.99. UBICACION: Caguas, Puerto Rico. HORARIO: Mar-Jue 4pm-10pm, Vie 4pm-11pm, Sab-Dom 12pm-11pm, Lun Cerrado. DELIVERY: Si, $3 adicional. PICKUP: Gratis. PERSONALIDAD: Boricua autentico de Puerto Rico. Usa: brutal, riquísimo, espectacular, a otro nivel, wepa, duro, al punto. Para tiempo: ahora, en pal de minutos. NUNCA uses: ahorita, que lo que, expresiones mexicanas o dominicanas. Responde en el idioma del cliente. Maximo 3 oraciones.";
   } else if (businessSlug) {
-    const bizFile = path.join(__dirname, "..", "data", "businesses", `${businessSlug}.json`);
+    const bizFile = path.join("/data", "businesses", `${businessSlug}.json`);
     if (fs.existsSync(bizFile)) {
       try {
         const biz = JSON.parse(fs.readFileSync(bizFile, "utf8"));
@@ -1548,7 +1548,7 @@ app.post("/start", async (req, res) => {
     sides: [], drinks: parseItems(drinks), desserts: []
   };
 
-  const bizFile = path.join(__dirname, "..", "data", "businesses", `${slug}.json`);
+  const bizFile = path.join("/data", "businesses", `${slug}.json`);
   fs.writeFileSync(bizFile, JSON.stringify(businessData, null, 2), "utf8");
 
   const siteUrl = `${req.protocol}://${req.get("host")}`;
@@ -2222,7 +2222,7 @@ app.get("/:slug", (req, res) => {
     return res.status(404).send('Not found');
   }
 
-  const businessFile = path.join(__dirname, "..", "data", "businesses", `${slug}.json`);
+  const businessFile = path.join("/data", "businesses", `${slug}.json`);
   const clientsFilePath = path.join(__dirname, "..", "data", "clients.json");
 
   if (fs.existsSync(businessFile)) {
