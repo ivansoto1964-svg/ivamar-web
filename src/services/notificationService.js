@@ -3,6 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 const { sendEmail, buildLeadEmailHtml } = require('./providers/emailProvider');
+const { sendWhatsApp, buildLeadWhatsAppText } = require('./providers/whatsappProvider');
 
 const LOG_DIR = '/data/notifications-log';
 
@@ -36,11 +37,13 @@ async function sendLeadNotification(lead, business) {
     results.push(result);
   }
 
-  // WhatsApp provider will be plugged in here in Etapa 3 — no changes needed
-  // to this function's callers when that happens.
   if (preferences.includes('whatsapp') && business.ownerWhatsApp) {
-    // placeholder until Etapa 3
-    logNotification(businessId, { channel: 'whatsapp', status: 'skipped', error: 'WhatsApp provider not yet implemented' });
+    const result = await sendWhatsApp({
+      to: business.ownerWhatsApp,
+      text: buildLeadWhatsAppText(lead, business)
+    });
+    logNotification(businessId, { channel: 'whatsapp', status: result.ok ? 'sent' : 'failed', error: result.error || null });
+    results.push(result);
   }
 
   return results;
