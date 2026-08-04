@@ -103,6 +103,7 @@ const pbBlogPost = require("./views/pb-blog/post");
 const Stripe = require("stripe");
 const stripe = process.env.STRIPE_SECRET_KEY ? Stripe(process.env.STRIPE_SECRET_KEY) : null;
 const { searchPlacesByText } = require("./helpers/googlePlaces");
+const { sendLeadNotification } = require("./services/notificationService");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 // Agreements directory for legal acceptance logs
@@ -1418,7 +1419,10 @@ RULES:
 app.post("/api/assistant", aiLimiter, async (req, res) => {
   const message = (req.body?.message || "").toString();
   const businessSlug = req.body?.businessSlug || null;
+  const history = Array.isArray(req.body?.history) ? req.body.history.slice(-20) : [];
+  const photo = (req.body?.photo || "").toString();
 
+  let businessObj = null;
   let systemPrompt = "Eres IvA, el asistente virtual de Ivamar AI. Ayudas a negocios en Puerto Rico y USA con paginas web con IA, asistentes digitales y menus digitales. Responde en el idioma del cliente. Se amigable y conciso. Servicios: paginas web con asistente de IA, menus digitales para restaurantes y food trucks, asistentes digitales para cualquier negocio. Setup: $125. Mensual desde $49/mes. Primer mes gratis.";
 
   if (businessSlug === "demo") {
@@ -1428,7 +1432,13 @@ app.post("/api/assistant", aiLimiter, async (req, res) => {
     if (fs.existsSync(bizFile)) {
       try {
         const biz = JSON.parse(fs.readFileSync(bizFile, "utf8"));
-        systemPrompt = `Eres ${biz.assistant?.name || "IvA"}, un asistente de IA para ${biz.name}. Tipo: ${biz.headline || "Negocio local"}. Descripcion: ${biz.description || ""}. Direccion: ${biz.address || ""}. Horario: ${biz.hours || ""}. Estado: ${biz.status || "abierto"}. WhatsApp: ${biz.links?.whatsapp || ""}. Menu: ${(biz.menu || []).map(i => i.name + (i.price ? " $" + i.price : "")).join(", ")}. Bebidas: ${(biz.drinks || []).map(i => i.name + (i.price ? " $" + i.price : "")).join(", ")}. Tono: ${biz.assistant?.tone || "amistoso y profesional"}. Responde en el idioma del cliente. Maximo 3 oraciones. Cuando el cliente quiera ordenar, guialo a WhatsApp.`;
+        businessObj = biz;
+        systemPrompt = `Eres ${biz.assistant?.name || "IvA"}, un asistente de IA para ${biz.name}. Tipo: ${biz.headline || "Negocio local"}. Descripcion: ${biz.description || ""}. Direccion: ${biz.address || ""}. Horario: ${biz.hours || ""}. Estado: ${biz.status || "abierto"}. WhatsApp: ${biz.links?.whatsapp || ""}. Menu: ${(biz.menu || []).map(i => i.name + (i.price ? " $" + i.price : "")).join(", ")}. Bebidas: ${(biz.drinks || []).map(i => i.name + (i.price ? " $" + i.price : "")).join(", ")}. Tono: ${biz.assistant?.tone || "amistoso y profesional"}. Responde en el idioma del cliente. Maximo 3 oraciones. Cuando el cliente quiera ordenar, guialo a WhatsApp.
+
+CAPTURA DE LEADS - MUY IMPORTANTE:
+Durante la conversación, trata de obtener naturalmente el nombre y telefono de la persona (y su interes/necesidad). NO lo pidas todo de golpe, ve preguntando en el flujo natural de la conversacion.
+Una vez tengas AL MENOS nombre y telefono, agrega al FINAL de tu respuesta (en una linea nueva, invisible para el usuario) esto exacto: <<LEAD>>{"customerName":"NOMBRE","phone":"TELEFONO","email":"EMAIL_SI_LO_DIO","service":"QUE_NECESITA","summary":"resumen breve de 1 oracion"}<<END>>
+Incluye ese marcador SOLO la primera vez que completes nombre+telefono, nunca lo repitas en mensajes posteriores de la misma conversacion.`;
       } catch (e) {
         console.error("Error loading business:", e.message);
       }
@@ -1440,9 +1450,25 @@ app.post("/api/assistant", aiLimiter, async (req, res) => {
       model: "claude-haiku-4-5-20251001",
       max_tokens: 300,
       system: systemPrompt,
-      messages: [{ role: "user", content: message }]
+      messages: [...history, { role: "user", content: message }]
     });
-    return res.json({ reply: response.content[0].text });
+    let replyText = response.content[0].text;
+
+    const leadMatch = replyText.match(/<<LEAD>>([\s\S]*?)<<END>>/);
+    if (leadMatch) {
+      replyText = replyText.replace(leadMatch[0], "").trim();
+      if (businessObj) {
+        try {
+          const lead = JSON.parse(leadMatch[1]);
+          if (photo) lead.photo = photo;
+          sendLeadNotification(lead, businessObj).catch(e => console.error("Notification error:", e.message));
+        } catch (parseErr) {
+          console.error("Lead parse error:", parseErr.message);
+        }
+      }
+    }
+
+    return res.json({ reply: replyText });
   } catch (e) {
     console.error("Claude API error:", e.status, e.message);
     return res.json({ reply: "Disculpa, tuve un problema tecnico. Por favor escribeme directamente por WhatsApp." });
@@ -2294,6 +2320,8 @@ app.get("/:slug", (req, res) => {
     </div>
     <div class="iva-chat-input-area">
       <input class="iva-chat-input" id="ivaInput" placeholder="Escribe tu pregunta..." onkeydown="if(event.key==='Enter')ivaSend('main')" />
+      <input type="file" id="ivaPhotoMain" accept="image/*" style="display:none" onchange="ivaUploadPhoto(this,'main')">
+      <button type="button" onclick="document.getElementById('ivaPhotoMain').click()" style="background:none;border:none;font-size:1.3rem;cursor:pointer;padding:0 0.5rem;">📷</button>
       <button class="iva-chat-send" onclick="ivaSend('main')">➤</button>
     </div>
   </div>
@@ -2319,12 +2347,34 @@ app.get("/:slug", (req, res) => {
   </div>
   <div class="iva-float-input-area">
     <input class="iva-float-input" id="ivaFloatInput" placeholder="Escribe aquí..." onkeydown="if(event.key==='Enter')ivaSend('float')" />
+    <input type="file" id="ivaPhotoFloat" accept="image/*" style="display:none" onchange="ivaUploadPhoto(this,'float')">
+    <button type="button" onclick="document.getElementById('ivaPhotoFloat').click()" style="background:none;border:none;font-size:1.3rem;cursor:pointer;padding:0 0.5rem;">📷</button>
     <button class="iva-float-send" onclick="ivaSend('float')">➤</button>
   </div>
 </div>
 
 <script>
 const IVA_SLUG = "${slug}";
+var ivaHistory = [];
+var ivaPendingPhoto = "";
+async function ivaUploadPhoto(input, mode){
+  const file = input.files[0];
+  if (!file) return;
+  if (file.size > 5 * 1024 * 1024) { alert('La foto debe ser menor de 5MB'); return; }
+  const reader = new FileReader();
+  reader.onload = async function(e){
+    try{
+      const res = await fetch('/api/upload-photo', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({data:e.target.result})});
+      const data = await res.json();
+      if (data.ok) {
+        ivaPendingPhoto = data.url;
+        const mId=mode==='float'?'ivaFloatMsgs':'ivaMsgs';
+        ivaAddMsg(mId, '<img src="'+data.url+'" style="max-width:180px;border-radius:8px;display:block;">📎 Foto adjunta — se enviará con tu mensaje', 'user');
+      }
+    }catch(e){ alert('No se pudo subir la foto, intenta de nuevo.'); }
+  };
+  reader.readAsDataURL(file);
+}
 function ivaToggleFloat(){document.getElementById('ivaFloatPanel').classList.toggle('open');}
 function ivaAddMsg(cId,text,type){const c=document.getElementById(cId);const now=new Date().toLocaleTimeString('es',{hour:'2-digit',minute:'2-digit'});const d=document.createElement('div');d.className='iva-msg '+type;d.innerHTML='<div class="iva-msg-bubble">'+text+'</div><div class="iva-msg-time">'+now+'</div>';c.appendChild(d);c.scrollTop=c.scrollHeight;}
 function ivaShowTyping(cId){const c=document.getElementById(cId);const d=document.createElement('div');d.className='iva-msg bot';d.id='ivaT_'+cId;d.innerHTML='<div class="iva-typing"><span></span><span></span><span></span></div>';c.appendChild(d);c.scrollTop=c.scrollHeight;}
@@ -2338,9 +2388,12 @@ async function ivaSend(mode){
   const sugg=document.getElementById('ivaSuggestions');if(sugg)sugg.style.display='none';
   ivaAddMsg(mId,text,'user');ivaShowTyping(mId);
   try{
-    const r=await fetch('/api/assistant',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:text,businessSlug:IVA_SLUG})});
+    const r=await fetch('/api/assistant',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:text,businessSlug:IVA_SLUG,history:ivaHistory,photo:ivaPendingPhoto})});
     const data=await r.json();
     ivaHideTyping(mId);ivaAddMsg(mId,data.reply||'¿En qué más te ayudo?','bot');
+    ivaHistory.push({role:'user',content:text},{role:'assistant',content:data.reply||''});
+    if(ivaHistory.length>20)ivaHistory=ivaHistory.slice(-20);
+    ivaPendingPhoto = "";
   }catch(e){ivaHideTyping(mId);ivaAddMsg(mId,'Disculpa, tuve un problema. Intenta de nuevo.','bot');}
 }
 function ivaSendSugg(el){document.getElementById('ivaInput').value=el.textContent;ivaSend('main');}
