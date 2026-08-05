@@ -22,10 +22,31 @@ function logNotification(businessId, entry) {
 
 // business = the parsed business JSON (data/businesses/{slug}.json)
 // lead = { customerName, phone, email, service, summary }
+function wasRecentlySent(businessId, phone) {
+  try {
+    const logFile = path.join(LOG_DIR, `${businessId}.json`);
+    if (!fs.existsSync(logFile)) return false;
+    const log = JSON.parse(fs.readFileSync(logFile, 'utf8'));
+    const fiveMinAgo = Date.now() - 5 * 60 * 1000;
+    return log.some(entry =>
+      entry.phone === phone &&
+      entry.status === 'sent' &&
+      new Date(entry.date).getTime() > fiveMinAgo
+    );
+  } catch (e) {
+    return false;
+  }
+}
+
 async function sendLeadNotification(lead, business) {
   const businessId = business.slug || business.name || 'unknown';
   const preferences = business.notificationPreferences || ['email'];
   const results = [];
+
+  if (wasRecentlySent(businessId, lead.phone)) {
+    console.log(`Duplicate lead skipped for ${businessId} / ${lead.phone}`);
+    return [{ ok: true, channel: 'none', skipped: true, reason: 'duplicate' }];
+  }
 
   if (preferences.includes('email') && business.ownerEmail) {
     const result = await sendEmail({
@@ -33,7 +54,7 @@ async function sendLeadNotification(lead, business) {
       subject: `📲 Nuevo Lead — ${business.name || businessId}`,
       html: buildLeadEmailHtml(lead, business)
     });
-    logNotification(businessId, { channel: 'email', status: result.ok ? 'sent' : 'failed', error: result.error || null });
+    logNotification(businessId, { channel: 'email', status: result.ok ? 'sent' : 'failed', error: result.error || null, phone: lead.phone });
     results.push(result);
   }
 
@@ -42,7 +63,7 @@ async function sendLeadNotification(lead, business) {
       to: business.ownerWhatsApp,
       text: buildLeadWhatsAppText(lead, business)
     });
-    logNotification(businessId, { channel: 'whatsapp', status: result.ok ? 'sent' : 'failed', error: result.error || null });
+    logNotification(businessId, { channel: 'whatsapp', status: result.ok ? 'sent' : 'failed', error: result.error || null, phone: lead.phone });
     results.push(result);
   }
 
