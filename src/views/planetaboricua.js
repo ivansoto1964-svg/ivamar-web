@@ -300,8 +300,14 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
 
 <!-- ADSENSE -->
 <div class="ad-strip">
-  <div style="min-height:250px;"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-8301223085122981" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
-  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+  <a href="https://ivamarai.com/landing.html" target="_blank" style="text-decoration:none;display:block;max-width:600px;margin:0 auto;">
+    <div style="background:linear-gradient(135deg,#0077B6,#00B4D8);border-radius:12px;padding:2rem;text-align:center;">
+      <div style="font-size:2rem;margin-bottom:0.5rem;">🤖</div>
+      <div style="color:#fff;font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:700;margin-bottom:0.5rem;">Tu Negocio, Atendido 24/7</div>
+      <div style="color:rgba(255,255,255,0.9);font-size:0.88rem;margin-bottom:1.2rem;max-width:400px;margin-left:auto;margin-right:auto;line-height:1.5;">Un asistente de IA bilingüe que responde a tus clientes y te envía cada lead directo a tu WhatsApp — al instante. Desde $29/mes.</div>
+      <div style="display:inline-block;background:#fff;color:#0077B6;padding:0.75rem 1.8rem;border-radius:8px;font-weight:700;font-size:0.85rem;">Conoce a IvA →</div>
+    </div>
+  </a>
 </div>
 
 
@@ -509,8 +515,14 @@ loadDirectorio();
 
 <!-- ADSENSE MID -->
 <div class="ad-strip">
-  <div style="min-height:250px;"><ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-8301223085122981" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
-  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script></div>
+  <a href="https://ivamarai.com/landing.html" target="_blank" style="text-decoration:none;display:block;max-width:600px;margin:0 auto;">
+    <div style="background:linear-gradient(135deg,#0077B6,#00B4D8);border-radius:12px;padding:2rem;text-align:center;">
+      <div style="font-size:2rem;margin-bottom:0.5rem;">🤖</div>
+      <div style="color:#fff;font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:700;margin-bottom:0.5rem;">Tu Negocio, Atendido 24/7</div>
+      <div style="color:rgba(255,255,255,0.9);font-size:0.88rem;margin-bottom:1.2rem;max-width:400px;margin-left:auto;margin-right:auto;line-height:1.5;">Un asistente de IA bilingüe que responde a tus clientes y te envía cada lead directo a tu WhatsApp — al instante. Desde $29/mes.</div>
+      <div style="display:inline-block;background:#fff;color:#0077B6;padding:0.75rem 1.8rem;border-radius:8px;font-weight:700;font-size:0.85rem;">Conoce a IvA →</div>
+    </div>
+  </a>
 </div>
 
 
