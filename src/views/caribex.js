@@ -406,6 +406,17 @@ nav{padding:0 1rem;}.nav-links{display:none;}
 </section>
 
 <!-- FOOTER -->
+<div style="max-width:1200px;margin:0 auto;padding:2rem;text-align:center;">
+  <a href="https://ivamarai.com/landing.html" target="_blank" style="text-decoration:none;display:block;max-width:600px;margin:0 auto;">
+    <div style="background:linear-gradient(135deg,#0077B6,#00B4D8);border-radius:12px;padding:2rem;text-align:center;">
+      <div style="font-size:2rem;margin-bottom:0.5rem;">🤖</div>
+      <div style="color:#fff;font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:700;margin-bottom:0.5rem;">Your Business, Answered 24/7</div>
+      <div style="color:rgba(255,255,255,0.9);font-size:0.88rem;margin-bottom:1.2rem;max-width:400px;margin-left:auto;margin-right:auto;line-height:1.5;">A bilingual AI assistant that talks to your customers and sends every lead straight to your WhatsApp — instantly. From $29/month.</div>
+      <div style="display:inline-block;background:#fff;color:#0077B6;padding:0.75rem 1.8rem;border-radius:8px;font-weight:700;font-size:0.85rem;">Meet IvA →</div>
+    </div>
+  </a>
+</div>
+
 <footer>
   <div class="footer-inner">
     <div class="footer-top">
