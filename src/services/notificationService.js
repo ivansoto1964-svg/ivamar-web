@@ -48,9 +48,12 @@ async function sendLeadNotification(lead, business) {
     return [{ ok: true, channel: 'none', skipped: true, reason: 'duplicate' }];
   }
 
-  if (preferences.includes('email') && business.ownerEmail) {
+  const emailDestination = business.notifyLeadDirectly ? lead.email : business.ownerEmail;
+  const whatsappDestination = business.notifyLeadDirectly ? lead.phone : business.ownerWhatsApp;
+
+  if (preferences.includes('email') && emailDestination) {
     const result = await sendEmail({
-      to: business.ownerEmail,
+      to: emailDestination,
       subject: `📲 Nuevo Lead — ${business.name || businessId}`,
       html: buildLeadEmailHtml(lead, business)
     });
@@ -58,9 +61,9 @@ async function sendLeadNotification(lead, business) {
     results.push(result);
   }
 
-  if (preferences.includes('whatsapp') && business.ownerWhatsApp) {
+  if (preferences.includes('whatsapp') && whatsappDestination) {
     const result = await sendWhatsApp({
-      to: business.ownerWhatsApp,
+      to: whatsappDestination,
       text: buildLeadWhatsAppText(lead, business)
     });
     logNotification(businessId, { channel: 'whatsapp', status: result.ok ? 'sent' : 'failed', error: result.error || null, phone: lead.phone });
