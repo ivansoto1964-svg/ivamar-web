@@ -2288,7 +2288,7 @@ body{font-family:'Inter',sans-serif;background:#F4F7F9;color:#1A2B3C;min-height:
     </div>
   </div>
   <div class="chat-msgs" id="healthMsgs">
-    <div class="chat-msg bot">${assistantWelcome}</div>
+    <div class="chat-msg bot" id="healthTyping">Escribiendo...</div>
   </div>
   <div class="chat-input-row">
     <input type="text" id="healthInput" placeholder="Escribe tu mensaje..." onkeydown="if(event.key==='Enter')healthSend()">
@@ -2299,6 +2299,20 @@ body{font-family:'Inter',sans-serif;background:#F4F7F9;color:#1A2B3C;min-height:
 <script>
 const HEALTH_SLUG = "${data.slug}";
 var healthHistory = [];
+
+async function healthInit(){
+  const msgs = document.getElementById('healthMsgs');
+  try{
+    const r = await fetch('/api/assistant',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:'(inicio de conversacion)',businessSlug:HEALTH_SLUG,history:[]})});
+    const data = await r.json();
+    document.getElementById('healthTyping').textContent = data.reply || 'Hola! En que te ayudo hoy?';
+    healthHistory.push({role:'user',content:'(inicio de conversacion)'},{role:'assistant',content:data.reply||''});
+  }catch(e){
+    document.getElementById('healthTyping').textContent = 'Hola! En que te ayudo hoy?';
+  }
+}
+healthInit();
+
 async function healthSend(){
   const input = document.getElementById('healthInput');
   const msgs = document.getElementById('healthMsgs');
