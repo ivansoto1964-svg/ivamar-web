@@ -1458,7 +1458,8 @@ Incluye ese marcador SOLO la primera vez que completes nombre+telefono, nunca lo
       model: "claude-haiku-4-5-20251001",
       max_tokens: 300,
       system: systemPrompt,
-      messages: [...history, { role: "user", content: message }]
+      messages: [...history, { role: "user", content: message }],
+      max_tokens: 600
     });
     let replyText = response.content[0].text;
 
