@@ -1433,6 +1433,13 @@ app.post("/api/assistant", aiLimiter, async (req, res) => {
       try {
         const biz = JSON.parse(fs.readFileSync(bizFile, "utf8"));
         businessObj = biz;
+        if (biz.customSystemPrompt) {
+          systemPrompt = biz.customSystemPrompt + `
+
+CAPTURA DE LEADS - MUY IMPORTANTE:
+Una vez tengas AL MENOS nombre y telefono, agrega al FINAL de tu respuesta (en una linea nueva, invisible para el usuario) esto exacto: <<LEAD>>{"customerName":"NOMBRE","phone":"TELEFONO","email":"EMAIL_SI_LO_DIO","service":"QUE_NECESITA","summary":"resumen breve de 1 oracion"}<<END>>
+Incluye ese marcador SOLO la primera vez que completes nombre+telefono, nunca lo repitas en mensajes posteriores de la misma conversacion.`;
+        } else {
         systemPrompt = `Eres ${biz.assistant?.name || "IvA"}, un asistente de IA para ${biz.name}. Tipo: ${biz.headline || "Negocio local"}. Descripcion: ${biz.description || ""}. Direccion: ${biz.address || ""}. Horario: ${biz.hours || ""}. Estado: ${biz.status || "abierto"}. WhatsApp: ${biz.links?.whatsapp || ""}. Menu: ${(biz.menu || []).map(i => i.name + (i.price ? " $" + i.price : "")).join(", ")}. Bebidas: ${(biz.drinks || []).map(i => i.name + (i.price ? " $" + i.price : "")).join(", ")}. Tono: ${biz.assistant?.tone || "amistoso y profesional"}. Responde en el idioma del cliente. Maximo 3 oraciones. Cuando el cliente quiera ordenar, guialo a WhatsApp.
 
 CAPTURA DE LEADS - MUY IMPORTANTE:
@@ -2227,6 +2234,102 @@ app.get("/:slug", (req, res) => {
 
   if (fs.existsSync(businessFile)) {
     const data = JSON.parse(fs.readFileSync(businessFile, "utf-8"));
+
+    if (data.industry === "health") {
+      const assistantName = data.assistant?.name || "IvA";
+      const assistantWelcome = data.assistant?.welcome || "¡Hola! ¿En qué te ayudo hoy?";
+      return res.send(`<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>${data.name} — Asistente Virtual</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',sans-serif;background:#F4F7F9;color:#1A2B3C;min-height:100vh;}
+.health-nav{background:#fff;padding:1rem 2rem;border-bottom:1px solid #E2E8ED;display:flex;align-items:center;gap:0.8rem;}
+.health-nav-logo{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:#0E7C7B;}
+.health-hero{max-width:700px;margin:0 auto;padding:3rem 1.5rem 1.5rem;text-align:center;}
+.health-hero h1{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,4vw,2.2rem);color:#0E7C7B;margin-bottom:0.6rem;}
+.health-hero p{color:#5A6B78;font-size:0.95rem;line-height:1.6;max-width:480px;margin:0 auto;}
+.health-badge{display:inline-flex;align-items:center;gap:0.4rem;background:#E6F4F3;color:#0E7C7B;padding:0.4rem 1rem;border-radius:20px;font-size:0.78rem;font-weight:600;margin-bottom:1rem;}
+.chat-wrap{max-width:560px;margin:1.5rem auto 3rem;background:#fff;border-radius:16px;box-shadow:0 4px 24px rgba(14,124,123,0.08);overflow:hidden;border:1px solid #E2E8ED;}
+.chat-top{background:#0E7C7B;padding:1rem 1.4rem;display:flex;align-items:center;gap:0.7rem;}
+.chat-top-name{color:#fff;font-weight:700;font-size:0.95rem;}
+.chat-top-status{color:rgba(255,255,255,0.75);font-size:0.72rem;display:flex;align-items:center;gap:4px;}
+.chat-msgs{height:380px;overflow-y:auto;padding:1.2rem;display:flex;flex-direction:column;gap:0.8rem;background:#FAFBFC;}
+.chat-msg{max-width:85%;padding:0.7rem 1rem;border-radius:12px;font-size:0.86rem;line-height:1.5;}
+.chat-msg.bot{background:#fff;border:1px solid #E2E8ED;align-self:flex-start;border-bottom-left-radius:3px;}
+.chat-msg.user{background:#0E7C7B;color:#fff;align-self:flex-end;border-bottom-right-radius:3px;}
+.chat-input-row{padding:0.8rem;border-top:1px solid #E2E8ED;display:flex;gap:0.5rem;background:#fff;}
+.chat-input-row input{flex:1;border:1.5px solid #E2E8ED;border-radius:8px;padding:0.7rem 1rem;font-size:0.85rem;font-family:inherit;outline:none;}
+.chat-input-row input:focus{border-color:#0E7C7B;}
+.chat-input-row button{background:#0E7C7B;color:#fff;border:none;border-radius:8px;padding:0 1.2rem;cursor:pointer;font-size:1rem;}
+.health-footer{text-align:center;padding:2rem;color:#8896A2;font-size:0.75rem;}
+</style>
+</head>
+<body>
+<nav class="health-nav">
+  <div class="health-nav-logo">${data.name}</div>
+</nav>
+<div class="health-hero">
+  <div class="health-badge">🔒 Confidencial y Seguro</div>
+  <h1>${data.name}</h1>
+  <p>Habla con nuestro asistente virtual para conocer más sobre nuestros servicios. Disponible las 24 horas, en español e inglés.</p>
+</div>
+<div class="chat-wrap">
+  <div class="chat-top">
+    <div>
+      <div class="chat-top-name">${assistantName}</div>
+      <div class="chat-top-status"><span style="width:6px;height:6px;border-radius:50%;background:#4ade80;display:inline-block;"></span>En línea ahora</div>
+    </div>
+  </div>
+  <div class="chat-msgs" id="healthMsgs">
+    <div class="chat-msg bot">${assistantWelcome}</div>
+  </div>
+  <div class="chat-input-row">
+    <input type="text" id="healthInput" placeholder="Escribe tu mensaje..." onkeydown="if(event.key==='Enter')healthSend()">
+    <button onclick="healthSend()">➤</button>
+  </div>
+</div>
+<div class="health-footer">Este asistente ofrece información educativa general y no sustituye una consulta médica profesional.</div>
+<script>
+const HEALTH_SLUG = "${data.slug}";
+var healthHistory = [];
+async function healthSend(){
+  const input = document.getElementById('healthInput');
+  const msgs = document.getElementById('healthMsgs');
+  const text = input.value.trim();
+  if(!text) return;
+  const userDiv = document.createElement('div');
+  userDiv.className = 'chat-msg user';
+  userDiv.textContent = text;
+  msgs.appendChild(userDiv);
+  input.value = '';
+  msgs.scrollTop = msgs.scrollHeight;
+  try{
+    const r = await fetch('/api/assistant',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:text,businessSlug:HEALTH_SLUG,history:healthHistory})});
+    const data = await r.json();
+    const botDiv = document.createElement('div');
+    botDiv.className = 'chat-msg bot';
+    botDiv.textContent = data.reply || '¿En qué más te puedo ayudar?';
+    msgs.appendChild(botDiv);
+    healthHistory.push({role:'user',content:text},{role:'assistant',content:data.reply||''});
+    if(healthHistory.length>20) healthHistory = healthHistory.slice(-20);
+    msgs.scrollTop = msgs.scrollHeight;
+  }catch(e){
+    const errDiv = document.createElement('div');
+    errDiv.className = 'chat-msg bot';
+    errDiv.textContent = 'Disculpa, tuve un problema. Intenta de nuevo.';
+    msgs.appendChild(errDiv);
+  }
+}
+</script>
+</body>
+</html>`);
+    }
+
     const theme = data.theme || "light";
     let pageStyle = "";
     if (theme === "dark") pageStyle = "background:#111;color:#f5f5f5;";
