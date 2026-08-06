@@ -1446,6 +1446,7 @@ CAPTURA DE LEADS - MUY IMPORTANTE:
 Durante la conversación, trata de obtener naturalmente el nombre y telefono de la persona (y su interes/necesidad). NO lo pidas todo de golpe, ve preguntando en el flujo natural de la conversacion.
 Una vez tengas AL MENOS nombre y telefono, agrega al FINAL de tu respuesta (en una linea nueva, invisible para el usuario) esto exacto: <<LEAD>>{"customerName":"NOMBRE","phone":"TELEFONO","email":"EMAIL_SI_LO_DIO","service":"QUE_NECESITA","summary":"resumen breve de 1 oracion"}<<END>>
 Incluye ese marcador SOLO la primera vez que completes nombre+telefono, nunca lo repitas en mensajes posteriores de la misma conversacion.`;
+        }
       } catch (e) {
         console.error("Error loading business:", e.message);
       }
