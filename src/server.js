@@ -106,6 +106,45 @@ const { searchPlacesByText } = require("./helpers/googlePlaces");
 const { sendLeadNotification } = require("./services/notificationService");
 const path = require("path");
 const cookieParser = require("cookie-parser");
+
+// Feria de Artesanías launches at midnight in Puerto Rico (UTC-4).
+const FERIA_LAUNCH_AT = new Date('2026-09-23T04:00:00.000Z');
+
+function feriaIsLive() {
+  return new Date() >= FERIA_LAUNCH_AT;
+}
+
+function feriaCanPreview(req) {
+  const configuredKey = process.env.FERIA_PREVIEW_KEY;
+  return Boolean(configuredKey && req.query.preview === configuredKey);
+}
+
+function feriaListingsVisible(req) {
+  return feriaIsLive() || feriaCanPreview(req);
+}
+
+function publicPBListing(listing) {
+  return {
+    id: listing.id,
+    name: listing.name,
+    category: listing.category,
+    location: listing.location,
+    city: listing.city,
+    desc: listing.desc,
+    website: listing.website,
+    instagram: listing.instagram,
+    facebook: listing.facebook,
+    tiktok: listing.tiktok,
+    etsy: listing.etsy,
+    whatsapp: listing.whatsapp,
+    logo: listing.logo,
+    photo: listing.photo,
+    price: listing.price,
+    status: listing.status,
+    approvedAt: listing.approvedAt,
+    destacado: Boolean(listing.destacado)
+  };
+}
 // Agreements directory for legal acceptance logs
 const agreementsDir = path.join(__dirname, "..", "data", "agreements");
 if (!fs.existsSync(agreementsDir)) {
@@ -2157,31 +2196,6 @@ app.use("/api/caribex-sync", caribexSync);
 app.get('/planeta-boricua-blog', (req, res) => res.redirect(301, 'https://blog.masboricuaqueunmofongo.com'));
 app.get('/planeta-boricua-blog/:path', (req, res) => res.redirect(301, 'https://blog.masboricuaqueunmofongo.com'));
 app.get('/inicio', (req, res) => res.redirect(301, 'https://blog.masboricuaqueunmofongo.com'));
-// Feria de Artesanías API
-app.get("/api/pb-negocios/all", (req, res) => {
-  try {
-    const fs2 = require('fs');
-    const pathLib = require('path');
-    const listingsDir = '/data/pb-listings';
-    const category = req.query.category;
-    let allNegocios = [];
-    if (fs2.existsSync(listingsDir)) {
-      fs2.readdirSync(listingsDir).forEach(file => {
-        if (file.endsWith('.json') && file !== 'pending.json') {
-          try {
-            const negocios = JSON.parse(fs2.readFileSync(pathLib.join(listingsDir, file), 'utf8'));
-            negocios.forEach(n => allNegocios.push(n));
-          } catch(e) {}
-        }
-      });
-    }
-    if (category) allNegocios = allNegocios.filter(n => n.category === category);
-    return res.json({ negocios: allNegocios });
-  } catch(e) {
-    return res.json({ negocios: [] });
-  }
-});
-
 app.get('/:year/:month/:slug', (req, res, next) => {
   const { year, month, slug } = req.params;
   if (/^\d{4}$/.test(year) && /^\d{2}$/.test(month)) {
@@ -2215,7 +2229,22 @@ app.get("/sitemap.xml", async (req, res) => {
   res.send(`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${staticUrls}${postUrls}</urlset>`);
 });
 
-app.get("/artesanosPR", (req, res) => res.send(feriaArtesanosPB));
+app.get("/feria-artesanos", (req, res) => {
+  if (!feriaListingsVisible(req)) {
+    res.set('Cache-Control', 'no-store');
+    return res.status(404).send('<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Feria de Artesanías — Próximamente</title></head><body style="font-family:Arial,sans-serif;text-align:center;padding:4rem 1rem;background:#f5f5f0;color:#111"><div style="max-width:620px;margin:auto"><div style="font-size:3rem">🇵🇷</div><h1>Feria de Artesanías</h1><p>La exposición abre el 23 de septiembre de 2026. Mientras tanto, los artesanos pueden solicitar su espacio gratuito.</p><a href="/pb/add-negocio" style="display:inline-block;background:#002D62;color:#fff;padding:.9rem 1.4rem;border-radius:8px;text-decoration:none;font-weight:700">Registrar mi artesanía</a></div></body></html>');
+  }
+  if (feriaCanPreview(req)) {
+    res.set('Cache-Control', 'private, no-store');
+    res.set('X-Robots-Tag', 'noindex, nofollow');
+  }
+  res.send(feriaArtesanosPB);
+});
+
+app.get("/artesanosPR", (req, res) => {
+  const preview = feriaCanPreview(req) ? '?preview=' + encodeURIComponent(req.query.preview) : '';
+  res.redirect(302, '/feria-artesanos' + preview);
+});
 app.get("/:slug", (req, res) => {
   try { decodeURIComponent(req.params.slug); } catch(e) { return res.status(400).send("Invalid URL"); }
   const slug = req.params.slug;
@@ -2763,12 +2792,14 @@ app.get("/admin/pb-approve/:token", async (req, res) => {
     }
     negocio.status = 'approved';
     negocio.approvedAt = new Date().toISOString();
-    negocio.badge = 'boricua-verificado';
+    negocio.badge = 'participante-feria';
+    pending = pending.filter(n => n.approveToken !== req.params.token);
+    delete negocio.approveToken;
+    delete negocio.rejectToken;
     approved.push(negocio);
     fs2.writeFileSync(approvedFile, JSON.stringify(approved, null, 2));
 
     // Remove from pending
-    pending = pending.filter(n => n.approveToken !== req.params.token);
     fs2.writeFileSync(pendingFile, JSON.stringify(pending, null, 2));
 
     // Email confirmation to business
@@ -2786,8 +2817,8 @@ app.get("/admin/pb-approve/:token", async (req, res) => {
             </div>
             <div style="padding:2rem;border:1px solid #eee;">
               <p style="font-size:1rem;color:#333;">Hola, <strong>${negocio.name}</strong>!</p>
-              <p style="color:#555;line-height:1.6;margin-top:1rem;">Tu negocio ha sido verificado y ya aparece en el <strong>Directorio Boricua</strong> de Planeta Boricua con el badge de <strong>🏅 Boricua Verificado</strong>.</p>
-              <p style="color:#555;line-height:1.6;margin-top:1rem;">Miles de boricuas en USA y Puerto Rico podrán encontrarte ahora mismo en <a href="https://masboricuaqueunmofongo.com/#directorio" style="color:#002D62;font-weight:700;">masboricuaqueunmofongo.com</a></p>
+              <p style="color:#555;line-height:1.6;margin-top:1rem;">Tu solicitud fue revisada y quedaste registrado como <strong>Participante de la Feria de Artesanías</strong> de Planeta Boricua.</p>
+              <p style="color:#555;line-height:1.6;margin-top:1rem;">Tu ficha se publicará oficialmente el <strong>23 de septiembre de 2026</strong> en <a href="https://masboricuaqueunmofongo.com/feria-artesanos" style="color:#002D62;font-weight:700;">la Feria de Artesanías</a>.</p>
               <p style="color:#555;line-height:1.6;margin-top:1rem;">¿Necesitas actualizar información? Contáctanos en <strong>connect@ivamarai.com</strong></p>
               <p style="margin-top:2rem;font-size:0.85rem;color:#999;">© 2026 Planeta Boricua · Un proyecto de Ivamar AI LLC</p>
             </div>
@@ -2801,7 +2832,7 @@ app.get("/admin/pb-approve/:token", async (req, res) => {
     res.send(`
       <html><body style="font-family:sans-serif;text-align:center;padding:3rem;">
         <h2 style="color:#16a34a;">✅ ¡Negocio aprobado!</h2>
-        <p><strong>${negocio.name}</strong> ya aparece en el directorio de Planeta Boricua.</p>
+        <p><strong>${negocio.name}</strong> quedó programado para la Feria de Artesanías.</p>
         <p>Se envió email de confirmación a ${negocio.email}</p>
       </body></html>
     `);
@@ -2859,6 +2890,11 @@ app.get("/admin/pb-reject/:token", async (req, res) => {
 
 // API para obtener TODOS los negocios aprobados
 app.get("/api/pb-negocios/all", (req, res) => {
+  if (!feriaListingsVisible(req)) {
+    res.set('Cache-Control', 'no-store');
+    return res.json({ negocios: [], launchPending: true, launchAt: FERIA_LAUNCH_AT.toISOString() });
+  }
+  if (feriaCanPreview(req)) res.set('Cache-Control', 'private, no-store');
   try {
     const fs2 = require('fs');
     const pathLib = require('path');
@@ -2878,7 +2914,7 @@ app.get("/api/pb-negocios/all", (req, res) => {
     }
 
     if (category) allNegocios = allNegocios.filter(n => n.category === category);
-    return res.json({ negocios: allNegocios });
+    return res.json({ negocios: allNegocios.map(publicPBListing) });
   } catch(e) {
     return res.json({ negocios: [] });
   }
@@ -2886,15 +2922,25 @@ app.get("/api/pb-negocios/all", (req, res) => {
 
 // API para obtener negocios aprobados por ubicación
 app.get("/api/pb-negocios/:location", (req, res) => {
+  if (!feriaListingsVisible(req)) {
+    res.set('Cache-Control', 'no-store');
+    return res.json({ negocios: [], launchPending: true, launchAt: FERIA_LAUNCH_AT.toISOString() });
+  }
+  if (feriaCanPreview(req)) res.set('Cache-Control', 'private, no-store');
   try {
     const fs2 = require('fs');
     const pathLib = require('path');
-    const approvedFile = pathLib.join('/data/pb-listings', req.params.location + '.json');
-    if (!fs2.existsSync(approvedFile)) return res.json({ negocios: [] });
-    const negocios = JSON.parse(fs2.readFileSync(approvedFile, 'utf8'));
+    const locations = req.params.location === 'florida-us'
+      ? ['florida-us', 'florida']
+      : [req.params.location];
+    const negocios = locations.flatMap(location => {
+      const approvedFile = pathLib.join('/data/pb-listings', location + '.json');
+      if (!fs2.existsSync(approvedFile)) return [];
+      return JSON.parse(fs2.readFileSync(approvedFile, 'utf8'));
+    });
     const category = req.query.category;
     const filtered = category ? negocios.filter(n => n.category === category) : negocios;
-    return res.json({ negocios: filtered });
+    return res.json({ negocios: filtered.map(publicPBListing) });
   } catch(e) {
     return res.json({ negocios: [] });
   }
