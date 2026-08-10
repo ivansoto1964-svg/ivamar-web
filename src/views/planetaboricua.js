@@ -224,6 +224,15 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
   .pb-footer-main{grid-template-columns:1fr 1fr;padding:2rem 1rem;}
   .pb-footer-bottom{padding:1rem;}
 }
+.tienda-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.5rem;}
+.tienda-card{background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden;text-decoration:none;display:block;box-shadow:0 2px 8px rgba(0,0,0,.05);transition:transform .2s,box-shadow .2s;}
+.tienda-card:hover{transform:translateY(-4px);box-shadow:0 10px 24px rgba(0,0,0,.12);}
+.tienda-card img{width:100%;height:150px;display:block;object-fit:cover;}
+.tienda-card-body{padding:.9rem 1rem;}
+.tienda-card-title{font-size:.86rem;font-weight:800;color:var(--dark);}
+.tienda-card-link{font-size:.7rem;color:var(--red);font-weight:700;margin-top:.3rem;}
+@media(max-width:900px){.tienda-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:520px){.tienda-grid{grid-template-columns:1fr;}.tienda-card img{height:190px;}}
 
 /* NOTICIAS EN VIVO */
 .noticias-vivo{background:var(--light);padding:2rem 0;border-top:1px solid var(--border);}
@@ -538,51 +547,42 @@ async function loadDirectorio() {
     <p style="font-size:0.88rem;color:var(--mid);line-height:1.7;margin:1rem 0 1.5rem;">
       Productos boricuas con orgullo 🇵🇷 — disponibles en Amazon con entrega rápida en USA y Puerto Rico.
     </p>
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.5rem;">
-      <a href="https://www.amazon.com/shop/planetaboricua/list/1W420Q1BXBM69?tag=ivansoto0f-20" target="_blank" style="text-decoration:none;background:var(--light);border:1px solid var(--border);border-radius:8px;padding:1.2rem;text-align:center;transition:all 0.2s;display:block;">
-        <div style="font-size:2rem;margin-bottom:0.5rem;">👕</div>
-        <div style="font-size:0.82rem;font-weight:700;color:var(--dark);">Camisetas de PR</div>
-        <div style="font-size:0.7rem;color:var(--mid);margin-top:0.2rem;">226 productos</div>
+    <div class="tienda-grid">
+      <a href="https://www.amazon.com/shop/planetaboricua/list/1W420Q1BXBM69?tag=ivansoto0f-20" target="_blank" rel="noopener sponsored" class="tienda-card">
+        <img src="https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?auto=format&fit=crop&w=600&q=80" alt="Camisetas de Puerto Rico" loading="lazy">
+        <div class="tienda-card-body"><div class="tienda-card-title">👕 Camisetas de PR</div><div class="tienda-card-link">Ver selección →</div></div>
       </a>
-      <a href="https://www.amazon.com/shop/planetaboricua/list/2CXBDURUV9G46?tag=ivansoto0f-20" target="_blank" style="text-decoration:none;background:var(--light);border:1px solid var(--border);border-radius:8px;padding:1.2rem;text-align:center;transition:all 0.2s;display:block;">
-        <div style="font-size:2rem;margin-bottom:0.5rem;">🧢</div>
-        <div style="font-size:0.82rem;font-weight:700;color:var(--dark);">Gorras de PR</div>
-        <div style="font-size:0.7rem;color:var(--mid);margin-top:0.2rem;">121 productos</div>
+      <a href="https://www.amazon.com/shop/planetaboricua/list/2CXBDURUV9G46?tag=ivansoto0f-20" target="_blank" rel="noopener sponsored" class="tienda-card">
+        <img src="https://images.unsplash.com/photo-1521369909029-2afed882baee?auto=format&fit=crop&w=600&q=80" alt="Gorras" loading="lazy">
+        <div class="tienda-card-body"><div class="tienda-card-title">🧢 Gorras de PR</div><div class="tienda-card-link">Ver selección →</div></div>
       </a>
-      <a href="https://www.amazon.com/shop/planetaboricua/list/1A33AK8DLTYDO?tag=ivansoto0f-20" target="_blank" style="text-decoration:none;background:var(--light);border:1px solid var(--border);border-radius:8px;padding:1.2rem;text-align:center;transition:all 0.2s;display:block;">
-        <div style="font-size:2rem;margin-bottom:0.5rem;">☕</div>
-        <div style="font-size:0.82rem;font-weight:700;color:var(--dark);">Tazas y Termos</div>
-        <div style="font-size:0.7rem;color:var(--mid);margin-top:0.2rem;">63 productos</div>
+      <a href="https://www.amazon.com/shop/planetaboricua/list/1A33AK8DLTYDO?tag=ivansoto0f-20" target="_blank" rel="noopener sponsored" class="tienda-card">
+        <img src="https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?auto=format&fit=crop&w=600&q=80" alt="Tazas y termos" loading="lazy">
+        <div class="tienda-card-body"><div class="tienda-card-title">☕ Tazas y Termos</div><div class="tienda-card-link">Ver selección →</div></div>
       </a>
-      <a href="https://www.amazon.com/shop/planetaboricua/list/GVPOWIBQMA3B?tag=ivansoto0f-20" target="_blank" style="text-decoration:none;background:var(--light);border:1px solid var(--border);border-radius:8px;padding:1.2rem;text-align:center;transition:all 0.2s;display:block;">
-        <div style="font-size:2rem;margin-bottom:0.5rem;">🌿</div>
-        <div style="font-size:0.82rem;font-weight:700;color:var(--dark);">Cocina Criolla</div>
-        <div style="font-size:0.7rem;color:var(--mid);margin-top:0.2rem;">33 productos</div>
+      <a href="https://www.amazon.com/shop/planetaboricua/list/GVPOWIBQMA3B?tag=ivansoto0f-20" target="_blank" rel="noopener sponsored" class="tienda-card">
+        <img src="https://images.unsplash.com/photo-1556911220-bff31c812dba?auto=format&fit=crop&w=600&q=80" alt="Cocina criolla" loading="lazy">
+        <div class="tienda-card-body"><div class="tienda-card-title">🌿 Cocina Criolla</div><div class="tienda-card-link">Ver selección →</div></div>
       </a>
-      <a href="https://www.amazon.com/shop/planetaboricua/list/2W7GCH9PJ1D9B?tag=ivansoto0f-20" target="_blank" style="text-decoration:none;background:var(--light);border:1px solid var(--border);border-radius:8px;padding:1.2rem;text-align:center;transition:all 0.2s;display:block;">
-        <div style="font-size:2rem;margin-bottom:0.5rem;">🍬</div>
-        <div style="font-size:0.82rem;font-weight:700;color:var(--dark);">Dulces de la Isla</div>
-        <div style="font-size:0.7rem;color:var(--mid);margin-top:0.2rem;">46 productos</div>
+      <a href="https://www.amazon.com/shop/planetaboricua/list/2W7GCH9PJ1D9B?tag=ivansoto0f-20" target="_blank" rel="noopener sponsored" class="tienda-card">
+        <img src="https://images.unsplash.com/photo-1582058091505-f87a2e55a40f?auto=format&fit=crop&w=600&q=80" alt="Dulces" loading="lazy">
+        <div class="tienda-card-body"><div class="tienda-card-title">🍬 Dulces de la Isla</div><div class="tienda-card-link">Ver selección →</div></div>
       </a>
-      <a href="https://www.amazon.com/shop/planetaboricua/list/3PF9YAQ8MKRCO?tag=ivansoto0f-20" target="_blank" style="text-decoration:none;background:var(--light);border:1px solid var(--border);border-radius:8px;padding:1.2rem;text-align:center;transition:all 0.2s;display:block;">
-        <div style="font-size:2rem;margin-bottom:0.5rem;">🐾</div>
-        <div style="font-size:0.82rem;font-weight:700;color:var(--dark);">Boricuas de 4 Patas</div>
-        <div style="font-size:0.7rem;color:var(--mid);margin-top:0.2rem;">40 productos</div>
+      <a href="https://www.amazon.com/shop/planetaboricua/list/3PF9YAQ8MKRCO?tag=ivansoto0f-20" target="_blank" rel="noopener sponsored" class="tienda-card">
+        <img src="https://images.unsplash.com/photo-1450778869180-41d0601e046e?auto=format&fit=crop&w=600&q=80" alt="Productos para mascotas" loading="lazy">
+        <div class="tienda-card-body"><div class="tienda-card-title">🐾 Boricuas de 4 Patas</div><div class="tienda-card-link">Ver selección →</div></div>
       </a>
-      <a href="https://www.amazon.com/shop/planetaboricua/list/1UY29IVPZQ34Y?tag=ivansoto0f-20" target="_blank" style="text-decoration:none;background:var(--light);border:1px solid var(--border);border-radius:8px;padding:1.2rem;text-align:center;transition:all 0.2s;display:block;">
-        <div style="font-size:2rem;margin-bottom:0.5rem;">💍</div>
-        <div style="font-size:0.82rem;font-weight:700;color:var(--dark);">Joyería Boricua</div>
-        <div style="font-size:0.7rem;color:var(--mid);margin-top:0.2rem;">20 productos</div>
+      <a href="https://www.amazon.com/shop/planetaboricua/list/1UY29IVPZQ34Y?tag=ivansoto0f-20" target="_blank" rel="noopener sponsored" class="tienda-card">
+        <img src="https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=600&q=80" alt="Joyería" loading="lazy">
+        <div class="tienda-card-body"><div class="tienda-card-title">💍 Joyería Boricua</div><div class="tienda-card-link">Ver selección →</div></div>
       </a>
-      <a href="https://www.amazon.com/shop/planetaboricua/list/1Q6CYDE5BV80P?tag=ivansoto0f-20" target="_blank" style="text-decoration:none;background:var(--light);border:1px solid var(--border);border-radius:8px;padding:1.2rem;text-align:center;transition:all 0.2s;display:block;">
-        <div style="font-size:2rem;margin-bottom:0.5rem;">🚗</div>
-        <div style="font-size:0.82rem;font-weight:700;color:var(--dark);">Para Tu Auto</div>
-        <div style="font-size:0.7rem;color:var(--mid);margin-top:0.2rem;">87 productos</div>
+      <a href="https://www.amazon.com/shop/planetaboricua/list/1Q6CYDE5BV80P?tag=ivansoto0f-20" target="_blank" rel="noopener sponsored" class="tienda-card">
+        <img src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=600&q=80" alt="Accesorios para autos" loading="lazy">
+        <div class="tienda-card-body"><div class="tienda-card-title">🚗 Para Tu Auto</div><div class="tienda-card-link">Ver selección →</div></div>
       </a>
-      <a href="https://amzn.to/4gbJZVv" target="_blank" style="text-decoration:none;background:linear-gradient(135deg,#002D62,#CE1126);border-radius:8px;padding:1.2rem;text-align:center;display:block;">
-        <div style="font-size:2rem;margin-bottom:10px;">👕</div>
-        <div style="font-size:0.82rem;font-weight:700;color:#fff;">Merch Oficial 🇵🇷</div>
-        <div style="font-size:0.7rem;color:rgba(255,255,255,0.7);margin-top:0.2rem;">Mas Boricua que un Mofongo</div>
+      <a href="https://amzn.to/4gbJZVv" target="_blank" rel="noopener sponsored" class="tienda-card">
+        <img src="/img/og-planetaboricua.jpg" alt="Mercancía oficial de Planeta Boricua" loading="lazy">
+        <div class="tienda-card-body" style="background:linear-gradient(135deg,#002D62,#CE1126);"><div class="tienda-card-title" style="color:#fff;">🇵🇷 Merch Oficial</div><div class="tienda-card-link" style="color:#fff;">Más Boricua que un Mofongo →</div></div>
       </a>
     </div>
     <div style="text-align:center;">
