@@ -97,7 +97,6 @@ const { getPlacePhoto } = require("./helpers/googlePhotos");
 const aecDemo = require("./views/autoridad-energia-criolla");
 const addNegocioPB = require("./views/planetaboricua/add-negocio");
 const feriaArtesanosPB = require("./views/planetaboricua/feriaartesanos");
-const pbNoticias = require("./views/planetaboricua/noticias");
 const pbBlogIndex = require("./views/pb-blog/index");
 const pbBlogPost = require("./views/pb-blog/post");
 const Stripe = require("stripe");
@@ -2152,7 +2151,7 @@ app.get("/api/place-photo", async (req, res) => {
 });
 
 app.get("/autoridad-energia-criolla", (req, res) => res.send(aecDemo));
-app.get("/noticias", (req, res) => res.send(pbNoticias));
+app.get("/noticias", (req, res) => res.redirect(301, "/blog"));
 
 // PB Blog routes
 const pbBlogRouter = require("./routes/pb-blog");
@@ -2224,7 +2223,7 @@ app.get("/sitemap.xml", async (req, res) => {
       return `<url><loc>https://www.masboricuaqueunmofongo.com/blog/${slug}</loc><lastmod>${date}</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>`;
     }).join('');
   } catch(e) { console.error('Sitemap RSS error:', e.message); }
-  const staticUrls = `<url><loc>https://www.masboricuaqueunmofongo.com/</loc><changefreq>daily</changefreq><priority>1.0</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/blog</loc><changefreq>daily</changefreq><priority>0.9</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/quienes-somos</loc><changefreq>monthly</changefreq><priority>0.7</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/privacidad</loc><changefreq>monthly</changefreq><priority>0.5</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/terminos</loc><changefreq>monthly</changefreq><priority>0.5</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/noticias</loc><changefreq>daily</changefreq><priority>0.8</priority></url>`;
+  const staticUrls = `<url><loc>https://www.masboricuaqueunmofongo.com/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/blog</loc><changefreq>weekly</changefreq><priority>0.9</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/recursos</loc><changefreq>weekly</changefreq><priority>0.9</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/feria-artesanos</loc><changefreq>weekly</changefreq><priority>0.8</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/quienes-somos</loc><changefreq>monthly</changefreq><priority>0.7</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/privacidad-boricua</loc><changefreq>monthly</changefreq><priority>0.5</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/terminos-boricua</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>`;
   res.set('Content-Type','application/xml');
   res.send(`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${staticUrls}${postUrls}</urlset>`);
 });
@@ -3266,6 +3265,10 @@ app.get('/api/planetaboricua-blog', async (req, res) => {
 
 
 app.get('/api/noticias-pr', async (req, res) => {
+  // Conservamos temporalmente la URL para clientes antiguos, pero retiramos
+  // la agregación automática y sus llamadas a servicios externos.
+  return res.status(410).json({ error: 'La sección de noticias automáticas fue retirada.' });
+
   try {
     const results = [];
 
@@ -3423,15 +3426,14 @@ app.post('/api/newsletter-boricua', express.json(), formLimiter, async (req, res
           <p style="color:rgba(255,255,255,0.8);margin-top:0.5rem;font-size:0.9rem;">Más Boricua Que Un Mofongo</p>
         </div>
         <div style="padding:2rem;background:#fff;border:1px solid #e5e5e0;">
-          <p style="font-size:1rem;color:#333">¡Wepa! 🎉 Ya eres parte de la comunidad de Planeta Boricua — el portal de cultura, noticias y orgullo boricua.</p>
-          <p style="font-size:0.9rem;color:#555;margin-top:1rem;">Cada semana recibirás lo mejor de Puerto Rico directo a tu email — noticias, cultura, gastronomía, recursos para la diáspora y mucho más.</p>
+          <p style="font-size:1rem;color:#333">¡Wepa! 🎉 Ya eres parte de la comunidad de Planeta Boricua — un espacio de cultura, identidad y orgullo boricua.</p>
+          <p style="font-size:0.9rem;color:#555;margin-top:1rem;">Recibirás historias originales, cultura, gastronomía, recursos útiles y novedades de nuestra comunidad.</p>
           <div style="background:#f5f5f0;border-radius:8px;padding:1.2rem;margin:1.5rem 0;">
             <p style="font-size:0.85rem;color:#444;margin:0;"><strong>¿Sabías que tenemos?</strong></p>
             <ul style="font-size:0.85rem;color:#555;margin:0.5rem 0 0 1.2rem;">
-              <li>🤖 Nayeli AI — tu asistente boricua</li>
               <li>📋 Centro de Recursos PR↔USA — guías de mudanza, licencias y más</li>
-              <li>🏪 Directorio de negocios boricuas en USA y PR</li>
-              <li>📰 Noticias frescas de Puerto Rico</li>
+              <li>🎨 Feria de Artesanías — talento hecho por manos boricuas</li>
+              <li>✍️ El Balcón — historias y artículos propios</li>
             </ul>
           </div>
           <div style="text-align:center;margin:2rem 0;">
