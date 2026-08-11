@@ -180,6 +180,18 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
 .newsletter-btn{background:var(--red);color:#fff;border:none;border-radius:4px;padding:0.8rem 1.2rem;font-size:0.85rem;font-weight:700;cursor:pointer;white-space:nowrap;font-family:'Inter',sans-serif;}
 .newsletter-btn:hover{background:#a80e1f;}
 .newsletter-note{font-size:0.68rem;color:rgba(255,255,255,0.2);margin-top:0.8rem;}
+.pb-app{background:linear-gradient(135deg,#002D62,#001a3d);padding:2rem;}
+.pb-app-inner{max-width:900px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:1.5rem;}
+.pb-app-copy{display:flex;align-items:center;gap:1rem;}
+.pb-app-icon{width:68px;height:68px;border-radius:16px;box-shadow:0 5px 18px rgba(0,0,0,.25);}
+.pb-app h3{font-family:'Playfair Display',serif;color:#fff;font-size:1.35rem;margin-bottom:.3rem;}
+.pb-app p{color:rgba(255,255,255,.7);font-size:.82rem;line-height:1.5;}
+.pb-app-actions{display:flex;gap:.7rem;flex-wrap:wrap;justify-content:flex-end;}
+.pb-app-btn{border:0;border-radius:7px;padding:.75rem 1rem;font-family:'Inter',sans-serif;font-size:.78rem;font-weight:800;cursor:pointer;white-space:nowrap;}
+.pb-app-install{background:#fff;color:#002D62;}
+.pb-app-alerts{background:#CE1126;color:#fff;}
+.pb-app-status{font-size:.7rem;color:#f5c842;margin-top:.5rem;display:none;}
+@media(max-width:700px){.pb-app-inner{align-items:flex-start;flex-direction:column}.pb-app-actions{width:100%;justify-content:stretch}.pb-app-btn{flex:1}.pb-app-icon{width:58px;height:58px}}
 
 /* BUTTONS */
 .btn-red{display:inline-flex;align-items:center;gap:0.5rem;background:var(--red);color:#fff;padding:0.75rem 1.5rem;border-radius:4px;font-size:0.85rem;font-weight:700;text-decoration:none;transition:all 0.2s;}
@@ -732,6 +744,24 @@ async function loadDirectorio() {
   </div>
 </section>
 
+<!-- APP INSTALABLE -->
+<section class="pb-app" id="instalar-app">
+  <div class="pb-app-inner">
+    <div class="pb-app-copy">
+      <img class="pb-app-icon" src="/icons/pb/icon-192.png" alt="Ícono de Planeta Boricua">
+      <div>
+        <h3>Lleva Planeta Boricua contigo 🇵🇷</h3>
+        <p>Instálala en tu pantalla y activa el coquí para enterarte cuando publiquemos algo importante.</p>
+        <div class="pb-app-status" id="pb-app-status" role="status"></div>
+      </div>
+    </div>
+    <div class="pb-app-actions">
+      <button class="pb-app-btn pb-app-install" id="pb-install-btn" type="button">📲 Instalar app</button>
+      <button class="pb-app-btn pb-app-alerts" id="pb-alerts-btn" type="button">🔔 Activar el coquí</button>
+    </div>
+  </div>
+</section>
+
 <!-- FOOTER -->
 <footer class="pb-footer">
   <div class="pb-footer-main">
@@ -773,12 +803,110 @@ async function loadDirectorio() {
 </footer>
 
 <script>
+let pbInstallPrompt = null;
+
+function pbShowStatus(message) {
+  const status = document.getElementById('pb-app-status');
+  status.textContent = message;
+  status.style.display = 'block';
+}
+
+function pbIsStandalone() {
+  return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+}
+
+function playCoqui() {
+  try {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    const ctx = new AudioContext();
+    const start = ctx.currentTime + 0.03;
+    [[1050, start, .09], [1650, start + .13, .16], [1050, start + .48, .09], [1650, start + .61, .16]].forEach(note => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = note[0];
+      gain.gain.setValueAtTime(0, note[1]);
+      gain.gain.linearRampToValueAtTime(.18, note[1] + .015);
+      gain.gain.exponentialRampToValueAtTime(.001, note[1] + note[2]);
+      osc.connect(gain).connect(ctx.destination);
+      osc.start(note[1]);
+      osc.stop(note[1] + note[2] + .02);
+    });
+    setTimeout(() => ctx.close(), 1200);
+  } catch (e) {}
+}
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('/sw-pb.js').catch(() => {}));
+}
+
+window.addEventListener('beforeinstallprompt', event => {
+  event.preventDefault();
+  pbInstallPrompt = event;
+});
+
+window.addEventListener('appinstalled', () => {
+  pbInstallPrompt = null;
+  pbShowStatus('¡Instalada! Ya tienes Planeta Boricua en tu pantalla.');
+  document.getElementById('pb-install-btn').textContent = '✅ App instalada';
+});
+
+document.getElementById('pb-install-btn').addEventListener('click', async () => {
+  if (pbIsStandalone()) {
+    pbShowStatus('Ya estás usando Planeta Boricua como app.');
+    return;
+  }
+  if (pbInstallPrompt) {
+    pbInstallPrompt.prompt();
+    await pbInstallPrompt.userChoice;
+    pbInstallPrompt = null;
+    return;
+  }
+  const isiPhone = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  pbShowStatus(isiPhone ? 'En iPhone: toca Compartir y luego “Añadir a pantalla de inicio”.' : 'Abre el menú del navegador y selecciona “Instalar aplicación” o “Añadir a pantalla”.');
+});
+
+document.getElementById('pb-alerts-btn').addEventListener('click', async () => {
+  if (!('Notification' in window)) {
+    pbShowStatus('Este navegador no permite avisos. Aun así puedes instalar la app.');
+    return;
+  }
+  const permission = await Notification.requestPermission();
+  if (permission === 'granted') {
+    localStorage.setItem('pb_coqui_enabled', '1');
+    playCoqui();
+    pbShowStatus('¡Coquí activado! Sonará dentro de la app cuando detectemos una publicación nueva.');
+    document.getElementById('pb-alerts-btn').textContent = '✅ Coquí activado';
+  } else {
+    pbShowStatus('Los avisos no fueron autorizados. Puedes activarlos luego desde el navegador.');
+  }
+});
+
+async function pbCheckForUpdate(post) {
+  if (!post || !post.link) return;
+  const previous = localStorage.getItem('pb_latest_post');
+  localStorage.setItem('pb_latest_post', post.link);
+  if (!previous || previous === post.link || localStorage.getItem('pb_coqui_enabled') !== '1') return;
+  playCoqui();
+  if (Notification.permission === 'granted' && 'serviceWorker' in navigator) {
+    const registration = await navigator.serviceWorker.ready;
+    registration.showNotification('Algo nuevo en Planeta Boricua 🇵🇷', {
+      body: post.title,
+      icon: '/icons/pb/icon-192.png',
+      badge: '/icons/pb/icon-192.png',
+      tag: 'pb-latest-post',
+      data: { url: post.link }
+    });
+  }
+}
+
 // Blog Feed
 (function(){
   fetch('/api/planetaboricua-blog')
     .then(r => r.json())
     .then(posts => {
       if (!posts || !posts.length) return;
+      pbCheckForUpdate(posts[0]);
 
       // Hero main — first post WITH image, fallback to first post
       const heroPost = posts.find(p => p.img) || posts[0];
@@ -822,6 +950,13 @@ async function loadDirectorio() {
     })
     .catch(e => console.log('Blog error:', e));
 })();
+
+setInterval(() => {
+  fetch('/api/planetaboricua-blog?check=' + Date.now())
+    .then(response => response.json())
+    .then(posts => { if (posts && posts.length) pbCheckForUpdate(posts[0]); })
+    .catch(() => {});
+}, 10 * 60 * 1000);
 
 
 // Newsletter
