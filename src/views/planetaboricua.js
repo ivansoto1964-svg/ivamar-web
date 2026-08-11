@@ -125,6 +125,18 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
 .dir-badge{font-size:0.58rem;background:#fff8e1;color:#b8860b;border:1px solid #f0d060;padding:0.1rem 0.4rem;border-radius:2px;font-weight:700;text-transform:uppercase;}
 .directorio-cta{text-align:center;margin-top:2rem;display:flex;gap:1rem;justify-content:center;}
 
+/* AGENDA BORICUA */
+.agenda-home{background:#fff;padding:2rem 0;border-bottom:1px solid var(--border);}
+.agenda-home-inner{max-width:1200px;margin:0 auto;padding:0 2rem;}
+.agenda-home-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1rem;}
+.agenda-mini{display:flex;gap:.9rem;background:var(--light);border:1px solid var(--border);border-radius:8px;padding:1rem;text-decoration:none;color:inherit;}
+.agenda-mini-date{width:52px;height:58px;background:var(--blue);color:#fff;border-radius:7px;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;text-transform:uppercase;}
+.agenda-mini-date strong{font-size:1.25rem;}.agenda-mini-date span{font-size:.62rem;}
+.agenda-mini-type{font-size:.58rem;color:var(--red);font-weight:900;text-transform:uppercase;letter-spacing:.06em;}
+.agenda-mini h3{font-family:'Playfair Display',serif;font-size:.95rem;line-height:1.25;margin:.2rem 0;color:var(--dark);}
+.agenda-mini p{font-size:.7rem;color:var(--mid);line-height:1.4;}
+@media(max-width:800px){.agenda-home-grid{grid-template-columns:1fr;}}
+
 /* NAYELI */
 .nayeli-section{background:var(--blue);padding:2.5rem 0;}
 .nayeli-inner{max-width:1200px;margin:0 auto;padding:0 2rem;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;}
@@ -285,6 +297,7 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
     </a>
     <div class="nav-links">
       <a href="/blog">El Balcón</a>
+      <a href="/agenda-boricua">Agenda</a>
       <a href="#recursos">Recursos</a>
       <a href="/feria-artesanos">Artesanos</a>
       <a href="#tienda">Tienda</a>
@@ -325,6 +338,20 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
       <a href="/pb/add-negocio" style="display:inline-flex;align-items:center;gap:0.5rem;background:#fff;color:#002D62;padding:0.85rem 1.8rem;border-radius:25px;font-size:0.88rem;font-weight:800;text-decoration:none;white-space:nowrap;">🎨 Registra tu artesanía gratis →</a>
       <a href="/feria-artesanos" style="display:inline-flex;align-items:center;gap:0.5rem;background:rgba(255,255,255,0.15);color:#fff;padding:0.85rem 1.8rem;border-radius:25px;font-size:0.88rem;font-weight:700;text-decoration:none;border:1px solid rgba(255,255,255,0.3);white-space:nowrap;">Explorar artesanos</a>
     </div>
+  </div>
+</section>
+
+<!-- AGENDA BORICUA -->
+<section class="agenda-home" id="agenda">
+  <div class="agenda-home-inner">
+    <div class="sec-divider-inner">
+      <span class="sec-divider-label">Agenda Boricua</span>
+      <div class="sec-divider-line"></div>
+      <a href="/agenda-boricua" class="sec-divider-link">Ver todos →</a>
+    </div>
+    <p style="font-size:.85rem;color:var(--mid);line-height:1.6;">Eventos gratuitos que celebran nuestra cultura en Puerto Rico y Estados Unidos.</p>
+    <div class="agenda-home-grid" id="agenda-home-grid"><div style="color:#999;font-size:.8rem;padding:1rem 0;">Buscando próximos eventos…</div></div>
+    <div style="margin-top:1rem;"><a href="/compartir-evento-boricua" class="btn-red">Comparte un evento gratis →</a></div>
   </div>
 </section>
 
@@ -779,12 +806,14 @@ async function loadDirectorio() {
       <a href="/blog">El Balcón</a>
       <a href="#recursos">Recursos</a>
       <a href="/feria-artesanos">Artesanos Puertorriqueños</a>
+      <a href="/agenda-boricua">Agenda Boricua</a>
       <a href="#tienda">Tienda Boricua</a>
       <a href="#viajes">Viajes</a>
     </div>
     <div class="pb-footer-col">
       <h4>Comunidad</h4>
       <a href="/feria-artesanos">Feria Digital de Artesanías 🎨</a>
+      <a href="/compartir-evento-boricua">Comparte un evento gratis</a>
       <a href="mailto:connect@ivamarai.com">Contacto</a>
     </div>
     <div class="pb-footer-col">
@@ -957,6 +986,18 @@ setInterval(() => {
     .then(posts => { if (posts && posts.length) pbCheckForUpdate(posts[0]); })
     .catch(() => {});
 }, 10 * 60 * 1000);
+
+// Próximos eventos de la Agenda Boricua
+(function loadAgendaHome(){
+  const grid=document.getElementById('agenda-home-grid');
+  if(!grid)return;
+  const safe=value=>String(value||'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+  fetch('/api/pb-eventos-proximos').then(response=>response.json()).then(data=>{
+    const events=data.events||[];
+    if(!events.length){grid.innerHTML='<div style="grid-column:1/-1;background:var(--light);border-radius:8px;padding:1.5rem;color:var(--mid);">La agenda está comenzando. ¿Conoces una actividad boricua gratuita? Compártela con nosotros.</div>';return;}
+    grid.innerHTML=events.map(event=>{const date=new Date(event.startDate+'T12:00:00');const month=date.toLocaleDateString('es-PR',{month:'short'}).replace('.','');const location=event.virtual?'Virtual':[event.city,event.region].filter(Boolean).join(', ');return '<a class="agenda-mini" href="/agenda-boricua"><div class="agenda-mini-date"><strong>'+date.getDate()+'</strong><span>'+safe(month)+'</span></div><div><div class="agenda-mini-type">'+safe(event.type||'Evento boricua')+'</div><h3>'+safe(event.name)+'</h3><p>📍 '+safe(location)+'</p></div></a>'}).join('');
+  }).catch(()=>{grid.innerHTML='<div style="color:var(--mid);font-size:.8rem;">No pudimos cargar la agenda en este momento.</div>'});
+})();
 
 
 // Newsletter
