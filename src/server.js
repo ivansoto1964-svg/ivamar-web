@@ -102,6 +102,7 @@ const artesanoPerfilPB = require("./views/planetaboricua/artesano-perfil");
 const agendaArtesanalPB = require("./views/planetaboricua/agenda-artesanal");
 const enviarEventoPB = require("./views/planetaboricua/enviar-evento");
 const enviarEventoBoricuaPB = require("./views/planetaboricua/enviar-evento-boricua");
+const loMasRecientePB = require("./views/planetaboricua/lo-mas-reciente");
 const pbBlogIndex = require("./views/pb-blog/index");
 const pbBlogPost = require("./views/pb-blog/post");
 const Stripe = require("stripe");
@@ -150,6 +151,22 @@ function writePBEvents(file, events) {
 }
 function publicPBEvent(event) {
   return { id:event.id,name:event.name,type:event.type,startDate:event.startDate,endDate:event.endDate,time:event.time,venue:event.venue,address:event.address,city:event.city,region:event.region,country:event.country,description:event.description,eventUrl:event.eventUrl,cost:event.cost,image:event.image,virtual:Boolean(event.virtual),artisanSlug:event.artisanSlug,artisanName:event.artisanName,organizerName:event.organizerName,sourceLabel:event.sourceLabel,approvedAt:event.approvedAt };
+}
+
+const PB_LATEST_DIR = '/data/pb-latest';
+function readPBLatest(file) {
+  try { return JSON.parse(fs.readFileSync(path.join(PB_LATEST_DIR, file), 'utf8')); } catch (_) { return []; }
+}
+function writePBLatest(file, items) {
+  if (!fs.existsSync(PB_LATEST_DIR)) fs.mkdirSync(PB_LATEST_DIR, { recursive: true });
+  fs.writeFileSync(path.join(PB_LATEST_DIR, file), JSON.stringify(items, null, 2));
+}
+function pbLatestSlug(title, id) {
+  const base = String(title || 'actualidad').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  return `${base}-${String(id || '').slice(-6)}`;
+}
+function publicPBLatest(item) {
+  return { id:item.id,slug:item.slug,title:item.title,summary:item.summary,body:item.body,image:item.image,sources:item.sources,publishedAt:item.publishedAt };
 }
 
 function publicPBListing(listing) {
@@ -2209,6 +2226,59 @@ app.post("/admin/pb-editorial/sync", requireAdmin, async (_req, res) => {
   }
 });
 
+// Lo más reciente: canal editorial rápido e independiente de Blogger.
+app.get('/api/pb-lo-mas-reciente', (_req, res) => {
+  const items = readPBLatest('approved.json').sort((a,b) => new Date(b.publishedAt) - new Date(a.publishedAt));
+  res.json({ ok:true, items:items.slice(0, 10).map(publicPBLatest) });
+});
+
+app.get('/lo-mas-reciente/:slug', (req, res) => {
+  const item = readPBLatest('approved.json').find(entry => entry.slug === req.params.slug);
+  if (!item) return res.status(404).send(loMasRecientePB(null));
+  res.send(loMasRecientePB(publicPBLatest(item)));
+});
+
+app.post('/api/pb-reciente-submit', formLimiter, express.json({ limit:'300kb' }), async (req, res) => {
+  const title = sanitize(req.body.title || '').trim();
+  const summary = sanitize(req.body.summary || '').trim();
+  const body = sanitize(req.body.body || '').trim();
+  let image = sanitize(req.body.image || '').trim();
+  const sources = Array.isArray(req.body.sources) ? req.body.sources.slice(0,5).map(source => {
+    const label = sanitize(source.label || '').trim();
+    try { const url = new URL(String(source.url || '').trim()); return label && ['http:','https:'].includes(url.protocol) ? { label, url:url.toString() } : null; } catch (_) { return null; }
+  }).filter(Boolean) : [];
+  if (!title || !summary || !body || !sources.length) return res.status(400).json({ok:false,error:'Faltan título, resumen, contenido o fuentes verificables.'});
+  if (title.length > 180 || summary.length > 400 || body.length > 12000) return res.status(400).json({ok:false,error:'La publicación excede el límite editorial.'});
+  if (image && !/^https?:\/\//i.test(image) && !image.startsWith('/')) image = '';
+  const crypto = require('crypto');
+  const id = Date.now().toString();
+  const item = { id,slug:pbLatestSlug(title,id),title,summary,body,image,sources,status:'pending',submittedAt:new Date().toISOString(),approveToken:crypto.randomBytes(24).toString('hex'),rejectToken:crypto.randomBytes(24).toString('hex') };
+  const pending = readPBLatest('pending.json'); pending.push(item); writePBLatest('pending.json',pending);
+  try {
+    await resend.emails.send({from:'Planeta Boricua <connect@ivamarai.com>',to:'connect@ivamarai.com',subject:`📰 Borrador Lo más reciente: ${item.title}`,html:`<h2>${item.title}</h2><p><strong>${item.summary}</strong></p><p>${item.body.slice(0,1200).replace(/\n/g,'<br>')}</p><p>Fuentes: ${item.sources.map(source => `<a href="${source.url}">${source.label}</a>`).join(' · ')}</p><p><a href="https://www.masboricuaqueunmofongo.com/admin/pb-reciente-approve/${item.approveToken}">✅ Aprobar y publicar</a> &nbsp; <a href="https://www.masboricuaqueunmofongo.com/admin/pb-reciente-reject/${item.rejectToken}">❌ Rechazar</a></p>`});
+  } catch (error) { console.error('PB latest notification error:',error.message); }
+  res.json({ok:true,id:item.id,slug:item.slug});
+});
+
+app.get('/admin/pb-reciente-approve/:token', (req, res) => {
+  const pending = readPBLatest('pending.json');
+  const index = pending.findIndex(item => item.approveToken === req.params.token);
+  if (index < 0) return res.status(404).send('Solicitud no encontrada o procesada.');
+  const [item] = pending.splice(index,1);
+  delete item.approveToken; delete item.rejectToken; item.status='approved'; item.publishedAt=new Date().toISOString();
+  const approved = readPBLatest('approved.json'); approved.push(item);
+  writePBLatest('pending.json',pending); writePBLatest('approved.json',approved);
+  res.send(`<!doctype html><html lang="es"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Publicado</title><body style="font-family:system-ui;text-align:center;padding:3rem"><h1>✅ Publicado en Lo más reciente</h1><p>${item.title}</p><p><a href="/lo-mas-reciente/${item.slug}">Ver publicación</a></p></body></html>`);
+});
+
+app.get('/admin/pb-reciente-reject/:token', (req, res) => {
+  const pending = readPBLatest('pending.json');
+  const index = pending.findIndex(item => item.rejectToken === req.params.token);
+  if (index < 0) return res.status(404).send('Solicitud no encontrada o procesada.');
+  pending.splice(index,1); writePBLatest('pending.json',pending);
+  res.send('<!doctype html><html lang="es"><meta charset="utf-8"><body style="font-family:system-ui;text-align:center;padding:3rem"><h1>Publicación rechazada</h1></body></html>');
+});
+
 // Caribex webhook - auto sync when new post published  
 app.get("/api/caribex-sync/ping", async (req, res) => {
   try {
@@ -2264,10 +2334,11 @@ app.get("/sitemap.xml", async (req, res) => {
   try {
     artisanUrls = loadApprovedPBListings().map(item => `<url><loc>https://www.masboricuaqueunmofongo.com/artesanos/${pbArtisanSlug(item)}</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>`).join('');
   } catch(e) { console.error('Sitemap artisans error:', e.message); }
+  const latestUrls = readPBLatest('approved.json').map(item => `<url><loc>https://www.masboricuaqueunmofongo.com/lo-mas-reciente/${item.slug}</loc><lastmod>${String(item.publishedAt || '').slice(0,10)}</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>`).join('');
   const staticUrls = `<url><loc>https://www.masboricuaqueunmofongo.com/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/blog</loc><changefreq>weekly</changefreq><priority>0.9</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/recursos</loc><changefreq>weekly</changefreq><priority>0.9</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/feria-artesanos</loc><changefreq>weekly</changefreq><priority>0.8</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/quienes-somos</loc><changefreq>monthly</changefreq><priority>0.7</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/privacidad-boricua</loc><changefreq>monthly</changefreq><priority>0.5</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/terminos-boricua</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>`;
   const agendaUrl = `<url><loc>https://www.masboricuaqueunmofongo.com/agenda-boricua</loc><changefreq>daily</changefreq><priority>0.8</priority></url>`;
   res.set('Content-Type','application/xml');
-  res.send(`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${staticUrls}${agendaUrl}${postUrls}${artisanUrls}</urlset>`);
+  res.send(`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${staticUrls}${agendaUrl}${latestUrls}${postUrls}${artisanUrls}</urlset>`);
 });
 
 app.get("/feria-artesanos", (req, res) => {
