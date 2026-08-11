@@ -99,6 +99,8 @@ const aecDemo = require("./views/autoridad-energia-criolla");
 const addNegocioPB = require("./views/planetaboricua/add-negocio");
 const feriaArtesanosPB = require("./views/planetaboricua/feriaartesanos");
 const artesanoPerfilPB = require("./views/planetaboricua/artesano-perfil");
+const agendaArtesanalPB = require("./views/planetaboricua/agenda-artesanal");
+const enviarEventoPB = require("./views/planetaboricua/enviar-evento");
 const pbBlogIndex = require("./views/pb-blog/index");
 const pbBlogPost = require("./views/pb-blog/post");
 const Stripe = require("stripe");
@@ -136,6 +138,17 @@ function loadApprovedPBListings() {
   return fs.readdirSync(dir).filter(file => file.endsWith('.json') && file !== 'pending.json').flatMap(file => {
     try { return JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8')); } catch (_) { return []; }
   });
+}
+const PB_EVENTS_DIR = '/data/pb-events';
+function readPBEvents(file) {
+  try { return JSON.parse(fs.readFileSync(path.join(PB_EVENTS_DIR, file), 'utf8')); } catch (_) { return []; }
+}
+function writePBEvents(file, events) {
+  if (!fs.existsSync(PB_EVENTS_DIR)) fs.mkdirSync(PB_EVENTS_DIR, { recursive: true });
+  fs.writeFileSync(path.join(PB_EVENTS_DIR, file), JSON.stringify(events, null, 2));
+}
+function publicPBEvent(event) {
+  return { id:event.id,name:event.name,type:event.type,startDate:event.startDate,endDate:event.endDate,time:event.time,venue:event.venue,address:event.address,city:event.city,region:event.region,description:event.description,eventUrl:event.eventUrl,cost:event.cost,image:event.image,virtual:Boolean(event.virtual),artisanSlug:event.artisanSlug,artisanName:event.artisanName,approvedAt:event.approvedAt };
 }
 
 function publicPBListing(listing) {
@@ -2251,12 +2264,59 @@ app.get("/sitemap.xml", async (req, res) => {
     artisanUrls = loadApprovedPBListings().map(item => `<url><loc>https://www.masboricuaqueunmofongo.com/artesanos/${pbArtisanSlug(item)}</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>`).join('');
   } catch(e) { console.error('Sitemap artisans error:', e.message); }
   const staticUrls = `<url><loc>https://www.masboricuaqueunmofongo.com/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/blog</loc><changefreq>weekly</changefreq><priority>0.9</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/recursos</loc><changefreq>weekly</changefreq><priority>0.9</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/feria-artesanos</loc><changefreq>weekly</changefreq><priority>0.8</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/quienes-somos</loc><changefreq>monthly</changefreq><priority>0.7</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/privacidad-boricua</loc><changefreq>monthly</changefreq><priority>0.5</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/terminos-boricua</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>`;
+  const agendaUrl = `<url><loc>https://www.masboricuaqueunmofongo.com/agenda-artesanal</loc><changefreq>daily</changefreq><priority>0.8</priority></url>`;
   res.set('Content-Type','application/xml');
-  res.send(`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${staticUrls}${postUrls}${artisanUrls}</urlset>`);
+  res.send(`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${staticUrls}${agendaUrl}${postUrls}${artisanUrls}</urlset>`);
 });
 
 app.get("/feria-artesanos", (req, res) => {
   res.send(feriaArtesanosPB);
+});
+
+app.get('/agenda-artesanal', (_req, res) => res.send(agendaArtesanalPB(readPBEvents('approved.json').map(publicPBEvent))));
+
+app.get('/artesanos/:slug/compartir-evento', (req, res) => {
+  const item = loadApprovedPBListings().find(entry => pbArtisanSlug(entry) === req.params.slug);
+  if (!item) return res.status(404).send('Artesano no encontrado');
+  res.send(enviarEventoPB({ name:item.name, slug:req.params.slug }));
+});
+
+app.post('/api/pb-evento-submit', formLimiter, express.json(), async (req, res) => {
+  const artisanSlug = sanitize(req.body.artisanSlug);
+  const artisan = loadApprovedPBListings().find(entry => pbArtisanSlug(entry) === artisanSlug);
+  if (!artisan) return res.status(404).json({ ok:false, error:'Perfil de artesano no encontrado.' });
+  const email = sanitize(req.body.email).toLowerCase();
+  if (!artisan.email || email !== String(artisan.email).trim().toLowerCase()) return res.status(403).json({ ok:false, error:'El email no coincide con el registro del artesano.' });
+  const fields = ['name','type','startDate','endDate','time','venue','address','city','region','description','eventUrl','cost','image'];
+  const event = {}; fields.forEach(key => event[key] = sanitize(req.body[key] || ''));
+  if (!event.name || !event.type || !event.startDate || !event.city || !event.region || !event.description) return res.status(400).json({ ok:false,error:'Completa todos los campos requeridos.' });
+  if (!req.body.rights) return res.status(400).json({ ok:false,error:'Debes confirmar que puedes compartir la información y el afiche.' });
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(event.startDate) || (event.endDate && !/^\d{4}-\d{2}-\d{2}$/.test(event.endDate))) return res.status(400).json({ ok:false,error:'Fecha inválida.' });
+  if (event.startDate < new Date().toISOString().slice(0,10)) return res.status(400).json({ ok:false,error:'La fecha del evento ya pasó.' });
+  if (event.endDate && event.endDate < event.startDate) return res.status(400).json({ ok:false,error:'La fecha final no puede ser anterior a la inicial.' });
+  for (const key of ['eventUrl','image']) if (event[key] && !/^https?:\/\//i.test(event[key])) event[key] = '';
+  const crypto = require('crypto');
+  Object.assign(event,{id:Date.now().toString(),artisanSlug,artisanName:artisan.name,email,virtual:Boolean(req.body.virtual),status:'pending',submittedAt:new Date().toISOString(),approveToken:crypto.randomBytes(24).toString('hex'),rejectToken:crypto.randomBytes(24).toString('hex')});
+  const pending = readPBEvents('pending.json'); pending.push(event); writePBEvents('pending.json',pending);
+  try {
+    await resend.emails.send({from:'Planeta Boricua <connect@ivamarai.com>',to:'connect@ivamarai.com',subject:`📅 Nuevo evento artesanal: ${event.name}`,html:`<h2>${event.name}</h2><p>Enviado por <strong>${event.artisanName}</strong></p><p>${event.startDate} · ${event.city}, ${event.region}</p><p>${event.description}</p><p><a href="https://www.masboricuaqueunmofongo.com/admin/pb-event-approve/${event.approveToken}">✅ Aprobar</a> &nbsp; <a href="https://www.masboricuaqueunmofongo.com/admin/pb-event-reject/${event.rejectToken}">❌ Rechazar</a></p>`});
+  } catch (error) { console.error('PB event notification error:',error.message); }
+  res.json({ok:true});
+});
+
+app.get('/admin/pb-event-approve/:token', async (req,res) => {
+  const pending = readPBEvents('pending.json'); const index = pending.findIndex(e => e.approveToken === req.params.token);
+  if (index < 0) return res.status(404).send('Evento no encontrado');
+  const event = pending.splice(index,1)[0]; event.status='approved'; event.approvedAt=new Date().toISOString();
+  const approved=readPBEvents('approved.json'); approved.push(event); writePBEvents('approved.json',approved); writePBEvents('pending.json',pending);
+  try { await resend.emails.send({from:'Planeta Boricua <connect@ivamarai.com>',to:event.email,subject:`✅ Evento aprobado: ${event.name}`,html:`<p>Tu evento <strong>${event.name}</strong> fue aprobado y ya puede aparecer en la <a href="https://www.masboricuaqueunmofongo.com/agenda-artesanal">Agenda Artesanal Boricua</a>.</p>`}); } catch(error){ console.error('PB event approval email:',error.message); }
+  res.send(`<h2>✅ Evento aprobado</h2><p>${event.name}</p><p><a href="/agenda-artesanal">Ver agenda</a></p>`);
+});
+
+app.get('/admin/pb-event-reject/:token', (req,res) => {
+  const pending=readPBEvents('pending.json'); const index=pending.findIndex(e=>e.rejectToken===req.params.token);
+  if(index<0)return res.status(404).send('Evento no encontrado');
+  const event=pending.splice(index,1)[0]; writePBEvents('pending.json',pending); res.send(`<h2>Evento rechazado</h2><p>${event.name}</p>`);
 });
 
 app.get('/artesanos/:slug', (req, res) => {
@@ -2264,7 +2324,8 @@ app.get('/artesanos/:slug', (req, res) => {
   if (!item) return res.status(404).send('Artesano no encontrado');
   const categories = {'tallado-madera':'Tallado en madera','joyeria':'Joyería artesanal','ceramica':'Cerámica y alfarería','textiles':'Textiles y costura','pintura':'Pintura y arte','santos':'Santos y tallas religiosas','cuero':'Trabajo en cuero','vejigantes':'Máscaras y vejigantes','instrumentos':'Instrumentos musicales','reciclado':'Arte con material reciclado','velas-jabones':'Velas y jabones artesanales','otro':'Artesanía puertorriqueña'};
   const locationLabel = `${item.city || item.location || 'Puerto Rico'}${PB_US_LOCATIONS.has(item.location) ? ', USA' : ', Puerto Rico'}`;
-  res.send(artesanoPerfilPB(item, { categoryLabel: categories[item.category] || 'Artesanía puertorriqueña', locationLabel, slug: req.params.slug }));
+  const events = readPBEvents('approved.json').map(publicPBEvent).filter(event => event.artisanSlug === req.params.slug && new Date(`${event.endDate || event.startDate}T23:59:59`) >= new Date());
+  res.send(artesanoPerfilPB(item, { categoryLabel: categories[item.category] || 'Artesanía puertorriqueña', locationLabel, slug: req.params.slug, events }));
 });
 
 app.get("/artesanosPR", (req, res) => {
