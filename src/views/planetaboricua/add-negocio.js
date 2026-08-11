@@ -5,7 +5,7 @@ module.exports = `<!DOCTYPE html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Añadir Mi Negocio — Planeta Boricua</title>
+<title>Registrar mi artesanía — Feria Digital de Artesanías Puertorriqueñas</title>
 </head>
 <body>
 <style>
@@ -53,12 +53,12 @@ footer{background:var(--blue);padding:2rem;text-align:center;}
   <a href="/" class="nav-logo">
     <span class="nav-logo-text">Planeta <span>Boricua</span></span>
   </a>
-  <a href="/#directorio" class="nav-back">← Directorio</a>
+  <a href="/feria-artesanos" class="nav-back">← Ver la Feria</a>
 </nav>
 
 <section class="hero">
-  <h1>🇵🇷 Únete a la Feria de Artesanías</h1>
-  <p>Presenta tu trabajo a la comunidad boricua en Puerto Rico y Estados Unidos. El registro es gratuito.</p>
+  <h1>🇵🇷 Únete a la Feria Digital</h1>
+  <p>Presenta tu artesanía a la comunidad boricua en Puerto Rico y la diáspora. El registro es gratuito.</p>
 </section>
 
 <div class="form-wrap">
@@ -68,7 +68,7 @@ footer{background:var(--blue);padding:2rem;text-align:center;}
       <div class="form-section-title">Información de tu Artesanía</div>
       <div class="form-group">
         <label>Nombre del Artesano / Taller *</label>
-        <input type="text" id="biz-name" placeholder="ej. El Mofongo de Mamá Food Truck" required>
+        <input type="text" id="biz-name" placeholder="ej. Taller Manos de Borinquen" required>
       </div>
       <div class="form-row">
         <div class="form-group">
@@ -245,11 +245,11 @@ footer{background:var(--blue);padding:2rem;text-align:center;}
       </div>
       <div class="form-group">
         <label>Descripción Corta * (máx. 160 caracteres)</label>
-        <input type="text" id="biz-desc" placeholder="ej. Auténtica comida boricua en el corazón de Orlando" maxlength="160">
+        <input type="text" id="biz-desc" placeholder="Describe en una oración lo que creas" maxlength="160">
       </div>
       <div class="form-group">
         <label>Descripción Completa *</label>
-        <textarea id="biz-full-desc" placeholder="Cuéntanos sobre tu negocio — qué ofreces, qué lo hace especial, horarios, experiencia del cliente..."></textarea>
+        <textarea id="biz-full-desc" placeholder="Cuéntanos tu historia, qué creas, qué materiales utilizas y cómo pueden comprarte o hacerte un pedido."></textarea>
       </div>
     </div>
 
@@ -334,7 +334,7 @@ footer{background:var(--blue);padding:2rem;text-align:center;}
     </div>
 
     <div style="background:#f0f4ff;border-radius:10px;padding:1.2rem;margin-bottom:2rem;border:1px solid var(--border);">
-      <p style="font-size:0.85rem;color:var(--mid);line-height:1.6;">🎨 Una vez revisada, tu ficha quedará registrada como <strong>Participante de la Feria</strong> y se publicará oficialmente el 23 de septiembre de 2026.</p>
+      <p style="font-size:0.85rem;color:var(--mid);line-height:1.6;">🎨 Una vez revisada y aprobada, tendrás una ficha pública dentro de la <strong>Feria Digital de Artesanías Puertorriqueñas</strong> que podrás compartir con tus clientes.</p>
     </div>
 
     <div class="terms-check">
@@ -352,7 +352,7 @@ footer{background:var(--blue);padding:2rem;text-align:center;}
     <p style="margin-top:1rem;">¿Preguntas? Escríbenos a <strong>connect@ivamarai.com</strong></p>
     <div style="margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid #86efac;">
       <p style="font-weight:700;color:#166534;">¿Conoces a otro artesano? 🎨</p>
-      <p style="margin-top:0.3rem;">Comparte la Feria de Artesanías para que también se beneficie.</p>
+      <p style="margin-top:0.3rem;">Comparte la Feria Digital para que también se beneficie.</p>
       <div style="display:flex;gap:0.6rem;justify-content:center;margin-top:1rem;flex-wrap:wrap;">
         <a href="https://wa.me/?text=¡Wepa! Mira esta Feria de Artesanías gratis de Planeta Boricua para mostrar tu trabajo: https://www.masboricuaqueunmofongo.com/pb/add-negocio" target="_blank" style="background:#25D366;color:#fff;padding:0.6rem 1.2rem;border-radius:8px;text-decoration:none;font-size:0.85rem;font-weight:700;">📱 WhatsApp</a>
         <a href="https://www.facebook.com/sharer/sharer.php?u=https://www.masboricuaqueunmofongo.com/pb/add-negocio" target="_blank" style="background:#1877F2;color:#fff;padding:0.6rem 1.2rem;border-radius:8px;text-decoration:none;font-size:0.85rem;font-weight:700;">📘 Facebook</a>
