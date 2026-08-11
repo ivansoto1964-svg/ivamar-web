@@ -83,7 +83,7 @@ footer p{color:rgba(255,255,255,0.3);font-size:0.75rem;margin-top:0.5rem;}
   <h2>Qué Hacemos</h2>
   <p><strong>Blog editorial "Los Temas del Balcón"</strong> — artículos originales sobre la cultura boricua, escritos para la diáspora que lleva a Puerto Rico en el corazón aunque viva en Orlando, Nueva York, Chicago o Madrid.</p>
   <p><strong>Feria de Artesanías</strong> — el directorio de artesanos puertorriqueños, para que su arte y oficio llegue a toda la diáspora y a Puerto Rico.</p>
-  <p><strong>Noticias de Puerto Rico</strong> — lo que pasa en la isla, curado para los que viven fuera y necesitan mantenerse conectados.</p>
+  <p><strong>Lo más reciente</strong> — acontecimientos seleccionados que ayudan a nuestra comunidad a mantenerse conectada, con contexto y sin llenar el portal de noticias repetidas.</p>
   <p><strong>Recursos para la Diáspora</strong> — guías prácticas para boricuas que se mudan entre Puerto Rico y USA.</p>
 
   <h2>Quién lo Hace</h2>
