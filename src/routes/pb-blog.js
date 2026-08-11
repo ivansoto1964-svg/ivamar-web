@@ -4,6 +4,7 @@ const fs = require("fs");
 const path = require("path");
 const pbBlogIndex = require("../views/pb-blog/index");
 const pbBlogPost = require("../views/pb-blog/post");
+const { CATEGORIES, categorySlug, editorialCategory } = require("../utils/pb-editorial");
 const POSTS_DIR = path.join(__dirname, "../../data/pb-blog/posts");
 const POSTS_PER_PAGE = 9;
 
@@ -13,22 +14,20 @@ function loadPosts() {
     return files.map(f => {
       try { return JSON.parse(fs.readFileSync(path.join(POSTS_DIR, f), "utf8")); }
       catch(e) { return null; }
-    }).filter(Boolean).sort((a, b) => new Date(b.dateISO || b.date || 0) - new Date(a.dateISO || a.date || 0));
+    }).filter(Boolean).map(p => ({...p, category: editorialCategory(p.title, [p.category, ...(p.tags || [])])})).sort((a, b) => new Date(b.dateISO || b.date || 0) - new Date(a.dateISO || a.date || 0));
   } catch(e) { return []; }
 }
 
-function norm(s) {
-  return (s||"").toLowerCase().replace(/ /g,"-").replace(/[áàä]/g,"a").replace(/[éèë]/g,"e").replace(/[íìï]/g,"i").replace(/[óòö]/g,"o").replace(/[úùü]/g,"u");
-}
+function visibleCategories(posts) { return CATEGORIES.filter(c => posts.some(p => p.category === c)); }
 
 router.get("/", (req, res) => {
   const posts = loadPosts();
   const page = parseInt(req.query.page) || 1;
   const cat = req.query.cat || null;
-  const filtered = cat ? posts.filter(p => norm(p.category).includes(cat)) : posts;
+  const filtered = cat ? posts.filter(p => categorySlug(p.category) === cat) : posts;
   const totalPages = Math.ceil(filtered.length / POSTS_PER_PAGE);
   const paginated = filtered.slice((page-1)*POSTS_PER_PAGE, page*POSTS_PER_PAGE);
-  res.send(pbBlogIndex(paginated, page, totalPages, cat, null));
+  res.send(pbBlogIndex(paginated, page, totalPages, cat, null, visibleCategories(posts), filtered.length));
 });
 
 router.get("/buscar", (req, res) => {
@@ -40,7 +39,7 @@ router.get("/buscar", (req, res) => {
     (p.category||"").toLowerCase().includes(q) ||
     (p.tags||[]).some(t => t.toLowerCase().includes(q))
   ) : posts;
-  res.send(pbBlogIndex(filtered, 1, 1, null, q));
+  res.send(pbBlogIndex(filtered, 1, 1, null, q, visibleCategories(posts), filtered.length));
 });
 
 router.get("/sitemap.xml", (req, res) => {
@@ -60,11 +59,11 @@ router.get("/feed.xml", (req, res) => {
 router.get("/categoria/:cat", (req, res) => {
   const posts = loadPosts();
   const cat = req.params.cat;
-  const filtered = posts.filter(p => norm(p.category).includes(cat));
+  const filtered = posts.filter(p => categorySlug(p.category) === cat || (cat === "cultura" && p.category === "Cultura e identidad"));
   const page = parseInt(req.query.page) || 1;
   const totalPages = Math.ceil(filtered.length / POSTS_PER_PAGE);
   const paginated = filtered.slice((page-1)*POSTS_PER_PAGE, page*POSTS_PER_PAGE);
-  res.send(pbBlogIndex(paginated, page, totalPages, cat, null));
+  res.send(pbBlogIndex(paginated, page, totalPages, cat, null, visibleCategories(posts), filtered.length));
 });
 
 router.get("/:slug", (req, res) => {
