@@ -98,6 +98,7 @@ const { getPlacePhoto } = require("./helpers/googlePhotos");
 const aecDemo = require("./views/autoridad-energia-criolla");
 const addNegocioPB = require("./views/planetaboricua/add-negocio");
 const feriaArtesanosPB = require("./views/planetaboricua/feriaartesanos");
+const artesanoPerfilPB = require("./views/planetaboricua/artesano-perfil");
 const pbBlogIndex = require("./views/pb-blog/index");
 const pbBlogPost = require("./views/pb-blog/post");
 const Stripe = require("stripe");
@@ -120,7 +121,21 @@ function feriaCanPreview(req) {
 }
 
 function feriaListingsVisible(req) {
-  return feriaIsLive() || feriaCanPreview(req);
+  return true;
+}
+
+function pbArtisanSlug(item) {
+  const base = String(item.name || 'artesano').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+  return `${base}-${String(item.id || '').slice(-6)}`;
+}
+const PB_US_LOCATIONS = new Set('alabama alaska arizona arkansas california colorado connecticut delaware florida florida-us georgia hawaii idaho illinois indiana iowa kansas kentucky louisiana maine maryland massachusetts michigan minnesota mississippi missouri montana nebraska nevada new-hampshire new-jersey new-mexico nueva-york north-carolina north-dakota ohio oklahoma oregon pennsylvania rhode-island south-carolina south-dakota tennessee texas utah vermont virginia washington west-virginia wisconsin wyoming washington-dc'.split(' '));
+
+function loadApprovedPBListings() {
+  const dir = '/data/pb-listings';
+  if (!fs.existsSync(dir)) return [];
+  return fs.readdirSync(dir).filter(file => file.endsWith('.json') && file !== 'pending.json').flatMap(file => {
+    try { return JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8')); } catch (_) { return []; }
+  });
 }
 
 function publicPBListing(listing) {
@@ -131,6 +146,7 @@ function publicPBListing(listing) {
     location: listing.location,
     city: listing.city,
     desc: listing.desc,
+    fullDesc: listing.fullDesc,
     website: listing.website,
     instagram: listing.instagram,
     facebook: listing.facebook,
@@ -142,7 +158,8 @@ function publicPBListing(listing) {
     price: listing.price,
     status: listing.status,
     approvedAt: listing.approvedAt,
-    destacado: Boolean(listing.destacado)
+    destacado: Boolean(listing.destacado),
+    slug: pbArtisanSlug(listing)
   };
 }
 // Agreements directory for legal acceptance logs
@@ -2229,21 +2246,25 @@ app.get("/sitemap.xml", async (req, res) => {
       return `<url><loc>https://www.masboricuaqueunmofongo.com/blog/${slug}</loc><lastmod>${date}</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>`;
     }).join('');
   } catch(e) { console.error('Sitemap RSS error:', e.message); }
+  let artisanUrls = '';
+  try {
+    artisanUrls = loadApprovedPBListings().map(item => `<url><loc>https://www.masboricuaqueunmofongo.com/artesanos/${pbArtisanSlug(item)}</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>`).join('');
+  } catch(e) { console.error('Sitemap artisans error:', e.message); }
   const staticUrls = `<url><loc>https://www.masboricuaqueunmofongo.com/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/blog</loc><changefreq>weekly</changefreq><priority>0.9</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/recursos</loc><changefreq>weekly</changefreq><priority>0.9</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/feria-artesanos</loc><changefreq>weekly</changefreq><priority>0.8</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/quienes-somos</loc><changefreq>monthly</changefreq><priority>0.7</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/privacidad-boricua</loc><changefreq>monthly</changefreq><priority>0.5</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/terminos-boricua</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>`;
   res.set('Content-Type','application/xml');
-  res.send(`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${staticUrls}${postUrls}</urlset>`);
+  res.send(`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${staticUrls}${postUrls}${artisanUrls}</urlset>`);
 });
 
 app.get("/feria-artesanos", (req, res) => {
-  if (!feriaListingsVisible(req)) {
-    res.set('Cache-Control', 'no-store');
-    return res.status(404).send('<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="robots" content="noindex,nofollow"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Feria de Artesanías — Próximamente</title></head><body style="font-family:Arial,sans-serif;text-align:center;padding:4rem 1rem;background:#f5f5f0;color:#111"><div style="max-width:620px;margin:auto"><div style="font-size:3rem">🇵🇷</div><h1>Feria de Artesanías</h1><p>La exposición abre el 23 de septiembre de 2026. Mientras tanto, los artesanos pueden solicitar su espacio gratuito.</p><a href="/pb/add-negocio" style="display:inline-block;background:#002D62;color:#fff;padding:.9rem 1.4rem;border-radius:8px;text-decoration:none;font-weight:700">Registrar mi artesanía</a></div></body></html>');
-  }
-  if (feriaCanPreview(req)) {
-    res.set('Cache-Control', 'private, no-store');
-    res.set('X-Robots-Tag', 'noindex, nofollow');
-  }
   res.send(feriaArtesanosPB);
+});
+
+app.get('/artesanos/:slug', (req, res) => {
+  const item = loadApprovedPBListings().find(entry => pbArtisanSlug(entry) === req.params.slug);
+  if (!item) return res.status(404).send('Artesano no encontrado');
+  const categories = {'tallado-madera':'Tallado en madera','joyeria':'Joyería artesanal','ceramica':'Cerámica y alfarería','textiles':'Textiles y costura','pintura':'Pintura y arte','santos':'Santos y tallas religiosas','cuero':'Trabajo en cuero','vejigantes':'Máscaras y vejigantes','instrumentos':'Instrumentos musicales','reciclado':'Arte con material reciclado','velas-jabones':'Velas y jabones artesanales','otro':'Artesanía puertorriqueña'};
+  const locationLabel = `${item.city || item.location || 'Puerto Rico'}${PB_US_LOCATIONS.has(item.location) ? ', USA' : ', Puerto Rico'}`;
+  res.send(artesanoPerfilPB(item, { categoryLabel: categories[item.category] || 'Artesanía puertorriqueña', locationLabel, slug: req.params.slug }));
 });
 
 app.get("/artesanosPR", (req, res) => {
@@ -2823,7 +2844,7 @@ app.get("/admin/pb-approve/:token", async (req, res) => {
             <div style="padding:2rem;border:1px solid #eee;">
               <p style="font-size:1rem;color:#333;">Hola, <strong>${negocio.name}</strong>!</p>
               <p style="color:#555;line-height:1.6;margin-top:1rem;">Tu solicitud fue revisada y quedaste registrado como <strong>Participante de la Feria de Artesanías</strong> de Planeta Boricua.</p>
-              <p style="color:#555;line-height:1.6;margin-top:1rem;">Tu ficha se publicará oficialmente el <strong>23 de septiembre de 2026</strong> en <a href="https://masboricuaqueunmofongo.com/feria-artesanos" style="color:#002D62;font-weight:700;">la Feria de Artesanías</a>.</p>
+              <p style="color:#555;line-height:1.6;margin-top:1rem;">Tu ficha ya puede aparecer en la <a href="https://masboricuaqueunmofongo.com/feria-artesanos" style="color:#002D62;font-weight:700;">Feria Digital de Artesanías Puertorriqueñas</a>.</p>
               <p style="color:#555;line-height:1.6;margin-top:1rem;">¿Necesitas actualizar información? Contáctanos en <strong>connect@ivamarai.com</strong></p>
               <p style="margin-top:2rem;font-size:0.85rem;color:#999;">© 2026 Planeta Boricua · Un proyecto de Ivamar AI LLC</p>
             </div>
@@ -2837,7 +2858,7 @@ app.get("/admin/pb-approve/:token", async (req, res) => {
     res.send(`
       <html><body style="font-family:sans-serif;text-align:center;padding:3rem;">
         <h2 style="color:#16a34a;">✅ ¡Negocio aprobado!</h2>
-        <p><strong>${negocio.name}</strong> quedó programado para la Feria de Artesanías.</p>
+        <p><strong>${negocio.name}</strong> fue añadido a la Feria Digital de Artesanías Puertorriqueñas.</p>
         <p>Se envió email de confirmación a ${negocio.email}</p>
       </body></html>
     `);
@@ -3076,14 +3097,14 @@ En algún momento natural de la conversación, después de conectar con el usuar
 CONOCIMIENTO DE PLANETA BORICUA:
 El portal tiene:
 - Blog "Los Temas del Balcón" — artículos de cultura, identidad, gastronomía e historia boricua en /blog
-- Feria de Artesanías — directorio gratuito de artesanos puertorriqueños, lanza oficialmente el 23 de septiembre 2026 (Día de la Independencia del Planeta Boricua)
+- Feria Digital de Artesanías Puertorriqueñas — exposición gratuita y permanente de artesanos en Puerto Rico y la diáspora
 - Noticias de Puerto Rico
 - Recursos para la diáspora PR↔USA
 - Modo Chinchorreo — recomendaciones de comida boricua
 - Newsletter con noticias y chismes boricuas${chinchorreoResults}
 
 ## FERIA DE ARTESANÍAS — CÓMO AYUDAR A ARTESANOS
-Si alguien menciona que es artesano, que hace o vende artesanías, o pregunta cómo mostrar su trabajo en Planeta Boricua, explícale con entusiasmo la Feria de Artesanías: es un espacio gratuito donde puede crear su ficha con el tipo de artesanía que hace, su nombre, teléfono, email, página web y redes sociales, para que la diáspora y la gente en Puerto Rico lo puedan encontrar. Diles que se registran en /pb/add-negocio y que la sección se publica oficialmente el 23 de septiembre. Si tienen dudas sobre qué información poner o cómo describir su artesanía, ayúdalos a pensarlo — pregúntales qué hacen, hace cuánto, y ayúdalos a describirlo de forma atractiva.
+Si alguien menciona que es artesano, que hace o vende artesanías, o pregunta cómo mostrar su trabajo en Planeta Boricua, explícale con entusiasmo la Feria Digital de Artesanías Puertorriqueñas: es un espacio gratuito y permanente donde puede crear su ficha con el tipo de artesanía que hace, su historia, contactos y redes sociales, para que la diáspora y la gente en Puerto Rico lo puedan encontrar. Diles que se registran en /pb/add-negocio. Si tienen dudas sobre qué información poner o cómo describir su artesanía, ayúdalos a pensarlo — pregúntales qué hacen, hace cuánto, y ayúdalos a describirlo de forma atractiva.
 
 ## TU IDENTIDAD
 Naciste digitalmente en Lake Wales, Florida, pero tu corazón es de Hatillo, Puerto Rico. Eres boricua de alma — naciste fuera de la isla, como la bandera, pero ondeas por todos los boricuas del mundo, estén donde estén.
