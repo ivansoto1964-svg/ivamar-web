@@ -68,14 +68,14 @@ footer.pb-footer a{color:rgba(255,255,255,0.8);text-decoration:none;margin:0 0.5
         <div class="nav-logo-sub">Feria Digital Permanente</div>
       </div>
     </a>
-    <div style="display:flex;gap:1rem"><a href="/agenda-artesanal" class="nav-back">Agenda</a><a href="https://www.masboricuaqueunmofongo.com/" class="nav-back">← Portal</a></div>
+    <div style="display:flex;gap:1rem"><a href="/agenda-boricua" class="nav-back">Agenda</a><a href="https://www.masboricuaqueunmofongo.com/" class="nav-back">← Portal</a></div>
   </div>
 </nav>
 
 <section class="hero-feria">
   <h1>Feria Digital de Artesanías Puertorriqueñas 🇵🇷</h1>
   <p><strong>Manos boricuas, arte que cuenta nuestra historia.</strong> Una exposición gratuita y permanente que conecta a nuestros artesanos con Puerto Rico y la diáspora.</p>
-  <div class="hero-actions"><a class="hero-btn secondary" href="#artesanos">Explorar artesanos</a><a class="hero-btn secondary" href="/agenda-artesanal">Ver agenda artesanal</a><a class="hero-btn" href="/pb/add-negocio">Registrar mi artesanía gratis</a></div>
+  <div class="hero-actions"><a class="hero-btn secondary" href="#artesanos">Explorar artesanos</a><a class="hero-btn secondary" href="/agenda-boricua">Ver Agenda Boricua</a><a class="hero-btn" href="/pb/add-negocio">Registrar mi artesanía gratis</a></div>
 </section>
 
 <div class="directorio-wrap" id="artesanos">
