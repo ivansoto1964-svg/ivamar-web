@@ -36,7 +36,7 @@ module.exports = function agendaBoricua(events = []) {
         areaOf(event) === "pr"
           ? event.city
           : [event.region, event.city].filter(Boolean).join(" — ");
-      if (!event.image) event.image = "/img/og-planetaboricua.jpg";
+      if (!event.image) event.image = "/img/agenda-boricua-placeholder.svg";
       return `<article class="event-card" data-area="${areaOf(event)}" data-region="${esc(region).toLowerCase()}" data-city="${esc(event.city).toLowerCase()}">${event.image ? `<img src="${esc(event.image)}" alt="Afiche de ${esc(event.name)}" loading="lazy">` : ""}<div class="event-content"><div class="date"><strong>${date.getDate()}</strong><span>${esc(month)}</span></div><div class="event-copy"><div class="type">${esc(event.type || "Evento cultural")}</div><h2>${esc(event.name)}</h2><p class="where">📍 ${esc(location)}</p>${event.time ? `<p><strong>Horario:</strong> ${esc(event.time)}</p>` : ""}<p>${esc(event.description)}</p><div class="presenter">${presenter}</div><div class="actions">${event.eventUrl ? `<a href="${esc(event.eventUrl)}" target="_blank" rel="noopener">Información oficial</a>` : ""}<a href="https://wa.me/?text=${encodeURIComponent(event.name + " https://www.masboricuaqueunmofongo.com/agenda-boricua")}" target="_blank" rel="noopener">Compartir</a></div></div></div></article>`;
     })
     .join("");
