@@ -115,6 +115,9 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
 .latest-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:.5rem;}
 .latest-card{display:flex;flex-direction:column;background:#f7f7f3;border:1px solid var(--border);border-radius:8px;overflow:hidden;color:inherit;text-decoration:none;}
 .latest-card img{width:100%;height:155px;object-fit:cover;}
+.latest-placeholder{height:155px;background:linear-gradient(135deg,#002d62 0%,#064886 62%,#ce1126 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;text-align:center;gap:.35rem;}
+.latest-placeholder strong{font-family:'Playfair Display',serif;font-size:1.15rem;}
+.latest-placeholder span{font-size:2rem;}
 .latest-copy{padding:1rem;display:flex;flex-direction:column;flex:1;}
 .latest-label{font-size:.6rem;color:var(--red);font-weight:900;letter-spacing:.1em;text-transform:uppercase;}
 .latest-copy h3{font-family:'Playfair Display',serif;font-size:1rem;line-height:1.3;margin:.35rem 0;color:var(--dark);}
@@ -963,7 +966,7 @@ async function pbCheckForUpdate(post) {
   fetch('/api/pb-lo-mas-reciente').then(response=>response.json()).then(data=>{
     const items=(data.items||[]).slice(0,3);
     if(!items.length){grid.innerHTML='<div style="grid-column:1/-1;background:var(--light);border-radius:8px;padding:1.3rem;color:var(--mid);">Aquí aparecerán las actualizaciones importantes verificadas por Planeta Boricua.</div>';return;}
-    grid.innerHTML=items.map(item=>'<a class="latest-card" href="/lo-mas-reciente/'+encodeURIComponent(item.slug)+'"><img src="'+safe(item.image||'/img/og-planetaboricua.jpg')+'" alt="'+safe(item.title)+'" loading="lazy"><div class="latest-copy"><div class="latest-label">Lo más reciente</div><h3>'+safe(item.title)+'</h3><p>'+safe(item.summary)+'</p><div class="latest-date">'+new Date(item.publishedAt).toLocaleString('es-PR',{dateStyle:'medium',timeStyle:'short'})+'</div></div></a>').join('');
+    grid.innerHTML=items.map(item=>'<a class="latest-card" href="/lo-mas-reciente/'+encodeURIComponent(item.slug)+'">'+(item.image?'<img src="'+safe(item.image)+'" alt="'+safe(item.title)+'" loading="lazy">':'<div class="latest-placeholder"><span>🇵🇷</span><strong>Planeta Boricua</strong></div>')+'<div class="latest-copy"><div class="latest-label">Lo más reciente</div><h3>'+safe(item.title)+'</h3><p>'+safe(item.summary)+'</p><div class="latest-date">'+new Date(item.publishedAt).toLocaleString('es-PR',{dateStyle:'medium',timeStyle:'short'})+'</div></div></a>').join('');
   }).catch(()=>{grid.innerHTML='<div style="color:var(--mid);font-size:.8rem;">No pudimos cargar las actualizaciones.</div>'});
 })();
 
