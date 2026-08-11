@@ -193,7 +193,7 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;}
     <div class="pb-footer-col">
       <h4>Comunidad</h4>
       <a href="/pb/add-negocio">Registrar Mi Artesanía</a>
-      <a href="/#newsletter">Newsletter</a>
+      <a href="/#newsletter">Boletín Boricua</a>
       <a href="mailto:connect@ivamarai.com">Contacto</a>
     </div>
     <div class="pb-footer-col">
