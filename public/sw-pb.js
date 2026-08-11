@@ -1,4 +1,4 @@
-const PB_CACHE = 'planeta-boricua-v1';
+const PB_CACHE = 'planeta-boricua-v2';
 const PB_STATIC = [
   '/manifest-pb.json',
   '/icons/pb/icon-192.png',
@@ -22,13 +22,15 @@ self.addEventListener('activate', event => {
 
 self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET') return;
+  const url = new URL(event.request.url);
+  if (url.origin !== self.location.origin || url.pathname.startsWith('/api/') || url.pathname.startsWith('/admin/')) return;
   if (event.request.mode === 'navigate') {
     event.respondWith(fetch(event.request).catch(() => caches.match('/offline-pb.html')));
     return;
   }
   event.respondWith(
     caches.match(event.request).then(cached => cached || fetch(event.request).then(response => {
-      if (response.ok && new URL(event.request.url).origin === self.location.origin) {
+      if (response.ok && /\.(css|js|png|jpe?g|webp|svg|woff2?)$/i.test(url.pathname)) {
         const copy = response.clone();
         caches.open(PB_CACHE).then(cache => cache.put(event.request, copy));
       }
