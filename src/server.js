@@ -3018,7 +3018,7 @@ app.post('/api/nayeli', aiLimiter, express.json(), async (req, res) => {
             <div style="margin:1.5rem 0;">
               ${linksHtml}
             </div>
-            <p style="font-size:0.85rem;color:#666;">También te suscribimos al newsletter de Planeta Boricua para que no te pierdas nada boricua. Puedes cancelar cuando quieras.</p>
+            <p style="font-size:0.85rem;color:#666;">También te suscribimos al Boletín Boricua para que no te pierdas nada de nuestra comunidad. Puedes cancelar cuando quieras.</p>
           </div>
           <div style="padding:1rem;text-align:center;background:#f5f5f0;border-radius:0 0 12px 12px;">
             <p style="font-size:0.72rem;color:#999;">© 2026 Planeta Boricua · masboricuaqueunmofongo.com · Un proyecto de Ivamar AI LLC</p>
