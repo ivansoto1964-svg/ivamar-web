@@ -49,7 +49,8 @@ async function syncBlogger() {
       const dateStr = date.toLocaleDateString("es-PR", {year:"numeric",month:"long",day:"numeric"});
       const dateISO = date.toISOString().split("T")[0];
       const cats = (entry.category || []).map(c => c.term.trim()).filter(t => t.length < 40 && !t.includes("\n") && !t.includes("?"));
-      const category = cats.length > 0 ? cats[0] : "Cultura Boricua";
+      const urgentCategory = cats.find(c => c.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase() === "ultima hora");
+      const category = urgentCategory || (cats.length > 0 ? cats[0] : "Cultura Boricua");
       const tags = (entry.category || []).map(c => c.term.trim()).filter(Boolean);
       const link = (entry.link.find(l => l.rel === "alternate") || {}).href || "";
 
