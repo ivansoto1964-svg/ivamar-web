@@ -1,12 +1,21 @@
 {
   "name": "Planeta Boricua",
   "short_name": "Planeta Boricua",
-  "description": "Más boricua que un mofongo - recursos, blog y directorio para la diaspora",
-  "start_url": "/",
+  "description": "Cultura, historias y recursos para la comunidad boricua dentro y fuera de Puerto Rico.",
+  "id": "/",
+  "start_url": "/?source=pwa",
   "scope": "/",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#0033A0",
+  "categories": ["news", "lifestyle", "travel"],
+  "lang": "es-PR",
+  "dir": "ltr",
+  "shortcuts": [
+    { "name": "El Balcón", "short_name": "El Balcón", "url": "/blog", "icons": [{ "src": "/icons/pb/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Recursos", "short_name": "Recursos", "url": "/recursos", "icons": [{ "src": "/icons/pb/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Feria de Artesanías", "short_name": "Feria", "url": "/feria-artesanos", "icons": [{ "src": "/icons/pb/icon-192.png", "sizes": "192x192" }] }
+  ],
   "icons": [
     { "src": "/icons/pb/icon-192.png", "sizes": "192x192", "type": "image/png" },
     { "src": "/icons/pb/icon-512.png", "sizes": "512x512", "type": "image/png" },
