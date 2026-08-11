@@ -3241,8 +3241,13 @@ app.get('/api/planetaboricua-blog', async (req, res) => {
         if (match) img = match[1];
       }
       const feedTags = (e.category || []).map(c => c.term.replace(/\n/g, ' ').trim()).filter(Boolean);
-      const urgentTag = feedTags.find(tag => tag.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase() === 'ultima hora');
-      const tag = urgentTag || feedTags[0] || 'Cultura Boricua';
+      const featuredTag = feedTags.find(tag => {
+        const normalized = tag.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+        return normalized === 'lo mas reciente' || normalized === 'ultima hora';
+      });
+      const tag = featuredTag && featuredTag.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase() === 'ultima hora'
+        ? 'Lo más reciente'
+        : (featuredTag || feedTags[0] || 'Cultura Boricua');
       const titleText = e.title.$t.trim();
       const slug = titleText.toLowerCase().replace(/[áàä]/g,'a').replace(/[éèë]/g,'e').replace(/[íìï]/g,'i').replace(/[óòö]/g,'o').replace(/[úùü]/g,'u').replace(/ñ/g,'n').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
       return {
