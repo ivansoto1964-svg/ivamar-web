@@ -3205,7 +3205,7 @@ No insistas más de dos veces total. Si no lo dan, despídete con calidez sin pr
 
 // Cache for blog posts
 let pbBlogCache = { posts: [], lastFetch: 0 };
-const PB_CACHE_TTL = 6 * 60 * 60 * 1000; // 6 hours
+const PB_CACHE_TTL = 5 * 60 * 1000; // 5 minutes for timely Blogger updates
 
 app.get('/api/planetaboricua-blog', async (req, res) => {
   // Return cache if fresh
