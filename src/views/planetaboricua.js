@@ -286,7 +286,7 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
     <div class="nav-links">
       <a href="/blog">El Balcón</a>
       <a href="#recursos">Recursos</a>
-      <a href="#feria">Feria</a>
+      <a href="#feria">Artesanos</a>
       <a href="#tienda">Tienda</a>
       <a href="#viajes">Viajes</a>
       <a href="#newsletter" class="nav-cta">Boletín →</a>
@@ -323,7 +323,7 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
     </div>
     <div style="display:flex;gap:1rem;flex-wrap:wrap;">
       <a href="/pb/add-negocio" style="display:inline-flex;align-items:center;gap:0.5rem;background:#fff;color:#002D62;padding:0.85rem 1.8rem;border-radius:25px;font-size:0.88rem;font-weight:800;text-decoration:none;white-space:nowrap;">🎨 Registra tu artesanía gratis →</a>
-      <a href="#feria" style="display:inline-flex;align-items:center;gap:0.5rem;background:rgba(255,255,255,0.15);color:#fff;padding:0.85rem 1.8rem;border-radius:25px;font-size:0.88rem;font-weight:700;text-decoration:none;border:1px solid rgba(255,255,255,0.3);white-space:nowrap;">Conocer la Feria</a>
+      <a href="/feria-artesanos" style="display:inline-flex;align-items:center;gap:0.5rem;background:rgba(255,255,255,0.15);color:#fff;padding:0.85rem 1.8rem;border-radius:25px;font-size:0.88rem;font-weight:700;text-decoration:none;border:1px solid rgba(255,255,255,0.3);white-space:nowrap;">Explorar artesanos</a>
     </div>
   </div>
 </section>
@@ -533,12 +533,12 @@ async function loadDirectorio() {
 <section class="nayeli-section" id="feria">
   <div class="nayeli-inner">
     <div>
-      <div class="nayeli-eyebrow">Feria de Artesanías 🎨</div>
+      <div class="nayeli-eyebrow">Feria Digital Permanente 🎨</div>
       <h2 class="nayeli-title">Muestra tu <span class="accent">Arte</span> al Mundo 🇵🇷</h2>
       <p class="nayeli-sub">Un espacio gratuito para que artesanos puertorriqueños muestren su trabajo — tu tipo de artesanía, tu historia, tus contactos — para que la diáspora y la gente en Puerto Rico te encuentren.</p>
       <div style="background:rgba(255,255,255,0.12);border-radius:10px;padding:1rem 1.2rem;margin:1.2rem 0;display:flex;align-items:center;gap:0.8rem;">
         <div style="font-size:1.5rem;">📅</div>
-        <div style="font-size:0.85rem;color:#fff;line-height:1.5;">El listado se comenzará a publicar el <strong>23 de septiembre de 2026</strong> — Día del Grito de Lares.</div>
+        <div style="font-size:0.85rem;color:#fff;line-height:1.5;">La feria digital está abierta todo el año. El <strong>23 de septiembre</strong>, Día del Grito de Lares, celebramos su presentación especial como proyecto cultural permanente.</div>
       </div>
       <a href="/pb/add-negocio" class="btn-white">🎨 Regístrate Gratis →</a>
     </div>
@@ -778,13 +778,13 @@ async function loadDirectorio() {
       <h4>Portal</h4>
       <a href="/blog">El Balcón</a>
       <a href="#recursos">Recursos</a>
-      <a href="#feria">Feria de Artesanías</a>
+      <a href="/feria-artesanos">Artesanos Puertorriqueños</a>
       <a href="#tienda">Tienda Boricua</a>
       <a href="#viajes">Viajes</a>
     </div>
     <div class="pb-footer-col">
       <h4>Comunidad</h4>
-      <a href="/pb/add-negocio">Feria de Artesanías 🎨</a>
+      <a href="/feria-artesanos">Feria Digital de Artesanías 🎨</a>
       <a href="mailto:connect@ivamarai.com">Contacto</a>
     </div>
     <div class="pb-footer-col">
