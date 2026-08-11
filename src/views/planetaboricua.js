@@ -109,6 +109,18 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
 .noticia-excerpt{font-size:0.78rem;color:var(--mid);line-height:1.6;margin-bottom:0.8rem;}
 .noticia-date{font-size:0.65rem;color:#999;}
 
+/* LO MÁS RECIENTE */
+.latest-home{background:#fff;padding:2rem 0;border-bottom:1px solid var(--border);}
+.latest-home-inner{max-width:1200px;margin:0 auto;padding:0 2rem;}
+.latest-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:.5rem;}
+.latest-card{display:flex;flex-direction:column;background:#f7f7f3;border:1px solid var(--border);border-radius:8px;overflow:hidden;color:inherit;text-decoration:none;}
+.latest-card img{width:100%;height:155px;object-fit:cover;}
+.latest-copy{padding:1rem;display:flex;flex-direction:column;flex:1;}
+.latest-label{font-size:.6rem;color:var(--red);font-weight:900;letter-spacing:.1em;text-transform:uppercase;}
+.latest-copy h3{font-family:'Playfair Display',serif;font-size:1rem;line-height:1.3;margin:.35rem 0;color:var(--dark);}
+.latest-copy p{font-size:.75rem;color:var(--mid);line-height:1.55;}
+.latest-date{font-size:.62rem;color:#999;margin-top:auto;padding-top:.8rem;}
+
 /* DIRECTORIO */
 .directorio{background:var(--white);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:2rem 0;}
 .directorio-inner{max-width:1200px;margin:0 auto;padding:0 2rem;}
@@ -241,6 +253,8 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
   .hero-sidebar{border-left:none;border-top:1px solid var(--border);padding-left:0;padding-top:1rem;}
   .noticias-inner{padding:0 1rem;}
   .noticias-grid{grid-template-columns:1fr;}
+  .latest-home-inner{padding:0 1rem;}
+  .latest-grid{grid-template-columns:1fr;}
   .directorio-inner{padding:0 1rem;}
   .nayeli-inner{grid-template-columns:1fr;gap:2rem;padding:0 1rem;}
   .viajes-inner{padding:0 1rem;}
@@ -338,6 +352,18 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
       <a href="/pb/add-negocio" style="display:inline-flex;align-items:center;gap:0.5rem;background:#fff;color:#002D62;padding:0.85rem 1.8rem;border-radius:25px;font-size:0.88rem;font-weight:800;text-decoration:none;white-space:nowrap;">🎨 Registra tu artesanía gratis →</a>
       <a href="/feria-artesanos" style="display:inline-flex;align-items:center;gap:0.5rem;background:rgba(255,255,255,0.15);color:#fff;padding:0.85rem 1.8rem;border-radius:25px;font-size:0.88rem;font-weight:700;text-decoration:none;border:1px solid rgba(255,255,255,0.3);white-space:nowrap;">Explorar artesanos</a>
     </div>
+  </div>
+</section>
+
+<!-- LO MÁS RECIENTE -->
+<section class="latest-home" id="lo-mas-reciente">
+  <div class="latest-home-inner">
+    <div class="sec-divider-inner">
+      <span class="sec-divider-label">Lo más reciente</span>
+      <div class="sec-divider-line"></div>
+    </div>
+    <p style="font-size:.85rem;color:var(--mid);line-height:1.6;margin-bottom:1rem;">Acontecimientos seleccionados, verificados y explicados con contexto por Planeta Boricua.</p>
+    <div class="latest-grid" id="latest-grid"><div style="color:#999;font-size:.8rem;padding:1rem 0;">Buscando actualizaciones…</div></div>
   </div>
 </section>
 
@@ -928,6 +954,18 @@ async function pbCheckForUpdate(post) {
     });
   }
 }
+
+// Lo más reciente — canal editorial rápido de PB
+(function loadLatest(){
+  const grid=document.getElementById('latest-grid');
+  if(!grid)return;
+  const safe=value=>String(value||'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+  fetch('/api/pb-lo-mas-reciente').then(response=>response.json()).then(data=>{
+    const items=(data.items||[]).slice(0,3);
+    if(!items.length){grid.innerHTML='<div style="grid-column:1/-1;background:var(--light);border-radius:8px;padding:1.3rem;color:var(--mid);">Aquí aparecerán las actualizaciones importantes verificadas por Planeta Boricua.</div>';return;}
+    grid.innerHTML=items.map(item=>'<a class="latest-card" href="/lo-mas-reciente/'+encodeURIComponent(item.slug)+'"><img src="'+safe(item.image||'/img/og-planetaboricua.jpg')+'" alt="'+safe(item.title)+'" loading="lazy"><div class="latest-copy"><div class="latest-label">Lo más reciente</div><h3>'+safe(item.title)+'</h3><p>'+safe(item.summary)+'</p><div class="latest-date">'+new Date(item.publishedAt).toLocaleString('es-PR',{dateStyle:'medium',timeStyle:'short'})+'</div></div></a>').join('');
+  }).catch(()=>{grid.innerHTML='<div style="color:var(--mid);font-size:.8rem;">No pudimos cargar las actualizaciones.</div>'});
+})();
 
 // Blog Feed
 (function(){
