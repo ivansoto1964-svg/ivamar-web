@@ -289,7 +289,7 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
       <a href="#feria">Feria</a>
       <a href="#tienda">Tienda</a>
       <a href="#viajes">Viajes</a>
-      <a href="#newsletter" class="nav-cta">Newsletter →</a>
+      <a href="#newsletter" class="nav-cta">Boletín →</a>
     </div>
   </div>
 </nav>
@@ -732,7 +732,7 @@ async function loadDirectorio() {
 <!-- NEWSLETTER -->
 <section class="newsletter" id="newsletter">
   <div class="newsletter-inner">
-    <div class="newsletter-eyebrow">Newsletter</div>
+    <div class="newsletter-eyebrow">Boletín Boricua</div>
     <h2>Lo Boricua <em>Directo</em> a Tu Email</h2>
     <p>Historias, cultura, recursos y novedades de nuestra comunidad — directo a tu correo. Sin spam, solo lo bueno.</p>
     <div class="newsletter-form">
