@@ -2310,13 +2310,28 @@ app.get('/admin/pb-event-approve/:token', async (req,res) => {
   const event = pending.splice(index,1)[0]; event.status='approved'; event.approvedAt=new Date().toISOString();
   const approved=readPBEvents('approved.json'); approved.push(event); writePBEvents('approved.json',approved); writePBEvents('pending.json',pending);
   try { await resend.emails.send({from:'Planeta Boricua <connect@ivamarai.com>',to:event.email,subject:`✅ Evento aprobado: ${event.name}`,html:`<p>Tu evento <strong>${event.name}</strong> fue aprobado y ya puede aparecer en la <a href="https://www.masboricuaqueunmofongo.com/agenda-artesanal">Agenda Artesanal Boricua</a>.</p>`}); } catch(error){ console.error('PB event approval email:',error.message); }
-  res.send(`<h2>✅ Evento aprobado</h2><p>${event.name}</p><p><a href="/agenda-artesanal">Ver agenda</a></p>`);
+  res.send(`<h2>✅ Evento aprobado</h2><p>${event.name}</p><p><a href="/agenda-artesanal">Ver agenda</a> · <a href="/admin/pb-event-delete/${event.approveToken}">Eliminar evento</a></p>`);
 });
 
 app.get('/admin/pb-event-reject/:token', (req,res) => {
   const pending=readPBEvents('pending.json'); const index=pending.findIndex(e=>e.rejectToken===req.params.token);
   if(index<0)return res.status(404).send('Evento no encontrado');
   const event=pending.splice(index,1)[0]; writePBEvents('pending.json',pending); res.send(`<h2>Evento rechazado</h2><p>${event.name}</p>`);
+});
+
+app.get('/admin/pb-event-delete/:token', (req, res) => {
+  const event = readPBEvents('approved.json').find(entry => entry.approveToken === req.params.token);
+  if (!event) return res.status(404).send('Evento no encontrado');
+  res.send(`<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Eliminar evento</title><style>body{font-family:system-ui;background:#f5f5f0;color:#171717;padding:2rem}.box{max-width:560px;margin:auto;background:#fff;padding:2rem;border-radius:14px}button{background:#ce1126;color:#fff;border:0;border-radius:7px;padding:.8rem 1rem;font-weight:800;cursor:pointer}a{color:#002d62}</style></head><body><main class="box"><h1>Eliminar evento</h1><p>Vas a retirar de la agenda <strong>${sanitize(event.name)}</strong>.</p><form method="post" action="/admin/pb-event-delete/${encodeURIComponent(req.params.token)}"><button type="submit">Sí, eliminar evento</button></form><p><a href="/agenda-artesanal">Cancelar y volver a la agenda</a></p></main></body></html>`);
+});
+
+app.post('/admin/pb-event-delete/:token', (req, res) => {
+  const approved = readPBEvents('approved.json');
+  const index = approved.findIndex(entry => entry.approveToken === req.params.token);
+  if (index < 0) return res.status(404).send('Evento no encontrado');
+  const event = approved.splice(index, 1)[0];
+  writePBEvents('approved.json', approved);
+  res.send(`<h2>✅ Evento eliminado</h2><p>${sanitize(event.name)} ya no aparece en la agenda.</p><p><a href="/agenda-artesanal">Ver agenda</a></p>`);
 });
 
 app.get('/artesanos/:slug', (req, res) => {
