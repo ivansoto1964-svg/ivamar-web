@@ -91,8 +91,8 @@ router.get("/sync", async (req, res) => {
   }
 });
 
-// Auto sync on startup and every 6 hours
+// Auto sync on startup and every 10 minutes
 syncBlogger().catch(e => console.error("Initial sync failed:", e.message));
-setInterval(() => syncBlogger().catch(e => console.error("Auto sync failed:", e.message)), 30 * 60 * 1000);
+setInterval(() => syncBlogger().catch(e => console.error("Auto sync failed:", e.message)), 10 * 60 * 1000);
 
 module.exports = router;
