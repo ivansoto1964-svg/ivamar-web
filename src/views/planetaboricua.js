@@ -286,7 +286,7 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
     <div class="nav-links">
       <a href="/blog">El Balcón</a>
       <a href="#recursos">Recursos</a>
-      <a href="#feria">Artesanos</a>
+      <a href="/feria-artesanos">Artesanos</a>
       <a href="#tienda">Tienda</a>
       <a href="#viajes">Viajes</a>
       <a href="#newsletter" class="nav-cta">Boletín →</a>
