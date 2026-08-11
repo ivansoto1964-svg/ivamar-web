@@ -932,7 +932,7 @@ async function pbCheckForUpdate(post) {
         '</a>'
       ).join('');
 
-      // Noticias grid — blog posts (all except hero)
+      // Selección editorial — publicaciones del blog (excepto la principal)
       const grid = document.getElementById('noticias-grid');
       const noticiaPosts = posts.filter(p => p.link !== heroPost.link).slice(0, 3);
       grid.innerHTML = noticiaPosts.map(p =>
