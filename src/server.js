@@ -177,6 +177,25 @@ function postJson(urlStr, payload, options = {}) {
 
 app.use((req, res, next) => {
   const host = req.hostname;
+  const isIvamarHost = host === "ivamarai.com" || host === "www.ivamarai.com";
+  const isApiOrAsset = req.path.startsWith("/api/") || /\.(png|jpg|jpeg|gif|svg|ico|js|css|webp|mp4|pdf|txt|xml|json)$/i.test(req.path);
+  if (isIvamarHost && !isApiOrAsset) {
+    return res.send(`<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ivamar AI</title>
+<style>
+body{font-family:sans-serif;background:#0a1628;color:#fff;display:flex;align-items:center;justify-content:center;min-height:100vh;text-align:center;margin:0;padding:2rem;}
+h1{font-size:1.4rem;font-weight:600;}
+</style>
+</head>
+<body>
+<h1>Estamos trabajando para una mejor experiencia.</h1>
+</body>
+</html>`);
+  }
   if (host === "yourcaribbeanexpert.com" || host === "www.yourcaribbeanexpert.com") {
     if (req.path === "/" || req.path === "") {
       return res.send(caribex);
