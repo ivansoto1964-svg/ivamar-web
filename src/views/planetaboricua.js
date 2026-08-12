@@ -10,8 +10,8 @@ module.exports = `<!DOCTYPE html>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Planeta Boricua">
 <title>Planeta Boricua — Más Boricua Que Un Mofongo</title>
-<meta name="description" content="Tu portal de cultura, noticias y comunidad puertorriqueña. Feria de Artesanías, recursos para mudanzas PR↔USA, Nayeli AI y más.">
-<meta name="keywords" content="Puerto Rico, boricua, noticias Puerto Rico, cultura puertorriqueña, diáspora boricua, negocios boricuas, mudarse de Puerto Rico, boricuas en Florida, boricuas en Nueva York, recursos boricuas">
+<meta name="description" content="Cultura, identidad y recursos prácticos para la comunidad puertorriqueña en Puerto Rico y la diáspora. Artículos originales, Feria de Artesanías y guías PR↔USA.">
+<meta name="keywords" content="Puerto Rico, cultura puertorriqueña, diáspora boricua, artesanos puertorriqueños, mudarse de Puerto Rico, recursos boricuas">
 <meta name="author" content="Planeta Boricua — Ivamar AI LLC">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://www.masboricuaqueunmofongo.com/">
@@ -20,7 +20,7 @@ module.exports = `<!DOCTYPE html>
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://www.masboricuaqueunmofongo.com/">
 <meta property="og:title" content="Planeta Boricua — Más Boricua Que Un Mofongo">
-<meta property="og:description" content="Tu portal de cultura, noticias y comunidad puertorriqueña. Feria de Artesanías, recursos para mudanzas PR↔USA, Nayeli AI y más.">
+<meta property="og:description" content="Cultura, identidad, Feria de Artesanías y recursos prácticos para la comunidad puertorriqueña dentro y fuera de la isla.">
 <meta property="og:image" content="https://www.masboricuaqueunmofongo.com/img/og-planetaboricua.jpg">
 <meta property="og:locale" content="es_PR">
 <meta property="og:site_name" content="Planeta Boricua">
@@ -29,7 +29,7 @@ module.exports = `<!DOCTYPE html>
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:url" content="https://www.masboricuaqueunmofongo.com/">
 <meta name="twitter:title" content="Planeta Boricua — Más Boricua Que Un Mofongo">
-<meta name="twitter:description" content="Tu portal de cultura, noticias y comunidad puertorriqueña. Feria de Artesanías, recursos para mudanzas PR↔USA y Nayeli AI.">
+<meta name="twitter:description" content="Cultura, identidad, Feria de Artesanías y recursos para la comunidad puertorriqueña dentro y fuera de la isla.">
 <meta name="twitter:image" content="https://www.masboricuaqueunmofongo.com/img/og-planetaboricua.jpg">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8301223085122981" crossorigin="anonymous"></script>
@@ -37,6 +37,7 @@ module.exports = `<!DOCTYPE html>
 *{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
 body{font-family:'Inter',sans-serif;background:#f5f5f0;color:#111;overflow-x:hidden;}
+#nayeli-float-btn,#nayeli-float-chat{display:none!important;}
 :root{
   --red:#CE1126;
   --blue:#002D62;
@@ -108,6 +109,21 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
 .noticia-excerpt{font-size:0.78rem;color:var(--mid);line-height:1.6;margin-bottom:0.8rem;}
 .noticia-date{font-size:0.65rem;color:#999;}
 
+/* LO MÁS RECIENTE */
+.latest-home{background:#fff;padding:2rem 0;border-bottom:1px solid var(--border);}
+.latest-home-inner{max-width:1200px;margin:0 auto;padding:0 2rem;}
+.latest-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:.5rem;}
+.latest-card{display:flex;flex-direction:column;background:#f7f7f3;border:1px solid var(--border);border-radius:8px;overflow:hidden;color:inherit;text-decoration:none;}
+.latest-card img{width:100%;height:155px;object-fit:cover;}
+.latest-placeholder{height:155px;background:linear-gradient(135deg,#002d62 0%,#064886 62%,#ce1126 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;text-align:center;gap:.35rem;}
+.latest-placeholder strong{font-family:'Playfair Display',serif;font-size:1.15rem;}
+.latest-placeholder span{font-size:2rem;}
+.latest-copy{padding:1rem;display:flex;flex-direction:column;flex:1;}
+.latest-label{font-size:.6rem;color:var(--red);font-weight:900;letter-spacing:.1em;text-transform:uppercase;}
+.latest-copy h3{font-family:'Playfair Display',serif;font-size:1rem;line-height:1.3;margin:.35rem 0;color:var(--dark);}
+.latest-copy p{font-size:.75rem;color:var(--mid);line-height:1.55;}
+.latest-date{font-size:.62rem;color:#999;margin-top:auto;padding-top:.8rem;}
+
 /* DIRECTORIO */
 .directorio{background:var(--white);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:2rem 0;}
 .directorio-inner{max-width:1200px;margin:0 auto;padding:0 2rem;}
@@ -123,6 +139,18 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
 .dir-location{font-size:0.72rem;color:var(--mid);}
 .dir-badge{font-size:0.58rem;background:#fff8e1;color:#b8860b;border:1px solid #f0d060;padding:0.1rem 0.4rem;border-radius:2px;font-weight:700;text-transform:uppercase;}
 .directorio-cta{text-align:center;margin-top:2rem;display:flex;gap:1rem;justify-content:center;}
+
+/* AGENDA BORICUA */
+.agenda-home{background:#fff;padding:2rem 0;border-bottom:1px solid var(--border);}
+.agenda-home-inner{max-width:1200px;margin:0 auto;padding:0 2rem;}
+.agenda-home-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1rem;}
+.agenda-mini{display:flex;gap:.9rem;background:var(--light);border:1px solid var(--border);border-radius:8px;padding:1rem;text-decoration:none;color:inherit;}
+.agenda-mini-date{width:52px;height:58px;background:var(--blue);color:#fff;border-radius:7px;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;text-transform:uppercase;}
+.agenda-mini-date strong{font-size:1.25rem;}.agenda-mini-date span{font-size:.62rem;}
+.agenda-mini-type{font-size:.58rem;color:var(--red);font-weight:900;text-transform:uppercase;letter-spacing:.06em;}
+.agenda-mini h3{font-family:'Playfair Display',serif;font-size:.95rem;line-height:1.25;margin:.2rem 0;color:var(--dark);}
+.agenda-mini p{font-size:.7rem;color:var(--mid);line-height:1.4;}
+@media(max-width:800px){.agenda-home-grid{grid-template-columns:1fr;}}
 
 /* NAYELI */
 .nayeli-section{background:var(--blue);padding:2.5rem 0;}
@@ -179,6 +207,18 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
 .newsletter-btn{background:var(--red);color:#fff;border:none;border-radius:4px;padding:0.8rem 1.2rem;font-size:0.85rem;font-weight:700;cursor:pointer;white-space:nowrap;font-family:'Inter',sans-serif;}
 .newsletter-btn:hover{background:#a80e1f;}
 .newsletter-note{font-size:0.68rem;color:rgba(255,255,255,0.2);margin-top:0.8rem;}
+.pb-app{background:linear-gradient(135deg,#002D62,#001a3d);padding:2rem;}
+.pb-app-inner{max-width:900px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:1.5rem;}
+.pb-app-copy{display:flex;align-items:center;gap:1rem;}
+.pb-app-icon{width:68px;height:68px;border-radius:16px;box-shadow:0 5px 18px rgba(0,0,0,.25);}
+.pb-app h3{font-family:'Playfair Display',serif;color:#fff;font-size:1.35rem;margin-bottom:.3rem;}
+.pb-app p{color:rgba(255,255,255,.7);font-size:.82rem;line-height:1.5;}
+.pb-app-actions{display:flex;gap:.7rem;flex-wrap:wrap;justify-content:flex-end;}
+.pb-app-btn{border:0;border-radius:7px;padding:.75rem 1rem;font-family:'Inter',sans-serif;font-size:.78rem;font-weight:800;cursor:pointer;white-space:nowrap;}
+.pb-app-install{background:#fff;color:#002D62;}
+.pb-app-alerts{background:#CE1126;color:#fff;}
+.pb-app-status{font-size:.7rem;color:#f5c842;margin-top:.5rem;display:none;}
+@media(max-width:700px){.pb-app-inner{align-items:flex-start;flex-direction:column}.pb-app-actions{width:100%;justify-content:stretch}.pb-app-btn{flex:1}.pb-app-icon{width:58px;height:58px}}
 
 /* BUTTONS */
 .btn-red{display:inline-flex;align-items:center;gap:0.5rem;background:var(--red);color:#fff;padding:0.75rem 1.5rem;border-radius:4px;font-size:0.85rem;font-weight:700;text-decoration:none;transition:all 0.2s;}
@@ -216,6 +256,8 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
   .hero-sidebar{border-left:none;border-top:1px solid var(--border);padding-left:0;padding-top:1rem;}
   .noticias-inner{padding:0 1rem;}
   .noticias-grid{grid-template-columns:1fr;}
+  .latest-home-inner{padding:0 1rem;}
+  .latest-grid{grid-template-columns:1fr;}
   .directorio-inner{padding:0 1rem;}
   .nayeli-inner{grid-template-columns:1fr;gap:2rem;padding:0 1rem;}
   .viajes-inner{padding:0 1rem;}
@@ -223,6 +265,15 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
   .pb-footer-main{grid-template-columns:1fr 1fr;padding:2rem 1rem;}
   .pb-footer-bottom{padding:1rem;}
 }
+.tienda-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.5rem;}
+.tienda-card{background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden;text-decoration:none;display:block;box-shadow:0 2px 8px rgba(0,0,0,.05);transition:transform .2s,box-shadow .2s;}
+.tienda-card:hover{transform:translateY(-4px);box-shadow:0 10px 24px rgba(0,0,0,.12);}
+.tienda-card img{width:100%;height:150px;display:block;object-fit:cover;}
+.tienda-card-body{padding:.9rem 1rem;}
+.tienda-card-title{font-size:.86rem;font-weight:800;color:var(--dark);}
+.tienda-card-link{font-size:.7rem;color:var(--red);font-weight:700;margin-top:.3rem;}
+@media(max-width:900px){.tienda-grid{grid-template-columns:repeat(2,1fr);}}
+@media(max-width:520px){.tienda-grid{grid-template-columns:1fr;}.tienda-card img{height:190px;}}
 
 /* NOTICIAS EN VIVO */
 .noticias-vivo{background:var(--light);padding:2rem 0;border-top:1px solid var(--border);}
@@ -263,18 +314,12 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
     </a>
     <div class="nav-links">
       <a href="/blog">El Balcón</a>
-      <a href="#noticias">Noticias</a>
-
-      <a href="#directorio">Feria de Artesanías</a>
-      <a href="#nayeli">Nayeli AI</a>
+      <a href="/agenda-boricua">Agenda</a>
+      <a href="#recursos">Recursos</a>
+      <a href="/feria-artesanos">Artesanos</a>
+      <a href="#tienda">Tienda</a>
       <a href="#viajes">Viajes</a>
-      <a href="#newsletter" class="nav-cta">Newsletter →</a>
-    </div>
-  </div>
-  <div class="nav-ticker">
-    <div class="nav-ticker-inner">
-      <span class="nav-ticker-label">🔴 En vivo</span>
-      <span class="nav-ticker-text">Noticias de Puerto Rico y la diáspora boricua · Cultura · Política · Deportes · Gastronomía · Comunidad</span>
+      <a href="#newsletter" class="nav-cta">Boletín →</a>
     </div>
   </div>
 </nav>
@@ -285,7 +330,7 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
     <div class="hero-main" id="hero-main">
       <div class="hero-main-img" id="hero-main-img" style="display:flex;align-items:center;justify-content:center;font-size:5rem;">🇵🇷</div>
       <div class="hero-cat" id="hero-main-cat">Cargando...</div>
-      <h1 class="hero-title" id="hero-main-title">Lo último de Puerto Rico</h1>
+      <h1 class="hero-title" id="hero-main-title">Historias de nuestro Planeta Boricua</h1>
       <p class="hero-excerpt" id="hero-main-excerpt"></p>
       <div class="hero-meta">
         <span id="hero-main-date"></span>
@@ -293,60 +338,54 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
       </div>
     </div>
     <div class="hero-sidebar" id="hero-sidebar">
-      <div style="padding:1rem 0;color:#999;font-size:0.82rem;">Cargando noticias...</div>
+      <div style="padding:1rem 0;color:#999;font-size:0.82rem;">Cargando artículos...</div>
     </div>
   </div>
 </section>
 
-<!-- ADSENSE -->
-<div class="ad-strip">
-  <a href="https://ivamarai.com/landing.html" target="_blank" style="text-decoration:none;display:block;max-width:600px;margin:0 auto;">
-    <div style="background:linear-gradient(135deg,#0077B6,#00B4D8);border-radius:12px;padding:2rem;text-align:center;">
-      <div style="font-size:2rem;margin-bottom:0.5rem;">🤖</div>
-      <div style="color:#fff;font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:700;margin-bottom:0.5rem;">Tu Negocio, Atendido 24/7</div>
-      <div style="color:rgba(255,255,255,0.9);font-size:0.88rem;margin-bottom:1.2rem;max-width:400px;margin-left:auto;margin-right:auto;line-height:1.5;">Un asistente de IA bilingüe que responde a tus clientes y te envía cada lead directo a tu WhatsApp — al instante. Desde $29/mes.</div>
-      <div style="display:inline-block;background:#fff;color:#0077B6;padding:0.75rem 1.8rem;border-radius:8px;font-weight:700;font-size:0.85rem;">Conoce a IvA →</div>
-    </div>
-  </a>
-</div>
-
-
-<!-- BANNER DIRECTORIO DE NEGOCIOS -->
+<!-- BANNER FERIA DE ARTESANÍAS -->
 <section style="background:linear-gradient(135deg,#002D62,#CE1126);padding:2.5rem 2rem;">
   <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1.5rem;">
     <div>
       <div style="font-size:0.68rem;font-weight:800;color:rgba(255,255,255,0.6);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem;">🌍 Planeta Boricua</div>
-      <h2 style="font-family:'Playfair Display',serif;font-size:clamp(1.4rem,3vw,2rem);font-weight:700;color:#fff;line-height:1.2;margin-bottom:0.5rem;">Apoya a los negocios boricuas 🇵🇷</h2>
-      <p style="font-size:0.9rem;color:rgba(255,255,255,0.75);max-width:500px;">No importa dónde estés — que te encuentren en el Planeta Boricua. Si tienes un negocio, regístralo gratis y llega a toda la comunidad boricua en USA y PR.</p>
+      <h2 style="font-family:'Playfair Display',serif;font-size:clamp(1.4rem,3vw,2rem);font-weight:700;color:#fff;line-height:1.2;margin-bottom:0.5rem;">Manos boricuas, arte con historia 🇵🇷</h2>
+      <p style="font-size:0.9rem;color:rgba(255,255,255,0.75);max-width:500px;">Una exposición gratuita para conectar artesanos puertorriqueños con nuestra gente en la isla y la diáspora.</p>
     </div>
     <div style="display:flex;gap:1rem;flex-wrap:wrap;">
-      <a href="/pb/add-negocio" style="display:inline-flex;align-items:center;gap:0.5rem;background:#fff;color:#002D62;padding:0.85rem 1.8rem;border-radius:25px;font-size:0.88rem;font-weight:800;text-decoration:none;white-space:nowrap;">🏪 Registra tu negocio gratis →</a>
-      <a href="/#directorio" style="display:inline-flex;align-items:center;gap:0.5rem;background:rgba(255,255,255,0.15);color:#fff;padding:0.85rem 1.8rem;border-radius:25px;font-size:0.88rem;font-weight:700;text-decoration:none;border:1px solid rgba(255,255,255,0.3);white-space:nowrap;">🌍 Ver la Red</a>
+      <a href="/pb/add-negocio" style="display:inline-flex;align-items:center;gap:0.5rem;background:#fff;color:#002D62;padding:0.85rem 1.8rem;border-radius:25px;font-size:0.88rem;font-weight:800;text-decoration:none;white-space:nowrap;">🎨 Registra tu artesanía gratis →</a>
+      <a href="/feria-artesanos" style="display:inline-flex;align-items:center;gap:0.5rem;background:rgba(255,255,255,0.15);color:#fff;padding:0.85rem 1.8rem;border-radius:25px;font-size:0.88rem;font-weight:700;text-decoration:none;border:1px solid rgba(255,255,255,0.3);white-space:nowrap;">Explorar artesanos</a>
     </div>
   </div>
 </section>
 
-<!-- NOTICIAS EN VIVO -->
-<section class="noticias-vivo">
-  <div class="noticias-vivo-inner">
+<!-- LO MÁS RECIENTE -->
+<section class="latest-home" id="lo-mas-reciente">
+  <div class="latest-home-inner">
     <div class="sec-divider-inner">
-      <div style="display:flex;align-items:center;gap:0.6rem;">
-        <img src="/pbn-logo.webp" alt="PBN" style="height:32px;width:32px;object-fit:contain;">
-        <span class="sec-divider-label">PBN Noticias</span>
-      </div>
-      <div style="flex:1;height:2px;background:var(--red);margin:0 1rem;"></div>
-      <a href="/noticias" style="font-size:0.72rem;color:var(--red);font-weight:700;text-decoration:none;">Ver todas →</a>
+      <span class="sec-divider-label">Lo más reciente</span>
+      <div class="sec-divider-line"></div>
     </div>
-    <div class="noticias-vivo-grid" id="noticias-vivo-grid">
-      <div style="background:#fff;border-radius:4px;height:120px;border-left:3px solid #eee;"></div>
-      <div style="background:#fff;border-radius:4px;height:120px;border-left:3px solid #eee;"></div>
-      <div style="background:#fff;border-radius:4px;height:120px;border-left:3px solid #eee;"></div>
-    </div>
+    <p style="font-size:.85rem;color:var(--mid);line-height:1.6;margin-bottom:1rem;">Acontecimientos seleccionados, verificados y explicados con contexto por Planeta Boricua.</p>
+    <div class="latest-grid" id="latest-grid"><div style="color:#999;font-size:.8rem;padding:1rem 0;">Buscando actualizaciones…</div></div>
   </div>
 </section>
 
-<!-- NOTICIAS -->
-<section class="noticias" id="noticias">
+<!-- AGENDA BORICUA -->
+<section class="agenda-home" id="agenda">
+  <div class="agenda-home-inner">
+    <div class="sec-divider-inner">
+      <span class="sec-divider-label">Agenda Boricua</span>
+      <div class="sec-divider-line"></div>
+      <a href="/agenda-boricua" class="sec-divider-link">Ver todos →</a>
+    </div>
+    <p style="font-size:.85rem;color:var(--mid);line-height:1.6;">Eventos gratuitos que celebran nuestra cultura en Puerto Rico y Estados Unidos.</p>
+    <div class="agenda-home-grid" id="agenda-home-grid"><div style="color:#999;font-size:.8rem;padding:1rem 0;">Buscando próximos eventos…</div></div>
+    <div style="margin-top:1rem;"><a href="/compartir-evento-boricua" class="btn-red">Comparte un evento gratis →</a></div>
+  </div>
+</section>
+
+<!-- ARTÍCULOS ORIGINALES -->
+<section class="noticias" id="articulos">
   <div class="noticias-inner">
     <div class="sec-divider-inner">
       <span class="sec-divider-label">Los Temas del Balcón</span>
@@ -509,32 +548,17 @@ async function loadDirectorio() {
   }
 }
 
-// Load on page start
-loadDirectorio();
+// La Feria completa se publica en /feria-artesanos el 23 de septiembre.
 </script>
 
-<!-- ADSENSE MID -->
-<div class="ad-strip">
-  <a href="https://ivamarai.com/landing.html" target="_blank" style="text-decoration:none;display:block;max-width:600px;margin:0 auto;">
-    <div style="background:linear-gradient(135deg,#0077B6,#00B4D8);border-radius:12px;padding:2rem;text-align:center;">
-      <div style="font-size:2rem;margin-bottom:0.5rem;">🤖</div>
-      <div style="color:#fff;font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:700;margin-bottom:0.5rem;">Tu Negocio, Atendido 24/7</div>
-      <div style="color:rgba(255,255,255,0.9);font-size:0.88rem;margin-bottom:1.2rem;max-width:400px;margin-left:auto;margin-right:auto;line-height:1.5;">Un asistente de IA bilingüe que responde a tus clientes y te envía cada lead directo a tu WhatsApp — al instante. Desde $29/mes.</div>
-      <div style="display:inline-block;background:#fff;color:#0077B6;padding:0.75rem 1.8rem;border-radius:8px;font-weight:700;font-size:0.85rem;">Conoce a IvA →</div>
-    </div>
-  </a>
-</div>
-
-
-
 <!-- RECURSOS -->
-<section style="background:linear-gradient(135deg,var(--blue),#001a4d);padding:2rem 0;">
+<section id="recursos" style="background:linear-gradient(135deg,var(--blue),#001a4d);padding:2rem 0;">
   <div style="max-width:1200px;margin:0 auto;padding:0 2rem;display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:center;" class="recursos-inner">
     <div>
       <div style="font-size:0.65rem;font-weight:800;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:0.6rem;">Centro de Recursos</div>
       <h2 style="font-family:'Playfair Display',serif;font-size:clamp(1.5rem,2.5vw,2rem);font-weight:800;color:#fff;margin-bottom:0.8rem;line-height:1.2;">¿Te mudas entre PR y USA? <span style="color:#f5c842;">Tenemos tu guía.</span></h2>
       <p style="font-size:0.88rem;color:rgba(255,255,255,0.65);line-height:1.7;margin-bottom:1.5rem;">Licencias de conducir por estado, mudanzas, escuelas, servicios públicos, bancos, crédito y más — todo en español boricua y verificado.</p>
-      <a href="/blog" style="display:inline-flex;align-items:center;gap:0.5rem;background:#CE1126;color:#fff;padding:0.75rem 1.5rem;border-radius:4px;font-size:0.88rem;font-weight:700;text-decoration:none;margin-right:0.8rem;">PR → USA 🇺🇸</a><a href="/blog" style="display:inline-flex;align-items:center;gap:0.5rem;background:#002D62;color:#fff;padding:0.75rem 1.5rem;border-radius:4px;font-size:0.88rem;font-weight:700;text-decoration:none;">USA → PR 🇵🇷</a>
+      <a href="/mudarse-de-pr" style="display:inline-flex;align-items:center;gap:0.5rem;background:#CE1126;color:#fff;padding:0.75rem 1.5rem;border-radius:4px;font-size:0.88rem;font-weight:700;text-decoration:none;margin-right:0.8rem;">PR → USA 🇺🇸</a><a href="/regresar-a-pr" style="display:inline-flex;align-items:center;gap:0.5rem;background:#002D62;color:#fff;padding:0.75rem 1.5rem;border-radius:4px;font-size:0.88rem;font-weight:700;text-decoration:none;">USA → PR 🇵🇷</a>
     </div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;">
       <div style="background:rgba(255,255,255,0.08);border-radius:6px;padding:1rem;text-align:center;">
@@ -561,16 +585,16 @@ loadDirectorio();
   </div>
 </section>
 
-<!-- NAYELI -->
+<!-- FERIA DE ARTESANÍAS -->
 <section class="nayeli-section" id="feria">
   <div class="nayeli-inner">
     <div>
-      <div class="nayeli-eyebrow">Feria de Artesanías 🎨</div>
+      <div class="nayeli-eyebrow">Feria Digital Permanente 🎨</div>
       <h2 class="nayeli-title">Muestra tu <span class="accent">Arte</span> al Mundo 🇵🇷</h2>
       <p class="nayeli-sub">Un espacio gratuito para que artesanos puertorriqueños muestren su trabajo — tu tipo de artesanía, tu historia, tus contactos — para que la diáspora y la gente en Puerto Rico te encuentren.</p>
       <div style="background:rgba(255,255,255,0.12);border-radius:10px;padding:1rem 1.2rem;margin:1.2rem 0;display:flex;align-items:center;gap:0.8rem;">
         <div style="font-size:1.5rem;">📅</div>
-        <div style="font-size:0.85rem;color:#fff;line-height:1.5;">El listado se comenzará a publicar el <strong>23 de septiembre de 2026</strong> — Día del Grito de Lares.</div>
+        <div style="font-size:0.85rem;color:#fff;line-height:1.5;">La feria digital está abierta todo el año. El <strong>23 de septiembre</strong>, Día del Grito de Lares, celebramos su presentación especial como proyecto cultural permanente.</div>
       </div>
       <a href="/pb/add-negocio" class="btn-white">🎨 Regístrate Gratis →</a>
     </div>
@@ -578,7 +602,7 @@ loadDirectorio();
 </section>
 
 <!-- TIENDA BORICUA -->
-<section style="background:#fff;padding:2rem 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
+<section id="tienda" style="background:#fff;padding:2rem 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
   <div style="max-width:1200px;margin:0 auto;padding:0 2rem;">
     <div class="sec-divider-inner">
       <div style="display:flex;align-items:center;gap:0.6rem;">
@@ -591,51 +615,42 @@ loadDirectorio();
     <p style="font-size:0.88rem;color:var(--mid);line-height:1.7;margin:1rem 0 1.5rem;">
       Productos boricuas con orgullo 🇵🇷 — disponibles en Amazon con entrega rápida en USA y Puerto Rico.
     </p>
-    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.5rem;">
-      <a href="https://www.amazon.com/shop/planetaboricua/list/1W420Q1BXBM69?tag=ivansoto0f-20" target="_blank" style="text-decoration:none;background:var(--light);border:1px solid var(--border);border-radius:8px;padding:1.2rem;text-align:center;transition:all 0.2s;display:block;">
-        <div style="font-size:2rem;margin-bottom:0.5rem;">👕</div>
-        <div style="font-size:0.82rem;font-weight:700;color:var(--dark);">Camisetas de PR</div>
-        <div style="font-size:0.7rem;color:var(--mid);margin-top:0.2rem;">226 productos</div>
+    <div class="tienda-grid">
+      <a href="https://www.amazon.com/shop/planetaboricua/list/1W420Q1BXBM69?tag=ivansoto0f-20" target="_blank" rel="noopener sponsored" class="tienda-card">
+        <img src="/img/shop/camisetas-pr.webp" alt="Camisetas de Puerto Rico" loading="lazy">
+        <div class="tienda-card-body"><div class="tienda-card-title">👕 Camisetas de PR</div><div class="tienda-card-link">Ver selección →</div></div>
       </a>
-      <a href="https://www.amazon.com/shop/planetaboricua/list/2CXBDURUV9G46?tag=ivansoto0f-20" target="_blank" style="text-decoration:none;background:var(--light);border:1px solid var(--border);border-radius:8px;padding:1.2rem;text-align:center;transition:all 0.2s;display:block;">
-        <div style="font-size:2rem;margin-bottom:0.5rem;">🧢</div>
-        <div style="font-size:0.82rem;font-weight:700;color:var(--dark);">Gorras de PR</div>
-        <div style="font-size:0.7rem;color:var(--mid);margin-top:0.2rem;">121 productos</div>
+      <a href="https://www.amazon.com/shop/planetaboricua/list/2CXBDURUV9G46?tag=ivansoto0f-20" target="_blank" rel="noopener sponsored" class="tienda-card">
+        <img src="/img/shop/gorras-pr.webp" alt="Gorras de Puerto Rico" loading="lazy">
+        <div class="tienda-card-body"><div class="tienda-card-title">🧢 Gorras de PR</div><div class="tienda-card-link">Ver selección →</div></div>
       </a>
-      <a href="https://www.amazon.com/shop/planetaboricua/list/1A33AK8DLTYDO?tag=ivansoto0f-20" target="_blank" style="text-decoration:none;background:var(--light);border:1px solid var(--border);border-radius:8px;padding:1.2rem;text-align:center;transition:all 0.2s;display:block;">
-        <div style="font-size:2rem;margin-bottom:0.5rem;">☕</div>
-        <div style="font-size:0.82rem;font-weight:700;color:var(--dark);">Tazas y Termos</div>
-        <div style="font-size:0.7rem;color:var(--mid);margin-top:0.2rem;">63 productos</div>
+      <a href="https://www.amazon.com/shop/planetaboricua/list/1A33AK8DLTYDO?tag=ivansoto0f-20" target="_blank" rel="noopener sponsored" class="tienda-card">
+        <img src="/img/shop/tazas-termos.webp" alt="Tazas y termos boricuas" loading="lazy">
+        <div class="tienda-card-body"><div class="tienda-card-title">☕ Tazas y Termos</div><div class="tienda-card-link">Ver selección →</div></div>
       </a>
-      <a href="https://www.amazon.com/shop/planetaboricua/list/GVPOWIBQMA3B?tag=ivansoto0f-20" target="_blank" style="text-decoration:none;background:var(--light);border:1px solid var(--border);border-radius:8px;padding:1.2rem;text-align:center;transition:all 0.2s;display:block;">
-        <div style="font-size:2rem;margin-bottom:0.5rem;">🌿</div>
-        <div style="font-size:0.82rem;font-weight:700;color:var(--dark);">Cocina Criolla</div>
-        <div style="font-size:0.7rem;color:var(--mid);margin-top:0.2rem;">33 productos</div>
+      <a href="https://www.amazon.com/shop/planetaboricua/list/GVPOWIBQMA3B?tag=ivansoto0f-20" target="_blank" rel="noopener sponsored" class="tienda-card">
+        <img src="/img/shop/cocina-criolla.webp" alt="Productos para cocina criolla" loading="lazy">
+        <div class="tienda-card-body"><div class="tienda-card-title">🌿 Cocina Criolla</div><div class="tienda-card-link">Ver selección →</div></div>
       </a>
-      <a href="https://www.amazon.com/shop/planetaboricua/list/2W7GCH9PJ1D9B?tag=ivansoto0f-20" target="_blank" style="text-decoration:none;background:var(--light);border:1px solid var(--border);border-radius:8px;padding:1.2rem;text-align:center;transition:all 0.2s;display:block;">
-        <div style="font-size:2rem;margin-bottom:0.5rem;">🍬</div>
-        <div style="font-size:0.82rem;font-weight:700;color:var(--dark);">Dulces de la Isla</div>
-        <div style="font-size:0.7rem;color:var(--mid);margin-top:0.2rem;">46 productos</div>
+      <a href="https://www.amazon.com/shop/planetaboricua/list/2W7GCH9PJ1D9B?tag=ivansoto0f-20" target="_blank" rel="noopener sponsored" class="tienda-card">
+        <img src="/img/shop/dulces-isla.webp" alt="Dulces de Puerto Rico" loading="lazy">
+        <div class="tienda-card-body"><div class="tienda-card-title">🍬 Dulces de la Isla</div><div class="tienda-card-link">Ver selección →</div></div>
       </a>
-      <a href="https://www.amazon.com/shop/planetaboricua/list/3PF9YAQ8MKRCO?tag=ivansoto0f-20" target="_blank" style="text-decoration:none;background:var(--light);border:1px solid var(--border);border-radius:8px;padding:1.2rem;text-align:center;transition:all 0.2s;display:block;">
-        <div style="font-size:2rem;margin-bottom:0.5rem;">🐾</div>
-        <div style="font-size:0.82rem;font-weight:700;color:var(--dark);">Boricuas de 4 Patas</div>
-        <div style="font-size:0.7rem;color:var(--mid);margin-top:0.2rem;">40 productos</div>
+      <a href="https://www.amazon.com/shop/planetaboricua/list/3PF9YAQ8MKRCO?tag=ivansoto0f-20" target="_blank" rel="noopener sponsored" class="tienda-card">
+        <img src="/img/shop/cuatro-patas.webp" alt="Productos boricuas para mascotas" loading="lazy">
+        <div class="tienda-card-body"><div class="tienda-card-title">🐾 Boricuas de 4 Patas</div><div class="tienda-card-link">Ver selección →</div></div>
       </a>
-      <a href="https://www.amazon.com/shop/planetaboricua/list/1UY29IVPZQ34Y?tag=ivansoto0f-20" target="_blank" style="text-decoration:none;background:var(--light);border:1px solid var(--border);border-radius:8px;padding:1.2rem;text-align:center;transition:all 0.2s;display:block;">
-        <div style="font-size:2rem;margin-bottom:0.5rem;">💍</div>
-        <div style="font-size:0.82rem;font-weight:700;color:var(--dark);">Joyería Boricua</div>
-        <div style="font-size:0.7rem;color:var(--mid);margin-top:0.2rem;">20 productos</div>
+      <a href="https://www.amazon.com/shop/planetaboricua/list/1UY29IVPZQ34Y?tag=ivansoto0f-20" target="_blank" rel="noopener sponsored" class="tienda-card">
+        <img src="/img/shop/joyeria-boricua.webp" alt="Joyería boricua" loading="lazy">
+        <div class="tienda-card-body"><div class="tienda-card-title">💍 Joyería Boricua</div><div class="tienda-card-link">Ver selección →</div></div>
       </a>
-      <a href="https://www.amazon.com/shop/planetaboricua/list/1Q6CYDE5BV80P?tag=ivansoto0f-20" target="_blank" style="text-decoration:none;background:var(--light);border:1px solid var(--border);border-radius:8px;padding:1.2rem;text-align:center;transition:all 0.2s;display:block;">
-        <div style="font-size:2rem;margin-bottom:0.5rem;">🚗</div>
-        <div style="font-size:0.82rem;font-weight:700;color:var(--dark);">Para Tu Auto</div>
-        <div style="font-size:0.7rem;color:var(--mid);margin-top:0.2rem;">87 productos</div>
+      <a href="https://www.amazon.com/shop/planetaboricua/list/1Q6CYDE5BV80P?tag=ivansoto0f-20" target="_blank" rel="noopener sponsored" class="tienda-card">
+        <img src="/img/shop/para-tu-auto.webp" alt="Accesorios boricuas para autos" loading="lazy">
+        <div class="tienda-card-body"><div class="tienda-card-title">🚗 Para Tu Auto</div><div class="tienda-card-link">Ver selección →</div></div>
       </a>
-      <a href="https://amzn.to/4gbJZVv" target="_blank" style="text-decoration:none;background:linear-gradient(135deg,#002D62,#CE1126);border-radius:8px;padding:1.2rem;text-align:center;display:block;">
-        <div style="font-size:2rem;margin-bottom:10px;">👕</div>
-        <div style="font-size:0.82rem;font-weight:700;color:#fff;">Merch Oficial 🇵🇷</div>
-        <div style="font-size:0.7rem;color:rgba(255,255,255,0.7);margin-top:0.2rem;">Mas Boricua que un Mofongo</div>
+      <a href="https://amzn.to/4gbJZVv" target="_blank" rel="noopener sponsored" class="tienda-card">
+        <img src="/img/shop/merch-oficial.webp" alt="Mercancía oficial de Planeta Boricua" loading="lazy">
+        <div class="tienda-card-body" style="background:linear-gradient(135deg,#002D62,#CE1126);"><div class="tienda-card-title" style="color:#fff;">🇵🇷 Merch Oficial</div><div class="tienda-card-link" style="color:#fff;">Más Boricua que un Mofongo →</div></div>
       </a>
     </div>
     <div style="text-align:center;">
@@ -773,15 +788,33 @@ loadDirectorio();
 <!-- NEWSLETTER -->
 <section class="newsletter" id="newsletter">
   <div class="newsletter-inner">
-    <div class="newsletter-eyebrow">Newsletter</div>
+    <div class="newsletter-eyebrow">Boletín Boricua</div>
     <h2>Lo Boricua <em>Directo</em> a Tu Email</h2>
-    <p>Noticias de PR, cultura, negocios boricuas y más — cada semana en tu correo. Sin spam, solo lo bueno.</p>
+    <p>Historias, cultura, recursos y novedades de nuestra comunidad — directo a tu correo. Sin spam, solo lo bueno.</p>
     <div class="newsletter-form">
       <input class="newsletter-input" id="nlEmail" type="email" placeholder="tu@email.com">
       <button class="newsletter-btn" onclick="nlSubscribe()">Suscribirme →</button>
     </div>
     <div class="newsletter-note">Sin spam. Cancela cuando quieras. ¡Wepa! 🇵🇷</div>
     <div id="nlMsg" style="margin-top:1rem;font-size:0.85rem;color:#ff6b7a;display:none;"></div>
+  </div>
+</section>
+
+<!-- APP INSTALABLE -->
+<section class="pb-app" id="instalar-app">
+  <div class="pb-app-inner">
+    <div class="pb-app-copy">
+      <img class="pb-app-icon" src="/icons/pb/icon-192.png" alt="Ícono de Planeta Boricua">
+      <div>
+        <h3>Lleva Planeta Boricua contigo 🇵🇷</h3>
+        <p>Instálala en tu pantalla y activa el coquí para enterarte cuando publiquemos algo importante.</p>
+        <div class="pb-app-status" id="pb-app-status" role="status"></div>
+      </div>
+    </div>
+    <div class="pb-app-actions">
+      <button class="pb-app-btn pb-app-install" id="pb-install-btn" type="button">📲 Instalar app</button>
+      <button class="pb-app-btn pb-app-alerts" id="pb-alerts-btn" type="button">🔔 Activar el coquí</button>
+    </div>
   </div>
 </section>
 
@@ -800,15 +833,16 @@ loadDirectorio();
     <div class="pb-footer-col">
       <h4>Portal</h4>
       <a href="/blog">El Balcón</a>
-      <a href="#noticias">Noticias</a>
-      <a href="#directorio">Feria de Artesanías</a>
-
-      <a href="#nayeli">Nayeli AI</a>
-      <a href="#viajes">Viajes a PR</a>
+      <a href="#recursos">Recursos</a>
+      <a href="/feria-artesanos">Artesanos Puertorriqueños</a>
+      <a href="/agenda-boricua">Agenda Boricua</a>
+      <a href="#tienda">Tienda Boricua</a>
+      <a href="#viajes">Viajes</a>
     </div>
     <div class="pb-footer-col">
       <h4>Comunidad</h4>
-      <a href="/pb/add-negocio">Feria de Artesanías 🎨</a>
+      <a href="/feria-artesanos">Feria Digital de Artesanías 🎨</a>
+      <a href="/compartir-evento-boricua">Comparte un evento gratis</a>
       <a href="mailto:connect@ivamarai.com">Contacto</a>
     </div>
     <div class="pb-footer-col">
@@ -827,12 +861,122 @@ loadDirectorio();
 </footer>
 
 <script>
+let pbInstallPrompt = null;
+
+function pbShowStatus(message) {
+  const status = document.getElementById('pb-app-status');
+  status.textContent = message;
+  status.style.display = 'block';
+}
+
+function pbIsStandalone() {
+  return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+}
+
+function playCoqui() {
+  try {
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    const ctx = new AudioContext();
+    const start = ctx.currentTime + 0.03;
+    [[1050, start, .09], [1650, start + .13, .16], [1050, start + .48, .09], [1650, start + .61, .16]].forEach(note => {
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+      osc.type = 'sine';
+      osc.frequency.value = note[0];
+      gain.gain.setValueAtTime(0, note[1]);
+      gain.gain.linearRampToValueAtTime(.18, note[1] + .015);
+      gain.gain.exponentialRampToValueAtTime(.001, note[1] + note[2]);
+      osc.connect(gain).connect(ctx.destination);
+      osc.start(note[1]);
+      osc.stop(note[1] + note[2] + .02);
+    });
+    setTimeout(() => ctx.close(), 1200);
+  } catch (e) {}
+}
+
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('/sw-pb.js').catch(() => {}));
+}
+
+window.addEventListener('beforeinstallprompt', event => {
+  event.preventDefault();
+  pbInstallPrompt = event;
+});
+
+window.addEventListener('appinstalled', () => {
+  pbInstallPrompt = null;
+  pbShowStatus('¡Instalada! Ya tienes Planeta Boricua en tu pantalla.');
+  document.getElementById('pb-install-btn').textContent = '✅ App instalada';
+});
+
+document.getElementById('pb-install-btn').addEventListener('click', async () => {
+  if (pbIsStandalone()) {
+    pbShowStatus('Ya estás usando Planeta Boricua como app.');
+    return;
+  }
+  if (pbInstallPrompt) {
+    pbInstallPrompt.prompt();
+    await pbInstallPrompt.userChoice;
+    pbInstallPrompt = null;
+    return;
+  }
+  const isiPhone = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  pbShowStatus(isiPhone ? 'En iPhone: toca Compartir y luego “Añadir a pantalla de inicio”.' : 'Abre el menú del navegador y selecciona “Instalar aplicación” o “Añadir a pantalla”.');
+});
+
+document.getElementById('pb-alerts-btn').addEventListener('click', async () => {
+  if (!('Notification' in window)) {
+    pbShowStatus('Este navegador no permite avisos. Aun así puedes instalar la app.');
+    return;
+  }
+  const permission = await Notification.requestPermission();
+  if (permission === 'granted') {
+    localStorage.setItem('pb_coqui_enabled', '1');
+    playCoqui();
+    pbShowStatus('¡Coquí activado! Sonará dentro de la app cuando detectemos una publicación nueva.');
+    document.getElementById('pb-alerts-btn').textContent = '✅ Coquí activado';
+  } else {
+    pbShowStatus('Los avisos no fueron autorizados. Puedes activarlos luego desde el navegador.');
+  }
+});
+
+async function pbCheckForUpdate(post) {
+  if (!post || !post.link) return;
+  const previous = localStorage.getItem('pb_latest_post');
+  localStorage.setItem('pb_latest_post', post.link);
+  if (!previous || previous === post.link || localStorage.getItem('pb_coqui_enabled') !== '1') return;
+  playCoqui();
+  if (Notification.permission === 'granted' && 'serviceWorker' in navigator) {
+    const registration = await navigator.serviceWorker.ready;
+    registration.showNotification('Algo nuevo en Planeta Boricua 🇵🇷', {
+      body: post.title,
+      icon: '/icons/pb/icon-192.png',
+      badge: '/icons/pb/icon-192.png',
+      tag: 'pb-latest-post',
+      data: { url: post.link }
+    });
+  }
+}
+
+// Lo más reciente — canal editorial rápido de PB
+(function loadLatest(){
+  const grid=document.getElementById('latest-grid');
+  if(!grid)return;
+  const safe=value=>String(value||'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+  fetch('/api/pb-lo-mas-reciente').then(response=>response.json()).then(data=>{
+    const items=(data.items||[]).slice(0,3);
+    if(!items.length){grid.innerHTML='<div style="grid-column:1/-1;background:var(--light);border-radius:8px;padding:1.3rem;color:var(--mid);">Aquí aparecerán las actualizaciones importantes verificadas por Planeta Boricua.</div>';return;}
+    grid.innerHTML=items.map(item=>'<a class="latest-card" href="/lo-mas-reciente/'+encodeURIComponent(item.slug)+'">'+(item.image?'<img src="'+safe(item.image)+'" alt="'+safe(item.title)+'" loading="lazy">':'<div class="latest-placeholder"><span>🇵🇷</span><strong>Planeta Boricua</strong></div>')+'<div class="latest-copy"><div class="latest-label">Lo más reciente</div><h3>'+safe(item.title)+'</h3><p>'+safe(item.summary)+'</p><div class="latest-date">'+new Date(item.publishedAt).toLocaleString('es-PR',{dateStyle:'medium',timeStyle:'short'})+'</div></div></a>').join('');
+  }).catch(()=>{grid.innerHTML='<div style="color:var(--mid);font-size:.8rem;">No pudimos cargar las actualizaciones.</div>'});
+})();
+
 // Blog Feed
 (function(){
   fetch('/api/planetaboricua-blog')
     .then(r => r.json())
     .then(posts => {
       if (!posts || !posts.length) return;
+      pbCheckForUpdate(posts[0]);
 
       // Hero main — first post WITH image, fallback to first post
       const heroPost = posts.find(p => p.img) || posts[0];
@@ -858,11 +1002,11 @@ loadDirectorio();
         '</a>'
       ).join('');
 
-      // Noticias grid — blog posts (all except hero)
+      // Selección editorial — publicaciones del blog (excepto la principal)
       const grid = document.getElementById('noticias-grid');
       const noticiaPosts = posts.filter(p => p.link !== heroPost.link).slice(0, 3);
       grid.innerHTML = noticiaPosts.map(p =>
-        '<a href="' + p.link + '" target="_blank" class="noticia-card">' +
+        '<a href="' + p.link + '" class="noticia-card">' +
         '<div class="noticia-img">' +
         (p.img ? '<img src="' + p.img + '" alt="' + p.title + '">' : '<div style="width:100%;height:100%;background:linear-gradient(135deg,var(--blue),var(--red));display:flex;align-items:center;justify-content:center;font-size:2.5rem;">🇵🇷</div>') +
         '</div>' +
@@ -877,82 +1021,25 @@ loadDirectorio();
     .catch(e => console.log('Blog error:', e));
 })();
 
+setInterval(() => {
+  fetch('/api/planetaboricua-blog?check=' + Date.now())
+    .then(response => response.json())
+    .then(posts => { if (posts && posts.length) pbCheckForUpdate(posts[0]); })
+    .catch(() => {});
+}, 10 * 60 * 1000);
 
-// Noticias en Vivo
-fetch('/api/noticias-pr')
-  .then(r => r.json())
-  .then(noticias => {
-    const grid = document.getElementById('noticias-vivo-grid');
-    if (!grid || !noticias.length) return;
-    grid.innerHTML = noticias.slice(0, 12).map(n =>
-      '<a href="' + n.link + '" target="_blank" rel="noopener" class="noticia-vivo-card">' +
-      '<div style="display:flex;justify-content:space-between;align-items:center;">' +
-      '<span class="noticia-vivo-source">' + n.source + '</span>' +
-      '<span class="noticia-vivo-cat">' + n.categoria + '</span>' +
-      '</div>' +
-      (n.img ? '<img src="' + n.img + '" alt="" style="width:100%;height:160px;object-fit:cover;display:block;">' : '') +
-      '<div class="noticia-vivo-body">' +
-      '<div class="noticia-vivo-title">' + n.title + '</div>' +
-      (n.summary && n.summary !== '...' ? '<div class="noticia-vivo-summary">' + n.summary + '</div>' : '') +
-      '<div class="noticia-vivo-date">' + n.date + '</div>' +
-      '</div></a>'
-    ).join('');
-  })
-  .catch(e => console.log('Noticias error:', e));
+// Próximos eventos de la Agenda Boricua
+(function loadAgendaHome(){
+  const grid=document.getElementById('agenda-home-grid');
+  if(!grid)return;
+  const safe=value=>String(value||'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+  fetch('/api/pb-eventos-proximos').then(response=>response.json()).then(data=>{
+    const events=data.events||[];
+    if(!events.length){grid.innerHTML='<div style="grid-column:1/-1;background:var(--light);border-radius:8px;padding:1.5rem;color:var(--mid);">La agenda está comenzando. ¿Conoces una actividad boricua gratuita? Compártela con nosotros.</div>';return;}
+    grid.innerHTML=events.map(event=>{const date=new Date(event.startDate+'T12:00:00');const month=date.toLocaleDateString('es-PR',{month:'short'}).replace('.','');const location=event.virtual?'Virtual':[event.city,event.region].filter(Boolean).join(', ');return '<a class="agenda-mini" href="/agenda-boricua"><div class="agenda-mini-date"><strong>'+date.getDate()+'</strong><span>'+safe(month)+'</span></div><div><div class="agenda-mini-type">'+safe(event.type||'Evento boricua')+'</div><h3>'+safe(event.name)+'</h3><p>📍 '+safe(location)+'</p></div></a>'}).join('');
+  }).catch(()=>{grid.innerHTML='<div style="color:var(--mid);font-size:.8rem;">No pudimos cargar la agenda en este momento.</div>'});
+})();
 
-// Nayeli Chat
-let nayeliHistory = [];
-let nayeliEmailCaptured = false;
-async function nayeliSend() {
-  const input = document.getElementById('nayeliInput');
-  const msgs = document.getElementById('nayeliMsgs');
-  const text = input.value.trim();
-  if (!text) return;
-  input.value = '';
-  const userMsg = document.createElement('div');
-  userMsg.className = 'n-msg n-user';
-  userMsg.textContent = text;
-  msgs.appendChild(userMsg);
-  msgs.scrollTop = msgs.scrollHeight;
-  const typing = document.createElement('div');
-  typing.className = 'n-msg n-bot';
-  typing.textContent = '...';
-  msgs.appendChild(typing);
-  msgs.scrollTop = msgs.scrollHeight;
-  try {
-    const res = await fetch('/api/nayeli', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: text, history: nayeliHistory })
-    });
-    const data = await res.json();
-    const reply = data.reply || '¡Ay bendito! Intenta de nuevo.';
-    typing.textContent = reply;
-
-    // Save to history
-    nayeliHistory.push({ role: 'user', content: text });
-    nayeliHistory.push({ role: 'assistant', content: reply });
-
-    // Keep history manageable (last 10 exchanges)
-    if (nayeliHistory.length > 20) nayeliHistory = nayeliHistory.slice(-20);
-
-    // Email capture after 2+ exchanges - check if reply mentions email
-    if (nayeliHistory.length >= 4 && !nayeliEmailCaptured) {
-      const emailMatch = text.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/);
-      if (emailMatch) {
-        nayeliEmailCaptured = true;
-        await fetch('/api/nayeli', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email: emailMatch[0], history: nayeliHistory })
-        });
-      }
-    }
-  } catch {
-    typing.textContent = '¡Wepa! Algo salió mal. Intenta de nuevo 🇵🇷';
-  }
-  msgs.scrollTop = msgs.scrollHeight;
-}
 
 // Newsletter
 async function nlSubscribe() {
@@ -987,7 +1074,7 @@ async function nlSubscribe() {
 
 <!-- Cookie Banner -->
 <div id="cookie-banner" style="display:none;position:fixed;bottom:0;left:0;right:0;background:#111;color:#fff;padding:1rem 2rem;z-index:9999;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem;font-family:'Inter',sans-serif;font-size:0.82rem;">
-  <p style="margin:0;color:rgba(255,255,255,0.8);">🍪 Usamos cookies para mejorar tu experiencia y mostrar anuncios relevantes. Al continuar navegando, aceptas nuestro uso de cookies. <a href="/privacidad" style="color:#CE1126;text-decoration:underline;">Ver Política de Privacidad</a></p>
+  <p style="margin:0;color:rgba(255,255,255,0.8);">🍪 Usamos cookies para mejorar tu experiencia y mostrar anuncios relevantes. Al continuar navegando, aceptas nuestro uso de cookies. <a href="/privacidad-boricua" style="color:#CE1126;text-decoration:underline;">Ver Política de Privacidad</a></p>
   <button onclick="acceptCookies()" style="background:#CE1126;color:#fff;border:none;padding:0.5rem 1.5rem;border-radius:4px;font-weight:700;cursor:pointer;white-space:nowrap;font-size:0.82rem;">Aceptar</button>
 </div>
 <script>

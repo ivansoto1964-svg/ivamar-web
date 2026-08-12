@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const fs = require("fs");
 const path = require("path");
+const { editorialCategory } = require("../utils/pb-editorial");
 
 const POSTS_DIR = path.join(__dirname, "../../data/pb-blog/posts");
 const BLOGGER_FEED = "https://blog.masboricuaqueunmofongo.com/feeds/posts/default?alt=json&max-results=50";
@@ -49,7 +50,7 @@ async function syncBlogger() {
       const dateStr = date.toLocaleDateString("es-PR", {year:"numeric",month:"long",day:"numeric"});
       const dateISO = date.toISOString().split("T")[0];
       const cats = (entry.category || []).map(c => c.term.trim()).filter(t => t.length < 40 && !t.includes("\n") && !t.includes("?"));
-      const category = cats.length > 0 ? cats[0] : "Cultura Boricua";
+      const category = editorialCategory(title, cats);
       const tags = (entry.category || []).map(c => c.term.trim()).filter(Boolean);
       const link = (entry.link.find(l => l.rel === "alternate") || {}).href || "";
 
@@ -65,7 +66,8 @@ async function syncBlogger() {
       const excerpt = (lines[0] || textContent).substring(0, 160) + "...";
 
       const cleanImage = image && image.startsWith('http') ? image : '/img/og-planetaboricua.jpg';
-      const post = { slug, title, excerpt, category, date: dateStr, dateISO, readTime: Math.max(1, Math.ceil(textContent.split(/\s+/).length / 200)).toString(), image: cleanImage, tags, bloggerUrl: link, content };
+      const updatedISO = new Date((entry.updated || entry.published).$t).toISOString();
+      const post = { slug, title, excerpt, category, date: dateStr, dateISO, updatedISO, readTime: Math.max(1, Math.ceil(textContent.split(/\s+/).length / 200)).toString(), image: cleanImage, tags, bloggerUrl: link, content };
 
       const postPath = path.join(POSTS_DIR, slug + ".json");
       fs.writeFileSync(postPath, JSON.stringify(post, null, 2));
@@ -81,18 +83,12 @@ async function syncBlogger() {
   }
 }
 
-// Manual sync endpoint
-router.get("/sync", async (req, res) => {
-  try {
-    const result = await syncBlogger();
-    res.json({ success: true, ...result });
-  } catch(e) {
-    res.status(500).json({ success: false, error: e.message });
-  }
-});
+// La sincronización manual se expone únicamente dentro del panel administrativo.
+router.all("/sync", (_req, res) => res.status(404).json({ success: false }));
 
-// Auto sync on startup and every 6 hours
+// Auto sync on startup and every 10 minutes
 syncBlogger().catch(e => console.error("Initial sync failed:", e.message));
-setInterval(() => syncBlogger().catch(e => console.error("Auto sync failed:", e.message)), 30 * 60 * 1000);
+setInterval(() => syncBlogger().catch(e => console.error("Auto sync failed:", e.message)), 10 * 60 * 1000);
 
 module.exports = router;
+module.exports.syncBlogger = syncBlogger;

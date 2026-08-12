@@ -5,7 +5,7 @@ module.exports = `<!DOCTYPE html>
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Añadir Mi Negocio — Planeta Boricua</title>
+<title>Registrar mi artesanía — Feria Digital de Artesanías Puertorriqueñas</title>
 </head>
 <body>
 <style>
@@ -53,12 +53,12 @@ footer{background:var(--blue);padding:2rem;text-align:center;}
   <a href="/" class="nav-logo">
     <span class="nav-logo-text">Planeta <span>Boricua</span></span>
   </a>
-  <a href="/#directorio" class="nav-back">← Directorio</a>
+  <a href="/feria-artesanos" class="nav-back">← Ver la Feria</a>
 </nav>
 
 <section class="hero">
-  <h1>🇵🇷 Únete a la Feria de Artesanías</h1>
-  <p>Llega a miles de boricuas en USA y Puerto Rico. Gratis para comenzar. Con badge de verificación boricua.</p>
+  <h1>🇵🇷 Únete a la Feria Digital</h1>
+  <p>Presenta tu artesanía a la comunidad boricua en Puerto Rico y la diáspora. El registro es gratuito.</p>
 </section>
 
 <div class="form-wrap">
@@ -68,7 +68,7 @@ footer{background:var(--blue);padding:2rem;text-align:center;}
       <div class="form-section-title">Información de tu Artesanía</div>
       <div class="form-group">
         <label>Nombre del Artesano / Taller *</label>
-        <input type="text" id="biz-name" placeholder="ej. El Mofongo de Mamá Food Truck" required>
+        <input type="text" id="biz-name" placeholder="ej. Taller Manos de Borinquen" required>
       </div>
       <div class="form-row">
         <div class="form-group">
@@ -182,7 +182,7 @@ footer{background:var(--blue);padding:2rem;text-align:center;}
               <option value="colorado">Colorado</option>
               <option value="connecticut">Connecticut</option>
               <option value="delaware">Delaware</option>
-              <option value="florida">Florida</option>
+              <option value="florida-us">Florida</option>
               <option value="georgia">Georgia</option>
               <option value="hawaii">Hawaii</option>
               <option value="idaho">Idaho</option>
@@ -245,11 +245,11 @@ footer{background:var(--blue);padding:2rem;text-align:center;}
       </div>
       <div class="form-group">
         <label>Descripción Corta * (máx. 160 caracteres)</label>
-        <input type="text" id="biz-desc" placeholder="ej. Auténtica comida boricua en el corazón de Orlando" maxlength="160">
+        <input type="text" id="biz-desc" placeholder="Describe en una oración lo que creas" maxlength="160">
       </div>
       <div class="form-group">
         <label>Descripción Completa *</label>
-        <textarea id="biz-full-desc" placeholder="Cuéntanos sobre tu negocio — qué ofreces, qué lo hace especial, horarios, experiencia del cliente..."></textarea>
+        <textarea id="biz-full-desc" placeholder="Cuéntanos tu historia, qué creas, qué materiales utilizas y cómo pueden comprarte o hacerte un pedido."></textarea>
       </div>
     </div>
 
@@ -334,7 +334,7 @@ footer{background:var(--blue);padding:2rem;text-align:center;}
     </div>
 
     <div style="background:#f0f4ff;border-radius:10px;padding:1.2rem;margin-bottom:2rem;border:1px solid var(--border);">
-      <p style="font-size:0.85rem;color:var(--mid);line-height:1.6;">🏅 Una vez verificado, tu negocio recibirá el <strong>Badge Boricua Verificado</strong> y aparecerá en el directorio de Planeta Boricua visible para miles de boricuas en USA y PR.</p>
+      <p style="font-size:0.85rem;color:var(--mid);line-height:1.6;">🎨 Una vez revisada y aprobada, tendrás una ficha pública dentro de la <strong>Feria Digital de Artesanías Puertorriqueñas</strong> que podrás compartir con tus clientes.</p>
     </div>
 
     <div class="terms-check">
@@ -352,7 +352,7 @@ footer{background:var(--blue);padding:2rem;text-align:center;}
     <p style="margin-top:1rem;">¿Preguntas? Escríbenos a <strong>connect@ivamarai.com</strong></p>
     <div style="margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid #86efac;">
       <p style="font-weight:700;color:#166534;">¿Conoces a otro artesano? 🎨</p>
-      <p style="margin-top:0.3rem;">Comparte la Feria de Artesanías para que también se beneficie.</p>
+      <p style="margin-top:0.3rem;">Comparte la Feria Digital para que también se beneficie.</p>
       <div style="display:flex;gap:0.6rem;justify-content:center;margin-top:1rem;flex-wrap:wrap;">
         <a href="https://wa.me/?text=¡Wepa! Mira esta Feria de Artesanías gratis de Planeta Boricua para mostrar tu trabajo: https://www.masboricuaqueunmofongo.com/pb/add-negocio" target="_blank" style="background:#25D366;color:#fff;padding:0.6rem 1.2rem;border-radius:8px;text-decoration:none;font-size:0.85rem;font-weight:700;">📱 WhatsApp</a>
         <a href="https://www.facebook.com/sharer/sharer.php?u=https://www.masboricuaqueunmofongo.com/pb/add-negocio" target="_blank" style="background:#1877F2;color:#fff;padding:0.6rem 1.2rem;border-radius:8px;text-decoration:none;font-size:0.85rem;font-weight:700;">📘 Facebook</a>
@@ -501,65 +501,6 @@ async function submitNegocio() {
     btn.disabled = false;
     btn.textContent = 'Enviar para Revisión 🇵🇷 →';
   }
-}
-</script>
-
-<!-- Nayeli Floating Chat - ayuda a llenar el formulario -->
-<div id="nayeli-float-btn" onclick="toggleNayeliFloat()" style="position:fixed;bottom:1.5rem;left:1.5rem;z-index:1000;cursor:pointer;display:flex;align-items:center;gap:0.6rem;background:#002D62;border-radius:50px;padding:0.4rem 1rem 0.4rem 0.4rem;box-shadow:0 4px 20px rgba(0,45,98,0.4);transition:transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
-  <img src="/img/nayeli.jpg" alt="Nayeli" style="width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,0.3);">
-  <span style="color:#fff;font-size:0.82rem;font-weight:700;white-space:nowrap;">¿Necesitas ayuda? 🇵🇷</span>
-</div>
-
-<div id="nayeli-float-chat" style="display:none;position:fixed;bottom:5.5rem;left:1.5rem;z-index:1000;width:340px;max-width:calc(100vw - 3rem);background:#fff;border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,0.15);overflow:hidden;border:1px solid #e5e5e0;">
-  <div style="background:#002D62;padding:0.9rem 1.2rem;display:flex;align-items:center;gap:0.8rem;">
-    <img src="/img/nayeli.jpg" alt="Nayeli" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
-    <div>
-      <div style="color:#fff;font-weight:700;font-size:0.88rem;">Nayeli 🇵🇷</div>
-      <div style="color:rgba(255,255,255,0.6);font-size:0.7rem;display:flex;align-items:center;gap:4px;"><span style="width:6px;height:6px;border-radius:50%;background:#4ade80;display:inline-block;"></span>En línea ahora</div>
-    </div>
-    <button onclick="toggleNayeliFloat()" style="margin-left:auto;background:none;border:none;color:rgba(255,255,255,0.7);font-size:1.2rem;cursor:pointer;">✕</button>
-  </div>
-  <div id="nayeli-float-messages" style="height:280px;overflow-y:auto;padding:1rem;display:flex;flex-direction:column;gap:0.8rem;background:#f9f9f6;">
-    <div style="background:#fff;border:1px solid #e5e5e0;border-radius:12px;border-bottom-left-radius:3px;padding:0.7rem 1rem;font-size:0.84rem;max-width:85%;align-self:flex-start;">¡Wepa! 🇵🇷 Soy Nayeli. Si tienes dudas sobre cómo llenar tu ficha de artesano, o cómo describir tu trabajo, pregúntame lo que sea.</div>
-  </div>
-  <div style="padding:0.7rem;border-top:1px solid #e5e5e0;display:flex;gap:0.5rem;background:#fff;">
-    <input id="nayeli-float-input" type="text" placeholder="Escribe aquí..." style="flex:1;border:1.5px solid #e5e5e0;border-radius:8px;padding:0.5rem 0.8rem;font-size:0.82rem;font-family:Inter,sans-serif;outline:none;" onkeydown="if(event.key==='Enter')sendNayeliFloat()">
-    <button onclick="sendNayeliFloat()" style="background:#CE1126;color:#fff;border:none;border-radius:8px;padding:0 1rem;cursor:pointer;font-size:1rem;">➤</button>
-  </div>
-</div>
-<script>
-function toggleNayeliFloat() {
-  var chat = document.getElementById('nayeli-float-chat');
-  chat.style.display = chat.style.display === 'none' ? 'block' : 'none';
-  if (chat.style.display === 'block') document.getElementById('nayeli-float-input').focus();
-}
-var nayeliFloatHistory = [];
-async function sendNayeliFloat() {
-  var input = document.getElementById('nayeli-float-input');
-  var messages = document.getElementById('nayeli-float-messages');
-  var text = input.value.trim();
-  if (!text) return;
-  var userDiv = document.createElement('div');
-  userDiv.style.cssText = 'background:#CE1126;color:#fff;border-radius:12px;border-bottom-right-radius:3px;padding:0.7rem 1rem;font-size:0.84rem;max-width:85%;align-self:flex-end;';
-  userDiv.textContent = text;
-  messages.appendChild(userDiv);
-  input.value = '';
-  messages.scrollTop = messages.scrollHeight;
-  var typing = document.createElement('div');
-  typing.style.cssText = 'background:#fff;border:1px solid #e5e5e0;border-radius:12px;border-bottom-left-radius:3px;padding:0.7rem 1rem;font-size:0.84rem;max-width:85%;align-self:flex-start;';
-  typing.textContent = '...';
-  messages.appendChild(typing);
-  try {
-    var res = await fetch('/api/nayeli', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:text,history:nayeliFloatHistory})});
-    var data = await res.json();
-    typing.remove();
-    var botDiv = document.createElement('div');
-    botDiv.style.cssText = 'background:#fff;border:1px solid #e5e5e0;border-radius:12px;border-bottom-left-radius:3px;padding:0.7rem 1rem;font-size:0.84rem;max-width:85%;align-self:flex-start;line-height:1.5;';
-    botDiv.textContent = data.reply || 'Dale, cuéntame más.';
-    messages.appendChild(botDiv);
-    nayeliFloatHistory.push({role:'user',content:text},{role:'assistant',content:data.reply||''});
-    messages.scrollTop = messages.scrollHeight;
-  } catch(e) { typing.remove(); }
 }
 </script>
 

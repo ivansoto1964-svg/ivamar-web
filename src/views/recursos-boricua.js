@@ -168,16 +168,6 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;}
     <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
   </div>
 
-  <!-- NAYELI CTA -->
-  <div class="nayeli-strip">
-    <div class="nayeli-strip-icon">🇵🇷</div>
-    <div class="nayeli-strip-text">
-      <h3>¿Tienes preguntas? Habla con Nayeli</h3>
-      <p>Nayeli es tu asistente boricua de IA. Conoce todo sobre mudanzas PR↔USA, licencias, servicios y más. Pregúntale lo que necesites — en español boricua, 24/7.</p>
-    </div>
-    <a href="/#nayeli" class="nayeli-strip-btn">Hablar con Nayeli →</a>
-  </div>
-
 </div>
 
 <!-- FOOTER -->
@@ -195,15 +185,15 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;}
     <div class="pb-footer-col">
       <h4>Portal</h4>
       <a href="/">Inicio</a>
-      <a href="/#noticias">Noticias</a>
-      <a href="/#directorio">Directorio Boricua</a>
+      <a href="/blog">El Balcón</a>
+      <a href="/#feria">Feria de Artesanías</a>
       <a href="/recursos">Recursos PR↔USA</a>
       <a href="/regresar-a-pr">Regresar a PR</a>
     </div>
     <div class="pb-footer-col">
       <h4>Comunidad</h4>
-      <a href="/#directorio">Añadir Mi Negocio</a>
-      <a href="/#newsletter">Newsletter</a>
+      <a href="/pb/add-negocio">Registrar Mi Artesanía</a>
+      <a href="/#newsletter">Boletín Boricua</a>
       <a href="mailto:connect@ivamarai.com">Contacto</a>
     </div>
     <div class="pb-footer-col">

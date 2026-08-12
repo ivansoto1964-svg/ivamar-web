@@ -142,7 +142,7 @@ nav{background:#fff;border-bottom:3px solid #CE1126;padding:0;}
   <p><strong>Otros Socios (ej. Trip.com, Booking.com):</strong> También participamos en redes de afiliados de viajes y turismo. Los enlaces a hoteles, vuelos o servicios son enlaces de afiliados que nos ayudan a mantener esta plataforma gratuita para la comunidad.</p>
 
   <h2>5. Recopilación de Datos del Usuario</h2>
-  <p>Al registrarse en nuestra Feria de Artesanías o al suscribirse a nuestro Newsletter, usted nos proporciona voluntariamente información como su nombre, dirección de correo electrónico e información sobre su artesanía. Utilizamos esta información exclusivamente para publicar la ficha de su negocio en nuestro directorio y enviarle actualizaciones relevantes de nuestra comunidad.</p>
+  <p>Al registrarse en nuestra Feria de Artesanías o al suscribirse a nuestro Boletín Boricua, usted nos proporciona voluntariamente información como su nombre, dirección de correo electrónico e información sobre su artesanía. Utilizamos esta información exclusivamente para publicar la ficha de su negocio en nuestro directorio y enviarle actualizaciones relevantes de nuestra comunidad.</p>
   <p>Usted puede cancelar su suscripción en cualquier momento haciendo clic en el enlace "Darse de baja" incluido en todos nuestros correos electrónicos.</p>
 
   <h2>6. Nayeli AI</h2>
