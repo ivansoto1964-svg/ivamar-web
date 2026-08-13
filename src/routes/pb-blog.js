@@ -7,6 +7,13 @@ const pbBlogPost = require("../views/pb-blog/post");
 const { CATEGORIES, categorySlug, editorialCategory } = require("../utils/pb-editorial");
 const POSTS_DIR = path.join(__dirname, "../../data/pb-blog/posts");
 const POSTS_PER_PAGE = 9;
+const COMMENTS_FILE = "/data/pb-comments/approved.json";
+
+function loadCommentsForPost(slug) {
+  try {
+    return JSON.parse(fs.readFileSync(COMMENTS_FILE, "utf8")).filter(c => c.articleSlug === slug && c.section === "blog").sort((a,b) => new Date(b.approvedAt) - new Date(a.approvedAt));
+  } catch (_) { return []; }
+}
 
 function loadPosts() {
   try {
@@ -76,7 +83,7 @@ router.get("/:slug", (req, res) => {
     const related = allPosts.filter(p => p.slug !== post.slug && p.category === post.category).slice(0,3);
     const prevPost = currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : null;
     const nextPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null;
-    res.send(pbBlogPost(post, related, prevPost, nextPost));
+    res.send(pbBlogPost(post, related, prevPost, nextPost, loadCommentsForPost(post.slug)));
   } catch(e) {
     res.status(500).send("Error cargando el artículo");
   }

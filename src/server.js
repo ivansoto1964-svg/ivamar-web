@@ -155,6 +155,7 @@ function publicPBEvent(event) {
 
 const PB_LATEST_DIR = '/data/pb-latest';
 const PB_COMMENTS_DIR = '/data/pb-comments';
+const PB_BLOG_POSTS_DIR = path.join(__dirname, '../data/pb-blog/posts');
 function readPBLatest(file) {
   try { return JSON.parse(fs.readFileSync(path.join(PB_LATEST_DIR, file), 'utf8')); } catch (_) { return []; }
 }
@@ -170,7 +171,7 @@ function writePBComments(file, comments) {
   fs.writeFileSync(path.join(PB_COMMENTS_DIR, file), JSON.stringify(comments, null, 2));
 }
 function publicPBComment(comment) {
-  return { id:comment.id,articleSlug:comment.articleSlug,name:comment.name,comment:comment.comment,submittedAt:comment.submittedAt,approvedAt:comment.approvedAt };
+  return { id:comment.id,articleSlug:comment.articleSlug,section:comment.section || 'latest',name:comment.name,comment:comment.comment,submittedAt:comment.submittedAt,approvedAt:comment.approvedAt };
 }
 function pbLatestSlug(title, id) {
   const base = String(title || 'actualidad').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
@@ -2265,19 +2266,28 @@ app.get('/api/pb-lo-mas-reciente', (_req, res) => {
 app.get('/lo-mas-reciente/:slug', (req, res) => {
   const item = readPBLatest('approved.json').find(entry => entry.slug === req.params.slug);
   if (!item) return res.status(404).send(loMasRecientePB(null));
-  const comments = readPBComments('approved.json').filter(comment => comment.articleSlug === item.slug).sort((a,b) => new Date(b.approvedAt) - new Date(a.approvedAt)).map(publicPBComment);
+  const comments = readPBComments('approved.json').filter(comment => comment.articleSlug === item.slug && (comment.section || 'latest') === 'latest').sort((a,b) => new Date(b.approvedAt) - new Date(a.approvedAt)).map(publicPBComment);
   res.send(loMasRecientePB(publicPBLatest(item), comments));
 });
 
 app.get('/api/pb-comments/:slug', (req, res) => {
-  const articleExists = readPBLatest('approved.json').some(item => item.slug === req.params.slug);
+  const section = req.query.section === 'blog' ? 'blog' : 'latest';
+  const validSlug = /^[a-z0-9-]+$/.test(req.params.slug);
+  const articleExists = validSlug && (section === 'blog' ? fs.existsSync(path.join(PB_BLOG_POSTS_DIR, req.params.slug + '.json')) : readPBLatest('approved.json').some(item => item.slug === req.params.slug));
   if (!articleExists) return res.status(404).json({ok:false,error:'Publicación no encontrada.'});
-  const comments = readPBComments('approved.json').filter(comment => comment.articleSlug === req.params.slug).sort((a,b) => new Date(b.approvedAt) - new Date(a.approvedAt)).map(publicPBComment);
+  const comments = readPBComments('approved.json').filter(comment => comment.articleSlug === req.params.slug && (comment.section || 'latest') === section).sort((a,b) => new Date(b.approvedAt) - new Date(a.approvedAt)).map(publicPBComment);
   res.json({ok:true,comments});
 });
 
 app.post('/api/pb-comments/:slug', formLimiter, express.json({ limit:'20kb' }), async (req, res) => {
-  const article = readPBLatest('approved.json').find(item => item.slug === req.params.slug);
+  const section = req.body.section === 'blog' ? 'blog' : 'latest';
+  if (!/^[a-z0-9-]+$/.test(req.params.slug)) return res.status(404).json({ok:false,error:'Publicación no encontrada.'});
+  let article = null;
+  if (section === 'blog') {
+    try { article = JSON.parse(fs.readFileSync(path.join(PB_BLOG_POSTS_DIR, req.params.slug + '.json'), 'utf8')); } catch (_) {}
+  } else {
+    article = readPBLatest('approved.json').find(item => item.slug === req.params.slug);
+  }
   if (!article) return res.status(404).json({ok:false,error:'Publicación no encontrada.'});
   if (String(req.body.website || '').trim()) return res.json({ok:true,pending:true});
   const name = sanitize(req.body.name || '').replace(/\s+/g,' ').trim();
@@ -2286,9 +2296,9 @@ app.post('/api/pb-comments/:slug', formLimiter, express.json({ limit:'20kb' }), 
   if (name.length > 60 || commentText.length > 1000) return res.status(400).json({ok:false,error:'El comentario excede el límite permitido.'});
   const crypto = require('crypto');
   const pending = readPBComments('pending.json');
-  const recentDuplicate = pending.some(item => item.articleSlug === article.slug && item.name.toLowerCase() === name.toLowerCase() && item.comment === commentText);
+  const recentDuplicate = pending.some(item => item.articleSlug === article.slug && (item.section || 'latest') === section && item.name.toLowerCase() === name.toLowerCase() && item.comment === commentText);
   if (recentDuplicate) return res.json({ok:true,pending:true});
-  const item = {id:`${Date.now()}-${crypto.randomBytes(3).toString('hex')}`,articleSlug:article.slug,articleTitle:article.title,name,comment:commentText,status:'pending',submittedAt:new Date().toISOString(),approveToken:crypto.randomBytes(24).toString('hex'),rejectToken:crypto.randomBytes(24).toString('hex')};
+  const item = {id:`${Date.now()}-${crypto.randomBytes(3).toString('hex')}`,articleSlug:article.slug,articleTitle:article.title,section,name,comment:commentText,status:'pending',submittedAt:new Date().toISOString(),approveToken:crypto.randomBytes(24).toString('hex'),rejectToken:crypto.randomBytes(24).toString('hex')};
   pending.push(item); writePBComments('pending.json',pending);
   const emailEsc = (value) => String(value || '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
   try {
@@ -2305,7 +2315,7 @@ app.get('/admin/pb-comment-approve/:token', (req, res) => {
   delete item.approveToken; delete item.rejectToken; item.status='approved'; item.approvedAt=new Date().toISOString();
   const approved = readPBComments('approved.json'); approved.push(item);
   writePBComments('pending.json',pending); writePBComments('approved.json',approved);
-  res.send(`<!doctype html><html lang="es"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Comentario aprobado</title><body style="font-family:system-ui;text-align:center;padding:3rem"><h1>✅ Comentario publicado</h1><p>${emailEscForResponse(item.name)}</p><p><a href="/lo-mas-reciente/${encodeURIComponent(item.articleSlug)}#comentarios">Ver comentarios</a></p></body></html>`);
+  res.send(`<!doctype html><html lang="es"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Comentario aprobado</title><body style="font-family:system-ui;text-align:center;padding:3rem"><h1>✅ Comentario publicado</h1><p>${emailEscForResponse(item.name)}</p><p><a href="${item.section === 'blog' ? '/blog/' : '/lo-mas-reciente/'}${encodeURIComponent(item.articleSlug)}#comentarios">Ver comentarios</a></p></body></html>`);
 });
 
 app.get('/admin/pb-comment-reject/:token', (req, res) => {
