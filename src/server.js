@@ -154,12 +154,23 @@ function publicPBEvent(event) {
 }
 
 const PB_LATEST_DIR = '/data/pb-latest';
+const PB_COMMENTS_DIR = '/data/pb-comments';
 function readPBLatest(file) {
   try { return JSON.parse(fs.readFileSync(path.join(PB_LATEST_DIR, file), 'utf8')); } catch (_) { return []; }
 }
 function writePBLatest(file, items) {
   if (!fs.existsSync(PB_LATEST_DIR)) fs.mkdirSync(PB_LATEST_DIR, { recursive: true });
   fs.writeFileSync(path.join(PB_LATEST_DIR, file), JSON.stringify(items, null, 2));
+}
+function readPBComments(file) {
+  try { return JSON.parse(fs.readFileSync(path.join(PB_COMMENTS_DIR, file), 'utf8')); } catch (_) { return []; }
+}
+function writePBComments(file, comments) {
+  if (!fs.existsSync(PB_COMMENTS_DIR)) fs.mkdirSync(PB_COMMENTS_DIR, { recursive: true });
+  fs.writeFileSync(path.join(PB_COMMENTS_DIR, file), JSON.stringify(comments, null, 2));
+}
+function publicPBComment(comment) {
+  return { id:comment.id,articleSlug:comment.articleSlug,name:comment.name,comment:comment.comment,submittedAt:comment.submittedAt,approvedAt:comment.approvedAt };
 }
 function pbLatestSlug(title, id) {
   const base = String(title || 'actualidad').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
@@ -2254,8 +2265,60 @@ app.get('/api/pb-lo-mas-reciente', (_req, res) => {
 app.get('/lo-mas-reciente/:slug', (req, res) => {
   const item = readPBLatest('approved.json').find(entry => entry.slug === req.params.slug);
   if (!item) return res.status(404).send(loMasRecientePB(null));
-  res.send(loMasRecientePB(publicPBLatest(item)));
+  const comments = readPBComments('approved.json').filter(comment => comment.articleSlug === item.slug).sort((a,b) => new Date(b.approvedAt) - new Date(a.approvedAt)).map(publicPBComment);
+  res.send(loMasRecientePB(publicPBLatest(item), comments));
 });
+
+app.get('/api/pb-comments/:slug', (req, res) => {
+  const articleExists = readPBLatest('approved.json').some(item => item.slug === req.params.slug);
+  if (!articleExists) return res.status(404).json({ok:false,error:'Publicación no encontrada.'});
+  const comments = readPBComments('approved.json').filter(comment => comment.articleSlug === req.params.slug).sort((a,b) => new Date(b.approvedAt) - new Date(a.approvedAt)).map(publicPBComment);
+  res.json({ok:true,comments});
+});
+
+app.post('/api/pb-comments/:slug', formLimiter, express.json({ limit:'20kb' }), async (req, res) => {
+  const article = readPBLatest('approved.json').find(item => item.slug === req.params.slug);
+  if (!article) return res.status(404).json({ok:false,error:'Publicación no encontrada.'});
+  if (String(req.body.website || '').trim()) return res.json({ok:true,pending:true});
+  const name = sanitize(req.body.name || '').replace(/\s+/g,' ').trim();
+  const commentText = sanitize(req.body.comment || '').trim();
+  if (name.length < 2 || commentText.length < 3) return res.status(400).json({ok:false,error:'Escribe tu nombre y un comentario.'});
+  if (name.length > 60 || commentText.length > 1000) return res.status(400).json({ok:false,error:'El comentario excede el límite permitido.'});
+  const crypto = require('crypto');
+  const pending = readPBComments('pending.json');
+  const recentDuplicate = pending.some(item => item.articleSlug === article.slug && item.name.toLowerCase() === name.toLowerCase() && item.comment === commentText);
+  if (recentDuplicate) return res.json({ok:true,pending:true});
+  const item = {id:`${Date.now()}-${crypto.randomBytes(3).toString('hex')}`,articleSlug:article.slug,articleTitle:article.title,name,comment:commentText,status:'pending',submittedAt:new Date().toISOString(),approveToken:crypto.randomBytes(24).toString('hex'),rejectToken:crypto.randomBytes(24).toString('hex')};
+  pending.push(item); writePBComments('pending.json',pending);
+  const emailEsc = (value) => String(value || '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+  try {
+    await resend.emails.send({from:'Planeta Boricua <connect@ivamarai.com>',to:'connect@ivamarai.com',subject:`💬 Nuevo comentario: ${article.title}`,html:`<h2>Nuevo comentario pendiente</h2><p><strong>Publicación:</strong> ${emailEsc(article.title)}</p><p><strong>Nombre:</strong> ${emailEsc(name)}</p><blockquote>${emailEsc(commentText).replace(/\n/g,'<br>')}</blockquote><p><a href="https://www.masboricuaqueunmofongo.com/admin/pb-comment-approve/${item.approveToken}">✅ Aprobar</a> &nbsp; <a href="https://www.masboricuaqueunmofongo.com/admin/pb-comment-reject/${item.rejectToken}">❌ Rechazar</a></p>`});
+  } catch (error) { console.error('PB comment notification error:',error.message); }
+  res.status(202).json({ok:true,pending:true});
+});
+
+app.get('/admin/pb-comment-approve/:token', (req, res) => {
+  const pending = readPBComments('pending.json');
+  const index = pending.findIndex(item => item.approveToken === req.params.token);
+  if (index < 0) return res.status(404).send('Comentario no encontrado o procesado.');
+  const [item] = pending.splice(index,1);
+  delete item.approveToken; delete item.rejectToken; item.status='approved'; item.approvedAt=new Date().toISOString();
+  const approved = readPBComments('approved.json'); approved.push(item);
+  writePBComments('pending.json',pending); writePBComments('approved.json',approved);
+  res.send(`<!doctype html><html lang="es"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Comentario aprobado</title><body style="font-family:system-ui;text-align:center;padding:3rem"><h1>✅ Comentario publicado</h1><p>${emailEscForResponse(item.name)}</p><p><a href="/lo-mas-reciente/${encodeURIComponent(item.articleSlug)}#comentarios">Ver comentarios</a></p></body></html>`);
+});
+
+app.get('/admin/pb-comment-reject/:token', (req, res) => {
+  const pending = readPBComments('pending.json');
+  const index = pending.findIndex(item => item.rejectToken === req.params.token);
+  if (index < 0) return res.status(404).send('Comentario no encontrado o procesado.');
+  pending.splice(index,1); writePBComments('pending.json',pending);
+  res.send('<!doctype html><html lang="es"><meta charset="utf-8"><body style="font-family:system-ui;text-align:center;padding:3rem"><h1>Comentario rechazado</h1></body></html>');
+});
+
+function emailEscForResponse(value) {
+  return String(value || '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+}
 
 app.post('/api/pb-reciente-submit', formLimiter, express.json({ limit:'300kb' }), async (req, res) => {
   const title = sanitize(req.body.title || '').trim();
