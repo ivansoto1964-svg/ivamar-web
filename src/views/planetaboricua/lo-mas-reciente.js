@@ -4,7 +4,7 @@ module.exports = function loMasReciente(item) {
   if (!item) return '<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Publicación no encontrada</title></head><body><main><h1>Publicación no encontrada</h1><a href="/">Volver a Planeta Boricua</a></main></body></html>';
   const canonical = `https://www.masboricuaqueunmofongo.com/lo-mas-reciente/${encodeURIComponent(item.slug)}`;
   const paragraphs = String(item.body || "").split(/\n{2,}/).map((text) => `<p>${esc(text).replace(/\n/g, "<br>")}</p>`).join("");
-  const image = item.image || "";
+  const image = item.image === "/img/og-planetaboricua.jpg" ? "" : (item.image || "");
   const socialImage = image || "/img/pb-logo.png";
   const absoluteImage = socialImage.startsWith("/") ? `https://www.masboricuaqueunmofongo.com${socialImage}` : socialImage;
   const hero = image ? `<img class="article-image" src="${esc(image)}" alt="${esc(item.title)}">` : '<div class="article-brand"><span>🇵🇷</span><strong>Planeta Boricua</strong><small>Lo más reciente</small></div>';
