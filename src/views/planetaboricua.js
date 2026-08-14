@@ -610,41 +610,41 @@ async function loadDirectorio() {
         <span class="sec-divider-label">Tienda Boricua</span>
       </div>
       <div style="flex:1;height:2px;background:var(--red);margin:0 1rem;"></div>
-      <a href="https://www.amazon.com/shop/planetaboricua" target="_blank" class="sec-divider-link">Ver toda la tienda →</a>
+      <a href="/go/amazon-store" target="_blank" rel="sponsored noopener" class="sec-divider-link">Ver toda la tienda →</a>
     </div>
     <p style="font-size:0.88rem;color:var(--mid);line-height:1.7;margin:1rem 0 1.5rem;">
       Productos boricuas con orgullo 🇵🇷 — disponibles en Amazon con entrega rápida en USA y Puerto Rico.
     </p>
     <div class="tienda-grid">
-      <a href="https://www.amazon.com/shop/planetaboricua/list/1W420Q1BXBM69?tag=ivansoto0f-20" target="_blank" rel="noopener sponsored" class="tienda-card">
+      <a href="/go/amazon-shirts" target="_blank" rel="noopener sponsored" class="tienda-card">
         <img src="/img/shop/camisetas-pr.webp" alt="Camisetas de Puerto Rico" loading="eager" decoding="async">
         <div class="tienda-card-body"><div class="tienda-card-title">👕 Camisetas de PR</div><div class="tienda-card-link">Ver selección →</div></div>
       </a>
-      <a href="https://www.amazon.com/shop/planetaboricua/list/2CXBDURUV9G46?tag=ivansoto0f-20" target="_blank" rel="noopener sponsored" class="tienda-card">
+      <a href="/go/amazon-flags" target="_blank" rel="noopener sponsored" class="tienda-card">
         <img src="/img/shop/gorras-pr.webp" alt="Gorras de Puerto Rico" loading="eager" decoding="async">
         <div class="tienda-card-body"><div class="tienda-card-title">🧢 Gorras de PR</div><div class="tienda-card-link">Ver selección →</div></div>
       </a>
-      <a href="https://www.amazon.com/shop/planetaboricua/list/1A33AK8DLTYDO?tag=ivansoto0f-20" target="_blank" rel="noopener sponsored" class="tienda-card">
+      <a href="/go/amazon-kitchen" target="_blank" rel="noopener sponsored" class="tienda-card">
         <img src="/img/shop/tazas-termos.webp" alt="Tazas y termos boricuas" loading="eager" decoding="async">
         <div class="tienda-card-body"><div class="tienda-card-title">☕ Tazas y Termos</div><div class="tienda-card-link">Ver selección →</div></div>
       </a>
-      <a href="https://www.amazon.com/shop/planetaboricua/list/GVPOWIBQMA3B?tag=ivansoto0f-20" target="_blank" rel="noopener sponsored" class="tienda-card">
+      <a href="/go/amazon-music" target="_blank" rel="noopener sponsored" class="tienda-card">
         <img src="/img/shop/cocina-criolla.webp" alt="Productos para cocina criolla" loading="eager" decoding="async">
         <div class="tienda-card-body"><div class="tienda-card-title">🌿 Cocina Criolla</div><div class="tienda-card-link">Ver selección →</div></div>
       </a>
-      <a href="https://www.amazon.com/shop/planetaboricua/list/2W7GCH9PJ1D9B?tag=ivansoto0f-20" target="_blank" rel="noopener sponsored" class="tienda-card">
+      <a href="/go/amazon-books" target="_blank" rel="noopener sponsored" class="tienda-card">
         <img src="/img/shop/dulces-isla.webp" alt="Dulces de Puerto Rico" loading="eager" decoding="async">
         <div class="tienda-card-body"><div class="tienda-card-title">🍬 Dulces de la Isla</div><div class="tienda-card-link">Ver selección →</div></div>
       </a>
-      <a href="https://www.amazon.com/shop/planetaboricua/list/3PF9YAQ8MKRCO?tag=ivansoto0f-20" target="_blank" rel="noopener sponsored" class="tienda-card">
+      <a href="/go/amazon-home" target="_blank" rel="noopener sponsored" class="tienda-card">
         <img src="/img/shop/cuatro-patas.webp" alt="Productos boricuas para mascotas" loading="eager" decoding="async">
         <div class="tienda-card-body"><div class="tienda-card-title">🐾 Boricuas de 4 Patas</div><div class="tienda-card-link">Ver selección →</div></div>
       </a>
-      <a href="https://www.amazon.com/shop/planetaboricua/list/1UY29IVPZQ34Y?tag=ivansoto0f-20" target="_blank" rel="noopener sponsored" class="tienda-card">
+      <a href="/go/amazon-auto" target="_blank" rel="noopener sponsored" class="tienda-card">
         <img src="/img/shop/joyeria-boricua.webp" alt="Joyería boricua" loading="eager" decoding="async">
         <div class="tienda-card-body"><div class="tienda-card-title">💍 Joyería Boricua</div><div class="tienda-card-link">Ver selección →</div></div>
       </a>
-      <a href="https://www.amazon.com/shop/planetaboricua/list/1Q6CYDE5BV80P?tag=ivansoto0f-20" target="_blank" rel="noopener sponsored" class="tienda-card">
+      <a href="/go/amazon-gifts" target="_blank" rel="noopener sponsored" class="tienda-card">
         <img src="/img/shop/para-tu-auto.webp" alt="Accesorios boricuas para autos" loading="eager" decoding="async">
         <div class="tienda-card-body"><div class="tienda-card-title">🚗 Para Tu Auto</div><div class="tienda-card-link">Ver selección →</div></div>
       </a>
@@ -654,7 +654,7 @@ async function loadDirectorio() {
       </a>
     </div>
     <div style="text-align:center;">
-      <a href="https://www.amazon.com/shop/planetaboricua" target="_blank" style="display:inline-flex;align-items:center;gap:0.5rem;background:var(--red);color:#fff;padding:0.75rem 2rem;border-radius:4px;font-size:0.88rem;font-weight:700;text-decoration:none;">
+      <a href="/go/amazon-store" target="_blank" rel="sponsored noopener" style="display:inline-flex;align-items:center;gap:0.5rem;background:var(--red);color:#fff;padding:0.75rem 2rem;border-radius:4px;font-size:0.88rem;font-weight:700;text-decoration:none;">
         🛒 Ver Toda la Tienda Boricua en Amazon →
       </a>
     </div>

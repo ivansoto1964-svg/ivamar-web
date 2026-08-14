@@ -90,6 +90,8 @@ const quoteES = require("./views/quote-es");
 const adminLogin = require("./views/admin-login");
 const adminDashboard = require("./views/admin-dashboard");
 const adminEdit = require("./views/admin-edit");
+const pbControl = require("./views/pb-control");
+const pbControlLogin = require("./views/pb-control-login");
 const Anthropic = require("@anthropic-ai/sdk");
 const { Resend } = require("resend");
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -112,6 +114,7 @@ const { searchPlacesByText } = require("./helpers/googlePlaces");
 const { sendLeadNotification } = require("./services/notificationService");
 const path = require("path");
 const cookieParser = require("cookie-parser");
+const crypto = require("crypto");
 
 // Feria de Artesanías launches at midnight in Puerto Rico (UTC-4).
 const FERIA_LAUNCH_AT = new Date('2026-09-23T04:00:00.000Z');
@@ -206,6 +209,57 @@ function publicPBListing(listing) {
     slug: pbArtisanSlug(listing)
   };
 }
+
+const PB_AFFILIATE_CAMPAIGNS = {
+  'amazon-store': { label:'Amazon · Tienda general', url:'https://www.amazon.com/shop/planetaboricua' },
+  'amazon-shirts': { label:'Amazon · Camisetas', url:'https://www.amazon.com/shop/planetaboricua/list/1W420Q1BXBM69?tag=ivansoto0f-20' },
+  'amazon-flags': { label:'Amazon · Banderas', url:'https://www.amazon.com/shop/planetaboricua/list/2CXBDURUV9G46?tag=ivansoto0f-20' },
+  'amazon-kitchen': { label:'Amazon · Cocina', url:'https://www.amazon.com/shop/planetaboricua/list/1A33AK8DLTYDO?tag=ivansoto0f-20' },
+  'amazon-music': { label:'Amazon · Música', url:'https://www.amazon.com/shop/planetaboricua/list/GVPOWIBQMA3B?tag=ivansoto0f-20' },
+  'amazon-books': { label:'Amazon · Libros', url:'https://www.amazon.com/shop/planetaboricua/list/2W7GCH9PJ1D9B?tag=ivansoto0f-20' },
+  'amazon-home': { label:'Amazon · Hogar', url:'https://www.amazon.com/shop/planetaboricua/list/3PF9YAQ8MKRCO?tag=ivansoto0f-20' },
+  'amazon-auto': { label:'Amazon · Auto', url:'https://www.amazon.com/shop/planetaboricua/list/1UY29IVPZQ34Y?tag=ivansoto0f-20' },
+  'amazon-gifts': { label:'Amazon · Regalos', url:'https://www.amazon.com/shop/planetaboricua/list/1Q6CYDE5BV80P?tag=ivansoto0f-20' },
+  'travel-hotels': { label:'Travelpayouts · Hoteles', url:'https://booking.tpo.lu/OcdV3VzY' },
+  'travel-flights': { label:'Travelpayouts · Vuelos', url:'https://trip.tpo.lu/tOQAQ2WQ' }
+};
+const PB_AFFILIATE_CLICKS_FILE = '/data/pb-affiliate-clicks.json';
+
+function readJsonFile(file, fallback = []) {
+  try { return JSON.parse(fs.readFileSync(file,'utf8')); } catch (_) { return fallback; }
+}
+
+function writeJsonFile(file, value) {
+  const dir = path.dirname(file);
+  if (!fs.existsSync(dir)) fs.mkdirSync(dir,{recursive:true});
+  const temp = `${file}.${process.pid}.tmp`;
+  fs.writeFileSync(temp,JSON.stringify(value,null,2),'utf8');
+  fs.renameSync(temp,file);
+}
+
+function loadPBApprovedArtisansWithFiles() {
+  const dir = '/data/pb-listings';
+  if (!fs.existsSync(dir)) return [];
+  return fs.readdirSync(dir).filter(file => file.endsWith('.json') && file !== 'pending.json').flatMap(file => readJsonFile(path.join(dir,file),[]).map(item => ({...item,_file:file,slug:pbArtisanSlug(item)})));
+}
+
+function loadPBBlogPosts() {
+  try {
+    return fs.readdirSync(PB_BLOG_POSTS_DIR).filter(file => file.endsWith('.json')).map(file => readJsonFile(path.join(PB_BLOG_POSTS_DIR,file),null)).filter(Boolean).sort((a,b) => new Date(b.dateISO || 0) - new Date(a.dateISO || 0));
+  } catch (_) { return []; }
+}
+
+function pbAffiliateSummary() {
+  const clicks = readJsonFile(PB_AFFILIATE_CLICKS_FILE,[]);
+  const grouped = new Map();
+  clicks.forEach(click => {
+    const current = grouped.get(click.campaign) || {campaign:click.campaign,label:PB_AFFILIATE_CAMPAIGNS[click.campaign]?.label || click.campaign,clicks:0,lastClick:null};
+    current.clicks += 1;
+    if (!current.lastClick || click.clickedAt > current.lastClick) current.lastClick = click.clickedAt;
+    grouped.set(click.campaign,current);
+  });
+  return [...grouped.values()].sort((a,b) => b.clicks-a.clicks);
+}
 // Agreements directory for legal acceptance logs
 const agreementsDir = path.join(__dirname, "..", "data", "agreements");
 if (!fs.existsSync(agreementsDir)) {
@@ -221,15 +275,32 @@ app.use(express.urlencoded({ limit: '15mb', extended: true }));
 const PORT = process.env.PORT || 4000;
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
-const BILLING_API_URL = process.env.BILLING_API_URL || "https://ivamar-brain.onrender.com/v1/billing/checkout-session";
-const BILLING_API_KEY = process.env.BILLING_API_KEY || "dev-secret";
-const ADMIN_USER = process.env.ADMIN_USER || "ivamar-admin";
-const ADMIN_PASS = process.env.ADMIN_PASS || "ivamar2025";
+const BILLING_API_URL = process.env.BILLING_API_URL || "";
+const BILLING_API_KEY = process.env.BILLING_API_KEY || "";
+const ADMIN_USER = process.env.ADMIN_USER || "";
+const ADMIN_PASS = process.env.ADMIN_PASS || "";
+const PB_ADMIN_USER = process.env.PB_ADMIN_USER || process.env.ADMIN_USER || '';
+const PB_ADMIN_PASS = process.env.PB_ADMIN_PASS || process.env.ADMIN_PASS || '';
 
 const sessions = new Map();
+const pbSessions = new Map();
+
+const adminAuthLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 8,
+  message: { ok:false, error:'Demasiados intentos. Espera 15 minutos.' },
+  standardHeaders: true,
+  legacyHeaders: false
+});
 
 function generateToken() {
-  return Math.random().toString(36).substring(2) + Date.now().toString(36);
+  return crypto.randomBytes(32).toString('hex');
+}
+
+function safeEqual(value, expected) {
+  const a = Buffer.from(String(value || ''));
+  const b = Buffer.from(String(expected || ''));
+  return a.length === b.length && crypto.timingSafeEqual(a, b);
 }
 
 function requireAdmin(req, res, next) {
@@ -237,6 +308,26 @@ function requireAdmin(req, res, next) {
   const session = sessions.get(token);
   if (!session) return res.redirect("/admin");
   req.adminSession = session;
+  next();
+}
+
+function requirePBAdmin(req, res, next) {
+  const token = req.cookies?.pbAdminToken;
+  const session = pbSessions.get(token);
+  if (!session || session.expiresAt < Date.now()) {
+    if (token) pbSessions.delete(token);
+    return res.redirect('/pb-control/login');
+  }
+  session.expiresAt = Date.now() + 12 * 60 * 60 * 1000;
+  req.pbAdminSession = session;
+  res.set('Cache-Control','no-store, private');
+  res.set('X-Robots-Tag','noindex, nofollow');
+  next();
+}
+
+function requirePBCsrf(req, res, next) {
+  const supplied = req.get('X-CSRF-Token') || req.body?.csrf;
+  if (!safeEqual(supplied, req.pbAdminSession?.csrf)) return res.status(403).json({ok:false,error:'La sesión de seguridad expiró. Vuelve a entrar.'});
   next();
 }
 
@@ -927,7 +1018,7 @@ app.get("/admin", (req, res) => res.send(layout({ title: "Admin — Ivamar AI", 
 
 app.post("/admin/auth", (req, res) => {
   const { user, pass } = req.body || {};
-  if (user === ADMIN_USER && pass === ADMIN_PASS) {
+  if (ADMIN_USER && ADMIN_PASS && safeEqual(user,ADMIN_USER) && safeEqual(pass,ADMIN_PASS)) {
     const token = generateToken();
     sessions.set(token, { role: "admin", slug: null });
     res.cookie("adminToken", token, { httpOnly: true, maxAge: 86400000 * 7 });
@@ -935,8 +1026,8 @@ app.post("/admin/auth", (req, res) => {
   }
   const businessFile = path.join("/data", "businesses", `${user}.json`);
   if (fs.existsSync(businessFile)) {
-    const clientPass = process.env[`CLIENT_PASS_${user.toUpperCase().replace(/-/g, "_")}`] || user + "2025";
-    if (pass === clientPass) {
+    const clientPass = process.env[`CLIENT_PASS_${user.toUpperCase().replace(/-/g, "_")}`];
+    if (clientPass && safeEqual(pass,clientPass)) {
       const token = generateToken();
       sessions.set(token, { role: "client", slug: user });
       res.cookie("adminToken", token, { httpOnly: true, maxAge: 86400000 * 7 });
@@ -1006,6 +1097,132 @@ app.post("/admin/delete/:slug", requireAdmin, (req, res) => {
   } catch (e) {
     res.json({ ok: false, error: e.message });
   }
+});
+
+// ==========================================
+// PLANETA BORICUA — CENTRO DE CONTROL
+// ==========================================
+function buildPBControlModel(csrf) {
+  const latestPending = readPBLatest('pending.json').sort((a,b) => new Date(b.submittedAt || 0)-new Date(a.submittedAt || 0));
+  const latestApproved = readPBLatest('approved.json').sort((a,b) => new Date(b.publishedAt || 0)-new Date(a.publishedAt || 0));
+  const commentsPending = readPBComments('pending.json').sort((a,b) => new Date(b.submittedAt || 0)-new Date(a.submittedAt || 0));
+  const commentsApproved = readPBComments('approved.json').sort((a,b) => new Date(b.approvedAt || 0)-new Date(a.approvedAt || 0));
+  const artisansPending = readJsonFile('/data/pb-listings/pending.json',[]).sort((a,b) => new Date(b.submittedAt || 0)-new Date(a.submittedAt || 0));
+  const artisansApproved = loadPBApprovedArtisansWithFiles().sort((a,b) => new Date(b.approvedAt || 0)-new Date(a.approvedAt || 0));
+  const eventsPending = readPBEvents('pending.json').sort((a,b) => new Date(b.submittedAt || 0)-new Date(a.submittedAt || 0));
+  const eventsApproved = readPBEvents('approved.json').sort((a,b) => String(a.startDate || '').localeCompare(String(b.startDate || '')));
+  const subscribers = readJsonFile('/data/pb-subscribers.json',[]).sort((a,b) => new Date(b.subscribedAt || 0)-new Date(a.subscribedAt || 0));
+  const blogPosts = loadPBBlogPosts();
+  const affiliates = pbAffiliateSummary();
+  return {csrf,latestPending,latestApproved,commentsPending,commentsApproved,artisansPending,artisansApproved,eventsPending,eventsApproved,subscribers,blogPosts,affiliates,counts:{pendingLatest:latestPending.length,pendingComments:commentsPending.length,pendingArtisans:artisansPending.length,pendingEvents:eventsPending.length,pendingTotal:latestPending.length+commentsPending.length+artisansPending.length+eventsPending.length,blogPosts:blogPosts.length,subscribers:subscribers.length,affiliateClicks:affiliates.reduce((sum,item)=>sum+item.clicks,0)}};
+}
+
+app.get('/pb-control/login', (req,res) => {
+  if (pbSessions.has(req.cookies?.pbAdminToken)) return res.redirect('/pb-control');
+  res.set('Cache-Control','no-store, private');
+  res.set('X-Robots-Tag','noindex, nofollow');
+  res.send(pbControlLogin);
+});
+
+app.post('/pb-control/login', adminAuthLimiter, express.json({limit:'5kb'}), (req,res) => {
+  res.set('Cache-Control','no-store, private');
+  if (!PB_ADMIN_USER || !PB_ADMIN_PASS) return res.status(503).json({ok:false,error:'Falta configurar el acceso privado en Render.'});
+  if (!safeEqual(req.body?.user,PB_ADMIN_USER) || !safeEqual(req.body?.pass,PB_ADMIN_PASS)) return res.status(401).json({ok:false,error:'Usuario o contraseña incorrectos.'});
+  const token = generateToken();
+  pbSessions.set(token,{csrf:generateToken(),expiresAt:Date.now()+12*60*60*1000});
+  res.cookie('pbAdminToken',token,{httpOnly:true,secure:req.secure || req.get('x-forwarded-proto') === 'https',sameSite:'strict',maxAge:12*60*60*1000,path:'/'});
+  res.json({ok:true});
+});
+
+app.get('/pb-control/logout',(req,res) => {
+  if (req.cookies?.pbAdminToken) pbSessions.delete(req.cookies.pbAdminToken);
+  res.clearCookie('pbAdminToken',{path:'/'});
+  res.redirect('/pb-control/login');
+});
+
+app.get('/pb-control', requirePBAdmin, (req,res) => res.send(pbControl(buildPBControlModel(req.pbAdminSession.csrf))));
+
+app.get('/pb-control/subscribers.csv', requirePBAdmin, (req,res) => {
+  const safeCell = value => {
+    let text = String(value || '');
+    if (/^[=+\-@]/.test(text)) text = `'${text}`;
+    return `"${text.replace(/"/g,'""')}"`;
+  };
+  const rows = readJsonFile('/data/pb-subscribers.json',[]).map(item => [item.email,item.source,item.subscribedAt].map(safeCell).join(','));
+  res.set('Content-Type','text/csv; charset=utf-8');
+  res.set('Content-Disposition','attachment; filename="suscriptores-planeta-boricua.csv"');
+  res.send('\ufeff"email","fuente","fecha"\n'+rows.join('\n'));
+});
+
+app.post('/pb-control/action', requirePBAdmin, requirePBCsrf, express.json({limit:'30kb'}), async (req,res) => {
+  const action = sanitize(req.body?.action || '');
+  const id = sanitize(req.body?.id || '');
+  const ok = message => res.json({ok:true,message});
+  const missing = () => res.status(404).json({ok:false,error:'El elemento ya no existe o fue procesado.'});
+  try {
+    if (action === 'blog-sync') {
+      const result = await bloggerSync.syncBlogger();
+      pbBlogCache = { posts: [], lastFetch: 0 };
+      return ok(`${result.count} artículos sincronizados.`);
+    }
+    if (action === 'latest-create') {
+      const title = sanitize(req.body.title || '').trim();
+      const summary = sanitize(req.body.summary || '').trim();
+      const body = sanitize(req.body.body || '').trim();
+      const sourceLabel = sanitize(req.body.sourceLabel || '').trim();
+      let image = sanitize(req.body.image || '').trim();
+      let sourceUrl;
+      try { sourceUrl = new URL(String(req.body.sourceUrl || '').trim()); } catch (_) { return res.status(400).json({ok:false,error:'El enlace de la fuente no es válido.'}); }
+      if (!['http:','https:'].includes(sourceUrl.protocol)) return res.status(400).json({ok:false,error:'El enlace de la fuente no es válido.'});
+      if (!title || !summary || !body || !sourceLabel) return res.status(400).json({ok:false,error:'Completa título, resumen, contenido y fuente.'});
+      if (title.length>180 || summary.length>400 || body.length>12000 || sourceLabel.length>100) return res.status(400).json({ok:false,error:'La publicación excede los límites permitidos.'});
+      if (image && !/^https?:\/\//i.test(image)) image='';
+      const now = Date.now().toString();
+      const item={id:now,slug:pbLatestSlug(title,now),title,summary,body,image,sources:[{label:sourceLabel,url:sourceUrl.toString()}],status:'approved',publishedAt:new Date().toISOString()};
+      const approved=readPBLatest('approved.json');approved.push(item);writeJsonFile(path.join(PB_LATEST_DIR,'approved.json'),approved);
+      return ok('Publicación creada en Lo más reciente.');
+    }
+    if (action.startsWith('latest-')) {
+      if (action === 'latest-approve') {
+        const pending=readPBLatest('pending.json');const index=pending.findIndex(item=>item.id===id);if(index<0)return missing();const item=pending.splice(index,1)[0];delete item.approveToken;delete item.rejectToken;item.status='approved';item.publishedAt=new Date().toISOString();const approved=readPBLatest('approved.json');approved.push(item);writeJsonFile(path.join(PB_LATEST_DIR,'pending.json'),pending);writeJsonFile(path.join(PB_LATEST_DIR,'approved.json'),approved);return ok('Publicación aprobada.');
+      }
+      const file=action==='latest-reject'?'pending.json':'approved.json';const items=readPBLatest(file);const index=items.findIndex(item=>item.id===id);if(index<0)return missing();items.splice(index,1);writeJsonFile(path.join(PB_LATEST_DIR,file),items);return ok(action==='latest-reject'?'Publicación rechazada.':'Publicación eliminada.');
+    }
+    if (action.startsWith('comment-')) {
+      if (action==='comment-approve') {const pending=readPBComments('pending.json');const index=pending.findIndex(item=>item.id===id);if(index<0)return missing();const item=pending.splice(index,1)[0];delete item.approveToken;delete item.rejectToken;item.status='approved';item.approvedAt=new Date().toISOString();const approved=readPBComments('approved.json');approved.push(item);writeJsonFile(path.join(PB_COMMENTS_DIR,'pending.json'),pending);writeJsonFile(path.join(PB_COMMENTS_DIR,'approved.json'),approved);return ok('Comentario publicado.');}
+      const file=action==='comment-reject'?'pending.json':'approved.json';const items=readPBComments(file);const index=items.findIndex(item=>item.id===id);if(index<0)return missing();items.splice(index,1);writeJsonFile(path.join(PB_COMMENTS_DIR,file),items);return ok(action==='comment-reject'?'Comentario rechazado.':'Comentario eliminado.');
+    }
+    if (action.startsWith('artisan-')) {
+      if (action==='artisan-approve') {const file='/data/pb-listings/pending.json';const pending=readJsonFile(file,[]);const index=pending.findIndex(item=>item.id===id);if(index<0)return missing();const item=pending.splice(index,1)[0];const approvedFile=path.join('/data/pb-listings',`${item.location}.json`);const approved=readJsonFile(approvedFile,[]);delete item.approveToken;delete item.rejectToken;item.status='approved';item.approvedAt=new Date().toISOString();item.badge='participante-feria';approved.push(item);writeJsonFile(file,pending);writeJsonFile(approvedFile,approved);return ok('Artesano aprobado.');}
+      if (action==='artisan-reject') {const file='/data/pb-listings/pending.json';const pending=readJsonFile(file,[]);const index=pending.findIndex(item=>item.id===id);if(index<0)return missing();pending.splice(index,1);writeJsonFile(file,pending);return ok('Solicitud rechazada.');}
+      const match=loadPBApprovedArtisansWithFiles().find(item=>item.id===id);if(!match)return missing();const file=path.join('/data/pb-listings',match._file);const approved=readJsonFile(file,[]).filter(item=>item.id!==id);writeJsonFile(file,approved);return ok('Artesano retirado de la Feria.');
+    }
+    if (action.startsWith('event-')) {
+      if (action==='event-approve') {const pending=readPBEvents('pending.json');const index=pending.findIndex(item=>item.id===id);if(index<0)return missing();const item=pending.splice(index,1)[0];delete item.approveToken;delete item.rejectToken;item.status='approved';item.approvedAt=new Date().toISOString();const approved=readPBEvents('approved.json');approved.push(item);writeJsonFile(path.join(PB_EVENTS_DIR,'pending.json'),pending);writeJsonFile(path.join(PB_EVENTS_DIR,'approved.json'),approved);return ok('Evento publicado en la Agenda.');}
+      const file=action==='event-reject'?'pending.json':'approved.json';const items=readPBEvents(file);const index=items.findIndex(item=>item.id===id);if(index<0)return missing();items.splice(index,1);writeJsonFile(path.join(PB_EVENTS_DIR,file),items);return ok(action==='event-reject'?'Evento rechazado.':'Evento eliminado.');
+    }
+    return res.status(400).json({ok:false,error:'Acción no reconocida.'});
+  } catch(error) {
+    console.error('PB control action error:',error.message);
+    return res.status(500).json({ok:false,error:'No se pudo guardar el cambio.'});
+  }
+});
+
+app.get('/go/:campaign', (req,res) => {
+  const campaign = PB_AFFILIATE_CAMPAIGNS[req.params.campaign];
+  if (!campaign) return res.status(404).send('Enlace no encontrado');
+  try {
+    const clicks = readJsonFile(PB_AFFILIATE_CLICKS_FILE,[]);
+    let source = '';
+    try {
+      const referrer = new URL(req.get('referer') || '');
+      if (referrer.hostname === req.hostname || referrer.hostname === `www.${req.hostname}`) source = referrer.pathname.slice(0,200);
+    } catch (_) {}
+    clicks.push({campaign:req.params.campaign,clickedAt:new Date().toISOString(),source});
+    writeJsonFile(PB_AFFILIATE_CLICKS_FILE,clicks.slice(-10000));
+  } catch (error) { console.error('PB affiliate click error:',error.message); }
+  res.set('Cache-Control','no-store');
+  res.redirect(302,campaign.url);
 });
 
 // ==========================================
