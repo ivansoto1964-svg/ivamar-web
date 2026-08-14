@@ -103,6 +103,7 @@ const agendaArtesanalPB = require("./views/planetaboricua/agenda-artesanal");
 const enviarEventoPB = require("./views/planetaboricua/enviar-evento");
 const enviarEventoBoricuaPB = require("./views/planetaboricua/enviar-evento-boricua");
 const loMasRecientePB = require("./views/planetaboricua/lo-mas-reciente");
+const loMasRecienteIndexPB = require("./views/planetaboricua/lo-mas-reciente-index");
 const pbBlogIndex = require("./views/pb-blog/index");
 const pbBlogPost = require("./views/pb-blog/post");
 const Stripe = require("stripe");
@@ -2263,6 +2264,29 @@ app.get('/api/pb-lo-mas-reciente', (_req, res) => {
   res.json({ ok:true, items:items.slice(0, 10).map(publicPBLatest) });
 });
 
+function pbLatestTopic(item) {
+  const text = `${item.title || ''} ${item.summary || ''}`.toLowerCase();
+  if (/agua|manantial|sequ[ií]a|lluvia|hurac[aá]n|ambiente|epa|arroyo/.test(text)) return 'Ambiente';
+  if (/arrest|fbi|federal|fiscal[ií]a|delito|polic[ií]a|tribunal/.test(text)) return 'Seguridad y justicia';
+  if (/gobierno|contrato|junta|gobern|senado|c[aá]mara|alcald|presidente|trump|pol[ií]tica/.test(text)) return 'Gobierno y política';
+  if (/trabaj|salario|empleo|costo|econom[ií]a|vivienda|factura/.test(text)) return 'Economía y vida diaria';
+  return 'Comunidad';
+}
+
+app.get('/lo-mas-reciente', (req, res) => {
+  const query = sanitize(req.query.q || '').trim().toLowerCase().slice(0,100);
+  const selectedTopic = sanitize(req.query.tema || '').trim().slice(0,60);
+  const all = readPBLatest('approved.json').map(publicPBLatest).map(item => ({...item,topic:pbLatestTopic(item)})).sort((a,b) => new Date(b.publishedAt) - new Date(a.publishedAt));
+  const topics = [...new Set(all.map(item => item.topic))];
+  const filtered = all.filter(item => (!query || `${item.title} ${item.summary} ${item.body}`.toLowerCase().includes(query)) && (!selectedTopic || item.topic === selectedTopic));
+  const perPage = 9;
+  const totalPages = Math.max(1, Math.ceil(filtered.length / perPage));
+  const requestedPage = Number.parseInt(req.query.page,10) || 1;
+  const page = Math.min(Math.max(1,requestedPage),totalPages);
+  const items = filtered.slice((page-1)*perPage,page*perPage);
+  res.send(loMasRecienteIndexPB(items,page,totalPages,query,selectedTopic,topics,filtered.length));
+});
+
 app.get('/lo-mas-reciente/:slug', (req, res) => {
   const item = readPBLatest('approved.json').find(entry => entry.slug === req.params.slug);
   if (!item) return res.status(404).send(loMasRecientePB(null));
@@ -2427,7 +2451,7 @@ app.get("/sitemap.xml", async (req, res) => {
     artisanUrls = loadApprovedPBListings().map(item => `<url><loc>https://www.masboricuaqueunmofongo.com/artesanos/${pbArtisanSlug(item)}</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>`).join('');
   } catch(e) { console.error('Sitemap artisans error:', e.message); }
   const latestUrls = readPBLatest('approved.json').map(item => `<url><loc>https://www.masboricuaqueunmofongo.com/lo-mas-reciente/${item.slug}</loc><lastmod>${String(item.publishedAt || '').slice(0,10)}</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>`).join('');
-  const staticUrls = `<url><loc>https://www.masboricuaqueunmofongo.com/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/blog</loc><changefreq>weekly</changefreq><priority>0.9</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/recursos</loc><changefreq>weekly</changefreq><priority>0.9</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/feria-artesanos</loc><changefreq>weekly</changefreq><priority>0.8</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/quienes-somos</loc><changefreq>monthly</changefreq><priority>0.7</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/privacidad-boricua</loc><changefreq>monthly</changefreq><priority>0.5</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/terminos-boricua</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>`;
+  const staticUrls = `<url><loc>https://www.masboricuaqueunmofongo.com/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/blog</loc><changefreq>weekly</changefreq><priority>0.9</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/lo-mas-reciente</loc><changefreq>daily</changefreq><priority>0.9</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/recursos</loc><changefreq>weekly</changefreq><priority>0.9</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/feria-artesanos</loc><changefreq>weekly</changefreq><priority>0.8</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/quienes-somos</loc><changefreq>monthly</changefreq><priority>0.7</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/privacidad-boricua</loc><changefreq>monthly</changefreq><priority>0.5</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/terminos-boricua</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>`;
   const agendaUrl = `<url><loc>https://www.masboricuaqueunmofongo.com/agenda-boricua</loc><changefreq>daily</changefreq><priority>0.8</priority></url>`;
   res.set('Content-Type','application/xml');
   res.send(`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${staticUrls}${agendaUrl}${latestUrls}${postUrls}${artisanUrls}</urlset>`);
