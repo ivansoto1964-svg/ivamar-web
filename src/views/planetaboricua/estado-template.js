@@ -276,7 +276,7 @@ nav{background:var(--white);border-bottom:2px solid var(--red);padding:0 2rem;di
   <div class="tienda-inner">
     <h2 class="tienda-title">🛍️ Tienda Boricua</h2>
     <p class="tienda-sub">Lleva tu orgullo boricua a donde vayas — camisetas, tazas, dulces y más con entrega rápida en USA.</p>
-    <a href="https://www.amazon.com/shop/planetaboricua" target="_blank" class="tienda-btn">🛒 Ver Tienda en Amazon →</a>
+    <a href="/go/amazon-store" target="_blank" rel="sponsored noopener" class="tienda-btn">🛒 Ver Tienda en Amazon →</a>
   </div>
 </section>
 
