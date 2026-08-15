@@ -1,11 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const fs = require("fs");
-const path = require("path");
 const pbBlogIndex = require("../views/pb-blog/index");
 const pbBlogPost = require("../views/pb-blog/post");
-const { CATEGORIES, categorySlug, editorialCategory } = require("../utils/pb-editorial");
-const POSTS_DIR = path.join(__dirname, "../../data/pb-blog/posts");
+const { CATEGORIES, categorySlug } = require("../utils/pb-editorial");
+const blogStore = require("../services/pb-blog-store");
 const POSTS_PER_PAGE = 9;
 const COMMENTS_FILE = "/data/pb-comments/approved.json";
 
@@ -15,15 +14,7 @@ function loadCommentsForPost(slug) {
   } catch (_) { return []; }
 }
 
-function loadPosts() {
-  try {
-    const files = fs.readdirSync(POSTS_DIR).filter(f => f.endsWith(".json"));
-    return files.map(f => {
-      try { return JSON.parse(fs.readFileSync(path.join(POSTS_DIR, f), "utf8")); }
-      catch(e) { return null; }
-    }).filter(Boolean).map(p => ({...p, category: editorialCategory(p.title, [p.category, ...(p.tags || [])])})).sort((a, b) => new Date(b.dateISO || b.date || 0) - new Date(a.dateISO || a.date || 0));
-  } catch(e) { return []; }
-}
+const loadPosts = () => blogStore.loadPosts();
 
 function visibleCategories(posts) { return CATEGORIES.filter(c => posts.some(p => p.category === c)); }
 
@@ -75,9 +66,8 @@ router.get("/categoria/:cat", (req, res) => {
 
 router.get("/:slug", (req, res) => {
   try {
-    const postPath = path.join(POSTS_DIR, req.params.slug + ".json");
-    if (!fs.existsSync(postPath)) return res.status(404).send("Post no encontrado");
-    const post = JSON.parse(fs.readFileSync(postPath, "utf8"));
+    const post = blogStore.readPost(req.params.slug);
+    if (!post) return res.status(404).send("Post no encontrado");
     const allPosts = loadPosts();
     const currentIndex = allPosts.findIndex(p => p.slug === post.slug);
     const related = allPosts.filter(p => p.slug !== post.slug && p.category === post.category).slice(0,3);
