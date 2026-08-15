@@ -194,7 +194,7 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;}
       <h4>Comunidad</h4>
       <a href="/pb/add-negocio">Registrar Mi Artesanía</a>
       <a href="/#newsletter">Boletín Boricua</a>
-      <a href="mailto:connect@ivamarai.com">Contacto</a>
+      <a href="mailto:masboricuaqueunmofongo@gmail.com">Contacto</a>
     </div>
     <div class="pb-footer-col">
       <h4>Legal</h4>

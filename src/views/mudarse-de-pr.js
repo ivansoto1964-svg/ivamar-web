@@ -1248,7 +1248,7 @@ nav{background:var(--white);border-bottom:3px solid var(--blue);padding:0;positi
       <h4>Comunidad</h4>
       <a href="/#directorio">Añadir Mi Negocio</a>
       <a href="/#newsletter">Newsletter</a>
-      <a href="mailto:connect@ivamarai.com">Contacto</a>
+      <a href="mailto:masboricuaqueunmofongo@gmail.com">Contacto</a>
     </div>
     <div class="pb-footer-col">
       <h4>Legal</h4>

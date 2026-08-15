@@ -68,7 +68,7 @@ nav{background:#fff;border-bottom:3px solid #CE1126;padding:0;}
   <p>Estos términos se rigen e interpretan de acuerdo con las leyes aplicables del Estado de Florida, Estados Unidos, sin dar efecto a ningún principio de conflictos de leyes.</p>
 
   <h2>8. Contacto</h2>
-  <p>Para consultas relacionadas con estos Términos, puedes comunicarte a través de <a href="mailto:connect@ivamarai.com" style="color:#CE1126;">connect@ivamarai.com</a></p>
+  <p>Para consultas relacionadas con estos Términos, puedes comunicarte a través de <a href="mailto:masboricuaqueunmofongo@gmail.com" style="color:#CE1126;">masboricuaqueunmofongo@gmail.com</a></p>
   <p style="margin-top:1rem;font-size:0.82rem;color:#888;">Operador: Iván Soto · Florida, USA.</p>
 </div>
 <footer class="footer">
@@ -155,7 +155,7 @@ nav{background:#fff;border-bottom:3px solid #CE1126;padding:0;}
   <p>Esta Política de Privacidad puede actualizarse ocasionalmente. Cualquier cambio será publicado en esta misma página con la fecha de actualización.</p>
 
   <h2>9. Contacto</h2>
-  <p>Si tiene alguna pregunta sobre esta Política de Privacidad, puede contactarnos a través de: <a href="mailto:connect@ivamarai.com" style="color:#CE1126;">connect@ivamarai.com</a></p>
+  <p>Si tiene alguna pregunta sobre esta Política de Privacidad, puede contactarnos a través de: <a href="mailto:masboricuaqueunmofongo@gmail.com" style="color:#CE1126;">masboricuaqueunmofongo@gmail.com</a></p>
   <p style="margin-top:1rem;font-size:0.82rem;color:#888;">Operador: Iván Soto · Florida, USA.</p>
 </div>
 <footer class="footer">
@@ -238,7 +238,7 @@ nav{background:#fff;border-bottom:3px solid #CE1126;padding:0;}
   <p>Planeta Boricua prioriza la transparencia y el respeto hacia sus lectores por encima de cualquier consideración comercial.</p>
 
   <h2>Contacto</h2>
-  <p>Si tienes preguntas sobre este aviso de afiliados, puedes comunicarte a través de <a href="mailto:connect@ivamarai.com" style="color:#CE1126;">connect@ivamarai.com</a></p>
+  <p>Si tienes preguntas sobre este aviso de afiliados, puedes comunicarte a través de <a href="mailto:masboricuaqueunmofongo@gmail.com" style="color:#CE1126;">masboricuaqueunmofongo@gmail.com</a></p>
   <p style="margin-top:1rem;font-size:0.82rem;color:#888;">Este sitio es un proyecto independiente operado por Iván Soto desde Florida, USA.</p>
 </div>
 <footer class="footer">

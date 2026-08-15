@@ -349,7 +349,7 @@ footer{background:var(--blue);padding:2rem;text-align:center;}
     <div style="font-size:3rem;margin-bottom:1rem;">🇵🇷</div>
     <h3>¡Wepa! Solicitud Recibida</h3>
     <p>Recibimos la información de tu negocio. Lo revisaremos en 1-3 días hábiles y te avisaremos por email cuando esté aprobado.</p>
-    <p style="margin-top:1rem;">¿Preguntas? Escríbenos a <strong>connect@ivamarai.com</strong></p>
+    <p style="margin-top:1rem;">¿Preguntas? Escríbenos a <strong>masboricuaqueunmofongo@gmail.com</strong></p>
     <div style="margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid #86efac;">
       <p style="font-weight:700;color:#166534;">¿Conoces a otro artesano? 🎨</p>
       <p style="margin-top:0.3rem;">Comparte la Feria Digital para que también se beneficie.</p>

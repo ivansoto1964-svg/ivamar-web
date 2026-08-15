@@ -97,7 +97,7 @@ footer p{color:rgba(255,255,255,0.3);font-size:0.75rem;margin-top:0.5rem;}
   <p><strong>Orgullo</strong> — ser boricua no es un accidente. Es una identidad que se lleva, se practica y se pasa adelante. En el Planeta Boricua, eso se celebra todos los días.</p>
 
   <h2>Contacto</h2>
-  <p>Para colaboraciones, consultas o simplemente para decir wepa — escríbenos a <a href="mailto:connect@ivamarai.com">connect@ivamarai.com</a></p>
+  <p>Para colaboraciones, consultas o simplemente para decir wepa — escríbenos a <a href="mailto:masboricuaqueunmofongo@gmail.com">masboricuaqueunmofongo@gmail.com</a></p>
   <p style="font-size:0.85rem;color:var(--mid);">Planeta Boricua es operado de manera independiente por Iván Soto · Florida, USA · masboricuaqueunmofongo.com</p>
 
 </div>
