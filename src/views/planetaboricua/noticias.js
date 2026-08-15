@@ -156,7 +156,7 @@ footer{background:var(--blue);padding:2rem;text-align:center;margin-top:3rem;}
     <a href="/#directorio">Directorio</a>
     <a href="/pb/add-negocio">Añadir Negocio</a>
   </div>
-  <div class="footer-info">© 2026 Planeta Boricua · masboricuaqueunmofongo.com · Un proyecto de Ivamar AI LLC</div>
+  <div class="footer-info">© 2026 Planeta Boricua · masboricuaqueunmofongo.com · Proyecto independiente de Iván Soto</div>
 </footer>
 
 <script>

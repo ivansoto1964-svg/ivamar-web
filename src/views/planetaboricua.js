@@ -12,7 +12,7 @@ module.exports = `<!DOCTYPE html>
 <title>Planeta Boricua — Más Boricua Que Un Mofongo</title>
 <meta name="description" content="Cultura, identidad y recursos prácticos para la comunidad puertorriqueña en Puerto Rico y la diáspora. Artículos originales, Feria de Artesanías y guías PR↔USA.">
 <meta name="keywords" content="Puerto Rico, cultura puertorriqueña, diáspora boricua, artesanos puertorriqueños, mudarse de Puerto Rico, recursos boricuas">
-<meta name="author" content="Planeta Boricua — Ivamar AI LLC">
+<meta name="author" content="Planeta Boricua — Iván Soto">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://www.masboricuaqueunmofongo.com/">
 
@@ -825,7 +825,7 @@ async function loadDirectorio() {
   <div class="pb-footer-bottom">
     <div class="pb-footer-bottom-inner">
       <div class="pb-footer-copy">© 2026 Planeta Boricua · masboricuaqueunmofongo.com · Todos los derechos reservados</div>
-      <div class="pb-footer-ivamar">Un producto de <a href="https://ivamarai.com" target="_blank">Ivamar AI LLC</a></div>
+      <div class="pb-footer-ivamar">Proyecto independiente de Iván Soto · Florida, USA</div>
     </div>
   </div>
 </footer>
