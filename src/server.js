@@ -160,6 +160,8 @@ function publicPBEvent(event) {
 const PB_LATEST_DIR = '/data/pb-latest';
 const PB_COMMENTS_DIR = '/data/pb-comments';
 const PB_BLOG_POSTS_DIR = path.join(__dirname, '../data/pb-blog/posts');
+const PB_CONTACT_EMAIL = process.env.PB_CONTACT_EMAIL || 'masboricuaqueunmofongo@gmail.com';
+const PB_SENDER_EMAIL = process.env.PB_SENDER_EMAIL || 'connect@ivamarai.com';
 function readPBLatest(file) {
   try { return JSON.parse(fs.readFileSync(path.join(PB_LATEST_DIR, file), 'utf8')); } catch (_) { return []; }
 }
@@ -2543,7 +2545,7 @@ app.post('/api/pb-comments/:slug', formLimiter, express.json({ limit:'20kb' }), 
   pending.push(item); writePBComments('pending.json',pending);
   const emailEsc = (value) => String(value || '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
   try {
-    await resend.emails.send({from:'Planeta Boricua <connect@ivamarai.com>',to:'connect@ivamarai.com',subject:`💬 Nuevo comentario: ${article.title}`,html:`<h2>Nuevo comentario pendiente</h2><p><strong>Publicación:</strong> ${emailEsc(article.title)}</p><p><strong>Nombre:</strong> ${emailEsc(name)}</p><blockquote>${emailEsc(commentText).replace(/\n/g,'<br>')}</blockquote><p><a href="https://www.masboricuaqueunmofongo.com/admin/pb-comment-approve/${item.approveToken}">✅ Aprobar</a> &nbsp; <a href="https://www.masboricuaqueunmofongo.com/admin/pb-comment-reject/${item.rejectToken}">❌ Rechazar</a></p>`});
+    await resend.emails.send({from:`Planeta Boricua <${PB_SENDER_EMAIL}>`,to:PB_CONTACT_EMAIL,subject:`💬 Nuevo comentario: ${article.title}`,html:`<h2>Nuevo comentario pendiente</h2><p><strong>Publicación:</strong> ${emailEsc(article.title)}</p><p><strong>Nombre:</strong> ${emailEsc(name)}</p><blockquote>${emailEsc(commentText).replace(/\n/g,'<br>')}</blockquote><p><a href="https://www.masboricuaqueunmofongo.com/admin/pb-comment-approve/${item.approveToken}">✅ Aprobar</a> &nbsp; <a href="https://www.masboricuaqueunmofongo.com/admin/pb-comment-reject/${item.rejectToken}">❌ Rechazar</a></p>`});
   } catch (error) { console.error('PB comment notification error:',error.message); }
   res.status(202).json({ok:true,pending:true});
 });
@@ -2588,7 +2590,7 @@ app.post('/api/pb-reciente-submit', formLimiter, express.json({ limit:'300kb' })
   const item = { id,slug:pbLatestSlug(title,id),title,summary,body,image,sources,status:'pending',submittedAt:new Date().toISOString(),approveToken:crypto.randomBytes(24).toString('hex'),rejectToken:crypto.randomBytes(24).toString('hex') };
   const pending = readPBLatest('pending.json'); pending.push(item); writePBLatest('pending.json',pending);
   try {
-    await resend.emails.send({from:'Planeta Boricua <connect@ivamarai.com>',to:'connect@ivamarai.com',subject:`📰 Borrador Lo más reciente: ${item.title}`,html:`<h2>${item.title}</h2><p><strong>${item.summary}</strong></p><p>${item.body.slice(0,1200).replace(/\n/g,'<br>')}</p><p>Fuentes: ${item.sources.map(source => `<a href="${source.url}">${source.label}</a>`).join(' · ')}</p><p><a href="https://www.masboricuaqueunmofongo.com/admin/pb-reciente-approve/${item.approveToken}">✅ Aprobar y publicar</a> &nbsp; <a href="https://www.masboricuaqueunmofongo.com/admin/pb-reciente-reject/${item.rejectToken}">❌ Rechazar</a></p>`});
+    await resend.emails.send({from:`Planeta Boricua <${PB_SENDER_EMAIL}>`,to:PB_CONTACT_EMAIL,subject:`📰 Borrador Lo más reciente: ${item.title}`,html:`<h2>${item.title}</h2><p><strong>${item.summary}</strong></p><p>${item.body.slice(0,1200).replace(/\n/g,'<br>')}</p><p>Fuentes: ${item.sources.map(source => `<a href="${source.url}">${source.label}</a>`).join(' · ')}</p><p><a href="https://www.masboricuaqueunmofongo.com/admin/pb-reciente-approve/${item.approveToken}">✅ Aprobar y publicar</a> &nbsp; <a href="https://www.masboricuaqueunmofongo.com/admin/pb-reciente-reject/${item.rejectToken}">❌ Rechazar</a></p>`});
   } catch (error) { console.error('PB latest notification error:',error.message); }
   res.json({ok:true,id:item.id,slug:item.slug});
 });
@@ -2713,7 +2715,7 @@ app.post('/api/pb-evento-submit', formLimiter, express.json(), async (req, res) 
   Object.assign(event,{id:Date.now().toString(),artisanSlug,artisanName:artisan.name,email,virtual:Boolean(req.body.virtual),status:'pending',submittedAt:new Date().toISOString(),approveToken:crypto.randomBytes(24).toString('hex'),rejectToken:crypto.randomBytes(24).toString('hex')});
   const pending = readPBEvents('pending.json'); pending.push(event); writePBEvents('pending.json',pending);
   try {
-    await resend.emails.send({from:'Planeta Boricua <connect@ivamarai.com>',to:'connect@ivamarai.com',subject:`📅 Nuevo evento artesanal: ${event.name}`,html:`<h2>${event.name}</h2><p>Enviado por <strong>${event.artisanName}</strong></p><p>${event.startDate} · ${event.city}, ${event.region}</p><p>${event.description}</p><p><a href="https://www.masboricuaqueunmofongo.com/admin/pb-event-approve/${event.approveToken}">✅ Aprobar</a> &nbsp; <a href="https://www.masboricuaqueunmofongo.com/admin/pb-event-reject/${event.rejectToken}">❌ Rechazar</a></p>`});
+    await resend.emails.send({from:`Planeta Boricua <${PB_SENDER_EMAIL}>`,to:PB_CONTACT_EMAIL,subject:`📅 Nuevo evento artesanal: ${event.name}`,html:`<h2>${event.name}</h2><p>Enviado por <strong>${event.artisanName}</strong></p><p>${event.startDate} · ${event.city}, ${event.region}</p><p>${event.description}</p><p><a href="https://www.masboricuaqueunmofongo.com/admin/pb-event-approve/${event.approveToken}">✅ Aprobar</a> &nbsp; <a href="https://www.masboricuaqueunmofongo.com/admin/pb-event-reject/${event.rejectToken}">❌ Rechazar</a></p>`});
   } catch (error) { console.error('PB event notification error:',error.message); }
   res.json({ok:true});
 });
@@ -2738,7 +2740,7 @@ app.post('/api/pb-evento-publico-submit', formLimiter, express.json(), async (re
   Object.assign(event,{id:Date.now().toString(),virtual:event.country==='Virtual',cost:'Gratis',status:'pending',submittedAt:new Date().toISOString(),approveToken:crypto.randomBytes(24).toString('hex'),rejectToken:crypto.randomBytes(24).toString('hex')});
   const pending = readPBEvents('pending.json'); pending.push(event); writePBEvents('pending.json',pending);
   try {
-    await resend.emails.send({from:'Planeta Boricua <connect@ivamarai.com>',to:'connect@ivamarai.com',subject:`📅 Evento boricua gratuito: ${event.name}`,html:`<h2>${event.name}</h2><p>Organizado por <strong>${event.organizerName}</strong></p><p>${event.startDate} · ${event.city}, ${event.region}</p><p>${event.description}</p><p><a href="${event.eventUrl}">Ver fuente oficial</a></p><p><a href="https://www.masboricuaqueunmofongo.com/admin/pb-event-approve/${event.approveToken}">✅ Aprobar</a> &nbsp; <a href="https://www.masboricuaqueunmofongo.com/admin/pb-event-reject/${event.rejectToken}">❌ Rechazar</a></p>`});
+    await resend.emails.send({from:`Planeta Boricua <${PB_SENDER_EMAIL}>`,to:PB_CONTACT_EMAIL,subject:`📅 Evento boricua gratuito: ${event.name}`,html:`<h2>${event.name}</h2><p>Organizado por <strong>${event.organizerName}</strong></p><p>${event.startDate} · ${event.city}, ${event.region}</p><p>${event.description}</p><p><a href="${event.eventUrl}">Ver fuente oficial</a></p><p><a href="https://www.masboricuaqueunmofongo.com/admin/pb-event-approve/${event.approveToken}">✅ Aprobar</a> &nbsp; <a href="https://www.masboricuaqueunmofongo.com/admin/pb-event-reject/${event.rejectToken}">❌ Rechazar</a></p>`});
   } catch (error) { console.error('PB public event notification error:',error.message); }
   res.json({ok:true});
 });
@@ -2748,7 +2750,7 @@ app.get('/admin/pb-event-approve/:token', async (req,res) => {
   if (index < 0) return res.status(404).send('Evento no encontrado');
   const event = pending.splice(index,1)[0]; event.status='approved'; event.approvedAt=new Date().toISOString();
   const approved=readPBEvents('approved.json'); approved.push(event); writePBEvents('approved.json',approved); writePBEvents('pending.json',pending);
-  try { await resend.emails.send({from:'Planeta Boricua <connect@ivamarai.com>',to:event.email,subject:`✅ Evento aprobado: ${event.name}`,html:`<p>Tu evento <strong>${event.name}</strong> fue aprobado y ya puede aparecer en la <a href="https://www.masboricuaqueunmofongo.com/agenda-boricua">Agenda Boricua</a>.</p>`}); } catch(error){ console.error('PB event approval email:',error.message); }
+  try { await resend.emails.send({from:`Planeta Boricua <${PB_SENDER_EMAIL}>`,to:event.email,subject:`✅ Evento aprobado: ${event.name}`,html:`<p>Tu evento <strong>${event.name}</strong> fue aprobado y ya puede aparecer en la <a href="https://www.masboricuaqueunmofongo.com/agenda-boricua">Agenda Boricua</a>.</p>`}); } catch(error){ console.error('PB event approval email:',error.message); }
   res.send(`<h2>✅ Evento aprobado</h2><p>${event.name}</p><p><a href="/agenda-boricua">Ver agenda</a> · <a href="/admin/pb-event-delete/${event.approveToken}">Eliminar evento</a></p>`);
 });
 
@@ -3269,8 +3271,8 @@ app.post("/api/pb-negocio-submit", formLimiter, express.json(), async (req, res)
     const rejectUrl = 'https://masboricuaqueunmofongo.com/admin/pb-reject/' + negocio.rejectToken;
 
     await resendClient.emails.send({
-      from: 'Planeta Boricua <connect@ivamarai.com>',
-      to: 'connect@ivamarai.com',
+      from: `Planeta Boricua <${PB_SENDER_EMAIL}>`,
+      to: PB_CONTACT_EMAIL,
       subject: '🇵🇷 Nuevo Negocio PB: ' + name,
       html: `
         <div style="font-family:sans-serif;max-width:600px;margin:0 auto;">
@@ -3348,7 +3350,7 @@ app.get("/admin/pb-approve/:token", async (req, res) => {
       const { Resend } = require('resend');
       const resendClient = new Resend(process.env.RESEND_API_KEY);
       await resendClient.emails.send({
-        from: 'Planeta Boricua <connect@ivamarai.com>',
+        from: `Planeta Boricua <${PB_SENDER_EMAIL}>`,
         to: negocio.email,
         subject: '🇵🇷 ¡Tu negocio fue aprobado en Planeta Boricua!',
         html: `
@@ -3360,7 +3362,7 @@ app.get("/admin/pb-approve/:token", async (req, res) => {
               <p style="font-size:1rem;color:#333;">Hola, <strong>${negocio.name}</strong>!</p>
               <p style="color:#555;line-height:1.6;margin-top:1rem;">Tu solicitud fue revisada y quedaste registrado como <strong>Participante de la Feria de Artesanías</strong> de Planeta Boricua.</p>
               <p style="color:#555;line-height:1.6;margin-top:1rem;">Tu ficha ya puede aparecer en la <a href="https://masboricuaqueunmofongo.com/feria-artesanos" style="color:#002D62;font-weight:700;">Feria Digital de Artesanías Puertorriqueñas</a>.</p>
-              <p style="color:#555;line-height:1.6;margin-top:1rem;">¿Necesitas actualizar información? Contáctanos en <strong>connect@ivamarai.com</strong></p>
+              <p style="color:#555;line-height:1.6;margin-top:1rem;">¿Necesitas actualizar información? Contáctanos en <strong>${PB_CONTACT_EMAIL}</strong></p>
               <p style="margin-top:2rem;font-size:0.85rem;color:#999;">© 2026 Planeta Boricua · Proyecto independiente de Iván Soto</p>
             </div>
           </div>
@@ -3402,14 +3404,14 @@ app.get("/admin/pb-reject/:token", async (req, res) => {
       const { Resend } = require('resend');
       const resendClient = new Resend(process.env.RESEND_API_KEY);
       await resendClient.emails.send({
-        from: 'Planeta Boricua <connect@ivamarai.com>',
+        from: `Planeta Boricua <${PB_SENDER_EMAIL}>`,
         to: negocio.email,
         subject: 'Actualización sobre tu solicitud en Planeta Boricua',
         html: `
           <div style="font-family:sans-serif;max-width:600px;margin:0 auto;padding:2rem;">
             <h2>Hola, ${negocio.name}</h2>
             <p style="color:#555;line-height:1.6;">Gracias por tu interés en Planeta Boricua. En esta ocasión no pudimos aprobar tu solicitud. Esto puede deberse a información incompleta o que el negocio no cumple con nuestros criterios del directorio.</p>
-            <p style="color:#555;line-height:1.6;margin-top:1rem;">Si crees que fue un error o quieres más información, contáctanos en <strong>connect@ivamarai.com</strong></p>
+            <p style="color:#555;line-height:1.6;margin-top:1rem;">Si crees que fue un error o quieres más información, contáctanos en <strong>${PB_CONTACT_EMAIL}</strong></p>
           </div>
         `
       });
@@ -3501,8 +3503,8 @@ app.post('/api/nayeli', aiLimiter, express.json(), async (req, res) => {
         body: JSON.stringify({ email, listIds: [4], updateEnabled: true, attributes: { SOURCE: 'nayeli-chat' } })
       });
       await resend.emails.send({
-        from: 'Planeta Boricua <connect@ivamarai.com>',
-        to: 'connect@ivamarai.com',
+        from: `Planeta Boricua <${PB_SENDER_EMAIL}>`,
+        to: PB_CONTACT_EMAIL,
         subject: '🇵🇷 Nayeli capturó email: ' + email,
         html: '<p>Email capturado por Nayeli: <strong>' + email + '</strong></p><p>Historial: ' + JSON.stringify(history).slice(0, 500) + '</p>'
       });
@@ -3546,7 +3548,7 @@ app.post('/api/nayeli', aiLimiter, express.json(), async (req, res) => {
       ).join('') + '<a href="https://www.masboricuaqueunmofongo.com/recursos" style="display:block;background:#444;color:#fff;padding:0.8rem 1.2rem;border-radius:6px;text-decoration:none;font-weight:700;">📋 Ver Centro de Recursos Completo →</a>';
 
       await resend.emails.send({
-        from: 'Nayeli — Planeta Boricua <connect@ivamarai.com>',
+        from: `Nayeli — Planeta Boricua <${PB_SENDER_EMAIL}>`,
         to: email,
         subject: '🇵🇷 Nayeli te envía tu resumen de Planeta Boricua',
         html: `<div style="font-family:sans-serif;max-width:600px;margin:0 auto;">
@@ -3891,8 +3893,8 @@ app.post('/api/colaboracion-boricua', express.json(), formLimiter, async (req, r
     const { Resend } = require('resend');
     const resend = new Resend(process.env.RESEND_API_KEY);
     await resend.emails.send({
-      from: 'Planeta Boricua <connect@ivamarai.com>',
-      to: 'connect@ivamarai.com',
+      from: `Planeta Boricua <${PB_SENDER_EMAIL}>`,
+      to: PB_CONTACT_EMAIL,
       subject: 'Nueva colaboración: ' + tema,
       html: '<h2>Nueva colaboración del Centro de Recursos</h2><p><strong>Nombre:</strong> ' + nombre + '</p><p><strong>Email:</strong> ' + email + '</p><p><strong>Tema:</strong> ' + tema + '</p><p><strong>Información:</strong></p><p>' + info + '</p>'
     });
@@ -3941,8 +3943,8 @@ app.post('/api/newsletter-boricua', express.json(), formLimiter, async (req, res
 
     // Notify Ivan
     await resend.emails.send({
-      from: 'Planeta Boricua <connect@ivamarai.com>',
-      to: 'connect@ivamarai.com',
+      from: `Planeta Boricua <${PB_SENDER_EMAIL}>`,
+      to: PB_CONTACT_EMAIL,
       subject: '🇵🇷 Nuevo suscriptor Planeta Boricua: ' + email,
       html: '<p>Nuevo suscriptor: <strong>' + email + '</strong></p><p>Fuente: ' + (source || 'landing') + '</p><p>Total: ' + subscribers.length + '</p>'
     });
@@ -3960,7 +3962,7 @@ app.post('/api/newsletter-boricua', express.json(), formLimiter, async (req, res
 
     // Welcome email in Spanish
     await resend.emails.send({
-      from: 'Planeta Boricua <connect@ivamarai.com>',
+      from: `Planeta Boricua <${PB_SENDER_EMAIL}>`,
       to: email,
       subject: '🇵🇷 ¡Bienvenido/a a Planeta Boricua!',
       html: `<div style="font-family:sans-serif;max-width:600px;margin:0 auto;">

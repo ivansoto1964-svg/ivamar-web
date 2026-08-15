@@ -813,7 +813,7 @@ async function loadDirectorio() {
       <h4>Comunidad</h4>
       <a href="/feria-artesanos">Feria Digital de Artesanías 🎨</a>
       <a href="/compartir-evento-boricua">Comparte un evento gratis</a>
-      <a href="mailto:connect@ivamarai.com">Contacto</a>
+      <a href="mailto:masboricuaqueunmofongo@gmail.com">Contacto</a>
     </div>
     <div class="pb-footer-col">
       <h4>Legal</h4>
