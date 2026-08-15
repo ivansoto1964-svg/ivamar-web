@@ -363,7 +363,7 @@ footer{background:var(--blue);padding:2rem;text-align:center;}
 
 <footer>
   <div class="footer-logo">Planeta <span>Boricua</span></div>
-  <div class="footer-info">© 2026 Planeta Boricua · masboricuaqueunmofongo.com · Un proyecto de Ivamar AI LLC</div>
+  <div class="footer-info">© 2026 Planeta Boricua · masboricuaqueunmofongo.com · Proyecto independiente de Iván Soto</div>
 </footer>
 
 <script>

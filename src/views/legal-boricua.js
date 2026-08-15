@@ -41,38 +41,38 @@ nav{background:#fff;border-bottom:3px solid #CE1126;padding:0;}
 </nav>
 <section class="page-hero">
   <h1>Términos y Condiciones de Uso</h1>
-  <p>Última actualización: 12 de julio de 2026</p>
+  <p>Última actualización: 15 de agosto de 2026</p>
 </section>
 <div class="content">
-  <p>Bienvenido a Más Boricua Que Un Mofongo (masboricuaqueunmofongo.com), un sitio web operado por Ivamar AI LLC. Al acceder o utilizar nuestra plataforma, directorio, asistente de IA (Nayeli AI) y servicios relacionados, usted acepta cumplir y estar sujeto a los siguientes Términos y Condiciones. Si no está de acuerdo con alguna parte de estos términos, no deberá utilizar nuestro sitio web.</p>
+  <p>Bienvenido a Más Boricua Que Un Mofongo (masboricuaqueunmofongo.com), el portal de Planeta Boricua, proyecto independiente operado por Iván Soto desde Florida, Estados Unidos. Al acceder o utilizar nuestra plataforma, directorio, asistente de IA (Nayeli AI) y servicios relacionados, usted acepta cumplir y estar sujeto a los siguientes Términos y Condiciones. Si no está de acuerdo con alguna parte de estos términos, no deberá utilizar nuestro sitio web.</p>
 
   <h2>1. Uso del Sitio y la Feria de Artesanías</h2>
   <p>Al registrarse en nuestra Feria de Artesanías, usted garantiza que la información proporcionada es verídica, exacta y que tiene los derechos legítimos sobre su oficio o negocio artesanal. Nos reservamos el derecho de remover cualquier listado que consideremos fraudulento, engañoso, ofensivo o que viole derechos de terceros sin previo aviso.</p>
 
   <h2>2. Propiedad Intelectual</h2>
-  <p>Todo el contenido original de este sitio, incluyendo textos, gráficos, logotipos, código y la personalidad de nuestra asistente de IA (Nayeli AI), es propiedad exclusiva de Ivamar AI LLC y está protegido por las leyes de propiedad intelectual internacionales y de los Estados Unidos.</p>
+  <p>Todo el contenido original de este sitio, incluyendo textos, gráficos, logotipos, código y la personalidad de nuestra asistente de IA (Nayeli AI), pertenece a Planeta Boricua y a su creador, Iván Soto, y está protegido por las leyes de propiedad intelectual aplicables.</p>
 
   <h2>3. Descargo de Responsabilidad de Afiliados y Publicidad</h2>
-  <p>Este sitio web muestra anuncios de Google AdSense y contiene enlaces de afiliados (incluyendo el Programa de Asociados de Amazon, Booking.com y Trip.com). Ivamar AI LLC no se hace responsable de las transacciones, compras, cancelaciones o disputas que ocurran entre el usuario y las plataformas de terceros vinculadas. Cualquier reclamación sobre un producto o servicio adquirido a través de un enlace de afiliado debe dirigirse al proveedor final.</p>
+  <p>Este sitio web muestra anuncios de Google AdSense y contiene enlaces de afiliados (incluyendo el Programa de Asociados de Amazon, Booking.com y Trip.com). Planeta Boricua no controla ni se hace responsable de las transacciones, compras, cancelaciones o disputas que ocurran entre el usuario y las plataformas de terceros vinculadas. Cualquier reclamación sobre un producto o servicio adquirido a través de un enlace de afiliado debe dirigirse al proveedor final.</p>
 
   <h2>4. Comentarios y Participación</h2>
   <p>Los comentarios en los artículos deben realizarse con respeto. No se permite contenido ofensivo, spam, publicidad no solicitada o mensajes que inciten al odio o a la desinformación. Planeta Boricua se reserva el derecho de moderar, editar o eliminar comentarios que no cumplan con estas normas.</p>
 
   <h2>5. Limitación de Responsabilidad</h2>
-  <p>Ivamar AI LLC y Más Boricua Que Un Mofongo no garantizan que el sitio web funcione de manera ininterrumpida o libre de errores. En ningún caso seremos responsables por daños directos, indirectos, incidentales o consecuentes que resulten del uso o la imposibilidad de uso de nuestra plataforma o de la información proporcionada por nuestra asistente Nayeli AI.</p>
+  <p>Planeta Boricua y su operador no garantizan que el sitio web funcione de manera ininterrumpida o libre de errores. En la medida permitida por la ley, no serán responsables por daños directos, indirectos, incidentales o consecuentes que resulten del uso o la imposibilidad de uso de la plataforma o de la información proporcionada por Nayeli AI.</p>
 
   <h2>6. Modificaciones</h2>
   <p>Nos reservamos el derecho de modificar estos Términos y Condiciones en cualquier momento. Las actualizaciones serán publicadas en esta página y entrarán en vigor desde su publicación.</p>
 
   <h2>7. Ley Aplicable</h2>
-  <p>Estos términos se rigen e interpretan de acuerdo con las leyes del Estado de Delaware, Estados Unidos, sin dar efecto a ningún principio de conflictos de leyes.</p>
+  <p>Estos términos se rigen e interpretan de acuerdo con las leyes aplicables del Estado de Florida, Estados Unidos, sin dar efecto a ningún principio de conflictos de leyes.</p>
 
   <h2>8. Contacto</h2>
   <p>Para consultas relacionadas con estos Términos, puedes comunicarte a través de <a href="mailto:connect@ivamarai.com" style="color:#CE1126;">connect@ivamarai.com</a></p>
-  <p style="margin-top:1rem;font-size:0.82rem;color:#888;">Empresa matriz: Ivamar AI LLC, Delaware, USA.</p>
+  <p style="margin-top:1rem;font-size:0.82rem;color:#888;">Operador: Iván Soto · Florida, USA.</p>
 </div>
 <footer class="footer">
-  <p>© 2026 <a href="/">Planeta Boricua</a> · <a href="/privacidad-boricua">Privacidad</a> · <a href="/terminos-boricua">Términos</a> · <a href="/afiliados-boricua">Aviso de Afiliados</a> · Un producto de <a href="https://ivamarai.com">Ivamar AI LLC</a></p>
+  <p>© 2026 <a href="/">Planeta Boricua</a> · <a href="/privacidad-boricua">Privacidad</a> · <a href="/terminos-boricua">Términos</a> · <a href="/afiliados-boricua">Aviso de Afiliados</a> · Proyecto independiente de Iván Soto</p>
 </footer>
 </body>
 </html>`;
@@ -120,11 +120,11 @@ nav{background:#fff;border-bottom:3px solid #CE1126;padding:0;}
 </nav>
 <section class="page-hero">
   <h1>Política de Privacidad</h1>
-  <p>Última actualización: junio 2026</p>
+  <p>Última actualización: 15 de agosto de 2026</p>
 </section>
 <div class="content">
-  <p><em>Última actualización: 12 de julio de 2026</em></p>
-  <p>En Más Boricua Que Un Mofongo (accesible a través de masboricuaqueunmofongo.com), propiedad y operado por Ivamar AI LLC, una de nuestras principales prioridades es la privacidad de nuestros visitantes. Este documento de Política de Privacidad detalla los tipos de información que recopilamos y registramos, y cómo la utilizamos.</p>
+  <p><em>Última actualización: 15 de agosto de 2026</em></p>
+  <p>En Más Boricua Que Un Mofongo (accesible a través de masboricuaqueunmofongo.com), portal de Planeta Boricua operado de manera independiente por Iván Soto desde Florida, una de nuestras principales prioridades es la privacidad de nuestros visitantes. Este documento detalla los tipos de información que recopilamos y registramos, y cómo la utilizamos.</p>
 
   <h2>1. Archivos de Registro (Log Files)</h2>
   <p>Más Boricua Que Un Mofongo sigue un procedimiento estándar de uso de archivos de registro. Estos archivos registran a los visitantes cuando entran a los sitios web. La información recopilada incluye direcciones de protocolo de Internet (IP), tipo de navegador, proveedor de servicios de Internet (ISP), fecha y hora de la visita, páginas de referencia/salida y posiblemente el número de clics. Estos datos no están vinculados a ninguna información personalmente identificable.</p>
@@ -156,10 +156,10 @@ nav{background:#fff;border-bottom:3px solid #CE1126;padding:0;}
 
   <h2>9. Contacto</h2>
   <p>Si tiene alguna pregunta sobre esta Política de Privacidad, puede contactarnos a través de: <a href="mailto:connect@ivamarai.com" style="color:#CE1126;">connect@ivamarai.com</a></p>
-  <p style="margin-top:1rem;font-size:0.82rem;color:#888;">Empresa matriz: Ivamar AI LLC, Delaware, USA.</p>
+  <p style="margin-top:1rem;font-size:0.82rem;color:#888;">Operador: Iván Soto · Florida, USA.</p>
 </div>
 <footer class="footer">
-  <p>© 2026 <a href="/">Planeta Boricua</a> · <a href="/privacidad-boricua">Privacidad</a> · <a href="/terminos-boricua">Términos</a> · <a href="/afiliados-boricua">Aviso de Afiliados</a> · Un producto de <a href="https://ivamarai.com">Ivamar AI LLC</a></p>
+  <p>© 2026 <a href="/">Planeta Boricua</a> · <a href="/privacidad-boricua">Privacidad</a> · <a href="/terminos-boricua">Términos</a> · <a href="/afiliados-boricua">Aviso de Afiliados</a> · Proyecto independiente de Iván Soto</p>
 </footer>
 </body>
 </html>`;
@@ -207,7 +207,7 @@ nav{background:#fff;border-bottom:3px solid #CE1126;padding:0;}
 </nav>
 <section class="page-hero">
   <h1>Aviso de Afiliados</h1>
-  <p>Divulgación FTC — Última actualización: junio 2026</p>
+  <p>Divulgación FTC — Última actualización: 15 de agosto de 2026</p>
 </section>
 <div class="content">
   <div class="info-box">
@@ -239,10 +239,10 @@ nav{background:#fff;border-bottom:3px solid #CE1126;padding:0;}
 
   <h2>Contacto</h2>
   <p>Si tienes preguntas sobre este aviso de afiliados, puedes comunicarte a través de <a href="mailto:connect@ivamarai.com" style="color:#CE1126;">connect@ivamarai.com</a></p>
-  <p style="margin-top:1rem;font-size:0.82rem;color:#888;">Este sitio es operado como parte del ecosistema de proyectos de Ivamar AI LLC, Delaware, USA.</p>
+  <p style="margin-top:1rem;font-size:0.82rem;color:#888;">Este sitio es un proyecto independiente operado por Iván Soto desde Florida, USA.</p>
 </div>
 <footer class="footer">
-  <p>© 2026 <a href="/">Planeta Boricua</a> · <a href="/privacidad-boricua">Privacidad</a> · <a href="/terminos-boricua">Términos</a> · <a href="/afiliados-boricua">Aviso de Afiliados</a> · Un producto de <a href="https://ivamarai.com">Ivamar AI LLC</a></p>
+  <p>© 2026 <a href="/">Planeta Boricua</a> · <a href="/privacidad-boricua">Privacidad</a> · <a href="/terminos-boricua">Términos</a> · <a href="/afiliados-boricua">Aviso de Afiliados</a> · Proyecto independiente de Iván Soto</p>
 </footer>
 </body>
 </html>`;

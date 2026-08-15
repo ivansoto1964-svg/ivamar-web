@@ -87,8 +87,9 @@ footer p{color:rgba(255,255,255,0.3);font-size:0.75rem;margin-top:0.5rem;}
   <p><strong>Recursos para la Diáspora</strong> — guías prácticas para boricuas que se mudan entre Puerto Rico y USA.</p>
 
   <h2>Quién lo Hace</h2>
-  <p>Planeta Boricua es un proyecto de <strong>Ivamar AI LLC</strong>, empresa de tecnología con sede en Delaware, USA, fundada por <strong>Iván Soto</strong>, emprendedor digital boricua.</p>
-  <p>Iván lleva años construyendo plataformas digitales para comunidades latinas y caribeñas. Planeta Boricua es el proyecto más personal — el que nació del deseo de crear un espacio que la diáspora boricua merecía tener.</p>
+  <p>Planeta Boricua es un proyecto cultural y editorial independiente creado y dirigido por <strong>Iván Soto</strong>, comunicador puertorriqueño radicado en Florida.</p>
+  <p>Iván comenzó en la radio en 1981, a los 16 años, produciendo un espacio dominical en WMIA 1070 AM de Arecibo. Luego formó parte del equipo de locutores de WMSW 1120 AM y, desde 1985, trabajó en WCMN Delta 107.3 FM. En 1989 combinó la locución con la venta de publicidad y desde 1991 se dedicó de lleno al área comercial hasta diciembre de 2006.</p>
+  <p>Su trayectoria también incluye proyectos de transporte turístico, televisión y publicidad. Planeta Boricua reúne esa experiencia con su interés por la tecnología y su deseo de crear un espacio útil, auténtico y cercano para Puerto Rico y su diáspora.</p>
 
   <h2>Nuestros Valores</h2>
   <p><strong>Autenticidad</strong> — escribimos desde adentro, no desde afuera. No explicamos la cultura boricua. La celebramos.</p>
@@ -97,7 +98,7 @@ footer p{color:rgba(255,255,255,0.3);font-size:0.75rem;margin-top:0.5rem;}
 
   <h2>Contacto</h2>
   <p>Para colaboraciones, consultas o simplemente para decir wepa — escríbenos a <a href="mailto:connect@ivamarai.com">connect@ivamarai.com</a></p>
-  <p style="font-size:0.85rem;color:var(--mid);">Planeta Boricua es operado por Ivamar AI LLC · Delaware, USA · masboricuaqueunmofongo.com</p>
+  <p style="font-size:0.85rem;color:var(--mid);">Planeta Boricua es operado de manera independiente por Iván Soto · Florida, USA · masboricuaqueunmofongo.com</p>
 
 </div>
 
@@ -105,9 +106,9 @@ footer p{color:rgba(255,255,255,0.3);font-size:0.75rem;margin-top:0.5rem;}
   <a href="/">Portal</a>
   <a href="/blog">El Balcón</a>
   <a href="/quienes-somos">Quiénes Somos</a>
-  <a href="/privacidad">Privacidad</a>
-  <a href="/terminos">Términos</a>
-  <p>© 2026 Planeta Boricua — Ivamar AI LLC · Más Boricua Que Un Mofongo 🇵🇷</p>
+  <a href="/privacidad-boricua">Privacidad</a>
+  <a href="/terminos-boricua">Términos</a>
+  <p>© 2026 Planeta Boricua — Iván Soto · Más Boricua Que Un Mofongo 🇵🇷</p>
 </footer>
 </body>
 </html>`;

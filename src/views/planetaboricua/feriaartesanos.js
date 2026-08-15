@@ -132,7 +132,7 @@ footer.pb-footer a{color:rgba(255,255,255,0.8);text-decoration:none;margin:0 0.5
     <a href="https://www.masboricuaqueunmofongo.com/privacidad-boricua">Privacidad</a>
     <a href="https://www.masboricuaqueunmofongo.com/terminos-boricua">Términos</a>
   </div>
-  <div style="margin-top:0.8rem;">© 2026 Planeta Boricua · Un producto de Ivamar AI LLC</div>
+  <div style="margin-top:0.8rem;">© 2026 Planeta Boricua · Proyecto independiente de Iván Soto · Florida, USA</div>
 </footer>
 
 <script>
