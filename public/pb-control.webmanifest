@@ -1,0 +1,31 @@
+{
+  "name": "PB Control — Planeta Boricua",
+  "short_name": "PB Control",
+  "description": "Centro de Control de Planeta Boricua",
+  "start_url": "/pb-control",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#f4f5f7",
+  "theme_color": "#002d62",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/icons/pb/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/pb/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icons/pb/icon-512-maskable.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
