@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="robots" content="noindex,nofollow">
+  <title>Nueva publicación — Lo más reciente | PB Control</title>
+  <style>
+    :root{--blue:#002d62;--red:#ce1126;--ink:#172033;--muted:#667085;--line:#e1e5eb;--paper:#f4f5f7;--green:#087443}
+    *{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:Inter,system-ui,-apple-system,sans-serif}
+    header{background:var(--blue);color:#fff;padding:1rem;position:sticky;top:0;z-index:10;box-shadow:0 3px 14px #001a3e33}
+    .head{max-width:850px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:1rem}.brand{font-weight:900}.brand small{display:block;opacity:.75;font-weight:600}.back{color:#fff;text-decoration:none;border:1px solid #ffffff66;border-radius:8px;padding:.55rem .75rem;font-size:.78rem;font-weight:800}
+    main{max-width:850px;margin:auto;padding:1rem 1rem 5rem}.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:1rem;margin:1rem 0}.card h1{font-size:1.35rem;color:var(--blue);margin:.1rem 0}.intro{color:var(--muted);line-height:1.55;font-size:.88rem}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}.field{display:flex;flex-direction:column;gap:.3rem}.full{grid-column:1/-1}.field label{font-size:.74rem;font-weight:900;color:var(--blue)}input,textarea{width:100%;border:1px solid #cbd2dc;border-radius:8px;padding:.75rem;font:inherit;background:#fff}textarea{min-height:115px;resize:vertical}textarea.body{min-height:330px;line-height:1.55}.help{font-size:.7rem;color:var(--muted)}
+    .buttons{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1rem}.primary,.secondary{border:0;border-radius:8px;padding:.78rem 1rem;font-weight:900;cursor:pointer}.primary{background:var(--red);color:#fff}.primary:disabled{opacity:.55;cursor:not-allowed}.secondary{background:#eef3f9;color:var(--blue);text-decoration:none;border:1px solid #cad4e2}
+    #status{display:none;margin:1rem 0;padding:.9rem 1rem;border-radius:9px;font-weight:800;line-height:1.45}#status.show{display:block}#status.info{background:#eef5ff;color:#284d79}#status.good{background:#e8f7ef;color:var(--green)}#status.bad{background:#fff0f1;color:#9f1d2b}
+    .imagePreview{display:none;margin-top:.7rem;max-width:100%;max-height:280px;border-radius:10px;border:1px solid var(--line);object-fit:contain;background:#f7f7f7}.imagePreview.show{display:block}
+    @media(max-width:650px){.grid{grid-template-columns:1fr}.full{grid-column:auto}.head{align-items:flex-start}.brand small{font-size:.72rem}}
+  </style>
+</head>
+<body>
+<header><div class="head"><div class="brand">🇵🇷 Nueva publicación<small>Lo más reciente · Planeta Boricua</small></div><a class="back" href="/pb-control#publicaciones">PB Control</a></div></header>
+<main>
+  <div id="status" role="status"></div>
+  <section class="card">
+    <h1>Publicar en Lo más reciente</h1>
+    <p class="intro">Formulario directo para noticias, actualidad y asuntos urgentes. Puedes subir la imagen desde tu celular o computadora; PB la guarda en su almacenamiento y publica usando el acceso privado de PB Control.</p>
+    <form id="latestForm">
+      <div class="grid">
+        <div class="field full"><label for="title">Título</label><input id="title" name="title" maxlength="180" required></div>
+        <div class="field full"><label for="summary">Resumen</label><textarea id="summary" name="summary" maxlength="400" required></textarea></div>
+        <div class="field full"><label for="body">Contenido</label><textarea class="body" id="body" name="body" maxlength="12000" required></textarea></div>
+        <div class="field"><label for="sourceLabel">Nombre de la fuente</label><input id="sourceLabel" name="sourceLabel" maxlength="100" required></div>
+        <div class="field"><label for="sourceUrl">Enlace de la fuente</label><input id="sourceUrl" name="sourceUrl" type="url" required></div>
+        <div class="field full"><label for="imageFile">Subir imagen (opcional)</label><input id="imageFile" name="imageFile" type="file" accept="image/jpeg,image/png,image/webp"><span class="help">JPG, PNG o WebP · máximo 5 MB.</span><img id="imagePreview" class="imagePreview" alt="Vista previa"></div>
+        <div class="field full"><label for="image">O usar una URL de imagen (opcional)</label><input id="image" name="image" type="url" placeholder="https://..."><span class="help">Si subes un archivo, tendrá prioridad sobre esta URL.</span></div>
+      </div>
+      <div class="buttons"><button class="primary" id="publishBtn" type="submit">Publicar ahora</button><a class="secondary" href="/lo-mas-reciente" target="_blank">Ver Lo más reciente</a></div>
+    </form>
+  </section>
+</main>
+<script>
+  let csrf='';
+  const statusBox=document.getElementById('status');
+  const publishBtn=document.getElementById('publishBtn');
+  const form=document.getElementById('latestForm');
+  const imageFile=document.getElementById('imageFile');
+  const imagePreview=document.getElementById('imagePreview');
+
+  function status(message,type='info'){
+    statusBox.textContent=message;
+    statusBox.className='show '+type;
+  }
+
+  async function loadControlHtml(){
+    const response=await fetch('/pb-control?publisher='+Date.now(),{credentials:'include',cache:'no-store'});
+    if(response.url.includes('/pb-control/login')) throw new Error('Tu sesión de PB Control no está activa. Entra a PB Control y vuelve a abrir esta página.');
+    if(!response.ok) throw new Error('No se pudo validar la sesión de PB Control.');
+    return response.text();
+  }
+
+  async function init(){
+    publishBtn.disabled=true;
+    try{
+      const html=await loadControlHtml();
+      const match=html.match(/const csrf=([^;]+);const notice=/);
+      if(!match) throw new Error('No se pudo obtener la protección de seguridad de PB Control.');
+      csrf=JSON.parse(match[1]);
+      publishBtn.disabled=false;
+      status('Listo para publicar. Tu sesión privada de PB Control está activa.','good');
+    }catch(error){
+      status(error.message,'bad');
+    }
+  }
+
+  async function action(action,id,payload={}){
+    const response=await fetch('/pb-control/action',{
+      method:'POST',credentials:'include',
+      headers:{'Content-Type':'application/json','X-CSRF-Token':csrf},
+      body:JSON.stringify({action,id,...payload})
+    });
+    const data=await response.json().catch(()=>({}));
+    if(!response.ok||!data.ok) throw new Error(data.error||'No se pudo completar la operación.');
+    return data;
+  }
+
+  function fileAsDataUrl(file){
+    return new Promise((resolve,reject)=>{
+      const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=()=>reject(new Error('No se pudo leer la imagen.'));reader.readAsDataURL(file);
+    });
+  }
+
+  async function uploadViaPrivateBlogMedia(file){
+    if(file.size>5*1024*1024) throw new Error('La imagen no puede superar 5 MB.');
+    const stamp=Date.now();
+    const tempSlug='tmp-latest-image-'+stamp;
+    const imageData=await fileAsDataUrl(file);
+    status('Subiendo la imagen a Planeta Boricua…','info');
+    await action('blog-save','new',{
+      originalSlug:'',title:'Imagen temporal Lo más reciente '+stamp,slug:tempSlug,
+      category:'Cultura e identidad',dateISO:new Date().toISOString().slice(0,10),tags:'',
+      excerpt:'Archivo temporal para una publicación de Lo más reciente.',
+      content:'Archivo temporal de imagen para Lo más reciente.',image:'',seoTitle:'',metaDescription:'',status:'draft',imageData
+    });
+
+    const html=await loadControlHtml();
+    const doc=new DOMParser().parseFromString(html,'text/html');
+    let imagePath='';
+    for(const button of doc.querySelectorAll('[data-edit-blog]')){
+      try{
+        const post=JSON.parse(decodeURIComponent(button.getAttribute('data-edit-blog')));
+        if(post.slug===tempSlug){imagePath=post.image||'';break;}
+      }catch(_){ }
+    }
+    if(!imagePath) throw new Error('La imagen se subió, pero no pude recuperar su dirección. El borrador temporal quedó en PB Control para no perderla.');
+    await action('blog-delete',tempSlug);
+    return imagePath;
+  }
+
+  imageFile.addEventListener('change',()=>{
+    const file=imageFile.files[0];
+    if(!file){imagePreview.className='imagePreview';imagePreview.removeAttribute('src');return;}
+    if(file.size>5*1024*1024){status('La imagen no puede superar 5 MB.','bad');imageFile.value='';return;}
+    imagePreview.src=URL.createObjectURL(file);imagePreview.className='imagePreview show';
+  });
+
+  form.addEventListener('submit',async event=>{
+    event.preventDefault();
+    if(!csrf){status('Primero debes tener una sesión activa en PB Control.','bad');return;}
+    publishBtn.disabled=true;
+    try{
+      const fields=Object.fromEntries(new FormData(form));
+      delete fields.imageFile;
+      const file=imageFile.files[0];
+      if(file) fields.image=await uploadViaPrivateBlogMedia(file);
+      status('Publicando en Lo más reciente…','info');
+      const result=await action('latest-create','new',fields);
+      status(result.message||'Publicación creada correctamente.','good');
+      form.reset();imagePreview.className='imagePreview';imagePreview.removeAttribute('src');
+      setTimeout(()=>window.open('/lo-mas-reciente','_blank'),700);
+    }catch(error){
+      status(error.message,'bad');
+    }finally{publishBtn.disabled=false;}
+  });
+
+  init();
+</script>
+</body>
+</html>
