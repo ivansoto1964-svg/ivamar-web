@@ -1,1 +1,0 @@
-PB Control publication UX: Blog oficial y Lo más reciente comparten el mismo bloque de creación con selector visible arriba. Lo más reciente acepta carga directa de JPG/PNG/WebP usando el almacenamiento de medios ya existente del blog y elimina el borrador temporal tras recuperar la ruta de la imagen.
