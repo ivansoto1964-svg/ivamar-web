@@ -1,0 +1,96 @@
+{
+  "project": "Auténtico PB — Apoya lo Nuestro",
+  "purpose": "Selección editorial de hospederías que sirvan como bases para descubrir las regiones de Puerto Rico. No pretende ser un directorio exhaustivo.",
+  "rules": {
+    "exclude": ["Airbnb", "Vrbo", "alquileres vacacionales individuales como eje de la selección"],
+    "puertoRicanOwnership": "Solo marcar Apoya lo Nuestro cuando la propiedad u operación puertorriqueña esté verificada.",
+    "selection": "Priorizar autenticidad, arraigo, historia, ubicación útil para recorrer la región y reserva/contacto directo.",
+    "quantity": "Normalmente 1 a 3 opciones fuertes por zona; no llenar por llenar."
+  },
+  "regions": [
+    {
+      "region": "Norte",
+      "lodgings": [
+        {"name":"Arecibo Inn","municipality":"Arecibo","status":"candidato fuerte","notes":"Propiedad local indicada por conocimiento directo; corroboración pública pendiente."},
+        {"name":"Parador El Buen Café","municipality":"Hatillo","status":"candidato fuerte","notes":"Historia familiar/local; base útil para el norte."},
+        {"name":"Hotel Punta Maracayo / Juan Luis Cuevas","municipality":"Hatillo","status":"candidato fuerte","notes":"Opción costera; conservar también la historia de Juan Luis Cuevas."}
+      ]
+    },
+    {
+      "region": "Noroeste",
+      "lodgings": [
+        {"name":"Parador Villas del Mar Hau","municipality":"Isabela","status":"candidato fuerte","notes":"Base para Isabela y Aguadilla."}
+      ]
+    },
+    {
+      "region": "Montaña / Centro",
+      "lodgings": [
+        {"name":"Parador Villas Sotomayor","municipality":"Adjuntas","status":"candidato fuerte","notes":"Historia y operación local; base para la montaña."},
+        {"name":"Hotel Monte Río","municipality":"Adjuntas","status":"candidato","notes":"Hospedería tradicional del pueblo."},
+        {"name":"Hotel Posada Jayuya","municipality":"Jayuya","status":"candidato fuerte","notes":"En el casco urbano; buena base para vivir Jayuya."},
+        {"name":"Hotel Hacienda Gripiñas","municipality":"Jayuya","status":"candidato fuerte","notes":"Experiencia rural/montaña."},
+        {"name":"Hacienda Horizonte","municipality":"Utuado","status":"candidato fuerte","notes":"Finca cafetalera; experiencia de montaña."},
+        {"name":"Hacienda Moraika","municipality":"Orocovis","status":"verificar","notes":"Agroturismo/café; verificar operación y propiedad actuales."}
+      ]
+    },
+    {
+      "region": "Oeste / Suroeste",
+      "lodgings": [
+        {"name":"Mayagüez Resort & Casino","municipality":"Mayagüez","status":"candidato fuerte","notes":"Opción puertorriqueña de mayor escala; base familiar para el oeste."},
+        {"name":"Parador Boquemar","municipality":"Cabo Rojo","status":"candidato fuerte","notes":"En pleno Poblado de Boquerón; historia local y ubicación caminable."},
+        {"name":"Combate Beach Resort","municipality":"Cabo Rojo","status":"candidato fuerte","notes":"Base para el extremo suroeste."},
+        {"name":"4 Casitas","municipality":"Cabo Rojo","status":"candidato fuerte","notes":"B&B/finca; experiencia pequeña y rural."},
+        {"name":"Parador Guánica 1929","municipality":"Guánica","status":"candidato fuerte","notes":"Historia, naturaleza y suroeste."},
+        {"name":"La Jamaca","municipality":"Lajas","status":"candidato","notes":"Opción pequeña para La Parguera; verificar criterios finales."}
+      ]
+    },
+    {
+      "region": "Sur / Sureste",
+      "lodgings": [
+        {"name":"Boutique Hotel Bélgica","municipality":"Ponce","status":"candidato fuerte","notes":"Casco histórico; opción para recorrer Ponce caminando."},
+        {"name":"Brandemar Hotel & Restaurant","municipality":"Guayama","status":"candidato fuerte","notes":"Hospedería familiar/local de larga trayectoria; verificar propiedad actual antes del sello final."},
+        {"name":"Parador Maunacaribe","municipality":"Maunabo","status":"candidato fuerte","notes":"Base para el sureste."},
+        {"name":"Parador Palmas de Lucía","municipality":"Yabucoa","status":"candidato fuerte","notes":"Base para costa sureste y Yabucoa."}
+      ]
+    },
+    {
+      "region": "Este",
+      "lodgings": [
+        {"name":"Luquillo Sunrise Beach Inn","municipality":"Luquillo","status":"verificar","notes":"Ubicación útil para Luquillo, El Yunque y Fajardo; verificar propiedad."},
+        {"name":"Fajardo Inn","municipality":"Fajardo","status":"verificar","notes":"Reserva directa y buena base regional; verificar propiedad/operación."},
+        {"name":"Rainforest Inn","municipality":"Río Grande","status":"verificar","notes":"B&B pequeño ligado a El Yunque."}
+      ]
+    },
+    {
+      "region": "Culebra",
+      "lodgings": [
+        {"name":"Posada La Hamaca","municipality":"Culebra","status":"selección principal","notes":"12 habitaciones, cerca del ferry, experiencia personal repetida y fuerte identidad local."},
+        {"name":"Mamacita's Guest House","municipality":"Culebra","status":"candidato fuerte","notes":"Hospedaje + restaurante/bar en el pueblo."},
+        {"name":"Club Seabourne","municipality":"Culebra","status":"candidato","notes":"Alternativa boutique para una experiencia distinta; verificar sello final."}
+      ]
+    },
+    {
+      "region": "Vieques",
+      "lodgings": [
+        {"name":"Sea Gate Hotel","municipality":"Vieques","status":"selección principal","notes":"Hospedería histórica conocida personalmente; verificar actividad/operación actual antes de publicar."},
+        {"name":"Vieques Tropical Guest House","municipality":"Vieques","status":"candidato fuerte","notes":"Operación puertorriqueña reportada; verificar condición física/actividad actual antes de recomendar."},
+        {"name":"Casa de Amistad","municipality":"Vieques","status":"verificar","notes":"Pequeña hospedería en Isabel II; verificar propiedad/operación."}
+      ],
+      "historical": [
+        {"name":"Vieques Ocean View Hotel","status":"cerrado/no incluir como alojamiento actual","notes":"Lugar recordado de una estadía en 2009 cerca del embarcadero; conservar como posible historia de memoria local."}
+      ]
+    },
+    {
+      "region": "Metro / Isla Verde",
+      "lodgings": [
+        {"name":"Hotel Villa del Sol","municipality":"Carolina","status":"verificar","notes":"Pequeño y cerca de playa/aeropuerto; verificar propiedad antes del sello."}
+      ]
+    }
+  ],
+  "next": [
+    "Cerrar 1-3 selecciones por cada zona estratégica.",
+    "Verificar actividad actual y propiedad/operación de cada finalista.",
+    "Crear itinerario piloto de 7 días usando las selecciones.",
+    "Después diseñar la arquitectura de páginas de los 78 municipios y conectar Agenda, Artesanos, Blog y Lo más reciente."
+  ]
+}
