@@ -1,0 +1,46 @@
+name: Install PB towns route
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/routes/pb-towns.js'
+      - 'src/data/pb-towns.js'
+      - 'src/views/planetaboricua/town-page.js'
+      - '.github/workflows/pb-towns-install.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Register reusable town route
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('src/server.js')
+          s=p.read_text()
+          line='require("./routes/pb-towns")(app);'
+          if line not in s:
+              anchor='require("./routes/pb-stories")(app);'
+              if anchor not in s:
+                  raise SystemExit('PB stories route anchor not found')
+              s=s.replace(anchor, line+'\n'+anchor, 1)
+              p.write_text(s)
+          PY
+      - name: Commit route registration
+        run: |
+          if git diff --quiet; then
+            echo "PB towns route already registered"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/server.js
+          git commit -m "Register reusable PB towns route"
+          git push origin main
