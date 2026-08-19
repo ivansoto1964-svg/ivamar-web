@@ -1,0 +1,43 @@
+name: PB editorial submit
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'data/pb-submit/*.json'
+
+permissions:
+  contents: read
+
+jobs:
+  submit-for-approval:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+
+      - name: Wait briefly for PB deployment
+        run: sleep 45
+
+      - name: Submit new PB drafts for email approval
+        shell: bash
+        run: |
+          set -euo pipefail
+          BEFORE='${{ github.event.before }}'
+          AFTER='${{ github.sha }}'
+          if [ "$BEFORE" = "0000000000000000000000000000000000000000" ]; then
+            FILES=$(git ls-files 'data/pb-submit/*.json')
+          else
+            FILES=$(git diff --name-only "$BEFORE" "$AFTER" -- 'data/pb-submit/*.json')
+          fi
+          [ -n "$FILES" ] || { echo 'No new PB drafts.'; exit 0; }
+          while IFS= read -r file; do
+            [ -f "$file" ] || continue
+            echo "Submitting $file"
+            curl --fail-with-body --retry 3 --retry-delay 10 \
+              -X POST 'https://www.masboricuaqueunmofongo.com/api/pb-reciente-submit' \
+              -H 'Content-Type: application/json' \
+              --data-binary "@$file"
+            echo
+          done <<< "$FILES"
