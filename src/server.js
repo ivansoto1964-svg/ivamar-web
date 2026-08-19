@@ -2509,6 +2509,9 @@ app.get("/api/place-photo", async (req, res) => {
 app.get("/autoridad-energia-criolla", (req, res) => res.send(aecDemo));
 app.get("/noticias", (req, res) => res.redirect(301, "/blog"));
 
+// PB town stories
+require("./routes/pb-stories")(app);
+
 // PB Blog routes
 const pbBlogRouter = require("./routes/pb-blog");
 const quienesSomos = require("./views/quienes-somos");
