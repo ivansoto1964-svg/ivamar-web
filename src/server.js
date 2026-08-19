@@ -2510,6 +2510,7 @@ app.get("/autoridad-energia-criolla", (req, res) => res.send(aecDemo));
 app.get("/noticias", (req, res) => res.redirect(301, "/blog"));
 
 // PB town stories
+require("./routes/pb-towns")(app);
 require("./routes/pb-stories")(app);
 
 // PB Blog routes
