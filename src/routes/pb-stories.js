@@ -20,6 +20,20 @@ function slugify(value='') { return String(value).normalize('NFD').replace(/[\u0
 function townName(slug) { return slug.split('-').map(x => x.charAt(0).toUpperCase()+x.slice(1)).join(' '); }
 function publicStory(item) { return { id:item.id,town:item.town,slug:item.slug,name:item.name,location:item.location,type:item.type,title:item.title,story:item.story,approvedAt:item.approvedAt }; }
 function storyUrl(item) { return `https://www.masboricuaqueunmofongo.com/pueblos/${encodeURIComponent(item.town)}/historias/${encodeURIComponent(item.slug)}`; }
+function lowQualityStory(text) {
+  const normalized=String(text||'').replace(/\s+/g,' ').trim();
+  const words=normalized.match(/[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]{2,}/g)||[];
+  const alpha=(normalized.match(/[A-Za-zÁÉÍÓÚÜÑáéíóúüñ]/g)||[]).length;
+  const symbols=(normalized.match(/[^A-Za-zÁÉÍÓÚÜÑáéíóúüñ0-9\s.,¿?¡!:'"()\-]/g)||[]).length;
+  const repeated=/([A-Za-zÁÉÍÓÚÜÑáéíóúüñ])\1{4,}/i.test(normalized);
+  const keyboardNoise=/(?:asdf|qwer|zxcv|hjkl|jkl;|poiuy|lkjh|12345|67890)/i.test(normalized);
+  const unique=new Set(words.map(w=>w.toLowerCase()));
+  if(words.length < 8) return true;
+  if(alpha && symbols/Math.max(normalized.length,1) > .12) return true;
+  if(repeated || keyboardNoise) return true;
+  if(words.length >= 10 && unique.size/words.length < .35) return true;
+  return false;
+}
 
 function renderStory(item) {
   const canonical = storyUrl(item);
@@ -47,6 +61,7 @@ module.exports = function registerPBStories(app) {
     if (!name || !email || !title || !story || !consent) return res.status(400).json({ok:false,error:'Completa nombre, email, título, historia y acepta las normas.'});
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return res.status(400).json({ok:false,error:'Escribe un email válido.'});
     if (story.length < 40) return res.status(400).json({ok:false,error:'Cuéntanos un poquito más. La historia debe tener al menos 40 caracteres.'});
+    if (lowQualityStory(story)) return res.status(400).json({ok:false,error:'Parece que el texto está incompleto o no contiene una historia clara. Escribe unas cuantas palabras más contándonos el recuerdo o dato que quieres compartir.'});
     const urls = (story.match(/https?:\/\//gi) || []).length;
     const risky = urls > 2 || /\b(?:ssn|social security|credit card|tarjeta de cr[eé]dito|password|contrase[nñ]a)\b/i.test(story);
     if (risky) return res.status(400).json({ok:false,error:'La aportación contiene enlaces o información sensible que no podemos recibir de esta forma.'});
