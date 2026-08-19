@@ -1,0 +1,45 @@
+name: Install PB stories route
+
+on:
+  push:
+    branches:
+      - agent/pb-adjuntas-stories-live
+    paths:
+      - 'src/routes/pb-stories.js'
+      - '.github/workflows/pb-stories-install.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/pb-adjuntas-stories-live
+      - name: Register route in server
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p=Path('src/server.js')
+          s=p.read_text()
+          line='require("./routes/pb-stories")(app);'
+          if line not in s:
+              anchor='// PB Blog routes\n'
+              if anchor not in s:
+                  raise SystemExit('PB Blog routes anchor not found')
+              s=s.replace(anchor, '// PB town stories\n'+line+'\n\n'+anchor, 1)
+              p.write_text(s)
+          PY
+      - name: Commit registration
+        run: |
+          if git diff --quiet; then
+            echo "Route already registered"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/server.js
+          git commit -m "Register PB stories route"
+          git push origin HEAD:agent/pb-adjuntas-stories-live
