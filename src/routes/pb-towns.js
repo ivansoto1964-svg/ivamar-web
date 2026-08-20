@@ -6,6 +6,9 @@ module.exports = function registerPBTowns(app) {
     const slug=String(req.params.town||'').toLowerCase();
     const town=towns[slug];
     if(!town) return next();
+    res.set('Cache-Control','no-store, no-cache, must-revalidate, proxy-revalidate');
+    res.set('Pragma','no-cache');
+    res.set('Expires','0');
     return res.send(renderTownPage(town,slug));
   });
 };
