@@ -1,0 +1,23 @@
+name: PB editorial retry once
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/pb-editorial-retry-once.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  retry-submit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Retry PB draft submission
+        run: |
+          set -euo pipefail
+          curl --fail-with-body --retry 3 --retry-delay 10 \
+            -X POST 'https://www.masboricuaqueunmofongo.com/api/pb-reciente-submit' \
+            -H 'Content-Type: application/json' \
+            --data-binary '@data/pb-submit/2026-08-20-fbi-contrato-energia-plan-b.json'
