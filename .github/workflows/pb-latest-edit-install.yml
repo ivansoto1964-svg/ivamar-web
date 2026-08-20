@@ -1,0 +1,103 @@
+name: Install PB latest edit support
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/pb-latest-edit-install.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Add edit support to Lo más reciente
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+
+          # --- server action: latest-update ---
+          p=Path('src/server.js')
+          s=p.read_text()
+          anchor="""    if (action.startsWith('latest-')) {
+"""
+          block="""    if (action === 'latest-update') {
+      const title = sanitize(req.body.title || '').trim();
+      const summary = sanitize(req.body.summary || '').trim();
+      const body = sanitize(req.body.body || '').trim();
+      const sourceLabel = sanitize(req.body.sourceLabel || '').trim();
+      let image = sanitize(req.body.image || '').trim();
+      let sourceUrl;
+      try { sourceUrl = new URL(String(req.body.sourceUrl || '').trim()); } catch (_) { return res.status(400).json({ok:false,error:'El enlace de la fuente no es válido.'}); }
+      if (!['http:','https:'].includes(sourceUrl.protocol)) return res.status(400).json({ok:false,error:'El enlace de la fuente no es válido.'});
+      if (!title || !summary || !body || !sourceLabel) return res.status(400).json({ok:false,error:'Completa título, resumen, contenido y fuente.'});
+      if (title.length>180 || summary.length>400 || body.length>12000 || sourceLabel.length>100) return res.status(400).json({ok:false,error:'La publicación excede los límites permitidos.'});
+      if (image && !/^https?:\\/\\//i.test(image) && !image.startsWith('/img/') && !image.startsWith('/media/pb-blog/')) image='';
+      const approved=readPBLatest('approved.json');
+      const index=approved.findIndex(item=>item.id===id);
+      if(index<0)return missing();
+      const current=approved[index];
+      approved[index]={...current,title,summary,body,image:image || current.image || '',sources:[{label:sourceLabel,url:sourceUrl.toString()}],updatedAt:new Date().toISOString()};
+      writeJsonFile(path.join(PB_LATEST_DIR,'approved.json'),approved);
+      return ok('Publicación actualizada.');
+    }
+"""
+          if "action === 'latest-update'" not in s:
+              if anchor not in s: raise SystemExit('server latest anchor not found')
+              s=s.replace(anchor,block+anchor,1)
+              p.write_text(s)
+
+          # --- PB Control: add Edit button/data ---
+          p=Path('src/views/pb-control.js')
+          s=p.read_text()
+          old="""function latestRows(items, pending) {
+  if (!items.length) return empty(pending ? 'No hay publicaciones esperando aprobación.' : 'Todavía no hay publicaciones en esta lista.');
+  return items.map(item => `<article class=\"item\"><div><span class=\"eyebrow\">${pending ? 'Pendiente' : shortDate(item.publishedAt)}</span><h3>${esc(item.title)}</h3><p>${esc(item.summary || '')}</p></div><div class=\"actions\">${pending ? actionButton('Aprobar','latest-approve',item.id,'good') + actionButton('Rechazar','latest-reject',item.id,'danger') : `<a class=\"action\" href=\"/lo-mas-reciente/${encodeURIComponent(item.slug)}\" target=\"_blank\">Ver</a>` + actionButton('Eliminar','latest-delete',item.id,'danger')}</div></article>`).join('');
+}
+"""
+          new="""function latestRows(items, pending) {
+  if (!items.length) return empty(pending ? 'No hay publicaciones esperando aprobación.' : 'Todavía no hay publicaciones en esta lista.');
+  return items.map(item => {
+    const editable = encodeURIComponent(JSON.stringify({id:item.id,title:item.title,summary:item.summary || '',body:item.body || '',image:item.image || '',sourceLabel:item.sources?.[0]?.label || '',sourceUrl:item.sources?.[0]?.url || ''}));
+    return `<article class=\"item\"><div><span class=\"eyebrow\">${pending ? 'Pendiente' : shortDate(item.publishedAt)}</span><h3>${esc(item.title)}</h3><p>${esc(item.summary || '')}</p></div><div class=\"actions\">${pending ? actionButton('Aprobar','latest-approve',item.id,'good') + actionButton('Rechazar','latest-reject',item.id,'danger') : `<button class=\"action\" type=\"button\" data-edit-latest=\"${editable}\">Editar</button><a class=\"action\" href=\"/lo-mas-reciente/${encodeURIComponent(item.slug)}\" target=\"_blank\">Ver</a>` + actionButton('Eliminar','latest-delete',item.id,'danger')}</div></article>`;
+  }).join('');
+}
+"""
+          if 'data-edit-latest' not in s:
+              if old not in s: raise SystemExit('latestRows block not found')
+              s=s.replace(old,new,1)
+
+          form_old='<form id="latestForm" class="formgrid">'
+          form_new='<form id="latestForm" class="formgrid"><input type="hidden" name="editingId">'
+          if 'name="editingId"' not in s:
+              if form_old not in s: raise SystemExit('latest form anchor not found')
+              s=s.replace(form_old,form_new,1)
+
+          js_old="""latestForm.onsubmit=async e=>{e.preventDefault();const submit=e.submitter;submit.disabled=true;try{const data=Object.fromEntries(new FormData(latestForm));delete data.imageFile;const file=latestImageFile.files[0];if(file)data.image=await uploadLatestImage(file);show('Publicando…');const d=await apiAction('latest-create','new',data);show(d.message||'Publicado.');setTimeout(()=>location.reload(),700)}catch(err){show(err.message,true);submit.disabled=false}};"""
+          js_new="""latestForm.onsubmit=async e=>{e.preventDefault();const submit=e.submitter;submit.disabled=true;try{const data=Object.fromEntries(new FormData(latestForm));delete data.imageFile;const editingId=data.editingId||'';delete data.editingId;const file=latestImageFile.files[0];if(file)data.image=await uploadLatestImage(file);show(editingId?'Guardando cambios…':'Publicando…');const d=await apiAction(editingId?'latest-update':'latest-create',editingId||'new',data);show(d.message||(editingId?'Actualizado.':'Publicado.'));setTimeout(()=>location.reload(),700)}catch(err){show(err.message,true);submit.disabled=false}};document.querySelectorAll('[data-edit-latest]').forEach(button=>button.onclick=()=>{const item=JSON.parse(decodeURIComponent(button.dataset.editLatest));tab('publicaciones');composer('latest');latestForm.elements.editingId.value=item.id||'';latestForm.elements.title.value=item.title||'';latestForm.elements.summary.value=item.summary||'';latestForm.elements.body.value=item.body||'';latestForm.elements.image.value=item.image||'';latestForm.elements.sourceLabel.value=item.sourceLabel||'';latestForm.elements.sourceUrl.value=item.sourceUrl||'';latestForm.scrollIntoView({behavior:'smooth',block:'start'});latestForm.elements.title.focus()});"""
+          if "latest-update':'latest-create" not in s:
+              if js_old not in s: raise SystemExit('latest submit JS anchor not found')
+              s=s.replace(js_old,js_new,1)
+
+          p.write_text(s)
+          PY
+      - name: Syntax check
+        run: |
+          node --check src/server.js
+          node --check src/views/pb-control.js
+      - name: Commit installed support
+        run: |
+          if git diff --quiet; then
+            echo "Already installed"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/server.js src/views/pb-control.js
+          git commit -m "Add edit support for published PB latest posts"
+          git push origin HEAD:main
