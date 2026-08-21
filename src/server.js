@@ -294,6 +294,19 @@ if (!fs.existsSync(agreementsDir)) {
 
 app.use(express.json({ limit: '15mb' }));
 app.use(express.urlencoded({ limit: '15mb', extended: true }));
+app.use((err, req, res, next) => {
+  if (err && err.type === 'entity.parse.failed' && err instanceof SyntaxError) {
+    const requestPath = req.originalUrl || req.url || 'unknown';
+    console.warn(`[bad-json] ${req.method} ${requestPath}: malformed JSON rejected`);
+    return res.status(400).json({ ok:false, error:'Invalid JSON body.' });
+  }
+  if (err && err.type === 'entity.too.large') {
+    const requestPath = req.originalUrl || req.url || 'unknown';
+    console.warn(`[body-too-large] ${req.method} ${requestPath}: request rejected`);
+    return res.status(413).json({ ok:false, error:'Request body too large.' });
+  }
+  next(err);
+});
 const PORT = process.env.PORT || 4000;
 const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
 
@@ -353,8 +366,6 @@ function requirePBCsrf(req, res, next) {
   next();
 }
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public", { maxAge: "1y", immutable: true }));
 app.use('/media/pb-blog', express.static(pbBlogStore.MEDIA_DIR, { maxAge:'30d', immutable:true }));
 app.use(cookieParser());
