@@ -1,0 +1,90 @@
+from pathlib import Path
+
+p = Path('src/server.js')
+s = p.read_text()
+
+helper = r'''
+function normalizePBArtisanEmail(value) {
+  return String(value || '').trim().toLowerCase();
+}
+
+function normalizePBArtisanPhone(value) {
+  let digits = String(value || '').replace(/\D/g, '');
+  if (digits.length === 11 && digits.startsWith('1')) digits = digits.slice(1);
+  return digits;
+}
+
+function findPBArtisanDuplicate(candidate, options = {}) {
+  const excludeId = String(options.excludeId || '');
+  const approvedOnly = Boolean(options.approvedOnly);
+  const approved = loadApprovedPBListings();
+  let pending = [];
+  if (!approvedOnly) {
+    try {
+      const pendingFile = '/data/pb-listings/pending.json';
+      pending = fs.existsSync(pendingFile) ? JSON.parse(fs.readFileSync(pendingFile, 'utf8')) : [];
+      if (!Array.isArray(pending)) pending = [];
+    } catch (_) { pending = []; }
+  }
+  const phone = normalizePBArtisanPhone(candidate?.whatsapp);
+  const email = normalizePBArtisanEmail(candidate?.email);
+  for (const existing of approved.concat(pending)) {
+    if (excludeId && String(existing?.id || '') === excludeId) continue;
+    if (phone && normalizePBArtisanPhone(existing?.whatsapp) === phone) return { reason:'whatsapp' };
+    if (email && normalizePBArtisanEmail(existing?.email) === email) return { reason:'email' };
+  }
+  return null;
+}
+
+function pbArtisanDuplicateMessage(reason) {
+  return reason === 'whatsapp'
+    ? 'Ya existe un perfil registrado con este WhatsApp. Si es tuyo y necesitas actualizarlo, contáctanos.'
+    : 'Ya existe un perfil registrado con este email. Si es tuyo y necesitas actualizarlo, contáctanos.';
+}
+'''
+
+if 'function normalizePBArtisanEmail' not in s:
+    anchor = "const PB_EVENTS_DIR = '/data/pb-events';"
+    if anchor not in s:
+        raise SystemExit('PB helper anchor not found')
+    s = s.replace(anchor, helper + '\n' + anchor, 1)
+
+registration_check = r'''
+  const duplicate = findPBArtisanDuplicate({ email, whatsapp });
+  if (duplicate) {
+    return res.status(409).json({ ok:false, error:pbArtisanDuplicateMessage(duplicate.reason) });
+  }
+'''
+if "const duplicate = findPBArtisanDuplicate({ email, whatsapp });" not in s:
+    anchor = '''  if (!name || !category || !location || !city || !desc || !fullDesc || !email || !photo) {
+    return res.json({ ok: false, error: "Faltan campos requeridos" });
+  }
+
+  try {'''
+    replacement = '''  if (!name || !category || !location || !city || !desc || !fullDesc || !email || !photo) {
+    return res.json({ ok: false, error: "Faltan campos requeridos" });
+  }
+''' + registration_check + '''
+  try {'''
+    if anchor not in s:
+        raise SystemExit('PB registration anchor not found')
+    s = s.replace(anchor, replacement, 1)
+
+approval_check = r'''
+    const duplicate = findPBArtisanDuplicate(negocio, { approvedOnly:true, excludeId:negocio.id });
+    if (duplicate) {
+      return res.status(409).send(`<div style="font-family:system-ui;max-width:680px;margin:3rem auto;padding:2rem"><h2>⚠️ Posible perfil duplicado</h2><p>${pbArtisanDuplicateMessage(duplicate.reason)}</p><p>Este registro no fue aprobado ni eliminado. Revísalo en PB Control antes de continuar.</p></div>`);
+    }
+'''
+if "const duplicate = findPBArtisanDuplicate(negocio, { approvedOnly:true" not in s:
+    anchor = '''    if (!negocio) return res.send('<h2>Token inválido o negocio ya procesado.</h2>');
+
+    // Move to approved file by location'''
+    replacement = '''    if (!negocio) return res.send('<h2>Token inválido o negocio ya procesado.</h2>');
+''' + approval_check + '''
+    // Move to approved file by location'''
+    if anchor not in s:
+        raise SystemExit('PB approval anchor not found')
+    s = s.replace(anchor, replacement, 1)
+
+p.write_text(s)
