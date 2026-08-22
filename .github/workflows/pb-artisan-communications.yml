@@ -15,6 +15,18 @@ jobs:
           ref: main
       - name: Apply artisan communications
         run: python3 scripts/install-pb-artisan-communications.py
+      - name: Fix nested template literal in PB Control
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('src/views/pb-control.js')
+          s = p.read_text()
+          old = "if(!isTest&&!confirm(`Vas a enviar este comunicado a ${model.artisanEmailCount || 0} artesanos. ¿Deseas continuar?`))return;"
+          new = "if(!isTest&&!confirm('Vas a enviar este comunicado a ${model.artisanEmailCount || 0} artesanos. ¿Deseas continuar?'))return;"
+          if old not in s:
+              raise SystemExit('Expected confirmation snippet not found')
+          p.write_text(s.replace(old, new, 1))
+          PY
       - name: Validate server and PB control syntax
         run: |
           node --check src/server.js
