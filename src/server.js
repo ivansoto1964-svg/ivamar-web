@@ -264,6 +264,42 @@ const PB_AFFILIATE_CAMPAIGNS = {
   'travel-flights': { label:'Travelpayouts · Vuelos', url:'https://trip.tpo.lu/tOQAQ2WQ' }
 };
 const PB_AFFILIATE_CLICKS_FILE = '/data/pb-affiliate-clicks.json';
+const PB_ARTISAN_MAIL_HISTORY_FILE = '/data/pb-artisan-mail-history.json';
+
+function pbArtisanRecipients() {
+  const seen = new Set();
+  return loadApprovedPBListings().map(item => ({
+    name:String(item.name || 'Artesano/a').trim(),
+    email:String(item.email || '').trim().toLowerCase()
+  })).filter(item => {
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(item.email) || seen.has(item.email)) return false;
+    seen.add(item.email);
+    return true;
+  });
+}
+
+function pbArtisanMailHistory() {
+  return readJsonFile(PB_ARTISAN_MAIL_HISTORY_FILE,[]).sort((a,b) => new Date(b.sentAt || 0)-new Date(a.sentAt || 0)).slice(0,25);
+}
+
+function pbArtisanMailHtml(name, message) {
+  const escMail = value => String(value || '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+  const safeName = escMail(name || 'Artesano/a');
+  const safeMessage = escMail(message).replace(/\n/g,'<br>');
+  return `<div style="font-family:Arial,sans-serif;max-width:640px;margin:0 auto;color:#253247">
+    <div style="background:linear-gradient(135deg,#002d62,#ce1126);padding:24px;text-align:center;border-radius:12px 12px 0 0">
+      <div style="font-size:30px">🇵🇷</div><h1 style="color:white;font-size:22px;margin:8px 0 0">Planeta Boricua</h1>
+      <p style="color:#ffffffcc;margin:5px 0 0">Feria Digital de Artesanías Puertorriqueñas</p>
+    </div>
+    <div style="background:#fff;border:1px solid #e5e8ee;padding:28px">
+      <p style="font-size:16px">Hola, <strong>${safeName}</strong>:</p>
+      <div style="font-size:15px;line-height:1.7">${safeMessage}</div>
+      <div style="text-align:center;margin:28px 0"><a href="https://www.masboricuaqueunmofongo.com/pb/add-negocio" style="display:inline-block;background:#ce1126;color:#fff;text-decoration:none;padding:12px 20px;border-radius:8px;font-weight:700">Invitar a otro artesano →</a></div>
+    </div>
+    <div style="background:#f5f5f0;padding:16px;text-align:center;border-radius:0 0 12px 12px;color:#777;font-size:12px;line-height:1.5">Recibes este mensaje porque participas en la Feria Digital de Artesanías Puertorriqueñas de Planeta Boricua.<br>© 2026 Planeta Boricua · Más Boricua que un Mofongo 🇵🇷</div>
+  </div>`;
+}
+
 
 function readJsonFile(file, fallback = []) {
   try { return JSON.parse(fs.readFileSync(file,'utf8')); } catch (_) { return fallback; }
@@ -1190,7 +1226,9 @@ function buildPBControlModel(csrf) {
   const subscribers = readJsonFile('/data/pb-subscribers.json',[]).sort((a,b) => new Date(b.subscribedAt || 0)-new Date(a.subscribedAt || 0));
   const blogPosts = loadPBBlogPosts();
   const affiliates = pbAffiliateSummary();
-  return {csrf,latestPending,latestApproved,commentsPending,commentsApproved,artisansPending,artisansApproved,eventsPending,eventsApproved,subscribers,blogPosts,affiliates,counts:{pendingLatest:latestPending.length,pendingComments:commentsPending.length,pendingArtisans:artisansPending.length,pendingEvents:eventsPending.length,pendingTotal:latestPending.length+commentsPending.length+artisansPending.length+eventsPending.length,blogPosts:blogPosts.length,subscribers:subscribers.length,affiliateClicks:affiliates.reduce((sum,item)=>sum+item.clicks,0)}};
+  const artisanEmailCount = pbArtisanRecipients().length;
+  const artisanMailHistory = pbArtisanMailHistory();
+  return {csrf,latestPending,latestApproved,commentsPending,commentsApproved,artisansPending,artisansApproved,eventsPending,eventsApproved,subscribers,blogPosts,affiliates,artisanEmailCount,artisanMailHistory,counts:{pendingLatest:latestPending.length,pendingComments:commentsPending.length,pendingArtisans:artisansPending.length,pendingEvents:eventsPending.length,pendingTotal:latestPending.length+commentsPending.length+artisansPending.length+eventsPending.length,blogPosts:blogPosts.length,subscribers:subscribers.length,affiliateClicks:affiliates.reduce((sum,item)=>sum+item.clicks,0)}};
 }
 
 app.get('/pb-control/login', (req,res) => {
@@ -1304,6 +1342,33 @@ app.post('/pb-control/action', requirePBAdmin, requirePBCsrf, express.json({limi
       if (action==='artisan-approve') {const file='/data/pb-listings/pending.json';const pending=readJsonFile(file,[]);const index=pending.findIndex(item=>item.id===id);if(index<0)return missing();const item=pending.splice(index,1)[0];const approvedFile=path.join('/data/pb-listings',`${item.location}.json`);const approved=readJsonFile(approvedFile,[]);delete item.approveToken;delete item.rejectToken;item.status='approved';item.approvedAt=new Date().toISOString();item.badge='participante-feria';approved.push(item);writeJsonFile(file,pending);writeJsonFile(approvedFile,approved);return ok('Artesano aprobado.');}
       if (action==='artisan-reject') {const file='/data/pb-listings/pending.json';const pending=readJsonFile(file,[]);const index=pending.findIndex(item=>item.id===id);if(index<0)return missing();pending.splice(index,1);writeJsonFile(file,pending);return ok('Solicitud rechazada.');}
       const match=loadPBApprovedArtisansWithFiles().find(item=>item.id===id);if(!match)return missing();const file=path.join('/data/pb-listings',match._file);const approved=readJsonFile(file,[]).filter(item=>item.id!==id);writeJsonFile(file,approved);return ok('Artesano retirado de la Feria.');
+    }
+    if (action === 'artisan-email-test' || action === 'artisan-email-send') {
+      const subject = sanitize(req.body.subject || '').replace(/\s+/g,' ').trim();
+      const message = sanitize(req.body.message || '').trim();
+      if (subject.length < 3 || subject.length > 140) return res.status(400).json({ok:false,error:'El asunto debe tener entre 3 y 140 caracteres.'});
+      if (message.length < 10 || message.length > 6000) return res.status(400).json({ok:false,error:'El mensaje debe tener entre 10 y 6,000 caracteres.'});
+      if (!process.env.RESEND_API_KEY) return res.status(503).json({ok:false,error:'Resend no está configurado en Render.'});
+      if (action === 'artisan-email-test') {
+        await resend.emails.send({from:`Planeta Boricua <${PB_SENDER_EMAIL}>`,to:PB_CONTACT_EMAIL,subject:`[PRUEBA] ${subject}`,html:pbArtisanMailHtml('Prueba PB',message)});
+        return ok(`Email de prueba enviado a ${PB_CONTACT_EMAIL}.`);
+      }
+      const recipients = pbArtisanRecipients();
+      if (!recipients.length) return res.status(400).json({ok:false,error:'No encontré emails válidos de artesanos aprobados.'});
+      const payloads = recipients.map(person => ({from:`Planeta Boricua <${PB_SENDER_EMAIL}>`,to:person.email,subject,html:pbArtisanMailHtml(person.name,message)}));
+      for (let i=0;i<payloads.length;i+=100) {
+        const batch = payloads.slice(i,i+100);
+        if (resend.batch && typeof resend.batch.send === 'function') {
+          const result = await resend.batch.send(batch);
+          if (result?.error) throw new Error(result.error.message || 'Resend rechazó un lote de emails.');
+        } else {
+          for (const email of batch) await resend.emails.send(email);
+        }
+      }
+      const history = readJsonFile(PB_ARTISAN_MAIL_HISTORY_FILE,[]);
+      history.push({id:`${Date.now()}-${crypto.randomBytes(3).toString('hex')}`,subject,messagePreview:message.slice(0,180),recipientCount:recipients.length,sentAt:new Date().toISOString()});
+      writeJsonFile(PB_ARTISAN_MAIL_HISTORY_FILE,history.slice(-100));
+      return ok(`Comunicado enviado a ${recipients.length} artesanos.`);
     }
     if (action.startsWith('event-')) {
       if (action==='event-approve') {const pending=readPBEvents('pending.json');const index=pending.findIndex(item=>item.id===id);if(index<0)return missing();const item=pending.splice(index,1)[0];delete item.approveToken;delete item.rejectToken;item.status='approved';item.approvedAt=new Date().toISOString();const approved=readPBEvents('approved.json');approved.push(item);writeJsonFile(path.join(PB_EVENTS_DIR,'pending.json'),pending);writeJsonFile(path.join(PB_EVENTS_DIR,'approved.json'),approved);return ok('Evento publicado en la Agenda.');}
