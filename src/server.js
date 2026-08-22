@@ -1338,11 +1338,6 @@ app.post('/pb-control/action', requirePBAdmin, requirePBCsrf, express.json({limi
       if (action==='comment-approve') {const pending=readPBComments('pending.json');const index=pending.findIndex(item=>item.id===id);if(index<0)return missing();const item=pending.splice(index,1)[0];delete item.approveToken;delete item.rejectToken;item.status='approved';item.approvedAt=new Date().toISOString();const approved=readPBComments('approved.json');approved.push(item);writeJsonFile(path.join(PB_COMMENTS_DIR,'pending.json'),pending);writeJsonFile(path.join(PB_COMMENTS_DIR,'approved.json'),approved);return ok('Comentario publicado.');}
       const file=action==='comment-reject'?'pending.json':'approved.json';const items=readPBComments(file);const index=items.findIndex(item=>item.id===id);if(index<0)return missing();items.splice(index,1);writeJsonFile(path.join(PB_COMMENTS_DIR,file),items);return ok(action==='comment-reject'?'Comentario rechazado.':'Comentario eliminado.');
     }
-    if (action.startsWith('artisan-')) {
-      if (action==='artisan-approve') {const file='/data/pb-listings/pending.json';const pending=readJsonFile(file,[]);const index=pending.findIndex(item=>item.id===id);if(index<0)return missing();const item=pending.splice(index,1)[0];const approvedFile=path.join('/data/pb-listings',`${item.location}.json`);const approved=readJsonFile(approvedFile,[]);delete item.approveToken;delete item.rejectToken;item.status='approved';item.approvedAt=new Date().toISOString();item.badge='participante-feria';approved.push(item);writeJsonFile(file,pending);writeJsonFile(approvedFile,approved);return ok('Artesano aprobado.');}
-      if (action==='artisan-reject') {const file='/data/pb-listings/pending.json';const pending=readJsonFile(file,[]);const index=pending.findIndex(item=>item.id===id);if(index<0)return missing();pending.splice(index,1);writeJsonFile(file,pending);return ok('Solicitud rechazada.');}
-      const match=loadPBApprovedArtisansWithFiles().find(item=>item.id===id);if(!match)return missing();const file=path.join('/data/pb-listings',match._file);const approved=readJsonFile(file,[]).filter(item=>item.id!==id);writeJsonFile(file,approved);return ok('Artesano retirado de la Feria.');
-    }
     if (action === 'artisan-email-test' || action === 'artisan-email-send') {
       const subject = sanitize(req.body.subject || '').replace(/\s+/g,' ').trim();
       const message = sanitize(req.body.message || '').trim();
@@ -1369,6 +1364,11 @@ app.post('/pb-control/action', requirePBAdmin, requirePBCsrf, express.json({limi
       history.push({id:`${Date.now()}-${crypto.randomBytes(3).toString('hex')}`,subject,messagePreview:message.slice(0,180),recipientCount:recipients.length,sentAt:new Date().toISOString()});
       writeJsonFile(PB_ARTISAN_MAIL_HISTORY_FILE,history.slice(-100));
       return ok(`Comunicado enviado a ${recipients.length} artesanos.`);
+    }
+    if (action.startsWith('artisan-')) {
+      if (action==='artisan-approve') {const file='/data/pb-listings/pending.json';const pending=readJsonFile(file,[]);const index=pending.findIndex(item=>item.id===id);if(index<0)return missing();const item=pending.splice(index,1)[0];const approvedFile=path.join('/data/pb-listings',`${item.location}.json`);const approved=readJsonFile(approvedFile,[]);delete item.approveToken;delete item.rejectToken;item.status='approved';item.approvedAt=new Date().toISOString();item.badge='participante-feria';approved.push(item);writeJsonFile(file,pending);writeJsonFile(approvedFile,approved);return ok('Artesano aprobado.');}
+      if (action==='artisan-reject') {const file='/data/pb-listings/pending.json';const pending=readJsonFile(file,[]);const index=pending.findIndex(item=>item.id===id);if(index<0)return missing();pending.splice(index,1);writeJsonFile(file,pending);return ok('Solicitud rechazada.');}
+      const match=loadPBApprovedArtisansWithFiles().find(item=>item.id===id);if(!match)return missing();const file=path.join('/data/pb-listings',match._file);const approved=readJsonFile(file,[]).filter(item=>item.id!==id);writeJsonFile(file,approved);return ok('Artesano retirado de la Feria.');
     }
     if (action.startsWith('event-')) {
       if (action==='event-approve') {const pending=readPBEvents('pending.json');const index=pending.findIndex(item=>item.id===id);if(index<0)return missing();const item=pending.splice(index,1)[0];delete item.approveToken;delete item.rejectToken;item.status='approved';item.approvedAt=new Date().toISOString();const approved=readPBEvents('approved.json');approved.push(item);writeJsonFile(path.join(PB_EVENTS_DIR,'pending.json'),pending);writeJsonFile(path.join(PB_EVENTS_DIR,'approved.json'),approved);return ok('Evento publicado en la Agenda.');}
