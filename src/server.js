@@ -145,6 +145,45 @@ function loadApprovedPBListings() {
     try { return JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8')); } catch (_) { return []; }
   });
 }
+
+function normalizePBArtisanEmail(value) {
+  return String(value || '').trim().toLowerCase();
+}
+
+function normalizePBArtisanPhone(value) {
+  let digits = String(value || '').replace(/\D/g, '');
+  if (digits.length === 11 && digits.startsWith('1')) digits = digits.slice(1);
+  return digits;
+}
+
+function findPBArtisanDuplicate(candidate, options = {}) {
+  const excludeId = String(options.excludeId || '');
+  const approvedOnly = Boolean(options.approvedOnly);
+  const approved = loadApprovedPBListings();
+  let pending = [];
+  if (!approvedOnly) {
+    try {
+      const pendingFile = '/data/pb-listings/pending.json';
+      pending = fs.existsSync(pendingFile) ? JSON.parse(fs.readFileSync(pendingFile, 'utf8')) : [];
+      if (!Array.isArray(pending)) pending = [];
+    } catch (_) { pending = []; }
+  }
+  const phone = normalizePBArtisanPhone(candidate?.whatsapp);
+  const email = normalizePBArtisanEmail(candidate?.email);
+  for (const existing of approved.concat(pending)) {
+    if (excludeId && String(existing?.id || '') === excludeId) continue;
+    if (phone && normalizePBArtisanPhone(existing?.whatsapp) === phone) return { reason:'whatsapp' };
+    if (email && normalizePBArtisanEmail(existing?.email) === email) return { reason:'email' };
+  }
+  return null;
+}
+
+function pbArtisanDuplicateMessage(reason) {
+  return reason === 'whatsapp'
+    ? 'Ya existe un perfil registrado con este WhatsApp. Si es tuyo y necesitas actualizarlo, contáctanos.'
+    : 'Ya existe un perfil registrado con este email. Si es tuyo y necesitas actualizarlo, contáctanos.';
+}
+
 const PB_EVENTS_DIR = '/data/pb-events';
 function readPBEvents(file) {
   try { return JSON.parse(fs.readFileSync(path.join(PB_EVENTS_DIR, file), 'utf8')); } catch (_) { return []; }
@@ -3288,6 +3327,11 @@ app.post("/api/pb-negocio-submit", formLimiter, express.json(), async (req, res)
     return res.json({ ok: false, error: "Faltan campos requeridos" });
   }
 
+  const duplicate = findPBArtisanDuplicate({ email, whatsapp });
+  if (duplicate) {
+    return res.status(409).json({ ok:false, error:pbArtisanDuplicateMessage(duplicate.reason) });
+  }
+
   try {
     const fs2 = require('fs');
     const pathLib = require('path');
@@ -3376,6 +3420,11 @@ app.get("/admin/pb-approve/:token", async (req, res) => {
     const negocio = pending.find(n => n.approveToken === req.params.token);
 
     if (!negocio) return res.send('<h2>Token inválido o negocio ya procesado.</h2>');
+
+    const duplicate = findPBArtisanDuplicate(negocio, { approvedOnly:true, excludeId:negocio.id });
+    if (duplicate) {
+      return res.status(409).send(`<div style="font-family:system-ui;max-width:680px;margin:3rem auto;padding:2rem"><h2>⚠️ Posible perfil duplicado</h2><p>${pbArtisanDuplicateMessage(duplicate.reason)}</p><p>Este registro no fue aprobado ni eliminado. Revísalo en PB Control antes de continuar.</p></div>`);
+    }
 
     // Move to approved file by location
     const approvedFile = pathLib.join(approvedDir, negocio.location + '.json');
