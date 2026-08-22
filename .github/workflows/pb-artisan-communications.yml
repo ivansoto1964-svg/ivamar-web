@@ -1,0 +1,32 @@
+name: Install PB artisan communications
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Apply artisan communications
+        run: python3 scripts/install-pb-artisan-communications.py
+      - name: Validate server and PB control syntax
+        run: |
+          node --check src/server.js
+          node --check src/views/pb-control.js
+      - name: Commit communications
+        run: |
+          if git diff --quiet; then
+            echo "PB artisan communications already installed"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/server.js src/views/pb-control.js
+          git commit -m "Add artisan communications to PB Control"
+          git push origin main
