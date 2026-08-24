@@ -8,3 +8,5 @@ if old not in s:
     raise SystemExit('artisan public route anchor not found')
 s = s.replace(old, new, 1)
 p.write_text(s)
+
+# Triggered intentionally so the workflow applies the route-order fix to main.
