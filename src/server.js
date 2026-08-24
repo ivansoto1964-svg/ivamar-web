@@ -70,6 +70,16 @@ const pbArtisanLimiter = rateLimit({
   legacyHeaders: false
 });
 
+// Lightweight first-party metrics. This endpoint only stores aggregate counters,
+// never IP addresses or other visitor identifiers.
+const pbArtisanMetricsLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 300,
+  message: { ok:false, error:'Demasiadas solicitudes de medición.' },
+  standardHeaders: true,
+  legacyHeaders: false
+});
+
 
 
 // ==========================================
@@ -366,6 +376,8 @@ const PB_AFFILIATE_CAMPAIGNS = {
 };
 const PB_AFFILIATE_CLICKS_FILE = '/data/pb-affiliate-clicks.json';
 const PB_ARTISAN_MAIL_HISTORY_FILE = '/data/pb-artisan-mail-history.json';
+const PB_ARTISAN_METRICS_FILE = '/data/pb-artisan-metrics.json';
+const PB_ARTISAN_METRIC_EVENTS = new Set(['view','whatsapp','website','instagram','facebook','store','share','event','edit']);
 
 function pbArtisanRecipients() {
   const seen = new Set();
@@ -434,6 +446,25 @@ function pbAffiliateSummary() {
     grouped.set(click.campaign,current);
   });
   return [...grouped.values()].sort((a,b) => b.clicks-a.clicks);
+}
+
+function pbArtisanMetricsSummary(artisans) {
+  const metrics = readJsonFile(PB_ARTISAN_METRICS_FILE,{});
+  const safeMetrics = metrics && !Array.isArray(metrics) && typeof metrics === 'object' ? metrics : {};
+  return artisans.map(item => {
+    const slug = pbArtisanSlug(item);
+    const entry = safeMetrics[slug] || {};
+    const clicks = entry.clicks && typeof entry.clicks === 'object' ? entry.clicks : {};
+    const clickTotal = Object.values(clicks).reduce((sum,value) => sum + (Number(value) || 0),0);
+    return {
+      slug,
+      name:item.name || 'Artesano/a',
+      views:Number(entry.views) || 0,
+      clickTotal,
+      clicks,
+      lastActivity:entry.lastActivity || null
+    };
+  }).sort((a,b) => (b.views + b.clickTotal) - (a.views + a.clickTotal) || String(a.name).localeCompare(String(b.name),'es'));
 }
 
 function blogContentHtml(value) {
@@ -1329,7 +1360,8 @@ function buildPBControlModel(csrf) {
   const affiliates = pbAffiliateSummary();
   const artisanEmailCount = pbArtisanRecipients().length;
   const artisanMailHistory = pbArtisanMailHistory();
-  return {csrf,latestPending,latestApproved,commentsPending,commentsApproved,artisansPending,artisansApproved,eventsPending,eventsApproved,subscribers,blogPosts,affiliates,artisanEmailCount,artisanMailHistory,counts:{pendingLatest:latestPending.length,pendingComments:commentsPending.length,pendingArtisans:artisansPending.length,pendingEvents:eventsPending.length,pendingTotal:latestPending.length+commentsPending.length+artisansPending.length+eventsPending.length,blogPosts:blogPosts.length,subscribers:subscribers.length,affiliateClicks:affiliates.reduce((sum,item)=>sum+item.clicks,0)}};
+  const artisanMetrics = pbArtisanMetricsSummary(artisansApproved);
+  return {csrf,latestPending,latestApproved,commentsPending,commentsApproved,artisansPending,artisansApproved,eventsPending,eventsApproved,subscribers,blogPosts,affiliates,artisanEmailCount,artisanMailHistory,artisanMetrics,counts:{pendingLatest:latestPending.length,pendingComments:commentsPending.length,pendingArtisans:artisansPending.length,pendingEvents:eventsPending.length,pendingTotal:latestPending.length+commentsPending.length+artisansPending.length+eventsPending.length,blogPosts:blogPosts.length,subscribers:subscribers.length,affiliateClicks:affiliates.reduce((sum,item)=>sum+item.clicks,0),artisanViews:artisanMetrics.reduce((sum,item)=>sum+item.views,0),artisanClicks:artisanMetrics.reduce((sum,item)=>sum+item.clickTotal,0)}};
 }
 
 app.get('/pb-control/login', (req,res) => {
@@ -3039,6 +3071,30 @@ app.get('/artesanos/:slug', (req, res, next) => {
   const locationLabel = `${item.city || item.location || 'Puerto Rico'}${PB_US_LOCATIONS.has(item.location) ? ', USA' : ', Puerto Rico'}`;
   const events = readPBEvents('approved.json').map(publicPBEvent).filter(event => event.artisanSlug === req.params.slug && new Date(`${event.endDate || event.startDate}T23:59:59`) >= new Date());
   res.send(artesanoPerfilPB(item, { categoryLabel: categories[item.category] || 'Artesanía puertorriqueña', locationLabel, slug: req.params.slug, events }));
+});
+
+app.post('/api/pb-artesano-metrica/:slug', pbArtisanMetricsLimiter, express.json({limit:'2kb'}), (req,res) => {
+  const slug = String(req.params.slug || '');
+  const event = sanitize(req.body?.event || '').trim().toLowerCase();
+  if (!/^[a-z0-9][a-z0-9-]{0,159}$/.test(slug) || !PB_ARTISAN_METRIC_EVENTS.has(event)) return res.status(400).json({ok:false});
+  const exists = loadApprovedPBListings().some(item => pbArtisanSlug(item) === slug);
+  if (!exists) return res.status(404).json({ok:false});
+  try {
+    const stored = readJsonFile(PB_ARTISAN_METRICS_FILE,{});
+    const metrics = stored && !Array.isArray(stored) && typeof stored === 'object' ? stored : {};
+    const current = metrics[slug] && typeof metrics[slug] === 'object' ? metrics[slug] : {views:0,clicks:{}};
+    current.views = Number(current.views) || 0;
+    current.clicks = current.clicks && typeof current.clicks === 'object' ? current.clicks : {};
+    if (event === 'view') current.views += 1;
+    else current.clicks[event] = (Number(current.clicks[event]) || 0) + 1;
+    current.lastActivity = new Date().toISOString();
+    metrics[slug] = current;
+    writeJsonFile(PB_ARTISAN_METRICS_FILE,metrics);
+  } catch (error) {
+    console.error('PB artisan metric error:',error.message);
+    return res.status(500).json({ok:false});
+  }
+  res.status(204).end();
 });
 
 app.get("/artesanosPR", (req, res) => {
