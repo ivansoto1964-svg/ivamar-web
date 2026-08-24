@@ -40,7 +40,7 @@ new = r'''    if (searchTerm) {
         const haystack = normalize([
           n.name,n.category,n.desc,n.fullDesc,n.city,n.location,n.address,n.website,n.instagram,n.facebook,n.etsy
         ].filter(Boolean).join(' '));
-        return Array.from(terms).every(term => haystack.includes(term)) || Array.from(terms).some(term => haystack.includes(term));
+        return Array.from(terms).some(term => haystack.includes(term));
       });
     }
 '''
