@@ -186,11 +186,37 @@ async function loadDirectorio() {
       negocios = negocios.filter(n => n.category === category);
     }
     if (searchTerm) {
-      negocios = negocios.filter(n =>
-        (n.name || '').toLowerCase().includes(searchTerm) ||
-        (n.category || '').toLowerCase().includes(searchTerm) ||
-        (n.desc || '').toLowerCase().includes(searchTerm)
-      );
+      const normalize = value => String(value || '').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9ñ]+/g,' ').trim();
+      const synonyms = {
+        'sombrero':['sombrero','sombreros','gorro','gorros','hat','hats','boina','boinas'],
+        'gorro':['gorro','gorros','sombrero','sombreros','hat','hats','boina','boinas'],
+        'tenis':['tenis','tennis','sneaker','sneakers','zapato','zapatos','calzado','deportivo','deportivos','custom','pintado','pintados'],
+        'tennis':['tenis','tennis','sneaker','sneakers','zapato','zapatos','calzado','deportivo','deportivos','custom','pintado','pintados'],
+        'sneaker':['sneaker','sneakers','tenis','tennis','zapato','zapatos','calzado','deportivo','deportivos'],
+        'zapato':['zapato','zapatos','calzado','tenis','tennis','sneaker','sneakers'],
+        'crochet':['crochet','tejido','tejidos','ganchillo','hilo','lana'],
+        'tejido':['tejido','tejidos','crochet','ganchillo','hilo','lana'],
+        'pantalla':['pantalla','pantallas','arete','aretes','pendiente','pendientes','joyeria'],
+        'arete':['arete','aretes','pantalla','pantallas','pendiente','pendientes','joyeria'],
+        'collar':['collar','collares','cadena','cadenas','joyeria'],
+        'pulsera':['pulsera','pulseras','brazalete','brazaletes','joyeria'],
+        'cartera':['cartera','carteras','bolso','bolsos','bulto','bultos'],
+        'bolso':['bolso','bolsos','cartera','carteras','bulto','bultos'],
+        'madera':['madera','tallado','talla','pirograbado','wood'],
+        'vela':['vela','velas','candle','candles'],
+        'jabon':['jabon','jabones','soap','soaps'],
+        'mascara':['mascara','mascaras','vejigante','vejigantes'],
+        'pintura':['pintura','pinturas','arte','cuadro','cuadros','pintado','pintados']
+      };
+      const q = normalize(searchTerm);
+      const terms = new Set(q.split(/\s+/).filter(Boolean));
+      Array.from(terms).forEach(term => (synonyms[term] || []).forEach(s => terms.add(normalize(s))));
+      negocios = negocios.filter(n => {
+        const haystack = normalize([
+          n.name,n.category,n.desc,n.fullDesc,n.city,n.location,n.address,n.website,n.instagram,n.facebook,n.etsy
+        ].filter(Boolean).join(' '));
+        return Array.from(terms).some(term => haystack.includes(term));
+      });
     }
 
     if (negocios.length === 0) {
