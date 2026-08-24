@@ -342,6 +342,7 @@ footer{background:var(--blue);padding:2rem;text-align:center;}
       <label for="terms-agree">He leído y acepto los términos del directorio de Planeta Boricua. Confirmo que toda la información proporcionada es verídica y que este es un negocio legítimo operado por o para la comunidad boricua.</label>
     </div>
 
+    <div id="registration-error" style="display:none;background:#fff1f2;color:#9f1239;border:1px solid #fda4af;padding:1rem;border-radius:10px;margin-bottom:1rem;line-height:1.5;font-size:.86rem"></div>
     <button class="btn-submit" id="submit-btn" onclick="submitNegocio()">Enviar para Revisión 🇵🇷 →</button>
   </div>
 
@@ -395,8 +396,9 @@ async function handlePhotoUpload(input) {
         document.getElementById('photo-placeholder').style.display = 'none';
         status.textContent = '✅ Foto subida exitosamente';
         status.style.color = 'green';
+        if (typeof saveArtisanDraft === 'function') saveArtisanDraft();
       } else {
-        status.textContent = '❌ Error al subir. Intenta de nuevo.';
+        status.textContent = '❌ ' + (data.error || 'Error al subir. Intenta de nuevo.');
         status.style.color = 'red';
       }
     } catch(e) {
@@ -435,8 +437,9 @@ async function handleLogoUpload(input) {
         document.getElementById('logo-placeholder').style.display = 'none';
         status.textContent = '✅ Logo subido exitosamente';
         status.style.color = 'green';
+        if (typeof saveArtisanDraft === 'function') saveArtisanDraft();
       } else {
-        status.textContent = '❌ Error al subir. Intenta de nuevo.';
+        status.textContent = '❌ ' + (data.error || 'Error al subir. Intenta de nuevo.');
         status.style.color = 'red';
       }
     } catch(e) {
@@ -447,61 +450,33 @@ async function handleLogoUpload(input) {
   reader.readAsDataURL(file);
 }
 
+const PB_ARTISAN_DRAFT_V1='pbArtisanRegistrationDraftV1';
+const draftIds=['biz-name','biz-category','biz-location','biz-city','biz-zip','biz-address','biz-desc','biz-full-desc','biz-email','biz-whatsapp','biz-website','biz-instagram','biz-facebook','biz-tiktok','biz-etsy','biz-logo','biz-photo','biz-price'];
+let draftTimer=null;
+function saveArtisanDraft(){clearTimeout(draftTimer);draftTimer=setTimeout(()=>{const d={};draftIds.forEach(id=>{const el=document.getElementById(id);if(el)d[id]=el.value});d.terms=document.getElementById('terms-agree').checked;localStorage.setItem(PB_ARTISAN_DRAFT_V1,JSON.stringify(d));},350)}
+function restoreArtisanDraft(){try{const d=JSON.parse(localStorage.getItem(PB_ARTISAN_DRAFT_V1)||'null');if(!d)return;draftIds.forEach(id=>{const el=document.getElementById(id);if(el&&d[id]!==undefined)el.value=d[id]});document.getElementById('terms-agree').checked=Boolean(d.terms);if(d['biz-photo']){document.getElementById('preview-img').src=d['biz-photo'];document.getElementById('photo-preview').style.display='block';document.getElementById('photo-placeholder').style.display='none';document.getElementById('upload-status').textContent='✅ Foto recuperada del borrador';document.getElementById('upload-status').style.color='green'}if(d['biz-logo']){document.getElementById('preview-logo').src=d['biz-logo'];document.getElementById('logo-preview').style.display='block';document.getElementById('logo-placeholder').style.display='none';document.getElementById('logo-upload-status').textContent='✅ Logo recuperado del borrador';document.getElementById('logo-upload-status').style.color='green'}}catch(_){}}
+function showRegistrationError(message,fieldId){const box=document.getElementById('registration-error');box.textContent=message;box.style.display='block';if(fieldId){const el=document.getElementById(fieldId);if(el){el.focus();el.scrollIntoView({behavior:'smooth',block:'center'})}}}
+function clearRegistrationError(){const box=document.getElementById('registration-error');box.style.display='none';box.textContent=''}
+function validEmail(v){return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)}
+
 async function submitNegocio() {
-  const name = document.getElementById('biz-name').value.trim();
-  const category = document.getElementById('biz-category').value;
-  const location = document.getElementById('biz-location').value;
-  const city = document.getElementById('biz-city').value.trim();
-  const zip = document.getElementById('biz-zip').value.trim();
-  const address = document.getElementById('biz-address').value.trim();
-  const desc = document.getElementById('biz-desc').value.trim();
-  const fullDesc = document.getElementById('biz-full-desc').value.trim();
-  const email = document.getElementById('biz-email').value.trim();
-  const whatsapp = document.getElementById('biz-whatsapp').value.trim();
-  const website = document.getElementById('biz-website').value.trim();
-  const instagram = document.getElementById('biz-instagram').value.trim();
-  const facebook = document.getElementById('biz-facebook').value.trim();
-  const tiktok = document.getElementById('biz-tiktok').value.trim();
-  const etsy = document.getElementById('biz-etsy').value.trim();
-  const logo = document.getElementById('biz-logo').value.trim();
-  const photo = document.getElementById('biz-photo').value.trim();
-  const price = document.getElementById('biz-price').value;
-  const agreed = document.getElementById('terms-agree').checked;
-
-  if (!name || !category || !location || !city || !desc || !fullDesc || !email || !photo) {
-    alert('¡Wepa! Por favor llena todos los campos requeridos incluyendo una foto.');
-    return;
-  }
-  if (!agreed) {
-    alert('Por favor acepta los términos antes de enviar.');
-    return;
-  }
-
-  const btn = document.getElementById('submit-btn');
-  btn.disabled = true;
-  btn.textContent = 'Enviando...';
-
-  try {
-    const res = await fetch('/api/pb-negocio-submit', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, category, location, city, zip, address, desc, fullDesc, email, whatsapp, website, instagram, facebook, tiktok, etsy, logo, photo, price })
-    });
-    const data = await res.json();
-    if (data.ok) {
-      document.getElementById('form-container').style.display = 'none';
-      document.getElementById('success-msg').style.display = 'block';
-    } else {
-      alert('Algo salió mal. Intenta de nuevo.');
-      btn.disabled = false;
-      btn.textContent = 'Enviar para Revisión 🇵🇷 →';
-    }
-  } catch(e) {
-    alert('Error de conexión. Intenta de nuevo.');
-    btn.disabled = false;
-    btn.textContent = 'Enviar para Revisión 🇵🇷 →';
-  }
+  clearRegistrationError();
+  const values={name:document.getElementById('biz-name').value.trim(),category:document.getElementById('biz-category').value,location:document.getElementById('biz-location').value,city:document.getElementById('biz-city').value.trim(),zip:document.getElementById('biz-zip').value.trim(),address:document.getElementById('biz-address').value.trim(),desc:document.getElementById('biz-desc').value.trim(),fullDesc:document.getElementById('biz-full-desc').value.trim(),email:document.getElementById('biz-email').value.trim(),whatsapp:document.getElementById('biz-whatsapp').value.trim(),website:document.getElementById('biz-website').value.trim(),instagram:document.getElementById('biz-instagram').value.trim(),facebook:document.getElementById('biz-facebook').value.trim(),tiktok:document.getElementById('biz-tiktok').value.trim(),etsy:document.getElementById('biz-etsy').value.trim(),logo:document.getElementById('biz-logo').value.trim(),photo:document.getElementById('biz-photo').value.trim(),price:document.getElementById('biz-price').value};
+  const required=[['name','biz-name','Escribe el nombre del artesano o emprendimiento.'],['category','biz-category','Selecciona una categoría.'],['location','biz-location','Selecciona tu estado o pueblo.'],['city','biz-city','Escribe tu ciudad, pueblo o sector.'],['desc','biz-desc','Añade una descripción corta.'],['fullDesc','biz-full-desc','Cuéntanos un poco más sobre tu trabajo.'],['email','biz-email','Escribe tu email.'],['photo','photo-upload-area','Sube una foto principal de tu trabajo.']];
+  for(const [key,id,msg] of required){if(!values[key]){showRegistrationError('⚠️ '+msg,id);return}}
+  if(!validEmail(values.email)){showRegistrationError('⚠️ El email no parece válido. Revísalo antes de enviar.','biz-email');return}
+  if(!document.getElementById('terms-agree').checked){showRegistrationError('⚠️ Debes aceptar los términos antes de enviar.','terms-agree');return}
+  const btn=document.getElementById('submit-btn');btn.disabled=true;btn.textContent='Enviando… no cierres esta página';
+  try{
+    const controller=new AbortController();const timeout=setTimeout(()=>controller.abort(),25000);
+    const res=await fetch('/api/pb-negocio-submit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(values),signal:controller.signal});clearTimeout(timeout);
+    let data={};try{data=await res.json()}catch(_){throw new Error('El servidor no devolvió una respuesta válida. Intenta de nuevo.')}
+    if(!res.ok||!data.ok)throw new Error(data.error||'No pudimos completar el registro. Revisa la información e intenta otra vez.');
+    localStorage.removeItem(PB_ARTISAN_DRAFT_V1);document.getElementById('form-container').style.display='none';document.getElementById('success-msg').style.display='block';window.scrollTo({top:0,behavior:'smooth'});
+  }catch(e){const text=e.name==='AbortError'?'La conexión tardó demasiado. Tu información quedó guardada en este teléfono; verifica tu señal e intenta otra vez.':e.message||'Error de conexión. Tu borrador quedó guardado.';showRegistrationError('❌ '+text);btn.disabled=false;btn.textContent='Enviar para Revisión 🇵🇷 →'}
 }
+
+document.addEventListener('DOMContentLoaded',()=>{restoreArtisanDraft();document.querySelectorAll('input,select,textarea').forEach(el=>{el.addEventListener('input',saveArtisanDraft);el.addEventListener('change',saveArtisanDraft)})});
 </script>
 
 </body>

@@ -17,6 +17,23 @@ app.use(compression());
 app.use(helmet({ contentSecurityPolicy: false, crossOriginEmbedderPolicy: false }));
 app.set('trust proxy', 1);
 
+// PB analytics: set PB_GA_MEASUREMENT_ID=G-XXXXXXXXXX in Render to activate.
+app.use((req, res, next) => {
+  const measurementId = String(process.env.PB_GA_MEASUREMENT_ID || '').trim();
+  if (!/^G-[A-Z0-9]+$/i.test(measurementId)) return next();
+  const host = String(req.hostname || '').toLowerCase();
+  if (!host.includes('masboricuaqueunmofongo.com')) return next();
+  const send = res.send.bind(res);
+  res.send = body => {
+    if (typeof body === 'string' && body.includes('</head>') && !body.includes('googletagmanager.com/gtag/js')) {
+      const snippet = `<script async src="https://www.googletagmanager.com/gtag/js?id=${measurementId}"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','${measurementId}',{anonymize_ip:true});</script>`;
+      body = body.replace('</head>', snippet + '</head>');
+    }
+    return send(body);
+  };
+  next();
+});
+
 // Handle malformed URI errors from bots/scanners
 app.use((err, req, res, next) => {
   if (err instanceof URIError) {
@@ -40,6 +57,15 @@ const formLimiter = rateLimit({
   windowMs: 60 * 60 * 1000,
   max: 5,
   message: { error: 'Too many submissions. Please try again later.' },
+  standardHeaders: true,
+  legacyHeaders: false
+});
+
+// Artisan registration: allow normal retries without punishing a user for a validation/network problem.
+const pbArtisanLimiter = rateLimit({
+  windowMs: 60 * 60 * 1000,
+  max: 20,
+  message: { ok:false, error:'Has hecho demasiados intentos en poco tiempo. Espera unos minutos y vuelve a intentar.' },
   standardHeaders: true,
   legacyHeaders: false
 });
@@ -101,6 +127,7 @@ const aecDemo = require("./views/autoridad-energia-criolla");
 const addNegocioPB = require("./views/planetaboricua/add-negocio");
 const feriaArtesanosPB = require("./views/planetaboricua/feriaartesanos");
 const artesanoPerfilPB = require("./views/planetaboricua/artesano-perfil");
+const artesanoMiPerfilPB = require("./views/planetaboricua/artesano-mi-perfil");
 const agendaArtesanalPB = require("./views/planetaboricua/agenda-artesanal");
 const enviarEventoPB = require("./views/planetaboricua/enviar-evento");
 const enviarEventoBoricuaPB = require("./views/planetaboricua/enviar-evento-boricua");
@@ -133,8 +160,9 @@ function feriaListingsVisible(req) {
 }
 
 function pbArtisanSlug(item) {
-  const base = String(item.name || 'artesano').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
-  return `${base}-${String(item.id || '').slice(-6)}`;
+  if (item && /^[a-z0-9][a-z0-9-]*$/.test(String(item.slug || ''))) return String(item.slug);
+  const base = String(item?.name || 'artesano').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+  return `${base}-${String(item?.id || '').slice(-6)}`;
 }
 const PB_US_LOCATIONS = new Set('alabama alaska arizona arkansas california colorado connecticut delaware florida florida-us georgia hawaii idaho illinois indiana iowa kansas kentucky louisiana maine maryland massachusetts michigan minnesota mississippi missouri montana nebraska nevada new-hampshire new-jersey new-mexico nueva-york north-carolina north-dakota ohio oklahoma oregon pennsylvania rhode-island south-carolina south-dakota tennessee texas utah vermont virginia washington west-virginia wisconsin wyoming washington-dc'.split(' '));
 
@@ -182,6 +210,78 @@ function pbArtisanDuplicateMessage(reason) {
   return reason === 'whatsapp'
     ? 'Ya existe un perfil registrado con este WhatsApp. Si es tuyo y necesitas actualizarlo, contáctanos.'
     : 'Ya existe un perfil registrado con este email. Si es tuyo y necesitas actualizarlo, contáctanos.';
+}
+
+
+const PB_ARTISAN_DIR = '/data/pb-listings';
+const PB_ARTISAN_BACKUP_DIR = '/data/pb-backups';
+
+function loadPBApprovedArtisanRecord(id) {
+  if (!fs.existsSync(PB_ARTISAN_DIR)) return null;
+  for (const file of fs.readdirSync(PB_ARTISAN_DIR).filter(f => f.endsWith('.json') && f !== 'pending.json')) {
+    const full = path.join(PB_ARTISAN_DIR, file);
+    let items = [];
+    try { items = JSON.parse(fs.readFileSync(full, 'utf8')); } catch (_) { continue; }
+    if (!Array.isArray(items)) continue;
+    const index = items.findIndex(item => String(item?.id || '') === String(id || ''));
+    if (index >= 0) return { item:items[index], items, index, file, full };
+  }
+  return null;
+}
+
+function backupPBArtisans(reason = 'automatic') {
+  try {
+    if (!fs.existsSync(PB_ARTISAN_BACKUP_DIR)) fs.mkdirSync(PB_ARTISAN_BACKUP_DIR, {recursive:true});
+    const stamp = new Date().toISOString().replace(/[:.]/g,'-');
+    const snapshot = { createdAt:new Date().toISOString(), reason, listings:loadApprovedPBListings() };
+    fs.writeFileSync(path.join(PB_ARTISAN_BACKUP_DIR, `artisans-${stamp}.json`), JSON.stringify(snapshot,null,2));
+    const files = fs.readdirSync(PB_ARTISAN_BACKUP_DIR).filter(f => /^artisans-.*\.json$/.test(f)).sort().reverse();
+    files.slice(40).forEach(f => { try { fs.unlinkSync(path.join(PB_ARTISAN_BACKUP_DIR,f)); } catch (_) {} });
+  } catch (error) { console.error('PB artisan backup error:', error.message); }
+}
+
+function pbArtisanMagicSecret() {
+  return String(process.env.PB_ARTISAN_MAGIC_SECRET || process.env.PB_ADMIN_PASS || '').trim();
+}
+
+function createPBArtisanToken(item) {
+  const secret = pbArtisanMagicSecret();
+  if (!secret) return '';
+  const payload = Buffer.from(JSON.stringify({id:String(item.id),email:normalizePBArtisanEmail(item.email),exp:Date.now()+2*60*60*1000})).toString('base64url');
+  const sig = crypto.createHmac('sha256',secret).update(payload).digest('base64url');
+  return `${payload}.${sig}`;
+}
+
+function verifyPBArtisanToken(token) {
+  try {
+    const secret = pbArtisanMagicSecret();
+    if (!secret) return null;
+    const [payload,sig] = String(token || '').split('.');
+    if (!payload || !sig) return null;
+    const expected = crypto.createHmac('sha256',secret).update(payload).digest('base64url');
+    const a = Buffer.from(sig); const b = Buffer.from(expected);
+    if (a.length !== b.length || !crypto.timingSafeEqual(a,b)) return null;
+    const data = JSON.parse(Buffer.from(payload,'base64url').toString('utf8'));
+    if (!data?.id || !data?.email || !data?.exp || Date.now() > Number(data.exp)) return null;
+    return data;
+  } catch (_) { return null; }
+}
+
+function savePBArtisanUpdate(record, next) {
+  const sourceItems = record.items.slice();
+  const oldLocation = String(record.item.location || '');
+  const newLocation = String(next.location || oldLocation);
+  if (newLocation === oldLocation) {
+    sourceItems[record.index] = next;
+    writeJsonFile(record.full, sourceItems);
+    return;
+  }
+  sourceItems.splice(record.index,1);
+  writeJsonFile(record.full, sourceItems);
+  const target = path.join(PB_ARTISAN_DIR, `${newLocation}.json`);
+  const targetItems = readJsonFile(target, []);
+  targetItems.push(next);
+  writeJsonFile(target, targetItems);
 }
 
 const PB_EVENTS_DIR = '/data/pb-events';
@@ -3363,11 +3463,61 @@ CÓMO RESPONDER:
 // Página de noticias PBN
 // noticias route moved above /:slug
 
+// Artisan self-service: passwordless access by verified registration email.
+app.get('/artesanos/mi-perfil', (_req,res) => {
+  res.set('Cache-Control','no-store, private');
+  res.send(artesanoMiPerfilPB.loginPage());
+});
+
+app.post('/api/pb-artesano-access', pbArtisanLimiter, express.json({limit:'10kb'}), async (req,res) => {
+  const email = normalizePBArtisanEmail(sanitize(req.body?.email || ''));
+  const generic = 'Si ese email corresponde a un perfil aprobado, recibirás un enlace seguro en unos minutos.';
+  if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return res.status(400).json({ok:false,message:'Escribe un email válido.'});
+  const item = loadApprovedPBListings().find(entry => normalizePBArtisanEmail(entry.email) === email);
+  if (!item) return res.json({ok:true,message:generic});
+  const token = createPBArtisanToken(item);
+  if (!token) return res.status(503).json({ok:false,message:'El acceso de artesanos todavía no está configurado. Intenta más tarde.'});
+  try {
+    await resend.emails.send({from:`Planeta Boricua <${PB_SENDER_EMAIL}>`,to:email,subject:'🇵🇷 Enlace para administrar tu perfil en Planeta Boricua',html:`<div style="font-family:system-ui;max-width:600px"><h2>Administra tu perfil</h2><p>Hola <strong>${emailEscForResponse(item.name)}</strong>. Usa este enlace para actualizar tu información. El enlace vence en 2 horas.</p><p><a href="https://www.masboricuaqueunmofongo.com/artesanos/mi-perfil/${encodeURIComponent(token)}" style="display:inline-block;background:#002d62;color:#fff;padding:12px 18px;border-radius:7px;text-decoration:none;font-weight:700">Abrir mi perfil</a></p><p style="color:#777;font-size:13px">Si no solicitaste este acceso, puedes ignorar este mensaje.</p></div>`});
+  } catch (error) { console.error('PB artisan access email:',error.message); return res.status(503).json({ok:false,message:'No pudimos enviar el email en este momento. Intenta de nuevo más tarde.'}); }
+  res.json({ok:true,message:generic});
+});
+
+app.get('/artesanos/mi-perfil/:token', (req,res) => {
+  res.set('Cache-Control','no-store, private');
+  const auth = verifyPBArtisanToken(req.params.token);
+  if (!auth) return res.status(401).send('<div style="font-family:system-ui;max-width:600px;margin:3rem auto"><h2>Este enlace venció o no es válido.</h2><p><a href="/artesanos/mi-perfil">Solicita un enlace nuevo.</a></p></div>');
+  const record = loadPBApprovedArtisanRecord(auth.id);
+  if (!record || normalizePBArtisanEmail(record.item.email) !== auth.email) return res.status(404).send('Perfil no encontrado.');
+  const slug = pbArtisanSlug(record.item);
+  res.send(artesanoMiPerfilPB.editPage(record.item, req.params.token, `/artesanos/${encodeURIComponent(slug)}`));
+});
+
+app.post('/api/pb-artesano-update/:token', pbArtisanLimiter, express.json({limit:'80kb'}), async (req,res) => {
+  const auth = verifyPBArtisanToken(req.params.token);
+  if (!auth) return res.status(401).json({ok:false,error:'Tu enlace de acceso venció. Solicita uno nuevo.'});
+  const record = loadPBApprovedArtisanRecord(auth.id);
+  if (!record || normalizePBArtisanEmail(record.item.email) !== auth.email) return res.status(404).json({ok:false,error:'Perfil no encontrado.'});
+  const fields = ['name','category','location','city','zip','address','desc','fullDesc','whatsapp','website','instagram','facebook','tiktok','etsy','logo','photo','price'];
+  const changes = {}; fields.forEach(key => changes[key] = sanitize(req.body?.[key] || '').trim());
+  if (!changes.name || !changes.category || !changes.location || !changes.city || !changes.desc || !changes.fullDesc || !changes.photo) return res.status(400).json({ok:false,error:'Completa los campos requeridos, incluyendo la foto principal.'});
+  const duplicate = findPBArtisanDuplicate({email:record.item.email,whatsapp:changes.whatsapp},{approvedOnly:true,excludeId:record.item.id});
+  if (duplicate) return res.status(409).json({ok:false,error:pbArtisanDuplicateMessage(duplicate.reason)});
+  const stableSlug = pbArtisanSlug(record.item);
+  const next = {...record.item,...changes,slug:stableSlug,email:record.item.email,id:record.item.id,status:'approved',updatedAt:new Date().toISOString()};
+  backupPBArtisans(`before-update-${record.item.id}`);
+  try { savePBArtisanUpdate(record,next); } catch(error) { console.error('PB artisan update:',error); return res.status(500).json({ok:false,error:'No pudimos guardar los cambios. Intenta de nuevo.'}); }
+  try { await resend.emails.send({from:`Planeta Boricua <${PB_SENDER_EMAIL}>`,to:next.email,subject:'✅ Tu perfil de Planeta Boricua fue actualizado',html:`<p>Hola <strong>${emailEscForResponse(next.name)}</strong>. Tus cambios fueron guardados.</p><p><a href="https://www.masboricuaqueunmofongo.com/artesanos/${encodeURIComponent(stableSlug)}">Ver mi perfil</a></p>`}); } catch(error) { console.error('PB artisan update confirmation:',error.message); }
+  res.json({ok:true,message:'Tus cambios fueron guardados.',profileUrl:`/artesanos/${stableSlug}`});
+});
+
+app.get('/a/:slug', (req,res) => res.redirect(302, `/artesanos/${encodeURIComponent(req.params.slug)}`));
+
 // Formulario público
 app.get("/pb/add-negocio", (req, res) => res.send(addNegocioPB));
 
 // Submit de nuevo negocio
-app.post("/api/pb-negocio-submit", formLimiter, express.json(), async (req, res) => {
+app.post("/api/pb-negocio-submit", pbArtisanLimiter, express.json({limit:'80kb'}), async (req, res) => {
   console.log("📋 PB Negocio submit:", req.body?.name);
   const name = sanitize(req.body.name);
   const category = sanitize(req.body.category);
@@ -3491,6 +3641,8 @@ app.get("/admin/pb-approve/:token", async (req, res) => {
       return res.status(409).send(`<div style="font-family:system-ui;max-width:680px;margin:3rem auto;padding:2rem"><h2>⚠️ Posible perfil duplicado</h2><p>${pbArtisanDuplicateMessage(duplicate.reason)}</p><p>Este registro no fue aprobado ni eliminado. Revísalo en PB Control antes de continuar.</p></div>`);
     }
 
+    backupPBArtisans(`before-approve-${negocio.id}`);
+
     // Move to approved file by location
     const approvedFile = pathLib.join(approvedDir, negocio.location + '.json');
     let approved = [];
@@ -3526,7 +3678,7 @@ app.get("/admin/pb-approve/:token", async (req, res) => {
               <p style="font-size:1rem;color:#333;">Hola, <strong>${negocio.name}</strong>!</p>
               <p style="color:#555;line-height:1.6;margin-top:1rem;">Tu solicitud fue revisada y quedaste registrado como <strong>Participante de la Feria de Artesanías</strong> de Planeta Boricua.</p>
               <p style="color:#555;line-height:1.6;margin-top:1rem;">Tu ficha ya puede aparecer en la <a href="https://masboricuaqueunmofongo.com/feria-artesanos" style="color:#002D62;font-weight:700;">Feria Digital de Artesanías Puertorriqueñas</a>.</p>
-              <p style="color:#555;line-height:1.6;margin-top:1rem;">¿Necesitas actualizar información? Contáctanos en <strong>${PB_CONTACT_EMAIL}</strong></p>
+              <p style="color:#555;line-height:1.6;margin-top:1rem;">¿Necesitas actualizar información? Entra a <a href="https://www.masboricuaqueunmofongo.com/artesanos/mi-perfil" style="color:#002D62;font-weight:700;">Mi Perfil</a> y solicita un enlace seguro con este mismo email.</p>
               <p style="margin-top:2rem;font-size:0.85rem;color:#999;">© 2026 Planeta Boricua · Proyecto independiente de Iván Soto</p>
             </div>
           </div>
