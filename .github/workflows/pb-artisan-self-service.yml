@@ -1,0 +1,46 @@
+name: Install PB artisan self-service
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/pb-artisan-self-service.yml'
+      - 'scripts/install-pb-artisan-self-service.py'
+      - 'src/views/planetaboricua/artesano-mi-perfil.js'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  install:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Apply self-service, backups, analytics hook and registration UX
+        run: python3 scripts/install-pb-artisan-self-service.py
+      - name: Validate JavaScript syntax
+        run: |
+          node --check src/server.js
+          node --check src/views/planetaboricua/add-negocio.js
+          node --check src/views/planetaboricua/artesano-mi-perfil.js
+      - name: Verify critical routes and protections
+        run: |
+          grep -q "app.get('/artesanos/mi-perfil'" src/server.js
+          grep -q "app.post('/api/pb-artesano-update/:token'" src/server.js
+          grep -q "PB_GA_MEASUREMENT_ID" src/server.js
+          grep -q "PB_ARTISAN_DRAFT_V1" src/views/planetaboricua/add-negocio.js
+          grep -q "backupPBArtisans" src/server.js
+      - name: Commit installed changes
+        run: |
+          if git diff --quiet; then
+            echo "PB artisan self-service already installed"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/server.js src/views/planetaboricua/add-negocio.js
+          git commit -m "Add artisan self-service and harden registration flow"
+          git push origin main
