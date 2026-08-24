@@ -106,11 +106,11 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
 .sidebar-link{display:block;font-size:0.78rem;color:var(--mid);text-decoration:none;padding:0.4rem 0;border-bottom:1px solid var(--border);transition:color 0.2s;}
 .sidebar-link:last-child{border-bottom:none;}
 .sidebar-link:hover{color:var(--red);}
-.nayeli-cta{background:var(--blue);border-radius:8px;padding:1.2rem;text-align:center;color:#fff;}
-.nayeli-cta-icon{font-size:2rem;margin-bottom:0.5rem;}
-.nayeli-cta-title{font-family:'Playfair Display',serif;font-size:1rem;font-weight:800;margin-bottom:0.4rem;}
-.nayeli-cta-sub{font-size:0.75rem;color:rgba(255,255,255,0.65);margin-bottom:1rem;line-height:1.5;}
-.nayeli-cta-btn{display:block;background:var(--red);color:#fff;padding:0.65rem;border-radius:4px;font-size:0.82rem;font-weight:700;text-decoration:none;}
+.ayuda-cta{background:var(--blue);border-radius:8px;padding:1.2rem;text-align:center;color:#fff;}
+.ayuda-cta-icon{font-size:2rem;margin-bottom:0.5rem;}
+.ayuda-cta-title{font-family:'Playfair Display',serif;font-size:1rem;font-weight:800;margin-bottom:0.4rem;}
+.ayuda-cta-sub{font-size:0.75rem;color:rgba(255,255,255,0.65);margin-bottom:1rem;line-height:1.5;}
+.ayuda-cta-btn{display:block;background:var(--red);color:#fff;padding:0.65rem;border-radius:4px;font-size:0.82rem;font-weight:700;text-decoration:none;}
 
 /* AD */
 .ad-strip{max-width:1200px;margin:0 auto;padding:1rem 2rem;text-align:center;}
@@ -1087,11 +1087,11 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
 
   <!-- SIDEBAR -->
   <div class="sidebar">
-    <div class="nayeli-cta">
-      <div class="nayeli-cta-icon">🇵🇷</div>
-      <div class="nayeli-cta-title">¿Tienes preguntas?</div>
-      <div class="nayeli-cta-sub">Nayeli conoce todo sobre regresar a Puerto Rico. Pregúntale lo que necesites.</div>
-      <a href="/#nayeli" class="nayeli-cta-btn">Hablar con Nayeli →</a>
+    <div class="ayuda-cta">
+      <div class="ayuda-cta-icon">🇵🇷</div>
+      <div class="ayuda-cta-title">¿Encontraste información desactualizada?</div>
+      <div class="ayuda-cta-sub">Ayúdanos a mantener esta guía útil para toda la comunidad boricua.</div>
+      <a href="mailto:masboricuaqueunmofongo@gmail.com" class="ayuda-cta-btn">Escribir a Planeta Boricua →</a>
     </div>
 
     <div class="sidebar-card" style="margin-top:1rem;">

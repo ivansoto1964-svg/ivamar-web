@@ -17,6 +17,37 @@ app.use(compression());
 app.use(helmet({ contentSecurityPolicy: false, crossOriginEmbedderPolicy: false }));
 app.set('trust proxy', 1);
 
+// Planeta Boricua is now the only active public platform on this service.
+// This gate prevents the retired Ivamar AI, Caribex/Sun and Nayeli routes from
+// executing or consuming third-party APIs while PB remains untouched.
+const RETIRED_HOSTS = new Set([
+  'ivamarai.com',
+  'www.ivamarai.com',
+  'yourcaribbeanexpert.com',
+  'www.yourcaribbeanexpert.com'
+]);
+const RETIRED_PATHS = [
+  '/caribex', '/insights', '/caribex-sitemap.xml', '/manifest-caribex.json',
+  '/api/caribex', '/api/blog-feed', '/api/nayeli',
+  '/api/iva', '/api/demo', '/api/dealer-demo', '/api/kia-demo', '/api/assistant',
+  '/start', '/quote', '/cotizar', '/pricing', '/demo-dealers', '/demo-dealers-es',
+  '/demo-autos', '/mr-frappe', '/adis', '/dyerkia', '/autoridad-energia-criolla',
+  '/es', '/en', '/about', '/sobre-nosotros', '/contact', '/privacy', '/terms'
+];
+
+app.use((req, res, next) => {
+  const host = String(req.hostname || '').toLowerCase();
+  const path = String(req.path || '/');
+  const retiredPath = RETIRED_PATHS.some(prefix => path === prefix || path.startsWith(`${prefix}/`) || path.startsWith(`${prefix}-`));
+  if (!RETIRED_HOSTS.has(host) && !retiredPath) return next();
+
+  res.set('Cache-Control', 'no-store');
+  if (path.startsWith('/api/')) {
+    return res.status(410).json({ error: 'Este servicio fue retirado.' });
+  }
+  return res.status(410).send('<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Proyecto retirado</title><style>body{font-family:system-ui,sans-serif;display:grid;place-items:center;min-height:100vh;margin:0;background:#f5f5f0;color:#222;text-align:center}main{padding:2rem}h1{font-size:1.5rem}</style></head><body><main><h1>Este proyecto fue retirado.</h1></main></body></html>');
+});
+
 // PB analytics: set PB_GA_MEASUREMENT_ID=G-XXXXXXXXXX in Render to activate.
 app.use((req, res, next) => {
   const measurementId = String(process.env.PB_GA_MEASUREMENT_ID || '').trim();
@@ -669,7 +700,7 @@ h1{font-size:1.4rem;font-weight:600;}
   next();
 });
 
-app.get("/", (req, res) => res.send(layout({ title: "Ivamar AI", body: home })));
+app.get("/", (req, res) => res.send(planetaboricua));
 app.get("/es", (req, res) => res.send(layout({ title: "Ivamar AI · Español", body: homeES })));
 app.get("/en", (req, res) => res.send(layout({  lang: "en", title: "Ivamar AI · English", body: homeEN })));
 app.get("/about", (req, res) => {
@@ -678,7 +709,7 @@ app.get("/about", (req, res) => {
   return res.send(layout({ lang: "en", title: "About — Ivamar AI LLC", body: about }));
 });
 app.get("/sobre-nosotros", (req, res) => res.send(layout({ title: "Sobre Nosotros — Ivamar AI", body: sobreNosotros })));
-app.get("/contacto", (req, res) => res.send(layout({ title: "Contacto — Ivamar AI", body: contactoES })));
+app.get("/contacto", (req, res) => res.redirect(301, "/quienes-somos"));
 app.get("/contact", (req, res) => res.send(layout({  lang: "en", title: "Contact — Ivamar AI LLC", body: contact })));
 app.get("/privacy", (req, res) => res.send(layout({  lang: "en", title: "Privacy Policy — Ivamar AI LLC", body: privacy })));
 app.get("/terms", (req, res) => res.send(layout({  lang: "en", title: "Terms of Service — Ivamar AI LLC", body: terms })));

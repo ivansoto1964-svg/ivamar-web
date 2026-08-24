@@ -37,7 +37,6 @@ module.exports = `<!DOCTYPE html>
 *{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
 body{font-family:'Inter',sans-serif;background:#f5f5f0;color:#111;overflow-x:hidden;}
-#nayeli-float-btn,#nayeli-float-chat{display:none!important;}
 :root{
   --red:#CE1126;
   --blue:#002D62;
@@ -152,31 +151,15 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
 .agenda-mini p{font-size:.7rem;color:var(--mid);line-height:1.4;}
 @media(max-width:800px){.agenda-home-grid{grid-template-columns:1fr;}}
 
-/* NAYELI */
-.nayeli-section{background:var(--blue);padding:2.5rem 0;}
-.nayeli-inner{max-width:1200px;margin:0 auto;padding:0 2rem;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;}
-.nayeli-eyebrow{font-size:0.65rem;font-weight:800;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:0.6rem;}
-.nayeli-title{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3vw,2.6rem);font-weight:800;color:#fff;line-height:1.15;margin-bottom:1rem;}
-.nayeli-title .accent{color:#90CAF9;}
-.nayeli-sub{font-size:0.92rem;color:rgba(255,255,255,0.65);line-height:1.8;margin-bottom:1.5rem;}
-.nayeli-features{list-style:none;display:flex;flex-direction:column;gap:0.6rem;margin-bottom:2rem;}
-.nayeli-features li{display:flex;align-items:flex-start;gap:0.6rem;font-size:0.85rem;color:rgba(255,255,255,0.75);}
-.nayeli-features li::before{content:'🇵🇷';font-size:0.75rem;flex-shrink:0;margin-top:2px;}
+/* FERIA */
+.feria-section{background:var(--blue);padding:2.5rem 0;}
+.feria-inner{max-width:1200px;margin:0 auto;padding:0 2rem;display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;}
+.feria-eyebrow{font-size:0.65rem;font-weight:800;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:0.6rem;}
+.feria-title{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3vw,2.6rem);font-weight:800;color:#fff;line-height:1.15;margin-bottom:1rem;}
+.feria-title .accent{color:#90CAF9;}
+.feria-sub{font-size:0.92rem;color:rgba(255,255,255,0.65);line-height:1.8;margin-bottom:1.5rem;}
 .btn-white{display:inline-flex;align-items:center;gap:0.5rem;background:#fff;color:var(--blue);padding:0.85rem 1.8rem;border-radius:4px;font-size:0.88rem;font-weight:700;text-decoration:none;transition:all 0.2s;}
 .btn-white:hover{background:#f0f0f0;}
-.nayeli-chat{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:8px;overflow:hidden;}
-.nayeli-chat-header{padding:1rem 1.2rem;background:rgba(0,0,0,0.2);border-bottom:1px solid rgba(255,255,255,0.08);display:flex;align-items:center;gap:0.8rem;}
-.nayeli-avatar{width:36px;height:36px;background:var(--red);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0;}
-.nayeli-name{font-size:0.85rem;font-weight:700;color:#fff;}
-.nayeli-online{font-size:0.62rem;color:rgba(255,255,255,0.5);}
-.nayeli-msgs{padding:1.2rem;display:flex;flex-direction:column;gap:0.8rem;min-height:200px;}
-.n-msg{max-width:85%;padding:0.75rem 1rem;font-size:0.82rem;line-height:1.6;}
-.n-bot{background:rgba(255,255,255,0.1);border-radius:4px 12px 12px 12px;color:#fff;align-self:flex-start;}
-.n-user{background:var(--red);color:#fff;border-radius:12px 4px 12px 12px;align-self:flex-end;}
-.nayeli-input-row{padding:0.8rem;border-top:1px solid rgba(255,255,255,0.08);display:flex;gap:0.5rem;}
-.nayeli-input{flex:1;background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.12);border-radius:4px;padding:0.6rem 0.9rem;color:#fff;font-size:0.78rem;outline:none;font-family:'Inter',sans-serif;}
-.nayeli-input::placeholder{color:rgba(255,255,255,0.3);}
-.nayeli-send{background:var(--red);border:none;border-radius:4px;width:34px;height:34px;cursor:pointer;font-size:0.85rem;color:#fff;}
 
 /* VIAJES */
 .viajes{background:var(--light);padding:2rem 0;}
@@ -259,7 +242,7 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
   .latest-home-inner{padding:0 1rem;}
   .latest-grid{grid-template-columns:1fr;}
   .directorio-inner{padding:0 1rem;}
-  .nayeli-inner{grid-template-columns:1fr;gap:2rem;padding:0 1rem;}
+  .feria-inner{grid-template-columns:1fr;gap:2rem;padding:0 1rem;}
   .viajes-inner{padding:0 1rem;}
   .viajes-grid{grid-template-columns:1fr;}
   .pb-footer-main{grid-template-columns:1fr 1fr;padding:2rem 1rem;}
@@ -586,12 +569,12 @@ async function loadDirectorio() {
 </section>
 
 <!-- FERIA DE ARTESANÍAS -->
-<section class="nayeli-section" id="feria">
-  <div class="nayeli-inner">
+<section class="feria-section" id="feria">
+  <div class="feria-inner">
     <div>
-      <div class="nayeli-eyebrow">Feria Digital Permanente 🎨</div>
-      <h2 class="nayeli-title">Muestra tu <span class="accent">Arte</span> al Mundo 🇵🇷</h2>
-      <p class="nayeli-sub">Un espacio gratuito para que artesanos puertorriqueños muestren su trabajo — tu tipo de artesanía, tu historia, tus contactos — para que la diáspora y la gente en Puerto Rico te encuentren.</p>
+      <div class="feria-eyebrow">Feria Digital Permanente 🎨</div>
+      <h2 class="feria-title">Muestra tu <span class="accent">Arte</span> al Mundo 🇵🇷</h2>
+      <p class="feria-sub">Un espacio gratuito para que artesanos puertorriqueños muestren su trabajo — tu tipo de artesanía, tu historia, tus contactos — para que la diáspora y la gente en Puerto Rico te encuentren.</p>
       <div style="background:rgba(255,255,255,0.12);border-radius:10px;padding:1rem 1.2rem;margin:1.2rem 0;display:flex;align-items:center;gap:0.8rem;">
         <div style="font-size:1.5rem;">📅</div>
         <div style="font-size:0.85rem;color:#fff;line-height:1.5;">La feria digital está abierta todo el año. El <strong>23 de septiembre</strong>, Día del Grito de Lares, celebramos su presentación especial como proyecto cultural permanente.</div>
@@ -1059,66 +1042,6 @@ window.addEventListener('DOMContentLoaded', function() {
 });
 </script>
 
-<!-- Nayeli Floating Chat Button -->
-<div id="nayeli-float-btn" onclick="toggleNayeliFloat()" style="position:fixed;bottom:1.5rem;left:1.5rem;z-index:1000;cursor:pointer;display:flex;align-items:center;gap:0.6rem;background:#002D62;border-radius:50px;padding:0.4rem 1rem 0.4rem 0.4rem;box-shadow:0 4px 20px rgba(0,45,98,0.4);transition:transform 0.2s;" onmouseover="this.style.transform='scale(1.05)'" onmouseout="this.style.transform='scale(1)'">
-  <img src="/img/nayeli.jpg" alt="Nayeli" style="width:44px;height:44px;border-radius:50%;object-fit:cover;border:2px solid rgba(255,255,255,0.3);">
-  <span style="color:#fff;font-size:0.82rem;font-weight:700;white-space:nowrap;">¡Hola! Soy Nayeli 🇵🇷</span>
-</div>
-
-<!-- Nayeli Floating Chat Window -->
-<div id="nayeli-float-chat" style="display:none;position:fixed;bottom:5.5rem;left:1.5rem;z-index:1000;width:340px;max-width:calc(100vw - 3rem);background:#fff;border-radius:16px;box-shadow:0 8px 40px rgba(0,0,0,0.15);overflow:hidden;border:1px solid var(--border);">
-  <div style="background:#002D62;padding:0.9rem 1.2rem;display:flex;align-items:center;gap:0.8rem;">
-    <img src="/img/nayeli.jpg" alt="Nayeli" style="width:36px;height:36px;border-radius:50%;object-fit:cover;">
-    <div>
-      <div style="color:#fff;font-weight:700;font-size:0.88rem;">Nayeli 🇵🇷</div>
-      <div style="color:rgba(255,255,255,0.6);font-size:0.7rem;display:flex;align-items:center;gap:4px;"><span style="width:6px;height:6px;border-radius:50%;background:#4ade80;display:inline-block;"></span>En línea ahora</div>
-    </div>
-    <button onclick="toggleNayeliFloat()" style="margin-left:auto;background:none;border:none;color:rgba(255,255,255,0.7);font-size:1.2rem;cursor:pointer;">✕</button>
-  </div>
-  <div id="nayeli-float-messages" style="height:280px;overflow-y:auto;padding:1rem;display:flex;flex-direction:column;gap:0.8rem;background:#f9f9f6;">
-    <div style="background:#fff;border:1px solid var(--border);border-radius:12px;border-bottom-left-radius:3px;padding:0.7rem 1rem;font-size:0.84rem;max-width:85%;align-self:flex-start;">¡Wepa! 🇵🇷 Soy Nayeli. ¿En qué te puedo ayudar hoy?</div>
-  </div>
-  <div style="padding:0.7rem;border-top:1px solid var(--border);display:flex;gap:0.5rem;background:#fff;">
-    <input id="nayeli-float-input" type="text" placeholder="Escribe aquí..." style="flex:1;border:1.5px solid var(--border);border-radius:8px;padding:0.5rem 0.8rem;font-size:0.82rem;font-family:Inter,sans-serif;outline:none;" onkeydown="if(event.key==='Enter')sendNayeliFloat()">
-    <button onclick="sendNayeliFloat()" style="background:#CE1126;color:#fff;border:none;border-radius:8px;padding:0 1rem;cursor:pointer;font-size:1rem;">➤</button>
-  </div>
-</div>
-
-<script>
-function toggleNayeliFloat() {
-  var chat = document.getElementById('nayeli-float-chat');
-  chat.style.display = chat.style.display === 'none' ? 'block' : 'none';
-  if (chat.style.display === 'block') document.getElementById('nayeli-float-input').focus();
-}
-var nayeliFloatHistory = [];
-async function sendNayeliFloat() {
-  var input = document.getElementById('nayeli-float-input');
-  var messages = document.getElementById('nayeli-float-messages');
-  var text = input.value.trim();
-  if (!text) return;
-  var userDiv = document.createElement('div');
-  userDiv.style.cssText = 'background:#CE1126;color:#fff;border-radius:12px;border-bottom-right-radius:3px;padding:0.7rem 1rem;font-size:0.84rem;max-width:85%;align-self:flex-end;';
-  userDiv.textContent = text;
-  messages.appendChild(userDiv);
-  input.value = '';
-  messages.scrollTop = messages.scrollHeight;
-  var typing = document.createElement('div');
-  typing.style.cssText = 'background:#fff;border:1px solid #e5e5e0;border-radius:12px;border-bottom-left-radius:3px;padding:0.7rem 1rem;font-size:0.84rem;max-width:85%;align-self:flex-start;';
-  typing.textContent = '...';
-  messages.appendChild(typing);
-  try {
-    var res = await fetch('/api/nayeli', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:text,history:nayeliFloatHistory})});
-    var data = await res.json();
-    typing.remove();
-    var botDiv = document.createElement('div');
-    botDiv.style.cssText = 'background:#fff;border:1px solid #e5e5e0;border-radius:12px;border-bottom-left-radius:3px;padding:0.7rem 1rem;font-size:0.84rem;max-width:85%;align-self:flex-start;line-height:1.5;';
-    botDiv.textContent = data.reply || 'Wepa!';
-    messages.appendChild(botDiv);
-    nayeliFloatHistory.push({role:'user',content:text},{role:'assistant',content:data.reply||''});
-    messages.scrollTop = messages.scrollHeight;
-  } catch(e) { typing.remove(); }
-}
-</script>
 </body>
 </html>
 `;

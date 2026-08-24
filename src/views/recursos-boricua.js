@@ -63,13 +63,6 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;}
 .direction-card.usa-pr .direction-btn{background:var(--red);color:#fff;}
 .direction-card.usa-pr .direction-btn:hover{background:#a80e1f;}
 
-/* NAYELI CTA */
-.nayeli-strip{background:var(--blue);border-radius:12px;padding:2rem;display:flex;align-items:center;gap:2rem;margin-bottom:2rem;}
-.nayeli-strip-icon{font-size:3rem;flex-shrink:0;}
-.nayeli-strip-text h3{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:800;color:#fff;margin-bottom:0.4rem;}
-.nayeli-strip-text p{font-size:0.85rem;color:rgba(255,255,255,0.65);line-height:1.6;}
-.nayeli-strip-btn{display:inline-flex;align-items:center;gap:0.5rem;background:var(--red);color:#fff;padding:0.75rem 1.5rem;border-radius:6px;font-size:0.85rem;font-weight:700;text-decoration:none;white-space:nowrap;flex-shrink:0;}
-
 /* AD */
 .ad-strip{text-align:center;margin-bottom:2rem;}
 
@@ -88,7 +81,6 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;}
   .hero{padding:3rem 1rem;}
   .main{padding:2rem 1rem;}
   .direction-grid{grid-template-columns:1fr;}
-  .nayeli-strip{flex-direction:column;text-align:center;}
   .pb-footer-main{grid-template-columns:1fr 1fr;padding:1.5rem 1rem;}
   .pb-footer-bottom{flex-direction:column;text-align:center;padding:1rem;}
 }

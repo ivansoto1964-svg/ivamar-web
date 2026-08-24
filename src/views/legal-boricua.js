@@ -41,16 +41,16 @@ nav{background:#fff;border-bottom:3px solid #CE1126;padding:0;}
 </nav>
 <section class="page-hero">
   <h1>Términos y Condiciones de Uso</h1>
-  <p>Última actualización: 15 de agosto de 2026</p>
+  <p>Última actualización: 24 de agosto de 2026</p>
 </section>
 <div class="content">
-  <p>Bienvenido a Más Boricua Que Un Mofongo (masboricuaqueunmofongo.com), el portal de Planeta Boricua, proyecto independiente operado por Iván Soto desde Florida, Estados Unidos. Al acceder o utilizar nuestra plataforma, directorio, asistente de IA (Nayeli AI) y servicios relacionados, usted acepta cumplir y estar sujeto a los siguientes Términos y Condiciones. Si no está de acuerdo con alguna parte de estos términos, no deberá utilizar nuestro sitio web.</p>
+  <p>Bienvenido a Más Boricua Que Un Mofongo (masboricuaqueunmofongo.com), el portal de Planeta Boricua, proyecto independiente operado por Iván Soto desde Florida, Estados Unidos. Al acceder o utilizar nuestra plataforma, directorio y servicios relacionados, usted acepta cumplir y estar sujeto a los siguientes Términos y Condiciones. Si no está de acuerdo con alguna parte de estos términos, no deberá utilizar nuestro sitio web.</p>
 
   <h2>1. Uso del Sitio y la Feria de Artesanías</h2>
   <p>Al registrarse en nuestra Feria de Artesanías, usted garantiza que la información proporcionada es verídica, exacta y que tiene los derechos legítimos sobre su oficio o negocio artesanal. Nos reservamos el derecho de remover cualquier listado que consideremos fraudulento, engañoso, ofensivo o que viole derechos de terceros sin previo aviso.</p>
 
   <h2>2. Propiedad Intelectual</h2>
-  <p>Todo el contenido original de este sitio, incluyendo textos, gráficos, logotipos, código y la personalidad de nuestra asistente de IA (Nayeli AI), pertenece a Planeta Boricua y a su creador, Iván Soto, y está protegido por las leyes de propiedad intelectual aplicables.</p>
+  <p>Todo el contenido original de este sitio, incluyendo textos, gráficos, logotipos y código, pertenece a Planeta Boricua y a su creador, Iván Soto, y está protegido por las leyes de propiedad intelectual aplicables.</p>
 
   <h2>3. Descargo de Responsabilidad de Afiliados y Publicidad</h2>
   <p>Este sitio web muestra anuncios de Google AdSense y contiene enlaces de afiliados (incluyendo el Programa de Asociados de Amazon, Booking.com y Trip.com). Planeta Boricua no controla ni se hace responsable de las transacciones, compras, cancelaciones o disputas que ocurran entre el usuario y las plataformas de terceros vinculadas. Cualquier reclamación sobre un producto o servicio adquirido a través de un enlace de afiliado debe dirigirse al proveedor final.</p>
@@ -59,7 +59,7 @@ nav{background:#fff;border-bottom:3px solid #CE1126;padding:0;}
   <p>Los comentarios en los artículos deben realizarse con respeto. No se permite contenido ofensivo, spam, publicidad no solicitada o mensajes que inciten al odio o a la desinformación. Planeta Boricua se reserva el derecho de moderar, editar o eliminar comentarios que no cumplan con estas normas.</p>
 
   <h2>5. Limitación de Responsabilidad</h2>
-  <p>Planeta Boricua y su operador no garantizan que el sitio web funcione de manera ininterrumpida o libre de errores. En la medida permitida por la ley, no serán responsables por daños directos, indirectos, incidentales o consecuentes que resulten del uso o la imposibilidad de uso de la plataforma o de la información proporcionada por Nayeli AI.</p>
+  <p>Planeta Boricua y su operador no garantizan que el sitio web funcione de manera ininterrumpida o libre de errores. En la medida permitida por la ley, no serán responsables por daños directos, indirectos, incidentales o consecuentes que resulten del uso o la imposibilidad de uso de la plataforma.</p>
 
   <h2>6. Modificaciones</h2>
   <p>Nos reservamos el derecho de modificar estos Términos y Condiciones en cualquier momento. Las actualizaciones serán publicadas en esta página y entrarán en vigor desde su publicación.</p>
@@ -120,10 +120,10 @@ nav{background:#fff;border-bottom:3px solid #CE1126;padding:0;}
 </nav>
 <section class="page-hero">
   <h1>Política de Privacidad</h1>
-  <p>Última actualización: 15 de agosto de 2026</p>
+  <p>Última actualización: 24 de agosto de 2026</p>
 </section>
 <div class="content">
-  <p><em>Última actualización: 15 de agosto de 2026</em></p>
+  <p><em>Última actualización: 24 de agosto de 2026</em></p>
   <p>En Más Boricua Que Un Mofongo (accesible a través de masboricuaqueunmofongo.com), portal de Planeta Boricua operado de manera independiente por Iván Soto desde Florida, una de nuestras principales prioridades es la privacidad de nuestros visitantes. Este documento detalla los tipos de información que recopilamos y registramos, y cómo la utilizamos.</p>
 
   <h2>1. Archivos de Registro (Log Files)</h2>
@@ -131,6 +131,7 @@ nav{background:#fff;border-bottom:3px solid #CE1126;padding:0;}
 
   <h2>2. Cookies y Web Beacons</h2>
   <p>Como cualquier otro sitio web, Más Boricua Que Un Mofongo utiliza "cookies". Estas cookies se utilizan para almacenar información, incluyendo las preferencias de los visitantes y las páginas del sitio web a las que el visitante accedió o visitó. La información se utiliza para optimizar la experiencia de los usuarios personalizando el contenido de nuestra página web.</p>
+  <p>También utilizamos Google Analytics 4 para conocer de forma agregada cómo se visita el portal, por ejemplo las páginas consultadas, el país aproximado y el tipo de dispositivo. Planeta Boricua no envía a Google nombres, correos electrónicos ni la información privada de los perfiles de artesanos como parte de esta medición.</p>
 
   <h2>3. Políticas de Google AdSense y Publicidad de Terceros</h2>
   <p>Nuestro sitio web utiliza Google AdSense para publicar anuncios. Google, como proveedor externo, utiliza cookies para publicar anuncios en nuestro sitio basados en las visitas anteriores de un usuario a nuestro sitio web u otros sitios web.</p>
@@ -145,16 +146,13 @@ nav{background:#fff;border-bottom:3px solid #CE1126;padding:0;}
   <p>Al registrarse en nuestra Feria de Artesanías o al suscribirse a nuestro Boletín Boricua, usted nos proporciona voluntariamente información como su nombre, dirección de correo electrónico e información sobre su artesanía. Utilizamos esta información exclusivamente para publicar la ficha de su negocio en nuestro directorio y enviarle actualizaciones relevantes de nuestra comunidad.</p>
   <p>Usted puede cancelar su suscripción en cualquier momento haciendo clic en el enlace "Darse de baja" incluido en todos nuestros correos electrónicos.</p>
 
-  <h2>6. Nayeli AI</h2>
-  <p>Las conversaciones con Nayeli son procesadas para generar respuestas. Si decides compartir tu email durante la conversación, este se usa para enviarte el resumen de la misma. No se comparte con terceros sin tu consentimiento.</p>
-
-  <h2>7. Consentimiento</h2>
+  <h2>6. Consentimiento</h2>
   <p>Al utilizar nuestro sitio web, usted acepta nuestra Política de Privacidad y está de acuerdo con sus Términos y Condiciones.</p>
 
-  <h2>8. Cambios a esta política</h2>
+  <h2>7. Cambios a esta política</h2>
   <p>Esta Política de Privacidad puede actualizarse ocasionalmente. Cualquier cambio será publicado en esta misma página con la fecha de actualización.</p>
 
-  <h2>9. Contacto</h2>
+  <h2>8. Contacto</h2>
   <p>Si tiene alguna pregunta sobre esta Política de Privacidad, puede contactarnos a través de: <a href="mailto:masboricuaqueunmofongo@gmail.com" style="color:#CE1126;">masboricuaqueunmofongo@gmail.com</a></p>
   <p style="margin-top:1rem;font-size:0.82rem;color:#888;">Operador: Iván Soto · Florida, USA.</p>
 </div>
