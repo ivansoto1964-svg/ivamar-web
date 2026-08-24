@@ -451,6 +451,72 @@ function pbArtisanRecipients() {
   });
 }
 
+const PB_EMAIL_DOMAIN_TYPOS = new Map([
+  ['gmal.com','gmail.com'],['gmial.com','gmail.com'],['gamil.com','gmail.com'],
+  ['gmail.con','gmail.com'],['gmail.co','gmail.com'],['gmail.om','gmail.com'],['gmai.com','gmail.com'],
+  ['yaho.com','yahoo.com'],['yahho.com','yahoo.com'],['yahoo.con','yahoo.com'],['yahoo.co','yahoo.com'],
+  ['hotmal.com','hotmail.com'],['hotmial.com','hotmail.com'],['hotmail.con','hotmail.com'],
+  ['outlok.com','outlook.com'],['outloo.com','outlook.com'],['outlook.con','outlook.com'],
+  ['icloud.con','icloud.com'],['iclud.com','icloud.com'],['aol.con','aol.com']
+]);
+
+function pbArtisanEmailAudit(artisans) {
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const records = (artisans || []).map(item => {
+    const rawEmail = String(item.email || '');
+    const email = normalizePBArtisanEmail(rawEmail);
+    const domain = email.includes('@') ? email.split('@').pop() : '';
+    return {id:String(item.id || ''),name:String(item.name || 'Artesano/a').trim(),rawEmail,email,domain};
+  });
+  const emailGroups = new Map();
+  records.forEach(record => {
+    if (!record.email) return;
+    if (!emailGroups.has(record.email)) emailGroups.set(record.email,[]);
+    emailGroups.get(record.email).push(record);
+  });
+  const duplicateEmails = new Set([...emailGroups.entries()].filter(([,items]) => items.length > 1).map(([email]) => email));
+  const issues = [];
+  records.forEach(record => {
+    const types = [];
+    const notes = [];
+    let suggestion = '';
+    if (!record.email) {
+      types.push('missing');
+      notes.push('No tiene email registrado.');
+    } else {
+      if (!emailPattern.test(record.email)) {
+        types.push('invalid');
+        notes.push('El formato del email no es válido.');
+      }
+      if (record.rawEmail !== record.email) {
+        types.push('normalization');
+        notes.push('Contiene mayúsculas o espacios que conviene normalizar.');
+      }
+      if (PB_EMAIL_DOMAIN_TYPOS.has(record.domain)) {
+        types.push('suspicious');
+        const correctDomain = PB_EMAIL_DOMAIN_TYPOS.get(record.domain);
+        suggestion = `${record.email.slice(0,record.email.lastIndexOf('@') + 1)}${correctDomain}`;
+        notes.push(`El dominio “${record.domain}” parece un error; posiblemente quiso escribir “${correctDomain}”.`);
+      }
+      if (duplicateEmails.has(record.email)) {
+        types.push('duplicate');
+        notes.push(`Este email aparece en ${emailGroups.get(record.email).length} perfiles.`);
+      }
+    }
+    if (types.length) issues.push({...record,types,notes,suggestion});
+  });
+  const count = type => issues.filter(item => item.types.includes(type)).length;
+  return {
+    total:records.length,
+    present:records.filter(item => item.email).length,
+    uniqueValid:new Set(records.filter(item => item.email && emailPattern.test(item.email)).map(item => item.email)).size,
+    duplicateAddresses:duplicateEmails.size,
+    counts:{missing:count('missing'),invalid:count('invalid'),duplicateProfiles:count('duplicate'),suspicious:count('suspicious'),normalization:count('normalization'),issues:issues.length},
+    issues
+  };
+}
+
+
 function pbArtisanMailHistory() {
   return readJsonFile(PB_ARTISAN_MAIL_HISTORY_FILE,[]).sort((a,b) => new Date(b.sentAt || 0)-new Date(a.sentAt || 0)).slice(0,25);
 }
@@ -1419,9 +1485,10 @@ function buildPBControlModel(csrf) {
   const blogPosts = loadPBBlogPosts();
   const affiliates = pbAffiliateSummary();
   const artisanEmailCount = pbArtisanRecipients().length;
+  const artisanEmailAudit = pbArtisanEmailAudit(artisansApproved);
   const artisanMailHistory = pbArtisanMailHistory();
   const artisanMetrics = pbArtisanMetricsSummary(artisansApproved);
-  return {csrf,latestPending,latestApproved,commentsPending,commentsApproved,artisansPending,artisansApproved,eventsPending,eventsApproved,subscribers,blogPosts,affiliates,artisanEmailCount,artisanMailHistory,artisanMetrics,counts:{pendingLatest:latestPending.length,pendingComments:commentsPending.length,pendingArtisans:artisansPending.length,pendingEvents:eventsPending.length,pendingTotal:latestPending.length+commentsPending.length+artisansPending.length+eventsPending.length,blogPosts:blogPosts.length,subscribers:subscribers.length,affiliateClicks:affiliates.reduce((sum,item)=>sum+item.clicks,0),artisanViews:artisanMetrics.reduce((sum,item)=>sum+item.views,0),artisanClicks:artisanMetrics.reduce((sum,item)=>sum+item.clickTotal,0)}};
+  return {csrf,latestPending,latestApproved,commentsPending,commentsApproved,artisansPending,artisansApproved,eventsPending,eventsApproved,subscribers,blogPosts,affiliates,artisanEmailCount,artisanEmailAudit,artisanMailHistory,artisanMetrics,counts:{pendingLatest:latestPending.length,pendingComments:commentsPending.length,pendingArtisans:artisansPending.length,pendingEvents:eventsPending.length,pendingTotal:latestPending.length+commentsPending.length+artisansPending.length+eventsPending.length,blogPosts:blogPosts.length,subscribers:subscribers.length,affiliateClicks:affiliates.reduce((sum,item)=>sum+item.clicks,0),artisanViews:artisanMetrics.reduce((sum,item)=>sum+item.views,0),artisanClicks:artisanMetrics.reduce((sum,item)=>sum+item.clickTotal,0)}};
 }
 
 app.get('/pb-control/login', (req,res) => {
