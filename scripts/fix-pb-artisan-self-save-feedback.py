@@ -1,5 +1,6 @@
 from pathlib import Path
 
+# Trigger workflow after installer creation.
 p = Path('src/views/planetaboricua/artesano-mi-perfil.js')
 s = p.read_text()
 
