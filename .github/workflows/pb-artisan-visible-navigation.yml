@@ -1,0 +1,43 @@
+name: Add visible artisan management navigation
+on:
+  push:
+    paths:
+      - '.github/workflows/pb-artisan-visible-navigation.yml'
+permissions:
+  contents: write
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Add visible links
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          f=Path('src/views/pb-control.js')
+          s=f.read_text()
+          s=s.replace("`<a class=\"action\" href=\"/artesanos/${encodeURIComponent(item.slug)}\" target=\"_blank\">Ver</a>` + actionButton('Retirar','artisan-delete',item.id,'danger')", "`<a class=\"action good\" href=\"/pb-control/artesanos/${encodeURIComponent(item.id)}\">Editar</a><a class=\"action\" href=\"/artesanos/${encodeURIComponent(item.slug)}\" target=\"_blank\">Ver</a>` + actionButton('Retirar','artisan-delete',item.id,'danger')", 1)
+          s=s.replace('<div class="tools"><button class="primary" type="button" data-open-tab="publicaciones">Escribir / publicar</button>', '<div class="tools"><button class="primary" type="button" data-open-tab="publicaciones">Escribir / publicar</button><a class="action good" href="/pb-control/artesanos">🎨 Administrar artesanos</a><a class="action" href="/artesanos/mi-perfil" target="_blank">Vista: Mi Perfil</a>', 1)
+          f.write_text(s)
+
+          f=Path('src/views/planetaboricua/artesano-perfil.js')
+          s=f.read_text()
+          anchor='social.push(`<a class="btn secondary" href="/artesanos/${encodeURIComponent(slug)}/compartir-evento">Publicar evento</a>`);'
+          if 'Editar mi información' not in s:
+              s=s.replace(anchor, anchor+'\n  social.push(`<a class="btn secondary" href="/artesanos/mi-perfil">✏️ Editar mi información</a>`);', 1)
+          f.write_text(s)
+          PY
+      - name: Validate syntax
+        run: |
+          node --check src/views/pb-control.js
+          node --check src/views/planetaboricua/artesano-perfil.js
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/views/pb-control.js src/views/planetaboricua/artesano-perfil.js
+          git diff --cached --quiet && exit 0
+          git commit -m "Make artisan management controls visible"
+          git push origin main
