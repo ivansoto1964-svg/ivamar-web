@@ -3030,7 +3030,9 @@ app.post('/admin/pb-event-delete/:token', (req, res) => {
   res.send(`<h2>✅ Evento eliminado</h2><p>${sanitize(event.name)} ya no aparece en la agenda.</p><p><a href="/agenda-boricua">Ver agenda</a></p>`);
 });
 
-app.get('/artesanos/:slug', (req, res) => {
+app.get('/artesanos/:slug', (req, res, next) => {
+  // Reserve /artesanos/mi-perfil for the artisan self-service login route defined below.
+  if (req.params.slug === 'mi-perfil') return next();
   const item = loadApprovedPBListings().find(entry => pbArtisanSlug(entry) === req.params.slug);
   if (!item) return res.status(404).send('Artesano no encontrado');
   const categories = {'tallado-madera':'Tallado en madera','joyeria':'Joyería artesanal','ceramica':'Cerámica y alfarería','textiles':'Textiles y costura','pintura':'Pintura y arte','santos':'Santos y tallas religiosas','cuero':'Trabajo en cuero','vejigantes':'Máscaras y vejigantes','instrumentos':'Instrumentos musicales','reciclado':'Arte con material reciclado','velas-jabones':'Velas y jabones artesanales','otro':'Artesanía puertorriqueña'};
