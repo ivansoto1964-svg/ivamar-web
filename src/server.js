@@ -32,13 +32,17 @@ const RETIRED_PATHS = [
   '/api/iva', '/api/demo', '/api/dealer-demo', '/api/kia-demo', '/api/assistant',
   '/start', '/quote', '/cotizar', '/pricing', '/demo-dealers', '/demo-dealers-es',
   '/demo-autos', '/mr-frappe', '/adis', '/dyerkia', '/autoridad-energia-criolla',
+  '/landing.html', '/iva-chat.js', '/dealer-chat.js', '/dealer-chat-es.js', '/caribex-chat.js',
+  '/admin/dashboard', '/admin/new', '/admin/edit', '/admin/save', '/admin/delete',
+  '/admin/listings', '/admin/approve', '/admin/reject', '/admin/auth', '/admin/logout',
   '/es', '/en', '/about', '/sobre-nosotros', '/contact', '/privacy', '/terms'
 ];
+const RETIRED_EXACT_PATHS = new Set(['/admin']);
 
 app.use((req, res, next) => {
   const host = String(req.hostname || '').toLowerCase();
   const path = String(req.path || '/');
-  const retiredPath = RETIRED_PATHS.some(prefix => path === prefix || path.startsWith(`${prefix}/`) || path.startsWith(`${prefix}-`));
+  const retiredPath = RETIRED_EXACT_PATHS.has(path) || RETIRED_PATHS.some(prefix => path === prefix || path.startsWith(`${prefix}/`) || path.startsWith(`${prefix}-`));
   if (!RETIRED_HOSTS.has(host) && !retiredPath) return next();
 
   res.set('Cache-Control', 'no-store');
@@ -59,6 +63,31 @@ app.use((req, res, next) => {
     if (typeof body === 'string' && body.includes('</head>') && !body.includes('googletagmanager.com/gtag/js')) {
       const snippet = `<script async src="https://www.googletagmanager.com/gtag/js?id=${measurementId}"></script><script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','${measurementId}',{anonymize_ip:true});</script>`;
       body = body.replace('</head>', snippet + '</head>');
+    }
+    return send(body);
+  };
+  next();
+});
+
+// Keep every PB HTML page under one public identity and one canonical legal set.
+// Pages that already have the complete PB footer are left as-is; compact pages
+// and forms receive a small legal bar automatically.
+app.use((req, res, next) => {
+  const host = String(req.hostname || '').toLowerCase();
+  if (!host.includes('masboricuaqueunmofongo.com')) return next();
+  const send = res.send.bind(res);
+  res.send = body => {
+    if (typeof body === 'string' && body.includes('</body>')) {
+      body = body
+        .replace(/href=(['"])\/terminos\1/g, 'href=$1/terminos-boricua$1')
+        .replace(/href=(['"])\/privacidad\1/g, 'href=$1/privacidad-boricua$1')
+        .replace(/href=(['"])\/contacto\1/g, 'href=$1/quienes-somos$1')
+        .replace(/connect@ivamarai\.com/gi, 'masboricuaqueunmofongo@gmail.com');
+      const hasLegal = body.includes('/terminos-boricua') && body.includes('/privacidad-boricua');
+      if (!hasLegal && !body.includes('data-pb-legal-footer')) {
+        const legalBar = `<footer data-pb-legal-footer style="background:#002d62;color:#dbe5f2;padding:1.25rem 1rem;text-align:center;font:13px/1.6 system-ui,sans-serif"><strong style="color:#fff">🇵🇷 Planeta Boricua</strong> · Más Boricua que un Mofongo<br><a href="/quienes-somos" style="color:#fff">Quiénes Somos</a> · <a href="/privacidad-boricua" style="color:#fff">Privacidad</a> · <a href="/terminos-boricua" style="color:#fff">Términos</a> · <a href="/afiliados-boricua" style="color:#fff">Afiliados</a> · <a href="mailto:masboricuaqueunmofongo@gmail.com" style="color:#fff">Contacto</a><br><span style="font-size:12px">© 2026 Planeta Boricua · Proyecto independiente de Iván Soto · Florida, USA</span></footer>`;
+        body = body.replace('</body>', legalBar + '</body>');
+      }
     }
     return send(body);
   };

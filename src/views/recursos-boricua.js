@@ -74,7 +74,7 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;}
 .pb-footer-col a:hover{color:var(--red);}
 .pb-footer-bottom{background:var(--light);border-top:1px solid var(--border);padding:1rem 2rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.5rem;}
 .pb-footer-copy{font-size:0.68rem;color:#999;}
-.pb-footer-ivamar a{color:var(--red);text-decoration:none;font-size:0.68rem;}
+.pb-footer-owner a{color:var(--red);text-decoration:none;font-size:0.68rem;}
 
 @media(max-width:768px){
   .nav-top{padding:0.8rem 1rem;}
@@ -197,7 +197,7 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;}
   </div>
   <div class="pb-footer-bottom">
     <div class="pb-footer-copy">© 2026 Planeta Boricua · masboricuaqueunmofongo.com · Todos los derechos reservados</div>
-    <div class="pb-footer-ivamar">Proyecto independiente de Iván Soto · Florida, USA</div>
+    <div class="pb-footer-owner">Proyecto independiente de Iván Soto · Florida, USA</div>
   </div>
 </footer>
 
