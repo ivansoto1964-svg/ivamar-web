@@ -235,6 +235,17 @@ function pbArtisanSlug(item) {
   const base = String(item?.name || 'artesano').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
   return `${base}-${String(item?.id || '').slice(-6)}`;
 }
+
+const PB_ARTISAN_SLUG_REDIRECTS = new Map([
+  ['ivette-vargas-893766','ivette-vargas-893533'],
+  ['normari-lopez-laboy-112088','normari-lopez-laboy-430040'],
+  ['kenneth-a-melendez-padilla-mascaras-cabezudos-y-ritmos-370699','mascaras-cabezudos-y-ritmos-992425'],
+  ['griselle-abraham-tejidos-gris-151143','griselle-abraham-cancel-717023']
+]);
+
+function canonicalPBArtisanSlug(slug) {
+  return PB_ARTISAN_SLUG_REDIRECTS.get(String(slug || '')) || String(slug || '');
+}
 const PB_US_LOCATIONS = new Set('alabama alaska arizona arkansas california colorado connecticut delaware florida florida-us georgia hawaii idaho illinois indiana iowa kansas kentucky louisiana maine maryland massachusetts michigan minnesota mississippi missouri montana nebraska nevada new-hampshire new-jersey new-mexico nueva-york north-carolina north-dakota ohio oklahoma oregon pennsylvania rhode-island south-carolina south-dakota tennessee texas utah vermont virginia washington west-virginia wisconsin wyoming washington-dc'.split(' '));
 
 function loadApprovedPBListings() {
@@ -305,10 +316,15 @@ function backupPBArtisans(reason = 'automatic') {
     if (!fs.existsSync(PB_ARTISAN_BACKUP_DIR)) fs.mkdirSync(PB_ARTISAN_BACKUP_DIR, {recursive:true});
     const stamp = new Date().toISOString().replace(/[:.]/g,'-');
     const snapshot = { createdAt:new Date().toISOString(), reason, listings:loadApprovedPBListings() };
-    fs.writeFileSync(path.join(PB_ARTISAN_BACKUP_DIR, `artisans-${stamp}.json`), JSON.stringify(snapshot,null,2));
+    const backupFile = path.join(PB_ARTISAN_BACKUP_DIR, `artisans-${stamp}.json`);
+    fs.writeFileSync(backupFile, JSON.stringify(snapshot,null,2));
     const files = fs.readdirSync(PB_ARTISAN_BACKUP_DIR).filter(f => /^artisans-.*\.json$/.test(f)).sort().reverse();
     files.slice(40).forEach(f => { try { fs.unlinkSync(path.join(PB_ARTISAN_BACKUP_DIR,f)); } catch (_) {} });
-  } catch (error) { console.error('PB artisan backup error:', error.message); }
+    return backupFile;
+  } catch (error) {
+    console.error('PB artisan backup error:', error.message);
+    return '';
+  }
 }
 
 function pbArtisanMagicSecret() {
@@ -557,6 +573,140 @@ function loadPBApprovedArtisansWithFiles() {
   if (!fs.existsSync(dir)) return [];
   return fs.readdirSync(dir).filter(file => file.endsWith('.json') && file !== 'pending.json').flatMap(file => readJsonFile(path.join(dir,file),[]).map(item => ({...item,_file:file,slug:pbArtisanSlug(item)})));
 }
+
+const PB_ARTISAN_CLEANUP_MIGRATION = '2026-08-24-artisan-email-cleanup-v1';
+const PB_ARTISAN_CLEANUP_PAIRS = [
+  {keepId:'1787355893533',removeId:'1787355893766',keepSlug:'ivette-vargas-893533'},
+  {keepId:'1787399430040',removeId:'1787399112088',keepSlug:'normari-lopez-laboy-430040'},
+  {keepId:'1787354992425',removeId:'1785301370699',keepSlug:'mascaras-cabezudos-y-ritmos-992425'},
+  {keepId:'1787351717023',removeId:'1785332151143',keepSlug:'griselle-abraham-cancel-717023'}
+];
+
+function mergePBArtisanMetricEntries(current = {}, retired = {}) {
+  const clicks = {...(current.clicks && typeof current.clicks === 'object' ? current.clicks : {})};
+  Object.entries(retired.clicks && typeof retired.clicks === 'object' ? retired.clicks : {}).forEach(([event,count]) => {
+    clicks[event] = (Number(clicks[event]) || 0) + (Number(count) || 0);
+  });
+  const activityDates = [current.lastActivity,retired.lastActivity].filter(Boolean).sort();
+  return {
+    ...retired,
+    ...current,
+    views:(Number(current.views) || 0) + (Number(retired.views) || 0),
+    clicks,
+    lastActivity:activityDates.at(-1) || null
+  };
+}
+
+function runPBArtisanCleanupMigration() {
+  const migrationDir = '/data/pb-migrations';
+  const markerFile = path.join(migrationDir, `${PB_ARTISAN_CLEANUP_MIGRATION}.json`);
+  if (!fs.existsSync(PB_ARTISAN_DIR) || fs.existsSync(markerFile)) return;
+
+  try {
+    const files = new Map();
+    fs.readdirSync(PB_ARTISAN_DIR).filter(file => file.endsWith('.json') && file !== 'pending.json').forEach(file => {
+      const full = path.join(PB_ARTISAN_DIR,file);
+      const items = readJsonFile(full,[]);
+      if (Array.isArray(items)) files.set(full,items);
+    });
+    const rebuildIndex = () => {
+      const index = new Map();
+      files.forEach((items,file) => items.forEach(item => index.set(String(item?.id || ''),{item,file})));
+      return index;
+    };
+    let byId = rebuildIndex();
+    const missingCanonical = PB_ARTISAN_CLEANUP_PAIRS.filter(pair => !byId.has(pair.keepId));
+    if (missingCanonical.length) throw new Error(`canonical profiles missing: ${missingCanonical.map(pair => pair.keepId).join(', ')}`);
+
+    const backupFile = backupPBArtisans(`before-${PB_ARTISAN_CLEANUP_MIGRATION}`);
+    if (!backupFile) throw new Error('backup could not be created');
+
+    let emailChanges = 0;
+    files.forEach(items => items.forEach(item => {
+      const normalized = normalizePBArtisanEmail(item.email);
+      if (item.email && item.email !== normalized) {
+        item.email = normalized;
+        emailChanges += 1;
+      }
+    }));
+    byId = rebuildIndex();
+    const safeCorrections = new Map([
+      ['1787600162480','artesaniamaribel2025@gmail.com'],
+      ['1787391978954','usvaldocollazo@gmail.com']
+    ]);
+    safeCorrections.forEach((email,id) => {
+      const record = byId.get(id);
+      if (record && record.item.email !== email) {
+        record.item.email = email;
+        emailChanges += 1;
+      }
+    });
+
+    const retiredIds = new Set();
+    const mergeMissingFields = ['website','instagram','facebook','tiktok','etsy','logo','whatsapp','city','zip','address','fullDesc','desc'];
+    PB_ARTISAN_CLEANUP_PAIRS.forEach(pair => {
+      const canonical = byId.get(pair.keepId)?.item;
+      const duplicate = byId.get(pair.removeId)?.item;
+      canonical.slug = pair.keepSlug;
+      if (duplicate) {
+        mergeMissingFields.forEach(field => {
+          if (!canonical[field] && duplicate[field]) canonical[field] = duplicate[field];
+        });
+        retiredIds.add(pair.removeId);
+      }
+    });
+
+    const griselle = byId.get('1787351717023')?.item;
+    if (griselle) {
+      griselle.name = 'Griselle Abraham Cancel / Tejidos Gris';
+      griselle.category = 'textiles';
+      griselle.desc = 'Tejidos a crochet, amigurumis, pantallas y flores eternas.';
+      griselle.fullDesc = 'Creo tejidos a crochet, incluyendo amigurumis, pantallas y flores eternas.';
+      griselle.slug = 'griselle-abraham-cancel-717023';
+    }
+
+    files.forEach((items,file) => writeJsonFile(file,items.filter(item => !retiredIds.has(String(item?.id || '')))));
+
+    const storedMetrics = readJsonFile(PB_ARTISAN_METRICS_FILE,{});
+    const metrics = storedMetrics && !Array.isArray(storedMetrics) && typeof storedMetrics === 'object' ? storedMetrics : {};
+    PB_ARTISAN_SLUG_REDIRECTS.forEach((canonicalSlug,retiredSlug) => {
+      if (metrics[retiredSlug]) {
+        metrics[canonicalSlug] = mergePBArtisanMetricEntries(metrics[canonicalSlug],metrics[retiredSlug]);
+        delete metrics[retiredSlug];
+      }
+    });
+    writeJsonFile(PB_ARTISAN_METRICS_FILE,metrics);
+
+    ['pending.json','approved.json'].forEach(file => {
+      const full = path.join(PB_EVENTS_DIR,file);
+      if (!fs.existsSync(full)) return;
+      const events = readJsonFile(full,[]);
+      if (!Array.isArray(events)) return;
+      let changed = false;
+      events.forEach(event => {
+        const canonicalSlug = canonicalPBArtisanSlug(event.artisanSlug);
+        if (canonicalSlug !== event.artisanSlug) {
+          event.artisanSlug = canonicalSlug;
+          changed = true;
+        }
+      });
+      if (changed) writeJsonFile(full,events);
+    });
+
+    if (!fs.existsSync(migrationDir)) fs.mkdirSync(migrationDir,{recursive:true});
+    writeJsonFile(markerFile,{
+      completedAt:new Date().toISOString(),
+      backupFile,
+      normalizedOrCorrectedEmails:emailChanges,
+      retiredProfiles:retiredIds.size
+    });
+    console.log(`PB artisan cleanup complete: ${retiredIds.size} duplicates retired; ${emailChanges} emails normalized or corrected.`);
+  } catch (error) {
+    console.error('PB artisan cleanup migration skipped:',error.message);
+  }
+}
+
+runPBArtisanCleanupMigration();
 
 function loadPBBlogPosts() {
   return pbBlogStore.loadPosts({ includeDrafts:true });
@@ -3104,9 +3254,11 @@ app.get('/api/pb-eventos-proximos', (_req, res) => {
 app.get('/compartir-evento-boricua', (_req, res) => res.send(enviarEventoBoricuaPB()));
 
 app.get('/artesanos/:slug/compartir-evento', (req, res) => {
-  const item = loadApprovedPBListings().find(entry => pbArtisanSlug(entry) === req.params.slug);
+  const canonicalSlug = canonicalPBArtisanSlug(req.params.slug);
+  if (canonicalSlug !== req.params.slug) return res.redirect(301, `/artesanos/${encodeURIComponent(canonicalSlug)}/compartir-evento`);
+  const item = loadApprovedPBListings().find(entry => pbArtisanSlug(entry) === canonicalSlug);
   if (!item) return res.status(404).send('Artesano no encontrado');
-  res.send(enviarEventoPB({ name:item.name, slug:req.params.slug }));
+  res.send(enviarEventoPB({ name:item.name, slug:canonicalSlug }));
 });
 
 app.post('/api/pb-evento-submit', formLimiter, express.json(), async (req, res) => {
@@ -3192,12 +3344,14 @@ app.post('/admin/pb-event-delete/:token', (req, res) => {
 app.get('/artesanos/:slug', (req, res, next) => {
   // Reserve /artesanos/mi-perfil for the artisan self-service login route defined below.
   if (req.params.slug === 'mi-perfil') return next();
-  const item = loadApprovedPBListings().find(entry => pbArtisanSlug(entry) === req.params.slug);
+  const canonicalSlug = canonicalPBArtisanSlug(req.params.slug);
+  if (canonicalSlug !== req.params.slug) return res.redirect(301, `/artesanos/${encodeURIComponent(canonicalSlug)}`);
+  const item = loadApprovedPBListings().find(entry => pbArtisanSlug(entry) === canonicalSlug);
   if (!item) return res.status(404).send('Artesano no encontrado');
   const categories = {'tallado-madera':'Tallado en madera','joyeria':'Joyería artesanal','ceramica':'Cerámica y alfarería','textiles':'Textiles y costura','pintura':'Pintura y arte','santos':'Santos y tallas religiosas','cuero':'Trabajo en cuero','vejigantes':'Máscaras y vejigantes','instrumentos':'Instrumentos musicales','reciclado':'Arte con material reciclado','velas-jabones':'Velas y jabones artesanales','otro':'Artesanía puertorriqueña'};
   const locationLabel = `${item.city || item.location || 'Puerto Rico'}${PB_US_LOCATIONS.has(item.location) ? ', USA' : ', Puerto Rico'}`;
-  const events = readPBEvents('approved.json').map(publicPBEvent).filter(event => event.artisanSlug === req.params.slug && new Date(`${event.endDate || event.startDate}T23:59:59`) >= new Date());
-  res.send(artesanoPerfilPB(item, { categoryLabel: categories[item.category] || 'Artesanía puertorriqueña', locationLabel, slug: req.params.slug, events }));
+  const events = readPBEvents('approved.json').map(publicPBEvent).filter(event => event.artisanSlug === canonicalSlug && new Date(`${event.endDate || event.startDate}T23:59:59`) >= new Date());
+  res.send(artesanoPerfilPB(item, { categoryLabel: categories[item.category] || 'Artesanía puertorriqueña', locationLabel, slug: canonicalSlug, events }));
 });
 
 app.post('/api/pb-artesano-metrica/:slug', pbArtisanMetricsLimiter, express.json({limit:'2kb'}), (req,res) => {
