@@ -1,0 +1,33 @@
+name: Fix PB artisan self-service route
+
+on:
+  push:
+    paths:
+      - 'scripts/fix-pb-artisan-profile-route.py'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+      - name: Apply route fix
+        run: python3 scripts/fix-pb-artisan-profile-route.py
+      - name: Validate server syntax
+        run: node --check src/server.js
+      - name: Commit fix
+        run: |
+          if git diff --quiet; then
+            echo "Route fix already applied"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add src/server.js
+          git commit -m "Fix artisan self-service route collision"
+          git push origin main
