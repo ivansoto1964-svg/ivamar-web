@@ -257,7 +257,10 @@ function loadApprovedPBListings() {
 }
 
 function normalizePBArtisanEmail(value) {
-  return String(value || '').trim().toLowerCase();
+  return String(value || '')
+    .normalize('NFKC')
+    .replace(/[\s\u200B-\u200D\u2060\uFEFF]/g,'')
+    .toLowerCase();
 }
 
 function normalizePBArtisanPhone(value) {
