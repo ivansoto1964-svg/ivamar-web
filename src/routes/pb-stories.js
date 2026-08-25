@@ -7,7 +7,7 @@ const { Resend } = require('resend');
 
 const DATA_DIR = process.env.PB_STORIES_DATA_DIR || '/data/pb-stories';
 const PB_CONTACT_EMAIL = process.env.PB_CONTACT_EMAIL || 'masboricuaqueunmofongo@gmail.com';
-const PB_SENDER_EMAIL = process.env.PB_SENDER_EMAIL || 'connect@ivamarai.com';
+const PB_SENDER_EMAIL = process.env.PB_SENDER_EMAIL || 'notificaciones@masboricuaqueunmofongo.com';
 const resend = new Resend(process.env.RESEND_API_KEY);
 
 function ensureDir() { if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true }); }
