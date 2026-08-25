@@ -386,7 +386,7 @@ function publicPBEvent(event) {
 const PB_LATEST_DIR = '/data/pb-latest';
 const PB_COMMENTS_DIR = '/data/pb-comments';
 const PB_CONTACT_EMAIL = process.env.PB_CONTACT_EMAIL || 'masboricuaqueunmofongo@gmail.com';
-const PB_SENDER_EMAIL = process.env.PB_SENDER_EMAIL || 'connect@ivamarai.com';
+const PB_SENDER_EMAIL = process.env.PB_SENDER_EMAIL || 'notificaciones@masboricuaqueunmofongo.com';
 function readPBLatest(file) {
   try { return JSON.parse(fs.readFileSync(path.join(PB_LATEST_DIR, file), 'utf8')); } catch (_) { return []; }
 }
@@ -1755,12 +1755,12 @@ app.post('/pb-control/action', requirePBAdmin, requirePBCsrf, express.json({limi
       if (message.length < 10 || message.length > 6000) return res.status(400).json({ok:false,error:'El mensaje debe tener entre 10 y 6,000 caracteres.'});
       if (!process.env.RESEND_API_KEY) return res.status(503).json({ok:false,error:'Resend no está configurado en Render.'});
       if (action === 'artisan-email-test') {
-        await resend.emails.send({from:`Planeta Boricua <${PB_SENDER_EMAIL}>`,to:PB_CONTACT_EMAIL,subject:`[PRUEBA] ${subject}`,html:pbArtisanMailHtml('Prueba PB',message)});
+        await resend.emails.send({from:`Planeta Boricua <${PB_SENDER_EMAIL}>`,to:PB_CONTACT_EMAIL,replyTo:PB_CONTACT_EMAIL,subject:`[PRUEBA] ${subject}`,html:pbArtisanMailHtml('Prueba PB',message)});
         return ok(`Email de prueba enviado a ${PB_CONTACT_EMAIL}.`);
       }
       const recipients = pbArtisanRecipients();
       if (!recipients.length) return res.status(400).json({ok:false,error:'No encontré emails válidos de artesanos aprobados.'});
-      const payloads = recipients.map(person => ({from:`Planeta Boricua <${PB_SENDER_EMAIL}>`,to:person.email,subject,html:pbArtisanMailHtml(person.name,message)}));
+      const payloads = recipients.map(person => ({from:`Planeta Boricua <${PB_SENDER_EMAIL}>`,to:person.email,replyTo:PB_CONTACT_EMAIL,subject,html:pbArtisanMailHtml(person.name,message)}));
       for (let i=0;i<payloads.length;i+=100) {
         const batch = payloads.slice(i,i+100);
         if (resend.batch && typeof resend.batch.send === 'function') {
