@@ -452,16 +452,52 @@ const PB_AFFILIATE_CAMPAIGNS = {
 };
 const PB_AFFILIATE_CLICKS_FILE = '/data/pb-affiliate-clicks.json';
 const PB_ARTISAN_MAIL_HISTORY_FILE = '/data/pb-artisan-mail-history.json';
+const PB_ARTISAN_EMAIL_OPTOUTS_FILE = '/data/pb-artisan-email-optouts.json';
 const PB_ARTISAN_METRICS_FILE = '/data/pb-artisan-metrics.json';
 const PB_ARTISAN_METRIC_EVENTS = new Set(['view','whatsapp','website','instagram','facebook','store','share','event','edit']);
 
+function pbArtisanEmailOptOuts() {
+  return readJsonFile(PB_ARTISAN_EMAIL_OPTOUTS_FILE,[]).filter(item => item && normalizePBArtisanEmail(item.email));
+}
+
+function createPBArtisanEmailOptOutToken(email) {
+  const secret = pbArtisanMagicSecret();
+  const normalized = normalizePBArtisanEmail(email);
+  if (!secret || !normalized) return '';
+  const payload = Buffer.from(JSON.stringify({email:normalized,purpose:'artisan-email-optout',v:1})).toString('base64url');
+  const sig = crypto.createHmac('sha256',secret).update(payload).digest('base64url');
+  return `${payload}.${sig}`;
+}
+
+function verifyPBArtisanEmailOptOutToken(token) {
+  try {
+    const secret = pbArtisanMagicSecret();
+    if (!secret) return '';
+    const [payload,sig] = String(token || '').split('.');
+    if (!payload || !sig) return '';
+    const expected = crypto.createHmac('sha256',secret).update(payload).digest('base64url');
+    const a = Buffer.from(sig); const b = Buffer.from(expected);
+    if (a.length !== b.length || !crypto.timingSafeEqual(a,b)) return '';
+    const data = JSON.parse(Buffer.from(payload,'base64url').toString('utf8'));
+    if (data?.purpose !== 'artisan-email-optout' || data?.v !== 1) return '';
+    const email = normalizePBArtisanEmail(data.email);
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) ? email : '';
+  } catch (_) { return ''; }
+}
+
+function pbArtisanEmailOptOutUrl(email) {
+  const token = createPBArtisanEmailOptOutToken(email);
+  return token ? `https://www.masboricuaqueunmofongo.com/artesanos/comunicaciones/salir/${encodeURIComponent(token)}` : '';
+}
+
 function pbArtisanRecipients() {
   const seen = new Set();
+  const optedOut = new Set(pbArtisanEmailOptOuts().map(item => normalizePBArtisanEmail(item.email)));
   return loadApprovedPBListings().map(item => ({
     name:String(item.name || 'Artesano/a').trim(),
     email:String(item.email || '').trim().toLowerCase()
   })).filter(item => {
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(item.email) || seen.has(item.email)) return false;
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(item.email) || seen.has(item.email) || optedOut.has(item.email)) return false;
     seen.add(item.email);
     return true;
   });
@@ -537,10 +573,11 @@ function pbArtisanMailHistory() {
   return readJsonFile(PB_ARTISAN_MAIL_HISTORY_FILE,[]).sort((a,b) => new Date(b.sentAt || 0)-new Date(a.sentAt || 0)).slice(0,25);
 }
 
-function pbArtisanMailHtml(name, message) {
+function pbArtisanMailHtml(name, message, optOutUrl = '') {
   const escMail = value => String(value || '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
   const safeName = escMail(name || 'Artesano/a');
   const safeMessage = escMail(message).replace(/\n/g,'<br>');
+  const optOut = optOutUrl ? `<br><a href="${escMail(optOutUrl)}" style="color:#666">No deseo recibir más comunicaciones generales</a><br><span>Tu perfil continuará publicado en la Feria.</span>` : '';
   return `<div style="font-family:Arial,sans-serif;max-width:640px;margin:0 auto;color:#253247">
     <div style="background:linear-gradient(135deg,#002d62,#ce1126);padding:24px;text-align:center;border-radius:12px 12px 0 0">
       <div style="font-size:30px">🇵🇷</div><h1 style="color:white;font-size:22px;margin:8px 0 0">Planeta Boricua</h1>
@@ -551,7 +588,7 @@ function pbArtisanMailHtml(name, message) {
       <div style="font-size:15px;line-height:1.7">${safeMessage}</div>
       <div style="text-align:center;margin:28px 0"><a href="https://www.masboricuaqueunmofongo.com/pb/add-negocio" style="display:inline-block;background:#ce1126;color:#fff;text-decoration:none;padding:12px 20px;border-radius:8px;font-weight:700">Invitar a otro artesano →</a></div>
     </div>
-    <div style="background:#f5f5f0;padding:16px;text-align:center;border-radius:0 0 12px 12px;color:#777;font-size:12px;line-height:1.5">Recibes este mensaje porque participas en la Feria Digital de Artesanías Puertorriqueñas de Planeta Boricua.<br>© 2026 Planeta Boricua · Más Boricua que un Mofongo 🇵🇷</div>
+    <div style="background:#f5f5f0;padding:16px;text-align:center;border-radius:0 0 12px 12px;color:#777;font-size:12px;line-height:1.5">Recibes este mensaje porque participas en la Feria Digital de Artesanías Puertorriqueñas de Planeta Boricua.${optOut}<br>© 2026 Planeta Boricua · Más Boricua que un Mofongo 🇵🇷</div>
   </div>`;
 }
 
@@ -1755,12 +1792,17 @@ app.post('/pb-control/action', requirePBAdmin, requirePBCsrf, express.json({limi
       if (message.length < 10 || message.length > 6000) return res.status(400).json({ok:false,error:'El mensaje debe tener entre 10 y 6,000 caracteres.'});
       if (!process.env.RESEND_API_KEY) return res.status(503).json({ok:false,error:'Resend no está configurado en Render.'});
       if (action === 'artisan-email-test') {
-        await resend.emails.send({from:`Planeta Boricua <${PB_SENDER_EMAIL}>`,to:PB_CONTACT_EMAIL,replyTo:PB_CONTACT_EMAIL,subject:`[PRUEBA] ${subject}`,html:pbArtisanMailHtml('Prueba PB',message)});
+        const optOutUrl = pbArtisanEmailOptOutUrl(PB_CONTACT_EMAIL);
+        await resend.emails.send({from:`Planeta Boricua <${PB_SENDER_EMAIL}>`,to:PB_CONTACT_EMAIL,replyTo:PB_CONTACT_EMAIL,subject:`[PRUEBA] ${subject}`,html:pbArtisanMailHtml('Prueba PB',message,optOutUrl)});
         return ok(`Email de prueba enviado a ${PB_CONTACT_EMAIL}.`);
       }
+      if (!pbArtisanMagicSecret()) return res.status(503).json({ok:false,error:'La firma segura para los enlaces de exclusión no está configurada.'});
       const recipients = pbArtisanRecipients();
       if (!recipients.length) return res.status(400).json({ok:false,error:'No encontré emails válidos de artesanos aprobados.'});
-      const payloads = recipients.map(person => ({from:`Planeta Boricua <${PB_SENDER_EMAIL}>`,to:person.email,replyTo:PB_CONTACT_EMAIL,subject,html:pbArtisanMailHtml(person.name,message)}));
+      const payloads = recipients.map(person => {
+        const optOutUrl = pbArtisanEmailOptOutUrl(person.email);
+        return {from:`Planeta Boricua <${PB_SENDER_EMAIL}>`,to:person.email,replyTo:PB_CONTACT_EMAIL,subject,html:pbArtisanMailHtml(person.name,message,optOutUrl),headers:{'List-Unsubscribe':`<${optOutUrl}>`,'List-Unsubscribe-Post':'List-Unsubscribe=One-Click'}};
+      });
       for (let i=0;i<payloads.length;i+=100) {
         const batch = payloads.slice(i,i+100);
         if (resend.batch && typeof resend.batch.send === 'function') {
@@ -3833,6 +3875,36 @@ app.post('/pb-control/artesanos/:id', requirePBAdmin, requirePBCsrf, express.jso
   backupPBArtisans(`before-admin-update-${record.item.id}`);
   try{savePBArtisanUpdate(record,next)}catch(error){console.error('PB admin artisan update:',error);return res.status(500).json({ok:false,error:'No pudimos guardar los cambios.'})}
   res.json({ok:true,message:'Perfil actualizado correctamente.',profileUrl:`/artesanos/${stableSlug}`});
+});
+
+function pbArtisanOptOutPage({email = '',confirmed = false,invalid = false} = {}) {
+  const masked = email ? email.replace(/^(.{1,2}).*(@.*)$/,'$1••••$2') : '';
+  const title = invalid ? 'Enlace no válido' : confirmed ? 'Preferencia guardada' : 'Confirmar preferencia';
+  const body = invalid
+    ? '<p>Este enlace no es válido. Si necesitas ayuda, escríbenos a <a href="mailto:masboricuaqueunmofongo@gmail.com">masboricuaqueunmofongo@gmail.com</a>.</p>'
+    : confirmed
+      ? `<p><strong>${emailEscForResponse(masked)}</strong> no recibirá próximas comunicaciones generales para artesanos.</p><p>Tu perfil continúa publicado normalmente en la Feria Digital. Los mensajes necesarios para administrar tu perfil todavía podrán enviarse cuando los solicites.</p><p><a class="button" href="/artesanos">Volver a la Feria</a></p>`
+      : `<p>¿Deseas que <strong>${emailEscForResponse(masked)}</strong> deje de recibir comunicaciones generales para artesanos?</p><p>Esto no elimina ni cambia tu perfil en Planeta Boricua.</p><form method="post"><button type="submit">Sí, dejar de recibirlas</button></form>`;
+  return `<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>${title} · Planeta Boricua</title><style>body{margin:0;background:#f4f5f7;color:#162033;font-family:system-ui,sans-serif}.wrap{max-width:620px;margin:8vh auto;padding:1rem}.box{background:#fff;border:1px solid #e5e8ee;border-radius:16px;padding:clamp(1.5rem,5vw,2.5rem);box-shadow:0 12px 30px #001a3e14}h1{color:#002d62}p{line-height:1.65}button,.button{display:inline-block;border:0;border-radius:9px;background:#ce1126;color:#fff;padding:.8rem 1rem;font-weight:800;text-decoration:none;cursor:pointer}</style></head><body><main class="wrap"><div class="box"><div>🇵🇷 Planeta Boricua</div><h1>${title}</h1>${body}</div></main></body></html>`;
+}
+
+app.get('/artesanos/comunicaciones/salir/:token', (req,res) => {
+  res.set('Cache-Control','no-store, private');
+  const email = verifyPBArtisanEmailOptOutToken(req.params.token);
+  if (!email) return res.status(400).send(pbArtisanOptOutPage({invalid:true}));
+  res.send(pbArtisanOptOutPage({email}));
+});
+
+app.post('/artesanos/comunicaciones/salir/:token', pbArtisanLimiter, express.urlencoded({extended:false,limit:'5kb'}), (req,res) => {
+  res.set('Cache-Control','no-store, private');
+  const email = verifyPBArtisanEmailOptOutToken(req.params.token);
+  if (!email) return res.status(400).send(pbArtisanOptOutPage({invalid:true}));
+  const optOuts = pbArtisanEmailOptOuts();
+  if (!optOuts.some(item => normalizePBArtisanEmail(item.email) === email)) {
+    optOuts.push({email,optedOutAt:new Date().toISOString(),source:'artisan-email'});
+    writeJsonFile(PB_ARTISAN_EMAIL_OPTOUTS_FILE,optOuts);
+  }
+  res.send(pbArtisanOptOutPage({email,confirmed:true}));
 });
 
 app.get('/artesanos/mi-perfil', (_req,res) => {
