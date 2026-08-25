@@ -3898,7 +3898,7 @@ app.post("/api/pb-negocio-submit", pbArtisanLimiter, express.json({limit:'80kb'}
   const address = sanitize(req.body.address || '');
   const desc = sanitize(req.body.desc);
   const fullDesc = sanitize(req.body.fullDesc);
-  const email = sanitize(req.body.email);
+  const email = normalizePBArtisanEmail(sanitize(req.body.email));
   const whatsapp = sanitize(req.body.whatsapp || '');
   const website = sanitize(req.body.website || '');
   const instagram = sanitize(req.body.instagram || '');
@@ -3910,8 +3910,9 @@ app.post("/api/pb-negocio-submit", pbArtisanLimiter, express.json({limit:'80kb'}
   const price = sanitize(req.body.price || '');
 
   if (!name || !category || !location || !city || !desc || !fullDesc || !email || !photo) {
-    return res.json({ ok: false, error: "Faltan campos requeridos" });
+    return res.status(400).json({ ok: false, error: "Faltan campos requeridos" });
   }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return res.status(400).json({ok:false,error:'El email no parece válido. Revísalo antes de enviar.'});
 
   const duplicate = findPBArtisanDuplicate({ email, whatsapp });
   if (duplicate) {
@@ -3943,18 +3944,23 @@ app.post("/api/pb-negocio-submit", pbArtisanLimiter, express.json({limit:'80kb'}
 
     pending.push(negocio);
     fs2.writeFileSync(pendingFile, JSON.stringify(pending, null, 2));
+    const confirmationId = `PB-${negocio.id.slice(-8)}`;
 
-    // Email notification to admin
+    // The registration is already safely stored. Admin email delivery runs
+    // independently so a temporary Resend problem cannot show a false failure
+    // or tempt the artisan to submit the same registration again.
     const { Resend } = require('resend');
     const resendClient = new Resend(process.env.RESEND_API_KEY);
     const approveUrl = 'https://masboricuaqueunmofongo.com/admin/pb-approve/' + negocio.approveToken;
     const rejectUrl = 'https://masboricuaqueunmofongo.com/admin/pb-reject/' + negocio.rejectToken;
 
-    await resendClient.emails.send({
-      from: `Planeta Boricua <${PB_SENDER_EMAIL}>`,
-      to: PB_CONTACT_EMAIL,
-      subject: '🇵🇷 Nuevo Negocio PB: ' + name,
-      html: `
+    void (async () => {
+      try {
+        await resendClient.emails.send({
+          from: `Planeta Boricua <${PB_SENDER_EMAIL}>`,
+          to: PB_CONTACT_EMAIL,
+          subject: '🇵🇷 Nuevo Negocio PB: ' + name,
+          html: `
         <div style="font-family:sans-serif;max-width:600px;margin:0 auto;">
           <div style="background:linear-gradient(135deg,#002D62,#CE1126);padding:1.5rem;border-radius:8px 8px 0 0;">
             <h2 style="color:#fff;margin:0;">🇵🇷 Nuevo Negocio en Planeta Boricua</h2>
@@ -3985,9 +3991,13 @@ app.post("/api/pb-negocio-submit", pbArtisanLimiter, express.json({limit:'80kb'}
           </div>
         </div>
       `
-    });
+        });
+      } catch (emailError) {
+        console.error(`PB registration admin notification failed (${confirmationId}):`, emailError.message);
+      }
+    })();
 
-    return res.json({ ok: true });
+    return res.json({ ok: true, confirmationId });
   } catch(e) {
     console.error('PB negocio submit error:', e.message);
     return res.json({ ok: false, error: e.message });
