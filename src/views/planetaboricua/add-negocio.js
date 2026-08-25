@@ -350,6 +350,7 @@ footer{background:var(--blue);padding:2rem;text-align:center;}
     <div style="font-size:3rem;margin-bottom:1rem;">🇵🇷</div>
     <h3>¡Wepa! Solicitud Recibida</h3>
     <p>Recibimos la información de tu negocio. Lo revisaremos en 1-3 días hábiles y te avisaremos por email cuando esté aprobado.</p>
+    <p id="confirmation-code" style="display:none;margin-top:1rem;font-weight:800;color:#166534;"></p>
     <p style="margin-top:1rem;">¿Preguntas? Escríbenos a <strong>masboricuaqueunmofongo@gmail.com</strong></p>
     <div style="margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid #86efac;">
       <p style="font-weight:700;color:#166534;">¿Conoces a otro artesano? 🎨</p>
@@ -472,7 +473,7 @@ async function submitNegocio() {
     const res=await fetch('/api/pb-negocio-submit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(values),signal:controller.signal});clearTimeout(timeout);
     let data={};try{data=await res.json()}catch(_){throw new Error('El servidor no devolvió una respuesta válida. Intenta de nuevo.')}
     if(!res.ok||!data.ok)throw new Error(data.error||'No pudimos completar el registro. Revisa la información e intenta otra vez.');
-    localStorage.removeItem(PB_ARTISAN_DRAFT_V1);document.getElementById('form-container').style.display='none';document.getElementById('success-msg').style.display='block';window.scrollTo({top:0,behavior:'smooth'});
+    localStorage.removeItem(PB_ARTISAN_DRAFT_V1);document.getElementById('form-container').style.display='none';document.getElementById('success-msg').style.display='block';const confirmation=document.getElementById('confirmation-code');if(data.confirmationId){confirmation.textContent='Número de confirmación: '+data.confirmationId;confirmation.style.display='block'}window.scrollTo({top:0,behavior:'smooth'});
   }catch(e){const text=e.name==='AbortError'?'La conexión tardó demasiado. Tu información quedó guardada en este teléfono; verifica tu señal e intenta otra vez.':e.message||'Error de conexión. Tu borrador quedó guardado.';showRegistrationError('❌ '+text);btn.disabled=false;btn.textContent='Enviar para Revisión 🇵🇷 →'}
 }
 
