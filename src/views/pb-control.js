@@ -118,7 +118,7 @@ module.exports = function pbControl(model) {
 
 Cuando comenzamos esta idea en Planeta Boricua, queríamos crear un espacio donde nuestros artesanos pudieran mostrar su trabajo, darse a conocer y conectar con Puerto Rico y con nuestra diáspora.
 
-La respuesta ha sido increíble. Ya somos más de 100 artesanos inscritos, y seguimos creciendo.
+La respuesta ha sido increíble. Ya somos más de 160 artesanos inscritos, y seguimos creciendo.
 
 Quiero agradecerte personalmente por confiar en este proyecto y formar parte de él desde el comienzo. ❤️
 
