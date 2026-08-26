@@ -795,7 +795,10 @@ function blogContentHtml(value) {
     allowProtocolRelative:false,
     transformTags:{
       b:'strong',i:'em',
-      a:(tagName,attrs)=>({tagName:'a',attribs:{...attrs,rel:'noopener noreferrer'}}),
+      a:(tagName,attrs)=>({
+        tagName:'a',
+        attribs:{...attrs,rel:/\bsponsored\b/i.test(attrs.rel || '') ? 'sponsored noopener noreferrer' : 'noopener noreferrer'}
+      }),
       img:(tagName,attrs)=>({tagName:'img',attribs:{...attrs,loading:'lazy'}})
     }
   });
