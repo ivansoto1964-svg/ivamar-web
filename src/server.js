@@ -3987,6 +3987,7 @@ app.get("/pb/add-negocio", (req, res) => res.send(addNegocioPB));
 app.post("/api/pb-negocio-submit", pbArtisanLimiter, express.json({limit:'80kb'}), async (req, res) => {
   console.log("📋 PB Negocio submit:", req.body?.name);
   const name = sanitize(req.body.name);
+  const ownerName = sanitize(req.body.ownerName);
   const category = sanitize(req.body.category);
   const location = sanitize(req.body.location);
   const city = sanitize(req.body.city);
