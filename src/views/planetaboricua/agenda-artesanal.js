@@ -52,6 +52,10 @@ module.exports = function agendaBoricua(events = []) {
   const agendaUrl = `${siteUrl}/agenda-boricua`;
   const schema = upcoming.map((e) => {
     const organizerName = e.organizerName || e.sourceLabel || e.artisanName || "";
+    const officialUrl = /^https?:\/\//i.test(String(e.eventUrl || ""))
+      ? e.eventUrl
+      : agendaUrl;
+    const validFrom = e.approvedAt || e.startDate;
     const image = e.image
       ? (/^https?:\/\//i.test(e.image) ? e.image : `${siteUrl}${e.image.startsWith("/") ? "" : "/"}${e.image}`)
       : `${siteUrl}/img/agenda-boricua-placeholder.svg`;
@@ -69,7 +73,7 @@ module.exports = function agendaBoricua(events = []) {
       location: e.virtual
         ? {
             "@type": "VirtualLocation",
-            url: e.eventUrl || agendaUrl,
+            url: officialUrl,
           }
         : {
             "@type": "Place",
@@ -84,18 +88,21 @@ module.exports = function agendaBoricua(events = []) {
           },
       image: [image],
       description: e.description,
-      url: e.eventUrl || agendaUrl,
+      url: officialUrl,
       offers: {
         "@type": "Offer",
         price: 0,
         priceCurrency: "USD",
         availability: "https://schema.org/InStock",
+        url: officialUrl,
+        validFrom,
       },
       ...(organizerName
         ? {
             organizer: {
               "@type": "Organization",
               name: organizerName,
+              url: officialUrl,
             },
           }
         : {}),
