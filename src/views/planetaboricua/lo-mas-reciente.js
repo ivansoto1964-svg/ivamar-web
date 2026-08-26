@@ -3,7 +3,7 @@ const esc = (value) => String(value || "").replace(/[&<>"']/g, (char) => ({ "&":
 module.exports = function loMasReciente(item, comments = []) {
   if (!item) return '<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Publicación no encontrada</title></head><body><main><h1>Publicación no encontrada</h1><a href="/">Volver a Planeta Boricua</a></main></body></html>';
   const canonical = `https://www.masboricuaqueunmofongo.com/lo-mas-reciente/${encodeURIComponent(item.slug)}`;
-  const paragraphs = String(item.body || "").split(/\n{2,}/).map((text) => `<p>${esc(text).replace(/\n/g, "<br>")}</p>`).join("");
+  const paragraphs = String(item.body || "");
   const image = item.image === "/img/og-planetaboricua.jpg" ? "" : (item.image || "");
   const socialImage = image || "/img/pb-logo.png";
   const absoluteImage = socialImage.startsWith("/") ? `https://www.masboricuaqueunmofongo.com${socialImage}` : socialImage;
