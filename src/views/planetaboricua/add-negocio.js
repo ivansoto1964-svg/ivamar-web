@@ -67,8 +67,13 @@ footer{background:var(--blue);padding:2rem;text-align:center;}
     <div class="form-section">
       <div class="form-section-title">Información de tu Artesanía</div>
       <div class="form-group">
-        <label>Nombre del Artesano / Taller *</label>
-        <input type="text" id="biz-name" placeholder="ej. Taller Manos de Borinquen" required>
+        <label>Nombre del negocio o taller *</label>
+        <input type="text" id="biz-name" placeholder="ej. Crochet by Sany" maxlength="120" required>
+      </div>
+      <div class="form-group">
+        <label>Nombre del artesano o artesana *</label>
+        <input type="text" id="biz-owner-name" placeholder="ej. Sanyra Concepción Anguita" autocomplete="name" maxlength="120" required>
+        <small style="display:block;margin-top:.4rem;color:#666">Este nombre aparecerá en el perfil como la persona artesana responsable.</small>
       </div>
       <div class="form-row">
         <div class="form-group">
@@ -452,7 +457,7 @@ async function handleLogoUpload(input) {
 }
 
 const PB_ARTISAN_DRAFT_V1='pbArtisanRegistrationDraftV1';
-const draftIds=['biz-name','biz-category','biz-location','biz-city','biz-zip','biz-address','biz-desc','biz-full-desc','biz-email','biz-whatsapp','biz-website','biz-instagram','biz-facebook','biz-tiktok','biz-etsy','biz-logo','biz-photo','biz-price'];
+const draftIds=['biz-name','biz-owner-name','biz-category','biz-location','biz-city','biz-zip','biz-address','biz-desc','biz-full-desc','biz-email','biz-whatsapp','biz-website','biz-instagram','biz-facebook','biz-tiktok','biz-etsy','biz-logo','biz-photo','biz-price'];
 let draftTimer=null;
 function saveArtisanDraft(){clearTimeout(draftTimer);draftTimer=setTimeout(()=>{const d={};draftIds.forEach(id=>{const el=document.getElementById(id);if(el)d[id]=el.value});d.terms=document.getElementById('terms-agree').checked;localStorage.setItem(PB_ARTISAN_DRAFT_V1,JSON.stringify(d));},350)}
 function restoreArtisanDraft(){try{const d=JSON.parse(localStorage.getItem(PB_ARTISAN_DRAFT_V1)||'null');if(!d)return;draftIds.forEach(id=>{const el=document.getElementById(id);if(el&&d[id]!==undefined)el.value=d[id]});document.getElementById('terms-agree').checked=Boolean(d.terms);if(d['biz-photo']){document.getElementById('preview-img').src=d['biz-photo'];document.getElementById('photo-preview').style.display='block';document.getElementById('photo-placeholder').style.display='none';document.getElementById('upload-status').textContent='✅ Foto recuperada del borrador';document.getElementById('upload-status').style.color='green'}if(d['biz-logo']){document.getElementById('preview-logo').src=d['biz-logo'];document.getElementById('logo-preview').style.display='block';document.getElementById('logo-placeholder').style.display='none';document.getElementById('logo-upload-status').textContent='✅ Logo recuperado del borrador';document.getElementById('logo-upload-status').style.color='green'}}catch(_){}}
@@ -463,8 +468,8 @@ function validEmail(v){return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(v)}
 
 async function submitNegocio() {
   clearRegistrationError();
-  const values={name:document.getElementById('biz-name').value.trim(),category:document.getElementById('biz-category').value,location:document.getElementById('biz-location').value,city:document.getElementById('biz-city').value.trim(),zip:document.getElementById('biz-zip').value.trim(),address:document.getElementById('biz-address').value.trim(),desc:document.getElementById('biz-desc').value.trim(),fullDesc:document.getElementById('biz-full-desc').value.trim(),email:normalizeEmailInput(document.getElementById('biz-email').value),whatsapp:document.getElementById('biz-whatsapp').value.trim(),website:document.getElementById('biz-website').value.trim(),instagram:document.getElementById('biz-instagram').value.trim(),facebook:document.getElementById('biz-facebook').value.trim(),tiktok:document.getElementById('biz-tiktok').value.trim(),etsy:document.getElementById('biz-etsy').value.trim(),logo:document.getElementById('biz-logo').value.trim(),photo:document.getElementById('biz-photo').value.trim(),price:document.getElementById('biz-price').value};
-  const required=[['name','biz-name','Escribe el nombre del artesano o emprendimiento.'],['category','biz-category','Selecciona una categoría.'],['location','biz-location','Selecciona tu estado o pueblo.'],['city','biz-city','Escribe tu ciudad, pueblo o sector.'],['desc','biz-desc','Añade una descripción corta.'],['fullDesc','biz-full-desc','Cuéntanos un poco más sobre tu trabajo.'],['email','biz-email','Escribe tu email.'],['photo','photo-upload-area','Sube una foto principal de tu trabajo.']];
+  const values={name:document.getElementById('biz-name').value.trim(),ownerName:document.getElementById('biz-owner-name').value.trim(),category:document.getElementById('biz-category').value,location:document.getElementById('biz-location').value,city:document.getElementById('biz-city').value.trim(),zip:document.getElementById('biz-zip').value.trim(),address:document.getElementById('biz-address').value.trim(),desc:document.getElementById('biz-desc').value.trim(),fullDesc:document.getElementById('biz-full-desc').value.trim(),email:normalizeEmailInput(document.getElementById('biz-email').value),whatsapp:document.getElementById('biz-whatsapp').value.trim(),website:document.getElementById('biz-website').value.trim(),instagram:document.getElementById('biz-instagram').value.trim(),facebook:document.getElementById('biz-facebook').value.trim(),tiktok:document.getElementById('biz-tiktok').value.trim(),etsy:document.getElementById('biz-etsy').value.trim(),logo:document.getElementById('biz-logo').value.trim(),photo:document.getElementById('biz-photo').value.trim(),price:document.getElementById('biz-price').value};
+  const required=[['name','biz-name','Escribe el nombre del negocio o taller.'],['ownerName','biz-owner-name','Escribe el nombre del artesano o artesana.'],['category','biz-category','Selecciona una categoría.'],['location','biz-location','Selecciona tu estado o pueblo.'],['city','biz-city','Escribe tu ciudad, pueblo o sector.'],['desc','biz-desc','Añade una descripción corta.'],['fullDesc','biz-full-desc','Cuéntanos un poco más sobre tu trabajo.'],['email','biz-email','Escribe tu email.'],['photo','photo-upload-area','Sube una foto principal de tu trabajo.']];
   for(const [key,id,msg] of required){if(!values[key]){showRegistrationError('⚠️ '+msg,id);return}}
   if(!validEmail(values.email)){showRegistrationError('⚠️ El email no parece válido. Revísalo antes de enviar.','biz-email');return}
   if(!document.getElementById('terms-agree').checked){showRegistrationError('⚠️ Debes aceptar los términos antes de enviar.','terms-agree');return}
