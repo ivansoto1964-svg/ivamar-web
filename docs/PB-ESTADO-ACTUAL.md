@@ -110,7 +110,7 @@ La cantidad de artesanos es dinámica. Consultar PB Control antes de citar una c
 - Search Console reconoce `/agenda-boricua` como indexada y detecta seis eventos válidos.
 - Se añadieron recomendaciones de datos estructurados para `validFrom` y URL en ofertas/organizador.
 - La validación de Google puede tardar entre varios días y semanas; no repetir cambios mientras Google procesa una versión ya corregida.
-- Al momento de crear este documento, el `HEAD` local era `2b9b44a` (`Preserve latest image upload fixes`). Esto identifica el punto de trabajo, no sustituye la verificación del deploy de Render.
+- El commit funcional de referencia antes de añadir esta documentación es `65da45f` (`Repair server and separate artisan names`). Los commits posteriores que solo modifican documentos no requieren deploy ni cambian el funcionamiento público.
 
 ## Pendientes inmediatos
 
