@@ -1,6 +1,3 @@
-Warning: truncated output (original token count: 68356)
-Total output lines: 4722
-
 const compression = require("compression");
 const helmet = require("helmet");
 
@@ -1208,7 +1205,2674 @@ app.get("/api/caribex-photos", async (req, res) => {
 
   const photos = {};
   await Promise.all(destinations.map(async ({ slug, query }) => {
-    const photo = await getPlac…38356 tokens truncated…toLowerCase();
+    const photo = await getPlacePhoto(query, 400);
+    if (photo) photos[slug] = photo;
+  }));
+
+  res.json(photos);
+});
+
+// ==========================================
+// CARIBEX DESTINATION PAGES
+// ==========================================
+const renderDestination = require("./views/caribex/destination-template");
+
+app.get("/caribex/about", (req, res) => res.send(caribexAbout));
+app.get("/caribex/directory-terms", (req, res) => res.send(directoryTerms));
+app.get("/caribex/list-your-business", (req, res) => res.send(listYourBusiness));
+
+// CARIBEX DIRECTORY — APPROVE LISTING (Admin)
+app.post("/admin/listings/approve/:id", requireAdmin, async (req, res) => {
+  try {
+    const fs2 = require('fs');
+    const path = require('path');
+    const pendingFile = path.join('/data/listings/pending.json');
+    const approvedDir = path.join('/data/listings');
+
+    let pending = JSON.parse(fs2.readFileSync(pendingFile, 'utf8'));
+    const listing = pending.find(l => l.id === req.params.id);
+
+    if (!listing) return res.json({ ok: false, error: 'Listing not found' });
+
+    // Move to approved file for that destination
+    const approvedFile = path.join(approvedDir, listing.destination + '.json');
+    let approved = [];
+    if (fs2.existsSync(approvedFile)) {
+      approved = JSON.parse(fs2.readFileSync(approvedFile, 'utf8'));
+    }
+    listing.status = 'approved';
+    listing.approvedAt = new Date().toISOString();
+    approved.push(listing);
+    fs2.writeFileSync(approvedFile, JSON.stringify(approved, null, 2));
+
+    // Remove from pending
+    pending = pending.filter(l => l.id !== req.params.id);
+    fs2.writeFileSync(pendingFile, JSON.stringify(pending, null, 2));
+
+    return res.json({ ok: true });
+  } catch(e) {
+    return res.json({ ok: false, error: e.message });
+  }
+});
+
+// CARIBEX DIRECTORY — REJECT LISTING (Admin)
+app.post("/admin/listings/reject/:id", requireAdmin, async (req, res) => {
+  try {
+    const fs2 = require('fs');
+    const path = require('path');
+    const pendingFile = path.join('/data/listings/pending.json');
+    let pending = JSON.parse(fs2.readFileSync(pendingFile, 'utf8'));
+    pending = pending.filter(l => l.id !== req.params.id);
+    fs2.writeFileSync(pendingFile, JSON.stringify(pending, null, 2));
+    return res.json({ ok: true });
+  } catch(e) {
+    return res.json({ ok: false, error: e.message });
+  }
+});
+
+// CARIBEX DIRECTORY — GET LISTINGS FOR DESTINATION+CATEGORY
+app.get("/api/listings/:destination/:category", (req, res) => {
+  try {
+    const fs2 = require('fs');
+    const path = require('path');
+    const approvedFile = path.join('/data/listings', req.params.destination + '.json');
+    if (!fs2.existsSync(approvedFile)) return res.json({ listings: [] });
+    const all = JSON.parse(fs2.readFileSync(approvedFile, 'utf8'));
+    const filtered = all.filter(l => l.category === req.params.category && l.status === 'approved');
+    return res.json({ listings: filtered });
+  } catch(e) {
+    return res.json({ listings: [] });
+  }
+});
+
+// CARIBEX DIRECTORY — ADMIN PENDING LISTINGS VIEW
+app.get("/admin/listings", requireAdmin, (req, res) => {
+  try {
+    const fs2 = require('fs');
+    const path = require('path');
+    const pendingFile = path.join('/data/listings/pending.json');
+    const pending = fs2.existsSync(pendingFile) ? JSON.parse(fs2.readFileSync(pendingFile, 'utf8')) : [];
+
+    // Load all approved listings
+    const listingsDir = '/data/listings';
+    const allApproved = [];
+    if (fs2.existsSync(listingsDir)) {
+      fs2.readdirSync(listingsDir).forEach(file => {
+        if (file !== 'pending.json' && file.endsWith('.json')) {
+          const destination = file.replace('.json', '');
+          try {
+            const listings = JSON.parse(fs2.readFileSync(require('path').join(listingsDir, file), 'utf8'));
+            listings.forEach(l => allApproved.push({ ...l, destination }));
+          } catch(e) {}
+        }
+      });
+    }
+
+    const catNames = { hotels: '🏨 Where to Stay', tours: '🧭 Tours & Experiences', transport: '🚗 Transportation', restaurants: '🍽️ Where to Eat' };
+    const approvedByDest = {};
+    allApproved.forEach(l => {
+      if (!approvedByDest[l.destination]) approvedByDest[l.destination] = {};
+      if (!approvedByDest[l.destination][l.category]) approvedByDest[l.destination][l.category] = [];
+      approvedByDest[l.destination][l.category].push(l);
+    });
+
+    const approvedHTML = allApproved.length === 0
+      ? '<p style="color:#888;text-align:center;padding:2rem">No approved listings yet.</p>'
+      : Object.entries(approvedByDest).map(([dest, cats]) => `
+        <div style="margin-bottom:2rem;">
+          <h3 style="color:#0077B6;font-size:1rem;text-transform:capitalize;margin-bottom:1rem;border-bottom:2px solid #E0EEF4;padding-bottom:0.5rem">${dest.replace(/-/g,' ')}</h3>
+          ${Object.entries(cats).map(([cat, listings]) => `
+            <div style="margin-bottom:1rem;">
+              <div style="font-size:0.75rem;font-weight:700;color:#00B4D8;text-transform:uppercase;margin-bottom:0.5rem">${catNames[cat] || cat}</div>
+              ${listings.map(l => `
+                <div style="background:#fff;border:1px solid #E0EEF4;border-radius:8px;padding:1rem;margin-bottom:0.5rem;display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;">
+                  <div style="display:flex;align-items:center;gap:1rem;">
+                    ${l.photo ? `<img src="${l.photo}" style="width:60px;height:45px;object-fit:cover;border-radius:6px;">` : ''}
+                    <div>
+                      <div style="font-weight:700;color:#0D1B2A">${l.name}</div>
+                      <div style="font-size:0.75rem;color:#555">${l.desc}</div>
+                      ${l.price ? `<div style="font-size:0.7rem;color:#00B4D8;font-weight:700">${l.price}</div>` : ''}
+                    </div>
+                  </div>
+                  <button onclick="removeListing('${dest}','${l.id}')" style="background:#fff;color:#e53e3e;border:1px solid #e53e3e;padding:0.4rem 0.8rem;border-radius:6px;font-weight:700;cursor:pointer;font-size:0.75rem;white-space:nowrap;">🗑 Remove</button>
+                </div>
+              `).join('')}
+            </div>
+          `).join('')}
+        </div>
+      `).join('');
+
+    const cards = pending.length === 0
+      ? '<p style="color:#888;text-align:center;padding:3rem">No pending listings.</p>'
+      : pending.map(l => `
+        <div style="background:#fff;border:1px solid #E0EEF4;border-radius:12px;padding:1.5rem;margin-bottom:1rem;">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;flex-wrap:wrap;">
+            <div style="flex:1">
+              <div style="font-size:0.65rem;font-weight:700;color:#00B4D8;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.3rem">${l.category} · ${l.destination}</div>
+              <div style="font-size:1.1rem;font-weight:700;color:#0D1B2A;margin-bottom:0.3rem">${l.name}</div>
+              <div style="font-size:0.82rem;color:#555;margin-bottom:0.5rem">${l.desc}</div>
+              <div style="font-size:0.75rem;color:#888">📧 ${l.email} ${l.whatsapp ? '· 📱 ' + l.whatsapp : ''} ${l.website ? '· 🌐 ' + l.website : ''}</div>
+              <div style="font-size:0.75rem;color:#888;margin-top:0.3rem">Submitted: ${new Date(l.submittedAt).toLocaleDateString()}</div>
+            </div>
+            ${l.photo ? '<img src="' + l.photo + '" style="width:100px;height:70px;object-fit:cover;border-radius:8px;flex-shrink:0">' : ''}
+          </div>
+          <div style="margin-top:1rem;display:flex;gap:0.8rem;">
+            <button onclick="approveListing('${l.id}')" style="background:#00B4D8;color:#fff;border:none;padding:0.6rem 1.2rem;border-radius:6px;font-weight:700;cursor:pointer;font-size:0.82rem">✅ Approve</button>
+            <button onclick="rejectListing('${l.id}')" style="background:#fff;color:#e53e3e;border:1px solid #e53e3e;padding:0.6rem 1.2rem;border-radius:6px;font-weight:700;cursor:pointer;font-size:0.82rem">❌ Reject</button>
+          </div>
+        </div>
+      `).join('');
+
+    res.send(`
+      <!DOCTYPE html>
+      <html>
+      <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+      <title>Pending Listings — Caribex Admin</title>
+      <style>body{font-family:sans-serif;background:#F0F8FF;padding:2rem;max-width:900px;margin:0 auto;}h1{color:#0D1B2A;margin-bottom:0.3rem;}p.sub{color:#888;font-size:0.85rem;margin-bottom:2rem;}</style>
+      </head>
+      <body>
+      <h1>🌴 Caribex — Directory Admin</h1>
+      <p class="sub"><a href="/admin/dashboard">← Back to Dashboard</a></p>
+      <h2 style="font-size:1.1rem;color:#0D1B2A;margin-bottom:1rem;">⏳ Pending Approval (${pending.length})</h2>
+      ${cards}
+      <h2 style="font-size:1.1rem;color:#0D1B2A;margin:2rem 0 1rem;">✅ Approved Listings (${allApproved.length})</h2>
+      ${approvedHTML}
+      <script>
+      async function approveListing(id) {
+        if (!confirm('Approve this listing?')) return;
+        const r = await fetch('/admin/listings/approve/' + id, { method: 'POST', credentials: 'include' });
+        const d = await r.json();
+        if (d.ok) { alert('✅ Approved!'); location.reload(); }
+        else alert('Error: ' + d.error);
+      }
+      async function rejectListing(id) {
+        if (!confirm('Reject and delete this listing?')) return;
+        const r = await fetch('/admin/listings/reject/' + id, { method: 'POST', credentials: 'include' });
+        const d = await r.json();
+        if (d.ok) { alert('Rejected.'); location.reload(); }
+        else alert('Error: ' + d.error);
+      }
+      async function removeListing(destination, id) {
+        if (!confirm('Remove this approved listing?')) return;
+        const r = await fetch('/admin/listings/remove/' + destination + '/' + id, { method: 'POST', credentials: 'include' });
+        const d = await r.json();
+        if (d.ok) { alert('✅ Removed!'); location.reload(); }
+        else alert('Error: ' + d.error);
+      }
+      </script>
+      </body></html>
+    `);
+  } catch(e) {
+    res.send('Error: ' + e.message);
+  }
+});
+
+app.get("/caribex/:slug", async (req, res) => {
+  const slug = req.params.slug;
+  if (!slug || slug === 'null' || slug === 'undefined') return res.redirect('/caribex');
+  try {
+    const dest = JSON.parse(fs.readFileSync(`${__dirname}/data/destinations/${slug}.json`, 'utf8'));
+    const heroPhoto = await getPlacePhoto(dest.name + ' ' + dest.country, 1600, dest.searchQuery);
+    dest.heroPhoto = heroPhoto;
+    res.send(renderDestination(dest));
+  } catch(e) {
+    console.error("Destination error:", slug, e.message);
+    res.redirect("/caribex");
+  }
+});
+
+app.get("/caribex", (req, res) => res.send(caribex));
+app.use((req, res, next) => {
+  if (req.hostname === "yourcaribbeanexpert.com" || req.hostname === "www.yourcaribbeanexpert.com") {
+    if (req.path === "/" || req.path === "") {
+      return res.send(caribex);
+    }
+  }
+  next();
+});
+app.get("/florida", async (req, res) => {
+  try {
+    const estado = JSON.parse(fs.readFileSync(__dirname + "/data/estados/florida.json", "utf8"));
+    const heroPhoto = await getPlacePhoto("Florida boricua community Orlando", 1600, "Florida boricua community Orlando");
+    estado.heroPhoto = heroPhoto;
+    res.send(renderEstado(estado));
+  } catch(e) {
+    console.error(e);
+    res.status(500).send("Error loading Florida page");
+  }
+});
+
+// IvA Landing API
+app.post("/api/iva-landing", express.json(), async (req, res) => {
+  try {
+    const { messages, system } = req.body;
+    const response = await fetch("https://api.anthropic.com/v1/messages", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": process.env.ANTHROPIC_API_KEY,
+        "anthropic-version": "2023-06-01"
+      },
+      body: JSON.stringify({
+        model: "claude-haiku-4-5-20251001",
+        max_tokens: 150,
+        system: system,
+        messages: messages.slice(-6)
+      })
+    });
+    const data = await response.json();
+    const reply = data.content && data.content[0] ? data.content[0].text : "¿En qué puedo ayudarte?";
+    res.json({ reply });
+  } catch(e) {
+    res.status(500).json({ reply: "Un momento, ya te atiendo. 😊" });
+  }
+});
+
+// IvA Landing Lead Capture
+app.post("/api/iva-lead", express.json(), async (req, res) => {
+  try {
+    const { email, nombre, negocio, telefono } = req.body;
+    if (!email) return res.status(400).json({ ok: false });
+    const html = `
+      <h2>🔥 Nuevo lead capturado — Google Ads</h2>
+      <table style="border-collapse:collapse;width:100%">
+        <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold">Nombre</td><td style="padding:8px;border:1px solid #ddd">${nombre || 'No proporcionado'}</td></tr>
+        <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold">Negocio</td><td style="padding:8px;border:1px solid #ddd">${negocio || 'No proporcionado'}</td></tr>
+        <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold">Email</td><td style="padding:8px;border:1px solid #ddd">${email}</td></tr>
+        <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold">Teléfono</td><td style="padding:8px;border:1px solid #ddd">${telefono || 'No proporcionado'}</td></tr>
+        <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold">Fecha</td><td style="padding:8px;border:1px solid #ddd">${new Date().toLocaleString('es-PR')}</td></tr>
+      </table>
+    `;
+    await fetch("https://api.resend.com/emails", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + process.env.RESEND_API_KEY
+      },
+      body: JSON.stringify({
+        from: "IvA <connect@ivamarai.com>",
+        to: ["connect@ivamarai.com"],
+        subject: `🔥 Nuevo lead — ${nombre || email} · ${negocio || 'Negocio desconocido'}`,
+        html
+      })
+    });
+    res.json({ ok: true });
+  } catch(e) {
+    console.error("Lead error:", e.message);
+    res.json({ ok: false });
+  }
+});
+
+app.get("/mr-frappe", (req, res) => res.send(mrFrappe));
+app.get("/adis", (req, res) => res.send(adis));
+app.get("/dyerkia", (req, res) => res.send(dyerKia));
+app.get("/demo-autos", (req, res) => res.send(demoDealers));
+app.get("/quote", (req, res) => res.send(layout({  lang: "en", title: "Get Started — Ivamar AI", body: quote })));
+
+
+// API: Log legal agreement acceptance
+app.post("/api/log-agreement", express.json(), (req, res) => {
+  try {
+    const ip = req.headers['x-forwarded-for']?.split(',')[0]?.trim() 
+            || req.headers['x-real-ip']
+            || req.socket?.remoteAddress 
+            || 'unknown';
+    const userAgent = req.headers['user-agent'] || 'unknown';
+    
+    const record = {
+      ...req.body,
+      ip: ip,
+      userAgent: userAgent,
+      receivedAt: new Date().toISOString()
+    };
+    
+    const fileName = `${Date.now()}_${(req.body.email || 'unknown').replace(/[^a-z0-9]/gi, '_')}.json`;
+    const filePath = path.join(agreementsDir, fileName);
+    
+    fs.writeFileSync(filePath, JSON.stringify(record, null, 2));
+    
+    console.log(`✅ Agreement logged: ${req.body.bizName} (${req.body.email}) from IP ${ip}`);
+    
+    // Send backup email to business owner
+    if (process.env.RESEND_API_KEY && process.env.AGREEMENT_EMAIL_TO) {
+      resend.emails.send({
+        from: 'Ivamar AI <onboarding@resend.dev>',
+        to: process.env.AGREEMENT_EMAIL_TO,
+        subject: `📋 New Agreement: ${req.body.bizName || 'Unknown'} (${req.body.email || 'no email'})`,
+        html: `<h2>New Legal Agreement Signed</h2>
+<p><strong>Business:</strong> ${req.body.bizName || 'N/A'}</p>
+<p><strong>Name:</strong> ${req.body.name || 'N/A'}</p>
+<p><strong>Email:</strong> ${req.body.email || 'N/A'}</p>
+<p><strong>Plan:</strong> ${req.body.plan || 'N/A'}</p>
+<p><strong>IP:</strong> ${ip}</p>
+<p><strong>Time:</strong> ${record.receivedAt}</p>
+<p><strong>File ID:</strong> ${fileName}</p>
+<hr>
+<pre>${JSON.stringify(record, null, 2)}</pre>`,
+        attachments: [{
+          filename: fileName,
+          content: Buffer.from(JSON.stringify(record, null, 2)).toString('base64')
+        }]
+      }).then(() => {
+        console.log(`📧 Email backup sent for ${fileName}`);
+      }).catch(emailErr => {
+        console.error('Email backup failed:', emailErr);
+      });
+    }
+    
+    res.json({ success: true, id: fileName });
+  } catch (err) {
+    console.error('Agreement log error:', err);
+    res.status(500).json({ error: 'Failed to log agreement' });
+  }
+});
+
+app.get("/cotizar", (req, res) => res.send(layout({ title: "Empezar — Ivamar AI", body: quoteES })));
+app.get("/pricing", (req, res) => res.redirect("/quote"));
+
+// ==========================================
+// ADMIN ROUTES
+// ==========================================
+
+app.get("/admin", (req, res) => res.send(layout({ title: "Admin — Ivamar AI", body: adminLogin })));
+
+app.post("/admin/auth", (req, res) => {
+  const { user, pass } = req.body || {};
+  if (ADMIN_USER && ADMIN_PASS && safeEqual(user,ADMIN_USER) && safeEqual(pass,ADMIN_PASS)) {
+    const token = generateToken();
+    sessions.set(token, { role: "admin", slug: null });
+    res.cookie("adminToken", token, { httpOnly: true, maxAge: 86400000 * 7 });
+    return res.json({ ok: true, redirect: "/admin/dashboard" });
+  }
+  const businessFile = path.join("/data", "businesses", `${user}.json`);
+  if (fs.existsSync(businessFile)) {
+    const clientPass = process.env[`CLIENT_PASS_${user.toUpperCase().replace(/-/g, "_")}`];
+    if (clientPass && safeEqual(pass,clientPass)) {
+      const token = generateToken();
+      sessions.set(token, { role: "client", slug: user });
+      res.cookie("adminToken", token, { httpOnly: true, maxAge: 86400000 * 7 });
+      return res.json({ ok: true, redirect: `/admin/edit/${user}` });
+    }
+  }
+  res.json({ ok: false });
+});
+
+app.get("/admin/logout", (req, res) => {
+  const token = req.cookies?.adminToken;
+  if (token) sessions.delete(token);
+  res.clearCookie("adminToken");
+  res.redirect("/admin");
+});
+
+app.get("/admin/dashboard", requireAdmin, (req, res) => {
+  if (req.adminSession.role !== "admin") return res.redirect(`/admin/edit/${req.adminSession.slug}`);
+  const bizDir = path.join(__dirname, "..", "data", "businesses");
+  const files = fs.readdirSync(bizDir).filter(f => f.endsWith(".json"));
+  const businesses = files.map(f => {
+    try { return JSON.parse(fs.readFileSync(path.join(bizDir, f), "utf8")); }
+    catch (e) { return null; }
+  }).filter(Boolean);
+  res.send(layout({ title: "Dashboard — Ivamar AI", body: adminDashboard(businesses) }));
+});
+
+app.get("/admin/new", requireAdmin, (req, res) => {
+  if (req.adminSession.role !== "admin") return res.redirect("/admin/dashboard");
+  res.send(layout({ title: "Nuevo negocio — Admin", body: adminEdit({}, true) }));
+});
+
+app.get("/admin/edit/:slug", requireAdmin, (req, res) => {
+  const slug = req.params.slug;
+  if (req.adminSession.role === "client" && req.adminSession.slug !== slug) {
+    return res.redirect(`/admin/edit/${req.adminSession.slug}`);
+  }
+  const bizFile = path.join("/data", "businesses", `${slug}.json`);
+  let biz = {};
+  if (fs.existsSync(bizFile)) {
+    try { biz = JSON.parse(fs.readFileSync(bizFile, "utf8")); } catch (e) {}
+  }
+  res.send(layout({ title: `Editando ${biz.name || slug} — Admin`, body: adminEdit(biz, false) }));
+});
+
+app.post("/admin/save", requireAdmin, (req, res) => {
+  const data = req.body;
+  if (!data || !data.slug) return res.json({ ok: false, error: "slug requerido" });
+  if (req.adminSession.role === "client" && req.adminSession.slug !== data.slug) {
+    return res.json({ ok: false, error: "no autorizado" });
+  }
+  try {
+    const bizFile = path.join("/data", "businesses", `${data.slug}.json`);
+    fs.writeFileSync(bizFile, JSON.stringify(data, null, 2), "utf8");
+    res.json({ ok: true });
+  } catch (e) {
+    res.json({ ok: false, error: e.message });
+  }
+});
+
+app.post("/admin/delete/:slug", requireAdmin, (req, res) => {
+  if (req.adminSession.role !== "admin") return res.json({ ok: false, error: "no autorizado" });
+  try {
+    const bizFile = path.join("/data", "businesses", `${req.params.slug}.json`);
+    if (fs.existsSync(bizFile)) fs.unlinkSync(bizFile);
+    res.json({ ok: true });
+  } catch (e) {
+    res.json({ ok: false, error: e.message });
+  }
+});
+
+// ==========================================
+// PLANETA BORICUA — CENTRO DE CONTROL
+// ==========================================
+function buildPBControlModel(csrf) {
+  const latestPending = readPBLatest('pending.json').sort((a,b) => new Date(b.submittedAt || 0)-new Date(a.submittedAt || 0));
+  const latestApproved = readPBLatest('approved.json').sort((a,b) => new Date(b.publishedAt || 0)-new Date(a.publishedAt || 0));
+  const commentsPending = readPBComments('pending.json').sort((a,b) => new Date(b.submittedAt || 0)-new Date(a.submittedAt || 0));
+  const commentsApproved = readPBComments('approved.json').sort((a,b) => new Date(b.approvedAt || 0)-new Date(a.approvedAt || 0));
+  const artisansPending = readJsonFile('/data/pb-listings/pending.json',[]).sort((a,b) => new Date(b.submittedAt || 0)-new Date(a.submittedAt || 0));
+  const artisansApproved = loadPBApprovedArtisansWithFiles().sort((a,b) => new Date(b.approvedAt || 0)-new Date(a.approvedAt || 0));
+  const eventsPending = readPBEvents('pending.json').sort((a,b) => new Date(b.submittedAt || 0)-new Date(a.submittedAt || 0));
+  const eventsApproved = readPBEvents('approved.json').sort((a,b) => String(a.startDate || '').localeCompare(String(b.startDate || '')));
+  const subscribers = readJsonFile('/data/pb-subscribers.json',[]).sort((a,b) => new Date(b.subscribedAt || 0)-new Date(a.subscribedAt || 0));
+  const blogPosts = loadPBBlogPosts();
+  const affiliates = pbAffiliateSummary();
+  const artisanEmailCount = pbArtisanRecipients().length;
+  const artisanEmailAudit = pbArtisanEmailAudit(artisansApproved);
+  const artisanMailHistory = pbArtisanMailHistory();
+  const artisanMetrics = pbArtisanMetricsSummary(artisansApproved);
+  return {csrf,latestPending,latestApproved,commentsPending,commentsApproved,artisansPending,artisansApproved,eventsPending,eventsApproved,subscribers,blogPosts,affiliates,artisanEmailCount,artisanEmailAudit,artisanMailHistory,artisanMetrics,counts:{pendingLatest:latestPending.length,pendingComments:commentsPending.length,pendingArtisans:artisansPending.length,pendingEvents:eventsPending.length,pendingTotal:latestPending.length+commentsPending.length+artisansPending.length+eventsPending.length,blogPosts:blogPosts.length,subscribers:subscribers.length,affiliateClicks:affiliates.reduce((sum,item)=>sum+item.clicks,0),artisanViews:artisanMetrics.reduce((sum,item)=>sum+item.views,0),artisanClicks:artisanMetrics.reduce((sum,item)=>sum+item.clickTotal,0)}};
+}
+
+app.get('/pb-control/login', (req,res) => {
+  if (pbSessions.has(req.cookies?.pbAdminToken)) return res.redirect('/pb-control');
+  res.set('Cache-Control','no-store, private');
+  res.set('X-Robots-Tag','noindex, nofollow');
+  res.send(pbControlLogin);
+});
+
+app.post('/pb-control/login', adminAuthLimiter, express.json({limit:'5kb'}), (req,res) => {
+  res.set('Cache-Control','no-store, private');
+  if (!PB_ADMIN_USER || !PB_ADMIN_PASS) return res.status(503).json({ok:false,error:'Falta configurar el acceso privado en Render.'});
+  if (!safeEqual(req.body?.user,PB_ADMIN_USER) || !safeEqual(req.body?.pass,PB_ADMIN_PASS)) return res.status(401).json({ok:false,error:'Usuario o contraseña incorrectos.'});
+  const token = generateToken();
+  pbSessions.set(token,{csrf:generateToken(),expiresAt:Date.now()+12*60*60*1000});
+  res.cookie('pbAdminToken',token,{httpOnly:true,secure:req.secure || req.get('x-forwarded-proto') === 'https',sameSite:'strict',maxAge:12*60*60*1000,path:'/'});
+  res.json({ok:true});
+});
+
+app.get('/pb-control/logout',(req,res) => {
+  if (req.cookies?.pbAdminToken) pbSessions.delete(req.cookies.pbAdminToken);
+  res.clearCookie('pbAdminToken',{path:'/'});
+  res.redirect('/pb-control/login');
+});
+
+app.get('/pb-control', requirePBAdmin, (req,res) => res.send(pbControl(buildPBControlModel(req.pbAdminSession.csrf))));
+
+app.get('/pb-control/subscribers.csv', requirePBAdmin, (req,res) => {
+  const safeCell = value => {
+    let text = String(value || '');
+    if (/^[=+\-@]/.test(text)) text = `'${text}`;
+    return `"${text.replace(/"/g,'""')}"`;
+  };
+  const rows = readJsonFile('/data/pb-subscribers.json',[]).map(item => [item.email,item.source,item.subscribedAt].map(safeCell).join(','));
+  res.set('Content-Type','text/csv; charset=utf-8');
+  res.set('Content-Disposition','attachment; filename="suscriptores-planeta-boricua.csv"');
+  res.send('\ufeff"email","fuente","fecha"\n'+rows.join('\n'));
+});
+
+app.post('/pb-control/upload-image', requirePBAdmin, express.json({limit:'8mb'}), requirePBCsrf, (req,res) => {
+  try {
+    const image = pbBlogStore.saveImageData(req.body?.imageData, `latest-${Date.now()}`);
+    return res.json({ok:true,image});
+  } catch (error) {
+    return res.status(400).json({ok:false,error:error.message || 'No se pudo guardar la imagen.'});
+  }
+});
+
+app.post('/pb-control/action', requirePBAdmin, requirePBCsrf, express.json({limit:'30kb'}), async (req,res) => {
+  const action = sanitize(req.body?.action || '');
+  const id = sanitize(req.body?.id || '');
+  const ok = message => res.json({ok:true,message});
+  const missing = () => res.status(404).json({ok:false,error:'El elemento ya no existe o fue procesado.'});
+  try {
+    if (action === 'blog-save') {
+      const originalSlug = sanitize(req.body.originalSlug || '').trim();
+      const title = sanitize(req.body.title || '').replace(/\s+/g,' ').trim();
+      const category = sanitize(req.body.category || '').trim();
+      const excerpt = sanitize(req.body.excerpt || '').replace(/\s+/g,' ').trim();
+      const content = blogContentHtml(req.body.content || '');
+      const status = req.body.status === 'draft' ? 'draft' : 'published';
+      const tags = String(req.body.tags || '').split(',').map(tag => sanitize(tag).replace(/\s+/g,' ').trim()).filter(Boolean).slice(0,12);
+      const seoTitle = sanitize(req.body.seoTitle || '').replace(/\s+/g,' ').trim();
+      const metaDescription = sanitize(req.body.metaDescription || '').replace(/\s+/g,' ').trim();
+      const requestedSlug = originalSlug || pbBlogStore.slugify(req.body.slug || title);
+      const dateISO = /^\d{4}-\d{2}-\d{2}$/.test(req.body.dateISO || '') ? req.body.dateISO : new Date().toISOString().slice(0,10);
+      if (!title || !requestedSlug || !excerpt || !content) return res.status(400).json({ok:false,error:'Completa título, resumen y contenido.'});
+      if (title.length>180 || excerpt.length>400 || content.length>60000 || seoTitle.length>70 || metaDescription.length>150) return res.status(400).json({ok:false,error:'Revisa los límites del título, resumen, contenido y SEO.'});
+      const allowedCategories = require('./utils/pb-editorial').CATEGORIES.filter(item => item !== 'Lo más reciente');
+      if (!allowedCategories.includes(category)) return res.status(400).json({ok:false,error:'Selecciona una categoría válida.'});
+      const collision = pbBlogStore.readPost(requestedSlug,{includeDrafts:true});
+      if (collision && collision.slug !== originalSlug) return res.status(409).json({ok:false,error:'Ya existe un artículo con ese enlace.'});
+      let image = sanitize(req.body.image || '').trim();
+      if (req.body.imageData) image = pbBlogStore.saveImageData(req.body.imageData,requestedSlug);
+      if (image && !/^https?:\/\//i.test(image) && !image.startsWith('/img/') && !image.startsWith('/media/pb-blog/')) image='';
+      const current = originalSlug ? pbBlogStore.readPost(originalSlug,{includeDrafts:true}) : null;
+      const now = new Date().toISOString();
+      const post = {
+        slug:requestedSlug,title,excerpt,category,date:blogDateLabel(dateISO),dateISO,
+        updatedISO:now,readTime:String(Math.max(1,Math.ceil(sanitize(content).split(/\s+/).filter(Boolean).length/200))),
+        image:image || current?.image || '/img/og-planetaboricua.jpg',tags,content,status,
+        seoTitle:seoTitle || title,metaDescription:metaDescription || excerpt.slice(0,150),
+        createdISO:current?.createdISO || now,legacyPath:current?.legacyPath || ''
+      };
+      pbBlogStore.writePost(post,originalSlug);
+      return ok(status==='draft'?'Borrador guardado.':'Artículo publicado en PB.');
+    }
+    if (action === 'blog-delete') {
+      if (!pbBlogStore.deletePost(id)) return missing();
+      return ok('Artículo eliminado del blog.');
+    }
+    if (action === 'latest-create') {
+      const title = sanitize(req.body.title || '').trim();
+      const summary = sanitize(req.body.summary || '').trim();
+      const body = sanitize(req.body.body || '').trim();
+      const sourceLabel = sanitize(req.body.sourceLabel || '').trim();
+      let image = sanitize(req.body.image || '').trim();
+      let sourceUrl;
+      try { sourceUrl = new URL(String(req.body.sourceUrl || '').trim()); } catch (_) { return res.status(400).json({ok:false,error:'El enlace de la fuente no es válido.'}); }
+      if (!['http:','https:'].includes(sourceUrl.protocol)) return res.status(400).json({ok:false,error:'El enlace de la fuente no es válido.'});
+      if (!title || !summary || !body || !sourceLabel) return res.status(400).json({ok:false,error:'Completa título, resumen, contenido y fuente.'});
+      if (title.length>180 || summary.length>400 || body.length>12000 || sourceLabel.length>100) return res.status(400).json({ok:false,error:'La publicación excede los límites permitidos.'});
+      if (image && !/^https?:\/\//i.test(image) && !image.startsWith('/media/pb-blog/')) image='';
+      if (!image) return res.status(400).json({ok:false,error:'Añade una imagen antes de publicar.'});
+      const now = Date.now().toString();
+      const item={id:now,slug:pbLatestSlug(title,now),title,summary,body,image,sources:[{label:sourceLabel,url:sourceUrl.toString()}],status:'approved',publishedAt:new Date().toISOString()};
+      const approved=readPBLatest('approved.json');approved.push(item);writeJsonFile(path.join(PB_LATEST_DIR,'approved.json'),approved);
+      return ok('Publicación creada en Lo más reciente.');
+    }
+    if (action.startsWith('latest-')) {
+      if (action === 'latest-set-image') {
+        const image = sanitize(req.body.image || '').trim();
+        if (!image || (!/^https?:\/\//i.test(image) && !image.startsWith('/media/pb-blog/'))) return res.status(400).json({ok:false,error:'La imagen no es válida.'});
+        for (const file of ['approved.json','pending.json']) {
+          const items=readPBLatest(file);const index=items.findIndex(item=>item.id===id);
+          if(index>=0){items[index].image=image;writeJsonFile(path.join(PB_LATEST_DIR,file),items);return ok('Imagen guardada en la publicación.');}
+        }
+        return missing();
+      }
+      if (action === 'latest-approve') {
+        const pending=readPBLatest('pending.json');const index=pending.findIndex(item=>item.id===id);if(index<0)return missing();const item=pending.splice(index,1)[0];delete item.approveToken;delete item.rejectToken;item.status='approved';item.publishedAt=new Date().toISOString();const approved=readPBLatest('approved.json');approved.push(item);writeJsonFile(path.join(PB_LATEST_DIR,'pending.json'),pending);writeJsonFile(path.join(PB_LATEST_DIR,'approved.json'),approved);return ok('Publicación aprobada.');
+      }
+      if (action !== 'latest-delete' && action !== 'latest-reject') return res.status(400).json({ok:false,error:'Acción no reconocida.'});
+      const file=action==='latest-reject'?'pending.json':'approved.json';const items=readPBLatest(file);const index=items.findIndex(item=>item.id===id);if(index<0)return missing();items.splice(index,1);writeJsonFile(path.join(PB_LATEST_DIR,file),items);return ok(action==='latest-reject'?'Publicación rechazada.':'Publicación eliminada.');
+    }
+    if (action.startsWith('comment-')) {
+      if (action==='comment-approve') {const pending=readPBComments('pending.json');const index=pending.findIndex(item=>item.id===id);if(index<0)return missing();const item=pending.splice(index,1)[0];delete item.approveToken;delete item.rejectToken;item.status='approved';item.approvedAt=new Date().toISOString();const approved=readPBComments('approved.json');approved.push(item);writeJsonFile(path.join(PB_COMMENTS_DIR,'pending.json'),pending);writeJsonFile(path.join(PB_COMMENTS_DIR,'approved.json'),approved);return ok('Comentario publicado.');}
+      const file=action==='comment-reject'?'pending.json':'approved.json';const items=readPBComments(file);const index=items.findIndex(item=>item.id===id);if(index<0)return missing();items.splice(index,1);writeJsonFile(path.join(PB_COMMENTS_DIR,file),items);return ok(action==='comment-reject'?'Comentario rechazado.':'Comentario eliminado.');
+    }
+    if (action === 'artisan-email-test' || action === 'artisan-email-send') {
+      const subject = sanitize(req.body.subject || '').replace(/\s+/g,' ').trim();
+      const message = sanitize(req.body.message || '').trim();
+      if (subject.length < 3 || subject.length > 140) return res.status(400).json({ok:false,error:'El asunto debe tener entre 3 y 140 caracteres.'});
+      if (message.length < 10 || message.length > 6000) return res.status(400).json({ok:false,error:'El mensaje debe tener entre 10 y 6,000 caracteres.'});
+      if (!process.env.RESEND_API_KEY) return res.status(503).json({ok:false,error:'Resend no está configurado en Render.'});
+      if (action === 'artisan-email-test') {
+        const optOutUrl = pbArtisanEmailOptOutUrl(PB_CONTACT_EMAIL);
+        await resend.emails.send({from:`Planeta Boricua <${PB_SENDER_EMAIL}>`,to:PB_CONTACT_EMAIL,replyTo:PB_CONTACT_EMAIL,subject:`[PRUEBA] ${subject}`,html:pbArtisanMailHtml('Prueba PB',message,optOutUrl)});
+        return ok(`Email de prueba enviado a ${PB_CONTACT_EMAIL}.`);
+      }
+      if (!pbArtisanMagicSecret()) return res.status(503).json({ok:false,error:'La firma segura para los enlaces de exclusión no está configurada.'});
+      const recipients = pbArtisanRecipients();
+      if (!recipients.length) return res.status(400).json({ok:false,error:'No encontré emails válidos de artesanos aprobados.'});
+      const payloads = recipients.map(person => {
+        const optOutUrl = pbArtisanEmailOptOutUrl(person.email);
+        return {from:`Planeta Boricua <${PB_SENDER_EMAIL}>`,to:person.email,replyTo:PB_CONTACT_EMAIL,subject,html:pbArtisanMailHtml(person.name,message,optOutUrl),headers:{'List-Unsubscribe':`<${optOutUrl}>`,'List-Unsubscribe-Post':'List-Unsubscribe=One-Click'}};
+      });
+      for (let i=0;i<payloads.length;i+=100) {
+        const batch = payloads.slice(i,i+100);
+        if (resend.batch && typeof resend.batch.send === 'function') {
+          const result = await resend.batch.send(batch);
+          if (result?.error) throw new Error(result.error.message || 'Resend rechazó un lote de emails.');
+        } else {
+          for (const email of batch) await resend.emails.send(email);
+        }
+      }
+      const history = readJsonFile(PB_ARTISAN_MAIL_HISTORY_FILE,[]);
+      history.push({id:`${Date.now()}-${crypto.randomBytes(3).toString('hex')}`,subject,messagePreview:message.slice(0,180),recipientCount:recipients.length,sentAt:new Date().toISOString()});
+      writeJsonFile(PB_ARTISAN_MAIL_HISTORY_FILE,history.slice(-100));
+      return ok(`Comunicado enviado a ${recipients.length} artesanos.`);
+    }
+    if (action.startsWith('artisan-')) {
+      if (action==='artisan-approve') {const file='/data/pb-listings/pending.json';const pending=readJsonFile(file,[]);const index=pending.findIndex(item=>item.id===id);if(index<0)return missing();const item=pending.splice(index,1)[0];const approvedFile=path.join('/data/pb-listings',`${item.location}.json`);const approved=readJsonFile(approvedFile,[]);delete item.approveToken;delete item.rejectToken;item.status='approved';item.approvedAt=new Date().toISOString();item.badge='participante-feria';approved.push(item);writeJsonFile(file,pending);writeJsonFile(approvedFile,approved);return ok('Artesano aprobado.');}
+      if (action==='artisan-reject') {const file='/data/pb-listings/pending.json';const pending=readJsonFile(file,[]);const index=pending.findIndex(item=>item.id===id);if(index<0)return missing();pending.splice(index,1);writeJsonFile(file,pending);return ok('Solicitud rechazada.');}
+      const match=loadPBApprovedArtisansWithFiles().find(item=>item.id===id);if(!match)return missing();const file=path.join('/data/pb-listings',match._file);const approved=readJsonFile(file,[]).filter(item=>item.id!==id);writeJsonFile(file,approved);return ok('Artesano retirado de la Feria.');
+    }
+    if (action.startsWith('event-')) {
+      if (action==='event-approve') {const pending=readPBEvents('pending.json');const index=pending.findIndex(item=>item.id===id);if(index<0)return missing();const item=pending.splice(index,1)[0];delete item.approveToken;delete item.rejectToken;item.status='approved';item.approvedAt=new Date().toISOString();const approved=readPBEvents('approved.json');approved.push(item);writeJsonFile(path.join(PB_EVENTS_DIR,'pending.json'),pending);writeJsonFile(path.join(PB_EVENTS_DIR,'approved.json'),approved);return ok('Evento publicado en la Agenda.');}
+      const file=action==='event-reject'?'pending.json':'approved.json';const items=readPBEvents(file);const index=items.findIndex(item=>item.id===id);if(index<0)return missing();items.splice(index,1);writeJsonFile(path.join(PB_EVENTS_DIR,file),items);return ok(action==='event-reject'?'Evento rechazado.':'Evento eliminado.');
+    }
+    return res.status(400).json({ok:false,error:'Acción no reconocida.'});
+  } catch(error) {
+    console.error('PB control action error:',error.message);
+    return res.status(500).json({ok:false,error:'No se pudo guardar el cambio.'});
+  }
+});
+
+app.get('/go/:campaign', (req,res) => {
+  const campaign = PB_AFFILIATE_CAMPAIGNS[req.params.campaign];
+  if (!campaign) return res.status(404).send('Enlace no encontrado');
+  try {
+    const clicks = readJsonFile(PB_AFFILIATE_CLICKS_FILE,[]);
+    let source = '';
+    try {
+      const referrer = new URL(req.get('referer') || '');
+      if (referrer.hostname === req.hostname || referrer.hostname === `www.${req.hostname}`) source = referrer.pathname.slice(0,200);
+    } catch (_) {}
+    clicks.push({campaign:req.params.campaign,clickedAt:new Date().toISOString(),source});
+    writeJsonFile(PB_AFFILIATE_CLICKS_FILE,clicks.slice(-10000));
+  } catch (error) { console.error('PB affiliate click error:',error.message); }
+  res.set('Cache-Control','no-store');
+  res.redirect(302,campaign.url);
+});
+
+// ==========================================
+// IVA ASSISTANT API — CLAUDE
+// ==========================================
+
+app.post("/api/demo", aiLimiter, async (req, res) => {
+  const message = (req.body?.message || "").toString();
+  try {
+    const response = await anthropic.messages.create({
+      model: "claude-haiku-4-5-20251001",
+      max_tokens: 300,
+      system: "Eres IvA, el asistente de La Plaza Restaurant en Miami, FL. MENU: Ropa Vieja $15.99, Pollo a la Brasa $14.99, Camarones al Ajillo $18.99, Tostones con Guacamole $7.99, Empanadas x3 $8.99, Ensalada Tropical $9.99, Agua de Jamaica $3.99, Limonada Natural $3.99, Cafe Cubano $2.99, Flan de Coco $5.99, Churros con Chocolate $6.99. HORARIO: Lun-Vie 11am-10pm, Sab-Dom 10am-11pm. DELIVERY: Si, $3 adicional. PICKUP: Gratis. Responde en el idioma del cliente. Se amistoso y profesional. Maximo 3 oraciones.",
+      messages: [{ role: "user", content: message }]
+    });
+    return res.json({ reply: response.content[0].text });
+  } catch (e) {
+    console.error("Demo error:", e.message);
+    return res.json({ reply: "Sorry, I had a problem. Please try again or contact us via WhatsApp." });
+  }
+});
+
+app.post("/api/demo-autos", async (req, res) => {
+  const message = (req.body?.message || "").toString();
+  try {
+    const response = await anthropic.messages.create({
+      model: "claude-haiku-4-5-20251001",
+      max_tokens: 300,
+      system: "Eres IvA, asistente de Luis Soto Autos dealer en Puerto Rico y Florida. INVENTARIO: Honda CR-V 2022 $28,900 18,500mi SUV, Toyota Tacoma 2021 $34,500 24,000mi Truck, Hyundai Tucson 2023 $31,200 8,200mi SUV nuevo, Toyota Camry 2022 $26,400 21,000mi Sedan, Ford F-150 2021 $38,900 29,000mi Truck, Honda Civic 2023 $22,800 5,400mi Sedan nuevo. Aceptamos trade-in. Financiamiento todos los creditos desde $0 down. Horario Lun-Sab 9am-7pm. Captura nombre y telefono del prospecto. Maximo 3 oraciones. Responde en idioma del cliente.",
+      messages: [{ role: "user", content: message }]
+    });
+    return res.json({ reply: response.content[0].text });
+  } catch (e) {
+    console.error("Demo autos error:", e.message);
+    return res.json({ reply: "Disculpa, tuve un problema. Llámanos directamente." });
+  }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ==========================================
+// IvA SALES ASSISTANT - Conversational AI
+// ==========================================
+app.post("/api/iva-sales", aiLimiter, express.json(), async (req, res) => {
+  const { message, history = [], lang = "es", context = {} } = req.body;
+
+  const systemES = `Eres IvA, el asistente de ventas de Ivamar AI.
+
+SOBRE IVAMAR AI:
+- Empresa: Ivamar AI LLC, incorporada en Delaware, USA
+- Sitio web: ivamarai.com
+- Email: connect@ivamarai.com
+- WhatsApp: +1 (863) 521-6708
+- Fundador: Ivan Soto
+- Misión: Crear asistentes digitales inteligentes para negocios locales
+
+SERVICIOS Y PRECIOS:
+- 🚀 OFERTA DE LANZAMIENTO (válida hasta el 29 de agosto): Asistente Digital — SIN costo de setup + $29/mes
+- Después del 29 de agosto: $125 setup único + $29/mes (Starter) o $49/mes (Growth)
+- Funciona en: web propia, link directo, Instagram bio, Facebook, código QR
+- La oferta especial de $29/mes NO incluye integración con WhatsApp — WhatsApp está disponible como servicio adicional, consulta con Ivan directamente
+- No se necesita web propia — el link directo funciona solo
+- Setup completo en 48 horas
+- Sin contratos — cancela cuando quieras
+- Soporte en español e inglés
+
+QUÉ PUEDE HACER EL ASISTENTE:
+- Responder preguntas 24/7 automáticamente
+- Hablar cualquier idioma automáticamente
+- Capturar leads: nombre, teléfono, email de forma natural
+- Funcionar por link, QR en rótulos/flyers, web, redes sociales
+- Bautizarlo con cualquier nombre que el cliente elija
+- Personalidad y tono adaptado al negocio
+
+IDEAS CREATIVAS DE USO POR INDUSTRIA:
+REALTORS: Sticker con QR (5x5cm) pegado al letrero existente — el prospecto escanea y recibe info al instante. QR en tarjetas de presentación. QR en anuncios de Facebook. Link en bio de Instagram.
+RESTAURANTES/FOOD TRUCKS: QR en mesa o ventana. Link en Instagram bio. QR en bolsas de take-out. Integración WhatsApp para ordenar.
+CONTRACTORS/AC: QR en el vehículo de trabajo. QR en rótulos después de un trabajo. Link en anuncios para emergencias 24/7.
+DEALERS DE AUTOS: QR en el parabrisas de cada vehículo — comprador escanea a las 2am. QR en rótulos del dealer para fines de semana.
+BUFETES: QR en puerta de oficina para después de horas. Link en redes para pre-calificar clientes.
+SALONES/SPAS: QR en recepción para agendar. Link en Instagram bio para reservaciones 24/7.
+CUALQUIER NEGOCIO: Stickers de QR 5x5cm — económicos y se pegan en cualquier lugar. QR en firma de email. Link en perfil de Google Business.
+
+REGLAS DE CONVERSACIÓN:
+1. DETECTA EL IDIOMA del usuario y responde SIEMPRE en ese idioma.
+2. DETECTA LA INTENCIÓN antes de responder.
+3. Si el usuario PREGUNTA algo — respóndelo PRIMERO.
+4. NO uses "IA" o "inteligencia artificial" — di "asistente digital".
+5. NO presiones agresivamente por leads — captura orgánicamente.
+6. Varía tus respuestas — no repitas frases ni emojis.
+7. Máximo 4 oraciones por respuesta — conversacional y conciso.
+8. Si preguntan por precios — da los precios exactos claramente.
+9. Si preguntan por cancelación — confirma que es sin contratos, mes a mes.
+10. Si preguntan quién creó IvA — di que es el asistente de Ivamar AI LLC.
+11. Cuando sea relevante — sugiere ideas creativas de cómo usar el QR o link según su industria.
+12. Cuando el usuario pregunte cómo comenzar o qué hacer para contratar — NUNCA des email ni teléfono. SIEMPRE termina con: "¿Listo para comenzar? 👉 ivamarai.com/cotizar"
+
+CONTEXTO CONOCIDO DEL USUARIO:
+- Nombre: ${context.name || "desconocido"}
+- Tipo de negocio: ${context.businessType || "desconocido"}
+- Tiene web: ${context.hasWebsite || "desconocido"}
+- Ubicación: ${context.location || "desconocida"}
+
+RECUERDA: Eres el DEMO del producto. La experiencia de conversar contigo ES la demostración.`;
+
+  const systemEN = `You are IvA, the sales assistant for Ivamar AI.
+
+ABOUT IVAMAR AI:
+- Company: Ivamar AI LLC, incorporated in Delaware, USA
+- Website: ivamarai.com
+- Email: connect@ivamarai.com
+- WhatsApp: +1 (863) 521-6708
+- Founder: Ivan Soto
+- Mission: Build smart digital assistants for local businesses
+
+SERVICES & PRICING:
+- Digital Assistant Only: $125 one-time setup + $29/month (Starter) or $49/month (Growth)
+- Digital Assistant + Landing Page: $250 one-time setup + $29/month or $49/month
+- Works on: existing website, direct link, Instagram bio, Facebook, WhatsApp, QR code
+- No website needed — direct link works standalone
+- Full setup in 48 hours
+- No contracts — cancel anytime
+- English and Spanish support
+
+WHAT THE ASSISTANT CAN DO:
+- Answer customer questions 24/7 automatically
+- Speak any language automatically
+- Capture leads: name, phone, email naturally during conversation
+- Work via direct link, QR code on signs or flyers, website, social media
+- Be named anything the client chooses
+- Personality and tone adapted to the business
+
+CREATIVE USE CASE IDEAS BY INDUSTRY:
+REALTORS: QR sticker (2x2 inches) on existing yard signs — prospect scans and gets info instantly. QR on business cards. QR in Facebook ads. Link in Instagram bio.
+RESTAURANTS/FOOD TRUCKS: QR on table or window. Link in Instagram bio. QR on takeout bags. WhatsApp integration to order directly.
+CONTRACTORS/AC: QR on work vehicle. QR on yard signs after a job. Link in Facebook ads for 24/7 emergency calls.
+CAR DEALERS: QR on each vehicle windshield — buyer scans at 2am. QR on dealer signage for weekends when lot is closed.
+LAW FIRMS: QR on office door for after hours. Link on social media to pre-qualify clients.
+SALONS/SPAS: QR at reception to book. Link in Instagram bio for 24/7 bookings.
+ANY BUSINESS: 2x2 inch QR stickers — cheap, apply anywhere. QR in email signature. Link on Google Business profile.
+
+CONVERSATION RULES:
+1. DETECT THE LANGUAGE the user writes in and ALWAYS respond in that language.
+2. DETECT INTENT before responding.
+3. If the user ASKS something — answer it FIRST.
+4. Do NOT use "AI" or "artificial intelligence" — say "digital assistant".
+5. Do NOT aggressively push for leads — capture organically.
+6. Vary your responses — don't repeat phrases or emojis.
+7. Maximum 4 sentences per response — conversational and concise.
+8. If asked about pricing — give exact prices clearly.
+9. If asked about cancellation — confirm no contracts, month to month.
+10. If asked who built IvA — say she is the assistant of Ivamar AI LLC.
+11. When relevant — suggest creative ideas on how to use the QR or link for their industry.
+12. When the user asks how to get started, what to do next, or how to hire — NEVER give email or phone. ALWAYS end with: "Ready to get started? 👉 ivamarai.com/quote"
+
+KNOWN USER CONTEXT:
+- Name: ${context.name || "unknown"}
+- Business type: ${context.businessType || "unknown"}
+- Has website: ${context.hasWebsite || "unknown"}
+- Location: ${context.location || "unknown"}
+
+REMEMBER: You ARE the product demo. The experience of talking to you IS the demonstration.`;
+
+  const systemPrompt = lang === "en" ? systemEN : systemES;
+
+  const messages = [
+    ...(history || []),
+    { role: "user", content: message }
+  ];
+
+  try {
+    const response = await anthropic.messages.create({
+      model: "claude-haiku-4-5-20251001",
+      max_tokens: 400,
+      system: systemPrompt,
+      messages: messages
+    });
+    return res.json({ reply: response.content[0].text });
+  } catch (e) {
+    console.error("IvA Sales error:", e.message);
+    const fallback = lang === "en"
+      ? "Sorry, I had a technical issue. Please reach us on WhatsApp directly."
+      : "Disculpa, tuve un problema técnico. Por favor escríbenos por WhatsApp directamente.";
+    return res.json({ reply: fallback });
+  }
+});
+
+
+
+
+// ==========================================
+// GENERIC DEALER DEMO ASSISTANT - ES
+// ==========================================
+app.post("/api/dealer-demo-es", express.json(), async (req, res) => {
+  const { message, history = [] } = req.body;
+
+  const system = `Eres el asistente virtual de un dealer de autos — una demostración de Ivamar AI.
+
+SOBRE ESTE DEMO:
+Este es un ejemplo de cómo funcionaría un asistente digital para cualquier dealer de autos.
+El asistente puede ser personalizado con el nombre, inventario y servicios de cualquier dealer.
+
+LO QUE PUEDES HACER:
+- Responder preguntas sobre inventario de vehículos
+- Explicar opciones de financiamiento
+- Guiar sobre trade-ins
+- Agendar citas de servicio
+- Agendar pruebas de manejo
+- Capturar información del prospecto
+
+PLANES DE IVAMAR AI PARA DEALERS:
+- 1 dealer: $500 setup único + $149/mes
+- 3 dealers: $1,200 setup único + $349/mes
+- Grupo completo: $2,500 setup único + $599/mes
+- Sin contratos — cancela cuando quieras
+- Un QR y link directo por dealer
+- Listo en 48 horas
+- Para más información: connect@ivamarai.com
+
+REGLAS:
+1. Responde SIEMPRE en español
+2. Sé amigable, profesional y conversacional
+3. Máximo 4 oraciones por respuesta
+4. Si preguntan por precios — da los planes enterprise
+5. Si preguntan cómo empezar — manda a connect@ivamarai.com
+6. Deja claro que esto es un demo de Ivamar AI`;
+
+  try {
+    const response = await anthropic.messages.create({
+      model: "claude-haiku-4-5-20251001",
+      max_tokens: 400,
+      system,
+      messages: [...history, { role: "user", content: message }]
+    });
+    return res.json({ reply: response.content[0].text });
+  } catch(e) {
+    return res.json({ reply: "Tuve un problema técnico. Por favor escríbenos a connect@ivamarai.com" });
+  }
+});
+
+// ==========================================
+// GENERIC DEALER DEMO ASSISTANT
+// ==========================================
+app.post("/api/dealer-demo", express.json(), async (req, res) => {
+  const { message, history = [] } = req.body;
+  const lang = message.match(/[áéíóúñ¿¡]/i) ? 'es' : 'en';
+
+  const system = lang === 'es' ? `Eres el asistente virtual de un dealer de autos — una demostración de Ivamar AI.
+
+SOBRE ESTE DEMO:
+Este es un ejemplo de cómo funcionaría un asistente digital para cualquier dealer de autos.
+El asistente puede ser personalizado con el nombre, inventario y servicios de cualquier dealer.
+
+LO QUE PUEDES HACER:
+- Responder preguntas sobre inventario de vehículos
+- Explicar opciones de financiamiento
+- Guiar sobre trade-ins
+- Agendar citas de servicio
+- Agendar pruebas de manejo
+- Capturar información del prospecto
+
+PLANES DE IVAMAR AI PARA DEALERS:
+- 1 dealer: $500 setup único + $149/mes
+- 3 dealers: $1,200 setup único + $349/mes
+- Grupo completo: $2,500 setup único + $599/mes
+- Sin contratos — cancela cuando quieras
+- Un QR y link directo por dealer
+- Listo en 48 horas
+- Para más información: connect@ivamarai.com
+
+REGLAS:
+1. Responde en español cuando el cliente escriba en español
+2. Sé amigable, profesional y conversacional
+3. Máximo 4 oraciones por respuesta
+4. Si preguntan por precios — da los planes enterprise
+5. Si preguntan cómo empezar — manda a connect@ivamarai.com
+6. Deja claro que esto es un demo de Ivamar AI`
+  : `You are a virtual assistant for a car dealership — a live demo by Ivamar AI.
+
+ABOUT THIS DEMO:
+This is an example of how a digital assistant would work for any car dealership.
+The assistant can be customized with any dealer's name, inventory and services.
+
+WHAT YOU CAN DO:
+- Answer questions about vehicle inventory
+- Explain financing options
+- Guide customers through trade-ins
+- Schedule service appointments
+- Schedule test drives
+- Capture prospect information
+
+IVAMAR AI PLANS FOR DEALERSHIPS:
+- 1 dealership: $500 one-time setup + $149/month
+- 3 dealerships: $1,200 one-time setup + $349/month
+- Full group: $2,500 one-time setup + $599/month
+- No contracts — cancel anytime
+- One QR code and direct link per dealership
+- Ready in 48 hours
+- For more info: connect@ivamarai.com
+
+RULES:
+1. Respond in English when customer writes in English
+2. Respond in Spanish when customer writes in Spanish
+3. Be friendly, professional and conversational
+4. Maximum 4 sentences per response
+5. If asked about pricing — give enterprise plans
+6. If asked how to get started — direct to connect@ivamarai.com
+7. Make clear this is a demo by Ivamar AI`;
+
+  try {
+    const response = await anthropic.messages.create({
+      model: "claude-haiku-4-5-20251001",
+      max_tokens: 400,
+      system,
+      messages: [...history, { role: "user", content: message }]
+    });
+    return res.json({ reply: response.content[0].text });
+  } catch(e) {
+    return res.json({ reply: "Having a quick issue. Please email connect@ivamarai.com" });
+  }
+});
+
+// ==========================================
+// KIA DEALER DEMO ASSISTANT
+// ==========================================
+
+// ==========================================
+// GENERIC DEALER DEMO ASSISTANT
+// ==========================================
+app.post("/api/dealer-demo", express.json(), async (req, res) => {
+  const { message, history = [] } = req.body;
+  const lang = message.match(/[áéíóúñ¿¡]/i) ? 'es' : 'en';
+
+  const system = lang === 'es' ? `Eres un asistente virtual para un dealer de autos — este es un demo de Ivamar AI para mostrar cómo funciona un asistente digital para dealerships.
+
+ESTE ES UN DEMO:
+- Estás demostrando cómo funcionaría el asistente para cualquier dealer de autos
+- El dealer puede ser Toyota, Honda, Kia, Ford, Chevrolet o cualquier marca
+- El asistente se personaliza con la información real del dealer
+
+LO QUE PUEDES HACER:
+- Responder preguntas sobre inventario (nuevos y usados)
+- Explicar opciones de financiamiento
+- Guiar en el proceso de trade-in
+- Agendar pruebas de manejo
+- Responder en español e inglés automáticamente
+- Capturar leads: nombre, teléfono, vehículo de interés
+
+PLANES DISPONIBLES PARA DEALERS:
+- 1 dealer: $500 setup único + $149/mes
+- 3 dealers: $1,200 setup único + $349/mes
+- Grupo completo: $2,500 setup único + $599/mes
+- Sin contratos, cancela cuando quieras
+- Un QR y link directo por dealer
+- Setup en 48 horas
+
+REGLAS:
+1. Responde en español cuando el cliente escriba en español
+2. Sé amigable, profesional y conversacional
+3. Máximo 4 oraciones por respuesta
+4. Si preguntan por precios — menciona los planes enterprise
+5. Si preguntan cómo empezar — manda a connect@ivamarai.com`
+  : `You are a virtual assistant for a car dealership — this is an Ivamar AI demo showing how a digital assistant works for any dealership.
+
+THIS IS A DEMO:
+- You're demonstrating how an assistant would work for any car dealership
+- The dealer could be Toyota, Honda, Kia, Ford, Chevrolet or any brand
+- The assistant gets customized with the real dealer's information
+
+WHAT YOU CAN DO:
+- Answer questions about inventory (new and used)
+- Explain financing options
+- Guide through trade-in process
+- Schedule test drives
+- Respond in English and Spanish automatically
+- Capture leads: name, phone, vehicle of interest
+
+PLANS AVAILABLE FOR DEALERS:
+- 1 dealership: $500 one-time setup + $149/month
+- 3 dealerships: $1,200 one-time setup + $349/month
+- Full group: $2,500 one-time setup + $599/month
+- No contracts, cancel anytime
+- One QR code and direct link per dealer
+- Ready in 48 hours
+
+RULES:
+1. Respond in English when customer writes in English
+2. Respond in Spanish when customer writes in Spanish
+3. Be friendly, professional and conversational
+4. Maximum 4 sentences per response
+5. If asked about pricing — mention enterprise plans
+6. If asked how to get started — direct to connect@ivamarai.com`;
+
+  try {
+    const response = await anthropic.messages.create({
+      model: "claude-haiku-4-5-20251001",
+      max_tokens: 400,
+      system,
+      messages: [...history, { role: "user", content: message }]
+    });
+    return res.json({ reply: response.content[0].text });
+  } catch(e) {
+    return res.json({ reply: "I'm having a quick issue. Please email connect@ivamarai.com" });
+  }
+});
+
+app.post("/api/kia-demo", express.json(), async (req, res) => {
+  const { message, history = [] } = req.body;
+  const lang = message.match(/[áéíóúñ¿¡]/i) ? 'es' : 'en';
+
+  const system = lang === 'es' ? `Eres el asistente virtual de Dyer Kia Lake Wales — un dealer de autos en Lake Wales, Florida.
+
+INFORMACIÓN DEL DEALER:
+- Nombre: Dyer Kia Lake Wales
+- Dirección: 23280 US-27, Lake Wales, FL 33859
+- Teléfono: (863) 676-0595
+- Horario: Lun-Vie 7:30am-7pm, Sáb 8am-5pm, Dom cerrado
+- Inventario: 373+ vehículos
+- Rating: 4.3 estrellas con 479 reseñas
+
+MODELOS DISPONIBLES:
+- Kia Telluride: desde $38,490 (SUV 3 filas)
+- Kia Sportage: desde $27,090 (SUV compacto)
+- Kia Sorento: desde $32,490 (SUV mediano, híbrido disponible)
+- Kia K5: desde $25,990 (sedán)
+- Kia Soul, Forte, Carnival también disponibles
+
+SERVICIOS:
+- Venta de vehículos nuevos y usados
+- Financiamiento para todo tipo de crédito
+- Evaluación de trade-in
+- Centro de servicio
+- Pruebas de manejo disponibles
+- Equipo bilingüe (inglés y español)
+- Garantía: 10 años/100,000 millas tren motriz
+
+ESTE DEMO ES PRESENTADO POR IVAMAR AI:
+- Este es un ejemplo de cómo funciona un asistente digital para dealers
+- El asistente puede ser personalizado con la información de cualquier dealer
+- Planes enterprise disponibles desde $500 setup + $149/mes
+- Un solo QR y link directo por dealer — no por vehículo
+- Sin contratos, cancela cuando quieras
+- Para más información: connect@ivamarai.com
+
+REGLAS:
+1. Responde en español cuando el cliente escriba en español
+2. Sé amigable, profesional y conversacional
+3. Máximo 4 oraciones por respuesta
+4. Si preguntan por precios del asistente — menciona los planes enterprise
+5. NO menciones QR por vehículo — es un QR y link por dealer
+6. Si preguntan cómo empezar — manda a connect@ivamarai.com` 
+  : `You are the virtual assistant for Dyer Kia Lake Wales — a car dealership in Lake Wales, Florida.
+
+DEALER INFO:
+- Name: Dyer Kia Lake Wales
+- Address: 23280 US-27, Lake Wales, FL 33859
+- Phone: (863) 676-0595
+- Hours: Mon-Fri 7:30am-7pm, Sat 8am-5pm, Sun Closed
+- Inventory: 373+ vehicles
+- Rating: 4.3 stars with 479 reviews
+
+AVAILABLE MODELS:
+- Kia Telluride: from $38,490 (3-row SUV)
+- Kia Sportage: from $27,090 (compact SUV)
+- Kia Sorento: from $32,490 (midsize SUV, hybrid available)
+- Kia K5: from $25,990 (sedan)
+- Kia Soul, Forte, Carnival also available
+
+SERVICES:
+- New and used vehicle sales
+- Financing for all credit types
+- Trade-in appraisals
+- Service center
+- Test drives available
+- Bilingual team (English & Spanish)
+- Warranty: 10-year/100,000-mile powertrain
+
+THIS DEMO IS PRESENTED BY IVAMAR AI:
+- This is an example of how a digital assistant works for dealerships
+- The assistant can be customized with any dealer's information
+- Enterprise plans available from $500 setup + $149/month
+- One QR code and direct link per dealership — not per vehicle
+- No contracts, cancel anytime
+- For more info: connect@ivamarai.com
+
+RULES:
+1. Respond in English when customer writes in English
+2. Respond in Spanish when customer writes in Spanish
+3. Be friendly, professional and conversational
+4. Maximum 4 sentences per response
+5. If asked about assistant pricing — mention enterprise plans
+6. Do NOT mention QR per vehicle — it is one QR and link per dealer
+7. If asked how to get started — direct to connect@ivamarai.com`;
+
+  try {
+    const response = await anthropic.messages.create({
+      model: "claude-haiku-4-5-20251001",
+      max_tokens: 400,
+      system,
+      messages: [...history, { role: "user", content: message }]
+    });
+    return res.json({ reply: response.content[0].text });
+  } catch(e) {
+    return res.json({ reply: "I'm having a quick issue. Please call us at (863) 676-0595!" });
+  }
+});
+
+app.post("/api/assistant", aiLimiter, async (req, res) => {
+  const message = (req.body?.message || "").toString();
+  const businessSlug = req.body?.businessSlug || null;
+  const history = Array.isArray(req.body?.history) ? req.body.history.slice(-20) : [];
+  const photo = (req.body?.photo || "").toString();
+
+  let businessObj = null;
+  let systemPrompt = "Eres IvA, el asistente virtual de Ivamar AI. Ayudas a negocios en Puerto Rico y USA con paginas web con IA, asistentes digitales y menus digitales. Responde en el idioma del cliente. Se amigable y conciso. Servicios: paginas web con asistente de IA, menus digitales para restaurantes y food trucks, asistentes digitales para cualquier negocio. Setup: $125. Mensual desde $49/mes. Primer mes gratis.";
+
+  if (businessSlug === "demo") {
+    systemPrompt = "Eres El Bori, el asistente boricua de El Rincon Boricua, un food truck en Puerto Rico. MENU: Mofongo con Camarones $14.99, Pernil Plate $13.99, Chuletas Can-Can $15.99, Alcapurrias de Pollo $8.99, Tostones con Mojo $5.99, Empanadillas x4 $7.99, Coquito Shake $5.99, Limonada Tamarindo $3.99, Malta Caribena $2.99, Tembleque $4.99, Arroz con Leche $3.99. UBICACION: Caguas, Puerto Rico. HORARIO: Mar-Jue 4pm-10pm, Vie 4pm-11pm, Sab-Dom 12pm-11pm, Lun Cerrado. DELIVERY: Si, $3 adicional. PICKUP: Gratis. PERSONALIDAD: Boricua autentico de Puerto Rico. Usa: brutal, riquísimo, espectacular, a otro nivel, wepa, duro, al punto. Para tiempo: ahora, en pal de minutos. NUNCA uses: ahorita, que lo que, expresiones mexicanas o dominicanas. Responde en el idioma del cliente. Maximo 3 oraciones.";
+  } else if (businessSlug) {
+    const bizFile = path.join("/data", "businesses", `${businessSlug}.json`);
+    if (fs.existsSync(bizFile)) {
+      try {
+        const biz = JSON.parse(fs.readFileSync(bizFile, "utf8"));
+        businessObj = biz;
+        if (biz.customSystemPrompt) {
+          systemPrompt = biz.customSystemPrompt + `
+
+CAPTURA DE LEADS - MUY IMPORTANTE:
+Una vez tengas AL MENOS nombre y telefono, agrega al FINAL de tu respuesta (en una linea nueva, invisible para el usuario) esto exacto: <<LEAD>>{"customerName":"NOMBRE","phone":"TELEFONO","email":"EMAIL_SI_LO_DIO","service":"QUE_NECESITA","summary":"resumen breve de 1 oracion"}<<END>>
+Incluye ese marcador SOLO la primera vez que completes nombre+telefono, nunca lo repitas en mensajes posteriores de la misma conversacion.`;
+        } else {
+        systemPrompt = `Eres ${biz.assistant?.name || "IvA"}, un asistente de IA para ${biz.name}. Tipo: ${biz.headline || "Negocio local"}. Descripcion: ${biz.description || ""}. Direccion: ${biz.address || ""}. Horario: ${biz.hours || ""}. Estado: ${biz.status || "abierto"}. WhatsApp: ${biz.links?.whatsapp || ""}. Menu: ${(biz.menu || []).map(i => i.name + (i.price ? " $" + i.price : "")).join(", ")}. Bebidas: ${(biz.drinks || []).map(i => i.name + (i.price ? " $" + i.price : "")).join(", ")}. Tono: ${biz.assistant?.tone || "amistoso y profesional"}. Responde en el idioma del cliente. Maximo 3 oraciones. Cuando el cliente quiera ordenar, guialo a WhatsApp.
+
+CAPTURA DE LEADS - MUY IMPORTANTE:
+Durante la conversación, trata de obtener naturalmente el nombre y telefono de la persona (y su interes/necesidad). NO lo pidas todo de golpe, ve preguntando en el flujo natural de la conversacion.
+Una vez tengas AL MENOS nombre y telefono, agrega al FINAL de tu respuesta (en una linea nueva, invisible para el usuario) esto exacto: <<LEAD>>{"customerName":"NOMBRE","phone":"TELEFONO","email":"EMAIL_SI_LO_DIO","service":"QUE_NECESITA","summary":"resumen breve de 1 oracion"}<<END>>
+Incluye ese marcador SOLO la primera vez que completes nombre+telefono, nunca lo repitas en mensajes posteriores de la misma conversacion.`;
+        }
+      } catch (e) {
+        console.error("Error loading business:", e.message);
+      }
+    }
+  }
+
+  try {
+    const response = await anthropic.messages.create({
+      model: "claude-haiku-4-5-20251001",
+      max_tokens: 300,
+      system: systemPrompt,
+      messages: [...history, { role: "user", content: message }],
+      max_tokens: 600
+    });
+    let replyText = response.content[0].text;
+
+    const leadMatch = replyText.match(/<<LEAD>>([\s\S]*?)<<END>>/);
+    if (leadMatch) {
+      replyText = replyText.replace(leadMatch[0], "").trim();
+      if (businessObj) {
+        try {
+          const lead = JSON.parse(leadMatch[1]);
+          if (photo) lead.photo = photo;
+          sendLeadNotification(lead, businessObj).catch(e => console.error("Notification error:", e.message));
+        } catch (parseErr) {
+          console.error("Lead parse error:", parseErr.message);
+        }
+      }
+    }
+
+    return res.json({ reply: replyText });
+  } catch (e) {
+    console.error("Claude API error:", e.status, e.message);
+    return res.json({ reply: "Disculpa, tuve un problema tecnico. Por favor escribeme directamente por WhatsApp." });
+  }
+});
+
+// ==========================================
+// START FORM
+// ==========================================
+
+app.get("/start", (req, res) => {
+  const body = `
+  <div class="card">
+    <h1>Tu Mini Web con Asistente de IA</h1>
+    <p style="margin-bottom:20px;">En menos de 48 horas tu negocio tiene su propia página con asistente de IA.</p>
+    <form method="POST" action="/start">
+      <label>Nombre del negocio</label>
+      <input type="text" name="businessName" placeholder="Ej. El Rincón Boricua" required style="margin-bottom:16px;padding:10px;" />
+      <label>Nombre del dueño</label>
+      <input type="text" name="ownerName" placeholder="Tu nombre" required style="margin-bottom:16px;padding:10px;" />
+      <label>Email</label>
+      <input type="email" name="email" placeholder="ejemplo@email.com" required style="margin-bottom:16px;padding:10px;" />
+      <label>WhatsApp</label>
+      <input type="text" name="whatsapp" placeholder="787-000-0000" required style="margin-bottom:16px;padding:10px;" />
+      <label>Tipo de negocio</label>
+      <select name="businessType" required style="margin-bottom:16px;padding:10px;">
+        <option value="">Selecciona</option>
+        <option>Food Truck</option><option>Restaurante</option><option>Panadería</option>
+        <option>Cafetería</option><option>Dealer de Autos</option><option>Salón de Belleza</option>
+        <option>Servicios Profesionales</option><option>Otro</option>
+      </select>
+      <label>Descripción</label>
+      <textarea name="description" rows="3" placeholder="Describe tu negocio" style="margin-bottom:16px;padding:10px;"></textarea>
+      <label>Menú o servicios</label>
+      <textarea name="menu" rows="5" placeholder="Ej. Tripleta - $12" style="margin-bottom:16px;padding:10px;"></textarea>
+      <label>Bebidas</label>
+      <textarea name="drinks" rows="3" placeholder="Ej. Refresco - $2" style="margin-bottom:16px;padding:10px;"></textarea>
+      <label>Dirección</label>
+      <input type="text" name="address" placeholder="Ej. PR-2 Km 45, Arecibo, PR" style="margin-bottom:16px;padding:10px;" />
+      <label>Horario</label>
+      <input type="text" name="hours" placeholder="Lunes a Domingo 11am-9pm" style="margin-bottom:16px;padding:10px;" />
+      <label>Logo (link)</label>
+      <input type="text" name="logoUrl" placeholder="https://..." style="margin-bottom:16px;padding:10px;" />
+      <div style="margin:24px 0;padding:16px;border:1px solid #ddd;border-radius:8px;">
+        <p><b>🚀 Oferta de Lanzamiento — Sin costo de setup + $29/mes</b></p>
+        <p style="font-size:0.85rem;margin-top:4px;">Válida hasta el 29 de agosto. Tu propia mini web con logo y asistente de IA, lista en 48 horas.</p>
+      </div>
+      <div class="btns">
+        <button class="btn primary" type="submit">Continuar</button>
+        <a class="btn ghost" href="/">Volver</a>
+      </div>
+    </form>
+  </div>`;
+  res.send(layout({ title: "Start Now — Ivamar AI", body }));
+});
+
+app.post("/start", async (req, res) => {
+  const { businessName = "", ownerName = "", email = "", whatsapp = "", businessType = "", description = "", menu = "", drinks = "", logoUrl = "", address = "", hours = "" } = req.body || {};
+  const slug = businessName.toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+
+  function parseItems(text) {
+    return (text || "").split("\n").map(l => l.trim()).filter(Boolean).map(line => {
+      const m = line.match(/^(.*?)-\s*\$?(\d+(?:\.\d{1,2})?)$/);
+      if (m) return { name: m[1].trim(), price: Number(m[2]), desc: "" };
+      return { name: line, price: null, desc: "" };
+    });
+  }
+
+  const businessData = {
+    slug, name: businessName,
+    headline: `${businessType || "Negocio local"} con Ivamar AI`,
+    description: description || "Próximamente más información.",
+    logoUrl, businessPhotoUrl: "", address, hours, status: "abierto", theme: "light",
+    assistant: { name: "IvA", tone: "amistoso y profesional", welcome: `¡Hola! Soy IvA, el asistente de ${businessName}. ¿En qué te ayudo hoy?`, keywords: [], avatarUrl: "" },
+    links: { whatsapp: whatsapp ? `https://wa.me/${String(whatsapp).replace(/\D/g, "")}` : "#", instagram: "#", googleMaps: "#" },
+    menu: parseItems(menu).length ? parseItems(menu) : [{ name: "Menú pendiente", price: 0, desc: "" }],
+    sides: [], drinks: parseItems(drinks), desserts: []
+  };
+
+  const bizFile = path.join("/data", "businesses", `${slug}.json`);
+  fs.writeFileSync(bizFile, JSON.stringify(businessData, null, 2), "utf8");
+
+  const siteUrl = `${req.protocol}://${req.get("host")}`;
+
+  // Direct Stripe checkout — no longer depends on ivamar-brain
+  if (stripe && email && email.includes("@")) {
+    try {
+      const customers = await stripe.customers.list({ email, limit: 1 });
+      const customer = customers.data.length > 0
+        ? customers.data[0]
+        : await stripe.customers.create({ email, name: ownerName || undefined });
+
+      const augustPromo = new Date() <= new Date('2026-08-29T23:59:59-04:00');
+      const monthlyAmount = augustPromo ? 2900 : 4900; // $29 promo hasta 29 agosto, luego $49
+      const priceDescription = augustPromo
+        ? "Oferta de Lanzamiento — Sin costo de setup, $29/mes"
+        : "Setup + Monthly subscription";
+
+      const session = await stripe.checkout.sessions.create({
+        mode: "subscription",
+        payment_method_types: ["card"],
+        customer: customer.id,
+        line_items: [
+          {
+            price_data: {
+              currency: "usd",
+              product_data: {
+                name: `Ivamar AI — ${businessName}`,
+                description: priceDescription
+              },
+              unit_amount: monthlyAmount,
+              recurring: { interval: "month" }
+            },
+            quantity: 1
+          }
+        ],
+        metadata: { slug, businessName, ownerName: ownerName || "", businessType: businessType || "" },
+        success_url: `${siteUrl}/${slug}`,
+        cancel_url: `${siteUrl}/start`
+      });
+
+      if (session.url) return res.redirect(session.url);
+    } catch (e) {
+      console.error("Stripe checkout error:", e.message);
+    }
+  }
+
+  return res.redirect(`/${slug}`);
+});
+
+// ==========================================
+// DYNAMIC BUSINESS PAGES
+// ==========================================
+
+
+
+
+// ==========================================
+// CLOUDINARY PHOTO UPLOAD
+// ==========================================
+const cloudinary = require('cloudinary').v2;
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
+
+app.post("/api/upload-photo", express.json({ limit: '10mb' }), async (req, res) => {
+  try {
+    const { data } = req.body; // base64 image
+    if (!data) return res.json({ ok: false, error: 'No image data' });
+    
+    const result = await cloudinary.uploader.upload(data, {
+      folder: 'caribex-listings',
+      transformation: [
+        { width: 800, height: 600, crop: 'fill', gravity: 'auto' },
+        { fetch_format: 'auto', quality: 'auto' }
+      ]
+    });
+    
+    return res.json({ ok: true, url: result.secure_url });
+  } catch(e) {
+    console.error('Upload error:', e);
+    return res.json({ ok: false, error: e.message });
+  }
+});
+
+// ==========================================
+// CARIBEX DIRECTORY — LISTING SUBMISSION
+// ==========================================
+app.post("/api/listing-submit", formLimiter, express.json(), async (req, res) => {
+  console.log("📋 Listing submit received:", req.body?.name);
+  const name = sanitize(req.body.name);
+  const ownerName = sanitize(req.body.ownerName);
+  const category = sanitize(req.body.category);
+  const destination = sanitize(req.body.destination);
+  const desc = sanitize(req.body.desc);
+  const fullDesc = sanitize(req.body.fullDesc);
+  const email = sanitize(req.body.email);
+  const whatsapp = sanitize(req.body.whatsapp);
+  const website = sanitize(req.body.website);
+  const photo = sanitize(req.body.photo);
+  const price = sanitize(req.body.price);
+
+  if (!name || !category || !destination || !desc || !fullDesc || !email || !photo) {
+    return res.json({ ok: false, error: "Missing required fields" });
+  }
+
+  try {
+    // Save to pending listings file
+    const fs2 = require('fs');
+    const path = require('path');
+    const pendingFile = path.join('/data/listings/pending.json');
+    
+    let pending = [];
+    if (fs2.existsSync(pendingFile)) {
+      pending = JSON.parse(fs2.readFileSync(pendingFile, 'utf8'));
+    }
+    
+    const listing = {
+      id: Date.now().toString(),
+      status: 'pending',
+      submittedAt: new Date().toISOString(),
+      name, category, destination, desc, fullDesc, email, whatsapp, website, photo, price
+    };
+    
+    // Generate approval tokens
+    const crypto = require('crypto');
+    listing.approveToken = crypto.randomBytes(32).toString('hex');
+    listing.rejectToken = crypto.randomBytes(32).toString('hex');
+
+    pending.push(listing);
+    fs2.writeFileSync(pendingFile, JSON.stringify(pending, null, 2));
+
+    // Send email notification via Resend
+    const { Resend } = require('resend');
+    const resend = new Resend(process.env.RESEND_API_KEY);
+    const approveUrl = 'https://ivamarai.com/admin/approve/' + listing.approveToken;
+    const rejectUrl = 'https://ivamarai.com/admin/reject/' + listing.rejectToken;
+    
+    console.log("📧 Sending email via Resend...");
+    await resend.emails.send({
+      from: 'Caribex <connect@ivamarai.com>',
+      to: 'connect@ivamarai.com',
+      subject: 'New Caribex Listing: ' + name,
+      html: `
+        <h2>New Business Listing Submission</h2>
+        <table style="border-collapse:collapse;width:100%">
+          <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold">Business</td><td style="padding:8px;border:1px solid #ddd">${name}</td></tr>
+          <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold">Category</td><td style="padding:8px;border:1px solid #ddd">${category}</td></tr>
+          <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold">Destination</td><td style="padding:8px;border:1px solid #ddd">${destination}</td></tr>
+          <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold">Email</td><td style="padding:8px;border:1px solid #ddd">${email}</td></tr>
+          <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold">WhatsApp</td><td style="padding:8px;border:1px solid #ddd">${whatsapp || 'N/A'}</td></tr>
+          <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold">Website</td><td style="padding:8px;border:1px solid #ddd">${website || 'N/A'}</td></tr>
+          <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold">Price Range</td><td style="padding:8px;border:1px solid #ddd">${price || 'N/A'}</td></tr>
+          <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold">Short Desc</td><td style="padding:8px;border:1px solid #ddd">${desc}</td></tr>
+          <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold">Full Desc</td><td style="padding:8px;border:1px solid #ddd">${fullDesc}</td></tr>
+          <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold">Photo</td><td style="padding:8px;border:1px solid #ddd"><img src="${photo}" style="max-width:200px"></td></tr>
+        </table>
+        <br>
+        <p><strong>Listing ID:</strong> ${listing.id}</p>
+        <p style="margin-top:2rem;">
+            <a href="${approveUrl}" style="background:#00B4D8;color:#fff;padding:12px 24px;text-decoration:none;border-radius:6px;font-weight:bold;margin-right:10px">✅ Approve Listing</a>
+            <a href="${rejectUrl}" style="background:#fff;color:#e53e3e;padding:12px 24px;text-decoration:none;border-radius:6px;font-weight:bold;border:1px solid #e53e3e">❌ Reject Listing</a>
+          </p>
+      `
+    });
+
+    console.log("✅ Email sent successfully");
+    return res.json({ ok: true });
+  } catch(e) {
+    console.error('❌ Listing submit error:', e.message);
+    return res.json({ ok: false, error: e.message });
+  }
+});
+
+
+// ==========================================
+// CARIBEX DIRECTORY — APPROVE BY TOKEN
+// ==========================================
+app.get("/admin/approve/:token", async (req, res) => {
+  try {
+    const fs2 = require('fs');
+    const pendingFile = '/data/listings/pending.json';
+    if (!fs2.existsSync(pendingFile)) return res.send('<h2>Listing not found.</h2>');
+    let pending = JSON.parse(fs2.readFileSync(pendingFile, 'utf8'));
+    const listing = pending.find(l => l.approveToken === req.params.token);
+    if (!listing) return res.send('<h2 style="font-family:sans-serif;color:#e53e3e;padding:2rem">Token invalid or already used.</h2>');
+    const approvedFile = '/data/listings/' + listing.destination + '.json';
+    let approved = [];
+    if (fs2.existsSync(approvedFile)) approved = JSON.parse(fs2.readFileSync(approvedFile, 'utf8'));
+    listing.status = 'approved';
+    listing.approvedAt = new Date().toISOString();
+    delete listing.approveToken;
+    delete listing.rejectToken;
+    approved.push(listing);
+    fs2.writeFileSync(approvedFile, JSON.stringify(approved, null, 2));
+    pending = pending.filter(l => l.id !== listing.id);
+    fs2.writeFileSync(pendingFile, JSON.stringify(pending, null, 2));
+    console.log('📧 Sending approval email to:', listing.email);
+    try {
+      const { Resend } = require('resend');
+      const resend = new Resend(process.env.RESEND_API_KEY);
+      const destUrl = 'https://yourcaribbeanexpert.com/caribex/' + listing.destination;
+      await resend.emails.send({
+        from: 'Caribex <connect@ivamarai.com>',
+        to: listing.email,
+        subject: '🎉 Your business is live on Caribex!',
+        html: `<div style="font-family:sans-serif;max-width:600px;margin:0 auto;">
+          <div style="background:linear-gradient(135deg,#0D1B2A,#0077B6);padding:2rem;text-align:center;border-radius:12px 12px 0 0;">
+            <h1 style="color:#fff;font-size:1.5rem;margin:0">🌴 You're live on Caribex!</h1>
+          </div>
+          <div style="padding:2rem;background:#fff;border:1px solid #E0EEF4;">
+            <p>Hi there,</p>
+            <p><strong>${listing.name}</strong> is now live on Caribex!</p>
+            <div style="text-align:center;margin:2rem 0;">
+              <a href="${destUrl}" style="background:#00B4D8;color:#fff;padding:12px 24px;border-radius:6px;text-decoration:none;font-weight:700;">View Your Listing →</a>
+            </div>
+            <hr style="border:none;border-top:1px solid #E0EEF4;margin:2rem 0;">
+            <h2 style="font-size:1.1rem;color:#0D1B2A;">⭐ Upgrade to Featured — $19/month</h2>
+            <ul style="font-size:0.9rem;color:#555;line-height:1.8;"><li>🔝 Top position</li><li>✅ Verified badge</li><li>📸 Larger photo</li></ul>
+            <div style="text-align:center;margin:1.5rem 0;">
+              <a href="https://buy.stripe.com/bJe5kDdmaaKG4Jy7vyf3a07" style="background:#0077B6;color:#fff;padding:12px 24px;border-radius:6px;text-decoration:none;font-weight:700;">Upgrade to Featured →</a>
+            </div>
+            <hr style="border:none;border-top:1px solid #E0EEF4;margin:2rem 0;">
+            <h2 style="font-size:1.1rem;color:#0D1B2A;">🤖 Want an AI assistant?</h2>
+            <p style="font-size:0.9rem;color:#555;">Give your customers instant answers 24/7 with Ivamar AI.</p>
+            <div style="text-align:center;margin:1.5rem 0;">
+              <a href="https://ivamarai.com/quote" style="background:#0D1B2A;color:#fff;padding:12px 24px;border-radius:6px;text-decoration:none;font-weight:700;">Get Your AI Assistant →</a>
+            </div>
+          </div>
+          <div style="padding:1rem;text-align:center;background:#F0F8FF;border-radius:0 0 12px 12px;">
+            <p style="font-size:0.75rem;color:#888;">© 2026 Caribex — yourcaribbeanexpert.com</p>
+          </div>
+        </div>`
+      });
+    } catch(e) { console.error('Approval email error:', e.message); }
+    return res.send(`<div style="font-family:sans-serif;text-align:center;padding:3rem;max-width:500px;margin:0 auto;">
+      <div style="font-size:3rem;margin-bottom:1rem">🌴</div>
+      <h2 style="color:#0D1B2A">Listing Approved!</h2>
+      <p style="color:#555;margin:1rem 0">${listing.name} is now live on Caribex.</p>
+      <a href="https://ivamarai.com/admin/listings" style="background:#00B4D8;color:#fff;padding:10px 20px;border-radius:6px;text-decoration:none;font-weight:700">View All Listings →</a>
+    </div>`);
+  } catch(e) {
+    return res.send('<h2 style="font-family:sans-serif;color:#e53e3e;padding:2rem">Error: ' + e.message + '</h2>');
+  }
+});
+
+// CARIBEX DIRECTORY — REJECT BY TOKEN
+app.get("/admin/reject/:token", async (req, res) => {
+  try {
+    const fs2 = require('fs');
+    const pendingFile = '/data/listings/pending.json';
+    if (!fs2.existsSync(pendingFile)) return res.send('<h2>Listing not found.</h2>');
+    let pending = JSON.parse(fs2.readFileSync(pendingFile, 'utf8'));
+    const listing = pending.find(l => l.rejectToken === req.params.token);
+    if (!listing) return res.send('<h2 style="font-family:sans-serif;color:#e53e3e;padding:2rem">Token invalid or already used.</h2>');
+    pending = pending.filter(l => l.id !== listing.id);
+    fs2.writeFileSync(pendingFile, JSON.stringify(pending, null, 2));
+    try {
+      const { Resend } = require('resend');
+      const resend = new Resend(process.env.RESEND_API_KEY);
+      await resend.emails.send({
+        from: 'Caribex <connect@ivamarai.com>',
+        to: listing.email,
+        subject: 'Your Caribex listing submission',
+        html: `<div style="font-family:sans-serif;max-width:600px;margin:0 auto;">
+          <div style="background:linear-gradient(135deg,#0D1B2A,#0077B6);padding:2rem;text-align:center;border-radius:12px 12px 0 0;">
+            <h1 style="color:#fff;font-size:1.5rem;margin:0">🌴 Caribex Directory</h1>
+          </div>
+          <div style="padding:2rem;background:#fff;border:1px solid #E0EEF4;">
+            <p>Hi there,</p>
+            <p>Thank you for submitting <strong>${listing.name}</strong>. After review, we were unable to approve your listing at this time.</p>
+            <p style="font-size:0.9rem;color:#555;">Questions? Contact us at <a href="mailto:connect@ivamarai.com" style="color:#00B4D8;">connect@ivamarai.com</a></p>
+            <div style="text-align:center;margin:2rem 0;">
+              <a href="https://yourcaribbeanexpert.com/caribex/list-your-business" style="background:#00B4D8;color:#fff;padding:12px 24px;border-radius:6px;text-decoration:none;font-weight:700;">Resubmit →</a>
+            </div>
+          </div>
+          <div style="padding:1rem;text-align:center;background:#F0F8FF;border-radius:0 0 12px 12px;">
+            <p style="font-size:0.75rem;color:#888;">© 2026 Caribex — yourcaribbeanexpert.com</p>
+          </div>
+        </div>`
+      });
+    } catch(e) { console.error('Rejection email error:', e.message); }
+    return res.send(`<div style="font-family:sans-serif;text-align:center;padding:3rem;max-width:500px;margin:0 auto;">
+      <h2 style="color:#0D1B2A">Listing Rejected</h2>
+      <p style="color:#555;margin:1rem 0">${listing.name} has been removed.</p>
+      <a href="https://ivamarai.com/admin/listings" style="background:#00B4D8;color:#fff;padding:10px 20px;border-radius:6px;text-decoration:none;font-weight:700">View All Listings →</a>
+    </div>`);
+  } catch(e) {
+    return res.send('<h2 style="font-family:sans-serif;color:#e53e3e;padding:2rem">Error: ' + e.message + '</h2>');
+  }
+});
+
+
+// CARIBEX DIRECTORY — REMOVE APPROVED LISTING
+app.post("/admin/listings/remove/:destination/:id", requireAdmin, async (req, res) => {
+  try {
+    const fs2 = require('fs');
+    const approvedFile = '/data/listings/' + req.params.destination + '.json';
+    if (!fs2.existsSync(approvedFile)) return res.json({ ok: false, error: 'File not found' });
+    let approved = JSON.parse(fs2.readFileSync(approvedFile, 'utf8'));
+    approved = approved.filter(l => l.id !== req.params.id);
+    fs2.writeFileSync(approvedFile, JSON.stringify(approved, null, 2));
+    return res.json({ ok: true });
+  } catch(e) {
+    return res.json({ ok: false, error: e.message });
+  }
+});
+
+// CARIBEX DIRECTORY — LISTINGS COUNT FOR ADMIN DASHBOARD
+app.get("/api/listings-count", requireAdmin, (req, res) => {
+  try {
+    const fs2 = require('fs');
+    const pendingFile = '/data/listings/pending.json';
+    const pending = fs2.existsSync(pendingFile) ? JSON.parse(fs2.readFileSync(pendingFile, 'utf8')) : [];
+    
+    const listingsDir = '/data/listings';
+    let approved = 0;
+    let featured = 0;
+    if (fs2.existsSync(listingsDir)) {
+      fs2.readdirSync(listingsDir).forEach(file => {
+        if (file !== 'pending.json' && file.endsWith('.json')) {
+          try {
+            const listings = JSON.parse(fs2.readFileSync(require('path').join(listingsDir, file), 'utf8'));
+            approved += listings.length;
+            featured += listings.filter(l => l.featured).length;
+          } catch(e) {}
+        }
+      });
+    }
+    
+    return res.json({ pending: pending.length, approved, featured });
+  } catch(e) {
+    return res.json({ pending: 0, approved: 0, featured: 0 });
+  }
+});
+
+
+// ==========================================
+// CARIBEX NEWSLETTER SUBSCRIBE
+// ==========================================
+app.post("/api/caribex-subscribe", express.json(), async (req, res) => {
+  try {
+    const { email } = req.body;
+    if (!email || !email.includes('@')) return res.json({ ok: false });
+
+    // Save to subscribers file
+    const subscribersFile = '/data/caribex-subscribers.json';
+    let subscribers = [];
+    if (require('fs').existsSync(subscribersFile)) {
+      subscribers = JSON.parse(require('fs').readFileSync(subscribersFile, 'utf8'));
+    }
+    if (subscribers.find(s => s.email === email)) return res.json({ ok: true }); // already subscribed
+    subscribers.push({ email, subscribedAt: new Date().toISOString() });
+    require('fs').writeFileSync(subscribersFile, JSON.stringify(subscribers, null, 2));
+
+    // Notify Ivan
+    const { Resend } = require('resend');
+    const resend = new Resend(process.env.RESEND_API_KEY);
+    await resend.emails.send({
+      from: 'Caribex <connect@ivamarai.com>',
+      to: 'connect@ivamarai.com',
+      subject: 'New Caribex Subscriber: ' + email,
+      html: '<p>New subscriber: <strong>' + email + '</strong></p><p>Total subscribers: ' + subscribers.length + '</p>'
+    });
+
+    // Add to Brevo list
+    try {
+      const brevoRes = await fetch('https://api.brevo.com/v3/contacts', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'api-key': process.env.BREVO_API_KEY
+        },
+        body: JSON.stringify({
+          email: email,
+          listIds: [3],
+          updateEnabled: true
+        })
+      });
+      console.log('📋 Brevo response:', brevoRes.status);
+    } catch(brevoErr) {
+      console.error('Brevo error:', brevoErr.message);
+    }
+
+    // Welcome email to subscriber
+    await resend.emails.send({
+      from: 'Caribex <connect@ivamarai.com>',
+      to: email,
+      subject: '🌴 Welcome to Caribex!',
+      html: `<div style="font-family:sans-serif;max-width:600px;margin:0 auto;">
+        <div style="background:linear-gradient(135deg,#0D1B2A,#0077B6);padding:2rem;text-align:center;border-radius:12px 12px 0 0;">
+          <h1 style="color:#fff;font-size:1.5rem;margin:0">🌴 Welcome to Caribex!</h1>
+        </div>
+        <div style="padding:2rem;background:#fff;border:1px solid #E0EEF4;">
+          <p style="font-size:1rem;color:#333">You're now part of the Caribex community — the Caribbean travel guide built by people who actually know the islands.</p>
+          <p style="font-size:0.9rem;color:#555">Expect travel insights, destination guides and hidden gems delivered to your inbox.</p>
+          <div style="text-align:center;margin:2rem 0;">
+            <a href="https://yourcaribbeanexpert.com" style="background:#00B4D8;color:#fff;padding:12px 24px;border-radius:6px;text-decoration:none;font-weight:700;">Explore the Caribbean →</a>
+          </div>
+        </div>
+        <div style="padding:1rem;text-align:center;background:#F0F8FF;border-radius:0 0 12px 12px;">
+          <p style="font-size:0.75rem;color:#888;">© 2026 Caribex — yourcaribbeanexpert.com · A project by Ivamar AI LLC</p>
+        </div>
+      </div>`
+    });
+
+    return res.json({ ok: true });
+  } catch(e) {
+    console.error('Subscribe error:', e.message);
+    return res.json({ ok: false });
+  }
+});
+
+// ==========================================
+// BLOGGER RSS PROXY
+// ==========================================
+app.get("/api/blog-feed", async (req, res) => {
+  try {
+    const r = await fetch("https://blog.yourcaribbeanexpert.com/feeds/posts/default?alt=json&max-results=4");
+    const data = await r.json();
+    const entries = (data.feed && data.feed.entry) || [];
+    const posts = entries.map(e => {
+      const title = e.title.$t.trim();
+      const slug = title.toLowerCase().replace(/[áàä]/g,'a').replace(/[éèë]/g,'e').replace(/[íìï]/g,'i').replace(/[óòö]/g,'o').replace(/[úùü]/g,'u').replace(/ñ/g,'n').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+      const date = new Date(e.published.$t).toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'});
+      let image = '/img/og-caribex.jpg';
+      if (e.media$thumbnail) image = e.media$thumbnail.url.replace(/s72-[^/]*/,'s1200-c').replace(/w[0-9]+-h[0-9]+-c/,'s1200-c');
+      const content = e.content ? e.content.$t : '';
+      const imgMatch = content.match(/<img[^>]+src=["']([^"']+)["']/i);
+      if (imgMatch && !e.media$thumbnail) image = imgMatch[1];
+      const text = content.replace(/<[^>]+>/g,'').trim();
+      const excerpt = text.substring(0,150) + '...';
+      return { title, slug, date, image, excerpt, link: '/insights/' + slug };
+    });
+    res.set("Access-Control-Allow-Origin", "*");
+    res.json(posts);
+  } catch(e) {
+    res.status(500).json({ error: "Feed unavailable" });
+  }
+});
+
+
+// ==========================================
+// BLOGGER RSS PROXY
+// ==========================================
+app.get("/api/blog-feed", async (req, res) => {
+  try {
+    const r = await fetch("https://blog.yourcaribbeanexpert.com/feeds/posts/default?alt=json&max-results=4");
+    const data = await r.json();
+    const entries = (data.feed && data.feed.entry) || [];
+    const posts = entries.map(e => {
+      const title = e.title.$t.trim();
+      const slug = title.toLowerCase().replace(/[áàä]/g,'a').replace(/[éèë]/g,'e').replace(/[íìï]/g,'i').replace(/[óòö]/g,'o').replace(/[úùü]/g,'u').replace(/ñ/g,'n').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+      const date = new Date(e.published.$t).toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'});
+      let image = '/img/og-caribex.jpg';
+      if (e.media$thumbnail) image = e.media$thumbnail.url.replace(/s72-[^/]*/,'s1200-c').replace(/w[0-9]+-h[0-9]+-c/,'s1200-c');
+      const content = e.content ? e.content.$t : '';
+      const imgMatch = content.match(/<img[^>]+src=["']([^"']+)["']/i);
+      if (imgMatch && !e.media$thumbnail) image = imgMatch[1];
+      const text = content.replace(/<[^>]+>/g,'').trim();
+      const excerpt = text.substring(0,150) + '...';
+      return { title, slug, date, image, excerpt, link: '/insights/' + slug };
+    });
+    res.set("Access-Control-Allow-Origin", "*");
+    res.json(posts);
+  } catch(e) {
+    res.status(500).json({ error: "Feed unavailable" });
+  }
+});
+
+// ==========================================
+// SEO — SITEMAP & ROBOTS
+// ==========================================
+app.get("/quienes-somos", (req, res) => res.send(quienesSomos));
+
+app.get("/privacidad", (req, res) => res.send(caribexPrivacy));
+app.get("/terminos", (req, res) => res.send(caribexTerms));
+app.get("/privacidad", (req, res) => res.redirect(301, "/privacidad-boricua"));
+app.get("/terminos", (req, res) => res.redirect(301, "/terminos-boricua"));
+
+app.get("/ads.txt", (req, res) => {
+  res.set("Content-Type", "text/plain");
+  res.send("google.com, pub-8301223085122981, DIRECT, f08c47fec0942fa0");
+});
+
+app.get("/caribex-sitemap.xml", async (req, res) => {
+  const base = "https://www.yourcaribbeanexpert.com";
+  const destinations = [
+    'puerto-rico','dominican-republic','cuba','jamaica','grand-cayman',
+    'haiti','vieques-culebra','barbados','santa-lucia','trinidad-tobago',
+    'sint-maarten','martinique','guadeloupe','st-barths','grenada',
+    'antigua','dominica','st-kitts-nevis','aruba','curacao','bonaire',
+    'usvi','bvi','turks-caicos','bahamas','tulum','cartagena','san-andres',
+    'costa-rica','belize','panama','roatan','venezuela','corn-islands',
+    'guatemala-caribbean'
+  ];
+
+  // Get Caribex blog posts from RSS
+  let insightUrls = '';
+  try {
+    const rss = await fetch("https://blog.yourcaribbeanexpert.com/feeds/posts/default?alt=json&max-results=50");
+    const rssData = await rss.json();
+    const entries = rssData.feed.entry || [];
+    insightUrls = entries.map(e => {
+      const title = e.title.$t.trim();
+      const slug = title.toLowerCase().replace(/[áàä]/g,'a').replace(/[éèë]/g,'e').replace(/[íìï]/g,'i').replace(/[óòö]/g,'o').replace(/[úùü]/g,'u').replace(/ñ/g,'n').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+      const date = new Date(e.published.$t).toISOString().split('T')[0];
+      return `<url><loc>${base}/insights/${slug}</loc><lastmod>${date}</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>`;
+    }).join('');
+  } catch(e) { console.error('Caribex sitemap RSS error:', e.message); }
+
+  const urls = [
+    `<url><loc>${base}/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url>`,
+    `<url><loc>${base}/caribex</loc><changefreq>weekly</changefreq><priority>0.9</priority></url>`,
+    `<url><loc>${base}/insights</loc><changefreq>daily</changefreq><priority>0.9</priority></url>`,
+    `<url><loc>${base}/about</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>`,
+    `<url><loc>${base}/privacidad</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>`,
+    `<url><loc>${base}/terminos</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>`,
+    ...destinations.map(slug =>
+      `<url><loc>${base}/caribex/${slug}</loc><changefreq>monthly</changefreq><priority>0.8</priority></url>`
+    )
+  ].join("\n  ") + insightUrls;
+
+  res.header("Content-Type", "application/xml");
+  res.send(`<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  ${urls}
+</urlset>`);
+});
+
+app.get("/robots.txt", (req, res) => {
+  res.header("Content-Type", "text/plain");
+  res.send(`User-agent: *
+Allow: /
+Disallow: /admin
+Disallow: /api/
+
+Sitemap: https://yourcaribbeanexpert.com/caribex-sitemap.xml`);
+});
+
+
+// Generic place photo endpoint for Planeta Boricua viajes
+
+app.get("/api/place-photo", async (req, res) => {
+  try {
+    const q = req.query.q || 'travel destination';
+    const url = await getPlacePhoto(q, 600, q);
+    res.json({ url: url || null });
+  } catch(e) {
+    res.json({ url: null });
+  }
+});
+
+app.get("/autoridad-energia-criolla", (req, res) => res.send(aecDemo));
+app.get("/noticias", (req, res) => res.redirect(301, "/blog"));
+
+// PB town stories
+require("./routes/pb-towns")(app);
+require("./routes/pb-stories")(app);
+
+// PB Blog routes
+const pbBlogRouter = require("./routes/pb-blog");
+const quienesSomos = require("./views/quienes-somos");
+app.use("/blog", pbBlogRouter);
+
+app.get('/api/blogger/ping', (_req,res) => res.status(410).json({success:false,error:'Blogger ya no es la fuente del blog.'}));
+app.get('/admin/pb-editorial', (_req,res) => res.redirect(301,'/pb-control#publicaciones'));
+
+// Lo más reciente: canal editorial rápido e independiente de Blogger.
+app.get('/api/pb-lo-mas-reciente', (_req, res) => {
+  const items = readPBLatest('approved.json').sort((a,b) => new Date(b.publishedAt) - new Date(a.publishedAt));
+  res.json({ ok:true, items:items.slice(0, 10).map(publicPBLatest) });
+});
+
+function pbLatestTopic(item) {
+  const text = `${item.title || ''} ${item.summary || ''}`.toLowerCase();
+  if (/agua|manantial|sequ[ií]a|lluvia|hurac[aá]n|ambiente|epa|arroyo/.test(text)) return 'Ambiente';
+  if (/arrest|fbi|federal|fiscal[ií]a|delito|polic[ií]a|tribunal/.test(text)) return 'Seguridad y justicia';
+  if (/gobierno|contrato|junta|gobern|senado|c[aá]mara|alcald|presidente|trump|pol[ií]tica/.test(text)) return 'Gobierno y política';
+  if (/trabaj|salario|empleo|costo|econom[ií]a|vivienda|factura/.test(text)) return 'Economía y vida diaria';
+  return 'Comunidad';
+}
+
+app.get('/lo-mas-reciente', (req, res) => {
+  const query = sanitize(req.query.q || '').trim().toLowerCase().slice(0,100);
+  const selectedTopic = sanitize(req.query.tema || '').trim().slice(0,60);
+  const all = readPBLatest('approved.json').map(publicPBLatest).map(item => ({...item,topic:pbLatestTopic(item)})).sort((a,b) => new Date(b.publishedAt) - new Date(a.publishedAt));
+  const topics = [...new Set(all.map(item => item.topic))];
+  const filtered = all.filter(item => (!query || `${item.title} ${item.summary} ${item.body}`.toLowerCase().includes(query)) && (!selectedTopic || item.topic === selectedTopic));
+  const perPage = 9;
+  const totalPages = Math.max(1, Math.ceil(filtered.length / perPage));
+  const requestedPage = Number.parseInt(req.query.page,10) || 1;
+  const page = Math.min(Math.max(1,requestedPage),totalPages);
+  const items = filtered.slice((page-1)*perPage,page*perPage);
+  res.send(loMasRecienteIndexPB(items,page,totalPages,query,selectedTopic,topics,filtered.length));
+});
+
+app.get('/lo-mas-reciente/:slug', (req, res) => {
+  const item = readPBLatest('approved.json').find(entry => entry.slug === req.params.slug);
+  if (!item) return res.status(404).send(loMasRecientePB(null));
+  const comments = readPBComments('approved.json').filter(comment => comment.articleSlug === item.slug && (comment.section || 'latest') === 'latest').sort((a,b) => new Date(b.approvedAt) - new Date(a.approvedAt)).map(publicPBComment);
+  res.send(loMasRecientePB(publicPBLatest(item), comments));
+});
+
+app.get('/api/pb-comments/:slug', (req, res) => {
+  const section = req.query.section === 'blog' ? 'blog' : 'latest';
+  const validSlug = /^[a-z0-9-]+$/.test(req.params.slug);
+  const articleExists = validSlug && (section === 'blog' ? Boolean(pbBlogStore.readPost(req.params.slug)) : readPBLatest('approved.json').some(item => item.slug === req.params.slug));
+  if (!articleExists) return res.status(404).json({ok:false,error:'Publicación no encontrada.'});
+  const comments = readPBComments('approved.json').filter(comment => comment.articleSlug === req.params.slug && (comment.section || 'latest') === section).sort((a,b) => new Date(b.approvedAt) - new Date(a.approvedAt)).map(publicPBComment);
+  res.json({ok:true,comments});
+});
+
+app.post('/api/pb-comments/:slug', formLimiter, express.json({ limit:'20kb' }), async (req, res) => {
+  const section = req.body.section === 'blog' ? 'blog' : 'latest';
+  if (!/^[a-z0-9-]+$/.test(req.params.slug)) return res.status(404).json({ok:false,error:'Publicación no encontrada.'});
+  let article = null;
+  if (section === 'blog') {
+    article = pbBlogStore.readPost(req.params.slug);
+  } else {
+    article = readPBLatest('approved.json').find(item => item.slug === req.params.slug);
+  }
+  if (!article) return res.status(404).json({ok:false,error:'Publicación no encontrada.'});
+  if (String(req.body.website || '').trim()) return res.json({ok:true,pending:true});
+  const name = sanitize(req.body.name || '').replace(/\s+/g,' ').trim();
+  const commentText = sanitize(req.body.comment || '').trim();
+  if (name.length < 2 || commentText.length < 3) return res.status(400).json({ok:false,error:'Escribe tu nombre y un comentario.'});
+  if (name.length > 60 || commentText.length > 1000) return res.status(400).json({ok:false,error:'El comentario excede el límite permitido.'});
+  const crypto = require('crypto');
+  const pending = readPBComments('pending.json');
+  const recentDuplicate = pending.some(item => item.articleSlug === article.slug && (item.section || 'latest') === section && item.name.toLowerCase() === name.toLowerCase() && item.comment === commentText);
+  if (recentDuplicate) return res.json({ok:true,pending:true});
+  const item = {id:`${Date.now()}-${crypto.randomBytes(3).toString('hex')}`,articleSlug:article.slug,articleTitle:article.title,section,name,comment:commentText,status:'pending',submittedAt:new Date().toISOString(),approveToken:crypto.randomBytes(24).toString('hex'),rejectToken:crypto.randomBytes(24).toString('hex')};
+  pending.push(item); writePBComments('pending.json',pending);
+  const emailEsc = (value) => String(value || '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+  try {
+    await resend.emails.send({from:`Planeta Boricua <${PB_SENDER_EMAIL}>`,to:PB_CONTACT_EMAIL,subject:`💬 Nuevo comentario: ${article.title}`,html:`<h2>Nuevo comentario pendiente</h2><p><strong>Publicación:</strong> ${emailEsc(article.title)}</p><p><strong>Nombre:</strong> ${emailEsc(name)}</p><blockquote>${emailEsc(commentText).replace(/\n/g,'<br>')}</blockquote><p><a href="https://www.masboricuaqueunmofongo.com/admin/pb-comment-approve/${item.approveToken}">✅ Aprobar</a> &nbsp; <a href="https://www.masboricuaqueunmofongo.com/admin/pb-comment-reject/${item.rejectToken}">❌ Rechazar</a></p>`});
+  } catch (error) { console.error('PB comment notification error:',error.message); }
+  res.status(202).json({ok:true,pending:true});
+});
+
+app.get('/admin/pb-comment-approve/:token', (req, res) => {
+  const pending = readPBComments('pending.json');
+  const index = pending.findIndex(item => item.approveToken === req.params.token);
+  if (index < 0) return res.status(404).send('Comentario no encontrado o procesado.');
+  const [item] = pending.splice(index,1);
+  delete item.approveToken; delete item.rejectToken; item.status='approved'; item.approvedAt=new Date().toISOString();
+  const approved = readPBComments('approved.json'); approved.push(item);
+  writePBComments('pending.json',pending); writePBComments('approved.json',approved);
+  res.send(`<!doctype html><html lang="es"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Comentario aprobado</title><body style="font-family:system-ui;text-align:center;padding:3rem"><h1>✅ Comentario publicado</h1><p>${emailEscForResponse(item.name)}</p><p><a href="${item.section === 'blog' ? '/blog/' : '/lo-mas-reciente/'}${encodeURIComponent(item.articleSlug)}#comentarios">Ver comentarios</a></p></body></html>`);
+});
+
+app.get('/admin/pb-comment-reject/:token', (req, res) => {
+  const pending = readPBComments('pending.json');
+  const index = pending.findIndex(item => item.rejectToken === req.params.token);
+  if (index < 0) return res.status(404).send('Comentario no encontrado o procesado.');
+  pending.splice(index,1); writePBComments('pending.json',pending);
+  res.send('<!doctype html><html lang="es"><meta charset="utf-8"><body style="font-family:system-ui;text-align:center;padding:3rem"><h1>Comentario rechazado</h1></body></html>');
+});
+
+function emailEscForResponse(value) {
+  return String(value || '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+}
+
+app.post('/api/pb-reciente-submit', formLimiter, express.json({ limit:'300kb' }), async (req, res) => {
+  const title = sanitize(req.body.title || '').trim();
+  const summary = sanitize(req.body.summary || '').trim();
+  const body = sanitize(req.body.body || '').trim();
+  let image = sanitize(req.body.image || '').trim();
+  const sources = Array.isArray(req.body.sources) ? req.body.sources.slice(0,5).map(source => {
+    const label = sanitize(source.label || '').trim();
+    try { const url = new URL(String(source.url || '').trim()); return label && ['http:','https:'].includes(url.protocol) ? { label, url:url.toString() } : null; } catch (_) { return null; }
+  }).filter(Boolean) : [];
+  if (!title || !summary || !body || !sources.length) return res.status(400).json({ok:false,error:'Faltan título, resumen, contenido o fuentes verificables.'});
+  if (title.length > 180 || summary.length > 400 || body.length > 12000) return res.status(400).json({ok:false,error:'La publicación excede el límite editorial.'});
+  if (image && !/^https?:\/\//i.test(image) && !image.startsWith('/')) image = '';
+  const crypto = require('crypto');
+  const id = Date.now().toString();
+  const item = { id,slug:pbLatestSlug(title,id),title,summary,body,image,sources,status:'pending',submittedAt:new Date().toISOString(),approveToken:crypto.randomBytes(24).toString('hex'),rejectToken:crypto.randomBytes(24).toString('hex') };
+  const pending = readPBLatest('pending.json'); pending.push(item); writePBLatest('pending.json',pending);
+  try {
+    await resend.emails.send({from:`Planeta Boricua <${PB_SENDER_EMAIL}>`,to:PB_CONTACT_EMAIL,subject:`📰 Borrador Lo más reciente: ${item.title}`,html:`<h2>${item.title}</h2><p><strong>${item.summary}</strong></p><p>${item.body.slice(0,1200).replace(/\n/g,'<br>')}</p><p>Fuentes: ${item.sources.map(source => `<a href="${source.url}">${source.label}</a>`).join(' · ')}</p><p><a href="https://www.masboricuaqueunmofongo.com/admin/pb-reciente-approve/${item.approveToken}">✅ Aprobar y publicar</a> &nbsp; <a href="https://www.masboricuaqueunmofongo.com/admin/pb-reciente-reject/${item.rejectToken}">❌ Rechazar</a></p>`});
+  } catch (error) { console.error('PB latest notification error:',error.message); }
+  res.json({ok:true,id:item.id,slug:item.slug});
+});
+
+app.get('/admin/pb-reciente-approve/:token', (req, res) => {
+  const pending = readPBLatest('pending.json');
+  const index = pending.findIndex(item => item.approveToken === req.params.token);
+  if (index < 0) return res.status(404).send('Solicitud no encontrada o procesada.');
+  const [item] = pending.splice(index,1);
+  delete item.approveToken; delete item.rejectToken; item.status='approved'; item.publishedAt=new Date().toISOString();
+  const approved = readPBLatest('approved.json'); approved.push(item);
+  writePBLatest('pending.json',pending); writePBLatest('approved.json',approved);
+  res.send(`<!doctype html><html lang="es"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Publicado</title><body style="font-family:system-ui;text-align:center;padding:3rem"><h1>✅ Publicado en Lo más reciente</h1><p>${item.title}</p><p><a href="/lo-mas-reciente/${item.slug}">Ver publicación</a></p></body></html>`);
+});
+
+app.get('/admin/pb-reciente-reject/:token', (req, res) => {
+  const pending = readPBLatest('pending.json');
+  const index = pending.findIndex(item => item.rejectToken === req.params.token);
+  if (index < 0) return res.status(404).send('Solicitud no encontrada o procesada.');
+  pending.splice(index,1); writePBLatest('pending.json',pending);
+  res.send('<!doctype html><html lang="es"><meta charset="utf-8"><body style="font-family:system-ui;text-align:center;padding:3rem"><h1>Publicación rechazada</h1></body></html>');
+});
+
+// Caribex webhook - auto sync when new post published  
+app.get("/api/caribex-sync/ping", async (req, res) => {
+  try {
+    await fetch("http://localhost:10000/api/caribex-sync/sync");
+    res.status(200).send("OK");
+  } catch(e) {
+    res.status(500).send("Error");
+  }
+});
+
+// Caribex blog
+const caribexBlogRouter = require("./routes/caribex-blog");
+app.use("/insights", caribexBlogRouter);
+
+// Caribex sync
+const caribexSync = require("./routes/caribex-sync");
+app.use("/api/caribex-sync", caribexSync);
+
+
+// Redirects for old blog URLs that Google has indexed
+app.get('/planeta-boricua-blog', (req, res) => res.redirect(301, '/blog'));
+app.get('/planeta-boricua-blog/:path', (req, res) => res.redirect(301, '/blog'));
+app.get('/inicio', (req, res) => res.redirect(301, '/blog'));
+app.get('/feeds/posts/default', (_req,res) => res.redirect(301,'https://www.masboricuaqueunmofongo.com/blog/feed.xml'));
+app.get('/search', (_req,res) => res.redirect(301,'https://www.masboricuaqueunmofongo.com/blog'));
+app.get('/:year/:month/:slug', (req, res, next) => {
+  const { year, month, slug } = req.params;
+  if (/^\d{4}$/.test(year) && /^\d{2}$/.test(month)) {
+    const legacyPath = `/${year}/${month}/${slug}`;
+    const post = pbBlogStore.loadPosts().find(item => {
+      try { return decodeURI(item.legacyPath || '') === legacyPath; } catch (_) { return item.legacyPath === legacyPath; }
+    });
+    const destination = post ? `/blog/${post.slug}` : '/blog';
+    return res.redirect(301, `https://www.masboricuaqueunmofongo.com${destination}`);
+  } else {
+    next();
+  }
+});
+
+app.get("/sitemap.xml", async (req, res) => {
+  // Route to correct sitemap based on host
+  const host = req.hostname;
+  if (host.includes('yourcaribbeanexpert')) {
+    return res.redirect(301, '/caribex-sitemap.xml');
+  }
+  const postUrls = pbBlogStore.loadPosts().map(post => `<url><loc>https://www.masboricuaqueunmofongo.com/blog/${post.slug}</loc><lastmod>${post.updatedISO || post.dateISO}</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>`).join('');
+  let artisanUrls = '';
+  try {
+    artisanUrls = loadApprovedPBListings().map(item => `<url><loc>https://www.masboricuaqueunmofongo.com/artesanos/${pbArtisanSlug(item)}</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>`).join('');
+  } catch(e) { console.error('Sitemap artisans error:', e.message); }
+  const latestUrls = readPBLatest('approved.json').map(item => `<url><loc>https://www.masboricuaqueunmofongo.com/lo-mas-reciente/${item.slug}</loc><lastmod>${String(item.publishedAt || '').slice(0,10)}</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>`).join('');
+  const staticUrls = `<url><loc>https://www.masboricuaqueunmofongo.com/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/blog</loc><changefreq>weekly</changefreq><priority>0.9</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/lo-mas-reciente</loc><changefreq>daily</changefreq><priority>0.9</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/recursos</loc><changefreq>weekly</changefreq><priority>0.9</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/feria-artesanos</loc><changefreq>weekly</changefreq><priority>0.8</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/quienes-somos</loc><changefreq>monthly</changefreq><priority>0.7</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/privacidad-boricua</loc><changefreq>monthly</changefreq><priority>0.5</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/terminos-boricua</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>`;
+  const agendaUrl = `<url><loc>https://www.masboricuaqueunmofongo.com/agenda-boricua</loc><changefreq>daily</changefreq><priority>0.8</priority></url>`;
+  res.set('Content-Type','application/xml');
+  res.send(`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${staticUrls}${agendaUrl}${latestUrls}${postUrls}${artisanUrls}</urlset>`);
+});
+
+app.get("/feria-artesanos", (req, res) => {
+  res.send(feriaArtesanosPB);
+});
+
+app.get('/agenda-artesanal', (_req, res) => res.redirect(301, '/agenda-boricua'));
+app.get('/agenda-boricua', (_req, res) => res.send(agendaArtesanalPB(readPBEvents('approved.json').map(publicPBEvent))));
+app.get('/api/pb-eventos-proximos', (_req, res) => {
+  const today = new Date().toISOString().slice(0, 10);
+  const events = readPBEvents('approved.json').map(publicPBEvent).filter(event => (event.endDate || event.startDate) >= today).sort((a,b) => a.startDate.localeCompare(b.startDate)).slice(0, 3);
+  res.json({ ok:true, events });
+});
+app.get('/compartir-evento-boricua', (_req, res) => res.send(enviarEventoBoricuaPB()));
+
+app.get('/artesanos/:slug/compartir-evento', (req, res) => {
+  const canonicalSlug = canonicalPBArtisanSlug(req.params.slug);
+  if (canonicalSlug !== req.params.slug) return res.redirect(301, `/artesanos/${encodeURIComponent(canonicalSlug)}/compartir-evento`);
+  const item = loadApprovedPBListings().find(entry => pbArtisanSlug(entry) === canonicalSlug);
+  if (!item) return res.status(404).send('Artesano no encontrado');
+  res.send(enviarEventoPB({ name:item.name, slug:canonicalSlug }));
+});
+
+app.post('/api/pb-evento-submit', formLimiter, express.json(), async (req, res) => {
+  const artisanSlug = sanitize(req.body.artisanSlug);
+  const artisan = loadApprovedPBListings().find(entry => pbArtisanSlug(entry) === artisanSlug);
+  if (!artisan) return res.status(404).json({ ok:false, error:'Perfil de artesano no encontrado.' });
+  const email = sanitize(req.body.email).toLowerCase();
+  if (!artisan.email || email !== String(artisan.email).trim().toLowerCase()) return res.status(403).json({ ok:false, error:'El email no coincide con el registro del artesano.' });
+  const fields = ['name','type','startDate','endDate','time','venue','address','city','region','description','eventUrl','cost','image'];
+  const event = {}; fields.forEach(key => event[key] = sanitize(req.body[key] || ''));
+  if (!event.name || !event.type || !event.startDate || !event.city || !event.region || !event.description) return res.status(400).json({ ok:false,error:'Completa todos los campos requeridos.' });
+  if (!req.body.rights) return res.status(400).json({ ok:false,error:'Debes confirmar que puedes compartir la información y el afiche.' });
+  if (event.cost && !/^(gratis|free|\$?0(?:\.00)?)$/i.test(event.cost)) return res.status(400).json({ok:false,error:'La publicación gratuita está disponible únicamente para eventos sin costo de entrada.'});
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(event.startDate) || (event.endDate && !/^\d{4}-\d{2}-\d{2}$/.test(event.endDate))) return res.status(400).json({ ok:false,error:'Fecha inválida.' });
+  if (event.startDate < new Date().toISOString().slice(0,10)) return res.status(400).json({ ok:false,error:'La fecha del evento ya pasó.' });
+  if (event.endDate && event.endDate < event.startDate) return res.status(400).json({ ok:false,error:'La fecha final no puede ser anterior a la inicial.' });
+  for (const key of ['eventUrl','image']) if (event[key] && !/^https?:\/\//i.test(event[key])) event[key] = '';
+  event.cost = 'Gratis';
+  const crypto = require('crypto');
+  Object.assign(event,{id:Date.now().toString(),artisanSlug,artisanName:artisan.name,email,virtual:Boolean(req.body.virtual),status:'pending',submittedAt:new Date().toISOString(),approveToken:crypto.randomBytes(24).toString('hex'),rejectToken:crypto.randomBytes(24).toString('hex')});
+  const pending = readPBEvents('pending.json'); pending.push(event); writePBEvents('pending.json',pending);
+  try {
+    await resend.emails.send({from:`Planeta Boricua <${PB_SENDER_EMAIL}>`,to:PB_CONTACT_EMAIL,subject:`📅 Nuevo evento artesanal: ${event.name}`,html:`<h2>${event.name}</h2><p>Enviado por <strong>${event.artisanName}</strong></p><p>${event.startDate} · ${event.city}, ${event.region}</p><p>${event.description}</p><p><a href="https://www.masboricuaqueunmofongo.com/admin/pb-event-approve/${event.approveToken}">✅ Aprobar</a> &nbsp; <a href="https://www.masboricuaqueunmofongo.com/admin/pb-event-reject/${event.rejectToken}">❌ Rechazar</a></p>`});
+  } catch (error) { console.error('PB event notification error:',error.message); }
+  res.json({ok:true});
+});
+
+app.post('/api/pb-evento-publico-submit', formLimiter, express.json(), async (req, res) => {
+  const fields = ['name','type','startDate','endDate','time','venue','address','city','region','country','description','eventUrl','image','organizerName','email'];
+  const event = {}; fields.forEach(key => event[key] = sanitize(req.body[key] || ''));
+  event.email = event.email.toLowerCase();
+  if (!event.name || !event.type || !event.startDate || !event.region || !event.country || !event.description || !event.eventUrl || !event.organizerName || !event.email) return res.status(400).json({ok:false,error:'Completa todos los campos requeridos.'});
+  if (!['Puerto Rico', 'Estados Unidos', 'Virtual'].includes(event.country)) return res.status(400).json({ok:false,error:'Selecciona una ubicación válida.'});
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(event.email)) return res.status(400).json({ok:false,error:'Incluye un correo electrónico válido.'});
+  if (event.country !== 'Virtual' && !event.city) return res.status(400).json({ok:false,error:'Indica la ciudad o pueblo del evento.'});
+  if (!req.body.freeAdmission) return res.status(400).json({ok:false,error:'Este formulario acepta únicamente eventos completamente gratuitos.'});
+  if (!req.body.boricuaConnection) return res.status(400).json({ok:false,error:'La actividad debe tener relación directa con Puerto Rico o la comunidad boricua.'});
+  if (!req.body.rights) return res.status(400).json({ok:false,error:'Debes confirmar la información y los derechos de la imagen.'});
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(event.startDate) || (event.endDate && !/^\d{4}-\d{2}-\d{2}$/.test(event.endDate))) return res.status(400).json({ok:false,error:'Fecha inválida.'});
+  if (event.startDate < new Date().toISOString().slice(0,10)) return res.status(400).json({ok:false,error:'La fecha del evento ya pasó.'});
+  if (event.endDate && event.endDate < event.startDate) return res.status(400).json({ok:false,error:'La fecha final no puede ser anterior a la inicial.'});
+  if (!/^https?:\/\//i.test(event.eventUrl)) return res.status(400).json({ok:false,error:'Incluye un enlace oficial válido.'});
+  if (event.image && !/^https?:\/\//i.test(event.image)) event.image = '';
+  const crypto = require('crypto');
+  Object.assign(event,{id:Date.now().toString(),virtual:event.country==='Virtual',cost:'Gratis',status:'pending',submittedAt:new Date().toISOString(),approveToken:crypto.randomBytes(24).toString('hex'),rejectToken:crypto.randomBytes(24).toString('hex')});
+  const pending = readPBEvents('pending.json'); pending.push(event); writePBEvents('pending.json',pending);
+  try {
+    await resend.emails.send({from:`Planeta Boricua <${PB_SENDER_EMAIL}>`,to:PB_CONTACT_EMAIL,subject:`📅 Evento boricua gratuito: ${event.name}`,html:`<h2>${event.name}</h2><p>Organizado por <strong>${event.organizerName}</strong></p><p>${event.startDate} · ${event.city}, ${event.region}</p><p>${event.description}</p><p><a href="${event.eventUrl}">Ver fuente oficial</a></p><p><a href="https://www.masboricuaqueunmofongo.com/admin/pb-event-approve/${event.approveToken}">✅ Aprobar</a> &nbsp; <a href="https://www.masboricuaqueunmofongo.com/admin/pb-event-reject/${event.rejectToken}">❌ Rechazar</a></p>`});
+  } catch (error) { console.error('PB public event notification error:',error.message); }
+  res.json({ok:true});
+});
+
+app.get('/admin/pb-event-approve/:token', async (req,res) => {
+  const pending = readPBEvents('pending.json'); const index = pending.findIndex(e => e.approveToken === req.params.token);
+  if (index < 0) return res.status(404).send('Evento no encontrado');
+  const event = pending.splice(index,1)[0]; event.status='approved'; event.approvedAt=new Date().toISOString();
+  const approved=readPBEvents('approved.json'); approved.push(event); writePBEvents('approved.json',approved); writePBEvents('pending.json',pending);
+  try { await resend.emails.send({from:`Planeta Boricua <${PB_SENDER_EMAIL}>`,to:event.email,subject:`✅ Evento aprobado: ${event.name}`,html:`<p>Tu evento <strong>${event.name}</strong> fue aprobado y ya puede aparecer en la <a href="https://www.masboricuaqueunmofongo.com/agenda-boricua">Agenda Boricua</a>.</p>`}); } catch(error){ console.error('PB event approval email:',error.message); }
+  res.send(`<h2>✅ Evento aprobado</h2><p>${event.name}</p><p><a href="/agenda-boricua">Ver agenda</a> · <a href="/admin/pb-event-delete/${event.approveToken}">Eliminar evento</a></p>`);
+});
+
+app.get('/admin/pb-event-reject/:token', (req,res) => {
+  const pending=readPBEvents('pending.json'); const index=pending.findIndex(e=>e.rejectToken===req.params.token);
+  if(index<0)return res.status(404).send('Evento no encontrado');
+  const event=pending.splice(index,1)[0]; writePBEvents('pending.json',pending); res.send(`<h2>Evento rechazado</h2><p>${event.name}</p>`);
+});
+
+app.get('/admin/pb-event-delete/:token', (req, res) => {
+  const event = readPBEvents('approved.json').find(entry => entry.approveToken === req.params.token);
+  if (!event) return res.status(404).send('Evento no encontrado');
+  res.send(`<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>Eliminar evento</title><style>body{font-family:system-ui;background:#f5f5f0;color:#171717;padding:2rem}.box{max-width:560px;margin:auto;background:#fff;padding:2rem;border-radius:14px}button{background:#ce1126;color:#fff;border:0;border-radius:7px;padding:.8rem 1rem;font-weight:800;cursor:pointer}a{color:#002d62}</style></head><body><main class="box"><h1>Eliminar evento</h1><p>Vas a retirar de la agenda <strong>${sanitize(event.name)}</strong>.</p><form method="post" action="/admin/pb-event-delete/${encodeURIComponent(req.params.token)}"><button type="submit">Sí, eliminar evento</button></form><p><a href="/agenda-boricua">Cancelar y volver a la agenda</a></p></main></body></html>`);
+});
+
+app.post('/admin/pb-event-delete/:token', (req, res) => {
+  const approved = readPBEvents('approved.json');
+  const index = approved.findIndex(entry => entry.approveToken === req.params.token);
+  if (index < 0) return res.status(404).send('Evento no encontrado');
+  const event = approved.splice(index, 1)[0];
+  writePBEvents('approved.json', approved);
+  res.send(`<h2>✅ Evento eliminado</h2><p>${sanitize(event.name)} ya no aparece en la agenda.</p><p><a href="/agenda-boricua">Ver agenda</a></p>`);
+});
+
+app.get('/artesanos/:slug', (req, res, next) => {
+  // Reserve /artesanos/mi-perfil for the artisan self-service login route defined below.
+  if (req.params.slug === 'mi-perfil') return next();
+  const canonicalSlug = canonicalPBArtisanSlug(req.params.slug);
+  if (canonicalSlug !== req.params.slug) return res.redirect(301, `/artesanos/${encodeURIComponent(canonicalSlug)}`);
+  const item = loadApprovedPBListings().find(entry => pbArtisanSlug(entry) === canonicalSlug);
+  if (!item) return res.status(404).send('Artesano no encontrado');
+  const categories = {'tallado-madera':'Tallado en madera','joyeria':'Joyería artesanal','ceramica':'Cerámica y alfarería','textiles':'Textiles y costura','pintura':'Pintura y arte','santos':'Santos y tallas religiosas','cuero':'Trabajo en cuero','vejigantes':'Máscaras y vejigantes','instrumentos':'Instrumentos musicales','reciclado':'Arte con material reciclado','velas-jabones':'Velas y jabones artesanales','otro':'Artesanía puertorriqueña'};
+  const locationLabel = `${item.city || item.location || 'Puerto Rico'}${PB_US_LOCATIONS.has(item.location) ? ', USA' : ', Puerto Rico'}`;
+  const events = readPBEvents('approved.json').map(publicPBEvent).filter(event => event.artisanSlug === canonicalSlug && new Date(`${event.endDate || event.startDate}T23:59:59`) >= new Date());
+  res.send(artesanoPerfilPB(item, { categoryLabel: categories[item.category] || 'Artesanía puertorriqueña', locationLabel, slug: canonicalSlug, events }));
+});
+
+app.post('/api/pb-artesano-metrica/:slug', pbArtisanMetricsLimiter, express.json({limit:'2kb'}), (req,res) => {
+  const slug = String(req.params.slug || '');
+  const event = sanitize(req.body?.event || '').trim().toLowerCase();
+  if (!/^[a-z0-9][a-z0-9-]{0,159}$/.test(slug) || !PB_ARTISAN_METRIC_EVENTS.has(event)) return res.status(400).json({ok:false});
+  const exists = loadApprovedPBListings().some(item => pbArtisanSlug(item) === slug);
+  if (!exists) return res.status(404).json({ok:false});
+  try {
+    const stored = readJsonFile(PB_ARTISAN_METRICS_FILE,{});
+    const metrics = stored && !Array.isArray(stored) && typeof stored === 'object' ? stored : {};
+    const current = metrics[slug] && typeof metrics[slug] === 'object' ? metrics[slug] : {views:0,clicks:{}};
+    current.views = Number(current.views) || 0;
+    current.clicks = current.clicks && typeof current.clicks === 'object' ? current.clicks : {};
+    if (event === 'view') current.views += 1;
+    else current.clicks[event] = (Number(current.clicks[event]) || 0) + 1;
+    current.lastActivity = new Date().toISOString();
+    metrics[slug] = current;
+    writeJsonFile(PB_ARTISAN_METRICS_FILE,metrics);
+  } catch (error) {
+    console.error('PB artisan metric error:',error.message);
+    return res.status(500).json({ok:false});
+  }
+  res.status(204).end();
+});
+
+app.get("/artesanosPR", (req, res) => {
+  const preview = feriaCanPreview(req) ? '?preview=' + encodeURIComponent(req.query.preview) : '';
+  res.redirect(302, '/feria-artesanos' + preview);
+});
+app.get("/:slug", (req, res) => {
+  try { decodeURIComponent(req.params.slug); } catch(e) { return res.status(400).send("Invalid URL"); }
+  const slug = req.params.slug;
+
+  // Ignore static file requests (let express.static handle them)
+  if (/\.(png|jpg|jpeg|gif|svg|ico|js|css|webp|mp4|pdf|txt|xml|json)$/i.test(slug)) {
+    return res.status(404).send('Not found');
+  }
+
+  // Ignore known demo and app routes
+  const knownRoutes = ['autoridad-energia-criolla', 'pb', 'caribex', 'admin', 'api', 'start', 'demo', 'dyerkia', 'adis', 'noticias', 'mr-frappe', 'florida'];
+  if (knownRoutes.includes(slug)) {
+    return res.status(404).send('Not found');
+  }
+
+  const businessFile = path.join("/data", "businesses", `${slug}.json`);
+  const clientsFilePath = path.join(__dirname, "..", "data", "clients.json");
+
+  if (fs.existsSync(businessFile)) {
+    const data = JSON.parse(fs.readFileSync(businessFile, "utf-8"));
+
+    if (data.industry === "health") {
+      const assistantName = data.assistant?.name || "IvA";
+      const assistantWelcome = data.assistant?.welcome || "¡Hola! ¿En qué te ayudo hoy?";
+      return res.send(`<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>${data.name} — Asistente Virtual</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Inter',sans-serif;background:#F4F7F9;color:#1A2B3C;min-height:100vh;}
+.health-nav{background:#fff;padding:1rem 2rem;border-bottom:1px solid #E2E8ED;display:flex;align-items:center;gap:0.8rem;}
+.health-nav-logo{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;color:#0E7C7B;}
+.health-hero{max-width:700px;margin:0 auto;padding:3rem 1.5rem 1.5rem;text-align:center;}
+.health-hero h1{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,4vw,2.2rem);color:#0E7C7B;margin-bottom:0.6rem;}
+.health-hero p{color:#5A6B78;font-size:0.95rem;line-height:1.6;max-width:480px;margin:0 auto;}
+.health-badge{display:inline-flex;align-items:center;gap:0.4rem;background:#E6F4F3;color:#0E7C7B;padding:0.4rem 1rem;border-radius:20px;font-size:0.78rem;font-weight:600;margin-bottom:1rem;}
+.chat-wrap{max-width:560px;margin:1.5rem auto 3rem;background:#fff;border-radius:16px;box-shadow:0 4px 24px rgba(14,124,123,0.08);overflow:hidden;border:1px solid #E2E8ED;}
+.chat-top{background:#0E7C7B;padding:1rem 1.4rem;display:flex;align-items:center;gap:0.7rem;}
+.chat-top-name{color:#fff;font-weight:700;font-size:0.95rem;}
+.chat-top-status{color:rgba(255,255,255,0.75);font-size:0.72rem;display:flex;align-items:center;gap:4px;}
+.chat-msgs{height:380px;overflow-y:auto;padding:1.2rem;display:flex;flex-direction:column;gap:0.8rem;background:#FAFBFC;}
+.chat-msg{max-width:85%;padding:0.7rem 1rem;border-radius:12px;font-size:0.86rem;line-height:1.5;}
+.chat-msg.bot{background:#fff;border:1px solid #E2E8ED;align-self:flex-start;border-bottom-left-radius:3px;}
+.chat-msg.user{background:#0E7C7B;color:#fff;align-self:flex-end;border-bottom-right-radius:3px;}
+.chat-input-row{padding:0.8rem;border-top:1px solid #E2E8ED;display:flex;gap:0.5rem;background:#fff;}
+.chat-input-row input{flex:1;border:1.5px solid #E2E8ED;border-radius:8px;padding:0.7rem 1rem;font-size:0.85rem;font-family:inherit;outline:none;}
+.chat-input-row input:focus{border-color:#0E7C7B;}
+.chat-input-row button{background:#0E7C7B;color:#fff;border:none;border-radius:8px;padding:0 1.2rem;cursor:pointer;font-size:1rem;}
+.health-footer{text-align:center;padding:2rem;color:#8896A2;font-size:0.75rem;}
+</style>
+</head>
+<body>
+<nav class="health-nav">
+  <div class="health-nav-logo">${data.name}</div>
+</nav>
+<div class="health-hero">
+  <div class="health-badge">🔒 Confidencial y Seguro</div>
+  <h1>${data.name}</h1>
+  <p>Habla con nuestro asistente virtual para conocer más sobre nuestros servicios. Disponible las 24 horas, en español e inglés.</p>
+</div>
+<div class="chat-wrap">
+  <div class="chat-top">
+    <div>
+      <div class="chat-top-name">${assistantName}</div>
+      <div class="chat-top-status"><span style="width:6px;height:6px;border-radius:50%;background:#4ade80;display:inline-block;"></span>En línea ahora</div>
+    </div>
+  </div>
+  <div class="chat-msgs" id="healthMsgs">
+    <div class="chat-msg bot" id="healthTyping">Escribiendo...</div>
+  </div>
+  <div class="chat-input-row">
+    <input type="text" id="healthInput" placeholder="Escribe tu mensaje..." onkeydown="if(event.key==='Enter')healthSend()">
+    <button onclick="healthSend()">➤</button>
+  </div>
+</div>
+<div class="health-footer">Este asistente ofrece información educativa general y no sustituye una consulta médica profesional.</div>
+<script>
+const HEALTH_SLUG = "${data.slug}";
+var healthHistory = [];
+
+async function healthInit(){
+  const msgs = document.getElementById('healthMsgs');
+  try{
+    const r = await fetch('/api/assistant',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:'(inicio de conversacion)',businessSlug:HEALTH_SLUG,history:[]})});
+    const data = await r.json();
+    document.getElementById('healthTyping').textContent = data.reply || 'Hola! En que te ayudo hoy?';
+    healthHistory.push({role:'user',content:'(inicio de conversacion)'},{role:'assistant',content:data.reply||''});
+  }catch(e){
+    document.getElementById('healthTyping').textContent = 'Hola! En que te ayudo hoy?';
+  }
+}
+healthInit();
+
+async function healthSend(){
+  const input = document.getElementById('healthInput');
+  const msgs = document.getElementById('healthMsgs');
+  const text = input.value.trim();
+  if(!text) return;
+  const userDiv = document.createElement('div');
+  userDiv.className = 'chat-msg user';
+  userDiv.textContent = text;
+  msgs.appendChild(userDiv);
+  input.value = '';
+  msgs.scrollTop = msgs.scrollHeight;
+  try{
+    const r = await fetch('/api/assistant',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:text,businessSlug:HEALTH_SLUG,history:healthHistory})});
+    const data = await r.json();
+    const botDiv = document.createElement('div');
+    botDiv.className = 'chat-msg bot';
+    botDiv.textContent = data.reply || '¿En qué más te puedo ayudar?';
+    msgs.appendChild(botDiv);
+    healthHistory.push({role:'user',content:text},{role:'assistant',content:data.reply||''});
+    if(healthHistory.length>20) healthHistory = healthHistory.slice(-20);
+    msgs.scrollTop = msgs.scrollHeight;
+  }catch(e){
+    const errDiv = document.createElement('div');
+    errDiv.className = 'chat-msg bot';
+    errDiv.textContent = 'Disculpa, tuve un problema. Intenta de nuevo.';
+    msgs.appendChild(errDiv);
+  }
+}
+</script>
+</body>
+</html>`);
+    }
+
+    const theme = data.theme || "light";
+    let pageStyle = "";
+    if (theme === "dark") pageStyle = "background:#111;color:#f5f5f5;";
+    else if (theme === "tropical") pageStyle = "background:linear-gradient(180deg,#fff8e7 0%,#ffe8c2 100%);color:#2b1d0e;";
+    else pageStyle = "background:#ffffff;color:#111111;";
+
+    const assistantName = data.assistant?.name || "IvA";
+    const assistantWelcome = data.assistant?.welcome || "¡Hola! ¿En qué te ayudo hoy?";
+    const whatsappNumber = (data.links?.whatsapp || "").replace(/\D/g, "");
+    const hours = typeof data.hours === "string" ? data.hours : "";
+
+    let statusLabel = "";
+    if (data.status === "cerrado") statusLabel = "🔴 Cerrado";
+    else if (data.status === "vacaciones") statusLabel = "🌴 Vacaciones";
+    else if (data.status === "feriado") statusLabel = "📅 Feriado";
+    else statusLabel = "🟢 Open";
+
+    const chatHTML = `
+<style>
+.iva-chat-section{margin-top:40px;padding:24px;background:#0D1420;border-radius:16px;border:1px solid rgba(0,229,200,0.15);}
+.iva-chat-section h3{font-family:sans-serif;font-size:18px;font-weight:700;color:#F0F4FF;margin-bottom:4px;}
+.iva-chat-section p{font-size:13px;color:#8892A4;margin-bottom:16px;}
+.iva-chat-box{background:#080C12;border:1px solid rgba(255,255,255,0.06);border-radius:12px;overflow:hidden;}
+.iva-chat-topbar{background:#111827;padding:12px 16px;display:flex;align-items:center;gap:10px;border-bottom:1px solid rgba(255,255,255,0.05);}
+.iva-chat-avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,#00E5C8,#00a896);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;}
+.iva-chat-agent{flex:1;}
+.iva-chat-agent-name{font-size:13px;font-weight:700;color:#F0F4FF;}
+.iva-chat-agent-status{font-size:11px;color:#4CAF50;display:flex;align-items:center;gap:4px;}
+.iva-chat-agent-status::before{content:'●';font-size:8px;}
+.iva-chat-msgs{height:280px;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;scroll-behavior:smooth;}
+.iva-msg{max-width:82%;display:flex;flex-direction:column;gap:3px;}
+.iva-msg.bot{align-self:flex-start;}
+.iva-msg.user{align-self:flex-end;}
+.iva-msg-bubble{padding:10px 13px;border-radius:12px;font-size:13px;line-height:1.5;font-family:sans-serif;}
+.iva-msg.bot .iva-msg-bubble{background:#1C2536;color:#F0F4FF;border-bottom-left-radius:4px;}
+.iva-msg.user .iva-msg-bubble{background:#00E5C8;color:#030508;border-bottom-right-radius:4px;font-weight:500;}
+.iva-msg-time{font-size:10px;color:#4A5568;}
+.iva-msg.user .iva-msg-time{text-align:right;}
+.iva-typing{display:flex;gap:3px;padding:10px 13px;background:#1C2536;border-radius:12px;border-bottom-left-radius:4px;width:fit-content;}
+.iva-typing span{width:5px;height:5px;background:#8892A4;border-radius:50%;animation:ivaTyping 1.2s ease-in-out infinite;}
+.iva-typing span:nth-child(2){animation-delay:0.2s;}
+.iva-typing span:nth-child(3){animation-delay:0.4s;}
+@keyframes ivaTyping{0%,100%{opacity:0.3;transform:scale(0.8)}50%{opacity:1;transform:scale(1)}}
+.iva-suggestions{display:flex;gap:6px;flex-wrap:wrap;padding:8px 16px;}
+.iva-suggestion{padding:5px 10px;background:rgba(0,229,200,0.07);border:1px solid rgba(0,229,200,0.2);border-radius:100px;font-size:11px;color:#00E5C8;cursor:pointer;transition:all 0.2s;white-space:nowrap;}
+.iva-suggestion:hover{background:rgba(0,229,200,0.15);}
+.iva-chat-input-area{padding:12px 16px;border-top:1px solid rgba(255,255,255,0.05);display:flex;gap:8px;align-items:center;}
+.iva-chat-input{flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:10px 14px;color:#F0F4FF;font-family:sans-serif;font-size:13px;outline:none;}
+.iva-chat-input:focus{border-color:rgba(0,229,200,0.4);}
+.iva-chat-input::placeholder{color:#4A5568;}
+.iva-chat-send{width:36px;height:36px;background:#00E5C8;border:none;border-radius:8px;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:all 0.2s;flex-shrink:0;}
+.iva-float-btn{position:fixed;bottom:24px;right:24px;width:56px;height:56px;background:linear-gradient(135deg,#00E5C8,#00a896);border-radius:50%;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:22px;box-shadow:0 8px 25px rgba(0,229,200,0.35);z-index:999;transition:all 0.3s;}
+.iva-float-btn:hover{transform:scale(1.1);}
+.iva-float-badge{position:absolute;top:-2px;right:-2px;width:16px;height:16px;background:#4CAF50;border-radius:50%;border:2px solid white;}
+.iva-float-panel{position:fixed;bottom:90px;right:24px;width:300px;max-height:420px;background:#0D1420;border:1px solid rgba(0,229,200,0.2);border-radius:16px;overflow:hidden;z-index:998;display:none;flex-direction:column;box-shadow:0 20px 60px rgba(0,0,0,0.5);}
+.iva-float-panel.open{display:flex;}
+.iva-float-header{background:#111827;padding:12px 14px;display:flex;align-items:center;gap:8px;border-bottom:1px solid rgba(255,255,255,0.05);}
+.iva-float-avatar{width:30px;height:30px;border-radius:50%;background:linear-gradient(135deg,#00E5C8,#00a896);display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;}
+.iva-float-info{flex:1;}
+.iva-float-name{font-size:11px;font-weight:700;color:#F0F4FF;}
+.iva-float-status{font-size:10px;color:#4CAF50;}
+.iva-float-close{background:transparent;border:none;color:#4A5568;font-size:15px;cursor:pointer;}
+.iva-float-msgs{flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:8px;}
+.iva-float-input-area{padding:8px 10px;border-top:1px solid rgba(255,255,255,0.05);display:flex;gap:6px;}
+.iva-float-input{flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:7px;padding:7px 10px;color:#F0F4FF;font-family:sans-serif;font-size:12px;outline:none;}
+.iva-float-input::placeholder{color:#4A5568;}
+.iva-float-send{width:30px;height:30px;background:#00E5C8;border:none;border-radius:7px;cursor:pointer;font-size:11px;}
+</style>
+
+<div class="iva-chat-section">
+  <h3>💬 Chat with ${assistantName}</h3>
+  <p>Your AI assistant available 24/7 — in English & Spanish.</p>
+  <div class="iva-chat-box">
+    <div class="iva-chat-topbar">
+      <div class="iva-chat-avatar">🤖</div>
+      <div class="iva-chat-agent">
+        <div class="iva-chat-agent-name">${assistantName} — ${data.name}</div>
+        <div class="iva-chat-agent-status">Online now</div>
+      </div>
+    </div>
+    <div class="iva-chat-msgs" id="ivaMsgs">
+      <div class="iva-msg bot">
+        <div class="iva-msg-bubble">${assistantWelcome}</div>
+        <div class="iva-msg-time">Now</div>
+      </div>
+    </div>
+    <div class="iva-suggestions" id="ivaSuggestions">
+      <span class="iva-suggestion" onclick="ivaSendSugg(this)">What's on the menu?</span>
+      <span class="iva-suggestion" onclick="ivaSendSugg(this)">What are the hours?</span>
+      <span class="iva-suggestion" onclick="ivaSendSugg(this)">How do I order?</span>
+    </div>
+    <div class="iva-chat-input-area">
+      <input class="iva-chat-input" id="ivaInput" placeholder="Escribe tu pregunta..." onkeydown="if(event.key==='Enter')ivaSend('main')" />
+      <input type="file" id="ivaPhotoMain" accept="image/*" style="display:none" onchange="ivaUploadPhoto(this,'main')">
+      <button type="button" onclick="document.getElementById('ivaPhotoMain').click()" style="background:none;border:none;font-size:1.3rem;cursor:pointer;padding:0 0.5rem;">📷</button>
+      <button class="iva-chat-send" onclick="ivaSend('main')">➤</button>
+    </div>
+  </div>
+</div>
+
+<button class="iva-float-btn" onclick="ivaToggleFloat()">
+  🤖<div class="iva-float-badge"></div>
+</button>
+<div class="iva-float-panel" id="ivaFloatPanel">
+  <div class="iva-float-header">
+    <div class="iva-float-avatar">🤖</div>
+    <div class="iva-float-info">
+      <div class="iva-float-name">${assistantName} — ${data.name}</div>
+      <div class="iva-float-status">● En línea</div>
+    </div>
+    <button class="iva-float-close" onclick="ivaToggleFloat()">✕</button>
+  </div>
+  <div class="iva-float-msgs" id="ivaFloatMsgs">
+    <div class="iva-msg bot">
+      <div class="iva-msg-bubble">${assistantWelcome}</div>
+      <div class="iva-msg-time">Now</div>
+    </div>
+  </div>
+  <div class="iva-float-input-area">
+    <input class="iva-float-input" id="ivaFloatInput" placeholder="Escribe aquí..." onkeydown="if(event.key==='Enter')ivaSend('float')" />
+    <input type="file" id="ivaPhotoFloat" accept="image/*" style="display:none" onchange="ivaUploadPhoto(this,'float')">
+    <button type="button" onclick="document.getElementById('ivaPhotoFloat').click()" style="background:none;border:none;font-size:1.3rem;cursor:pointer;padding:0 0.5rem;">📷</button>
+    <button class="iva-float-send" onclick="ivaSend('float')">➤</button>
+  </div>
+</div>
+
+<script>
+const IVA_SLUG = "${slug}";
+var ivaHistory = [];
+var ivaPendingPhoto = "";
+async function ivaUploadPhoto(input, mode){
+  const file = input.files[0];
+  if (!file) return;
+  if (file.size > 5 * 1024 * 1024) { alert('La foto debe ser menor de 5MB'); return; }
+  const reader = new FileReader();
+  reader.onload = async function(e){
+    try{
+      const res = await fetch('/api/upload-photo', {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({data:e.target.result})});
+      const data = await res.json();
+      if (data.ok) {
+        ivaPendingPhoto = data.url;
+        const mId=mode==='float'?'ivaFloatMsgs':'ivaMsgs';
+        ivaAddMsg(mId, '<img src="'+data.url+'" style="max-width:180px;border-radius:8px;display:block;">📎 Foto adjunta — se enviará con tu mensaje', 'user');
+      }
+    }catch(e){ alert('No se pudo subir la foto, intenta de nuevo.'); }
+  };
+  reader.readAsDataURL(file);
+}
+function ivaToggleFloat(){document.getElementById('ivaFloatPanel').classList.toggle('open');}
+function ivaAddMsg(cId,text,type){const c=document.getElementById(cId);const now=new Date().toLocaleTimeString('es',{hour:'2-digit',minute:'2-digit'});const d=document.createElement('div');d.className='iva-msg '+type;d.innerHTML='<div class="iva-msg-bubble">'+text+'</div><div class="iva-msg-time">'+now+'</div>';c.appendChild(d);c.scrollTop=c.scrollHeight;}
+function ivaShowTyping(cId){const c=document.getElementById(cId);const d=document.createElement('div');d.className='iva-msg bot';d.id='ivaT_'+cId;d.innerHTML='<div class="iva-typing"><span></span><span></span><span></span></div>';c.appendChild(d);c.scrollTop=c.scrollHeight;}
+function ivaHideTyping(cId){const el=document.getElementById('ivaT_'+cId);if(el)el.remove();}
+async function ivaSend(mode){
+  const iId=mode==='float'?'ivaFloatInput':'ivaInput';
+  const mId=mode==='float'?'ivaFloatMsgs':'ivaMsgs';
+  const input=document.getElementById(iId);
+  const text=input.value.trim();if(!text)return;
+  input.value='';
+  const sugg=document.getElementById('ivaSuggestions');if(sugg)sugg.style.display='none';
+  ivaAddMsg(mId,text,'user');ivaShowTyping(mId);
+  try{
+    const r=await fetch('/api/assistant',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({message:text,businessSlug:IVA_SLUG,history:ivaHistory,photo:ivaPendingPhoto})});
+    const data=await r.json();
+    ivaHideTyping(mId);ivaAddMsg(mId,data.reply||'¿En qué más te ayudo?','bot');
+    ivaHistory.push({role:'user',content:text},{role:'assistant',content:data.reply||''});
+    if(ivaHistory.length>20)ivaHistory=ivaHistory.slice(-20);
+    ivaPendingPhoto = "";
+  }catch(e){ivaHideTyping(mId);ivaAddMsg(mId,'Disculpa, tuve un problema. Intenta de nuevo.','bot');}
+}
+function ivaSendSugg(el){document.getElementById('ivaInput').value=el.textContent;ivaSend('main');}
+<\/script>`;
+
+    const body = `
+      <div class="card" style="${pageStyle}">
+        ${data.businessPhotoUrl ? `<div style="margin:-20px -20px 24px -20px;overflow:hidden;border-radius:16px 16px 0 0;"><img src="${data.businessPhotoUrl}" alt="${data.name}" style="width:100%;height:300px;object-fit:cover;display:block;" /></div>` : ""}
+        <div style="text-align:center;margin-bottom:18px;">
+          ${data.logoUrl ? `<img src="${data.logoUrl}" alt="${data.name}" style="width:80px;height:80px;object-fit:cover;border-radius:14px;border:3px solid #fff;box-shadow:0 6px 20px rgba(0,0,0,.15);margin-bottom:12px;" />` : ""}
+          <div style="display:inline-block;margin-bottom:8px;padding:6px 14px;border-radius:999px;background:rgba(0,0,0,.05);font-weight:700;">${statusLabel}</div>
+          <h1 style="margin:8px 0;font-size:30px;">${data.name}</h1>
+          <p style="color:var(--muted);font-size:16px;max-width:600px;margin:0 auto;">${data.description || ""}</p>
+        </div>
+        ${data.address || hours ? `<div style="text-align:center;margin-bottom:20px;">${data.address ? `<div style="margin-bottom:6px;">📍 ${data.address}</div>` : ""}${hours ? `<div>🕐 ${hours}</div>` : ""}</div>` : ""}
+        <div style="text-align:center;margin:20px 0;">
+          <a href="${data.links?.whatsapp || "#"}" target="_blank" style="display:inline-block;background:#25D366;color:#fff;text-decoration:none;font-size:17px;font-weight:700;padding:13px 22px;border-radius:12px;">📲 Order via WhatsApp</a>
+        </div>
+        <h2 style="margin-top:36px;font-size:26px;">Menu</h2>
+        <div class="grid">
+          ${(data.menu || []).map((item, i) => `<div class="tile"><b>${item.name}</b><div style="font-size:13px;color:#888;margin-top:4px;">${item.desc || ""}</div><div style="margin-top:6px;font-weight:900;">${item.price !== null ? "$" + item.price : "Precio pendiente"}</div><div style="margin-top:10px;display:flex;align-items:center;gap:8px;"><button onclick="changeQty('menu-${i}',-1)" style="padding:5px 9px;border:none;border-radius:7px;cursor:pointer;">-</button><span id="qty-menu-${i}">0</span><button onclick="changeQty('menu-${i}',1)" style="padding:5px 9px;border:none;border-radius:7px;cursor:pointer;">+</button></div></div>`).join("")}
+        </div>
+        ${(data.drinks || []).length ? `<h2 style="margin-top:28px;font-size:22px;">Bebidas</h2><div class="grid">${(data.drinks || []).map((item, i) => `<div class="tile"><b>${item.name}</b><div style="margin-top:6px;font-weight:900;">${item.price !== null ? "$" + item.price : ""}</div><div style="margin-top:10px;display:flex;align-items:center;gap:8px;"><button onclick="changeQty('drink-${i}',-1)" style="padding:5px 9px;border:none;border-radius:7px;cursor:pointer;">-</button><span id="qty-drink-${i}">0</span><button onclick="changeQty('drink-${i}',1)" style="padding:5px 9px;border:none;border-radius:7px;cursor:pointer;">+</button></div></div>`).join("")}</div>` : ""}
+        <div id="cart" style="margin-top:36px;padding:18px;border-radius:16px;background:#f0f0f0;">
+          <h2 style="margin-top:0;">🛒 Your Order</h2>
+          <div id="cart-items" style="margin-bottom:14px;color:#555;">Nothing added yet.</div>
+          <div style="font-weight:700;"><div>Subtotal: $<span id="subtotal">0.00</span></div><div>Tax (11.5%): $<span id="tax">0.00</span></div><div style="font-size:18px;margin-top:6px;">Total: $<span id="total">0.00</span></div></div>
+          <a id="send-order-btn" href="#" target="_blank" style="margin-top:14px;display:inline-block;width:100%;padding:12px;border-radius:10px;background:#25D366;color:white;font-weight:700;text-decoration:none;text-align:center;">Send Order via WhatsApp</a>
+        </div>
+        ${chatHTML}
+        <script>
+        const menuItems = ${JSON.stringify(data.menu || [])};
+        const drinkItems = ${JSON.stringify(data.drinks || [])};
+        const waNumber = "${whatsappNumber}";
+        const bizName = "${data.name}";
+        function changeQty(id,delta){const el=document.getElementById("qty-"+id);if(!el)return;let qty=parseInt(el.textContent||"0",10)+delta;if(qty<0)qty=0;el.textContent=qty;updateCart();}
+        function updateCart(){let lines=[],subtotal=0;function process(items,prefix){items.forEach((item,i)=>{const el=document.getElementById("qty-"+prefix+"-"+i);const qty=el?parseInt(el.textContent||"0",10):0;if(qty>0){const price=Number.isFinite(Number(item.price))?Number(item.price):0;subtotal+=qty*price;lines.push(item.name+" x"+qty+" = $"+(qty*price).toFixed(2));}});}process(menuItems,"menu");process(drinkItems,"drink");document.getElementById("cart-items").innerHTML=lines.length?lines.join("<br/>"):"Nothing added yet.";const tax=subtotal*0.115;document.getElementById("subtotal").textContent=subtotal.toFixed(2);document.getElementById("tax").textContent=tax.toFixed(2);document.getElementById("total").textContent=(subtotal+tax).toFixed(2);const msg="🛒 *Order — "+bizName+"*\\n\\n"+lines.join("\\n")+"\\n\\n💰 *Total: $"+(subtotal+tax).toFixed(2)+"*\\n\\nThank you!";document.getElementById("send-order-btn").href="https://wa.me/"+waNumber+"?text="+encodeURIComponent(msg);}
+        updateCart();
+        <\/script>
+      </div>`;
+    return res.send(layout({ title: data.name, body }));
+  }
+
+  let clients = [];
+  try {
+    const raw = fs.readFileSync(clientsFilePath, "utf8");
+    clients = JSON.parse(raw);
+    if (!Array.isArray(clients)) clients = [];
+  } catch (e) { clients = []; }
+
+  const client = clients.find(item => item.slug === slug);
+  if (client) {
+    const body = `<div class="card"><h1>${client.businessName}</h1><p><b>WhatsApp:</b> ${client.whatsapp || "Pendiente"}</p><div class="btns" style="margin-top:16px;"><a class="btn ghost" href="/">Volver</a></div></div>`;
+    return res.send(layout({ title: client.businessName, body }));
+  }
+
+  return res.status(404).send(layout({ title: "No encontrado", body: `<div class="card"><h2>Negocio no encontrado</h2><a class="btn ghost" href="/">Volver</a></div>` }));
+});
+
+
+// ==========================================
+// AUTORIDAD ENERGÍA CRIOLLA — DEMO
+// ==========================================
+
+// AEC route moved above /:slug
+
+app.post("/api/aec-chat", aiLimiter, express.json(), async (req, res) => {
+  const { message, history = [] } = req.body;
+  const system = `Eres IvA, el asistente virtual de Autoridad de Energía Criolla, una empresa de paneles solares en Puerto Rico fundada por Reinaldo Ortiz García. Eres amable, profesional y conoces muy bien el mercado solar de Puerto Rico.
+
+SOBRE LA EMPRESA:
+- Nombre: Autoridad de Energía Criolla
+- Fundador/Presidente: Reinaldo Ortiz García — instalador y asesor con años de experiencia
+- Servicios: instalación de sistemas solares residenciales y comerciales, reparación, mantenimiento, baterías e inversores
+- Teléfono: (939) 865-1483
+- Email: autoridadenergiacriolla@gmail.com
+- Filosofía: servicio honesto, educación al cliente, soluciones accesibles
+
+INFORMACIÓN TÉCNICA Y DE INCENTIVOS QUE CONOCES:
+- Crédito Federal ITC: 30% del costo del sistema como crédito en impuestos federales (disponible hasta 2032)
+- Ley 399 de PR: exención total de impuesto sobre la propiedad para sistemas de energía renovable
+- Net Metering con LUMA: venta del exceso de energía de vuelta a la red, créditos en la factura
+- Financiamiento disponible desde $0 de inicial
+- Retorno de inversión típico: 5-7 años
+- Ahorro mensual promedio: $100-200 dependiendo del sistema y consumo
+- Garantía de paneles: 25 años típicamente
+- Garantía de inversores: 10-12 años típicamente
+- Un sistema residencial típico cuesta entre $15,000-$30,000 antes de incentivos
+- Después del crédito del 30%, el costo real baja significativamente
+
+CÓMO RESPONDER:
+- Responde en español
+- Máximo 3-4 oraciones por respuesta
+- Si preguntan por cotización específica, pide el consumo mensual de luz (kWh o monto en $) para dar una estimación más precisa
+- Siempre termina ofreciendo conectar con Reinaldo via WhatsApp: (939) 865-1483
+- Si preguntan algo que no sabes, di "Para darte información más precisa sobre eso, te recomiendo hablar directamente con Reinaldo al (939) 865-1483"`;
+
+  try {
+    const Anthropic = require('@anthropic-ai/sdk');
+    const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+    const messages = [
+      ...history.map(h => ({ role: h.role, content: h.content })),
+      { role: 'user', content: message }
+    ];
+    const response = await client.messages.create({
+      model: 'claude-haiku-4-5-20251001',
+      max_tokens: 400,
+      system,
+      messages
+    });
+    res.json({ reply: response.content[0].text });
+  } catch(err) {
+    console.error('AEC chat error:', err.message);
+    res.json({ reply: 'Hubo un error técnico. Llama directamente a Reinaldo al (939) 865-1483.' });
+  }
+});
+
+// ==========================================
+// PLANETA BORICUA — DIRECTORIO DE NEGOCIOS
+// ==========================================
+
+// Página de noticias PBN
+// noticias route moved above /:slug
+
+// Artisan self-service: passwordless access by verified registration email.
+// PB Control artisan editor.
+app.get('/pb-control/artesanos', requirePBAdmin, (req,res) => {
+  const q = sanitize(req.query?.q || '').trim().toLowerCase();
   let items = loadPBApprovedArtisansWithFiles().map(item => ({...item,slug:pbArtisanSlug(item)}));
   if (q) items = items.filter(item => [item.name,item.email,item.whatsapp,item.city,item.location].some(value => String(value || '').toLowerCase().includes(q)));
   items.sort((a,b)=>String(a.name||'').localeCompare(String(b.name||''),'es'));
@@ -1323,7 +3987,6 @@ app.get("/pb/add-negocio", (req, res) => res.send(addNegocioPB));
 app.post("/api/pb-negocio-submit", pbArtisanLimiter, express.json({limit:'80kb'}), async (req, res) => {
   console.log("📋 PB Negocio submit:", req.body?.name);
   const name = sanitize(req.body.name);
-  const ownerName = sanitize(req.body.ownerName);
   const category = sanitize(req.body.category);
   const location = sanitize(req.body.location);
   const city = sanitize(req.body.city);
