@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "node --check src/server.js && node --check src/views/pb-control.js && node tests/pb-artisan-registration.test.js"
+    "test": "node --check src/server.js && node --check src/views/pb-control.js && node tests/pb-artisan-registration.test.js && node tests/pb-blog-link-editor.test.js"
   },
   "keywords": [],
   "author": "",
