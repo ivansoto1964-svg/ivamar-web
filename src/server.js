@@ -1776,7 +1776,7 @@ app.post('/pb-control/action', requirePBAdmin, requirePBCsrf, express.json({limi
     if (action === 'latest-create') {
       const title = sanitize(req.body.title || '').trim();
       const summary = sanitize(req.body.summary || '').trim();
-      const body = sanitize(req.body.body || '').trim();
+      const body = blogContentHtml(req.body.body || '');
       const sourceLabel = sanitize(req.body.sourceLabel || '').trim();
       let image = sanitize(req.body.image || '').trim();
       let sourceUrl;
@@ -3148,7 +3148,7 @@ app.get('/lo-mas-reciente/:slug', (req, res) => {
   const item = readPBLatest('approved.json').find(entry => entry.slug === req.params.slug);
   if (!item) return res.status(404).send(loMasRecientePB(null));
   const comments = readPBComments('approved.json').filter(comment => comment.articleSlug === item.slug && (comment.section || 'latest') === 'latest').sort((a,b) => new Date(b.approvedAt) - new Date(a.approvedAt)).map(publicPBComment);
-  res.send(loMasRecientePB(publicPBLatest(item), comments));
+  res.send(loMasRecientePB({...publicPBLatest(item),body:blogContentHtml(item.body)}, comments));
 });
 
 app.get('/api/pb-comments/:slug', (req, res) => {
