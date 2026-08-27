@@ -9,6 +9,8 @@
   const title = document.querySelector('meta[property="og:title"]')?.content || document.title;
   const description = document.querySelector('meta[property="og:description"]')?.content || '';
   const imageUrl = document.querySelector('meta[property="og:image"]')?.content || '';
+  const isMobile = navigator.userAgentData?.mobile === true
+    || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
   const button = document.createElement('button');
   button.type = 'button';
   button.id = 'instagram-share';
@@ -43,7 +45,7 @@
   }
 
   if (facebookLink) {
-    if (!navigator.share) {
+    if (!isMobile || !navigator.share) {
       // Keep this as a normal user-clicked link so desktop popup blockers
       // cannot prevent Facebook from opening.
       facebookLink.href = 'https://www.facebook.com/';
@@ -51,7 +53,7 @@
     facebookLink.addEventListener('click', async (event) => {
       // Facebook's web sharer can redirect visitors to a broken
       // share_channel page. Avoid that flow on both computers and phones.
-      if (!navigator.share) {
+      if (!isMobile || !navigator.share) {
         const copied = await copyLink();
         status.textContent = copied
           ? 'Enlace copiado. Pégalo en tu publicación de Facebook.'
