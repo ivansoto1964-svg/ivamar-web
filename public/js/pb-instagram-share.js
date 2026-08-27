@@ -2,6 +2,7 @@
   const grid = document.querySelector('.share-grid');
   const nativeShare = document.getElementById('native-share');
   const status = document.getElementById('share-status');
+  const facebookLink = grid?.querySelector('.share-fb');
   if (!grid || !status || document.getElementById('instagram-share')) return;
 
   const canonical = document.querySelector('link[rel="canonical"]')?.href || location.href;
@@ -39,6 +40,34 @@
     } catch (_) {
       return null;
     }
+  }
+
+  if (facebookLink) {
+    facebookLink.addEventListener('click', async (event) => {
+      // Facebook's web sharer can redirect mobile visitors to a broken
+      // share_channel page. The phone's native share menu avoids that flow.
+      if (!navigator.share) return;
+      event.preventDefault();
+      facebookLink.setAttribute('aria-disabled', 'true');
+      facebookLink.style.pointerEvents = 'none';
+      const copied = await copyLink();
+      status.textContent = copied
+        ? 'Enlace copiado. Escoge Facebook para compartirlo.'
+        : 'Escoge Facebook para compartir la publicación.';
+      try {
+        await navigator.share({ title, text:description, url:canonical });
+        status.textContent = '✅ Menú para compartir abierto.';
+      } catch (error) {
+        if (error?.name !== 'AbortError') {
+          status.textContent = copied
+            ? 'Enlace copiado. Puedes pegarlo en Facebook.'
+            : 'No se pudo abrir el menú para compartir.';
+        }
+      } finally {
+        facebookLink.removeAttribute('aria-disabled');
+        facebookLink.style.pointerEvents = '';
+      }
+    });
   }
 
   button.addEventListener('click', async () => {
