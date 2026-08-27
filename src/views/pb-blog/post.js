@@ -42,5 +42,5 @@ ${tags ? `<div class="post-tags"><span class="post-tags-label">Temas:</span>${ta
  form.addEventListener('submit',async event=>{event.preventDefault();const button=form.querySelector('button[type="submit"]');button.disabled=true;status.textContent='Enviando…';const data=Object.fromEntries(new FormData(form).entries());data.section='blog';try{const response=await fetch('/api/pb-comments/'+encodeURIComponent(slug),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});const result=await response.json();if(!response.ok)throw new Error(result.error||'No se pudo enviar.');form.reset();status.textContent='✅ Recibido. Lo revisaremos antes de publicarlo.';}catch(error){status.textContent='⚠️ '+error.message;}finally{button.disabled=false;}});
  const banner=document.getElementById('cookie-banner');if(!localStorage.getItem('cookies_accepted'))banner.style.display='flex';document.getElementById('accept-cookies').addEventListener('click',()=>{localStorage.setItem('cookies_accepted','1');banner.style.display='none';});
 })();
-</script><script src="/js/pb-instagram-share.js?v=2"></script></body></html>`;
+</script><script src="/js/pb-instagram-share.js?v=3"></script></body></html>`;
 };
