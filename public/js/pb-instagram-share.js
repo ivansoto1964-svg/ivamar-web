@@ -9,8 +9,6 @@
   const title = document.querySelector('meta[property="og:title"]')?.content || document.title;
   const description = document.querySelector('meta[property="og:description"]')?.content || '';
   const imageUrl = document.querySelector('meta[property="og:image"]')?.content || '';
-  const isMobile = navigator.userAgentData?.mobile === true
-    || /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
   const button = document.createElement('button');
   button.type = 'button';
   button.id = 'instagram-share';
@@ -45,42 +43,15 @@
   }
 
   if (facebookLink) {
-    if (!isMobile || !navigator.share) {
-      // Keep this as a normal user-clicked link so desktop popup blockers
-      // cannot prevent Facebook from opening.
-      facebookLink.href = 'https://www.facebook.com/';
-    }
-    facebookLink.addEventListener('click', async (event) => {
-      // Facebook's web sharer can redirect visitors to a broken
-      // share_channel page. Avoid that flow on both computers and phones.
-      if (!isMobile || !navigator.share) {
-        const copied = await copyLink();
-        status.textContent = copied
-          ? 'Enlace copiado. Pégalo en tu publicación de Facebook.'
-          : 'Facebook abrió en otra pestaña. Copia el enlace del artículo para publicarlo.';
-        if (!copied) window.prompt('Copia este enlace para Facebook:', canonical);
-        return;
-      }
-      event.preventDefault();
-      facebookLink.setAttribute('aria-disabled', 'true');
-      facebookLink.style.pointerEvents = 'none';
+    // Use one normal Facebook link on every device. Meta's web sharer
+    // currently redirects some visitors to a broken share_channel page.
+    facebookLink.href = 'https://www.facebook.com/';
+    facebookLink.addEventListener('click', async () => {
       const copied = await copyLink();
       status.textContent = copied
-        ? 'Enlace copiado. Escoge Facebook para compartirlo.'
-        : 'Escoge Facebook para compartir la publicación.';
-      try {
-        await navigator.share({ title, text:description, url:canonical });
-        status.textContent = '✅ Menú para compartir abierto.';
-      } catch (error) {
-        if (error?.name !== 'AbortError') {
-          status.textContent = copied
-            ? 'Enlace copiado. Puedes pegarlo en Facebook.'
-            : 'No se pudo abrir el menú para compartir.';
-        }
-      } finally {
-        facebookLink.removeAttribute('aria-disabled');
-        facebookLink.style.pointerEvents = '';
-      }
+        ? 'Enlace copiado. Pégalo en tu publicación de Facebook.'
+        : 'Facebook abrió en otra pestaña. Copia el enlace del artículo para publicarlo.';
+      if (!copied) window.prompt('Copia este enlace para Facebook:', canonical);
     });
   }
 
