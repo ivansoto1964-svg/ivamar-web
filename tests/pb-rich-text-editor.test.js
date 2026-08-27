@@ -25,6 +25,7 @@ assert.match(asset, /sponsored noopener noreferrer/, 'Affiliate links must remai
 assert.match(server, /const body = blogContentHtml\(req\.body\.body \|\| ''\);/, 'Latest posts must save sanitized rich text.');
 assert.match(server, /body:blogContentHtml\(item\.body\)/, 'Latest posts must be sanitized again before rendering.');
 assert.match(server, /https:\/\/www\.trip\.com\/\?SID=2209817&allianceid=1094387&utm_campaign=520530/, 'Trip.com must use the direct affiliate URL without the fragile short-link redirect.');
+assert.match(server, /https:\/\/us\.trip\.com\/hotels\/list\?[^']*countryId=208[^']*SID=2209817&allianceid=1094387/, 'The Puerto Rico hotel card must use the working direct Trip.com affiliate URL.');
 
 const latestHtml = renderLatest({
   slug:'prueba', title:'Prueba', summary:'Resumen', image:'',
