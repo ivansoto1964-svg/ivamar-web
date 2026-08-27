@@ -16,14 +16,14 @@ const latest = renderLatest({
   sources:[],publishedAt:'2026-08-27T12:00:00.000Z'
 });
 
-assert.match(blog, /\/js\/pb-instagram-share\.js\?v=2/, 'Blog posts must load the current social sharing helper.');
-assert.match(latest, /\/js\/pb-instagram-share\.js\?v=2/, 'Latest posts must load the current social sharing helper.');
+assert.match(blog, /\/js\/pb-instagram-share\.js\?v=3/, 'Blog posts must load the current social sharing helper.');
+assert.match(latest, /\/js\/pb-instagram-share\.js\?v=3/, 'Latest posts must load the current social sharing helper.');
 assert.match(asset, /instagram-share/);
 assert.match(asset, /navigator\.share/);
 assert.match(asset, /querySelector\('\.share-fb'\)/, 'Facebook buttons must use the mobile share menu.');
 assert.match(asset, /event\.preventDefault\(\)/, 'Mobile Facebook sharing must bypass the broken web sharer.');
 assert.match(asset, /navigator\.share\(\{ title, text:description, url:canonical \}\)/, 'Facebook must receive the canonical article URL.');
-assert.match(asset, /window\.open\('https:\/\/www\.facebook\.com\/'/, 'Desktop fallback must open Facebook without the broken sharer URL.');
+assert.match(asset, /facebookLink\.href = 'https:\/\/www\.facebook\.com\/'/, 'Desktop fallback must use a normal Facebook link that popup blockers cannot stop.');
 assert.doesNotMatch(asset, /facebook\.com\/sharer/, 'The sharing helper must not use Facebook\'s broken web sharer.');
 assert.match(asset, /navigator\.clipboard\.writeText\(canonical\)/, 'The article link must be copied for Instagram.');
 assert.match(asset, /navigator\.canShare\(\{ files:\[file\] \}\)/, 'Supported phones should share the article image.');
