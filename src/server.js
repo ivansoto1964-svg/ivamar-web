@@ -5,6 +5,7 @@ const express = require("express");
 const sanitizeHtml = require('sanitize-html');
 const sanitize = (str) => str ? sanitizeHtml(str, { allowedTags: [], allowedAttributes: {} }) : '';
 const pbBlogStore = require('./services/pb-blog-store');
+const pbSiteAnalytics = require('./services/pb-site-analytics');
 
 
 
@@ -896,6 +897,32 @@ app.use(express.static("public", { maxAge: "1y", immutable: true }));
 app.use('/media/pb-blog', express.static(pbBlogStore.MEDIA_DIR, { maxAge:'30d', immutable:true }));
 app.use(cookieParser());
 
+// Private, aggregate PB traffic counts. The cookie stores only the current
+// Puerto Rico date; no IP address or persistent visitor identifier is saved.
+app.use((req, res, next) => {
+  if (!pbSiteAnalytics.shouldTrackRequest(req)) return next();
+  const dayKey = pbSiteAnalytics.puertoRicoDateKey();
+  const newVisitor = req.cookies?.pbVisitDay !== dayKey;
+  if (newVisitor) {
+    res.cookie('pbVisitDay', dayKey, {
+      httpOnly:true,
+      secure:true,
+      sameSite:'lax',
+      maxAge:48 * 60 * 60 * 1000
+    });
+  }
+  res.once('finish', () => {
+    const contentType = String(res.getHeader('content-type') || '');
+    if (res.statusCode < 200 || res.statusCode >= 300 || !contentType.includes('text/html')) return;
+    try {
+      pbSiteAnalytics.recordPageView({ pagePath:req.path, newVisitor });
+    } catch (error) {
+      console.error('[pb-analytics] Could not record page view:', error.message);
+    }
+  });
+  next();
+});
+
 function postJson(urlStr, payload, options = {}) {
   return new Promise((resolve, reject) => {
     try {
@@ -1681,7 +1708,8 @@ function buildPBControlModel(csrf) {
   const artisanEmailAudit = pbArtisanEmailAudit(artisansApproved);
   const artisanMailHistory = pbArtisanMailHistory();
   const artisanMetrics = pbArtisanMetricsSummary(artisansApproved);
-  return {csrf,latestPending,latestApproved,commentsPending,commentsApproved,artisansPending,artisansApproved,eventsPending,eventsApproved,subscribers,blogPosts,affiliates,artisanEmailCount,artisanEmailAudit,artisanMailHistory,artisanMetrics,counts:{pendingLatest:latestPending.length,pendingComments:commentsPending.length,pendingArtisans:artisansPending.length,pendingEvents:eventsPending.length,pendingTotal:latestPending.length+commentsPending.length+artisansPending.length+eventsPending.length,blogPosts:blogPosts.length,subscribers:subscribers.length,affiliateClicks:affiliates.reduce((sum,item)=>sum+item.clicks,0),artisanViews:artisanMetrics.reduce((sum,item)=>sum+item.views,0),artisanClicks:artisanMetrics.reduce((sum,item)=>sum+item.clickTotal,0)}};
+  const siteAnalytics = pbSiteAnalytics.summary();
+  return {csrf,latestPending,latestApproved,commentsPending,commentsApproved,artisansPending,artisansApproved,eventsPending,eventsApproved,subscribers,blogPosts,affiliates,artisanEmailCount,artisanEmailAudit,artisanMailHistory,artisanMetrics,siteAnalytics,counts:{pendingLatest:latestPending.length,pendingComments:commentsPending.length,pendingArtisans:artisansPending.length,pendingEvents:eventsPending.length,pendingTotal:latestPending.length+commentsPending.length+artisansPending.length+eventsPending.length,blogPosts:blogPosts.length,subscribers:subscribers.length,affiliateClicks:affiliates.reduce((sum,item)=>sum+item.clicks,0),artisanViews:artisanMetrics.reduce((sum,item)=>sum+item.views,0),artisanClicks:artisanMetrics.reduce((sum,item)=>sum+item.clickTotal,0)}};
 }
 
 app.get('/pb-control/login', (req,res) => {
