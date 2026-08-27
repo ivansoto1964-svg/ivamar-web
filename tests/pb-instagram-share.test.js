@@ -16,8 +16,8 @@ const latest = renderLatest({
   sources:[],publishedAt:'2026-08-27T12:00:00.000Z'
 });
 
-assert.match(blog, /\/js\/pb-instagram-share\.js\?v=1/, 'Blog posts must load Instagram sharing.');
-assert.match(latest, /\/js\/pb-instagram-share\.js\?v=1/, 'Latest posts must load Instagram sharing.');
+assert.match(blog, /\/js\/pb-instagram-share\.js\?v=2/, 'Blog posts must load the current social sharing helper.');
+assert.match(latest, /\/js\/pb-instagram-share\.js\?v=2/, 'Latest posts must load the current social sharing helper.');
 assert.match(asset, /instagram-share/);
 assert.match(asset, /navigator\.share/);
 assert.match(asset, /querySelector\('\.share-fb'\)/, 'Facebook buttons must use the mobile share menu.');
