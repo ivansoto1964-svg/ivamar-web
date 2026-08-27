@@ -450,7 +450,7 @@ const PB_AFFILIATE_CAMPAIGNS = {
   'amazon-home': { label:'Amazon · Hogar', url:'https://www.amazon.com/shop/planetaboricua/list/3PF9YAQ8MKRCO?tag=ivansoto0f-20' },
   'amazon-auto': { label:'Amazon · Auto', url:'https://www.amazon.com/shop/planetaboricua/list/1UY29IVPZQ34Y?tag=ivansoto0f-20' },
   'amazon-gifts': { label:'Amazon · Regalos', url:'https://www.amazon.com/shop/planetaboricua/list/1Q6CYDE5BV80P?tag=ivansoto0f-20' },
-  'travel-hotels': { label:'Travelpayouts · Hoteles', url:'https://booking.tpo.lu/OcdV3VzY' },
+  'travel-hotels': { label:'Trip.com · Hoteles', url:'https://us.trip.com/hotels/list?flexType=1&cityId=-1&countryId=208&destName=Puerto%20Rico&searchType=C&optionId=208&crn=1&adult=2&curr=USD&locale=es-US&SID=2209817&allianceid=1094387&utm_campaign=520530' },
   'travel-flights': { label:'Trip.com · Vuelos', url:'https://www.trip.com/?SID=2209817&allianceid=1094387&utm_campaign=520530' }
 };
 const PB_AFFILIATE_CLICKS_FILE = '/data/pb-affiliate-clicks.json';
