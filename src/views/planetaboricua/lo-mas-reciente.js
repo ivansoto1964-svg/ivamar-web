@@ -54,5 +54,5 @@ module.exports = function loMasReciente(item, comments = []) {
     finally { button.disabled = false; }
   });
 })();
-</script><script src="/js/pb-instagram-share.js?v=3"></script></body></html>`;
+</script><script src="/js/pb-instagram-share.js?v=4"></script></body></html>`;
 };
