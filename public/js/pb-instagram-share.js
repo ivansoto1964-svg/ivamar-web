@@ -44,12 +44,22 @@
 
   if (facebookLink) {
     facebookLink.addEventListener('click', async (event) => {
-      // Facebook's web sharer can redirect mobile visitors to a broken
-      // share_channel page. The phone's native share menu avoids that flow.
-      if (!navigator.share) return;
+      // Facebook's web sharer can redirect visitors to a broken
+      // share_channel page. Avoid that flow on both computers and phones.
       event.preventDefault();
       facebookLink.setAttribute('aria-disabled', 'true');
       facebookLink.style.pointerEvents = 'none';
+      if (!navigator.share) {
+        window.open('https://www.facebook.com/', '_blank', 'noopener,noreferrer');
+        const copied = await copyLink();
+        status.textContent = copied
+          ? 'Enlace copiado. Pégalo en tu publicación de Facebook.'
+          : 'Facebook abrió en otra pestaña. Copia el enlace del artículo para publicarlo.';
+        if (!copied) window.prompt('Copia este enlace para Facebook:', canonical);
+        facebookLink.removeAttribute('aria-disabled');
+        facebookLink.style.pointerEvents = '';
+        return;
+      }
       const copied = await copyLink();
       status.textContent = copied
         ? 'Enlace copiado. Escoge Facebook para compartirlo.'
