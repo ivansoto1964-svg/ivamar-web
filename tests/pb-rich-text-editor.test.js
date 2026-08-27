@@ -24,6 +24,7 @@ assert.match(asset, /text\/html/, 'Rich clipboard HTML must be read when pasting
 assert.match(asset, /sponsored noopener noreferrer/, 'Affiliate links must remain disclosed and protected.');
 assert.match(server, /const body = blogContentHtml\(req\.body\.body \|\| ''\);/, 'Latest posts must save sanitized rich text.');
 assert.match(server, /body:blogContentHtml\(item\.body\)/, 'Latest posts must be sanitized again before rendering.');
+assert.match(server, /https:\/\/www\.trip\.com\/\?SID=2209817&allianceid=1094387&utm_campaign=520530/, 'Trip.com must use the direct affiliate URL without the fragile short-link redirect.');
 
 const latestHtml = renderLatest({
   slug:'prueba', title:'Prueba', summary:'Resumen', image:'',
