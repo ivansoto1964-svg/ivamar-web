@@ -6,6 +6,7 @@ const sanitizeHtml = require('sanitize-html');
 const sanitize = (str) => str ? sanitizeHtml(str, { allowedTags: [], allowedAttributes: {} }) : '';
 const pbBlogStore = require('./services/pb-blog-store');
 const pbSiteAnalytics = require('./services/pb-site-analytics');
+const { buildPBExploreRecommendations } = require('./services/pb-ecosystem-explore');
 
 
 
@@ -3176,7 +3177,14 @@ app.get('/lo-mas-reciente/:slug', (req, res) => {
   const item = readPBLatest('approved.json').find(entry => entry.slug === req.params.slug);
   if (!item) return res.status(404).send(loMasRecientePB(null));
   const comments = readPBComments('approved.json').filter(comment => comment.articleSlug === item.slug && (comment.section || 'latest') === 'latest').sort((a,b) => new Date(b.approvedAt) - new Date(a.approvedAt)).map(publicPBComment);
-  res.send(loMasRecientePB({...publicPBLatest(item),body:blogContentHtml(item.body)}, comments));
+  const recommendations = buildPBExploreRecommendations({
+    currentSlug:item.slug,
+    latest:readPBLatest('approved.json').map(publicPBLatest),
+    blogPosts:loadPBBlogPosts(),
+    events:readPBEvents('approved.json').map(publicPBEvent),
+    artisans:loadPBApprovedArtisansWithFiles()
+  });
+  res.send(loMasRecientePB({...publicPBLatest(item),body:blogContentHtml(item.body)}, comments, recommendations));
 });
 
 app.get('/api/pb-comments/:slug', (req, res) => {
