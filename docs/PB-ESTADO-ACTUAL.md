@@ -6,7 +6,7 @@
 
 **Responsable:** Iván Soto
 
-**Última actualización documental:** 26 de agosto de 2026
+**Última actualización documental:** 29 de agosto de 2026
 
 **Repositorio:** `ivansoto1964-svg/ivamar-web`
 
@@ -81,7 +81,7 @@ Si un deploy falla, no improvisar sobre producción. Identificar el archivo y el
 - Consolidación segura de cuatro grupos de perfiles duplicados.
 - Opción para dejar de recibir comunicaciones.
 
-La cantidad de artesanos es dinámica. Consultar PB Control antes de citar una cifra pública. La última auditoría observada dejó un solo email inválido pendiente: **Jo It Savon Luxury Handmade Products — `joitsavon.gmail.com`**.
+La cantidad de artesanos es dinámica. Consultar PB Control antes de citar una cifra pública. El caso del email de **Jo It Savon Luxury Handmade Products** ya fue resuelto manualmente.
 
 ### Contenido y administración
 
@@ -94,6 +94,8 @@ La cantidad de artesanos es dinámica. Consultar PB Control antes de citar una c
 - Sitemap dinámico; Search Console descubrió 227 páginas el 25 de agosto de 2026.
 - Footer y páginas legales presentados bajo Planeta Boricua.
 - Google Analytics 4 recibiendo tráfico.
+- Sistema único de suscriptores con total y origen de captación en PB Control.
+- Formularios contextuales de suscripción preparados para Inicio, Blog, Lo más reciente y Agenda Boricua, sin popups ni un sistema paralelo.
 
 ### Email
 
@@ -107,20 +109,35 @@ La cantidad de artesanos es dinámica. Consultar PB Control antes de citar una c
 
 - El caso de **Crochet by Sany** confirmó y ayudó a corregir la validación de email en iPhone.
 - El perfil separa el negocio **Crochet by Sany** de la artesana **Sanyra Concepción Anguita**.
-- Search Console reconoce `/agenda-boricua` como indexada y detecta seis eventos válidos.
+- Search Console reconoce `/agenda-boricua` como indexada. Las validaciones de `validFrom` y URL en ofertas/organizador pasaron.
+- Queda como aviso no crítico el campo recomendado `performer` en algunos eventos.
 - Se añadieron recomendaciones de datos estructurados para `validFrom` y URL en ofertas/organizador.
 - La validación de Google puede tardar entre varios días y semanas; no repetir cambios mientras Google procesa una versión ya corregida.
 - El commit funcional de referencia antes de añadir esta documentación es `65da45f` (`Repair server and separate artisan names`). Los commits posteriores que solo modifican documentos no requieren deploy ni cambian el funcionamiento público.
 
+## Plan operativo hacia el lanzamiento
+
+- **Lanzamiento inaugural:** 23 de septiembre de 2026, presentado como **la primera feria de artesanos boricuas en línea 24/7**.
+- La inscripción de artesanos continúa gratis y la Feria permanecerá disponible al público después del lanzamiento.
+- Preparar y enviar el aviso para revisar y mejorar perfiles en lotes de aproximadamente 50 correos, comenzando en septiembre y respetando los límites vigentes de Resend.
+- Recibir de los artesanos colaboradores videos naturales trabajando y mostrando sus piezas; las confirmaciones ya comenzaron y todavía se espera el material.
+- Crear con ese pietaje una promoción del lanzamiento y material de apoyo para posibles entrevistas.
+- Preparar un comunicado y un paquete visual sencillo para medios de Puerto Rico; Iván coordina desde Florida y los artesanos participantes están mayormente en Puerto Rico.
+- Mantener imágenes y comunicación naturales, humanas y fáciles de entender; evitar visuales de IA que puedan confundir.
+- Continuar actualizando la Agenda mediante investigación de eventos gratuitos, verificación de fuente, publicación y aprobación. No publicar eventos que indiquen costo de entrada.
+
 ## Pendientes inmediatos
 
-1. Corregir manualmente el email inválido de **Jo It Savon** cuando se confirme la dirección correcta.
-2. Comprobar el resultado final de la validación de eventos en Search Console después del periodo de procesamiento.
-3. Diseñar el primer envío general a artesanos por lotes, respetando el límite vigente de Resend y las bajas de comunicación.
-4. Reducir las notificaciones innecesarias de GitHub Actions sin ocultar fallos importantes.
-5. Crear QR permanente para cada artesano.
-6. Completar URLs sencillas y estables para compartir perfiles donde todavía falten.
-7. Preparar una encuesta breve para saber qué herramientas necesitan realmente los artesanos.
+1. Completar y desplegar la captación contextual de suscriptores en Inicio, Blog, Lo más reciente y Agenda Boricua.
+2. Preparar el primer envío de revisión de perfiles por lotes, respetando el límite vigente de Resend y las bajas de comunicación.
+3. Recibir, organizar y editar los videos de artesanos para la promoción del 23 de septiembre.
+4. Crear el comunicado y paquete visual para medios del lanzamiento.
+5. Revisar semanalmente la preparación para Google AdSense; ya existe una tarea programada para esa revisión.
+6. Comprobar el aviso no crítico `performer` de eventos en Search Console después del periodo de procesamiento.
+7. Reducir las notificaciones innecesarias de GitHub Actions sin ocultar fallos importantes.
+8. Crear QR permanente para cada artesano.
+9. Completar URLs sencillas y estables para compartir perfiles donde todavía falten.
+10. Preparar una encuesta breve para saber qué herramientas necesitan realmente los artesanos.
 
 ## Próximas fases, sin activar todavía
 

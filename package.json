@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "node --check src/server.js && node --check src/views/pb-control.js && node --check src/services/pb-site-analytics.js && node tests/pb-artisan-registration.test.js && node tests/pb-blog-image-upload.test.js && node tests/pb-rich-text-editor.test.js && node tests/pb-instagram-share.test.js && node tests/pb-site-analytics.test.js"
+    "test": "node --check src/server.js && node --check src/views/pb-control.js && node --check src/services/pb-site-analytics.js && node tests/pb-artisan-registration.test.js && node tests/pb-blog-image-upload.test.js && node tests/pb-rich-text-editor.test.js && node tests/pb-instagram-share.test.js && node tests/pb-site-analytics.test.js && node tests/pb-subscriber-capture.test.js"
   },
   "keywords": [],
   "author": "",
