@@ -384,7 +384,7 @@ function writePBEvents(file, events) {
   fs.writeFileSync(path.join(PB_EVENTS_DIR, file), JSON.stringify(events, null, 2));
 }
 function publicPBEvent(event) {
-  return { id:event.id,name:event.name,type:event.type,startDate:event.startDate,endDate:event.endDate,time:event.time,venue:event.venue,address:event.address,city:event.city,region:event.region,country:event.country,description:event.description,eventUrl:event.eventUrl,cost:event.cost,image:event.image,virtual:Boolean(event.virtual),artisanSlug:event.artisanSlug,artisanName:event.artisanName,organizerName:event.organizerName,sourceLabel:event.sourceLabel,approvedAt:event.approvedAt };
+  return { id:event.id,name:event.name,type:event.type,startDate:event.startDate,endDate:event.endDate,time:event.time,venue:event.venue,address:event.address,city:event.city,region:event.region,country:event.country,description:event.description,eventUrl:event.eventUrl,cost:event.cost,image:event.image,virtual:Boolean(event.virtual),artisanSlug:event.artisanSlug,artisanName:event.artisanName,organizerName:event.organizerName,performerName:event.performerName,sourceLabel:event.sourceLabel,approvedAt:event.approvedAt };
 }
 
 const PB_LATEST_DIR = '/data/pb-latest';
@@ -1877,7 +1877,42 @@ app.post('/pb-control/action', requirePBAdmin, requirePBCsrf, express.json({limi
       const match=loadPBApprovedArtisansWithFiles().find(item=>item.id===id);if(!match)return missing();const file=path.join('/data/pb-listings',match._file);const approved=readJsonFile(file,[]).filter(item=>item.id!==id);writeJsonFile(file,approved);return ok('Artesano retirado de la Feria.');
     }
     if (action.startsWith('event-')) {
+      if (action==='event-create') {
+        const fields=['name','type','startDate','endDate','time','venue','address','city','region','country','description','eventUrl','image','organizerName','performerName','sourceLabel'];
+        const event={};fields.forEach(key=>event[key]=sanitize(req.body[key]||'').trim());
+        const allowedCountries=['Puerto Rico','Estados Unidos','Virtual'];
+        const allowedTypes=['Artesanía','Festival','Desfile','Música y baile','Gastronomía','Cultura e historia','Taller educativo','Actividad familiar','Evento comunitario','Evento virtual'];
+        if (!event.name||!event.type||!event.startDate||!event.country||!event.description||!event.eventUrl||!event.organizerName||!event.sourceLabel) return res.status(400).json({ok:false,error:'Completa todos los campos requeridos.'});
+        if (![true,'true','on'].includes(req.body.freeConfirmed)) return res.status(400).json({ok:false,error:'Confirma en la fuente que la entrada es gratuita.'});
+        if (!allowedCountries.includes(event.country)||!allowedTypes.includes(event.type)) return res.status(400).json({ok:false,error:'Selecciona una categoría y ubicación válidas.'});
+        if (event.country!=='Virtual'&&!event.city) return res.status(400).json({ok:false,error:'Indica la ciudad o pueblo del evento.'});
+        if (!/^\d{4}-\d{2}-\d{2}$/.test(event.startDate)||(event.endDate&&!/^\d{4}-\d{2}-\d{2}$/.test(event.endDate))) return res.status(400).json({ok:false,error:'Fecha inválida.'});
+        if (event.startDate<new Date().toISOString().slice(0,10)) return res.status(400).json({ok:false,error:'La fecha del evento ya pasó.'});
+        if (event.endDate&&event.endDate<event.startDate) return res.status(400).json({ok:false,error:'La fecha final no puede ser anterior a la inicial.'});
+        if (event.name.length>120||event.description.length>600||event.organizerName.length>120||event.performerName.length>180||event.sourceLabel.length>120||event.time.length>100||event.venue.length>180||event.address.length>240||event.city.length>120||event.region.length>120||event.eventUrl.length>2048||event.image.length>2048) return res.status(400).json({ok:false,error:'Revisa los límites de texto del evento.'});
+        let officialUrl;
+        try { officialUrl=new URL(event.eventUrl); } catch (_) { return res.status(400).json({ok:false,error:'El enlace de la fuente no es válido.'}); }
+        if (!['http:','https:'].includes(officialUrl.protocol)) return res.status(400).json({ok:false,error:'El enlace de la fuente no es válido.'});
+        event.eventUrl=officialUrl.toString();
+        if (event.image) {
+          let imageUrl;
+          try { imageUrl=new URL(event.image); } catch (_) { return res.status(400).json({ok:false,error:'El enlace de la imagen no es válido.'}); }
+          if (!['http:','https:'].includes(imageUrl.protocol)) return res.status(400).json({ok:false,error:'El enlace de la imagen no es válido.'});
+          event.image=imageUrl.toString();
+        }
+        event.virtual=event.country==='Virtual';
+        if (event.country==='Puerto Rico') event.region='Puerto Rico';
+        if (event.virtual) { event.region='Virtual'; event.city=''; }
+        const duplicateKey=item=>[item.name,item.startDate,item.city].map(value=>String(value||'').trim().toLocaleLowerCase('es')).join('|');
+        const existing=[...readPBEvents('pending.json'),...readPBEvents('approved.json')];
+        if (existing.some(item=>duplicateKey(item)===duplicateKey(event))) return res.status(409).json({ok:false,error:'Ese evento ya está guardado para la misma fecha y ubicación.'});
+        const now=new Date().toISOString();
+        Object.assign(event,{id:`${Date.now()}-${crypto.randomBytes(3).toString('hex')}`,cost:'Gratis',status:'approved',submittedAt:now,approvedAt:now,createdBy:'pb-admin'});
+        const approved=readPBEvents('approved.json');approved.push(event);writePBEvents('approved.json',approved);
+        return ok('Evento creado y publicado en la Agenda.');
+      }
       if (action==='event-approve') {const pending=readPBEvents('pending.json');const index=pending.findIndex(item=>item.id===id);if(index<0)return missing();const item=pending.splice(index,1)[0];delete item.approveToken;delete item.rejectToken;item.status='approved';item.approvedAt=new Date().toISOString();const approved=readPBEvents('approved.json');approved.push(item);writeJsonFile(path.join(PB_EVENTS_DIR,'pending.json'),pending);writeJsonFile(path.join(PB_EVENTS_DIR,'approved.json'),approved);return ok('Evento publicado en la Agenda.');}
+      if (action!=='event-reject'&&action!=='event-delete') return res.status(400).json({ok:false,error:'Acción no reconocida.'});
       const file=action==='event-reject'?'pending.json':'approved.json';const items=readPBEvents(file);const index=items.findIndex(item=>item.id===id);if(index<0)return missing();items.splice(index,1);writeJsonFile(path.join(PB_EVENTS_DIR,file),items);return ok(action==='event-reject'?'Evento rechazado.':'Evento eliminado.');
     }
     return res.status(400).json({ok:false,error:'Acción no reconocida.'});
