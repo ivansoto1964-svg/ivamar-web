@@ -754,6 +754,16 @@ function loadPBBlogPosts() {
   return pbBlogStore.loadPosts({ includeDrafts:true });
 }
 
+function pbExploreRecommendations(options = {}) {
+  return buildPBExploreRecommendations({
+    ...options,
+    latest:readPBLatest('approved.json').map(publicPBLatest),
+    blogPosts:loadPBBlogPosts(),
+    events:readPBEvents('approved.json').map(publicPBEvent),
+    artisans:loadPBApprovedArtisansWithFiles()
+  });
+}
+
 function pbAffiliateSummary() {
   const clicks = readJsonFile(PB_AFFILIATE_CLICKS_FILE,[]);
   const grouped = new Map();
@@ -3139,7 +3149,12 @@ require("./routes/pb-stories")(app);
 // PB Blog routes
 const pbBlogRouter = require("./routes/pb-blog");
 const quienesSomos = require("./views/quienes-somos");
-app.use("/blog", pbBlogRouter);
+app.use("/blog", (req, res, next) => {
+  res.locals.pbExploreRecommendations = pbExploreRecommendations({
+    currentBlogSlug:req.params?.slug || String(req.path || '').replace(/^\//, '')
+  });
+  next();
+}, pbBlogRouter);
 
 app.get('/api/blogger/ping', (_req,res) => res.status(410).json({success:false,error:'Blogger ya no es la fuente del blog.'}));
 app.get('/admin/pb-editorial', (_req,res) => res.redirect(301,'/pb-control#publicaciones'));
@@ -3177,13 +3192,7 @@ app.get('/lo-mas-reciente/:slug', (req, res) => {
   const item = readPBLatest('approved.json').find(entry => entry.slug === req.params.slug);
   if (!item) return res.status(404).send(loMasRecientePB(null));
   const comments = readPBComments('approved.json').filter(comment => comment.articleSlug === item.slug && (comment.section || 'latest') === 'latest').sort((a,b) => new Date(b.approvedAt) - new Date(a.approvedAt)).map(publicPBComment);
-  const recommendations = buildPBExploreRecommendations({
-    currentSlug:item.slug,
-    latest:readPBLatest('approved.json').map(publicPBLatest),
-    blogPosts:loadPBBlogPosts(),
-    events:readPBEvents('approved.json').map(publicPBEvent),
-    artisans:loadPBApprovedArtisansWithFiles()
-  });
+  const recommendations = pbExploreRecommendations({currentSlug:item.slug});
   res.send(loMasRecientePB({...publicPBLatest(item),body:blogContentHtml(item.body)}, comments, recommendations));
 });
 
@@ -3350,7 +3359,10 @@ app.get("/feria-artesanos", (req, res) => {
 });
 
 app.get('/agenda-artesanal', (_req, res) => res.redirect(301, '/agenda-boricua'));
-app.get('/agenda-boricua', (_req, res) => res.send(agendaArtesanalPB(readPBEvents('approved.json').map(publicPBEvent))));
+app.get('/agenda-boricua', (_req, res) => res.send(agendaArtesanalPB(
+  readPBEvents('approved.json').map(publicPBEvent),
+  pbExploreRecommendations({excludeAreas:['Agenda Boricua']})
+)));
 app.get('/api/pb-eventos-proximos', (_req, res) => {
   const today = new Date().toISOString().slice(0, 10);
   const events = readPBEvents('approved.json').map(publicPBEvent).filter(event => (event.endDate || event.startDate) >= today).sort((a,b) => a.startDate.localeCompare(b.startDate)).slice(0, 3);
@@ -3456,7 +3468,13 @@ app.get('/artesanos/:slug', (req, res, next) => {
   const categories = {'tallado-madera':'Tallado en madera','joyeria':'Joyería artesanal','ceramica':'Cerámica y alfarería','textiles':'Textiles y costura','pintura':'Pintura y arte','santos':'Santos y tallas religiosas','cuero':'Trabajo en cuero','vejigantes':'Máscaras y vejigantes','instrumentos':'Instrumentos musicales','reciclado':'Arte con material reciclado','velas-jabones':'Velas y jabones artesanales','otro':'Artesanía puertorriqueña'};
   const locationLabel = `${item.city || item.location || 'Puerto Rico'}${PB_US_LOCATIONS.has(item.location) ? ', USA' : ', Puerto Rico'}`;
   const events = readPBEvents('approved.json').map(publicPBEvent).filter(event => event.artisanSlug === canonicalSlug && new Date(`${event.endDate || event.startDate}T23:59:59`) >= new Date());
-  res.send(artesanoPerfilPB(item, { categoryLabel: categories[item.category] || 'Artesanía puertorriqueña', locationLabel, slug: canonicalSlug, events }));
+  res.send(artesanoPerfilPB(item, {
+    categoryLabel:categories[item.category] || 'Artesanía puertorriqueña',
+    locationLabel,
+    slug:canonicalSlug,
+    events,
+    recommendations:pbExploreRecommendations({currentArtisanSlug:canonicalSlug})
+  }));
 });
 
 app.post('/api/pb-artesano-metrica/:slug', pbArtisanMetricsLimiter, express.json({limit:'2kb'}), (req,res) => {

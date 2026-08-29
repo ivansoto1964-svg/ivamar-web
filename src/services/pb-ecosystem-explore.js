@@ -23,6 +23,9 @@ function eventDate(event) {
 
 function buildPBExploreRecommendations({
   currentSlug = '',
+  currentBlogSlug = '',
+  currentArtisanSlug = '',
+  excludeAreas = [],
   latest = [],
   blogPosts = [],
   events = [],
@@ -42,7 +45,7 @@ function buildPBExploreRecommendations({
   });
 
   const blog = blogPosts
-    .filter(post => post && post.slug && (post.status || 'published') === 'published')
+    .filter(post => post && post.slug && post.slug !== currentBlogSlug && (post.status || 'published') === 'published')
     .sort(byNewest)[0];
   if (blog) recommendations.push({
     area:'Blog oficial',
@@ -64,17 +67,18 @@ function buildPBExploreRecommendations({
   });
 
   const artisan = artisans
-    .filter(item => item && item.name && item.slug)
+    .filter(item => item && item.name && item.slug && item.slug !== currentArtisanSlug)
     .sort(byNewest)[0];
   if (artisan) recommendations.push({
     area:'Feria de Artesanos',
-    title:artisan.name,
-    summary:artisan.desc || [artisan.category, artisan.city].filter(Boolean).join(' · '),
+    title:'Descubre la Feria Digital de Artesanos',
+    summary:`Conoce a ${artisan.name} y explora más talento artesanal boricua.`,
     image:artisan.photo || artisan.logo,
-    href:`/artesanos/${encodeURIComponent(artisan.slug)}`
+    href:'/feria-artesanos'
   });
 
-  return recommendations.slice(0, 4);
+  const excluded = new Set(excludeAreas);
+  return recommendations.filter(item => !excluded.has(item.area)).slice(0, 4);
 }
 
 module.exports = { buildPBExploreRecommendations };
