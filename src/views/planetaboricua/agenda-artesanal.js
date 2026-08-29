@@ -6,6 +6,7 @@ const esc = (value) =>
         char
       ],
   );
+const { renderSubscriberForm } = require('./subscriber-form');
 const areaOf = (event) =>
   event.virtual
     ? "virtual"
@@ -20,7 +21,7 @@ module.exports = function agendaBoricua(events = []) {
   const upcoming = events
     .filter((e) => new Date(`${e.endDate || e.startDate}T23:59:59`) >= today)
     .sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
-  const cards = upcoming
+  let cards = upcoming
     .map((event) => {
       const date = new Date(`${event.startDate}T12:00:00`);
       const month = date
@@ -40,6 +41,7 @@ module.exports = function agendaBoricua(events = []) {
       return `<article class="event-card" data-area="${areaOf(event)}" data-region="${esc(region).toLowerCase()}" data-city="${esc(event.city).toLowerCase()}">${event.image ? `<img src="${esc(event.image)}" alt="Afiche de ${esc(event.name)}" loading="lazy">` : ""}<div class="event-content"><div class="date"><strong>${date.getDate()}</strong><span>${esc(month)}</span></div><div class="event-copy"><div class="type">${esc(event.type || "Evento cultural")}</div><h2>${esc(event.name)}</h2><p class="where">📍 ${esc(location)}</p>${event.time ? `<p><strong>Horario:</strong> ${esc(event.time)}</p>` : ""}<p>${esc(event.description)}</p><div class="presenter">${presenter}</div><div class="actions">${event.eventUrl ? `<a href="${esc(event.eventUrl)}" target="_blank" rel="noopener">Información oficial</a>` : ""}<a href="https://wa.me/?text=${encodeURIComponent(event.name + " https://www.masboricuaqueunmofongo.com/agenda-boricua")}" target="_blank" rel="noopener">Compartir</a></div></div></div></article>`;
     })
     .join("");
+  cards = (cards || '<div class="empty"><div style="font-size:3rem">📅</div><h2>La agenda está comenzando</h2><p>Pronto encontrarás aquí actividades boricuas gratuitas dentro y fuera de Puerto Rico.</p><p><a class="btn" href="/compartir-evento-boricua">Comparte la primera</a></p></div>') + renderSubscriberForm('agenda');
   const locations = upcoming.map((event) => ({
     area: areaOf(event),
     region:

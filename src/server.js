@@ -4702,8 +4702,14 @@ app.get("/sitemap-boricua.xml", (req, res) => {
 
 app.post('/api/newsletter-boricua', express.json(), formLimiter, async (req, res) => {
   try {
-    const { email, source } = req.body;
-    if (!email || !email.includes('@')) return res.status(400).json({ error: 'Email inválido' });
+    const body = req.body || {};
+    const email = String(body.email || '').trim().toLowerCase();
+    const requestedSource = String(body.source || '').trim().toLowerCase();
+    const sourceAliases = { landing: 'inicio' };
+    const source = sourceAliases[requestedSource] || requestedSource;
+    const allowedSources = new Set(['blog', 'lo_mas_reciente', 'agenda', 'inicio']);
+    const savedSource = allowedSources.has(source) ? source : 'inicio';
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return res.status(400).json({ ok: false, error: 'Email inválido' });
 
     // Save to file
     const subscribersFile = '/data/pb-subscribers.json';
@@ -4711,8 +4717,8 @@ app.post('/api/newsletter-boricua', express.json(), formLimiter, async (req, res
     if (require('fs').existsSync(subscribersFile)) {
       subscribers = JSON.parse(require('fs').readFileSync(subscribersFile, 'utf8'));
     }
-    if (subscribers.find(s => s.email === email)) return res.json({ ok: true });
-    subscribers.push({ email, source: source || 'landing', subscribedAt: new Date().toISOString() });
+    if (subscribers.find(s => String(s.email || '').trim().toLowerCase() === email)) return res.json({ ok: true, existing: true });
+    subscribers.push({ email, source: savedSource, subscribedAt: new Date().toISOString() });
     require('fs').writeFileSync(subscribersFile, JSON.stringify(subscribers, null, 2));
 
     // Notify Ivan
@@ -4720,7 +4726,7 @@ app.post('/api/newsletter-boricua', express.json(), formLimiter, async (req, res
       from: `Planeta Boricua <${PB_SENDER_EMAIL}>`,
       to: PB_CONTACT_EMAIL,
       subject: '🇵🇷 Nuevo suscriptor Planeta Boricua: ' + email,
-      html: '<p>Nuevo suscriptor: <strong>' + email + '</strong></p><p>Fuente: ' + (source || 'landing') + '</p><p>Total: ' + subscribers.length + '</p>'
+      html: '<p>Nuevo suscriptor: <strong>' + email + '</strong></p><p>Fuente: ' + savedSource + '</p><p>Total: ' + subscribers.length + '</p>'
     });
 
     // Add to Brevo list 4 (Planeta Boricua)
@@ -4769,6 +4775,6 @@ app.post('/api/newsletter-boricua', express.json(), formLimiter, async (req, res
     return res.json({ ok: true });
   } catch(e) {
     console.error('PB Subscribe error:', e.message);
-    return res.json({ ok: false });
+    return res.status(500).json({ ok: false, error: 'No se pudo completar la suscripción.' });
   }
 });

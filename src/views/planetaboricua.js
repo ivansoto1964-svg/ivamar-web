@@ -184,12 +184,12 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
 .newsletter h2{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,3vw,2.4rem);font-weight:800;color:#fff;margin-bottom:0.8rem;line-height:1.2;}
 .newsletter h2 em{color:#f5c842;font-style:italic;}
 .newsletter p{font-size:0.88rem;color:rgba(255,255,255,0.5);line-height:1.7;margin-bottom:2rem;}
-.newsletter-form{display:flex;gap:0.5rem;max-width:420px;margin:0 auto;}
+.newsletter-form{display:flex;flex-wrap:wrap;gap:0.5rem;max-width:420px;margin:0 auto;}
 .newsletter-input{flex:1;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);border-radius:4px;padding:0.8rem 1rem;color:#fff;font-size:0.85rem;outline:none;font-family:'Inter',sans-serif;}
 .newsletter-input::placeholder{color:rgba(255,255,255,0.25);}
 .newsletter-btn{background:var(--red);color:#fff;border:none;border-radius:4px;padding:0.8rem 1.2rem;font-size:0.85rem;font-weight:700;cursor:pointer;white-space:nowrap;font-family:'Inter',sans-serif;}
 .newsletter-btn:hover{background:#a80e1f;}
-.newsletter-note{font-size:0.68rem;color:rgba(255,255,255,0.2);margin-top:0.8rem;}
+.newsletter-note{font-size:0.68rem;color:rgba(255,255,255,0.35);margin-top:0.8rem;}.newsletter .pb-subscribe-status{flex-basis:100%;min-height:1.2em;margin:.5rem 0 0;font-size:.85rem;font-weight:700;color:#ff8b98}.newsletter .pb-subscribe-status[data-state="success"]{color:#72d993}.newsletter .pb-subscribe-status[data-state="error"]{color:#ff8b98}@media(max-width:520px){.newsletter-form{align-items:stretch;flex-direction:column}.newsletter-btn{width:100%}}
 .pb-app{background:linear-gradient(135deg,#002D62,#001a3d);padding:2rem;}
 .pb-app-inner{max-width:900px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:1.5rem;}
 .pb-app-copy{display:flex;align-items:center;gap:1rem;}
@@ -744,12 +744,12 @@ async function loadDirectorio() {
     <div class="newsletter-eyebrow">Boletín Boricua</div>
     <h2>Lo Boricua <em>Directo</em> a Tu Email</h2>
     <p>Historias, cultura, recursos y novedades de nuestra comunidad — directo a tu correo. Sin spam, solo lo bueno.</p>
-    <div class="newsletter-form">
-      <input class="newsletter-input" id="nlEmail" type="email" placeholder="tu@email.com">
-      <button class="newsletter-btn" onclick="nlSubscribe()">Suscribirme →</button>
-    </div>
+    <form class="newsletter-form" data-pb-subscribe data-source="inicio">
+      <input class="newsletter-input" name="email" type="email" inputmode="email" autocomplete="email" placeholder="tu@email.com" aria-label="Correo electrónico" required>
+      <button class="newsletter-btn" type="submit">Suscribirme →</button>
+      <p class="pb-subscribe-status" role="status" aria-live="polite"></p>
+    </form>
     <div class="newsletter-note">Sin spam. Cancela cuando quieras. ¡Wepa! 🇵🇷</div>
-    <div id="nlMsg" style="margin-top:1rem;font-size:0.85rem;color:#ff6b7a;display:none;"></div>
   </div>
 </section>
 
@@ -994,35 +994,9 @@ setInterval(() => {
 })();
 
 
-// Newsletter
-async function nlSubscribe() {
-  const email = document.getElementById('nlEmail').value.trim();
-  const msg = document.getElementById('nlMsg');
-  if (!email || !email.includes('@')) {
-    msg.style.display = 'block';
-    msg.textContent = 'Por favor entra un email válido.';
-    return;
-  }
-  try {
-    const res = await fetch('/api/newsletter-boricua', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, source: 'landing' })
-    });
-    msg.style.display = 'block';
-    if (res.ok) {
-      msg.style.color = '#4caf50';
-      msg.textContent = '¡Wepa! Ya estás suscrito. ¡Bendiciones! 🇵🇷';
-      document.getElementById('nlEmail').value = '';
-    } else {
-      msg.textContent = 'Algo salió mal. Intenta de nuevo.';
-    }
-  } catch {
-    msg.style.display = 'block';
-    msg.textContent = 'Error de conexión. Intenta de nuevo.';
-  }
-}
 </script>
+
+<script src="/js/pb-subscribe.js?v=1"></script>
 
 
 <!-- Cookie Banner -->
