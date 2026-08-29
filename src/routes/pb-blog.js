@@ -73,7 +73,7 @@ router.get("/:slug", (req, res) => {
     const related = allPosts.filter(p => p.slug !== post.slug && p.category === post.category).slice(0,3);
     const prevPost = currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : null;
     const nextPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null;
-    res.send(pbBlogPost(post, related, prevPost, nextPost, loadCommentsForPost(post.slug)));
+    res.send(pbBlogPost(post, related, prevPost, nextPost, loadCommentsForPost(post.slug), res.locals.pbExploreRecommendations || []));
   } catch(e) {
     res.status(500).send("Error cargando el artículo");
   }
