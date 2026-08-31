@@ -15,6 +15,7 @@ const socialUrl = (value, network) => {
   return /^[a-zA-Z0-9._]+$/.test(raw) ? `https://${network}.com/${raw}` : '';
 };
 const { renderExplorePB } = require('./explore-pb');
+const { isIndexablePBArtisan } = require('../../utils/pb-seo');
 
 function artesanoPerfil(item, helpers) {
   const { categoryLabel, locationLabel, slug, events = [], recommendations = [] } = helpers;
@@ -25,15 +26,15 @@ function artesanoPerfil(item, helpers) {
   const canonical = `https://www.masboricuaqueunmofongo.com/artesanos/${slug}`;
   const shortUrl = `https://www.masboricuaqueunmofongo.com/a/${slug}`;
   const social = [];
-  if (item.whatsapp) social.push(`<a class="btn wa" data-pb-track="whatsapp" href="https://wa.me/${String(item.whatsapp).replace(/[^0-9]/g,'')}" target="_blank" rel="noopener">WhatsApp</a>`);
+  if (item.whatsapp) social.push(`<a class="btn wa" data-pb-track="whatsapp" href="https://wa.me/${String(item.whatsapp).replace(/[^0-9]/g,'')}" target="_blank" rel="ugc nofollow noopener noreferrer">WhatsApp</a>`);
   const websiteUrl = safeUrl(item.website);
   const instagramUrl = socialUrl(item.instagram, 'instagram');
   const facebookUrl = socialUrl(item.facebook, 'facebook');
   const storeUrl = safeUrl(item.etsy);
-  if (websiteUrl) social.push(`<a class="btn" data-pb-track="website" href="${esc(websiteUrl)}" target="_blank" rel="noopener">Página web</a>`);
-  if (instagramUrl) social.push(`<a class="btn secondary" data-pb-track="instagram" href="${esc(instagramUrl)}" target="_blank" rel="noopener">Instagram</a>`);
-  if (facebookUrl) social.push(`<a class="btn secondary" data-pb-track="facebook" href="${esc(facebookUrl)}" target="_blank" rel="noopener">Facebook</a>`);
-  if (storeUrl && storeUrl !== websiteUrl) social.push(`<a class="btn secondary" data-pb-track="store" href="${esc(storeUrl)}" target="_blank" rel="noopener">Tienda online</a>`);
+  if (websiteUrl) social.push(`<a class="btn" data-pb-track="website" href="${esc(websiteUrl)}" target="_blank" rel="ugc nofollow noopener noreferrer">Página web</a>`);
+  if (instagramUrl) social.push(`<a class="btn secondary" data-pb-track="instagram" href="${esc(instagramUrl)}" target="_blank" rel="ugc nofollow noopener noreferrer">Instagram</a>`);
+  if (facebookUrl) social.push(`<a class="btn secondary" data-pb-track="facebook" href="${esc(facebookUrl)}" target="_blank" rel="ugc nofollow noopener noreferrer">Facebook</a>`);
+  if (storeUrl && storeUrl !== websiteUrl) social.push(`<a class="btn secondary" data-pb-track="store" href="${esc(storeUrl)}" target="_blank" rel="ugc nofollow noopener noreferrer">Tienda online</a>`);
   social.push(`<a class="btn secondary" data-pb-track="event" href="/artesanos/${encodeURIComponent(slug)}/compartir-evento">Publicar evento</a>`);
   social.push(`<a class="btn secondary" data-pb-track="edit" href="/artesanos/mi-perfil">✏️ Editar mi información</a>`);
   const eventList = events.map(event => `<a href="/agenda-boricua" style="display:block;background:#fff;padding:1rem;border-radius:8px;text-decoration:none;color:#111;border:1px solid #e5e5e0"><strong>${esc(event.startDate)} · ${esc(event.name)}</strong><br><span style="font-size:.8rem;color:#666">${esc(event.city)}, ${esc(event.region)}</span></a>`).join('');
@@ -43,7 +44,10 @@ function artesanoPerfil(item, helpers) {
 }
 
 module.exports = function artesanoPerfilConResponsable(item, helpers) {
-  const html = artesanoPerfil(item, helpers);
+  let html = artesanoPerfil(item, helpers);
+  if (!isIndexablePBArtisan(item)) {
+    html = html.replace('<link rel="canonical"', '<meta name="robots" content="noindex,follow"><link rel="canonical"');
+  }
   if (!item.ownerName) return html;
   return html.replace(
     `<h1>${esc(item.name)}</h1><div class="location">`,

@@ -41,7 +41,7 @@ nav{background:#fff;border-bottom:3px solid #CE1126;padding:0;}
 </nav>
 <section class="page-hero">
   <h1>Términos y Condiciones de Uso</h1>
-  <p>Última actualización: 24 de agosto de 2026</p>
+  <p>Última actualización: 31 de agosto de 2026</p>
 </section>
 <div class="content">
   <p>Bienvenido a Más Boricua Que Un Mofongo (masboricuaqueunmofongo.com), el portal de Planeta Boricua, proyecto independiente operado por Iván Soto desde Florida, Estados Unidos. Al acceder o utilizar nuestra plataforma, directorio y servicios relacionados, usted acepta cumplir y estar sujeto a los siguientes Términos y Condiciones. Si no está de acuerdo con alguna parte de estos términos, no deberá utilizar nuestro sitio web.</p>
@@ -120,10 +120,9 @@ nav{background:#fff;border-bottom:3px solid #CE1126;padding:0;}
 </nav>
 <section class="page-hero">
   <h1>Política de Privacidad</h1>
-  <p>Última actualización: 24 de agosto de 2026</p>
+  <p>Última actualización: 31 de agosto de 2026</p>
 </section>
 <div class="content">
-  <p><em>Última actualización: 24 de agosto de 2026</em></p>
   <p>En Más Boricua Que Un Mofongo (accesible a través de masboricuaqueunmofongo.com), portal de Planeta Boricua operado de manera independiente por Iván Soto desde Florida, una de nuestras principales prioridades es la privacidad de nuestros visitantes. Este documento detalla los tipos de información que recopilamos y registramos, y cómo la utilizamos.</p>
 
   <h2>1. Archivos de Registro (Log Files)</h2>
@@ -135,7 +134,7 @@ nav{background:#fff;border-bottom:3px solid #CE1126;padding:0;}
 
   <h2>3. Políticas de Google AdSense y Publicidad de Terceros</h2>
   <p>Nuestro sitio web utiliza Google AdSense para publicar anuncios. Google, como proveedor externo, utiliza cookies para publicar anuncios en nuestro sitio basados en las visitas anteriores de un usuario a nuestro sitio web u otros sitios web.</p>
-  <p>Los usuarios pueden inhabilitar la publicidad personalizada visitando la <a href="https://www.google.com/settings/ads" target="_blank" style="color:#CE1126;">Configuración de anuncios de Google</a>. Alternativamente, puede optar por no participar en el uso de cookies de terceros visitando <a href="http://www.aboutads.info" target="_blank" style="color:#CE1126;">www.aboutads.info</a>.</p>
+  <p>Google y otros proveedores o redes publicitarias autorizadas pueden utilizar cookies para mostrar anuncios basados en visitas anteriores. Los usuarios pueden conocer cómo Google utiliza los datos en <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener noreferrer" style="color:#CE1126;">Cómo utiliza Google la información de sitios asociados</a> e inhabilitar la publicidad personalizada en la <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener noreferrer" style="color:#CE1126;">Configuración de anuncios de Google</a>. También pueden consultar las opciones de otros proveedores en <a href="https://www.aboutads.info" target="_blank" rel="noopener noreferrer" style="color:#CE1126;">www.aboutads.info</a>.</p>
 
   <h2>4. Divulgación de Enlaces de Afiliados</h2>
   <p>Más Boricua Que Un Mofongo se financia, en parte, a través de programas de marketing de afiliados. Cuando hace clic en ciertos enlaces de nuestro sitio web y realiza una compra, podemos recibir una pequeña comisión sin ningún costo adicional para usted.</p>
@@ -205,7 +204,7 @@ nav{background:#fff;border-bottom:3px solid #CE1126;padding:0;}
 </nav>
 <section class="page-hero">
   <h1>Aviso de Afiliados</h1>
-  <p>Divulgación FTC — Última actualización: 15 de agosto de 2026</p>
+  <p>Divulgación FTC — Última actualización: 31 de agosto de 2026</p>
 </section>
 <div class="content">
   <div class="info-box">
@@ -223,8 +222,9 @@ nav{background:#fff;border-bottom:3px solid #CE1126;padding:0;}
   <h2>Programas de afiliados activos</h2>
   <p>Planeta Boricua participa en los siguientes programas de afiliados:</p>
   <ul>
+    <li><strong>Programa de Asociados de Amazon</strong> — enlaces a productos y a la tienda de Planeta Boricua en Amazon</li>
     <li><strong>Travelpayouts</strong> — plataforma de afiliados de viajes (Expedia, Booking.com, Aviasales, etc.)</li>
-    <li><strong>Google Adsense</strong> — anuncios contextuales de Google</li>
+    <li><strong>Google AdSense</strong> — anuncios contextuales de Google</li>
     <li>Otros programas de viajes y servicios que puedan añadirse en el futuro</li>
   </ul>
 
