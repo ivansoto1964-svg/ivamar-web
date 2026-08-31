@@ -7,7 +7,8 @@ const sanitize = (str) => str ? sanitizeHtml(str, { allowedTags: [], allowedAttr
 const pbBlogStore = require('./services/pb-blog-store');
 const pbSiteAnalytics = require('./services/pb-site-analytics');
 const { buildPBExploreRecommendations } = require('./services/pb-ecosystem-explore');
-const { isIndexablePBArtisan } = require('./utils/pb-seo');
+const { isIndexablePBArtisan, wordCount } = require('./utils/pb-seo');
+const PB_ARTISAN_DESCRIPTION_REPAIRS = require('./data/pb-artisan-description-repairs');
 
 
 
@@ -750,6 +751,36 @@ function runPBArtisanCleanupMigration() {
 }
 
 runPBArtisanCleanupMigration();
+
+const PB_ARTISAN_DESCRIPTION_MIGRATION = '2026-08-31-artisan-descriptions-v1';
+function runPBArtisanDescriptionMigration() {
+  const migrationDir = '/data/pb-migrations';
+  const markerFile = path.join(migrationDir, `${PB_ARTISAN_DESCRIPTION_MIGRATION}.json`);
+  if (!fs.existsSync(PB_ARTISAN_DIR) || fs.existsSync(markerFile)) return;
+  try {
+    const records = loadPBApprovedArtisansWithFiles();
+    const changes = records.filter(item => PB_ARTISAN_DESCRIPTION_REPAIRS[pbArtisanSlug(item)] && !isIndexablePBArtisan(item));
+    const backupFile = changes.length ? backupPBArtisans(`before-${PB_ARTISAN_DESCRIPTION_MIGRATION}`) : '';
+    if (changes.length && !backupFile) throw new Error('backup could not be created');
+    const changedFiles = new Map();
+    changes.forEach(item => {
+      const patch = PB_ARTISAN_DESCRIPTION_REPAIRS[pbArtisanSlug(item)];
+      const file = path.join(PB_ARTISAN_DIR,item._file);
+      const items = changedFiles.get(file) || readJsonFile(file,[]);
+      const index = items.findIndex(entry => String(entry?.id || '') === String(item.id || ''));
+      if (index < 0) return;
+      items[index] = {...items[index],...patch,updatedAt:new Date().toISOString()};
+      changedFiles.set(file,items);
+    });
+    changedFiles.forEach((items,file) => writeJsonFile(file,items));
+    if (!fs.existsSync(migrationDir)) fs.mkdirSync(migrationDir,{recursive:true});
+    writeJsonFile(markerFile,{completedAt:new Date().toISOString(),backupFile,updatedProfiles:changes.map(item => pbArtisanSlug(item))});
+    console.log(`PB artisan descriptions improved: ${changes.length} profiles updated.`);
+  } catch (error) {
+    console.error('PB artisan description migration skipped:',error.message);
+  }
+}
+runPBArtisanDescriptionMigration();
 
 function loadPBBlogPosts() {
   return pbBlogStore.loadPosts({ includeDrafts:true });
@@ -1711,6 +1742,7 @@ function buildPBControlModel(csrf) {
   const commentsApproved = readPBComments('approved.json').sort((a,b) => new Date(b.approvedAt || 0)-new Date(a.approvedAt || 0));
   const artisansPending = readJsonFile('/data/pb-listings/pending.json',[]).sort((a,b) => new Date(b.submittedAt || 0)-new Date(a.submittedAt || 0));
   const artisansApproved = loadPBApprovedArtisansWithFiles().sort((a,b) => new Date(b.approvedAt || 0)-new Date(a.approvedAt || 0));
+  const artisanNeedsImprovement = artisansApproved.filter(item => !isIndexablePBArtisan(item)).length;
   const eventsPending = readPBEvents('pending.json').sort((a,b) => new Date(b.submittedAt || 0)-new Date(a.submittedAt || 0));
   const eventsApproved = readPBEvents('approved.json').sort((a,b) => String(a.startDate || '').localeCompare(String(b.startDate || '')));
   const subscribers = readJsonFile('/data/pb-subscribers.json',[]).sort((a,b) => new Date(b.subscribedAt || 0)-new Date(a.subscribedAt || 0));
@@ -1721,7 +1753,7 @@ function buildPBControlModel(csrf) {
   const artisanMailHistory = pbArtisanMailHistory();
   const artisanMetrics = pbArtisanMetricsSummary(artisansApproved);
   const siteAnalytics = pbSiteAnalytics.summary();
-  return {csrf,latestPending,latestApproved,commentsPending,commentsApproved,artisansPending,artisansApproved,eventsPending,eventsApproved,subscribers,blogPosts,affiliates,artisanEmailCount,artisanEmailAudit,artisanMailHistory,artisanMetrics,siteAnalytics,counts:{pendingLatest:latestPending.length,pendingComments:commentsPending.length,pendingArtisans:artisansPending.length,pendingEvents:eventsPending.length,pendingTotal:latestPending.length+commentsPending.length+artisansPending.length+eventsPending.length,blogPosts:blogPosts.length,subscribers:subscribers.length,affiliateClicks:affiliates.reduce((sum,item)=>sum+item.clicks,0),artisanViews:artisanMetrics.reduce((sum,item)=>sum+item.views,0),artisanClicks:artisanMetrics.reduce((sum,item)=>sum+item.clickTotal,0)}};
+  return {csrf,latestPending,latestApproved,commentsPending,commentsApproved,artisansPending,artisansApproved,artisanNeedsImprovement,eventsPending,eventsApproved,subscribers,blogPosts,affiliates,artisanEmailCount,artisanEmailAudit,artisanMailHistory,artisanMetrics,siteAnalytics,counts:{pendingLatest:latestPending.length,pendingComments:commentsPending.length,pendingArtisans:artisansPending.length,pendingEvents:eventsPending.length,pendingTotal:latestPending.length+commentsPending.length+artisansPending.length+eventsPending.length,blogPosts:blogPosts.length,subscribers:subscribers.length,affiliateClicks:affiliates.reduce((sum,item)=>sum+item.clicks,0),artisanViews:artisanMetrics.reduce((sum,item)=>sum+item.views,0),artisanClicks:artisanMetrics.reduce((sum,item)=>sum+item.clickTotal,0)}};
 }
 
 app.get('/pb-control/login', (req,res) => {
@@ -3931,10 +3963,14 @@ CÓMO RESPONDER:
 // PB Control artisan editor.
 app.get('/pb-control/artesanos', requirePBAdmin, (req,res) => {
   const q = sanitize(req.query?.q || '').trim().toLowerCase();
+  const needsImprovement = req.query?.needs === '1';
   let items = loadPBApprovedArtisansWithFiles().map(item => ({...item,slug:pbArtisanSlug(item)}));
+  const total = items.length;
+  const needsCount = items.filter(item => !isIndexablePBArtisan(item)).length;
+  if (needsImprovement) items = items.filter(item => !isIndexablePBArtisan(item));
   if (q) items = items.filter(item => [item.name,item.email,item.whatsapp,item.city,item.location].some(value => String(value || '').toLowerCase().includes(q)));
   items.sort((a,b)=>String(a.name||'').localeCompare(String(b.name||''),'es'));
-  res.send(artesanoAdminPB.list(items.slice(0,300),q));
+  res.send(artesanoAdminPB.list(items.slice(0,300),q,{needsImprovement,total,needsCount,wordCount}));
 });
 
 app.get('/pb-control/artesanos/:id', requirePBAdmin, (req,res) => {
