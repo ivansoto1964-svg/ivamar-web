@@ -28,6 +28,9 @@ const server = fs.readFileSync(path.join(__dirname,'..','src/server.js'),'utf8')
 const view = fs.readFileSync(path.join(__dirname,'..','src/views/pb-control.js'),'utf8');
 assert.match(server,/PB_ARTISAN_MAIL_DELIVERIES_FILE/);
 assert.match(server,/Lote enviado a \$\{delivered\.length\} artesanos/);
+assert.match(server,/PB artisan email test rejected/);
+assert.match(server,/Email de prueba aceptado para/);
+assert.match(server,/if \(result\?\.error\)/);
 assert.match(server,/Actualizar mi perfil/);
 assert.match(view,/Enviar próximo lote \(máx\. 50\)/);
 assert.match(view,/un máximo de 50 artesanos pendientes/);

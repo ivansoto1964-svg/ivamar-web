@@ -1894,8 +1894,14 @@ app.post('/pb-control/action', requirePBAdmin, requirePBCsrf, express.json({limi
       if (!process.env.RESEND_API_KEY) return res.status(503).json({ok:false,error:'Resend no está configurado en Render.'});
       if (action === 'artisan-email-test') {
         const optOutUrl = pbArtisanEmailOptOutUrl(PB_CONTACT_EMAIL);
-        await resend.emails.send({from:`Planeta Boricua <${PB_SENDER_EMAIL}>`,to:PB_CONTACT_EMAIL,replyTo:PB_CONTACT_EMAIL,subject:`[PRUEBA] ${subject}`,html:pbArtisanMailHtml('Prueba PB',message,optOutUrl)});
-        return ok(`Email de prueba enviado a ${PB_CONTACT_EMAIL}.`);
+        const result = await resend.emails.send({from:`Planeta Boricua <${PB_SENDER_EMAIL}>`,to:PB_CONTACT_EMAIL,replyTo:PB_CONTACT_EMAIL,subject:`[PRUEBA] ${subject}`,html:pbArtisanMailHtml('Prueba PB',message,optOutUrl)});
+        if (result?.error) {
+          console.error('PB artisan email test rejected:',result.error);
+          const reason = sanitize(result.error.message || 'Resend rechazó el correo.').slice(0,240);
+          return res.status(502).json({ok:false,error:`Resend no aceptó la prueba: ${reason}`});
+        }
+        const emailId = sanitize(result?.data?.id || '').slice(0,100);
+        return res.json({ok:true,message:`Email de prueba aceptado para ${PB_CONTACT_EMAIL}.${emailId ? ` ID: ${emailId}` : ''}`,emailId});
       }
       if (!pbArtisanMagicSecret()) return res.status(503).json({ok:false,error:'La firma segura para los enlaces de exclusión no está configurada.'});
       const recipients = pbArtisanRecipients();
@@ -1914,7 +1920,8 @@ app.post('/pb-control/action', requirePBAdmin, requirePBCsrf, express.json({limi
         delivered.push(...selection.batch);
       } else {
         for (let i=0;i<payloads.length;i+=1) {
-          await resend.emails.send(payloads[i]);
+          const result = await resend.emails.send(payloads[i]);
+          if (result?.error) throw new Error(result.error.message || `Resend rechazó el correo ${i+1} del lote.`);
           delivered.push(selection.batch[i]);
           writeJsonFile(PB_ARTISAN_MAIL_DELIVERIES_FILE,pbArtisanMailBatches.recordDeliveries(readJsonFile(PB_ARTISAN_MAIL_DELIVERIES_FILE,[]),selection.campaignId,[selection.batch[i]]));
         }
