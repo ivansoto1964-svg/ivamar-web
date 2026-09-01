@@ -7,6 +7,7 @@ const sanitize = (str) => str ? sanitizeHtml(str, { allowedTags: [], allowedAttr
 const pbBlogStore = require('./services/pb-blog-store');
 const pbSiteAnalytics = require('./services/pb-site-analytics');
 const { buildPBExploreRecommendations } = require('./services/pb-ecosystem-explore');
+const pbArtisanMailBatches = require('./services/pb-artisan-mail-batches');
 const { isIndexablePBArtisan, wordCount } = require('./utils/pb-seo');
 const PB_ARTISAN_DESCRIPTION_REPAIRS = require('./data/pb-artisan-description-repairs');
 
@@ -459,6 +460,7 @@ const PB_AFFILIATE_CAMPAIGNS = {
 };
 const PB_AFFILIATE_CLICKS_FILE = '/data/pb-affiliate-clicks.json';
 const PB_ARTISAN_MAIL_HISTORY_FILE = '/data/pb-artisan-mail-history.json';
+const PB_ARTISAN_MAIL_DELIVERIES_FILE = '/data/pb-artisan-mail-deliveries.json';
 const PB_ARTISAN_EMAIL_OPTOUTS_FILE = '/data/pb-artisan-email-optouts.json';
 const PB_ARTISAN_METRICS_FILE = '/data/pb-artisan-metrics.json';
 const PB_ARTISAN_METRIC_EVENTS = new Set(['view','whatsapp','website','instagram','facebook','store','share','event','edit']);
@@ -593,7 +595,8 @@ function pbArtisanMailHtml(name, message, optOutUrl = '') {
     <div style="background:#fff;border:1px solid #e5e8ee;padding:28px">
       <p style="font-size:16px">Hola, <strong>${safeName}</strong>:</p>
       <div style="font-size:15px;line-height:1.7">${safeMessage}</div>
-      <div style="text-align:center;margin:28px 0"><a href="https://www.masboricuaqueunmofongo.com/pb/add-negocio" style="display:inline-block;background:#ce1126;color:#fff;text-decoration:none;padding:12px 20px;border-radius:8px;font-weight:700">Invitar a otro artesano →</a></div>
+      <div style="text-align:center;margin:28px 0"><a href="https://www.masboricuaqueunmofongo.com/artesanos/mi-perfil" style="display:inline-block;background:#ce1126;color:#fff;text-decoration:none;padding:12px 20px;border-radius:8px;font-weight:700">Actualizar mi perfil →</a></div>
+      <p style="font-size:13px;line-height:1.6;color:#667085;text-align:center">Por seguridad, escribe el mismo email con el que te registraste y recibirás un enlace privado para editar tu información.</p>
     </div>
     <div style="background:#f5f5f0;padding:16px;text-align:center;border-radius:0 0 12px 12px;color:#777;font-size:12px;line-height:1.5">Recibes este mensaje porque participas en la Feria Digital de Artesanías Puertorriqueñas de Planeta Boricua.${optOut}<br>© 2026 Planeta Boricua · Más Boricua que un Mofongo 🇵🇷</div>
   </div>`;
@@ -1897,23 +1900,31 @@ app.post('/pb-control/action', requirePBAdmin, requirePBCsrf, express.json({limi
       if (!pbArtisanMagicSecret()) return res.status(503).json({ok:false,error:'La firma segura para los enlaces de exclusión no está configurada.'});
       const recipients = pbArtisanRecipients();
       if (!recipients.length) return res.status(400).json({ok:false,error:'No encontré emails válidos de artesanos aprobados.'});
-      const payloads = recipients.map(person => {
+      const deliveries = readJsonFile(PB_ARTISAN_MAIL_DELIVERIES_FILE,[]);
+      const selection = pbArtisanMailBatches.nextBatch(recipients,deliveries,subject,message);
+      if (!selection.batch.length) return res.json({ok:true,message:'Este comunicado ya fue enviado a todos los artesanos disponibles.',sentCount:0,remaining:0,campaignId:selection.campaignId});
+      const payloads = selection.batch.map(person => {
         const optOutUrl = pbArtisanEmailOptOutUrl(person.email);
         return {from:`Planeta Boricua <${PB_SENDER_EMAIL}>`,to:person.email,replyTo:PB_CONTACT_EMAIL,subject,html:pbArtisanMailHtml(person.name,message,optOutUrl),headers:{'List-Unsubscribe':`<${optOutUrl}>`,'List-Unsubscribe-Post':'List-Unsubscribe=One-Click'}};
       });
-      for (let i=0;i<payloads.length;i+=100) {
-        const batch = payloads.slice(i,i+100);
-        if (resend.batch && typeof resend.batch.send === 'function') {
-          const result = await resend.batch.send(batch);
-          if (result?.error) throw new Error(result.error.message || 'Resend rechazó un lote de emails.');
-        } else {
-          for (const email of batch) await resend.emails.send(email);
+      const delivered = [];
+      if (resend.batch && typeof resend.batch.send === 'function') {
+        const result = await resend.batch.send(payloads);
+        if (result?.error) throw new Error(result.error.message || 'Resend rechazó el lote de emails.');
+        delivered.push(...selection.batch);
+      } else {
+        for (let i=0;i<payloads.length;i+=1) {
+          await resend.emails.send(payloads[i]);
+          delivered.push(selection.batch[i]);
+          writeJsonFile(PB_ARTISAN_MAIL_DELIVERIES_FILE,pbArtisanMailBatches.recordDeliveries(readJsonFile(PB_ARTISAN_MAIL_DELIVERIES_FILE,[]),selection.campaignId,[selection.batch[i]]));
         }
       }
+      if (delivered.length && resend.batch && typeof resend.batch.send === 'function') writeJsonFile(PB_ARTISAN_MAIL_DELIVERIES_FILE,pbArtisanMailBatches.recordDeliveries(deliveries,selection.campaignId,delivered));
+      const remaining = Math.max(0,selection.remainingBefore-delivered.length);
       const history = readJsonFile(PB_ARTISAN_MAIL_HISTORY_FILE,[]);
-      history.push({id:`${Date.now()}-${crypto.randomBytes(3).toString('hex')}`,subject,messagePreview:message.slice(0,180),recipientCount:recipients.length,sentAt:new Date().toISOString()});
+      history.push({id:`${Date.now()}-${crypto.randomBytes(3).toString('hex')}`,campaignId:selection.campaignId,subject,messagePreview:message.slice(0,180),recipientCount:delivered.length,remainingCount:remaining,sentAt:new Date().toISOString()});
       writeJsonFile(PB_ARTISAN_MAIL_HISTORY_FILE,history.slice(-100));
-      return ok(`Comunicado enviado a ${recipients.length} artesanos.`);
+      return res.json({ok:true,message:`Lote enviado a ${delivered.length} artesanos. Quedan ${remaining} pendientes para este comunicado.`,sentCount:delivered.length,remaining,campaignId:selection.campaignId});
     }
     if (action.startsWith('artisan-')) {
       if (action==='artisan-approve') {const file='/data/pb-listings/pending.json';const pending=readJsonFile(file,[]);const index=pending.findIndex(item=>item.id===id);if(index<0)return missing();const item=pending.splice(index,1)[0];const approvedFile=path.join('/data/pb-listings',`${item.location}.json`);const approved=readJsonFile(approvedFile,[]);delete item.approveToken;delete item.rejectToken;item.status='approved';item.approvedAt=new Date().toISOString();item.badge='participante-feria';approved.push(item);writeJsonFile(file,pending);writeJsonFile(approvedFile,approved);return ok('Artesano aprobado.');}

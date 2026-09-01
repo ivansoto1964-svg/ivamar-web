@@ -102,6 +102,7 @@ La cantidad de artesanos es dinámica. Consultar PB Control antes de citar una c
 - Resend usa el dominio verificado de Planeta Boricua.
 - Los mensajes de prueba salen como Planeta Boricua y permiten responder al Gmail oficial.
 - Los emails para artesanos incluyen mecanismo para no recibir más comunicaciones.
+- PB Control envía la campaña de revisión de perfiles en lotes de hasta 50, registra las entregas por campaña y evita repetir destinatarios en lotes posteriores.
 - ChatGPT puede leer el Gmail oficial, clasificar solicitudes y preparar respuestas.
 - Ningún email se envía desde ChatGPT sin autorización expresa de Iván.
 
@@ -129,7 +130,7 @@ La cantidad de artesanos es dinámica. Consultar PB Control antes de citar una c
 ## Pendientes inmediatos
 
 1. Completar y desplegar la captación contextual de suscriptores en Inicio, Blog, Lo más reciente y Agenda Boricua.
-2. Preparar el primer envío de revisión de perfiles por lotes, respetando el límite vigente de Resend y las bajas de comunicación.
+2. Enviar y comprobar la prueba de la campaña de revisión de perfiles; después enviar el primer lote de hasta 50, respetando las bajas y verificando entregas antes del siguiente lote.
 3. Recibir, organizar y editar los videos de artesanos para la promoción del 23 de septiembre.
 4. Crear el comunicado y paquete visual para medios del lanzamiento.
 5. Revisar semanalmente la preparación para Google AdSense; ya existe una tarea programada para esa revisión.
