@@ -505,7 +505,8 @@ function pbArtisanRecipients() {
   const optedOut = new Set(pbArtisanEmailOptOuts().map(item => normalizePBArtisanEmail(item.email)));
   return loadApprovedPBListings().map(item => ({
     name:String(item.name || 'Artesano/a').trim(),
-    email:String(item.email || '').trim().toLowerCase()
+    email:String(item.email || '').trim().toLowerCase(),
+    slug:pbArtisanSlug(item)
   })).filter(item => {
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(item.email) || seen.has(item.email) || optedOut.has(item.email)) return false;
     seen.add(item.email);
@@ -583,10 +584,15 @@ function pbArtisanMailHistory() {
   return readJsonFile(PB_ARTISAN_MAIL_HISTORY_FILE,[]).sort((a,b) => new Date(b.sentAt || 0)-new Date(a.sentAt || 0)).slice(0,25);
 }
 
-function pbArtisanMailHtml(name, message, optOutUrl = '') {
+function pbArtisanMailHtml(name, message, optOutUrl = '', slug = '') {
   const escMail = value => String(value || '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
   const safeName = escMail(name || 'Artesano/a');
   const safeMessage = escMail(message).replace(/\n/g,'<br>');
+  const safeSlug = encodeURIComponent(String(slug || '').trim());
+  const profileUrl = safeSlug ? `https://www.masboricuaqueunmofongo.com/artesanos/${safeSlug}` : 'https://www.masboricuaqueunmofongo.com/feria-artesanos';
+  const editUrl = 'https://www.masboricuaqueunmofongo.com/artesanos/mi-perfil';
+  const eventUrl = safeSlug ? `${profileUrl}/compartir-evento` : 'https://www.masboricuaqueunmofongo.com/enviar-evento-boricua';
+  const qrButton = safeSlug ? `<a href="${profileUrl}/qr.png" style="display:inline-block;background:#ce1126;color:#fff;text-decoration:none;padding:11px 15px;border-radius:8px;font-weight:700;margin:5px">Descargar mi QR</a>` : '';
   const optOut = optOutUrl ? `<br><a href="${escMail(optOutUrl)}" style="color:#666">No deseo recibir más comunicaciones generales</a><br><span>Tu perfil continuará publicado en la Feria.</span>` : '';
   return `<div style="font-family:Arial,sans-serif;max-width:640px;margin:0 auto;color:#253247">
     <div style="background:linear-gradient(135deg,#002d62,#ce1126);padding:24px;text-align:center;border-radius:12px 12px 0 0">
@@ -596,13 +602,17 @@ function pbArtisanMailHtml(name, message, optOutUrl = '') {
     <div style="background:#fff;border:1px solid #e5e8ee;padding:28px">
       <p style="font-size:16px">Hola, <strong>${safeName}</strong>:</p>
       <div style="font-size:15px;line-height:1.7">${safeMessage}</div>
-      <div style="text-align:center;margin:28px 0"><a href="https://www.masboricuaqueunmofongo.com/artesanos/mi-perfil" style="display:inline-block;background:#ce1126;color:#fff;text-decoration:none;padding:12px 20px;border-radius:8px;font-weight:700">Actualizar mi perfil →</a></div>
-      <p style="font-size:13px;line-height:1.6;color:#667085;text-align:center">Por seguridad, escribe el mismo email con el que te registraste y recibirás un enlace privado para editar tu información.</p>
+      <div style="text-align:center;margin:28px 0">
+        <a href="${profileUrl}" style="display:inline-block;background:#002d62;color:#fff;text-decoration:none;padding:11px 15px;border-radius:8px;font-weight:700;margin:5px">Ver mi perfil</a>
+        <a href="${editUrl}" style="display:inline-block;background:#ce1126;color:#fff;text-decoration:none;padding:11px 15px;border-radius:8px;font-weight:700;margin:5px">Editar mi información</a>
+        ${qrButton}
+        <a href="${eventUrl}" style="display:inline-block;background:#178c49;color:#fff;text-decoration:none;padding:11px 15px;border-radius:8px;font-weight:700;margin:5px">Publicar un evento</a>
+      </div>
+      <p style="font-size:13px;line-height:1.6;color:#667085;text-align:center">Para editar, escribe el mismo email con el que te registraste y recibirás un enlace privado y seguro.</p>
     </div>
     <div style="background:#f5f5f0;padding:16px;text-align:center;border-radius:0 0 12px 12px;color:#777;font-size:12px;line-height:1.5">Recibes este mensaje porque participas en la Feria Digital de Artesanías Puertorriqueñas de Planeta Boricua.${optOut}<br>© 2026 Planeta Boricua · Más Boricua que un Mofongo 🇵🇷</div>
   </div>`;
 }
-
 
 function readJsonFile(file, fallback = []) {
   try { return JSON.parse(fs.readFileSync(file,'utf8')); } catch (_) { return fallback; }
@@ -1895,7 +1905,7 @@ app.post('/pb-control/action', requirePBAdmin, requirePBCsrf, express.json({limi
       if (!process.env.RESEND_API_KEY) return res.status(503).json({ok:false,error:'Resend no está configurado en Render.'});
       if (action === 'artisan-email-test') {
         const optOutUrl = pbArtisanEmailOptOutUrl(PB_CONTACT_EMAIL);
-        const result = await resend.emails.send({from:`Planeta Boricua <${PB_SENDER_EMAIL}>`,to:PB_CONTACT_EMAIL,replyTo:PB_CONTACT_EMAIL,subject:`[PRUEBA] ${subject}`,html:pbArtisanMailHtml('Prueba PB',message,optOutUrl)});
+        const result = await resend.emails.send({from:`Planeta Boricua <${PB_SENDER_EMAIL}>`,to:PB_CONTACT_EMAIL,replyTo:PB_CONTACT_EMAIL,subject:`[PRUEBA] ${subject}`,html:pbArtisanMailHtml('Prueba PB',message,optOutUrl,pbArtisanRecipients()[0]?.slug || '')});
         if (result?.error) {
           console.error('PB artisan email test rejected:',result.error);
           const reason = sanitize(result.error.message || 'Resend rechazó el correo.').slice(0,240);
@@ -1912,7 +1922,7 @@ app.post('/pb-control/action', requirePBAdmin, requirePBCsrf, express.json({limi
       if (!selection.batch.length) return res.json({ok:true,message:'Este comunicado ya fue enviado a todos los artesanos disponibles.',sentCount:0,remaining:0,campaignId:selection.campaignId});
       const payloads = selection.batch.map(person => {
         const optOutUrl = pbArtisanEmailOptOutUrl(person.email);
-        return {from:`Planeta Boricua <${PB_SENDER_EMAIL}>`,to:person.email,replyTo:PB_CONTACT_EMAIL,subject,html:pbArtisanMailHtml(person.name,message,optOutUrl),headers:{'List-Unsubscribe':`<${optOutUrl}>`,'List-Unsubscribe-Post':'List-Unsubscribe=One-Click'}};
+        return {from:`Planeta Boricua <${PB_SENDER_EMAIL}>`,to:person.email,replyTo:PB_CONTACT_EMAIL,subject,html:pbArtisanMailHtml(person.name,message,optOutUrl,person.slug),headers:{'List-Unsubscribe':`<${optOutUrl}>`,'List-Unsubscribe-Post':'List-Unsubscribe=One-Click'}};
       });
       const delivered = [];
       if (resend.batch && typeof resend.batch.send === 'function') {
