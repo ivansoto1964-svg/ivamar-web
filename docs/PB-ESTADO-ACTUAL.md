@@ -137,6 +137,7 @@ La cantidad de artesanos es dinámica. Consultar PB Control antes de citar una c
 6. Comprobar el aviso no crítico `performer` de eventos en Search Console después del periodo de procesamiento.
 7. Reducir las notificaciones innecesarias de GitHub Actions sin ocultar fallos importantes.
 8. Desplegar y comprobar el QR permanente descargable de cada artesano; el QR apunta al enlace corto estable del perfil y su descarga queda medida en PB Control.
+   Los perfiles también ofrecen instalar PB en la pantalla del dispositivo sin popup; Android usa el instalador del navegador e iPhone muestra la instrucción de Safari. La app incluye un acceso rápido a **Mi perfil**.
 9. Completar URLs sencillas y estables para compartir perfiles donde todavía falten.
 10. Preparar una encuesta breve para saber qué herramientas necesitan realmente los artesanos.
 

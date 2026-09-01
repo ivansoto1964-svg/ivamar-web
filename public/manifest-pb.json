@@ -14,7 +14,9 @@
   "shortcuts": [
     { "name": "El Balcón", "short_name": "El Balcón", "url": "/blog", "icons": [{ "src": "/icons/pb/icon-192.png", "sizes": "192x192" }] },
     { "name": "Recursos", "short_name": "Recursos", "url": "/recursos", "icons": [{ "src": "/icons/pb/icon-192.png", "sizes": "192x192" }] },
-    { "name": "Feria de Artesanías", "short_name": "Feria", "url": "/feria-artesanos", "icons": [{ "src": "/icons/pb/icon-192.png", "sizes": "192x192" }] }
+    { "name": "Feria de Artesanías", "short_name": "Feria", "url": "/feria-artesanos", "icons": [{ "src": "/icons/pb/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Administrar mi perfil", "short_name": "Mi perfil", "url": "/artesanos/mi-perfil", "icons": [{ "src": "/icons/pb/icon-192.png", "sizes": "192x192" }] },
+    { "name": "Agenda Boricua", "short_name": "Agenda", "url": "/agenda-boricua", "icons": [{ "src": "/icons/pb/icon-192.png", "sizes": "192x192" }] }
   ],
   "icons": [
     { "src": "/icons/pb/icon-192.png", "sizes": "192x192", "type": "image/png" },

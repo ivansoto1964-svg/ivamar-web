@@ -15,9 +15,15 @@ const qr = require('../src/services/pb-artisan-qr');
   const server = fs.readFileSync(require.resolve('../src/server'),'utf8');
   assert.match(view,/Descargar mi QR/);
   assert.match(view,/compartir-evento/);
+  assert.match(view,/manifest-pb\.json/);
+  assert.match(view,/Ten Planeta Boricua a un toque/);
+  assert.match(view,/beforeinstallprompt/);
+  assert.match(view,/Añadir a pantalla de inicio/);
   assert.match(server,/\/artesanos\/:slug\/qr\.png/);
   assert.match(server,/Content-Disposition/);
   assert.match(server,/PB_ARTISAN_METRIC_EVENTS[^\n]+['"]qr['"]/);
+  const manifest = JSON.parse(fs.readFileSync(require.resolve('../public/manifest-pb.json'),'utf8'));
+  assert.ok(manifest.shortcuts.some(item => item.url === '/artesanos/mi-perfil'));
   console.log('PB artisan QR tests passed');
 })().catch(error => {
   console.error(error);
