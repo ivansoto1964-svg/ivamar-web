@@ -202,6 +202,7 @@ const aecDemo = require("./views/autoridad-energia-criolla");
 const addNegocioPB = require("./views/planetaboricua/add-negocio");
 const feriaArtesanosPB = require("./views/planetaboricua/feriaartesanos");
 const artesanoPerfilPB = require("./views/planetaboricua/artesano-perfil");
+const pbArtisanQr = require("./services/pb-artisan-qr");
 const artesanoMiPerfilPB = require("./views/planetaboricua/artesano-mi-perfil");
 const artesanoAdminPB = require("./views/planetaboricua/artesano-admin");
 const agendaArtesanalPB = require("./views/planetaboricua/agenda-artesanal");
@@ -463,7 +464,7 @@ const PB_ARTISAN_MAIL_HISTORY_FILE = '/data/pb-artisan-mail-history.json';
 const PB_ARTISAN_MAIL_DELIVERIES_FILE = '/data/pb-artisan-mail-deliveries.json';
 const PB_ARTISAN_EMAIL_OPTOUTS_FILE = '/data/pb-artisan-email-optouts.json';
 const PB_ARTISAN_METRICS_FILE = '/data/pb-artisan-metrics.json';
-const PB_ARTISAN_METRIC_EVENTS = new Set(['view','whatsapp','website','instagram','facebook','store','share','event','edit']);
+const PB_ARTISAN_METRIC_EVENTS = new Set(['view','whatsapp','website','instagram','facebook','store','share','event','edit','qr']);
 
 function pbArtisanEmailOptOuts() {
   return readJsonFile(PB_ARTISAN_EMAIL_OPTOUTS_FILE,[]).filter(item => item && normalizePBArtisanEmail(item.email));
@@ -3427,6 +3428,23 @@ app.get('/artesanos/:slug/compartir-evento', (req, res) => {
   const item = loadApprovedPBListings().find(entry => pbArtisanSlug(entry) === canonicalSlug);
   if (!item) return res.status(404).send('Artesano no encontrado');
   res.send(enviarEventoPB({ name:item.name, slug:canonicalSlug }));
+});
+
+app.get('/artesanos/:slug/qr.png', async (req, res) => {
+  const canonicalSlug = canonicalPBArtisanSlug(req.params.slug);
+  if (canonicalSlug !== req.params.slug) return res.redirect(301, `/artesanos/${encodeURIComponent(canonicalSlug)}/qr.png`);
+  const item = loadApprovedPBListings().find(entry => pbArtisanSlug(entry) === canonicalSlug);
+  if (!item) return res.status(404).send('Artesano no encontrado');
+  try {
+    const png = await pbArtisanQr.artisanQrPng(canonicalSlug);
+    res.set('Content-Type','image/png');
+    res.set('Content-Disposition',`attachment; filename="qr-${canonicalSlug}.png"`);
+    res.set('Cache-Control','public, max-age=86400');
+    return res.send(png);
+  } catch (error) {
+    console.error('PB artisan QR error:',error.message);
+    return res.status(500).send('No se pudo crear el código QR.');
+  }
 });
 
 app.post('/api/pb-evento-submit', formLimiter, express.json(), async (req, res) => {

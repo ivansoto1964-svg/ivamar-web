@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "node --check src/server.js && node --check src/views/pb-control.js && node --check src/services/pb-site-analytics.js && node tests/pb-artisan-registration.test.js && node tests/pb-blog-image-upload.test.js && node tests/pb-rich-text-editor.test.js && node tests/pb-instagram-share.test.js && node tests/pb-site-analytics.test.js && node tests/pb-subscriber-capture.test.js && node tests/pb-ecosystem-explore.test.js && node tests/pb-adsense-readiness.test.js && node tests/pb-artisan-quality-improvements.test.js && node tests/pb-artisan-mail-batches.test.js"
+    "test": "node --check src/server.js && node --check src/views/pb-control.js && node --check src/services/pb-site-analytics.js && node tests/pb-artisan-registration.test.js && node tests/pb-blog-image-upload.test.js && node tests/pb-rich-text-editor.test.js && node tests/pb-instagram-share.test.js && node tests/pb-site-analytics.test.js && node tests/pb-subscriber-capture.test.js && node tests/pb-ecosystem-explore.test.js && node tests/pb-adsense-readiness.test.js && node tests/pb-artisan-quality-improvements.test.js && node tests/pb-artisan-mail-batches.test.js && node tests/pb-artisan-qr.test.js"
   },
   "keywords": [],
   "author": "",
@@ -17,6 +17,7 @@
     "express": "^5.2.1",
     "express-rate-limit": "^8.5.2",
     "helmet": "^8.3.0",
+    "qrcode": "^1.5.4",
     "resend": "^6.12.2",
     "sanitize-html": "^2.17.4",
     "stripe": "^22.2.1",

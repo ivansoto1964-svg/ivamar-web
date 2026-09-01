@@ -36,6 +36,7 @@ function artesanoPerfil(item, helpers) {
   if (facebookUrl) social.push(`<a class="btn secondary" data-pb-track="facebook" href="${esc(facebookUrl)}" target="_blank" rel="ugc nofollow noopener noreferrer">Facebook</a>`);
   if (storeUrl && storeUrl !== websiteUrl) social.push(`<a class="btn secondary" data-pb-track="store" href="${esc(storeUrl)}" target="_blank" rel="ugc nofollow noopener noreferrer">Tienda online</a>`);
   social.push(`<a class="btn secondary" data-pb-track="event" href="/artesanos/${encodeURIComponent(slug)}/compartir-evento">Publicar evento</a>`);
+  social.push(`<a class="btn secondary" data-pb-track="qr" href="/artesanos/${encodeURIComponent(slug)}/qr.png" download="qr-${encodeURIComponent(slug)}.png">⬇️ Descargar mi QR</a>`);
   social.push(`<a class="btn secondary" data-pb-track="edit" href="/artesanos/mi-perfil">✏️ Editar mi información</a>`);
   const eventList = events.map(event => `<a href="/agenda-boricua" style="display:block;background:#fff;padding:1rem;border-radius:8px;text-decoration:none;color:#111;border:1px solid #e5e5e0"><strong>${esc(event.startDate)} · ${esc(event.name)}</strong><br><span style="font-size:.8rem;color:#666">${esc(event.city)}, ${esc(event.region)}</span></a>`).join('');
   const eventSection = eventList ? `<section class="upcoming"><div class="upcoming-head"><div><div class="eyebrow">Agenda Boricua</div><h2>Próximos eventos</h2></div><a href="/agenda-boricua">Ver agenda completa →</a></div><div class="event-list">${eventList}</div></section>` : '';

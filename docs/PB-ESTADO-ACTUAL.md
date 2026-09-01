@@ -136,7 +136,7 @@ La cantidad de artesanos es dinámica. Consultar PB Control antes de citar una c
 5. Revisar semanalmente la preparación para Google AdSense; ya existe una tarea programada para esa revisión.
 6. Comprobar el aviso no crítico `performer` de eventos en Search Console después del periodo de procesamiento.
 7. Reducir las notificaciones innecesarias de GitHub Actions sin ocultar fallos importantes.
-8. Crear QR permanente para cada artesano.
+8. Desplegar y comprobar el QR permanente descargable de cada artesano; el QR apunta al enlace corto estable del perfil y su descarga queda medida en PB Control.
 9. Completar URLs sencillas y estables para compartir perfiles donde todavía falten.
 10. Preparar una encuesta breve para saber qué herramientas necesitan realmente los artesanos.
 
