@@ -8,6 +8,7 @@ const pbBlogStore = require('./services/pb-blog-store');
 const pbSiteAnalytics = require('./services/pb-site-analytics');
 const { buildPBExploreRecommendations } = require('./services/pb-ecosystem-explore');
 const pbArtisanMailBatches = require('./services/pb-artisan-mail-batches');
+const pbLatestEditor = require('./services/pb-latest-editor');
 const { isIndexablePBArtisan, wordCount } = require('./utils/pb-seo');
 const PB_ARTISAN_DESCRIPTION_REPAIRS = require('./data/pb-artisan-description-repairs');
 
@@ -421,6 +422,18 @@ function pbLatestSlug(title, id) {
 function publicPBLatest(item) {
   return { id:item.id,slug:item.slug,title:item.title,summary:item.summary,body:item.body,image:item.image,sources:item.sources,publishedAt:item.publishedAt };
 }
+
+function repairPBLatestTitleTypo() {
+  try {
+    const correction = pbLatestEditor.correctKnownTitle(readPBLatest('approved.json'));
+    if (!correction.changed) return;
+    writePBLatest('approved.json',correction.items);
+    console.log('PB latest title typo corrected without changing its URL.');
+  } catch (error) {
+    console.error('PB latest title correction error:',error.message);
+  }
+}
+repairPBLatestTitleTypo();
 
 function publicPBListing(listing) {
   return {
@@ -1859,6 +1872,25 @@ app.post('/pb-control/action', requirePBAdmin, requirePBCsrf, express.json({limi
     if (action === 'blog-delete') {
       if (!pbBlogStore.deletePost(id)) return missing();
       return ok('Artículo eliminado del blog.');
+    }
+    if (action === 'latest-update') {
+      const title = sanitize(req.body.title || '').trim();
+      const summary = sanitize(req.body.summary || '').trim();
+      const body = blogContentHtml(req.body.body || '');
+      const sourceLabel = sanitize(req.body.sourceLabel || '').trim();
+      let image = sanitize(req.body.image || '').trim();
+      let sourceUrl;
+      try { sourceUrl = new URL(String(req.body.sourceUrl || '').trim()); } catch (_) { return res.status(400).json({ok:false,error:'El enlace de la fuente no es válido.'}); }
+      if (!['http:','https:'].includes(sourceUrl.protocol)) return res.status(400).json({ok:false,error:'El enlace de la fuente no es válido.'});
+      if (!title || !summary || !body || !sourceLabel) return res.status(400).json({ok:false,error:'Completa título, resumen, contenido y fuente.'});
+      if (title.length>180 || summary.length>400 || body.length>12000 || sourceLabel.length>100) return res.status(400).json({ok:false,error:'La publicación excede los límites permitidos.'});
+      if (image && !/^https?:\/\//i.test(image) && !image.startsWith('/media/pb-blog/')) return res.status(400).json({ok:false,error:'La imagen no es válida.'});
+      const approved = readPBLatest('approved.json');
+      const saved = pbLatestEditor.updatePublished(approved,id,{title,summary,body,image,sourceLabel,sourceUrl:sourceUrl.toString()});
+      if (!saved) return missing();
+      if (!saved.item.image) return res.status(400).json({ok:false,error:'Añade una imagen antes de guardar.'});
+      writePBLatest('approved.json',saved.items);
+      return ok('Publicación actualizada sin cambiar su enlace.');
     }
     if (action === 'latest-create') {
       const title = sanitize(req.body.title || '').trim();

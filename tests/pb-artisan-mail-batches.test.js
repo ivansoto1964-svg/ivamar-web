@@ -31,7 +31,7 @@ assert.match(server,/Lote enviado a \$\{delivered\.length\} artesanos/);
 assert.match(server,/PB artisan email test rejected/);
 assert.match(server,/Email de prueba aceptado para/);
 assert.match(server,/if \(result\?\.error\)/);
-assert.match(server,/Actualizar mi perfil/);
+assert.match(server,/Editar mi información/);
 assert.match(view,/Enviar próximo lote \(máx\. 50\)/);
 assert.match(view,/un máximo de 50 artesanos pendientes/);
 
