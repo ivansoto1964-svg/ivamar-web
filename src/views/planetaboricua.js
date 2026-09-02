@@ -300,7 +300,7 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
       <a href="/agenda-boricua">Agenda</a>
       <a href="#recursos">Recursos</a>
       <a href="/feria-artesanos">Artesanos</a>
-      <a href="#tienda">Tienda</a>
+      <a href="/tienda-boricua">Tienda</a>
       <a href="#viajes">Viajes</a>
       <a href="#newsletter" class="nav-cta">Boletín →</a>
     </div>
@@ -593,52 +593,52 @@ async function loadDirectorio() {
         <span class="sec-divider-label">Tienda Boricua</span>
       </div>
       <div style="flex:1;height:2px;background:var(--red);margin:0 1rem;"></div>
-      <a href="/go/amazon-store" target="_blank" rel="sponsored noopener" class="sec-divider-link">Ver toda la tienda →</a>
+      <a href="/tienda-boricua" class="sec-divider-link">Explorar la tienda →</a>
     </div>
     <p style="font-size:0.88rem;color:var(--mid);line-height:1.7;margin:1rem 0 1.5rem;">
-      Productos boricuas con orgullo 🇵🇷 — disponibles en Amazon con entrega rápida en USA y Puerto Rico.
+      Productos con orgullo boricua, seleccionados por Planeta Boricua. Consulta en Amazon el precio, la disponibilidad y la entrega para tu dirección.
     </p>
     <div class="tienda-grid">
       <a href="/go/amazon-shirts" target="_blank" rel="noopener sponsored" class="tienda-card">
-        <img src="/img/shop/camisetas-pr.webp" alt="Camisetas de Puerto Rico" loading="eager" decoding="async">
+        <img src="/img/shop/camisetas-pr.webp" alt="Camisetas de Puerto Rico" loading="lazy" decoding="async">
         <div class="tienda-card-body"><div class="tienda-card-title">👕 Camisetas de PR</div><div class="tienda-card-link">Ver selección →</div></div>
       </a>
       <a href="/go/amazon-flags" target="_blank" rel="noopener sponsored" class="tienda-card">
-        <img src="/img/shop/gorras-pr.webp" alt="Gorras de Puerto Rico" loading="eager" decoding="async">
+        <img src="/img/shop/gorras-pr.webp" alt="Gorras de Puerto Rico" loading="lazy" decoding="async">
         <div class="tienda-card-body"><div class="tienda-card-title">🧢 Gorras de PR</div><div class="tienda-card-link">Ver selección →</div></div>
       </a>
       <a href="/go/amazon-kitchen" target="_blank" rel="noopener sponsored" class="tienda-card">
-        <img src="/img/shop/tazas-termos.webp" alt="Tazas y termos boricuas" loading="eager" decoding="async">
+        <img src="/img/shop/tazas-termos.webp" alt="Tazas y termos boricuas" loading="lazy" decoding="async">
         <div class="tienda-card-body"><div class="tienda-card-title">☕ Tazas y Termos</div><div class="tienda-card-link">Ver selección →</div></div>
       </a>
       <a href="/go/amazon-music" target="_blank" rel="noopener sponsored" class="tienda-card">
-        <img src="/img/shop/cocina-criolla.webp" alt="Productos para cocina criolla" loading="eager" decoding="async">
+        <img src="/img/shop/cocina-criolla.webp" alt="Productos para cocina criolla" loading="lazy" decoding="async">
         <div class="tienda-card-body"><div class="tienda-card-title">🌿 Cocina Criolla</div><div class="tienda-card-link">Ver selección →</div></div>
       </a>
       <a href="/go/amazon-books" target="_blank" rel="noopener sponsored" class="tienda-card">
-        <img src="/img/shop/dulces-isla.webp" alt="Dulces de Puerto Rico" loading="eager" decoding="async">
+        <img src="/img/shop/dulces-isla.webp" alt="Dulces de Puerto Rico" loading="lazy" decoding="async">
         <div class="tienda-card-body"><div class="tienda-card-title">🍬 Dulces de la Isla</div><div class="tienda-card-link">Ver selección →</div></div>
       </a>
       <a href="/go/amazon-home" target="_blank" rel="noopener sponsored" class="tienda-card">
-        <img src="/img/shop/cuatro-patas.webp" alt="Productos boricuas para mascotas" loading="eager" decoding="async">
+        <img src="/img/shop/cuatro-patas.webp" alt="Productos boricuas para mascotas" loading="lazy" decoding="async">
         <div class="tienda-card-body"><div class="tienda-card-title">🐾 Boricuas de 4 Patas</div><div class="tienda-card-link">Ver selección →</div></div>
       </a>
       <a href="/go/amazon-auto" target="_blank" rel="noopener sponsored" class="tienda-card">
-        <img src="/img/shop/joyeria-boricua.webp" alt="Joyería boricua" loading="eager" decoding="async">
+        <img src="/img/shop/joyeria-boricua.webp" alt="Joyería boricua" loading="lazy" decoding="async">
         <div class="tienda-card-body"><div class="tienda-card-title">💍 Joyería Boricua</div><div class="tienda-card-link">Ver selección →</div></div>
       </a>
       <a href="/go/amazon-gifts" target="_blank" rel="noopener sponsored" class="tienda-card">
-        <img src="/img/shop/para-tu-auto.webp" alt="Accesorios boricuas para autos" loading="eager" decoding="async">
+        <img src="/img/shop/para-tu-auto.webp" alt="Accesorios boricuas para autos" loading="lazy" decoding="async">
         <div class="tienda-card-body"><div class="tienda-card-title">🚗 Para Tu Auto</div><div class="tienda-card-link">Ver selección →</div></div>
       </a>
-      <a href="https://amzn.to/4gbJZVv" target="_blank" rel="noopener sponsored" class="tienda-card">
-        <img src="/img/shop/merch-oficial.webp" alt="Mercancía oficial de Planeta Boricua" loading="eager" decoding="async">
+      <a href="/go/amazon-merch" target="_blank" rel="noopener sponsored" class="tienda-card">
+        <img src="/img/shop/merch-oficial.webp" alt="Mercancía oficial de Planeta Boricua" loading="lazy" decoding="async">
         <div class="tienda-card-body" style="background:linear-gradient(135deg,#002D62,#CE1126);"><div class="tienda-card-title" style="color:#fff;">🇵🇷 Merch Oficial</div><div class="tienda-card-link" style="color:#fff;">Más Boricua que un Mofongo →</div></div>
       </a>
     </div>
     <div style="text-align:center;">
-      <a href="/go/amazon-store" target="_blank" rel="sponsored noopener" style="display:inline-flex;align-items:center;gap:0.5rem;background:var(--red);color:#fff;padding:0.75rem 2rem;border-radius:4px;font-size:0.88rem;font-weight:700;text-decoration:none;">
-        🛒 Ver Toda la Tienda Boricua en Amazon →
+      <a href="/tienda-boricua" style="display:inline-flex;align-items:center;gap:0.5rem;background:var(--red);color:#fff;padding:0.75rem 2rem;border-radius:4px;font-size:0.88rem;font-weight:700;text-decoration:none;">
+        🛒 Explorar la Tienda Planeta Boricua →
       </a>
     </div>
   </div>
@@ -789,7 +789,7 @@ async function loadDirectorio() {
       <a href="#recursos">Recursos</a>
       <a href="/feria-artesanos">Artesanos Puertorriqueños</a>
       <a href="/agenda-boricua">Agenda Boricua</a>
-      <a href="#tienda">Tienda Boricua</a>
+      <a href="/tienda-boricua">Tienda Boricua</a>
       <a href="#viajes">Viajes</a>
     </div>
     <div class="pb-footer-col">

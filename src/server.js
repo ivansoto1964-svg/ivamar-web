@@ -175,6 +175,7 @@ const homeES = require("./views/home-es");
 const homeEN = require("./views/home-en");
 const about = require("./views/about");
 const planetaboricua = require("./views/planetaboricua");
+const tiendaBoricua = require("./views/tienda-boricua");
 const recursosBoriuca = require("./views/recursos-boricua");
 const { terminos: terminosBoricua, privacidad: privacidadBoricua, afiliados: afiliadosBoricua } = require("./views/legal-boricua");
 const regresarAPR = require("./views/regresar-a-pr");
@@ -462,14 +463,15 @@ function publicPBListing(listing) {
 
 const PB_AFFILIATE_CAMPAIGNS = {
   'amazon-store': { label:'Amazon · Tienda general', url:'https://www.amazon.com/shop/planetaboricua' },
-  'amazon-shirts': { label:'Amazon · Camisetas', url:'https://www.amazon.com/shop/planetaboricua/list/1W420Q1BXBM69?tag=ivansoto0f-20' },
-  'amazon-flags': { label:'Amazon · Banderas', url:'https://www.amazon.com/shop/planetaboricua/list/2CXBDURUV9G46?tag=ivansoto0f-20' },
-  'amazon-kitchen': { label:'Amazon · Cocina', url:'https://www.amazon.com/shop/planetaboricua/list/1A33AK8DLTYDO?tag=ivansoto0f-20' },
-  'amazon-music': { label:'Amazon · Música', url:'https://www.amazon.com/shop/planetaboricua/list/GVPOWIBQMA3B?tag=ivansoto0f-20' },
-  'amazon-books': { label:'Amazon · Libros', url:'https://www.amazon.com/shop/planetaboricua/list/2W7GCH9PJ1D9B?tag=ivansoto0f-20' },
-  'amazon-home': { label:'Amazon · Hogar', url:'https://www.amazon.com/shop/planetaboricua/list/3PF9YAQ8MKRCO?tag=ivansoto0f-20' },
-  'amazon-auto': { label:'Amazon · Auto', url:'https://www.amazon.com/shop/planetaboricua/list/1UY29IVPZQ34Y?tag=ivansoto0f-20' },
-  'amazon-gifts': { label:'Amazon · Regalos', url:'https://www.amazon.com/shop/planetaboricua/list/1Q6CYDE5BV80P?tag=ivansoto0f-20' },
+  'amazon-shirts': { label:'Amazon · Camisetas de PR', url:'https://www.amazon.com/shop/planetaboricua/list/1W420Q1BXBM69?tag=ivansoto0f-20' },
+  'amazon-flags': { label:'Amazon · Gorras de PR', url:'https://www.amazon.com/shop/planetaboricua/list/2CXBDURUV9G46?tag=ivansoto0f-20' },
+  'amazon-kitchen': { label:'Amazon · Tazas y termos', url:'https://www.amazon.com/shop/planetaboricua/list/1A33AK8DLTYDO?tag=ivansoto0f-20' },
+  'amazon-music': { label:'Amazon · Cocina criolla', url:'https://www.amazon.com/shop/planetaboricua/list/GVPOWIBQMA3B?tag=ivansoto0f-20' },
+  'amazon-books': { label:'Amazon · Dulces de la Isla', url:'https://www.amazon.com/shop/planetaboricua/list/2W7GCH9PJ1D9B?tag=ivansoto0f-20' },
+  'amazon-home': { label:'Amazon · Boricuas de 4 patas', url:'https://www.amazon.com/shop/planetaboricua/list/3PF9YAQ8MKRCO?tag=ivansoto0f-20' },
+  'amazon-auto': { label:'Amazon · Joyería boricua', url:'https://www.amazon.com/shop/planetaboricua/list/1UY29IVPZQ34Y?tag=ivansoto0f-20' },
+  'amazon-gifts': { label:'Amazon · Para tu auto', url:'https://www.amazon.com/shop/planetaboricua/list/1Q6CYDE5BV80P?tag=ivansoto0f-20' },
+  'amazon-merch': { label:'Amazon · Merch oficial PB', url:'https://amzn.to/4gbJZVv' },
   'travel-hotels': { label:'Trip.com · Hoteles', url:'https://us.trip.com/hotels/list?flexType=1&cityId=-1&countryId=208&destName=Puerto%20Rico&searchType=C&optionId=208&crn=1&adult=2&curr=USD&locale=es-US&SID=2209817&allianceid=1094387&utm_campaign=520530' },
   'travel-flights': { label:'Trip.com · Vuelos', url:'https://www.trip.com/?SID=2209817&allianceid=1094387&utm_campaign=520530' }
 };
@@ -1087,6 +1089,7 @@ h1{font-size:1.4rem;font-weight:600;}
 });
 
 app.get("/", (req, res) => res.send(planetaboricua));
+app.get("/tienda-boricua", (req, res) => res.send(tiendaBoricua));
 app.get("/es", (req, res) => res.send(layout({ title: "Ivamar AI · Español", body: homeES })));
 app.get("/en", (req, res) => res.send(layout({  lang: "en", title: "Ivamar AI · English", body: homeEN })));
 app.get("/about", (req, res) => {
@@ -3443,7 +3446,7 @@ app.get("/sitemap.xml", async (req, res) => {
     artisanUrls = loadApprovedPBListings().filter(isIndexablePBArtisan).map(item => `<url><loc>https://www.masboricuaqueunmofongo.com/artesanos/${pbArtisanSlug(item)}</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>`).join('');
   } catch(e) { console.error('Sitemap artisans error:', e.message); }
   const latestUrls = readPBLatest('approved.json').map(item => `<url><loc>https://www.masboricuaqueunmofongo.com/lo-mas-reciente/${item.slug}</loc><lastmod>${String(item.publishedAt || '').slice(0,10)}</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>`).join('');
-  const staticUrls = `<url><loc>https://www.masboricuaqueunmofongo.com/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/blog</loc><changefreq>weekly</changefreq><priority>0.9</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/lo-mas-reciente</loc><changefreq>daily</changefreq><priority>0.9</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/recursos</loc><changefreq>weekly</changefreq><priority>0.9</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/mudarse-de-pr</loc><changefreq>monthly</changefreq><priority>0.8</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/regresar-a-pr</loc><changefreq>monthly</changefreq><priority>0.8</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/feria-artesanos</loc><changefreq>weekly</changefreq><priority>0.8</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/quienes-somos</loc><changefreq>monthly</changefreq><priority>0.7</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/privacidad-boricua</loc><changefreq>monthly</changefreq><priority>0.5</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/terminos-boricua</loc><changefreq>monthly</changefreq><priority>0.5</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/afiliados-boricua</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>`;
+  const staticUrls = `<url><loc>https://www.masboricuaqueunmofongo.com/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/blog</loc><changefreq>weekly</changefreq><priority>0.9</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/lo-mas-reciente</loc><changefreq>daily</changefreq><priority>0.9</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/tienda-boricua</loc><changefreq>weekly</changefreq><priority>0.9</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/recursos</loc><changefreq>weekly</changefreq><priority>0.9</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/mudarse-de-pr</loc><changefreq>monthly</changefreq><priority>0.8</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/regresar-a-pr</loc><changefreq>monthly</changefreq><priority>0.8</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/feria-artesanos</loc><changefreq>weekly</changefreq><priority>0.8</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/quienes-somos</loc><changefreq>monthly</changefreq><priority>0.7</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/privacidad-boricua</loc><changefreq>monthly</changefreq><priority>0.5</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/terminos-boricua</loc><changefreq>monthly</changefreq><priority>0.5</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/afiliados-boricua</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>`;
   const agendaUrl = `<url><loc>https://www.masboricuaqueunmofongo.com/agenda-boricua</loc><changefreq>daily</changefreq><priority>0.8</priority></url>`;
   res.set('Content-Type','application/xml');
   res.send(`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${staticUrls}${agendaUrl}${latestUrls}${postUrls}${artisanUrls}</urlset>`);
