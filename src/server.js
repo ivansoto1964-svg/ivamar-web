@@ -202,6 +202,7 @@ const aecDemo = require("./views/autoridad-energia-criolla");
 const addNegocioPB = require("./views/planetaboricua/add-negocio");
 const feriaArtesanosPB = require("./views/planetaboricua/feriaartesanos");
 const artesanoPerfilPB = require("./views/planetaboricua/artesano-perfil");
+const artesanoQrPB = require("./views/planetaboricua/artesano-qr");
 const pbArtisanQr = require("./services/pb-artisan-qr");
 const artesanoMiPerfilPB = require("./views/planetaboricua/artesano-mi-perfil");
 const artesanoAdminPB = require("./views/planetaboricua/artesano-admin");
@@ -592,7 +593,7 @@ function pbArtisanMailHtml(name, message, optOutUrl = '', slug = '') {
   const profileUrl = safeSlug ? `https://www.masboricuaqueunmofongo.com/artesanos/${safeSlug}` : 'https://www.masboricuaqueunmofongo.com/feria-artesanos';
   const editUrl = 'https://www.masboricuaqueunmofongo.com/artesanos/mi-perfil';
   const eventUrl = safeSlug ? `${profileUrl}/compartir-evento` : 'https://www.masboricuaqueunmofongo.com/enviar-evento-boricua';
-  const qrButton = safeSlug ? `<a href="${profileUrl}/qr.png" style="display:inline-block;background:#ce1126;color:#fff;text-decoration:none;padding:11px 15px;border-radius:8px;font-weight:700;margin:5px">Descargar mi QR</a>` : '';
+  const qrButton = safeSlug ? `<a href="${profileUrl}/qr" style="display:inline-block;background:#ce1126;color:#fff;text-decoration:none;padding:11px 15px;border-radius:8px;font-weight:700;margin:5px">Ver y descargar mi QR</a>` : '';
   const optOut = optOutUrl ? `<br><a href="${escMail(optOutUrl)}" style="color:#666">No deseo recibir más comunicaciones generales</a><br><span>Tu perfil continuará publicado en la Feria.</span>` : '';
   return `<div style="font-family:Arial,sans-serif;max-width:640px;margin:0 auto;color:#253247">
     <div style="background:linear-gradient(135deg,#002d62,#ce1126);padding:24px;text-align:center;border-radius:12px 12px 0 0">
@@ -3438,6 +3439,21 @@ app.get('/artesanos/:slug/compartir-evento', (req, res) => {
   const item = loadApprovedPBListings().find(entry => pbArtisanSlug(entry) === canonicalSlug);
   if (!item) return res.status(404).send('Artesano no encontrado');
   res.send(enviarEventoPB({ name:item.name, slug:canonicalSlug }));
+});
+
+app.get('/artesanos/:slug/qr', async (req, res) => {
+  const canonicalSlug = canonicalPBArtisanSlug(req.params.slug);
+  if (canonicalSlug !== req.params.slug) return res.redirect(301, `/artesanos/${encodeURIComponent(canonicalSlug)}/qr`);
+  const item = loadApprovedPBListings().find(entry => pbArtisanSlug(entry) === canonicalSlug);
+  if (!item) return res.status(404).send('Artesano no encontrado');
+  try {
+    const png = await pbArtisanQr.artisanQrPng(canonicalSlug);
+    const qrDataUri = `data:image/png;base64,${png.toString('base64')}`;
+    return res.send(artesanoQrPB({ name:item.name, slug:canonicalSlug, qrDataUri }));
+  } catch (error) {
+    console.error('PB artisan QR preview error:',error.message);
+    return res.status(500).send('No se pudo mostrar el código QR.');
+  }
 });
 
 app.get('/artesanos/:slug/qr.png', async (req, res) => {

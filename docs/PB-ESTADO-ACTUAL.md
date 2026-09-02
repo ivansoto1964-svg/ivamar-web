@@ -6,7 +6,7 @@
 
 **Responsable:** Iván Soto
 
-**Última actualización documental:** 29 de agosto de 2026
+**Última actualización documental:** 2 de septiembre de 2026
 
 **Repositorio:** `ivansoto1964-svg/ivamar-web`
 
@@ -103,6 +103,7 @@ La cantidad de artesanos es dinámica. Consultar PB Control antes de citar una c
 - Los mensajes de prueba salen como Planeta Boricua y permiten responder al Gmail oficial.
 - Los emails para artesanos incluyen mecanismo para no recibir más comunicaciones.
 - PB Control envía la campaña de revisión de perfiles en lotes de hasta 50, registra las entregas por campaña y evita repetir destinatarios en lotes posteriores.
+- La campaña oficial comenzó el 1 de septiembre de 2026: el primer lote produjo 49 entregas y un rebote (`velarecolectionpr@outlook.com`); el segundo lote de 50 se envió el 2 de septiembre. No corresponde enviar otro lote el mismo día.
 - ChatGPT puede leer el Gmail oficial, clasificar solicitudes y preparar respuestas.
 - Ningún email se envía desde ChatGPT sin autorización expresa de Iván.
 
@@ -136,10 +137,10 @@ La cantidad de artesanos es dinámica. Consultar PB Control antes de citar una c
 5. Revisar semanalmente la preparación para Google AdSense; ya existe una tarea programada para esa revisión.
 6. Comprobar el aviso no crítico `performer` de eventos en Search Console después del periodo de procesamiento.
 7. Reducir las notificaciones innecesarias de GitHub Actions sin ocultar fallos importantes.
-8. Desplegar y comprobar el QR permanente descargable de cada artesano; el QR apunta al enlace corto estable del perfil y su descarga queda medida en PB Control.
+8. Desplegar y comprobar la página donde el artesano ve su QR permanente antes de descargarlo; el archivo `.png` y su enlace corto estable no cambian.
    Los perfiles también ofrecen instalar PB en la pantalla del dispositivo sin popup; Android usa el instalador del navegador e iPhone muestra la instrucción de Safari. La app incluye un acceso rápido a **Mi perfil**.
-9. Completar URLs sencillas y estables para compartir perfiles donde todavía falten.
-10. Preparar una encuesta breve para saber qué herramientas necesitan realmente los artesanos.
+9. Añadir edición completa para publicaciones existentes de **Lo más reciente** y corregir la palabra **Título** en el artículo de los 180,000 abonados sin cambiar su URL.
+10. Continuar recogiendo videos, preparar la promoción y el comunicado de prensa para el lanzamiento del 23 de septiembre, y mantener la revisión programada de AdSense.
 
 ## Próximas fases, sin activar todavía
 
