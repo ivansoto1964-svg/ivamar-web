@@ -7,7 +7,7 @@ module.exports = function renderEstado(estado) {
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Boricuas en ${estado.nombre} — Planeta Boricua</title>
 <meta name="description" content="${estado.descripcionSEO}">
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4181903530685744" crossorigin="anonymous"></script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2526350815852271" crossorigin="anonymous"></script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
