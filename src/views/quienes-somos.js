@@ -7,7 +7,7 @@ module.exports = `<!DOCTYPE html>
 <meta name="description" content="Planeta Boricua es el portal cultural de la diáspora puertorriqueña. Conoce nuestra misión, nuestro equipo y por qué existimos.">
 <link rel="canonical" href="https://www.masboricuaqueunmofongo.com/quienes-somos">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8301223085122981" crossorigin="anonymous"></script>
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4181903530685744" crossorigin="anonymous"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Inter',sans-serif;background:#f5f5f0;color:#111;}

@@ -32,6 +32,26 @@ assert.match(server, /loadApprovedPBListings\(\)\.filter\(isIndexablePBArtisan\)
 assert.match(server, /\/mudarse-de-pr<\/loc>/);
 assert.match(server, /\/regresar-a-pr<\/loc>/);
 assert.match(server, /\/afiliados-boricua<\/loc>/);
+assert.match(server, /google\.com, pub-4181903530685744, DIRECT, f08c47fec0942fa0/);
+assert.doesNotMatch(server, /google\.com, pub-8301223085122981, DIRECT/);
+
+const activePBViews = [
+  'src/views/planetaboricua.js',
+  'src/views/recursos-boricua.js',
+  'src/views/quienes-somos.js',
+  'src/views/mudarse-de-pr.js',
+  'src/views/regresar-a-pr.js',
+  'src/views/pb-blog/index.js',
+  'src/views/pb-blog/post.js',
+  'src/views/planetaboricua/noticias.js',
+  'src/views/planetaboricua/estado-template.js',
+  'src/views/planetaboricua/lo-mas-reciente-index.js'
+];
+for (const filename of activePBViews) {
+  const view = fs.readFileSync(path.join(root, filename), 'utf8');
+  assert.match(view, /ca-pub-4181903530685744/, `${filename} must use the active PB publisher ID`);
+  assert.doesNotMatch(view, /ca-pub-8301223085122981/, `${filename} still uses the cancelled publisher ID`);
+}
 
 const legal = fs.readFileSync(path.join(root, 'src/views/legal-boricua.js'), 'utf8');
 assert.match(legal, /Programa de Asociados de Amazon/);

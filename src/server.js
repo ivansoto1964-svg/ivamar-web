@@ -3166,7 +3166,7 @@ app.get("/terminos", (req, res) => res.redirect(301, "/terminos-boricua"));
 
 app.get("/ads.txt", (req, res) => {
   res.set("Content-Type", "text/plain");
-  res.send("google.com, pub-8301223085122981, DIRECT, f08c47fec0942fa0");
+  res.send("google.com, pub-4181903530685744, DIRECT, f08c47fec0942fa0");
 });
 
 app.get("/caribex-sitemap.xml", async (req, res) => {
