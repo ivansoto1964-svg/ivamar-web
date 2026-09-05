@@ -1874,7 +1874,7 @@ app.post('/pb-control/action', requirePBAdmin, requirePBCsrf, express.json({limi
     }
     if (action === 'blog-delete') {
       if (!pbBlogStore.deletePost(id)) return missing();
-      return ok('Artículo eliminado del blog.');
+      return ok('Artículo eliminado de El Balcón.');
     }
     if (action === 'latest-update') {
       const title = sanitize(req.body.title || '').trim();
@@ -3254,7 +3254,7 @@ app.use("/blog", (req, res, next) => {
   next();
 }, pbBlogRouter);
 
-app.get('/api/blogger/ping', (_req,res) => res.status(410).json({success:false,error:'Blogger ya no es la fuente del blog.'}));
+app.get('/api/blogger/ping', (_req,res) => res.status(410).json({success:false,error:'Blogger ya no es la fuente de El Balcón.'}));
 app.get('/admin/pb-editorial', (_req,res) => res.redirect(301,'/pb-control#publicaciones'));
 
 // Lo más reciente: canal editorial rápido e independiente de Blogger.
@@ -4599,7 +4599,7 @@ En algún momento natural de la conversación, después de conectar con el usuar
 
 CONOCIMIENTO DE PLANETA BORICUA:
 El portal tiene:
-- Blog "Los Temas del Balcón" — artículos de cultura, identidad, gastronomía e historia boricua en /blog
+- El Balcón — artículos de cultura, identidad, gastronomía e historia boricua en /blog
 - Feria Digital de Artesanías Puertorriqueñas — exposición gratuita y permanente de artesanos en Puerto Rico y la diáspora
 - Noticias de Puerto Rico
 - Recursos para la diáspora PR↔USA
@@ -4688,7 +4688,7 @@ SI NO hay ninguna sección de resultados de Google Places (la búsqueda no se ac
 - Gastronomía: mofongo, pernil, pasteles, alcapurrias, tostones, tembleque, coquito, lechón, asopao
 - Música: salsa, reggaetón, trap, plena, bomba, música jíbara — Bad Bunny, Daddy Yankee, Marc Anthony
 - 78 municipios: Rincón (surf), Luquillo (playa), Ponce (Ciudad Señorial), Hatillo (tu pueblo natal)
-- Directorio de negocios boricuas y blog oficial en masboricuaqueunmofongo.com/blog
+- Directorio de negocios boricuas y El Balcón en masboricuaqueunmofongo.com/blog
 
 ## EMAIL CAPTURE — DOS MOMENTOS
 
@@ -4704,7 +4704,7 @@ No insistas más de dos veces total. Si no lo dan, despídete con calidez sin pr
 - masboricuaqueunmofongo.com/recursos — Centro de Recursos
 - masboricuaqueunmofongo.com/mudarse-de-pr — Guía PR→USA
 - masboricuaqueunmofongo.com/regresar-a-pr — Guía USA→PR
-- masboricuaqueunmofongo.com/blog — Blog oficial
+- masboricuaqueunmofongo.com/blog — El Balcón
 
 ## REGLAS FINALES
 - Nunca inventes datos, lugares o precios que no tengas con certeza

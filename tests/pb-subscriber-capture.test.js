@@ -44,7 +44,7 @@ const baseControlModel = {
 };
 const control = renderControl(baseControlModel);
 assert(control.includes('2 en total'), 'PB Control debe mostrar el total existente.');
-assert(control.includes('Blog oficial: <strong>1</strong>'), 'PB Control debe resumir el origen Blog.');
+assert(control.includes('El Balcón: <strong>1</strong>'), 'PB Control debe resumir el origen El Balcón.');
 assert(control.includes('Inicio: <strong>1</strong>'), 'PB Control debe tratar el origen histórico landing como Inicio.');
 
 const server = fs.readFileSync(require.resolve('../src/server'), 'utf8');

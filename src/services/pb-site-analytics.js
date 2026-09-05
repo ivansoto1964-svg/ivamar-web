@@ -101,13 +101,13 @@ function changePercent(current, previous) {
 
 function pageLabel(pagePath) {
   const exact = {
-    '/':'Inicio', '/blog':'Blog oficial', '/lo-mas-reciente':'Lo más reciente',
+    '/':'Inicio', '/blog':'El Balcón', '/lo-mas-reciente':'Lo más reciente',
     '/feria-artesanos':'Feria de Artesanos', '/agenda-boricua':'Agenda Boricua',
     '/recursos':'Recursos', '/pb/add-negocio':'Registro de artesanos', '/quienes-somos':'Quiénes somos'
   };
   if (exact[pagePath]) return exact[pagePath];
   const prefixes = [
-    ['/blog/', 'Blog · '], ['/lo-mas-reciente/', 'Lo más reciente · '],
+    ['/blog/', 'El Balcón · '], ['/lo-mas-reciente/', 'Lo más reciente · '],
     ['/artesanos/', 'Artesano · '], ['/pueblos/', 'Pueblo · ']
   ];
   const match = prefixes.find(([prefix]) => pagePath.startsWith(prefix));

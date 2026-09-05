@@ -48,7 +48,7 @@ function buildPBExploreRecommendations({
     .filter(post => post && post.slug && post.slug !== currentBlogSlug && (post.status || 'published') === 'published')
     .sort(byNewest)[0];
   if (blog) recommendations.push({
-    area:'Blog oficial',
+    area:'El Balcón',
     title:blog.title,
     summary:blog.excerpt,
     image:blog.image,

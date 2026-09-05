@@ -29,7 +29,7 @@ const recommendations = buildPBExploreRecommendations({
 assert.strictEqual(recommendations.length, 4);
 assert.deepStrictEqual(recommendations.map(item => item.area), [
   'Lo más reciente',
-  'Blog oficial',
+  'El Balcón',
   'Agenda Boricua',
   'Feria de Artesanos'
 ]);
@@ -58,7 +58,7 @@ const agendaRecommendations = buildPBExploreRecommendations({
 });
 assert.deepStrictEqual(agendaRecommendations.map(item => item.area), [
   'Lo más reciente',
-  'Blog oficial',
+  'El Balcón',
   'Feria de Artesanos'
 ]);
 assert.ok(!agendaRecommendations.some(item => item.title === 'Historia actual'));

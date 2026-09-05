@@ -47,7 +47,7 @@ assert.equal(summary.topPages[0].path, '/blog/cafe-boricua');
 assert.equal(summary.topPages[0].views, 2);
 assert.equal(summary.topArticles.length, 2);
 assert.equal(summary.daily.at(-1).date, '2026-08-27');
-assert.match(analytics.pageLabel('/blog/cafe-boricua'), /Blog · Cafe Boricua/);
+assert.match(analytics.pageLabel('/blog/cafe-boricua'), /El Balcón · Cafe Boricua/);
 
 const html = renderPBControl({
   counts:{},
