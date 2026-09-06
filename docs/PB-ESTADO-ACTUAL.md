@@ -96,6 +96,8 @@ La cantidad de artesanos es dinámica. Consultar PB Control antes de citar una c
 - Google Analytics 4 recibiendo tráfico.
 - Sistema único de suscriptores con total y origen de captación en PB Control.
 - Formularios contextuales de suscripción preparados para Inicio, Blog, Lo más reciente y Agenda Boricua, sin popups ni un sistema paralelo.
+- Sala de Prensa PB integrada administrativamente dentro de Comunicaciones: contactos verificados, filtros, comunicados, asociaciones y seguimiento manual.
+- La Sala de Prensa usa almacenamiento separado con respaldos; no altera Artesanos, no envía emails y todavía no tiene una página pública.
 
 ### Email
 

@@ -28,6 +28,15 @@ npm test
 
 El despliegue de producción lo inicia manualmente Iván desde Render. Un cambio subido a GitHub no debe considerarse publicado hasta que Render termine y se verifique la página afectada.
 
+## Sala de Prensa PB
+
+La primera versión administrativa vive dentro de **PB Control → Comunicaciones** y reutiliza la sesión, protección CSRF, estilos y disco persistente existentes. Administra contactos verificados, comunicados, asociaciones y seguimiento manual de respuestas o publicaciones.
+
+- Datos: `/data/pb-press-room.json` con escritura atómica y respaldos rotativos.
+- No contiene contactos inventados ni un comunicado precargado.
+- No envía emails ni se conecta a servicios externos.
+- La futura Sala de Prensa pública no forma parte de esta versión.
+
 ## Ideas futuras en evaluación
 
 Estas propuestas todavía no están activas. Deben analizarse, cotizarse y probarse por separado antes de convertirlas en funciones o compromisos comerciales.

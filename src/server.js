@@ -9,6 +9,7 @@ const pbSiteAnalytics = require('./services/pb-site-analytics');
 const { buildPBExploreRecommendations } = require('./services/pb-ecosystem-explore');
 const pbArtisanMailBatches = require('./services/pb-artisan-mail-batches');
 const pbLatestEditor = require('./services/pb-latest-editor');
+const pbPressRoom = require('./services/pb-press-room');
 const { isIndexablePBArtisan, wordCount } = require('./utils/pb-seo');
 const PB_ARTISAN_DESCRIPTION_REPAIRS = require('./data/pb-artisan-description-repairs');
 
@@ -1784,7 +1785,17 @@ function buildPBControlModel(csrf) {
   const artisanMailHistory = pbArtisanMailHistory();
   const artisanMetrics = pbArtisanMetricsSummary(artisansApproved);
   const siteAnalytics = pbSiteAnalytics.summary();
-  return {csrf,latestPending,latestApproved,commentsPending,commentsApproved,artisansPending,artisansApproved,artisanNeedsImprovement,eventsPending,eventsApproved,subscribers,blogPosts,affiliates,artisanEmailCount,artisanEmailAudit,artisanMailHistory,artisanMetrics,siteAnalytics,counts:{pendingLatest:latestPending.length,pendingComments:commentsPending.length,pendingArtisans:artisansPending.length,pendingEvents:eventsPending.length,pendingTotal:latestPending.length+commentsPending.length+artisansPending.length+eventsPending.length,blogPosts:blogPosts.length,subscribers:subscribers.length,affiliateClicks:affiliates.reduce((sum,item)=>sum+item.clicks,0),artisanViews:artisanMetrics.reduce((sum,item)=>sum+item.views,0),artisanClicks:artisanMetrics.reduce((sum,item)=>sum+item.clickTotal,0)}};
+  const pressRoom = pbPressRoom.read();
+  pressRoom.options = {
+    mediaTypes:pbPressRoom.MEDIA_TYPES, reaches:pbPressRoom.REACHES, tags:pbPressRoom.TAGS,
+    priorities:pbPressRoom.PRIORITIES, contactTypes:pbPressRoom.CONTACT_TYPES,
+    contactStatuses:pbPressRoom.CONTACT_STATUSES, releaseStatuses:pbPressRoom.RELEASE_STATUSES,
+    distributionStatuses:pbPressRoom.DISTRIBUTION_STATUSES
+  };
+  pressRoom.contacts.sort((a,b) => String(a.mediaName || '').localeCompare(String(b.mediaName || ''),'es'));
+  pressRoom.releases.sort((a,b) => String(b.date || '').localeCompare(String(a.date || '')));
+  pressRoom.distributions.sort((a,b) => String(b.updatedAt || '').localeCompare(String(a.updatedAt || '')));
+  return {csrf,latestPending,latestApproved,commentsPending,commentsApproved,artisansPending,artisansApproved,artisanNeedsImprovement,eventsPending,eventsApproved,subscribers,blogPosts,affiliates,artisanEmailCount,artisanEmailAudit,artisanMailHistory,artisanMetrics,siteAnalytics,pressRoom,counts:{pendingLatest:latestPending.length,pendingComments:commentsPending.length,pendingArtisans:artisansPending.length,pendingEvents:eventsPending.length,pendingTotal:latestPending.length+commentsPending.length+artisansPending.length+eventsPending.length,blogPosts:blogPosts.length,subscribers:subscribers.length,affiliateClicks:affiliates.reduce((sum,item)=>sum+item.clicks,0),artisanViews:artisanMetrics.reduce((sum,item)=>sum+item.views,0),artisanClicks:artisanMetrics.reduce((sum,item)=>sum+item.clickTotal,0)}};
 }
 
 app.get('/pb-control/login', (req,res) => {
@@ -1979,6 +1990,30 @@ app.post('/pb-control/action', requirePBAdmin, requirePBCsrf, express.json({limi
       history.push({id:`${Date.now()}-${crypto.randomBytes(3).toString('hex')}`,campaignId:selection.campaignId,subject,messagePreview:message.slice(0,180),recipientCount:delivered.length,remainingCount:remaining,sentAt:new Date().toISOString()});
       writeJsonFile(PB_ARTISAN_MAIL_HISTORY_FILE,history.slice(-100));
       return res.json({ok:true,message:`Lote enviado a ${delivered.length} artesanos. Quedan ${remaining} pendientes para este comunicado.`,sentCount:delivered.length,remaining,campaignId:selection.campaignId});
+    }
+    if (action === 'press-contact-save') {
+      const saved = pbPressRoom.saveContact(req.body, id === 'new' ? '' : id);
+      if (!saved) return missing();
+      return res.json({ok:true,message:id === 'new' ? 'Contacto de prensa creado.' : 'Contacto de prensa actualizado.',id:saved.id});
+    }
+    if (action === 'press-contact-deactivate') {
+      const saved = pbPressRoom.deactivateContact(id);
+      if (!saved) return missing();
+      return ok('Contacto marcado como No contactar.');
+    }
+    if (action === 'press-release-save') {
+      const saved = pbPressRoom.saveRelease(req.body, id === 'new' ? '' : id);
+      if (!saved) return missing();
+      return res.json({ok:true,message:id === 'new' ? 'Comunicado creado.' : 'Comunicado actualizado.',id:saved.id});
+    }
+    if (action === 'press-release-associate') {
+      const added = pbPressRoom.associateContacts(id, req.body.contactIds);
+      return res.json({ok:true,message:added.length ? `${added.length} contacto${added.length === 1 ? '' : 's'} asociado${added.length === 1 ? '' : 's'} al comunicado.` : 'Los contactos seleccionados ya estaban asociados o no se pueden contactar.',addedCount:added.length});
+    }
+    if (action === 'press-distribution-update') {
+      const saved = pbPressRoom.updateDistribution(id, req.body);
+      if (!saved) return missing();
+      return ok('Seguimiento actualizado.');
     }
     if (action.startsWith('artisan-')) {
       if (action==='artisan-approve') {const file='/data/pb-listings/pending.json';const pending=readJsonFile(file,[]);const index=pending.findIndex(item=>item.id===id);if(index<0)return missing();const item=pending.splice(index,1)[0];const approvedFile=path.join('/data/pb-listings',`${item.location}.json`);const approved=readJsonFile(approvedFile,[]);delete item.approveToken;delete item.rejectToken;item.status='approved';item.approvedAt=new Date().toISOString();item.badge='participante-feria';approved.push(item);writeJsonFile(file,pending);writeJsonFile(approvedFile,approved);return ok('Artesano aprobado.');}
