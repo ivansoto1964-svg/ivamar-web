@@ -30,12 +30,75 @@ El despliegue de producción lo inicia manualmente Iván desde Render. Un cambio
 
 ## Sala de Prensa PB
 
-La primera versión administrativa vive dentro de **PB Control → Comunicaciones** y reutiliza la sesión, protección CSRF, estilos y disco persistente existentes. Administra contactos verificados, comunicados, asociaciones y seguimiento manual de respuestas o publicaciones.
+### Estado y ubicación
 
-- Datos: `/data/pb-press-room.json` con escritura atómica y respaldos rotativos.
+La primera versión administrativa fue desplegada y verificada el **6 de septiembre de 2026**. Vive dentro de **PB Control → Comunicaciones → Sala de Prensa PB** y está preparada para servir posteriormente a todas las áreas de Planeta Boricua, aunque la primera campaña será la Feria Digital de Artesanos.
+
+La implementación reutiliza la sesión privada, protección CSRF, componentes, estilos y disco persistente existentes. No rediseña el portal, no reconstruye funciones disponibles y no cambia datos, rutas ni funciones de Artesanos.
+
+### Protección y almacenamiento
+
+- Datos separados en `/data/pb-press-room.json`.
+- Escritura atómica y respaldos rotativos antes de modificaciones.
 - No contiene contactos inventados ni un comunicado precargado.
-- No envía emails ni se conecta a servicios externos.
-- La futura Sala de Prensa pública no forma parte de esta versión.
+- No envía emails ni se conecta a Resend u otros servicios externos.
+- No modificar el envío actual de comunicaciones a Artesanos al trabajar esta función.
+- No construir todavía la Sala de Prensa pública.
+- Antes de cada cambio: inspeccionar la arquitectura vigente y ejecutar `npm test`.
+- Después de cada cambio: comprobar Comunicaciones, Artesanos, contactos, comunicados, asociaciones y seguimiento antes del deploy manual de Render.
+
+### Contactos de medios
+
+Cada contacto puede guardar:
+
+- Medio, contacto o periodista, email, teléfono y sitio web.
+- Tipo de medio: Radio, Televisión, Periódico, Medio digital, Revista, Podcast u Otro.
+- Ciudad o mercado, estado y país.
+- Alcance: Puerto Rico, Diáspora, Latino o Nacional.
+- Etiquetas: Artesanos, Cultura, Eventos, Turismo, Gastronomía, Negocios, Comunidad, Diáspora, Viajes, Entretenimiento u Otros.
+- Prioridad A, B o C.
+- Tipo de contacto: Redacción general, Periodista, Editor, Productor, Director, Contacto personal u Otro.
+- Estado: Activo, Por verificar o No contactar.
+- Notas internas.
+
+La interfaz permite crear, consultar, editar y desactivar contactos; buscar; aplicar filtros por todos los campos importantes; y seleccionar múltiples contactos. Los contactos marcados **No contactar** no pueden añadirse a una distribución.
+
+### Comunicados y seguimiento
+
+Cada comunicado puede guardar título, fecha, tema o campaña, contenido, enlace al Media Kit y estado: **Borrador, Listo, En distribución o Finalizado**.
+
+Los contactos seleccionados pueden asociarse al comunicado sin duplicar la misma relación. Para cada asociación se registra:
+
+- Medio, contacto y email.
+- Fecha de envío.
+- Estado: Pendiente, Enviado, Respondió, Publicó, Seguimiento o No interesado.
+- Fecha de seguimiento.
+- Enlace de publicación.
+- Notas internas.
+
+El panel muestra totales de contactos, comunicados, seguimientos y publicaciones. También resume las gestiones, respuestas y publicaciones de cada contacto para identificar los medios con mejor relación con PB.
+
+### Primera campaña
+
+- Campaña: **Feria Digital de Artesanos — Planeta Boricua**.
+- Lanzamiento: **23 de septiembre de 2026**.
+- Investigar y verificar los contactos antes de añadirlos.
+- No redactar ni cargar el comunicado hasta recibir autorización de Iván.
+- Priorizar medios de Puerto Rico y la diáspora apropiados para artesanos, cultura, comunidad y eventos.
+
+### Fase pública futura
+
+La arquitectura administrativa podrá conectarse posteriormente a una página pública con Media Kit, información y datos rápidos de PB, comunicados autorizados, logos, fotografías, Feria Digital, contacto de prensa y archivo de cobertura. Esa página pública **no debe construirse ni publicar datos internos sin una instrucción nueva y autorización expresa**.
+
+## Operación inmediata de emails · septiembre de 2026
+
+- Asunto vigente: **🇵🇷 Bienvenido oficialmente a la Feria Digital de Artesanos Boricuas**.
+- Lotes enviados: 50 el 1 de septiembre, 50 el 2 de septiembre y un tercer lote el 3 de septiembre.
+- Resultado conocido del primer lote: 49 entregados y un rebote, `velarecolectionpr@outlook.com`.
+- Antes del próximo envío, hacer el lunes el inventario completo de destinatarios únicos, entregados, rebotados, quejas y pendientes.
+- No repetir destinatarios y no enviar otro lote hasta revisar ese inventario.
+- PB Control selecciona automáticamente los próximos destinatarios pendientes en lotes de hasta 50.
+- Todo envío necesita autorización expresa de Iván; la Sala de Prensa no participa en este proceso.
 
 ## Ideas futuras en evaluación
 
