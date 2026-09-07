@@ -114,6 +114,7 @@ assert.match(html,/Medio verificado/);
 assert.match(html,/Comunicado de prueba/);
 assert.match(html,/pressReleaseDraftStatus/);
 assert.match(html,/Feria Digital de Artesanos — Planeta Boricua/);
+assert.match(html,/data-open-press-editor="release">Nuevo comunicado/);
 const inlineScripts = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(match => match[1]);
 inlineScripts.forEach((script,index) => new vm.Script(script,{filename:`pb-control-press-inline-${index}.js`}));
 

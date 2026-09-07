@@ -69,6 +69,8 @@ Cada comunicado puede guardar título, fecha, tema o campaña, contenido, enlace
 
 El editor conserva un borrador local mientras se escribe y, para la primera campaña, propone automáticamente **Feria Digital de Artesanos — Planeta Boricua** y la fecha **23 de septiembre de 2026**. Guardar un borrador no lo publica ni envía correos.
 
+La cabecera de Sala de Prensa ofrece acceso directo a **Nuevo comunicado**, evitando recorrer la lista completa de contactos para llegar al editor.
+
 Los contactos seleccionados pueden asociarse al comunicado sin duplicar la misma relación. Para cada asociación se registra:
 
 - Medio, contacto y email.
