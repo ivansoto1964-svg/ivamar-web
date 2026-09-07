@@ -88,6 +88,8 @@ La cantidad de artesanos es dinámica. Consultar PB Control antes de citar una c
 - Blog oficial alojado dentro de PB.
 - Archivo de 30 artículos propios observado en PB Control.
 - Sección **Lo más reciente** para noticias y actualidad.
+- Editor visual compartido por **El Balcón** y **Lo más reciente**, con imágenes múltiples dentro del cuerpo, ALT obligatorio, pie/crédito opcional y controles para reordenar o eliminar antes de guardar.
+- Las imágenes interiores reutilizan la carga protegida existente, se muestran responsive y conservan la imagen principal como un campo independiente; no hubo migración ni cambios a publicaciones anteriores.
 - Borradores locales con autoguardado y recuperación en los editores.
 - Comentarios propios con moderación.
 - Agenda Boricua.

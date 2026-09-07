@@ -119,6 +119,17 @@ La arquitectura administrativa podrá conectarse posteriormente a una página p�
 - PB Control selecciona automáticamente los próximos destinatarios pendientes en lotes de hasta 50.
 - Todo envío necesita autorización expresa de Iván; la Sala de Prensa no participa en este proceso.
 
+## Editor de artículos e imágenes interiores
+
+**El Balcón** y **Lo más reciente** comparten el mismo editor visual en PB Control. Además de la imagen principal o portada, el editor permite insertar varias imágenes dentro del cuerpo y colocarlas después del párrafo seleccionado.
+
+- Cada imagen interior usa el cargador protegido ya existente y admite JPG, PNG o WebP de hasta 5 MB.
+- El texto alternativo (ALT) es obligatorio; el pie de foto y el crédito o fuente son opcionales.
+- Antes de guardar se puede subir, bajar o eliminar cada imagen desde su bloque de vista previa.
+- Las imágenes y sus pies se adaptan a móvil y escritorio sin cambiar el diseño general de las publicaciones.
+- El contenido se guarda como HTML sanitizado en los campos actuales; no requiere una tabla nueva ni migración.
+- Las publicaciones antiguas siguen funcionando sin cambios y pueden editarse normalmente aunque no tengan imágenes interiores.
+
 ## Ideas futuras en evaluación
 
 Estas propuestas todavía no están activas. Deben analizarse, cotizarse y probarse por separado antes de convertirlas en funciones o compromisos comerciales.

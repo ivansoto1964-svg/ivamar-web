@@ -1,8 +1,8 @@
 (() => {
   const selectors = ['#blogForm textarea[name="content"]', '#latestForm textarea[name="body"]'];
-  const allowedTags = new Set(['P', 'BR', 'H2', 'H3', 'H4', 'STRONG', 'EM', 'B', 'I', 'UL', 'OL', 'LI', 'BLOCKQUOTE', 'A', 'HR']);
+  const allowedTags = new Set(['P', 'BR', 'H2', 'H3', 'H4', 'STRONG', 'EM', 'B', 'I', 'UL', 'OL', 'LI', 'BLOCKQUOTE', 'A', 'IMG', 'FIGURE', 'FIGCAPTION', 'HR']);
   const style = document.createElement('style');
-  style.textContent = '.rich-editor-shell{border:1px solid #cbd2dc;border-radius:10px;overflow:hidden;background:#fff}.rich-editor-toolbar{display:flex;flex-wrap:wrap;gap:.35rem;padding:.5rem;background:#f4f6fa;border-bottom:1px solid #dfe4eb;position:sticky;top:65px;z-index:4}.rich-editor-button{border:1px solid #c8d0dc;border-radius:6px;background:#fff;color:#002d62;padding:.48rem .62rem;font:800 .75rem system-ui;cursor:pointer}.rich-editor-button:hover,.rich-editor-button:focus{background:#e8f1ff;outline:2px solid #99b7dd}.rich-editor-area{min-height:330px;padding:1rem;font:1rem/1.7 Georgia,serif;color:#242424;outline:0}.rich-editor-area:empty:before{content:attr(data-placeholder);color:#8a94a3}.rich-editor-area h2{font-size:1.55rem;color:#002d62;border-bottom:3px solid #ce1126;padding-bottom:.3rem}.rich-editor-area h3{font-size:1.25rem;color:#002d62}.rich-editor-area a{color:#002d62;font-weight:800}.rich-editor-area blockquote{border-left:4px solid #ce1126;padding-left:1rem;color:#555}@media(max-width:760px){.rich-editor-button{flex:1 1 auto}}';
+  style.textContent = '.rich-editor-shell{border:1px solid #cbd2dc;border-radius:10px;overflow:hidden;background:#fff}.rich-editor-toolbar{display:flex;flex-wrap:wrap;gap:.35rem;padding:.5rem;background:#f4f6fa;border-bottom:1px solid #dfe4eb;position:sticky;top:65px;z-index:4}.rich-editor-button{border:1px solid #c8d0dc;border-radius:6px;background:#fff;color:#002d62;padding:.48rem .62rem;font:800 .75rem system-ui;cursor:pointer}.rich-editor-button:hover,.rich-editor-button:focus{background:#e8f1ff;outline:2px solid #99b7dd}.rich-editor-area{min-height:330px;padding:1rem;font:1rem/1.7 Georgia,serif;color:#242424;outline:0}.rich-editor-area:empty:before{content:attr(data-placeholder);color:#8a94a3}.rich-editor-area h2{font-size:1.55rem;color:#002d62;border-bottom:3px solid #ce1126;padding-bottom:.3rem}.rich-editor-area h3{font-size:1.25rem;color:#002d62}.rich-editor-area a{color:#002d62;font-weight:800}.rich-editor-area blockquote{border-left:4px solid #ce1126;padding-left:1rem;color:#555}.rich-editor-area figure{margin:1.4rem 0;padding:.65rem;border:1px solid #d9e0e9;border-radius:10px;background:#f8fafc}.rich-editor-area figure img{display:block;width:100%;max-height:480px;object-fit:contain;border-radius:7px;background:#eef1f5}.rich-editor-area figcaption{padding:.55rem .2rem 0;color:#5f6875;font:italic .8rem/1.45 system-ui}.rich-image-controls{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.6rem}.rich-image-controls button{border:1px solid #c8d0dc;border-radius:6px;background:#fff;color:#002d62;padding:.42rem .6rem;font:800 .72rem system-ui;cursor:pointer}.rich-image-controls button:last-child{color:#9d1a29}.rich-image-modal{position:fixed;inset:0;z-index:1000;display:none;align-items:center;justify-content:center;padding:1rem;background:#001a3ecc}.rich-image-modal.show{display:flex}.rich-image-dialog{width:min(560px,100%);max-height:92vh;overflow:auto;background:#fff;border-radius:12px;padding:1.2rem;box-shadow:0 20px 70px #0006}.rich-image-dialog h2{margin:.1rem 0;color:#002d62;font:1.45rem Georgia,serif}.rich-image-dialog p{color:#667085;font-size:.82rem;line-height:1.5}.rich-image-dialog label{display:block;margin:.8rem 0 .3rem;color:#002d62;font:800 .76rem system-ui}.rich-image-dialog input{width:100%;padding:.72rem;border:1px solid #cbd2dc;border-radius:7px;font:inherit}.rich-image-dialog .rich-image-actions{display:flex;justify-content:flex-end;gap:.6rem;margin-top:1rem}.rich-image-dialog .rich-image-actions button{border:0;border-radius:7px;padding:.7rem 1rem;font-weight:900;cursor:pointer}.rich-image-cancel{background:#e9edf2;color:#334155}.rich-image-insert{background:#ce1126;color:#fff}.rich-image-status{min-height:1.2rem;color:#9d1a29!important;font-weight:800}@media(max-width:760px){.rich-editor-button{flex:1 1 auto}.rich-image-dialog .rich-image-actions{flex-direction:column-reverse}.rich-image-dialog .rich-image-actions button{width:100%}}';
   document.head.append(style);
 
   function escapeHtml(value) {
@@ -19,6 +19,7 @@
   function cleanHtml(value) {
     const template = document.createElement('template');
     template.innerHTML = String(value || '');
+    template.content.querySelectorAll('[data-pb-editor-only]').forEach(node => node.remove());
     [...template.content.querySelectorAll('*')].reverse().forEach(originalNode => {
       let node = originalNode;
       const inlineStyle = String(node.getAttribute('style') || '').toLowerCase();
@@ -40,6 +41,11 @@
       }
       const href = node.tagName === 'A' ? String(node.getAttribute('href') || '').trim() : '';
       const originalRel = node.tagName === 'A' ? String(node.getAttribute('rel') || '') : '';
+      const image = node.tagName === 'IMG' ? {
+        src:String(node.getAttribute('src') || '').trim(),
+        alt:String(node.getAttribute('alt') || '').trim().slice(0, 300),
+        title:String(node.getAttribute('title') || '').trim().slice(0, 300)
+      } : null;
       [...node.attributes].forEach(attribute => node.removeAttribute(attribute.name));
       if (node.tagName === 'A') {
         if (/^(https?:\/\/|mailto:|\/)/i.test(href)) {
@@ -49,6 +55,15 @@
         } else {
           node.replaceWith(...node.childNodes);
         }
+      } else if (node.tagName === 'IMG') {
+        if (!/^(https?:\/\/|\/media\/pb-blog\/|\/img\/)/i.test(image.src)) {
+          node.remove();
+          return;
+        }
+        node.setAttribute('src', image.src);
+        node.setAttribute('alt', image.alt);
+        if (image.title) node.setAttribute('title', image.title);
+        node.setAttribute('loading', 'lazy');
       }
     });
     return template.innerHTML;
@@ -73,6 +88,118 @@
     button.addEventListener('mousedown', event => event.preventDefault());
     button.addEventListener('click', action);
     return button;
+  }
+
+  function directEditorBlock(editor, node) {
+    let block = node?.nodeType === Node.ELEMENT_NODE ? node : node?.parentElement;
+    while (block && block.parentElement !== editor) block = block.parentElement;
+    return block?.parentElement === editor ? block : null;
+  }
+
+  function meaningfulSibling(figure, direction) {
+    let sibling = direction < 0 ? figure.previousElementSibling : figure.nextElementSibling;
+    while (sibling && sibling.tagName === 'P' && !sibling.textContent.trim()) {
+      sibling = direction < 0 ? sibling.previousElementSibling : sibling.nextElementSibling;
+    }
+    return sibling;
+  }
+
+  function decorateFigures(editor, sync) {
+    editor.querySelectorAll('figure').forEach(figure => {
+      figure.contentEditable = 'false';
+      if (figure.querySelector('[data-pb-editor-only]')) return;
+      const controls = document.createElement('div');
+      controls.className = 'rich-image-controls';
+      controls.dataset.pbEditorOnly = 'true';
+      const move = (label, title, direction) => makeButton(label, title, () => {
+        const sibling = meaningfulSibling(figure, direction);
+        if (!sibling) return;
+        if (direction < 0) sibling.before(figure); else sibling.after(figure);
+        sync();
+      });
+      const remove = makeButton('Eliminar', 'Eliminar esta imagen del artículo', () => {
+        if (!window.confirm('¿Eliminar esta imagen del cuerpo del artículo?')) return;
+        figure.remove();
+        sync();
+      });
+      controls.append(move('↑ Subir', 'Mover imagen hacia arriba', -1), move('↓ Bajar', 'Mover imagen hacia abajo', 1), remove);
+      figure.append(controls);
+    });
+  }
+
+  let imageModal;
+  function openImageModal(editor, sync) {
+    const selection = window.getSelection();
+    const anchor = selection?.rangeCount && editor.contains(selection.getRangeAt(0).commonAncestorContainer)
+      ? directEditorBlock(editor, selection.getRangeAt(0).commonAncestorContainer)
+      : null;
+    if (!imageModal) {
+      const overlay = document.createElement('div');
+      overlay.className = 'rich-image-modal';
+      overlay.innerHTML = '<form class="rich-image-dialog"><h2>Insertar imagen en el artículo</h2><p>La imagen se colocará después del párrafo seleccionado. Puedes repetir este proceso para añadir varias.</p><label>Imagen (JPG, PNG o WebP; máx. 5 MB)</label><input name="file" type="file" accept="image/jpeg,image/png,image/webp" required><label>Texto alternativo (ALT)</label><input name="alt" maxlength="300" required placeholder="Describe brevemente lo que aparece"><label>Pie de foto (opcional)</label><input name="caption" maxlength="500" placeholder="Explica la imagen al lector"><label>Crédito o fuente (opcional)</label><input name="credit" maxlength="300" placeholder="Foto: nombre / Fuente: organización"><p class="rich-image-status" role="status" aria-live="polite"></p><div class="rich-image-actions"><button class="rich-image-cancel" type="button">Cancelar</button><button class="rich-image-insert" type="submit">Subir e insertar</button></div></form>';
+      document.body.append(overlay);
+      imageModal = { overlay, form:overlay.querySelector('form'), active:null };
+      imageModal.form.querySelector('.rich-image-cancel').addEventListener('click', () => overlay.classList.remove('show'));
+      overlay.addEventListener('click', event => { if (event.target === overlay) overlay.classList.remove('show'); });
+      imageModal.form.addEventListener('submit', async event => {
+        event.preventDefault();
+        const current = imageModal.active;
+        const file = imageModal.form.elements.file.files[0];
+        const alt = imageModal.form.elements.alt.value.trim();
+        const caption = imageModal.form.elements.caption.value.trim();
+        const credit = imageModal.form.elements.credit.value.trim();
+        const status = imageModal.form.querySelector('.rich-image-status');
+        const submit = imageModal.form.querySelector('.rich-image-insert');
+        if (!current || !file || !alt) return;
+        if (!/^image\/(jpeg|png|webp)$/.test(file.type) || file.size > 5 * 1024 * 1024) {
+          status.textContent = 'Selecciona una imagen JPG, PNG o WebP de hasta 5 MB.';
+          return;
+        }
+        if (typeof uploadLatestImage !== 'function') {
+          status.textContent = 'El cargador de imágenes no está disponible. Recarga PB Control.';
+          return;
+        }
+        submit.disabled = true;
+        status.textContent = 'Subiendo imagen…';
+        try {
+          const src = await uploadLatestImage(file);
+          const figure = document.createElement('figure');
+          const img = document.createElement('img');
+          img.src = src;
+          img.alt = alt;
+          img.loading = 'lazy';
+          figure.append(img);
+          if (caption || credit) {
+            const figcaption = document.createElement('figcaption');
+            if (caption) figcaption.append(document.createTextNode(caption));
+            if (caption && credit) figcaption.append(document.createTextNode(' · '));
+            if (credit) {
+              const strong = document.createElement('strong');
+              strong.textContent = 'Crédito/Fuente: ';
+              figcaption.append(strong, document.createTextNode(credit));
+            }
+            figure.append(figcaption);
+          }
+          const spacer = document.createElement('p');
+          spacer.append(document.createElement('br'));
+          if (current.anchor?.isConnected && current.anchor.parentElement === current.editor) current.anchor.after(figure, spacer);
+          else current.editor.append(figure, spacer);
+          decorateFigures(current.editor, current.sync);
+          current.sync();
+          overlay.classList.remove('show');
+          current.editor.focus();
+        } catch (error) {
+          status.textContent = error.message || 'No se pudo subir la imagen.';
+        } finally {
+          submit.disabled = false;
+        }
+      });
+    }
+    imageModal.form.reset();
+    imageModal.form.querySelector('.rich-image-status').textContent = '';
+    imageModal.active = { editor, sync, anchor };
+    imageModal.overlay.classList.add('show');
+    imageModal.form.elements.file.focus();
   }
 
   function enhance(textarea) {
@@ -113,6 +240,7 @@
       makeButton('Subtítulo', 'Subtítulo', () => focusAndRun('formatBlock', 'h3')),
       makeButton('• Lista', 'Lista con viñetas', () => focusAndRun('insertUnorderedList')),
       makeButton('1. Lista', 'Lista numerada', () => focusAndRun('insertOrderedList')),
+      makeButton('📷 Imagen', 'Insertar imagen entre párrafos', () => openImageModal(editor, sync)),
       makeButton('🔗 Enlace', 'Añadir enlace', () => {
         editor.focus();
         const selection = window.getSelection();
@@ -135,6 +263,7 @@
 
     function refresh() {
       editor.innerHTML = normalizedHtml(textarea.value);
+      decorateFigures(editor, sync);
     }
 
     editor.addEventListener('input', sync);
