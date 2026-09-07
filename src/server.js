@@ -1789,8 +1789,10 @@ function buildPBControlModel(csrf) {
     distributionStatuses:pbPressRoom.DISTRIBUTION_STATUSES
   };
   pressRoom.contacts.sort((a,b) => String(a.mediaName || '').localeCompare(String(b.mediaName || ''),'es'));
+  pressRoom.entities.sort((a,b) => String(a.name || '').localeCompare(String(b.name || ''),'es'));
   pressRoom.releases.sort((a,b) => String(b.date || '').localeCompare(String(a.date || '')));
   pressRoom.distributions.sort((a,b) => String(b.updatedAt || '').localeCompare(String(a.updatedAt || '')));
+  pressRoom.controlSummary = pbPressRoom.controlSummary(pressRoom);
   return {csrf,latestPending,latestApproved,commentsPending,commentsApproved,artisansPending,artisansApproved,artisanNeedsImprovement,eventsPending,eventsApproved,subscribers,blogPosts,affiliates,artisanEmailCount,artisanEmailAudit,artisanMailHistory,artisanMetrics,siteAnalytics,pressRoom,counts:{pendingLatest:latestPending.length,pendingComments:commentsPending.length,pendingArtisans:artisansPending.length,pendingEvents:eventsPending.length,pendingTotal:latestPending.length+commentsPending.length+artisansPending.length+eventsPending.length,blogPosts:blogPosts.length,subscribers:subscribers.length,affiliateClicks:affiliates.reduce((sum,item)=>sum+item.clicks,0),artisanViews:artisanMetrics.reduce((sum,item)=>sum+item.views,0),artisanClicks:artisanMetrics.reduce((sum,item)=>sum+item.clickTotal,0)}};
 }
 
@@ -1840,7 +1842,7 @@ app.post('/pb-control/upload-image', requirePBAdmin, express.json({limit:'8mb'})
   }
 });
 
-app.post('/pb-control/action', requirePBAdmin, requirePBCsrf, express.json({limit:'30kb'}), async (req,res) => {
+app.post('/pb-control/action', requirePBAdmin, requirePBCsrf, express.json({limit:'200kb'}), async (req,res) => {
   const action = sanitize(req.body?.action || '');
   const id = sanitize(req.body?.id || '');
   const ok = message => res.json({ok:true,message});
@@ -1986,6 +1988,12 @@ app.post('/pb-control/action', requirePBAdmin, requirePBCsrf, express.json({limi
       history.push({id:`${Date.now()}-${crypto.randomBytes(3).toString('hex')}`,campaignId:selection.campaignId,subject,messagePreview:message.slice(0,180),recipientCount:delivered.length,remainingCount:remaining,sentAt:new Date().toISOString()});
       writeJsonFile(PB_ARTISAN_MAIL_HISTORY_FILE,history.slice(-100));
       return res.json({ok:true,message:`Lote enviado a ${delivered.length} artesanos. Quedan ${remaining} pendientes para este comunicado.`,sentCount:delivered.length,remaining,campaignId:selection.campaignId});
+    }
+    if (action === 'press-master-preview' || action === 'press-master-import') {
+      const source=String(req.body.source || '');
+      if (source.length < 100 || source.length > 150000) return res.status(400).json({ok:false,error:'Pega el Paquete Maestro completo (máximo 150,000 caracteres).'});
+      const report=action === 'press-master-preview' ? pbPressRoom.previewMasterPackage(source) : pbPressRoom.importMasterPackage(source);
+      return res.json({ok:true,message:action === 'press-master-preview' ? 'Análisis terminado; todavía no se guardó nada.' : 'Paquete Maestro consolidado con respaldo automático.',report});
     }
     if (action === 'press-contact-save') {
       const saved = pbPressRoom.saveContact(req.body, id === 'new' ? '' : id);

@@ -6,7 +6,7 @@
 
 **Responsable:** Iván Soto
 
-**Última actualización documental:** 2 de septiembre de 2026
+**Última actualización documental:** 7 de septiembre de 2026
 
 **Repositorio:** `ivansoto1964-svg/ivamar-web`
 
@@ -98,6 +98,9 @@ La cantidad de artesanos es dinámica. Consultar PB Control antes de citar una c
 - Formularios contextuales de suscripción preparados para Inicio, Blog, Lo más reciente y Agenda Boricua, sin popups ni un sistema paralelo.
 - Sala de Prensa PB integrada administrativamente dentro de Comunicaciones: contactos verificados, filtros, comunicados, asociaciones y seguimiento manual.
 - La Sala de Prensa usa almacenamiento separado con respaldos; no altera Artesanos, no envía emails y todavía no tiene una página pública.
+- La recopilación inicial de contactos se cerró el 7 de septiembre de 2026 mediante un Paquete Maestro. PB Control puede analizarlo sin escribir, consolidarlo de forma idempotente y mostrar el Resumen de Control.
+- Las organizaciones, festivales, instituciones culturales, amplificadores y servicios de distribución se conservan en categorías separadas de prensa para uso futuro; no existe todavía un directorio público.
+- La lista **LISTOS PARA ENVÍO — FERIA DIGITAL DE ARTESANOS** exige email, estado Activo y prioridad A+ o A. Los contactos nuevos no se consideran verificados automáticamente.
 
 ### Email
 

@@ -86,6 +86,19 @@ El panel muestra totales de contactos, comunicados, seguimientos y publicaciones
 - No redactar ni cargar el comunicado hasta recibir autorización de Iván.
 - Priorizar medios de Puerto Rico y la diáspora apropiados para artesanos, cultura, comunidad y eventos.
 
+### Paquete Maestro y consolidación
+
+La recopilación inicial se declaró terminada el **7 de septiembre de 2026**. PB Control incluye una herramienta privada para pegar el Paquete Maestro, analizarlo sin guardar y consolidarlo solamente después de revisar la vista previa.
+
+- Reconoce prioridad **A+** además de A, B y C.
+- Deduplica sin borrar contactos válidos existentes y actualiza solamente campos vacíos.
+- Conserva emails alternos de la misma persona sin convertirlos en contactos innecesariamente duplicados.
+- Separa prensa de organizaciones, festivales/eventos, cultura/instituciones, amplificadores/aliados y servicios de distribución.
+- Los registros nuevos del paquete quedan pendientes de validación; un email encontrado no se activa automáticamente.
+- La vista **LISTOS PARA ENVÍO — FERIA DIGITAL DE ARTESANOS** muestra únicamente contactos A+/A con email y estado Activo.
+- La consolidación crea un respaldo del archivo persistente antes de escribir.
+- Esta función no envía correos, no crea campañas y no construye el directorio público de organizaciones.
+
 ### Fase pública futura
 
 La arquitectura administrativa podrá conectarse posteriormente a una página pública con Media Kit, información y datos rápidos de PB, comunicados autorizados, logos, fotografías, Feria Digital, contacto de prensa y archivo de cobertura. Esa página pública **no debe construirse ni publicar datos internos sin una instrucción nueva y autorización expresa**.
