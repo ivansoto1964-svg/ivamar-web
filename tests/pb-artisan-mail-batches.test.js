@@ -24,12 +24,26 @@ assert.equal(new Set([...first.batch,...second.batch].map(item=>item.email)).siz
 const differentMessage = batches.nextBatch(recipients,deliveries,subject,message+' Cambio');
 assert.equal(differentMessage.batch[0].email,recipients[0].email,'a different message starts a separate campaign');
 
+const invisibleCharacterRecipients = [
+  {name:'Espacio invisible',email:' Persona\u200B1@Example.com '},
+  {name:'Duplicado normalizado',email:'persona1@example.com'},
+  {name:'Formato rechazado',email:'persona,2@example.com'},
+  {name:'Válido',email:'persona2@example.com'}
+];
+const normalized = batches.nextBatch(invisibleCharacterRecipients,[],subject,message);
+assert.deepEqual(normalized.batch.map(item => item.email),['persona1@example.com','persona2@example.com']);
+assert.equal(normalized.remainingBefore,2,'only normalized, provider-compatible unique emails enter a batch');
+assert.equal(batches.normalizeEmail(' Persona\u2060@Example.com '),'persona@example.com');
+assert.equal(batches.isValidEmail('persona@example.com'),true);
+assert.equal(batches.isValidEmail('persona,2@example.com'),false);
+
 const server = fs.readFileSync(path.join(__dirname,'..','src/server.js'),'utf8');
 const view = fs.readFileSync(path.join(__dirname,'..','src/views/pb-control.js'),'utf8');
 assert.match(server,/PB_ARTISAN_MAIL_DELIVERIES_FILE/);
 assert.match(server,/Lote enviado a \$\{delivered\.length\} artesanos/);
 assert.match(server,/PB artisan email test rejected/);
 assert.match(server,/Email de prueba aceptado para/);
+assert.match(server,/email:normalizePBArtisanEmail\(item\.email\)/);
 assert.match(server,/if \(result\?\.error\)/);
 assert.match(server,/Editar mi información/);
 assert.match(view,/Enviar próximo lote \(máx\. 50\)/);

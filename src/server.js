@@ -267,10 +267,7 @@ function loadApprovedPBListings() {
 }
 
 function normalizePBArtisanEmail(value) {
-  return String(value || '')
-    .normalize('NFKC')
-    .replace(/[\s\u200B-\u200D\u2060\uFEFF]/g,'')
-    .toLowerCase();
+  return pbArtisanMailBatches.normalizeEmail(value);
 }
 
 function normalizePBArtisanPhone(value) {
@@ -522,10 +519,10 @@ function pbArtisanRecipients() {
   const optedOut = new Set(pbArtisanEmailOptOuts().map(item => normalizePBArtisanEmail(item.email)));
   return loadApprovedPBListings().map(item => ({
     name:String(item.name || 'Artesano/a').trim(),
-    email:String(item.email || '').trim().toLowerCase(),
+    email:normalizePBArtisanEmail(item.email),
     slug:pbArtisanSlug(item)
   })).filter(item => {
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(item.email) || seen.has(item.email) || optedOut.has(item.email)) return false;
+    if (!pbArtisanMailBatches.isValidEmail(item.email) || seen.has(item.email) || optedOut.has(item.email)) return false;
     seen.add(item.email);
     return true;
   });
@@ -541,7 +538,6 @@ const PB_EMAIL_DOMAIN_TYPOS = new Map([
 ]);
 
 function pbArtisanEmailAudit(artisans) {
-  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   const records = (artisans || []).map(item => {
     const rawEmail = String(item.email || '');
     const email = normalizePBArtisanEmail(rawEmail);
@@ -564,7 +560,7 @@ function pbArtisanEmailAudit(artisans) {
       types.push('missing');
       notes.push('No tiene email registrado.');
     } else {
-      if (!emailPattern.test(record.email)) {
+      if (!pbArtisanMailBatches.isValidEmail(record.email)) {
         types.push('invalid');
         notes.push('El formato del email no es válido.');
       }
@@ -589,7 +585,7 @@ function pbArtisanEmailAudit(artisans) {
   return {
     total:records.length,
     present:records.filter(item => item.email).length,
-    uniqueValid:new Set(records.filter(item => item.email && emailPattern.test(item.email)).map(item => item.email)).size,
+    uniqueValid:new Set(records.filter(item => item.email && pbArtisanMailBatches.isValidEmail(item.email)).map(item => item.email)).size,
     duplicateAddresses:duplicateEmails.size,
     counts:{missing:count('missing'),invalid:count('invalid'),duplicateProfiles:count('duplicate'),suspicious:count('suspicious'),normalization:count('normalization'),issues:issues.length},
     issues
