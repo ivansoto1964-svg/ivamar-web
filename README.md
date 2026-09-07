@@ -67,6 +67,8 @@ La interfaz permite crear, consultar, editar y desactivar contactos; buscar; apl
 
 Cada comunicado puede guardar título, fecha, tema o campaña, contenido, enlace al Media Kit y estado: **Borrador, Listo, En distribución o Finalizado**.
 
+El editor conserva un borrador local mientras se escribe y, para la primera campaña, propone automáticamente **Feria Digital de Artesanos — Planeta Boricua** y la fecha **23 de septiembre de 2026**. Guardar un borrador no lo publica ni envía correos.
+
 Los contactos seleccionados pueden asociarse al comunicado sin duplicar la misma relación. Para cada asociación se registra:
 
 - Medio, contacto y email.
@@ -83,7 +85,8 @@ El panel muestra totales de contactos, comunicados, seguimientos y publicaciones
 - Campaña: **Feria Digital de Artesanos — Planeta Boricua**.
 - Lanzamiento: **23 de septiembre de 2026**.
 - Investigar y verificar los contactos antes de añadirlos.
-- No redactar ni cargar el comunicado hasta recibir autorización de Iván.
+- El desarrollo del borrador del comunicado quedó autorizado el **7 de septiembre de 2026**.
+- No distribuir ni marcar el comunicado como enviado sin una autorización nueva y expresa de Iván.
 - Priorizar medios de Puerto Rico y la diáspora apropiados para artesanos, cultura, comunidad y eventos.
 
 ### Paquete Maestro y consolidación
@@ -97,6 +100,7 @@ La recopilación inicial se declaró terminada el **7 de septiembre de 2026**. P
 - Los registros nuevos del paquete quedan pendientes de validación; un email encontrado no se activa automáticamente.
 - La vista **LISTOS PARA ENVÍO — FERIA DIGITAL DE ARTESANOS** muestra únicamente contactos A+/A con email y estado Activo.
 - La consolidación crea un respaldo del archivo persistente antes de escribir.
+- Los registros de organizaciones y eventos reciben identificadores permanentes; las importaciones anteriores con identificadores vacíos se reparan de forma automática en la próxima escritura segura.
 - Esta función no envía correos, no crea campañas y no construye el directorio público de organizaciones.
 
 ### Fase pública futura

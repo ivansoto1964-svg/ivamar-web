@@ -101,6 +101,8 @@ La cantidad de artesanos es dinámica. Consultar PB Control antes de citar una c
 - La recopilación inicial de contactos se cerró el 7 de septiembre de 2026 mediante un Paquete Maestro. PB Control puede analizarlo sin escribir, consolidarlo de forma idempotente y mostrar el Resumen de Control.
 - Las organizaciones, festivales, instituciones culturales, amplificadores y servicios de distribución se conservan en categorías separadas de prensa para uso futuro; no existe todavía un directorio público.
 - La lista **LISTOS PARA ENVÍO — FERIA DIGITAL DE ARTESANOS** exige email, estado Activo y prioridad A+ o A. Los contactos nuevos no se consideran verificados automáticamente.
+- El editor de comunicados tiene autoguardado local, permite reabrir borradores y propone la campaña de la Feria y el 23 de septiembre de 2026 al crear el primero. Esto no publica ni envía el comunicado.
+- Los identificadores vacíos de organizaciones y eventos procedentes de la primera consolidación se reparan automáticamente en la próxima escritura segura del archivo.
 
 ### Email
 
@@ -129,7 +131,7 @@ La cantidad de artesanos es dinámica. Consultar PB Control antes de citar una c
 - Preparar y enviar el aviso para revisar y mejorar perfiles en lotes de aproximadamente 50 correos, comenzando en septiembre y respetando los límites vigentes de Resend.
 - Recibir de los artesanos colaboradores videos naturales trabajando y mostrando sus piezas; las confirmaciones ya comenzaron y todavía se espera el material.
 - Crear con ese pietaje una promoción del lanzamiento y material de apoyo para posibles entrevistas.
-- Preparar un comunicado y un paquete visual sencillo para medios de Puerto Rico; Iván coordina desde Florida y los artesanos participantes están mayormente en Puerto Rico.
+- Desarrollar el borrador del comunicado y un paquete visual sencillo para medios de Puerto Rico; esta preparación quedó autorizada el 7 de septiembre de 2026, pero su distribución todavía requiere autorización expresa. Iván coordina desde Florida y los artesanos participantes están mayormente en Puerto Rico.
 - Mantener imágenes y comunicación naturales, humanas y fáciles de entender; evitar visuales de IA que puedan confundir.
 - Continuar actualizando la Agenda mediante investigación de eventos gratuitos, verificación de fuente, publicación y aprobación. No publicar eventos que indiquen costo de entrada.
 

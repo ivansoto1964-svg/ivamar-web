@@ -53,7 +53,7 @@ function normalizeState(value) {
     contacts:Array.isArray(state.contacts) ? state.contacts : [],
     releases:Array.isArray(state.releases) ? state.releases : [],
     distributions:Array.isArray(state.distributions) ? state.distributions : [],
-    entities:Array.isArray(state.entities) ? state.entities : [],
+    entities:Array.isArray(state.entities) ? state.entities.map(entity => ({...entity,id:text(entity?.id,120) || id('entity')})) : [],
     imports:Array.isArray(state.imports) ? state.imports.slice(-20) : []
   };
 }
@@ -316,7 +316,7 @@ function mergeParsedPackage(current,parsed) {
   parsed.entities.forEach(incoming => {
     let match=state.entities.find(item => sameEntity(item.name,incoming.name));
     if (!match) {
-      state.entities.push({id:id('entity'),...incoming,createdAt:now,updatedAt:now});
+      state.entities.push({...incoming,id:id('entity'),createdAt:now,updatedAt:now});
       report.addedEntities+=1;
       return;
     }

@@ -83,6 +83,7 @@ assert.equal(imported.summary.festivals,2);
 assert.equal(imported.summary.organizations,1);
 assert.equal(imported.summary.culture,1);
 assert.equal(pressRoom.read(file).entities.length,5);
+assert.ok(pressRoom.read(file).entities.every(entity => entity.id && entity.name),'every imported entity must retain its name and receive a stable id');
 const repeated = pressRoom.importMasterPackage(master,file);
 assert.equal(repeated.addedContacts,0,'master import must be idempotent');
 assert.equal(repeated.addedEntities,0,'entity import must be idempotent');
@@ -111,6 +112,8 @@ assert.match(html,/LISTOS PARA ENVÍO/);
 assert.match(html,/Organizaciones, festivales, cultura y aliados/);
 assert.match(html,/Medio verificado/);
 assert.match(html,/Comunicado de prueba/);
+assert.match(html,/pressReleaseDraftStatus/);
+assert.match(html,/Feria Digital de Artesanos — Planeta Boricua/);
 const inlineScripts = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(match => match[1]);
 inlineScripts.forEach((script,index) => new vm.Script(script,{filename:`pb-control-press-inline-${index}.js`}));
 
