@@ -80,6 +80,10 @@ Si un deploy falla, no improvisar sobre producción. Identificar el archivo y el
 - Auditoría privada de emails.
 - Consolidación segura de cuatro grupos de perfiles duplicados.
 - Opción para dejar de recibir comunicaciones.
+- Aviso discreto de compra responsable en cada perfil: PB conecta al visitante con el artesano, pero no procesa pagos ni participa en la transacción.
+- FAQ pública que aclara que no se exige certificación gubernamental como condición general, que las compras se realizan fuera de PB y que PB no recibe comisiones sobre esas ventas directas.
+- Formulario y Términos actualizados para distinguir participación de certificación, licencia o validación legal.
+- Enlaces comerciales externos rotulados como contacto, página, red social o tienda externa; no se presenta a PB como lugar de compra.
 
 La cantidad de artesanos es dinámica. Consultar PB Control antes de citar una cifra pública. El caso del email de **Jo It Savon Luxury Handmade Products** ya fue resuelto manualmente.
 
@@ -153,16 +157,14 @@ La cantidad de artesanos es dinámica. Consultar PB Control antes de citar una c
 
 ## Próximas fases, sin activar todavía
 
-- Tienda PB beta con aproximadamente diez artesanos.
-- Productos, fotos, precios y formas de pago.
-- Evaluación futura de niveles premium; no anunciar precios ni comenzar a cobrar todavía.
+- La idea anterior de una tienda o mercado de múltiples vendedores con artesanos queda archivada y no forma parte del modelo vigente. Reactivarla requeriría una decisión expresa, revisión legal y una arquitectura separada; PB actualmente no es marketplace ni procesa pagos.
+- Evaluación futura de niveles promocionales premium; no anunciar precios ni comenzar a cobrar todavía.
 - Herramientas impresas o descargables: tarjetas, stickers QR, cajas, sobres y recursos de envío.
 - Sustitución gradual de afiliados generales que no producen por negocios o marcas boricuas.
 - Sistema de auspiciadores de Planeta Boricua.
 - Shopper Boricua.
-- Mercado Boricua de múltiples vendedores a largo plazo.
 
-La tienda no debe adelantarse a la medición, la comunicación con artesanos y la estabilidad operativa.
+Ninguna fase futura debe presentar a PB como vendedor, intermediario comercial o procesador de las transacciones de los artesanos sin una nueva autorización y revisión específica.
 
 ## Documentos relacionados
 

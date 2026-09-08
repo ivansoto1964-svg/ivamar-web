@@ -35,6 +35,7 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
 .hero-feria h1{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:800;color:#fff;margin-bottom:0.6rem;text-shadow:0 2px 12px rgba(0,0,0,0.5);}
 .hero-feria p{color:rgba(255,255,255,0.9);font-size:0.95rem;max-width:600px;margin:0 auto;line-height:1.6;text-shadow:0 1px 6px rgba(0,0,0,0.5);}
 .hero-actions{display:flex;justify-content:center;gap:.7rem;flex-wrap:wrap;margin-top:1.4rem}.hero-btn{padding:.75rem 1.15rem;border-radius:8px;background:#ce1126;color:#fff;text-decoration:none;font-weight:800;font-size:.85rem}.hero-btn.secondary{background:#fff;color:#002d62}.directory-heading{display:flex;justify-content:space-between;align-items:end;gap:1rem;flex-wrap:wrap;margin-bottom:.6rem}.directory-heading h2{font-family:'Playfair Display',serif;font-size:1.6rem}.result-count{font-weight:700;color:var(--blue);font-size:.85rem}.fair-note{background:#fff;border-left:4px solid var(--blue);padding:1rem;margin:1.5rem 0;border-radius:6px;color:var(--mid);font-size:.82rem;line-height:1.6}
+.fair-faq{margin:2rem 0}.fair-faq h2{font-family:'Playfair Display',serif;font-size:1.55rem;margin-bottom:.8rem}.fair-faq details{background:#fff;border:1px solid var(--border);border-radius:8px;margin:.65rem 0;padding:.9rem 1rem}.fair-faq summary{color:var(--blue);cursor:pointer;font-weight:800;line-height:1.4}.fair-faq p{color:var(--mid);font-size:.85rem;line-height:1.65;margin-top:.7rem}
 
 .directorio-wrap{max-width:1200px;margin:0 auto;padding:2rem;}
 
@@ -121,7 +122,14 @@ footer.pb-footer a{color:rgba(255,255,255,0.8);text-decoration:none;margin:0 0.5
   <div style="text-align:center;margin-top:2rem;">
     <a href="/pb/add-negocio" style="display:inline-block;background:var(--blue);color:#fff;padding:0.9rem 1.8rem;border-radius:8px;text-decoration:none;font-weight:700;font-size:0.92rem;">🎨 Regístrate Gratis →</a>
   </div>
-  <div class="fair-note"><strong>Una vitrina, no un intermediario.</strong> La información es provista por cada participante. Planeta Boricua no procesa compras ni pagos; los pedidos, entregas y acuerdos se coordinan directamente con cada artesano.</div>
+  <div class="fair-note"><strong>Una vitrina, no un intermediario.</strong> Planeta Boricua ayuda a descubrir y contactar artesanos. No procesa pagos ni participa en las transacciones; las compras, los pedidos, los envíos, las entregas y demás acuerdos se coordinan directamente entre el comprador y cada artesano, fuera de PB.</div>
+  <section class="fair-faq" aria-labelledby="fair-faq-title">
+    <h2 id="fair-faq-title">Preguntas frecuentes</h2>
+    <details><summary>¿Necesito una certificación oficial de artesano para participar?</summary><p>Planeta Boricua no exige una certificación gubernamental de artesano como condición general para solicitar participación. Cada artesano continúa siendo responsable de los registros, licencias, permisos u otros requisitos aplicables a su actividad y al lugar donde opera. La presencia de un perfil en PB no constituye una certificación gubernamental ni una validación legal del negocio o de sus productos.</p></details>
+    <details><summary>¿Puedo comprar directamente en Planeta Boricua?</summary><p>No. Planeta Boricua te ayuda a descubrir y contactar al artesano. Las compras y los pagos se coordinan directamente con el artesano fuera de PB.</p></details>
+    <details><summary>¿Planeta Boricua recibe dinero de las ventas?</summary><p>No. PB no procesa el pago, no recibe comisiones sobre las ventas directas de los artesanos ni participa en la transacción entre comprador y artesano.</p></details>
+    <details><summary>¿Qué debo hacer antes de comprar?</summary><p>Verifica directamente con el artesano qué producto estás comprando, el precio, el método de pago, el envío o la entrega y cualquier otra condición relevante antes de enviar dinero.</p></details>
+  </section>
 </div>
 
 <footer class="pb-footer">
@@ -252,11 +260,11 @@ async function loadDirectorio() {
         var descText = n.desc && n.desc !== ''
           ? '<div class="dir-card-desc">' + escapeHtml(n.desc) + '</div>' : '';
         var waLink = n.whatsapp && n.whatsapp !== ''
-          ? '<a href="https://wa.me/' + String(n.whatsapp).replace(/[^0-9]/g,'') + '" target="_blank" rel="noopener">WhatsApp</a>' : '';
+          ? '<a href="https://wa.me/' + String(n.whatsapp).replace(/[^0-9]/g,'') + '" target="_blank" rel="noopener">Contactar</a>' : '';
         var igLink = n.instagram && n.instagram !== '' && n.instagram.toLowerCase() !== 'no'
-          ? '<a href="' + escapeHtml(instagramUrl(n.instagram)) + '" target="_blank" rel="noopener">Instagram</a>' : '';
+          ? '<a href="' + escapeHtml(instagramUrl(n.instagram)) + '" target="_blank" rel="noopener">Ver Instagram</a>' : '';
         var webLink = n.website && n.website !== '' && n.website.toLowerCase() !== 'no' && n.website.toLowerCase() !== 'nan'
-          ? '<a href="' + escapeHtml(safeExternalUrl(n.website)) + '" target="_blank" rel="noopener">Web</a>' : '';
+          ? '<a href="' + escapeHtml(safeExternalUrl(n.website)) + '" target="_blank" rel="noopener">Visitar su página</a>' : '';
         html += '<div class="dir-card">';
         html += photoImg;
         html += '<div class="dir-card-body">';

@@ -254,7 +254,7 @@ footer{background:var(--blue);padding:2rem;text-align:center;}
       </div>
       <div class="form-group">
         <label>Descripción Completa *</label>
-        <textarea id="biz-full-desc" placeholder="Cuéntanos tu historia, qué creas, qué materiales utilizas y cómo pueden comprarte o hacerte un pedido."></textarea>
+        <textarea id="biz-full-desc" placeholder="Cuéntanos tu historia, qué creas, qué materiales utilizas y cómo pueden contactarte o conocer tus productos."></textarea>
       </div>
     </div>
 
@@ -291,7 +291,7 @@ footer{background:var(--blue);padding:2rem;text-align:center;}
         </div>
       </div>
       <div class="form-group">
-        <label>Etsy o Tienda Online</label>
+        <label>Enlace a tienda externa (Etsy u otra)</label>
         <input type="url" id="biz-etsy" placeholder="https://etsy.com/shop/tutienda">
       </div>
       <div class="form-group">
@@ -339,12 +339,12 @@ footer{background:var(--blue);padding:2rem;text-align:center;}
     </div>
 
     <div style="background:#f0f4ff;border-radius:10px;padding:1.2rem;margin-bottom:2rem;border:1px solid var(--border);">
-      <p style="font-size:0.85rem;color:var(--mid);line-height:1.6;">🎨 Una vez revisada y aprobada, tendrás una ficha pública dentro de la <strong>Feria Digital de Artesanías Puertorriqueñas</strong> que podrás compartir con tus clientes.</p>
+      <p style="font-size:0.85rem;color:var(--mid);line-height:1.6;">🎨 Una vez revisada y aprobada, tendrás una ficha pública dentro de la <strong>Feria Digital de Artesanías Puertorriqueñas</strong> que podrás compartir con tu comunidad. Planeta Boricua no exige una certificación gubernamental de artesano como condición general para solicitar participación, pero cada participante es responsable de los registros, licencias, permisos y demás requisitos aplicables a su actividad. PB ayuda a descubrir y contactar artesanos; no procesa ventas ni pagos.</p>
     </div>
 
     <div class="terms-check">
       <input type="checkbox" id="terms-agree">
-      <label for="terms-agree">He leído y acepto los términos del directorio de Planeta Boricua. Confirmo que toda la información proporcionada es verídica y que este es un negocio legítimo operado por o para la comunidad boricua.</label>
+      <label for="terms-agree">He leído y acepto los <a href="/terminos-boricua" target="_blank" rel="noopener">Términos de Uso</a>. Confirmo que la información proporcionada es verídica, que tengo derecho a publicarla y que soy responsable de cumplir los requisitos aplicables a mi actividad. Entiendo que la aceptación del perfil no constituye una certificación gubernamental, licencia comercial ni validación legal de mi negocio o productos.</label>
     </div>
 
     <div id="registration-error" style="display:none;background:#fff1f2;color:#9f1239;border:1px solid #fda4af;padding:1rem;border-radius:10px;margin-bottom:1rem;line-height:1.5;font-size:.86rem"></div>

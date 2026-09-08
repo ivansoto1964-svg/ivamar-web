@@ -130,6 +130,20 @@ La arquitectura administrativa podrá conectarse posteriormente a una página p�
 - El contenido se guarda como HTML sanitizado en los campos actuales; no requiere una tabla nueva ni migración.
 - Las publicaciones antiguas siguen funcionando sin cambios y pueden editarse normalmente aunque no tengan imágenes interiores.
 
+## Política de artesanos y transacciones externas
+
+Desde el **8 de septiembre de 2026**, la Feria y los perfiles se presentan de forma consistente como una plataforma de descubrimiento, promoción y conexión:
+
+- Planeta Boricua no vende los productos de los artesanos, no procesa ni custodia pagos y no participa en sus transacciones.
+- Las compras, pedidos, pagos, envíos, entregas, cambios, devoluciones y garantías se coordinan directamente entre comprador y artesano, fuera de PB.
+- PB no exige una certificación gubernamental de artesano como condición general para solicitar participación y no actúa como organismo certificador.
+- Cada participante conserva la responsabilidad de cumplir los registros, licencias, permisos, obligaciones contributivas y demás requisitos aplicables a su actividad.
+- La aceptación de un perfil no equivale a certificación, licencia, validación legal ni garantía de una transacción futura.
+- Los perfiles mantienen sus enlaces externos, identificados como formas de contactar al artesano o visitar su página, redes o tienda externa.
+- Las comisiones de afiliados de otras áreas de PB son relaciones separadas y no incluyen las ventas directas de los artesanos de la Feria.
+
+La Feria incluye una FAQ pública con estas aclaraciones; el formulario de registro enlaza los Términos de Uso, y los perfiles muestran un aviso breve de compra responsable. Esta política no crea carrito, checkout, sistema de pagos ni marketplace.
+
 ## Ideas futuras en evaluación
 
 Estas propuestas todavía no están activas. Deben analizarse, cotizarse y probarse por separado antes de convertirlas en funciones o compromisos comerciales.

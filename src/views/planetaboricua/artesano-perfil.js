@@ -26,15 +26,15 @@ function artesanoPerfil(item, helpers) {
   const canonical = `https://www.masboricuaqueunmofongo.com/artesanos/${slug}`;
   const shortUrl = `https://www.masboricuaqueunmofongo.com/a/${slug}`;
   const social = [];
-  if (item.whatsapp) social.push(`<a class="btn wa" data-pb-track="whatsapp" href="https://wa.me/${String(item.whatsapp).replace(/[^0-9]/g,'')}" target="_blank" rel="ugc nofollow noopener noreferrer">WhatsApp</a>`);
+  if (item.whatsapp) social.push(`<a class="btn wa" data-pb-track="whatsapp" href="https://wa.me/${String(item.whatsapp).replace(/[^0-9]/g,'')}" target="_blank" rel="ugc nofollow noopener noreferrer">Contactar por WhatsApp</a>`);
   const websiteUrl = safeUrl(item.website);
   const instagramUrl = socialUrl(item.instagram, 'instagram');
   const facebookUrl = socialUrl(item.facebook, 'facebook');
   const storeUrl = safeUrl(item.etsy);
-  if (websiteUrl) social.push(`<a class="btn" data-pb-track="website" href="${esc(websiteUrl)}" target="_blank" rel="ugc nofollow noopener noreferrer">Página web</a>`);
-  if (instagramUrl) social.push(`<a class="btn secondary" data-pb-track="instagram" href="${esc(instagramUrl)}" target="_blank" rel="ugc nofollow noopener noreferrer">Instagram</a>`);
-  if (facebookUrl) social.push(`<a class="btn secondary" data-pb-track="facebook" href="${esc(facebookUrl)}" target="_blank" rel="ugc nofollow noopener noreferrer">Facebook</a>`);
-  if (storeUrl && storeUrl !== websiteUrl) social.push(`<a class="btn secondary" data-pb-track="store" href="${esc(storeUrl)}" target="_blank" rel="ugc nofollow noopener noreferrer">Tienda online</a>`);
+  if (websiteUrl) social.push(`<a class="btn" data-pb-track="website" href="${esc(websiteUrl)}" target="_blank" rel="ugc nofollow noopener noreferrer">Visitar su página</a>`);
+  if (instagramUrl) social.push(`<a class="btn secondary" data-pb-track="instagram" href="${esc(instagramUrl)}" target="_blank" rel="ugc nofollow noopener noreferrer">Ver Instagram</a>`);
+  if (facebookUrl) social.push(`<a class="btn secondary" data-pb-track="facebook" href="${esc(facebookUrl)}" target="_blank" rel="ugc nofollow noopener noreferrer">Ver Facebook</a>`);
+  if (storeUrl && storeUrl !== websiteUrl) social.push(`<a class="btn secondary" data-pb-track="store" href="${esc(storeUrl)}" target="_blank" rel="ugc nofollow noopener noreferrer">Visitar su tienda</a>`);
   social.push(`<a class="btn secondary" data-pb-track="event" href="/artesanos/${encodeURIComponent(slug)}/compartir-evento">Publicar evento</a>`);
   social.push(`<a class="btn secondary" data-pb-track="qr" href="/artesanos/${encodeURIComponent(slug)}/qr">🔳 Ver y descargar mi QR</a>`);
   social.push(`<a class="btn secondary" data-pb-track="edit" href="/artesanos/mi-perfil">✏️ Editar mi información</a>`);
@@ -46,6 +46,14 @@ function artesanoPerfil(item, helpers) {
 
 module.exports = function artesanoPerfilConResponsable(item, helpers) {
   let html = artesanoPerfil(item, helpers);
+  html = html.replace(
+    '.note{max-width:1000px;margin:1.2rem auto;padding:1rem;background:#fff;border-left:4px solid #002d62;color:#555;font-size:.82rem;line-height:1.6}',
+    '.note{max-width:1000px;margin:1.2rem auto;padding:1rem;background:#fff;border-left:4px solid #002d62;border-radius:8px;color:#555;font-size:.82rem;line-height:1.6}.note strong{display:block;color:#002d62;font-size:.92rem;margin-bottom:.2rem}'
+  );
+  html = html.replace(
+    '<aside class="note"><strong>Información provista por el participante.</strong> Planeta Boricua presenta a artesanos independientes. Compras, pagos, entregas y acuerdos se coordinan directamente con cada artesano.</aside>',
+    '<aside class="note"><strong>Compra directamente al artesano</strong>Planeta Boricua te ayuda a descubrir y contactar artesanos, pero no procesa pagos ni participa en las transacciones. Antes de realizar una compra o enviar un pago, verifica directamente con el artesano los detalles del producto, precio, forma de pago, envío o entrega. Confiamos en nuestra comunidad; verificar también es parte de comprar responsablemente.</aside>'
+  );
   if (!isIndexablePBArtisan(item)) {
     html = html.replace('<link rel="canonical"', '<meta name="robots" content="noindex,follow"><link rel="canonical"');
   }

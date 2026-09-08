@@ -41,33 +41,41 @@ nav{background:#fff;border-bottom:3px solid #CE1126;padding:0;}
 </nav>
 <section class="page-hero">
   <h1>Términos y Condiciones de Uso</h1>
-  <p>Última actualización: 31 de agosto de 2026</p>
+  <p>Última actualización: 8 de septiembre de 2026</p>
 </section>
 <div class="content">
   <p>Bienvenido a Más Boricua Que Un Mofongo (masboricuaqueunmofongo.com), el portal de Planeta Boricua, proyecto independiente operado por Iván Soto desde Florida, Estados Unidos. Al acceder o utilizar nuestra plataforma, directorio y servicios relacionados, usted acepta cumplir y estar sujeto a los siguientes Términos y Condiciones. Si no está de acuerdo con alguna parte de estos términos, no deberá utilizar nuestro sitio web.</p>
 
   <h2>1. Uso del Sitio y la Feria de Artesanías</h2>
-  <p>Al registrarse en nuestra Feria de Artesanías, usted garantiza que la información proporcionada es verídica, exacta y que tiene los derechos legítimos sobre su oficio o negocio artesanal. Nos reservamos el derecho de remover cualquier listado que consideremos fraudulento, engañoso, ofensivo o que viole derechos de terceros sin previo aviso.</p>
+  <p>Al solicitar participación en nuestra Feria de Artesanías, usted confirma que la información proporcionada es verídica y exacta y que tiene derecho a publicarla. Planeta Boricua puede rechazar, desactivar o retirar contenido fraudulento, engañoso, ofensivo o que vulnere derechos de terceros.</p>
+  <p>Planeta Boricua no exige una certificación gubernamental de artesano como condición general para solicitar participación y no actúa como organismo certificador. Cada participante es responsable de determinar y cumplir los registros, licencias, permisos, obligaciones contributivas y demás requisitos comerciales o regulatorios aplicables a su actividad y a la jurisdicción donde opera. La aceptación o publicación de un perfil no constituye certificación gubernamental, licencia comercial ni validación legal del negocio o de sus productos.</p>
 
-  <h2>2. Propiedad Intelectual</h2>
+  <h2>2. Perfiles y transacciones con artesanos</h2>
+  <p>Planeta Boricua es una plataforma de descubrimiento, promoción e información que ayuda a visitantes y artesanos a conectarse. PB no vende los productos de los artesanos, no cobra al comprador por ellos, no procesa ni custodia pagos y no recibe comisiones sobre las ventas directas realizadas entre compradores y artesanos.</p>
+  <p>Las compras, pagos, pedidos, envíos, entregas, cambios, devoluciones, garantías y demás acuerdos comerciales se realizan directamente entre el comprador y el artesano, fuera de Planeta Boricua. PB no es comprador, vendedor, plataforma de pagos ni parte de esos acuerdos.</p>
+  <p>Planeta Boricua no fija ni controla los precios, el inventario, la disponibilidad, la calidad, la autenticidad, la seguridad, la legalidad, el envío, la entrega, los cambios, las devoluciones o las garantías ofrecidas por terceros. Cada artesano es responsable de la información de su perfil y del cumplimiento de las normas aplicables. Cada comprador debe realizar verificaciones razonables directamente con el artesano antes de completar una transacción externa. La aparición de un perfil en PB no constituye una garantía de Planeta Boricua sobre una transacción futura.</p>
+
+  <h2>3. Propiedad Intelectual</h2>
   <p>Todo el contenido original de este sitio, incluyendo textos, gráficos, logotipos y código, pertenece a Planeta Boricua y a su creador, Iván Soto, y está protegido por las leyes de propiedad intelectual aplicables.</p>
 
-  <h2>3. Descargo de Responsabilidad de Afiliados y Publicidad</h2>
-  <p>Este sitio web muestra anuncios de Google AdSense y contiene enlaces de afiliados (incluyendo el Programa de Asociados de Amazon, Booking.com y Trip.com). Planeta Boricua no controla ni se hace responsable de las transacciones, compras, cancelaciones o disputas que ocurran entre el usuario y las plataformas de terceros vinculadas. Cualquier reclamación sobre un producto o servicio adquirido a través de un enlace de afiliado debe dirigirse al proveedor final.</p>
+  <h2>4. Afiliados y publicidad</h2>
+  <p>Este sitio web puede mostrar anuncios de Google AdSense y contener enlaces de afiliados identificados como tales, incluyendo programas de Amazon y de servicios de viaje. En esas secciones editoriales o comerciales separadas, PB podría recibir una comisión del proveedor externo. Estas relaciones no incluyen las ventas directas de los artesanos presentados en la Feria y no convierten a PB en parte de una transacción entre comprador y artesano.</p>
+  <p>Planeta Boricua no controla las compras, cancelaciones o disputas que ocurran con plataformas externas vinculadas. Las consultas o reclamaciones sobre un producto o servicio adquirido mediante un enlace de afiliado deben dirigirse al proveedor final.</p>
 
-  <h2>4. Comentarios y Participación</h2>
+  <h2>5. Comentarios y Participación</h2>
   <p>Los comentarios en los artículos deben realizarse con respeto. No se permite contenido ofensivo, spam, publicidad no solicitada o mensajes que inciten al odio o a la desinformación. Planeta Boricua se reserva el derecho de moderar, editar o eliminar comentarios que no cumplan con estas normas.</p>
 
-  <h2>5. Limitación de Responsabilidad</h2>
-  <p>Planeta Boricua y su operador no garantizan que el sitio web funcione de manera ininterrumpida o libre de errores. En la medida permitida por la ley, no serán responsables por daños directos, indirectos, incidentales o consecuentes que resulten del uso o la imposibilidad de uso de la plataforma.</p>
+  <h2>6. Alcance y responsabilidades</h2>
+  <p>Planeta Boricua procura mantener información útil y un servicio disponible, pero no puede garantizar que el sitio funcione de manera ininterrumpida ni que toda la información suministrada por terceros permanezca completa o actualizada. Si detectas información incorrecta, un perfil problemático o un posible uso indebido, puedes comunicarlo para revisión.</p>
+  <p>Nada en estos términos pretende excluir derechos del consumidor ni responsabilidades que no puedan limitarse conforme a la ley aplicable. Cualquier situación se evaluará según los hechos y las normas que correspondan.</p>
 
-  <h2>6. Modificaciones</h2>
+  <h2>7. Modificaciones</h2>
   <p>Nos reservamos el derecho de modificar estos Términos y Condiciones en cualquier momento. Las actualizaciones serán publicadas en esta página y entrarán en vigor desde su publicación.</p>
 
-  <h2>7. Ley Aplicable</h2>
+  <h2>8. Ley Aplicable</h2>
   <p>Estos términos se rigen e interpretan de acuerdo con las leyes aplicables del Estado de Florida, Estados Unidos, sin dar efecto a ningún principio de conflictos de leyes.</p>
 
-  <h2>8. Contacto</h2>
+  <h2>9. Contacto</h2>
   <p>Para consultas relacionadas con estos Términos, puedes comunicarte a través de <a href="mailto:masboricuaqueunmofongo@gmail.com" style="color:#CE1126;">masboricuaqueunmofongo@gmail.com</a></p>
   <p style="margin-top:1rem;font-size:0.82rem;color:#888;">Operador: Iván Soto · Florida, USA.</p>
 </div>
@@ -120,7 +128,7 @@ nav{background:#fff;border-bottom:3px solid #CE1126;padding:0;}
 </nav>
 <section class="page-hero">
   <h1>Política de Privacidad</h1>
-  <p>Última actualización: 31 de agosto de 2026</p>
+  <p>Última actualización: 8 de septiembre de 2026</p>
 </section>
 <div class="content">
   <p>En Más Boricua Que Un Mofongo (accesible a través de masboricuaqueunmofongo.com), portal de Planeta Boricua operado de manera independiente por Iván Soto desde Florida, una de nuestras principales prioridades es la privacidad de nuestros visitantes. Este documento detalla los tipos de información que recopilamos y registramos, y cómo la utilizamos.</p>
@@ -143,6 +151,7 @@ nav{background:#fff;border-bottom:3px solid #CE1126;padding:0;}
 
   <h2>5. Recopilación de Datos del Usuario</h2>
   <p>Al registrarse en nuestra Feria de Artesanías o al suscribirse a nuestro Boletín Boricua, usted nos proporciona voluntariamente información como su nombre, dirección de correo electrónico e información sobre su artesanía. Utilizamos esta información exclusivamente para publicar la ficha de su negocio en nuestro directorio y enviarle actualizaciones relevantes de nuestra comunidad.</p>
+  <p>Los perfiles pueden mostrar los canales externos que cada artesano decida proporcionar para que los visitantes puedan contactarlo. Planeta Boricua no solicita ni procesa datos de pago relacionados con compras entre visitantes y artesanos.</p>
   <p>Usted puede cancelar su suscripción en cualquier momento haciendo clic en el enlace "Darse de baja" incluido en todos nuestros correos electrónicos.</p>
 
   <h2>6. Consentimiento</h2>
@@ -204,7 +213,7 @@ nav{background:#fff;border-bottom:3px solid #CE1126;padding:0;}
 </nav>
 <section class="page-hero">
   <h1>Aviso de Afiliados</h1>
-  <p>Divulgación FTC — Última actualización: 31 de agosto de 2026</p>
+  <p>Divulgación FTC — Última actualización: 8 de septiembre de 2026</p>
 </section>
 <div class="content">
   <div class="info-box">
@@ -230,6 +239,7 @@ nav{background:#fff;border-bottom:3px solid #CE1126;padding:0;}
 
   <h2>Transparencia</h2>
   <p>Cuando un contenido incluya enlaces de afiliados, se indicará de forma clara dentro del artículo correspondiente con la etiqueta <em>"enlace de afiliado"</em> o similar.</p>
+  <p>Los enlaces externos incluidos en los perfiles de la Feria Digital sirven para contactar al artesano o visitar sus canales. Planeta Boricua no recibe comisiones sobre las ventas directas entre esos artesanos y sus compradores.</p>
 
   <h2>Sostenibilidad del proyecto</h2>
   <p>Las comisiones generadas a través de enlaces de afiliados ayudan a sostener este proyecto editorial y a mantener este espacio activo e independiente para la comunidad boricua.</p>
