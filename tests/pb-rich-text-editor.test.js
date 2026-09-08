@@ -48,7 +48,9 @@ assert.match(latestHtml, /<h2>Título interior<\/h2>/, 'Latest headings must ren
 assert.match(latestHtml, /<strong>fuerte<\/strong>/, 'Latest bold text must render.');
 assert.doesNotMatch(latestHtml, /&lt;h2&gt;/, 'Latest rich text must not be escaped after server sanitization.');
 assert.match(latestHtml, /<figure><img src="\/media\/pb-blog\/interior\.webp" alt="Artesana pintando una pieza" loading="lazy"><figcaption>/, 'Latest must render inline images, ALT and captions in article order.');
-assert.match(latestHtml, /\.body figure img\{display:block;width:100%;height:auto/, 'Latest inline images must be responsive.');
+assert.match(latestHtml, /\.body figure img\{display:block;width:100%;height:auto/, 'Latest inline images must scale responsively.');
+assert.match(latestHtml, /\.body figure img\{max-width:100%\}/, 'Latest inline images must never overflow their article container.');
+assert.match(latestHtml, /\.article-image\{display:block;max-width:100%;height:clamp\(260px,54vw,440px\);object-fit:cover/, 'Latest cover images must stay inside a predictable responsive frame.');
 
 const blogHtml = renderBlogPost({
   slug:'prueba-blog', title:'Prueba El Balcón', excerpt:'Resumen', image:'',
@@ -56,7 +58,8 @@ const blogHtml = renderBlogPost({
   tags:[], date:'7 de septiembre de 2026', dateISO:'2026-09-07'
 }, [], null, null, []);
 assert.match(blogHtml, /<p>Primer párrafo\.<\/p><figure><img src="\/media\/pb-blog\/blog\.webp" alt="Mesa con artesanías"><figcaption>/, 'El Balcón must preserve inline images between paragraphs.');
-assert.match(blogHtml, /\.post-body figure img\{display:block;width:100%;height:auto/, 'El Balcón inline images must be responsive.');
+assert.match(blogHtml, /\.post-body figure img\{display:block;width:100%;max-width:100%;height:auto/, 'El Balcón inline images must be responsive.');
+assert.match(blogHtml, /\.post-hero\{height:clamp\(260px,54vw,440px\);overflow:hidden/, 'El Balcón cover images must stay inside a predictable responsive frame.');
 
 new vm.Script(asset, { filename:'pb-rich-text-editor.js' });
 console.log('PB rich text editor contract: OK');
