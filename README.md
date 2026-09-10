@@ -160,6 +160,7 @@ Estas propuestas todavía no están activas. Deben analizarse, cotizarse y proba
 - Desarrollar después **¿Te mudaste? ¿Cómo te va? Cuenta tu historia**, con experiencias reales de personas que se mudaron durante el año.
 - Evaluar un concurso independiente con premio de hasta $1,000, sujeto a conseguir primero el dinero de auspiciadores.
 - Posibles auspiciadores: compañías de mudanzas y de envío de automóviles. Considerar exclusividad anual por categoría y mantener el enlace disponible durante todo el año.
+- Prospecto inicial para la categoría de envío de automóviles: **Car Lover Transport**. Contacto, cobertura, propuesta económica y disponibilidad de exclusividad quedan pendientes de investigar y verificar antes de cualquier acercamiento.
 - Definir presupuesto, reglas, selección de historias, derechos de publicación y promoción antes de anunciar premio o fechas.
 
 ### Publicaciones gastronómicas con cupones QR
