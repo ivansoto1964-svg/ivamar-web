@@ -19,6 +19,17 @@ assert.match(store, /Como afiliado de Amazon/);
 assert.match(store, /sin costo adicional para ti/);
 assert.match(store, /Confirma en Amazon el precio, la disponibilidad y la entrega/);
 assert.doesNotMatch(store, /entrega rápida/i);
+assert.match(store, /<h2 id="popular-title">Lo más buscado<\/h2>/);
+
+const popularStart = store.indexOf('<section class="popular"');
+const categoriesStart = store.indexOf('<section id="categorias"');
+assert.ok(popularStart >= 0 && popularStart < categoriesStart, 'Lo más buscado debe aparecer antes del catálogo completo');
+[
+  'amazon-shirts', 'amazon-auto', 'amazon-home', 'amazon-flags'
+].forEach(campaign => {
+  const occurrences = store.split(`/go/${campaign}`).length - 1;
+  assert.ok(occurrences >= 2, `Lo más buscado debe destacar /go/${campaign} sin quitarlo del catálogo`);
+});
 
 campaigns.forEach(campaign => {
   assert.ok(store.includes(`/go/${campaign}`), `La tienda debe incluir /go/${campaign}`);
