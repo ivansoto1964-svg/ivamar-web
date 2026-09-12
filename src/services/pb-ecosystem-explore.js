@@ -1,3 +1,5 @@
+const { eventPath } = require('./pb-event-tools');
+
 function byNewest(a, b) {
   const aDate = new Date(a.publishedAt || a.dateISO || a.updatedISO || a.approvedAt || Number(a.id) || 0);
   const bDate = new Date(b.publishedAt || b.dateISO || b.updatedISO || b.approvedAt || Number(b.id) || 0);
@@ -63,7 +65,7 @@ function buildPBExploreRecommendations({
     title:event.name,
     summary:[eventDate(event), eventLocation(event)].filter(Boolean).join(' · '),
     image:event.image || '/img/agenda-boricua-placeholder.svg',
-    href:'/agenda-boricua'
+    href:eventPath(event)
   });
 
   const artisan = artisans

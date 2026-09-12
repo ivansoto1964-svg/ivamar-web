@@ -108,12 +108,12 @@ function pageLabel(pagePath) {
   if (exact[pagePath]) return exact[pagePath];
   const prefixes = [
     ['/blog/', 'El Balcón · '], ['/lo-mas-reciente/', 'Lo más reciente · '],
-    ['/artesanos/', 'Artesano · '], ['/pueblos/', 'Pueblo · ']
+    ['/agenda-boricua/', 'Evento · '], ['/artesanos/', 'Artesano · '], ['/pueblos/', 'Pueblo · ']
   ];
   const match = prefixes.find(([prefix]) => pagePath.startsWith(prefix));
   if (!match) return pagePath;
   const slug = pagePath.slice(match[0].length).split('/').filter(Boolean).at(-1) || pagePath;
-  const title = slug.replace(/-\d{6}$/, '').replace(/-/g, ' ').replace(/\b\w/g, letter => letter.toUpperCase());
+  const title = slug.replace(/-\d{6,8}$/, '').replace(/-/g, ' ').replace(/\b\w/g, letter => letter.toUpperCase());
   return `${match[1]}${title}`;
 }
 

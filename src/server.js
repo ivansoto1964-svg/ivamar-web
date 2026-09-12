@@ -11,6 +11,8 @@ const pbArtisanMailBatches = require('./services/pb-artisan-mail-batches');
 const pbLatestEditor = require('./services/pb-latest-editor');
 const pbPressRoom = require('./services/pb-press-room');
 const pbEventAdmin = require('./services/pb-event-admin');
+const pbEventTools = require('./services/pb-event-tools');
+const pbEventMetrics = require('./services/pb-event-metrics');
 const { isIndexablePBArtisan, wordCount } = require('./utils/pb-seo');
 const PB_ARTISAN_DESCRIPTION_REPAIRS = require('./data/pb-artisan-description-repairs');
 
@@ -211,6 +213,7 @@ const pbArtisanQr = require("./services/pb-artisan-qr");
 const artesanoMiPerfilPB = require("./views/planetaboricua/artesano-mi-perfil");
 const artesanoAdminPB = require("./views/planetaboricua/artesano-admin");
 const agendaArtesanalPB = require("./views/planetaboricua/agenda-artesanal");
+const eventoBoricuaPB = require("./views/planetaboricua/evento-boricua");
 const enviarEventoPB = require("./views/planetaboricua/enviar-evento");
 const enviarEventoBoricuaPB = require("./views/planetaboricua/enviar-evento-boricua");
 const loMasRecientePB = require("./views/planetaboricua/lo-mas-reciente");
@@ -391,7 +394,7 @@ function writePBEvents(file, events) {
   fs.writeFileSync(path.join(PB_EVENTS_DIR, file), JSON.stringify(events, null, 2));
 }
 function publicPBEvent(event) {
-  return { id:event.id,name:event.name,type:event.type,startDate:event.startDate,endDate:event.endDate,time:event.time,venue:event.venue,address:event.address,city:event.city,region:event.region,country:event.country,description:event.description,eventUrl:event.eventUrl,cost:event.cost,image:event.image,virtual:Boolean(event.virtual),artisanSlug:event.artisanSlug,artisanName:event.artisanName,organizerName:event.organizerName,sourceLabel:event.sourceLabel,approvedAt:event.approvedAt };
+  return { id:event.id,name:event.name,type:event.type,startDate:event.startDate,endDate:event.endDate,time:event.time,venue:event.venue,address:event.address,city:event.city,region:event.region,country:event.country,description:event.description,eventUrl:event.eventUrl,cost:event.cost,image:event.image,virtual:Boolean(event.virtual),artisanSlug:event.artisanSlug,artisanName:event.artisanName,organizerName:event.organizerName,sourceLabel:event.sourceLabel,approvedAt:event.approvedAt,url:pbEventTools.eventPath(event) };
 }
 
 const PB_LATEST_DIR = '/data/pb-latest';
@@ -1773,7 +1776,10 @@ function buildPBControlModel(csrf) {
   const artisansApproved = loadPBApprovedArtisansWithFiles().sort((a,b) => new Date(b.approvedAt || 0)-new Date(a.approvedAt || 0));
   const artisanNeedsImprovement = artisansApproved.filter(item => !isIndexablePBArtisan(item)).length;
   const eventsPending = readPBEvents('pending.json').sort((a,b) => new Date(b.submittedAt || 0)-new Date(a.submittedAt || 0));
-  const eventsApproved = readPBEvents('approved.json').sort((a,b) => String(a.startDate || '').localeCompare(String(b.startDate || '')));
+  const eventsApproved = pbEventMetrics.summary(
+    readPBEvents('approved.json').sort((a,b) => String(a.startDate || '').localeCompare(String(b.startDate || ''))),
+    pbEventTools.eventSlug
+  );
   const subscribers = readJsonFile('/data/pb-subscribers.json',[]).sort((a,b) => new Date(b.subscribedAt || 0)-new Date(a.subscribedAt || 0));
   const blogPosts = loadPBBlogPosts();
   const affiliates = pbAffiliateSummary();
@@ -3505,10 +3511,11 @@ app.get("/sitemap.xml", async (req, res) => {
     artisanUrls = loadApprovedPBListings().filter(isIndexablePBArtisan).map(item => `<url><loc>https://www.masboricuaqueunmofongo.com/artesanos/${pbArtisanSlug(item)}</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>`).join('');
   } catch(e) { console.error('Sitemap artisans error:', e.message); }
   const latestUrls = readPBLatest('approved.json').map(item => `<url><loc>https://www.masboricuaqueunmofongo.com/lo-mas-reciente/${item.slug}</loc><lastmod>${String(item.publishedAt || '').slice(0,10)}</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>`).join('');
+  const eventUrls = readPBEvents('approved.json').map(event => `<url><loc>${pbEventTools.eventPageUrl(event)}</loc><lastmod>${String(event.approvedAt || event.startDate || '').slice(0,10)}</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>`).join('');
   const staticUrls = `<url><loc>https://www.masboricuaqueunmofongo.com/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/blog</loc><changefreq>weekly</changefreq><priority>0.9</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/lo-mas-reciente</loc><changefreq>daily</changefreq><priority>0.9</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/tienda-boricua</loc><changefreq>weekly</changefreq><priority>0.9</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/recursos</loc><changefreq>weekly</changefreq><priority>0.9</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/mudarse-de-pr</loc><changefreq>monthly</changefreq><priority>0.8</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/regresar-a-pr</loc><changefreq>monthly</changefreq><priority>0.8</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/feria-artesanos</loc><changefreq>weekly</changefreq><priority>0.8</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/quienes-somos</loc><changefreq>monthly</changefreq><priority>0.7</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/privacidad-boricua</loc><changefreq>monthly</changefreq><priority>0.5</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/terminos-boricua</loc><changefreq>monthly</changefreq><priority>0.5</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/afiliados-boricua</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>`;
   const agendaUrl = `<url><loc>https://www.masboricuaqueunmofongo.com/agenda-boricua</loc><changefreq>daily</changefreq><priority>0.8</priority></url>`;
   res.set('Content-Type','application/xml');
-  res.send(`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${staticUrls}${agendaUrl}${latestUrls}${postUrls}${artisanUrls}</urlset>`);
+  res.send(`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${staticUrls}${agendaUrl}${eventUrls}${latestUrls}${postUrls}${artisanUrls}</urlset>`);
 });
 
 app.get("/feria-artesanos", (req, res) => {
@@ -3520,10 +3527,57 @@ app.get('/agenda-boricua', (_req, res) => res.send(agendaArtesanalPB(
   readPBEvents('approved.json').map(publicPBEvent),
   pbExploreRecommendations({excludeAreas:['Agenda Boricua']})
 )));
+app.get('/agenda-boricua/:slug/calendario.ics', (req, res) => {
+  const events = readPBEvents('approved.json').map(publicPBEvent);
+  const event = pbEventTools.findEventBySlug(events, req.params.slug);
+  if (!event) return res.status(404).send('Evento no encontrado');
+  try {
+    const filename = `${pbEventTools.eventSlug(event)}.ics`;
+    res.set('Content-Type','text/calendar; charset=utf-8');
+    res.set('Content-Disposition',`attachment; filename="${filename}"`);
+    res.set('Cache-Control','public, max-age=3600');
+    return res.send(pbEventTools.buildEventIcs(event));
+  } catch (error) {
+    console.error('PB event calendar error:',error.message);
+    return res.status(500).send('No se pudo crear el calendario.');
+  }
+});
+app.get('/agenda-boricua/:slug', (req, res) => {
+  const events = readPBEvents('approved.json').map(publicPBEvent);
+  const event = pbEventTools.findEventBySlug(events, req.params.slug);
+  if (!event) return res.status(404).send(eventoBoricuaPB(null));
+  const today = new Date().toISOString().slice(0,10);
+  const relatedEvents = events
+    .filter(item => pbEventTools.eventSlug(item) !== req.params.slug && (item.endDate || item.startDate) >= today)
+    .sort((a,b) => {
+      const aMatch = Number(a.city === event.city) * 2 + Number(a.region === event.region);
+      const bMatch = Number(b.city === event.city) * 2 + Number(b.region === event.region);
+      return bMatch - aMatch || String(a.startDate).localeCompare(String(b.startDate));
+    })
+    .slice(0,3);
+  return res.send(eventoBoricuaPB(event, {
+    relatedEvents,
+    recommendations:pbExploreRecommendations({excludeAreas:['Agenda Boricua']})
+  }));
+});
 app.get('/api/pb-eventos-proximos', (_req, res) => {
   const today = new Date().toISOString().slice(0, 10);
   const events = readPBEvents('approved.json').map(publicPBEvent).filter(event => (event.endDate || event.startDate) >= today).sort((a,b) => a.startDate.localeCompare(b.startDate)).slice(0, 3);
   res.json({ ok:true, events });
+});
+app.post('/api/pb-evento-metrica/:slug', pbArtisanMetricsLimiter, express.json({limit:'2kb'}), (req,res) => {
+  const events = readPBEvents('approved.json').map(publicPBEvent);
+  const event = pbEventTools.findEventBySlug(events, req.params.slug);
+  if (!event) return res.status(404).json({ok:false});
+  try {
+    if (!pbEventMetrics.record(req.params.slug, sanitize(req.body?.action || '').trim().toLowerCase())) {
+      return res.status(400).json({ok:false});
+    }
+    return res.status(204).end();
+  } catch (error) {
+    console.error('PB event metric error:',error.message);
+    return res.status(500).json({ok:false});
+  }
 });
 app.get('/compartir-evento-boricua', (_req, res) => res.send(enviarEventoBoricuaPB()));
 

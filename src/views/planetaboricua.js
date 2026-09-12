@@ -989,7 +989,7 @@ setInterval(() => {
   fetch('/api/pb-eventos-proximos').then(response=>response.json()).then(data=>{
     const events=data.events||[];
     if(!events.length){grid.innerHTML='<div style="grid-column:1/-1;background:var(--light);border-radius:8px;padding:1.5rem;color:var(--mid);">La agenda está comenzando. ¿Conoces una actividad boricua gratuita? Compártela con nosotros.</div>';return;}
-    grid.innerHTML=events.map(event=>{const date=new Date(event.startDate+'T12:00:00');const month=date.toLocaleDateString('es-PR',{month:'short'}).replace('.','');const location=event.virtual?'Virtual':[event.city,event.region].filter(Boolean).join(', ');return '<a class="agenda-mini" href="/agenda-boricua"><div class="agenda-mini-date"><strong>'+date.getDate()+'</strong><span>'+safe(month)+'</span></div><div><div class="agenda-mini-type">'+safe(event.type||'Evento boricua')+'</div><h3>'+safe(event.name)+'</h3><p>📍 '+safe(location)+'</p></div></a>'}).join('');
+    grid.innerHTML=events.map(event=>{const date=new Date(event.startDate+'T12:00:00');const month=date.toLocaleDateString('es-PR',{month:'short'}).replace('.','');const location=event.virtual?'Virtual':[event.city,event.region].filter(Boolean).join(', ');return '<a class="agenda-mini" href="'+safe(event.url||'/agenda-boricua')+'"><div class="agenda-mini-date"><strong>'+date.getDate()+'</strong><span>'+safe(month)+'</span></div><div><div class="agenda-mini-type">'+safe(event.type||'Evento boricua')+'</div><h3>'+safe(event.name)+'</h3><p>📍 '+safe(location)+'</p></div></a>'}).join('');
   }).catch(()=>{grid.innerHTML='<div style="color:var(--mid);font-size:.8rem;">No pudimos cargar la agenda en este momento.</div>'});
 })();
 

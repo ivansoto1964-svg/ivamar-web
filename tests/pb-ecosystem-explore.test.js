@@ -36,7 +36,7 @@ assert.deepStrictEqual(recommendations.map(item => item.area), [
 assert.ok(!recommendations.some(item => item.title === 'No debe repetirse'));
 assert.ok(!recommendations.some(item => item.title === 'Borrador'));
 assert.ok(!recommendations.some(item => item.title === 'Evento pasado'));
-assert.strictEqual(recommendations[2].href, '/agenda-boricua');
+assert.strictEqual(recommendations[2].href, '/agenda-boricua/festival-boricua-20260905');
 assert.strictEqual(recommendations[3].href, '/feria-artesanos');
 assert.ok(recommendations[3].summary.includes('Taller Boricua'));
 

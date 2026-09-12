@@ -6,7 +6,7 @@
 
 **Responsable:** Iván Soto
 
-**Última actualización documental:** 7 de septiembre de 2026
+**Última actualización documental:** 12 de septiembre de 2026
 
 **Repositorio:** `ivansoto1964-svg/ivamar-web`
 
@@ -97,6 +97,9 @@ La cantidad de artesanos es dinámica. Consultar PB Control antes de citar una c
 - Borradores locales con autoguardado y recuperación en los editores.
 - Comentarios propios con moderación.
 - Agenda Boricua.
+- Páginas dinámicas individuales para cada evento de Agenda Boricua, con URL permanente, compartir desde el celular, WhatsApp, Facebook, copia de enlace, calendario universal, Google Calendar y direcciones.
+- Las páginas de eventos reutilizan los registros existentes, muestran contenido relacionado de PB, incluyen AdSense y ofrecen el botón **Publica un evento gratis**.
+- Los clics de compartir, calendario, direcciones y fuente oficial se resumen por evento en PB Control sin recopilar datos personales.
 - Sitemap dinámico; Search Console descubrió 227 páginas el 25 de agosto de 2026.
 - Footer y páginas legales presentados bajo Planeta Boricua.
 - Google Analytics 4 recibiendo tráfico.

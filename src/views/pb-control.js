@@ -1,3 +1,5 @@
+const { eventPath } = require('../services/pb-event-tools');
+
 function esc(value) {
   return String(value ?? '').replace(/[&<>"']/g, char => ({
     '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
@@ -46,7 +48,15 @@ function listingRows(items, pending) {
 
 function eventRows(items, pending) {
   if (!items.length) return empty(pending ? 'No hay eventos pendientes.' : 'No hay eventos publicados.');
-  return items.map(item => `<article class="item"><div><span class="eyebrow">${esc(item.startDate || '')} · ${esc(item.city || item.region || item.country || '')}</span><h3>${esc(item.name)}</h3><p>${esc(item.description || '')}</p></div><div class="actions">${pending ? actionButton('Aprobar','event-approve',item.id,'good') + actionButton('Rechazar','event-reject',item.id,'danger') : actionButton('Eliminar','event-delete',item.id,'danger')}</div></article>`).join('');
+  return items.map(item => {
+    const metrics = item.metrics || {};
+    const action = metrics.actions || {};
+    const performance = pending ? '' : `<br><strong>Rendimiento:</strong> ${esc(metrics.views || 0)} vistas · ${esc((action.share || 0)+(action.whatsapp || 0)+(action.facebook || 0)+(action.copy || 0))} compartidos · ${esc((action.calendar || 0)+(action['google-calendar'] || 0))} calendarios · ${esc(action.directions || 0)} direcciones · ${esc(action.official || 0)} fuente oficial`;
+    const controls = pending
+      ? actionButton('Aprobar','event-approve',item.id,'good') + actionButton('Rechazar','event-reject',item.id,'danger')
+      : `<a class="action" href="${esc(eventPath(item))}" target="_blank">Ver</a>` + actionButton('Eliminar','event-delete',item.id,'danger');
+    return `<article class="item"><div><span class="eyebrow">${esc(item.startDate || '')} · ${esc(item.city || item.region || item.country || '')}</span><h3>${esc(item.name)}</h3><p>${esc(item.description || '')}${performance}</p></div><div class="actions">${controls}</div></article>`;
+  }).join('');
 }
 
 function subscriberRows(items) {

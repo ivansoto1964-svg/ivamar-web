@@ -130,6 +130,19 @@ La arquitectura administrativa podrá conectarse posteriormente a una página p�
 - El contenido se guarda como HTML sanitizado en los campos actuales; no requiere una tabla nueva ni migración.
 - Las publicaciones antiguas siguen funcionando sin cambios y pueden editarse normalmente aunque no tengan imágenes interiores.
 
+## Agenda Boricua — páginas y herramientas de eventos
+
+Cada evento aprobado dispone de una página pública dinámica con enlace permanente. No se crean archivos o copias de imágenes por evento: una sola plantilla reutiliza los datos existentes.
+
+- Las tarjetas de Agenda, la portada y los perfiles de artesanos enlazan al evento correspondiente.
+- Cada página permite compartir mediante el menú del celular, WhatsApp, Facebook o un enlace copiado.
+- Los visitantes pueden descargar un calendario universal `.ics`, abrir Google Calendar y consultar la dirección en Google Maps.
+- Cuando el horario solamente está disponible como texto, el calendario conserva el evento como actividad de día completo e incluye el horario anunciado en la descripción para no interpretar incorrectamente horas o zonas horarias.
+- La página presenta la fuente oficial, actividades relacionadas, enlaces para continuar explorando PB y una invitación visible para publicar gratuitamente otro evento.
+- Los eventos aparecen en el sitemap con sus propias URLs y datos estructurados `Event`.
+- PB Control mide por evento vistas y clics en compartir, calendarios, direcciones y fuente oficial sin guardar nombres, emails, IP ni identificadores persistentes.
+- Los eventos existentes funcionan con la nueva plantilla sin migración ni republicación.
+
 ## Política de artesanos y transacciones externas
 
 Desde el **8 de septiembre de 2026**, la Feria y los perfiles se presentan de forma consistente como una plataforma de descubrimiento, promoción y conexión:
