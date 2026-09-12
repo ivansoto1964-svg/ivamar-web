@@ -10,6 +10,7 @@ const { buildPBExploreRecommendations } = require('./services/pb-ecosystem-explo
 const pbArtisanMailBatches = require('./services/pb-artisan-mail-batches');
 const pbLatestEditor = require('./services/pb-latest-editor');
 const pbPressRoom = require('./services/pb-press-room');
+const pbEventAdmin = require('./services/pb-event-admin');
 const { isIndexablePBArtisan, wordCount } = require('./utils/pb-seo');
 const PB_ARTISAN_DESCRIPTION_REPAIRS = require('./data/pb-artisan-description-repairs');
 
@@ -2025,6 +2026,25 @@ app.post('/pb-control/action', requirePBAdmin, requirePBCsrf, express.json({limi
       const match=loadPBApprovedArtisansWithFiles().find(item=>item.id===id);if(!match)return missing();const file=path.join('/data/pb-listings',match._file);const approved=readJsonFile(file,[]).filter(item=>item.id!==id);writeJsonFile(file,approved);return ok('Artesano retirado de la Feria.');
     }
     if (action.startsWith('event-')) {
+      if (action === 'event-create') {
+        const approved = readPBEvents('approved.json');
+        const pending = readPBEvents('pending.json');
+        let event;
+        try {
+          const fields = ['name','type','startDate','endDate','time','venue','address','city','region','country','description','eventUrl','image','organizerName'];
+          const payload = {};
+          fields.forEach(key => { payload[key] = sanitize(req.body[key] || ''); });
+          event = pbEventAdmin.buildAdminEvent(payload, {
+            existing:[...approved,...pending],
+            idFactory:() => `${Date.now()}-${crypto.randomBytes(3).toString('hex')}`
+          });
+        } catch (error) {
+          return res.status(400).json({ok:false,error:error.message || 'No se pudo validar el evento.'});
+        }
+        approved.push(event);
+        writeJsonFile(path.join(PB_EVENTS_DIR,'approved.json'),approved);
+        return res.json({ok:true,message:'Evento publicado directamente en la Agenda. No se enviaron correos.',id:event.id});
+      }
       if (action==='event-approve') {const pending=readPBEvents('pending.json');const index=pending.findIndex(item=>item.id===id);if(index<0)return missing();const item=pending.splice(index,1)[0];delete item.approveToken;delete item.rejectToken;item.status='approved';item.approvedAt=new Date().toISOString();const approved=readPBEvents('approved.json');approved.push(item);writeJsonFile(path.join(PB_EVENTS_DIR,'pending.json'),pending);writeJsonFile(path.join(PB_EVENTS_DIR,'approved.json'),approved);return ok('Evento publicado en la Agenda.');}
       const file=action==='event-reject'?'pending.json':'approved.json';const items=readPBEvents(file);const index=items.findIndex(item=>item.id===id);if(index<0)return missing();items.splice(index,1);writeJsonFile(path.join(PB_EVENTS_DIR,file),items);return ok(action==='event-reject'?'Evento rechazado.':'Evento eliminado.');
     }
