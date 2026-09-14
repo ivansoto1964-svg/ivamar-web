@@ -105,9 +105,9 @@ La recopilación inicial se declaró terminada el **7 de septiembre de 2026**. P
 - Los registros de organizaciones y eventos reciben identificadores permanentes; las importaciones anteriores con identificadores vacíos se reparan de forma automática en la próxima escritura segura.
 - Esta función no envía correos, no crea campañas y no construye el directorio público de organizaciones.
 
-### Fase pública futura
+### Sala de Prensa pública
 
-La arquitectura administrativa podrá conectarse posteriormente a una página pública con Media Kit, información y datos rápidos de PB, comunicados autorizados, logos, fotografías, Feria Digital, contacto de prensa y archivo de cobertura. Esa página pública **no debe construirse ni publicar datos internos sin una instrucción nueva y autorización expresa**.
+La primera fase pública quedó autorizada e implementada el **14 de septiembre de 2026** en `/sala-de-prensa`. Publica únicamente material aprobado: ocho fotografías oficiales de la Feria Digital con identificación, ubicación, pie de foto, crédito y descarga individual. No expone contactos, seguimientos, borradores ni otros datos internos del panel administrativo.
 
 ## Operación inmediata de emails · septiembre de 2026
 
