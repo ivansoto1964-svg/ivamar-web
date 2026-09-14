@@ -14,6 +14,7 @@ const pbEventAdmin = require('./services/pb-event-admin');
 const pbEventTools = require('./services/pb-event-tools');
 const pbEventMetrics = require('./services/pb-event-metrics');
 const { isIndexablePBArtisan, wordCount } = require('./utils/pb-seo');
+const { CATEGORIES:PB_BLOG_CATEGORIES, categorySlug:pbBlogCategorySlug } = require('./utils/pb-editorial');
 const PB_ARTISAN_DESCRIPTION_REPAIRS = require('./data/pb-artisan-description-repairs');
 
 
@@ -1788,6 +1789,21 @@ function buildPBControlModel(csrf) {
   const artisanMailHistory = pbArtisanMailHistory();
   const artisanMetrics = pbArtisanMetricsSummary(artisansApproved);
   const siteAnalytics = pbSiteAnalytics.summary();
+  const publishedBlogPosts = blogPosts.filter(post => (post.status || 'published') === 'published');
+  const last30Pages = siteAnalytics.last30?.pages || {};
+  const measuredPages = siteAnalytics.pageHistory || {};
+  siteAnalytics.blogHistory = publishedBlogPosts.map(post => {
+    const pagePath = `/blog/${post.slug}`;
+    const measured = measuredPages[pagePath] || {};
+    return {
+      title:post.title,
+      path:pagePath,
+      views30:Number(last30Pages[pagePath]) || 0,
+      viewsTotal:Number(measured.views) || 0,
+      firstView:measured.firstView || '',
+      lastView:measured.lastView || ''
+    };
+  }).sort((a,b) => b.viewsTotal - a.viewsTotal || b.views30 - a.views30 || a.title.localeCompare(b.title,'es'));
   const pressRoom = pbPressRoom.read();
   pressRoom.options = {
     mediaTypes:pbPressRoom.MEDIA_TYPES, reaches:pbPressRoom.REACHES, tags:pbPressRoom.TAGS,
@@ -3485,6 +3501,18 @@ app.get('/planeta-boricua-blog/:path', (req, res) => res.redirect(301, '/blog'))
 app.get('/inicio', (req, res) => res.redirect(301, '/blog'));
 app.get('/feeds/posts/default', (_req,res) => res.redirect(301,'https://www.masboricuaqueunmofongo.com/blog/feed.xml'));
 app.get('/search', (_req,res) => res.redirect(301,'https://www.masboricuaqueunmofongo.com/blog'));
+app.get('/search/label/:label', (req,res) => {
+  const requested = pbBlogCategorySlug(req.params.label || '');
+  const category = PB_BLOG_CATEGORIES.find(item => pbBlogCategorySlug(item) === requested);
+  const destination = category ? `/blog/categoria/${pbBlogCategorySlug(category)}` : '/blog';
+  return res.redirect(301, `https://www.masboricuaqueunmofongo.com${destination}`);
+});
+app.get('/:year/:month', (req,res,next) => {
+  if (/^\d{4}$/.test(req.params.year) && /^\d{2}$/.test(req.params.month)) {
+    return res.redirect(301,'https://www.masboricuaqueunmofongo.com/blog');
+  }
+  return next();
+});
 app.get('/:year/:month/:slug', (req, res, next) => {
   const { year, month, slug } = req.params;
   if (/^\d{4}$/.test(year) && /^\d{2}$/.test(month)) {

@@ -6,7 +6,7 @@
 
 **Responsable:** Iván Soto
 
-**Última actualización documental:** 12 de septiembre de 2026
+**Última actualización documental:** 14 de septiembre de 2026
 
 **Repositorio:** `ivansoto1964-svg/ivamar-web`
 
@@ -91,6 +91,10 @@ La cantidad de artesanos es dinámica. Consultar PB Control antes de citar una c
 
 - Blog oficial alojado dentro de PB.
 - Archivo de 30 artículos propios observado en PB Control.
+- El índice de El Balcón mantiene las tarjetas principales y expone los demás títulos en un archivo compacto, para que todas las historias tengan un enlace directo desde la primera página.
+- Las páginas paginadas y categorías tienen canonical propio; las rutas mensuales y de etiquetas heredadas de Blogger redirigen hacia El Balcón en lugar de responder 404.
+- PB Control presenta el historial completo de cada artículo publicado: total medido, últimos 30 días, primera actividad y última actividad. También incluye artículos con cero visitas para que ninguno quede invisible en el informe.
+- La medición histórica comienza con el contador propio de PB. No se atribuyen a los artículos visitas anteriores que Blogger, GA4 o Search Console no hayan aportado.
 - Sección **Lo más reciente** para noticias y actualidad.
 - Editor visual compartido por **El Balcón** y **Lo más reciente**, con imágenes múltiples dentro del cuerpo, ALT obligatorio, pie/crédito opcional y controles para reordenar o eliminar antes de guardar.
 - Las imágenes interiores reutilizan la carga protegida existente, se muestran responsive y conservan la imagen principal como un campo independiente; no hubo migración ni cambios a publicaciones anteriores.

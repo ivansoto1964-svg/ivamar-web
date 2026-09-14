@@ -130,6 +130,18 @@ La arquitectura administrativa podrá conectarse posteriormente a una página p�
 - El contenido se guarda como HTML sanitizado en los campos actuales; no requiere una tabla nueva ni migración.
 - Las publicaciones antiguas siguen funcionando sin cambios y pueden editarse normalmente aunque no tengan imágenes interiores.
 
+## Descubrimiento e historial de El Balcón
+
+El Balcón conserva las publicaciones migradas desde Blogger y facilita nuevamente el acceso a las historias antiguas sin cambiar las URLs actuales.
+
+- La primera página mantiene sus tarjetas y añade un archivo compacto con todos los demás títulos publicados.
+- Las páginas 2 en adelante y las categorías usan una URL canónica propia; ya no apuntan todas a la primera página.
+- Las antiguas rutas mensuales de Blogger y sus páginas de etiquetas redirigen permanentemente al archivo o categoría correspondiente en PB.
+- Las 29 publicaciones originales conservan una ruta antigua única y una URL actual única.
+- PB Control muestra un historial completo de todos los artículos publicados, incluso los que todavía tengan cero visitas medidas.
+- Para cada artículo se presentan visitas de los últimos 30 días, acumulado desde que comenzó la medición propia y fechas de primera y última actividad.
+- Las visitas anteriores a la activación del contador propio no se fabrican ni pueden deducirse del contenido migrado. Para investigar tráfico anterior debe consultarse Blogger, GA4 o Search Console mientras esos datos sigan disponibles.
+
 ## Agenda Boricua — páginas y herramientas de eventos
 
 Cada evento aprobado dispone de una página pública dinámica con enlace permanente. No se crean archivos o copias de imágenes por evento: una sola plantilla reutiliza los datos existentes.

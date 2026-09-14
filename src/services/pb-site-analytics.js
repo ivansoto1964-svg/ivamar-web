@@ -123,6 +123,21 @@ function rankedPages(pages, filter = () => true, limit = 10) {
   })).sort((a, b) => b.views - a.views || a.label.localeCompare(b.label, 'es')).slice(0, limit);
 }
 
+function pageHistory(data) {
+  const history = {};
+  Object.keys(data.days || {}).sort().forEach(dateKey => {
+    Object.entries(data.days[dateKey]?.pages || {}).forEach(([pagePath, count]) => {
+      const normalizedPath = normalizePagePath(pagePath);
+      const item = history[normalizedPath] || { views:0, firstView:dateKey, lastView:dateKey };
+      item.views += Number(count) || 0;
+      item.firstView = item.firstView < dateKey ? item.firstView : dateKey;
+      item.lastView = item.lastView > dateKey ? item.lastView : dateKey;
+      history[normalizedPath] = item;
+    });
+  });
+  return history;
+}
+
 function summary({ file = DEFAULT_FILE, date = new Date() } = {}) {
   const data = readData(file);
   const todayKey = puertoRicoDateKey(date);
@@ -131,6 +146,7 @@ function summary({ file = DEFAULT_FILE, date = new Date() } = {}) {
   const previous7 = period(data, shiftDay(todayKey, -7), 7);
   const last30 = period(data, todayKey, 30);
   const previous30 = period(data, shiftDay(todayKey, -30), 30);
+  const allTime = period(data, todayKey, RETENTION_DAYS);
   const daily = Array.from({ length:14 }, (_, index) => shiftDay(todayKey, index - 13)).map(key => ({
     date:key,
     visitors:Number(data.days[key]?.visitors) || 0,
@@ -142,6 +158,8 @@ function summary({ file = DEFAULT_FILE, date = new Date() } = {}) {
     today,
     last7:{...last7, change:changePercent(last7.visitors, previous7.visitors)},
     last30:{...last30, change:changePercent(last30.visitors, previous30.visitors)},
+    allTime,
+    pageHistory:pageHistory(data),
     topPages:rankedPages(last30.pages, () => true, 12),
     topArticles:rankedPages(last30.pages, isArticle, 10),
     daily
@@ -154,6 +172,7 @@ module.exports = {
   pageLabel,
   puertoRicoDateKey,
   recordPageView,
+  pageHistory,
   shouldTrackRequest,
   summary
 };

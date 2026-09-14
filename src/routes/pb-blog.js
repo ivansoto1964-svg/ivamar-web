@@ -20,12 +20,14 @@ function visibleCategories(posts) { return CATEGORIES.filter(c => posts.some(p =
 
 router.get("/", (req, res) => {
   const posts = loadPosts();
-  const page = parseInt(req.query.page) || 1;
+  const page = Math.max(1, parseInt(req.query.page) || 1);
   const cat = req.query.cat || null;
   const filtered = cat ? posts.filter(p => categorySlug(p.category) === cat) : posts;
   const totalPages = Math.ceil(filtered.length / POSTS_PER_PAGE);
   const paginated = filtered.slice((page-1)*POSTS_PER_PAGE, page*POSTS_PER_PAGE);
-  res.send(pbBlogIndex(paginated, page, totalPages, cat, null, visibleCategories(posts), filtered.length));
+  const visibleSlugs = new Set(paginated.map(post => post.slug));
+  const archivePosts = page === 1 ? filtered.filter(post => !visibleSlugs.has(post.slug)) : [];
+  res.send(pbBlogIndex(paginated, page, totalPages, cat, null, visibleCategories(posts), filtered.length, archivePosts));
 });
 
 router.get("/buscar", (req, res) => {
@@ -58,10 +60,12 @@ router.get("/categoria/:cat", (req, res) => {
   const posts = loadPosts();
   const cat = req.params.cat;
   const filtered = posts.filter(p => categorySlug(p.category) === cat || (cat === "cultura" && p.category === "Cultura e identidad"));
-  const page = parseInt(req.query.page) || 1;
+  const page = Math.max(1, parseInt(req.query.page) || 1);
   const totalPages = Math.ceil(filtered.length / POSTS_PER_PAGE);
   const paginated = filtered.slice((page-1)*POSTS_PER_PAGE, page*POSTS_PER_PAGE);
-  res.send(pbBlogIndex(paginated, page, totalPages, cat, null, visibleCategories(posts), filtered.length));
+  const visibleSlugs = new Set(paginated.map(post => post.slug));
+  const archivePosts = page === 1 ? filtered.filter(post => !visibleSlugs.has(post.slug)) : [];
+  res.send(pbBlogIndex(paginated, page, totalPages, cat, null, visibleCategories(posts), filtered.length, archivePosts));
 });
 
 router.get("/:slug", (req, res) => {
