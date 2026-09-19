@@ -1,0 +1,45 @@
+/* Shared image rules for every Planeta Boricua editorial publication. */
+.pb-editorial-card-media {
+  display: block;
+  position: relative;
+  overflow: hidden;
+  background: #e9edf2;
+}
+
+.pb-editorial-card-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform .3s ease;
+}
+
+.pb-editorial-cover {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  min-height: 260px;
+  overflow: hidden;
+  background: linear-gradient(135deg, rgba(0,45,98,.055), rgba(206,17,38,.035)), #eef1f5;
+}
+
+.pb-editorial-cover-image {
+  display: block;
+  width: auto;
+  max-width: 100%;
+  height: auto;
+  max-height: min(74vh, 720px);
+  object-fit: contain;
+  object-position: center;
+}
+
+@media (max-width: 620px) {
+  .pb-editorial-cover { min-height: 220px; }
+  .pb-editorial-cover-image { max-height: min(68vh, 640px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pb-editorial-card-image { transition: none; }
+}
