@@ -14,6 +14,8 @@ assert.equal((html.match(/<footer/g) || []).length, 0);
 assert.ok(html.indexOf('Más de 230 artesanos de Puerto Rico y Estados Unidos se unen en una Feria Digital permanente') < html.indexOf('Fotografías oficiales'));
 assert.match(html, /Al 14 de septiembre de 2026, la Feria reúne a 237 artesanos de Puerto Rico y de 11 estados de Estados Unidos/);
 assert.match(html, /“Un artesano puede estar en Etsy entre miles de opciones de todas partes del mundo\./);
+assert.match(html, /Para visitar la Feria Digital de Artesanos, entra a .*masboricuaqueunmofongo\.com.* y selecciona “Feria de Artesanos”\./);
+assert.doesNotMatch(html, /href="https:\/\/www\.masboricuaqueunmofongo\.com\/feria-artesanos"/);
 assert.match(html, /<h2 id="material-audiovisual-title">Material audiovisual<\/h2>/);
 assert.match(html, /Descargar B-roll/);
 assert.match(html, /MP4 · Full HD 1920 × 1080 · 35\.9 segundos · sin audio · 18 MB/);
