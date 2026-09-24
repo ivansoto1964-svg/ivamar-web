@@ -12,7 +12,6 @@ module.exports = `<!DOCTYPE html>
 <meta property="og:image" content="https://www.masboricuaqueunmofongo.com/img/og-planetaboricua.jpg">
 <link rel="canonical" href="https://www.masboricuaqueunmofongo.com/mudarse-de-pr">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2526350815852271" crossorigin="anonymous"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
@@ -91,7 +90,6 @@ nav{background:var(--white);border-bottom:3px solid var(--blue);padding:0;positi
 .ayuda-cta-title{font-family:'Playfair Display',serif;font-size:1rem;font-weight:800;margin-bottom:0.4rem;}
 .ayuda-cta-sub{font-size:0.75rem;color:rgba(255,255,255,0.75);margin-bottom:1rem;line-height:1.5;}
 .ayuda-cta-btn{display:block;background:#fff;color:var(--red);padding:0.65rem;border-radius:4px;font-size:0.82rem;font-weight:700;text-decoration:none;}
-.ad-strip{max-width:1200px;margin:0 auto;padding:1rem 2rem;text-align:center;}
 .pb-footer{background:var(--white);border-top:3px solid var(--blue);}
 .pb-footer-main{max-width:1200px;margin:0 auto;padding:2rem;display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:2rem;}
 .pb-footer-col h4{font-size:0.65rem;font-weight:800;color:var(--dark);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:0.8rem;padding-bottom:0.4rem;border-bottom:2px solid var(--blue);}
@@ -146,11 +144,6 @@ nav{background:var(--white);border-bottom:3px solid var(--blue);padding:0;positi
     <button class="cat-tab" onclick="showSection('bancos')">🏦 Crédito</button>
     <button class="cat-tab" onclick="showSection('gobierno')">🏛️ Gobierno</button>
   </div>
-</div>
-
-<div class="ad-strip">
-  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2526350815852271" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
-  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 </div>
 
 <div class="content">
@@ -1213,16 +1206,7 @@ nav{background:var(--white);border-bottom:3px solid var(--blue);padding:0;positi
       <a href="/#directorio" class="sidebar-link">Directorio Boricua →</a>
       <a href="/#noticias" class="sidebar-link">Noticias de PR →</a>
     </div>
-    <div class="sidebar-card">
-      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2526350815852271" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
-      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
   </div>
-</div>
-
-<div class="ad-strip">
-  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2526350815852271" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
-  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 </div>
 
 <footer class="pb-footer">
@@ -1230,11 +1214,6 @@ nav{background:var(--white);border-bottom:3px solid var(--blue);padding:0;positi
     <div>
       <div style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:800;color:#111;margin-bottom:0.3rem;">🇵🇷 Planeta Boricua</div>
       <div style="font-size:0.72rem;color:#666;margin-bottom:1rem;">Más Boricua Que Un Mofongo</div>
-      <div style="display:flex;gap:0.8rem;">
-        <a href="https://www.tiktok.com/@planetaboricua4" target="_blank" style="font-size:0.8rem;color:var(--blue);text-decoration:none;">📱 TikTok</a>
-        <a href="https://www.instagram.com/miplanetaboricua" target="_blank" style="font-size:0.8rem;color:var(--blue);text-decoration:none;">📸 IG</a>
-        <a href="https://www.facebook.com/elplanetaboricua" target="_blank" style="font-size:0.8rem;color:var(--blue);text-decoration:none;">👍 FB</a>
-      </div>
     </div>
     <div class="pb-footer-col">
       <h4>Portal</h4>

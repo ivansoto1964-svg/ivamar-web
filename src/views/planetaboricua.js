@@ -32,7 +32,6 @@ module.exports = `<!DOCTYPE html>
 <meta name="twitter:description" content="Cultura, identidad, Feria de Artesanías y recursos para la comunidad puertorriqueña dentro y fuera de la isla.">
 <meta name="twitter:image" content="https://www.masboricuaqueunmofongo.com/img/og-planetaboricua.jpg">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2526350815852271" crossorigin="anonymous"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
@@ -227,8 +226,6 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
 .pb-footer-owner{font-size:0.68rem;color:#999;}
 .pb-footer-owner a{color:var(--red);text-decoration:none;}
 
-/* ADSENSE */
-.ad-strip{max-width:1200px;margin:0 auto;padding:1rem 2rem;text-align:center;}
 
 @media(max-width:768px){
 .recursos-inner{grid-template-columns:1fr!important;}
@@ -248,15 +245,6 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
   .pb-footer-main{grid-template-columns:1fr 1fr;padding:2rem 1rem;}
   .pb-footer-bottom{padding:1rem;}
 }
-.tienda-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-bottom:1.5rem;}
-.tienda-card{background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden;text-decoration:none;display:block;box-shadow:0 2px 8px rgba(0,0,0,.05);transition:transform .2s,box-shadow .2s;}
-.tienda-card:hover{transform:translateY(-4px);box-shadow:0 10px 24px rgba(0,0,0,.12);}
-.tienda-card img{width:100%;height:150px;display:block;object-fit:cover;}
-.tienda-card-body{padding:.9rem 1rem;}
-.tienda-card-title{font-size:.86rem;font-weight:800;color:var(--dark);}
-.tienda-card-link{font-size:.7rem;color:var(--red);font-weight:700;margin-top:.3rem;}
-@media(max-width:900px){.tienda-grid{grid-template-columns:repeat(2,1fr);}}
-@media(max-width:520px){.tienda-grid{grid-template-columns:1fr;}.tienda-card img{height:190px;}}
 
 /* NOTICIAS EN VIVO */
 .noticias-vivo{background:var(--light);padding:2rem 0;border-top:1px solid var(--border);}
@@ -300,7 +288,6 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
       <a href="/agenda-boricua">Agenda</a>
       <a href="#recursos">Recursos</a>
       <a href="/feria-artesanos">Artesanos</a>
-      <a href="/tienda-boricua">Tienda</a>
       <a href="#viajes">Viajes</a>
       <a href="#newsletter" class="nav-cta">Boletín →</a>
     </div>
@@ -584,66 +571,6 @@ async function loadDirectorio() {
   </div>
 </section>
 
-<!-- TIENDA BORICUA -->
-<section id="tienda" style="background:#fff;padding:2rem 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border);">
-  <div style="max-width:1200px;margin:0 auto;padding:0 2rem;">
-    <div class="sec-divider-inner">
-      <div style="display:flex;align-items:center;gap:0.6rem;">
-        <span style="font-size:1.3rem;">🛍️</span>
-        <span class="sec-divider-label">Tienda Boricua</span>
-      </div>
-      <div style="flex:1;height:2px;background:var(--red);margin:0 1rem;"></div>
-      <a href="/tienda-boricua" class="sec-divider-link">Explorar la tienda →</a>
-    </div>
-    <p style="font-size:0.88rem;color:var(--mid);line-height:1.7;margin:1rem 0 1.5rem;">
-      Productos con orgullo boricua, seleccionados por Planeta Boricua. Consulta en Amazon el precio, la disponibilidad y la entrega para tu dirección.
-    </p>
-    <div class="tienda-grid">
-      <a href="/go/amazon-shirts" target="_blank" rel="noopener sponsored" class="tienda-card">
-        <img src="/img/shop/camisetas-pr.webp" alt="Camisetas de Puerto Rico" loading="lazy" decoding="async">
-        <div class="tienda-card-body"><div class="tienda-card-title">👕 Camisetas de PR</div><div class="tienda-card-link">Ver selección →</div></div>
-      </a>
-      <a href="/go/amazon-flags" target="_blank" rel="noopener sponsored" class="tienda-card">
-        <img src="/img/shop/gorras-pr.webp" alt="Gorras de Puerto Rico" loading="lazy" decoding="async">
-        <div class="tienda-card-body"><div class="tienda-card-title">🧢 Gorras de PR</div><div class="tienda-card-link">Ver selección →</div></div>
-      </a>
-      <a href="/go/amazon-kitchen" target="_blank" rel="noopener sponsored" class="tienda-card">
-        <img src="/img/shop/tazas-termos.webp" alt="Tazas y termos boricuas" loading="lazy" decoding="async">
-        <div class="tienda-card-body"><div class="tienda-card-title">☕ Tazas y Termos</div><div class="tienda-card-link">Ver selección →</div></div>
-      </a>
-      <a href="/go/amazon-music" target="_blank" rel="noopener sponsored" class="tienda-card">
-        <img src="/img/shop/cocina-criolla.webp" alt="Productos para cocina criolla" loading="lazy" decoding="async">
-        <div class="tienda-card-body"><div class="tienda-card-title">🌿 Cocina Criolla</div><div class="tienda-card-link">Ver selección →</div></div>
-      </a>
-      <a href="/go/amazon-books" target="_blank" rel="noopener sponsored" class="tienda-card">
-        <img src="/img/shop/dulces-isla.webp" alt="Dulces de Puerto Rico" loading="lazy" decoding="async">
-        <div class="tienda-card-body"><div class="tienda-card-title">🍬 Dulces de la Isla</div><div class="tienda-card-link">Ver selección →</div></div>
-      </a>
-      <a href="/go/amazon-home" target="_blank" rel="noopener sponsored" class="tienda-card">
-        <img src="/img/shop/cuatro-patas.webp" alt="Productos boricuas para mascotas" loading="lazy" decoding="async">
-        <div class="tienda-card-body"><div class="tienda-card-title">🐾 Boricuas de 4 Patas</div><div class="tienda-card-link">Ver selección →</div></div>
-      </a>
-      <a href="/go/amazon-auto" target="_blank" rel="noopener sponsored" class="tienda-card">
-        <img src="/img/shop/joyeria-boricua.webp" alt="Joyería boricua" loading="lazy" decoding="async">
-        <div class="tienda-card-body"><div class="tienda-card-title">💍 Joyería Boricua</div><div class="tienda-card-link">Ver selección →</div></div>
-      </a>
-      <a href="/go/amazon-gifts" target="_blank" rel="noopener sponsored" class="tienda-card">
-        <img src="/img/shop/para-tu-auto.webp" alt="Accesorios boricuas para autos" loading="lazy" decoding="async">
-        <div class="tienda-card-body"><div class="tienda-card-title">🚗 Para Tu Auto</div><div class="tienda-card-link">Ver selección →</div></div>
-      </a>
-      <a href="/go/amazon-merch" target="_blank" rel="noopener sponsored" class="tienda-card">
-        <img src="/img/shop/merch-oficial.webp" alt="Mercancía oficial de Planeta Boricua" loading="lazy" decoding="async">
-        <div class="tienda-card-body" style="background:linear-gradient(135deg,#002D62,#CE1126);"><div class="tienda-card-title" style="color:#fff;">🇵🇷 Merch Oficial</div><div class="tienda-card-link" style="color:#fff;">Más Boricua que un Mofongo →</div></div>
-      </a>
-    </div>
-    <div style="text-align:center;">
-      <a href="/tienda-boricua" style="display:inline-flex;align-items:center;gap:0.5rem;background:var(--red);color:#fff;padding:0.75rem 2rem;border-radius:4px;font-size:0.88rem;font-weight:700;text-decoration:none;">
-        🛒 Explorar la Tienda Planeta Boricua →
-      </a>
-    </div>
-  </div>
-</section>
-
 <!-- VIAJES -->
 <section class="viajes" id="viajes">
   <div class="viajes-inner">
@@ -777,11 +704,6 @@ async function loadDirectorio() {
     <div class="pb-footer-brand">
       <div class="pb-footer-logo">🇵🇷 Planeta Boricua</div>
       <div class="pb-footer-tagline">Más Boricua Que Un Mofongo</div>
-      <div class="pb-footer-social">
-        <a href="https://www.tiktok.com/@planetaboricua4" target="_blank">📱</a>
-        <a href="https://www.instagram.com/miplanetaboricua" target="_blank">📸</a>
-        <a href="https://www.facebook.com/elplanetaboricua" target="_blank">👍</a>
-      </div>
     </div>
     <div class="pb-footer-col">
       <h4>Portal</h4>
@@ -789,7 +711,6 @@ async function loadDirectorio() {
       <a href="#recursos">Recursos</a>
       <a href="/feria-artesanos">Artesanos Puertorriqueños</a>
       <a href="/agenda-boricua">Agenda Boricua</a>
-      <a href="/tienda-boricua">Tienda Boricua</a>
       <a href="#viajes">Viajes</a>
     </div>
     <div class="pb-footer-col">

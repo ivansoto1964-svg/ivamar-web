@@ -12,8 +12,8 @@ const event = {
   id:'event-1',
   name:'Festival del Ñame y la Carne Frita',
   type:'Gastronomía',
-  startDate:'2026-09-19',
-  endDate:'2026-09-20',
+  startDate:'2099-09-19',
+  endDate:'2099-09-20',
   time:'10:00 a. m. a 6:00 p. m.',
   venue:'Plaza Pública',
   address:'Calle Principal',
@@ -28,7 +28,7 @@ const event = {
   approvedAt:'2026-09-07T12:00:00.000Z'
 };
 
-const slug = 'festival-del-name-y-la-carne-frita-20260919';
+const slug = 'festival-del-name-y-la-carne-frita-20990919';
 assert.equal(tools.eventSlug(event), slug);
 assert.equal(tools.eventPath(event), `/agenda-boricua/${slug}`);
 assert.equal(tools.findEventBySlug([event], slug), event);
@@ -37,15 +37,15 @@ assert.match(tools.mapsUrl(event), /^https:\/\/www\.google\.com\/maps\/search/);
 
 const ics = tools.buildEventIcs(event);
 assert.match(ics, /BEGIN:VCALENDAR/);
-assert.match(ics, /DTSTART;VALUE=DATE:20260919/);
-assert.match(ics, /DTEND;VALUE=DATE:20260921/);
+assert.match(ics, /DTSTART;VALUE=DATE:20990919/);
+assert.match(ics, /DTEND;VALUE=DATE:20990921/);
 assert.match(ics, /Festival del Ñame y la Carne Frita/);
 const unfoldedIcs = ics.replace(/\r\n /g, '');
 assert.match(unfoldedIcs, new RegExp(tools.eventPageUrl(event).replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
 
 const google = new URL(tools.googleCalendarUrl(event));
 assert.equal(google.hostname, 'calendar.google.com');
-assert.equal(google.searchParams.get('dates'), '20260919/20260921');
+assert.equal(google.searchParams.get('dates'), '20990919/20990921');
 
 const eventHtml = renderEvent(event, { relatedEvents:[] });
 assert.match(eventHtml, /Compartir evento/);
@@ -54,7 +54,7 @@ assert.match(eventHtml, /Google Calendar/);
 assert.match(eventHtml, /Cómo llegar/);
 assert.match(eventHtml, /Publica un evento gratis/);
 assert.match(eventHtml, new RegExp(`/agenda-boricua/${slug}/calendario\\.ics`));
-assert.match(eventHtml, /ca-pub-2526350815852271/);
+assert.doesNotMatch(eventHtml, /adsbygoogle|googlesyndication|ca-pub-/i);
 assert.match(eventHtml, /application\/ld\+json/);
 
 const agendaHtml = renderAgenda([event]);

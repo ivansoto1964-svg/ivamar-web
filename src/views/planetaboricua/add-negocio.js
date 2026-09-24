@@ -303,10 +303,10 @@ footer{background:var(--blue);padding:2rem;text-align:center;}
           <div id="logo-placeholder">
             <div style="font-size:1.8rem;margin-bottom:0.4rem;">🏷️</div>
             <div style="font-size:0.85rem;color:var(--mid);font-weight:600;">Toca para subir tu logo</div>
-            <div style="font-size:0.72rem;color:#aaa;margin-top:0.2rem;">JPG, PNG — máx. 5MB</div>
+            <div style="font-size:0.72rem;color:#aaa;margin-top:0.2rem;">JPG, PNG o WebP — máx. 5MB</div>
           </div>
         </div>
-        <input type="file" id="logo-file" accept="image/*" style="display:none" onchange="handleLogoUpload(this)">
+        <input type="file" id="logo-file" accept="image/jpeg,image/png,image/webp" style="display:none" onchange="handleLogoUpload(this)">
         <input type="hidden" id="biz-logo" value="">
         <div id="logo-upload-status" style="font-size:0.78rem;margin-top:0.5rem;"></div>
       </div>
@@ -319,12 +319,21 @@ footer{background:var(--blue);padding:2rem;text-align:center;}
           <div id="photo-placeholder">
             <div style="font-size:2rem;margin-bottom:0.5rem;">📷</div>
             <div style="font-size:0.88rem;color:var(--mid);font-weight:600;">Toca para subir una foto</div>
-            <div style="font-size:0.75rem;color:#aaa;margin-top:0.3rem;">JPG, PNG — máx. 5MB</div>
+            <div style="font-size:0.75rem;color:#aaa;margin-top:0.3rem;">JPG, PNG o WebP — máx. 5MB</div>
           </div>
         </div>
-        <input type="file" id="photo-file" accept="image/*" style="display:none" onchange="handlePhotoUpload(this)">
+        <input type="file" id="photo-file" accept="image/jpeg,image/png,image/webp" style="display:none" onchange="handlePhotoUpload(this)">
         <input type="hidden" id="biz-photo" value="">
         <div id="upload-status" style="font-size:0.78rem;margin-top:0.5rem;"></div>
+      </div>
+      <div class="form-group" data-pb-gallery-editor>
+        <label for="gallery-files">Galería adicional (opcional)</label>
+        <p style="font-size:.78rem;color:var(--mid);line-height:1.5;margin:.2rem 0 .7rem">Puedes añadir hasta 5 fotos más. Se optimizan al subir y cargarán solamente cuando el visitante se acerque a la galería.</p>
+        <input type="file" id="gallery-files" data-pb-gallery-files accept="image/jpeg,image/png,image/webp" multiple>
+        <input type="hidden" id="biz-gallery" data-pb-gallery-value value="[]">
+        <div data-pb-gallery-preview style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:.65rem;margin-top:.8rem"></div>
+        <div data-pb-gallery-status style="font-size:.78rem;margin-top:.5rem" role="status"></div>
+        <style>.pb-gallery-thumb{position:relative;aspect-ratio:4/3}.pb-gallery-thumb img{width:100%;height:100%;object-fit:cover;border-radius:8px}.pb-gallery-thumb button{position:absolute;right:.3rem;bottom:.3rem;border:0;border-radius:6px;background:#8d1020;color:#fff;padding:.35rem .5rem;font-weight:800}</style>
       </div>
       <div class="form-group">
         <label>Rango de Precios</label>
@@ -457,7 +466,7 @@ async function handleLogoUpload(input) {
 }
 
 const PB_ARTISAN_DRAFT_V1='pbArtisanRegistrationDraftV1';
-const draftIds=['biz-name','biz-owner-name','biz-category','biz-location','biz-city','biz-zip','biz-address','biz-desc','biz-full-desc','biz-email','biz-whatsapp','biz-website','biz-instagram','biz-facebook','biz-tiktok','biz-etsy','biz-logo','biz-photo','biz-price'];
+const draftIds=['biz-name','biz-owner-name','biz-category','biz-location','biz-city','biz-zip','biz-address','biz-desc','biz-full-desc','biz-email','biz-whatsapp','biz-website','biz-instagram','biz-facebook','biz-tiktok','biz-etsy','biz-logo','biz-photo','biz-gallery','biz-price'];
 let draftTimer=null;
 function saveArtisanDraft(){clearTimeout(draftTimer);draftTimer=setTimeout(()=>{const d={};draftIds.forEach(id=>{const el=document.getElementById(id);if(el)d[id]=el.value});d.terms=document.getElementById('terms-agree').checked;localStorage.setItem(PB_ARTISAN_DRAFT_V1,JSON.stringify(d));},350)}
 function restoreArtisanDraft(){try{const d=JSON.parse(localStorage.getItem(PB_ARTISAN_DRAFT_V1)||'null');if(!d)return;draftIds.forEach(id=>{const el=document.getElementById(id);if(el&&d[id]!==undefined)el.value=d[id]});document.getElementById('terms-agree').checked=Boolean(d.terms);if(d['biz-photo']){document.getElementById('preview-img').src=d['biz-photo'];document.getElementById('photo-preview').style.display='block';document.getElementById('photo-placeholder').style.display='none';document.getElementById('upload-status').textContent='✅ Foto recuperada del borrador';document.getElementById('upload-status').style.color='green'}if(d['biz-logo']){document.getElementById('preview-logo').src=d['biz-logo'];document.getElementById('logo-preview').style.display='block';document.getElementById('logo-placeholder').style.display='none';document.getElementById('logo-upload-status').textContent='✅ Logo recuperado del borrador';document.getElementById('logo-upload-status').style.color='green'}}catch(_){}}
@@ -468,7 +477,7 @@ function validEmail(v){return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(v)}
 
 async function submitNegocio() {
   clearRegistrationError();
-  const values={name:document.getElementById('biz-name').value.trim(),ownerName:document.getElementById('biz-owner-name').value.trim(),category:document.getElementById('biz-category').value,location:document.getElementById('biz-location').value,city:document.getElementById('biz-city').value.trim(),zip:document.getElementById('biz-zip').value.trim(),address:document.getElementById('biz-address').value.trim(),desc:document.getElementById('biz-desc').value.trim(),fullDesc:document.getElementById('biz-full-desc').value.trim(),email:normalizeEmailInput(document.getElementById('biz-email').value),whatsapp:document.getElementById('biz-whatsapp').value.trim(),website:document.getElementById('biz-website').value.trim(),instagram:document.getElementById('biz-instagram').value.trim(),facebook:document.getElementById('biz-facebook').value.trim(),tiktok:document.getElementById('biz-tiktok').value.trim(),etsy:document.getElementById('biz-etsy').value.trim(),logo:document.getElementById('biz-logo').value.trim(),photo:document.getElementById('biz-photo').value.trim(),price:document.getElementById('biz-price').value};
+  const values={name:document.getElementById('biz-name').value.trim(),ownerName:document.getElementById('biz-owner-name').value.trim(),category:document.getElementById('biz-category').value,location:document.getElementById('biz-location').value,city:document.getElementById('biz-city').value.trim(),zip:document.getElementById('biz-zip').value.trim(),address:document.getElementById('biz-address').value.trim(),desc:document.getElementById('biz-desc').value.trim(),fullDesc:document.getElementById('biz-full-desc').value.trim(),email:normalizeEmailInput(document.getElementById('biz-email').value),whatsapp:document.getElementById('biz-whatsapp').value.trim(),website:document.getElementById('biz-website').value.trim(),instagram:document.getElementById('biz-instagram').value.trim(),facebook:document.getElementById('biz-facebook').value.trim(),tiktok:document.getElementById('biz-tiktok').value.trim(),etsy:document.getElementById('biz-etsy').value.trim(),logo:document.getElementById('biz-logo').value.trim(),photo:document.getElementById('biz-photo').value.trim(),gallery:document.getElementById('biz-gallery').value,price:document.getElementById('biz-price').value};
   const required=[['name','biz-name','Escribe el nombre del negocio o taller.'],['ownerName','biz-owner-name','Escribe el nombre del artesano o artesana.'],['category','biz-category','Selecciona una categoría.'],['location','biz-location','Selecciona tu estado o pueblo.'],['city','biz-city','Escribe tu ciudad, pueblo o sector.'],['desc','biz-desc','Añade una descripción corta.'],['fullDesc','biz-full-desc','Cuéntanos un poco más sobre tu trabajo.'],['email','biz-email','Escribe tu email.'],['photo','photo-upload-area','Sube una foto principal de tu trabajo.']];
   for(const [key,id,msg] of required){if(!values[key]){showRegistrationError('⚠️ '+msg,id);return}}
   if(!validEmail(values.email)){showRegistrationError('⚠️ El email no parece válido. Revísalo antes de enviar.','biz-email');return}
@@ -484,7 +493,7 @@ async function submitNegocio() {
 }
 
 document.addEventListener('DOMContentLoaded',()=>{restoreArtisanDraft();document.querySelectorAll('input,select,textarea').forEach(el=>{el.addEventListener('input',saveArtisanDraft);el.addEventListener('change',saveArtisanDraft)})});
-</script>
+</script><script src="/js/pb-artisan-gallery.js?v=1" defer></script>
 
 </body>
 </html>

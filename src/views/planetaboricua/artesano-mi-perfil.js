@@ -24,13 +24,20 @@ function editPage(item, token, publicUrl) {
 }
 
 function editPageWithOwner(item, token, publicUrl) {
+  const gallery = esc(JSON.stringify(Array.isArray(item.gallery) ? item.gallery.slice(0, 5) : []));
   return editPage(item, token, publicUrl).replace(
     '<div class="field full"><label>Nombre del artesano / emprendimiento *</label><input name="name"',
     '<div class="field full"><label>Nombre del negocio o taller *</label><input name="name"'
   ).replace(
     '</div><div class="field"><label>Categoría *</label>',
     `</div><div class="field full"><label>Nombre del artesano o artesana</label><input name="ownerName" value="${esc(item.ownerName)}" placeholder="Tu nombre completo"></div><div class="field"><label>Categoría *</label>`
-  );
+  ).replace(
+    '</div></div><div class="actions">',
+    `</div><div class="field full" data-pb-gallery-editor><label>Galería adicional (hasta 5 fotos)</label><p class="muted">JPG, PNG o WebP; máximo 5 MB por imagen. Puedes quitar o añadir fotos sin afectar la foto principal.</p><input type="file" data-pb-gallery-files accept="image/jpeg,image/png,image/webp" multiple><input type="hidden" name="gallery" data-pb-gallery-value value="${gallery}"><div class="pb-gallery-preview" data-pb-gallery-preview></div><div class="muted" data-pb-gallery-status role="status"></div></div></div><div class="actions">`
+  ).replace(
+    '</style>',
+    '.pb-gallery-preview{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:.65rem;margin:.8rem 0}.pb-gallery-thumb{position:relative;aspect-ratio:4/3}.pb-gallery-thumb img{width:100%;height:100%;object-fit:cover;border-radius:8px}.pb-gallery-thumb button{position:absolute;right:.3rem;bottom:.3rem;border:0;border-radius:6px;background:#8d1020;color:#fff;padding:.35rem .5rem;font-weight:800}</style>'
+  ).replace('</body>', '<script src="/js/pb-artisan-gallery.js?v=1" defer></script></body>');
 }
 
 module.exports = { loginPage, editPage: editPageWithOwner };

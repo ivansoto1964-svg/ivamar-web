@@ -7,7 +7,6 @@ module.exports = function renderEstado(estado) {
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Boricuas en ${estado.nombre} — Planeta Boricua</title>
 <meta name="description" content="${estado.descripcionSEO}">
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2526350815852271" crossorigin="anonymous"></script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
@@ -110,11 +109,6 @@ nav{background:var(--white);border-bottom:2px solid var(--red);padding:0 2rem;di
 .viaje-btn{display:inline-flex;align-items:center;gap:0.5rem;padding:0.85rem 1.8rem;border-radius:25px;font-size:0.88rem;font-weight:700;text-decoration:none;}
 
 /* TIENDA */
-.tienda-sec{padding:3rem 2rem;background:var(--white);border-top:1px solid var(--border);text-align:center;}
-.tienda-inner{max-width:600px;margin:0 auto;}
-.tienda-title{font-family:'Playfair Display',serif;font-size:1.6rem;font-weight:700;color:var(--dark);margin-bottom:0.5rem;}
-.tienda-sub{font-size:0.85rem;color:var(--mid);margin-bottom:1.2rem;}
-.tienda-btn{display:inline-flex;align-items:center;gap:0.5rem;background:var(--red);color:#fff;padding:0.85rem 2rem;border-radius:25px;font-size:0.9rem;font-weight:700;text-decoration:none;}
 
 /* FOOTER */
 .estado-footer{background:var(--dark);padding:1.5rem 2rem;text-align:center;}
@@ -268,15 +262,6 @@ nav{background:var(--white);border-bottom:2px solid var(--red);padding:0 2rem;di
       <a href="${estado.tripcomUrl}" target="_blank" rel="noopener" class="viaje-btn" style="background:#1890ff;color:#fff;">🏨 Hoteles en Trip.com</a>
       <a href="https://kiwi.tpo.lu/2wAyEzMK" target="_blank" rel="noopener" class="viaje-btn" style="background:#e5520a;color:#fff;">✈️ Vuelos en Kiwi.com</a>
     </div>
-  </div>
-</section>
-
-<!-- TIENDA -->
-<section class="tienda-sec">
-  <div class="tienda-inner">
-    <h2 class="tienda-title">🛍️ Tienda Boricua</h2>
-    <p class="tienda-sub">Lleva tu orgullo boricua a donde vayas — camisetas, tazas, dulces y más con entrega rápida en USA.</p>
-    <a href="/go/amazon-store" target="_blank" rel="sponsored noopener" class="tienda-btn">🛒 Ver Tienda en Amazon →</a>
   </div>
 </section>
 

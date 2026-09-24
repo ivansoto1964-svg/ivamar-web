@@ -102,7 +102,7 @@ La cantidad de artesanos es dinámica. Consultar PB Control antes de citar una c
 - Comentarios propios con moderación.
 - Agenda Boricua.
 - Páginas dinámicas individuales para cada evento de Agenda Boricua, con URL permanente, compartir desde el celular, WhatsApp, Facebook, copia de enlace, calendario universal, Google Calendar y direcciones.
-- Las páginas de eventos reutilizan los registros existentes, muestran contenido relacionado de PB, incluyen AdSense y ofrecen el botón **Publica un evento gratis**.
+- Las páginas de eventos reutilizan los registros existentes, muestran contenido relacionado de PB y ofrecen el botón **Publica un evento gratis**. No cargan redes publicitarias externas.
 - Los clics de compartir, calendario, direcciones y fuente oficial se resumen por evento en PB Control sin recopilar datos personales.
 - Sitemap dinámico; Search Console descubrió 227 páginas el 25 de agosto de 2026.
 - Footer y páginas legales presentados bajo Planeta Boricua.
@@ -154,13 +154,13 @@ La cantidad de artesanos es dinámica. Consultar PB Control antes de citar una c
 2. Enviar y comprobar la prueba de la campaña de revisión de perfiles; después enviar el primer lote de hasta 50, respetando las bajas y verificando entregas antes del siguiente lote.
 3. Recibir, organizar y editar los videos de artesanos para la promoción del 23 de septiembre.
 4. Crear el comunicado y paquete visual para medios del lanzamiento.
-5. Revisar semanalmente la preparación para Google AdSense; ya existe una tarea programada para esa revisión.
+5. Revisar el rendimiento y el inventario de PB Ads antes de activar campañas comerciales.
 6. Comprobar el aviso no crítico `performer` de eventos en Search Console después del periodo de procesamiento.
 7. Reducir las notificaciones innecesarias de GitHub Actions sin ocultar fallos importantes.
 8. Desplegar y comprobar la página donde el artesano ve su QR permanente antes de descargarlo; el archivo `.png` y su enlace corto estable no cambian.
    Los perfiles también ofrecen instalar PB en la pantalla del dispositivo sin popup; Android usa el instalador del navegador e iPhone muestra la instrucción de Safari. La app incluye un acceso rápido a **Mi perfil**.
 9. Añadir edición completa para publicaciones existentes de **Lo más reciente** y corregir la palabra **Título** en el artículo de los 180,000 abonados sin cambiar su URL.
-10. Continuar recogiendo videos, preparar la promoción y el comunicado de prensa para el lanzamiento del 23 de septiembre, y mantener la revisión programada de AdSense.
+10. Continuar la optimización post-lanzamiento y validar PB Ads antes de activar campañas comerciales.
 
 ## Próximas fases, sin activar todavía
 

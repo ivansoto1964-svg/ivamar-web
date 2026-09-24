@@ -59,7 +59,7 @@ nav{background:#fff;border-bottom:3px solid #CE1126;padding:0;}
   <p>Todo el contenido original de este sitio, incluyendo textos, gráficos, logotipos y código, pertenece a Planeta Boricua y a su creador, Iván Soto, y está protegido por las leyes de propiedad intelectual aplicables.</p>
 
   <h2>4. Afiliados y publicidad</h2>
-  <p>Este sitio web puede mostrar anuncios de Google AdSense y contener enlaces de afiliados identificados como tales, incluyendo programas de Amazon y de servicios de viaje. En esas secciones editoriales o comerciales separadas, PB podría recibir una comisión del proveedor externo. Estas relaciones no incluyen las ventas directas de los artesanos presentados en la Feria y no convierten a PB en parte de una transacción entre comprador y artesano.</p>
+  <p>Este sitio web puede mostrar campañas administradas por Planeta Boricua y contener enlaces de afiliados identificados como tales, incluyendo programas de Amazon y de servicios de viaje. En esas secciones editoriales o comerciales separadas, PB podría recibir un pago o una comisión del proveedor externo. Estas relaciones no incluyen las ventas directas de los artesanos presentados en la Feria y no convierten a PB en parte de una transacción entre comprador y artesano.</p>
   <p>Planeta Boricua no controla las compras, cancelaciones o disputas que ocurran con plataformas externas vinculadas. Las consultas o reclamaciones sobre un producto o servicio adquirido mediante un enlace de afiliado deben dirigirse al proveedor final.</p>
 
   <h2>5. Comentarios y Participación</h2>
@@ -128,7 +128,7 @@ nav{background:#fff;border-bottom:3px solid #CE1126;padding:0;}
 </nav>
 <section class="page-hero">
   <h1>Política de Privacidad</h1>
-  <p>Última actualización: 8 de septiembre de 2026</p>
+  <p>Última actualización: 24 de septiembre de 2026</p>
 </section>
 <div class="content">
   <p>En Más Boricua Que Un Mofongo (accesible a través de masboricuaqueunmofongo.com), portal de Planeta Boricua operado de manera independiente por Iván Soto desde Florida, una de nuestras principales prioridades es la privacidad de nuestros visitantes. Este documento detalla los tipos de información que recopilamos y registramos, y cómo la utilizamos.</p>
@@ -140,9 +140,9 @@ nav{background:#fff;border-bottom:3px solid #CE1126;padding:0;}
   <p>Como cualquier otro sitio web, Más Boricua Que Un Mofongo utiliza "cookies". Estas cookies se utilizan para almacenar información, incluyendo las preferencias de los visitantes y las páginas del sitio web a las que el visitante accedió o visitó. La información se utiliza para optimizar la experiencia de los usuarios personalizando el contenido de nuestra página web.</p>
   <p>También utilizamos Google Analytics 4 para conocer de forma agregada cómo se visita el portal, por ejemplo las páginas consultadas, el país aproximado y el tipo de dispositivo. Planeta Boricua no envía a Google nombres, correos electrónicos ni la información privada de los perfiles de artesanos como parte de esta medición.</p>
 
-  <h2>3. Políticas de Google AdSense y Publicidad de Terceros</h2>
-  <p>Nuestro sitio web utiliza Google AdSense para publicar anuncios. Google, como proveedor externo, utiliza cookies para publicar anuncios en nuestro sitio basados en las visitas anteriores de un usuario a nuestro sitio web u otros sitios web.</p>
-  <p>Google y otros proveedores o redes publicitarias autorizadas pueden utilizar cookies para mostrar anuncios basados en visitas anteriores. Los usuarios pueden conocer cómo Google utiliza los datos en <a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener noreferrer" style="color:#CE1126;">Cómo utiliza Google la información de sitios asociados</a> e inhabilitar la publicidad personalizada en la <a href="https://www.google.com/settings/ads" target="_blank" rel="noopener noreferrer" style="color:#CE1126;">Configuración de anuncios de Google</a>. También pueden consultar las opciones de otros proveedores en <a href="https://www.aboutads.info" target="_blank" rel="noopener noreferrer" style="color:#CE1126;">www.aboutads.info</a>.</p>
+  <h2>3. PB Ads y publicidad</h2>
+  <p>Planeta Boricua administra directamente sus espacios publicitarios mediante PB Ads, sin cargar una red publicitaria externa. Cada anuncio se identifica como <em>Publicidad</em>, <em>Enlace afiliado</em> o <em>Promoción de Planeta Boricua</em>, según corresponda.</p>
+  <p>PB Ads registra métricas técnicas básicas y agregadas —como campaña, ubicación, impresión y clic— para evaluar el funcionamiento de las campañas. Este registro no almacena nombres, correos electrónicos ni direcciones IP. Al seguir un enlace externo, el sitio de destino aplicará sus propias políticas de privacidad.</p>
 
   <h2>4. Divulgación de Enlaces de Afiliados</h2>
   <p>Más Boricua Que Un Mofongo se financia, en parte, a través de programas de marketing de afiliados. Cuando hace clic en ciertos enlaces de nuestro sitio web y realiza una compra, podemos recibir una pequeña comisión sin ningún costo adicional para usted.</p>
@@ -231,9 +231,8 @@ nav{background:#fff;border-bottom:3px solid #CE1126;padding:0;}
   <h2>Programas de afiliados activos</h2>
   <p>Planeta Boricua participa en los siguientes programas de afiliados:</p>
   <ul>
-    <li><strong>Programa de Asociados de Amazon</strong> — enlaces a productos y a la tienda de Planeta Boricua en Amazon</li>
+    <li><strong>Programa de Asociados de Amazon</strong> — enlaces a productos seleccionados en Amazon</li>
     <li><strong>Travelpayouts</strong> — plataforma de afiliados de viajes (Expedia, Booking.com, Aviasales, etc.)</li>
-    <li><strong>Google AdSense</strong> — anuncios contextuales de Google</li>
     <li>Otros programas de viajes y servicios que puedan añadirse en el futuro</li>
   </ul>
 

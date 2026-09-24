@@ -12,7 +12,6 @@ module.exports = `<!DOCTYPE html>
 <meta property="og:image" content="https://www.masboricuaqueunmofongo.com/img/og-planetaboricua.jpg">
 <link rel="canonical" href="https://www.masboricuaqueunmofongo.com/regresar-a-pr">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2526350815852271" crossorigin="anonymous"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
@@ -113,7 +112,6 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
 .ayuda-cta-btn{display:block;background:var(--red);color:#fff;padding:0.65rem;border-radius:4px;font-size:0.82rem;font-weight:700;text-decoration:none;}
 
 /* AD */
-.ad-strip{max-width:1200px;margin:0 auto;padding:1rem 2rem;text-align:center;}
 
 /* FOOTER */
 .pb-footer{background:var(--white);border-top:3px solid var(--red);}
@@ -176,12 +174,6 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
     <button class="cat-tab" onclick="showSection('salud')">🏥 Salud</button>
     <button class="cat-tab" onclick="showSection('escuelas')">🏫 Escuelas</button>
   </div>
-</div>
-
-<!-- AD -->
-<div class="ad-strip">
-  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2526350815852271" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
-  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 </div>
 
 <!-- MAIN CONTENT -->
@@ -1112,17 +1104,7 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
       <a href="/#noticias" class="sidebar-link">Noticias de PR →</a>
     </div>
 
-    <div class="sidebar-card">
-      <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2526350815852271" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
-      <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-    </div>
   </div>
-</div>
-
-<!-- AD BOTTOM -->
-<div class="ad-strip">
-  <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2526350815852271" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
-  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
 </div>
 
 <!-- FOOTER -->
@@ -1131,11 +1113,6 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
     <div>
       <div style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:800;color:#111;margin-bottom:0.3rem;">🇵🇷 Planeta Boricua</div>
       <div style="font-size:0.72rem;color:#666;margin-bottom:1rem;">Más Boricua Que Un Mofongo</div>
-      <div style="display:flex;gap:0.8rem;">
-        <a href="https://www.tiktok.com/@planetaboricua4" target="_blank" style="font-size:0.8rem;color:#CE1126;text-decoration:none;">📱 TikTok</a>
-        <a href="https://www.instagram.com/miplanetaboricua" target="_blank" style="font-size:0.8rem;color:#CE1126;text-decoration:none;">📸 IG</a>
-        <a href="https://www.facebook.com/elplanetaboricua" target="_blank" style="font-size:0.8rem;color:#CE1126;text-decoration:none;">👍 FB</a>
-      </div>
     </div>
     <div class="pb-footer-col">
       <h4>Portal</h4>

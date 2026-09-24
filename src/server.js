@@ -13,7 +13,9 @@ const pbPressRoom = require('./services/pb-press-room');
 const pbEventAdmin = require('./services/pb-event-admin');
 const pbEventTools = require('./services/pb-event-tools');
 const pbEventMetrics = require('./services/pb-event-metrics');
+const { createPBAds } = require('./services/pb-ads');
 const salaPrensaPB = require('./views/planetaboricua/sala-prensa');
+const { renderPBSocialFollow } = require('./views/planetaboricua/social-follow');
 const { isIndexablePBArtisan, wordCount } = require('./utils/pb-seo');
 const { CATEGORIES:PB_BLOG_CATEGORIES, categorySlug:pbBlogCategorySlug } = require('./utils/pb-editorial');
 const PB_ARTISAN_DESCRIPTION_REPAIRS = require('./data/pb-artisan-description-repairs');
@@ -100,6 +102,13 @@ app.use((req, res, next) => {
         const legalBar = `<footer data-pb-legal-footer style="background:#002d62;color:#dbe5f2;padding:1.25rem 1rem;text-align:center;font:13px/1.6 system-ui,sans-serif"><strong style="color:#fff">🇵🇷 Planeta Boricua</strong> · Más Boricua que un Mofongo<br><a href="/quienes-somos" style="color:#fff">Quiénes Somos</a> · <a href="/privacidad-boricua" style="color:#fff">Privacidad</a> · <a href="/terminos-boricua" style="color:#fff">Términos</a> · <a href="/afiliados-boricua" style="color:#fff">Afiliados</a> · <a href="mailto:masboricuaqueunmofongo@gmail.com" style="color:#fff">Contacto</a><br><span style="font-size:12px">© 2026 Planeta Boricua · Proyecto independiente de Iván Soto · Florida, USA</span></footer>`;
         body = body.replace('</body>', legalBar + '</body>');
       }
+      const privatePath = /^\/(?:pb-control|api|auth)(?:\/|$)/.test(String(req.path || ''));
+      if (!privatePath && !body.includes('data-pb-social-follow')) {
+        const social = renderPBSocialFollow();
+        body = /<footer\b/i.test(body)
+          ? body.replace(/<footer\b/i, `${social}<footer`)
+          : body.replace('</body>', social + '</body>');
+      }
     }
     return send(body);
   };
@@ -181,7 +190,6 @@ const homeES = require("./views/home-es");
 const homeEN = require("./views/home-en");
 const about = require("./views/about");
 const planetaboricua = require("./views/planetaboricua");
-const tiendaBoricua = require("./views/tienda-boricua");
 const recursosBoriuca = require("./views/recursos-boricua");
 const { terminos: terminosBoricua, privacidad: privacidadBoricua, afiliados: afiliadosBoricua } = require("./views/legal-boricua");
 const regresarAPR = require("./views/regresar-a-pr");
@@ -201,6 +209,7 @@ const adminDashboard = require("./views/admin-dashboard");
 const adminEdit = require("./views/admin-edit");
 const pbControl = require("./views/pb-control");
 const pbControlLogin = require("./views/pb-control-login");
+const pbAdsControl = require("./views/pb-ads-control");
 const Anthropic = require("@anthropic-ai/sdk");
 const { Resend } = require("resend");
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -229,6 +238,7 @@ const { sendLeadNotification } = require("./services/notificationService");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const crypto = require("crypto");
+const pbAds = createPBAds();
 
 // Feria de Artesanías launches at midnight in Puerto Rico (UTC-4).
 const FERIA_LAUNCH_AT = new Date('2026-09-23T04:00:00.000Z');
@@ -971,6 +981,7 @@ function requirePBCsrf(req, res, next) {
 
 app.use(express.static("public", { maxAge: "1y", immutable: true }));
 app.use('/media/pb-blog', express.static(pbBlogStore.MEDIA_DIR, { maxAge:'30d', immutable:true }));
+app.use('/media/pb-ads', express.static(pbAds.mediaDir, { maxAge:'1y', immutable:true }));
 app.use(cookieParser());
 
 // Private, aggregate PB traffic counts. The cookie stores only the current
@@ -1092,7 +1103,7 @@ h1{font-size:1.4rem;font-weight:600;}
 });
 
 app.get("/", (req, res) => res.send(planetaboricua));
-app.get("/tienda-boricua", (req, res) => res.send(tiendaBoricua));
+app.get("/tienda-boricua", (_req, res) => res.redirect(301, "/recursos"));
 app.get("/es", (req, res) => res.send(layout({ title: "Ivamar AI · Español", body: homeES })));
 app.get("/en", (req, res) => res.send(layout({  lang: "en", title: "Ivamar AI · English", body: homeEN })));
 app.get("/about", (req, res) => {
@@ -1845,6 +1856,39 @@ app.get('/pb-control/logout',(req,res) => {
 
 app.get('/pb-control', requirePBAdmin, (req,res) => res.send(pbControl(buildPBControlModel(req.pbAdminSession.csrf))));
 
+app.get('/pb-control/ads', requirePBAdmin, (req,res) => {
+  res.send(pbAdsControl({csrf:req.pbAdminSession.csrf,campaigns:pbAds.list(),metrics:pbAds.summary()}));
+});
+
+app.post('/pb-control/ads/upload', requirePBAdmin, express.json({limit:'1mb'}), requirePBCsrf, (req,res) => {
+  try { return res.json({ok:true,image:pbAds.saveImageData(req.body?.imageData)}); }
+  catch (error) { return res.status(400).json({ok:false,error:error.message || 'No se pudo guardar el banner.'}); }
+});
+
+app.post('/pb-control/ads/action', requirePBAdmin, requirePBCsrf, express.json({limit:'50kb'}), (req,res) => {
+  const action = sanitize(req.body?.action || '');
+  const id = sanitize(req.body?.id || '');
+  try {
+    if (action === 'save') {
+      const saved = pbAds.save(req.body,id === 'new' ? '' : id);
+      if (!saved) return res.status(404).json({ok:false,error:'La campaña ya no existe.'});
+      return res.json({ok:true,message:id === 'new' ? 'Campaña creada.' : 'Campaña actualizada.',id:saved.id});
+    }
+    if (action === 'status') {
+      const saved = pbAds.setStatus(id,sanitize(req.body?.status || ''));
+      if (!saved) return res.status(404).json({ok:false,error:'La campaña ya no existe.'});
+      return res.json({ok:true,message:saved.status === 'active' ? 'Campaña activada.' : 'Campaña pausada.'});
+    }
+    if (action === 'archive') {
+      if (!pbAds.remove(id)) return res.status(404).json({ok:false,error:'La campaña ya no existe.'});
+      return res.json({ok:true,message:'Campaña archivada.'});
+    }
+    return res.status(400).json({ok:false,error:'Acción no reconocida.'});
+  } catch (error) {
+    return res.status(400).json({ok:false,error:error.message || 'No se pudo guardar la campaña.'});
+  }
+});
+
 app.get('/pb-control/subscribers.csv', requirePBAdmin, (req,res) => {
   const safeCell = value => {
     let text = String(value || '');
@@ -2076,6 +2120,29 @@ app.post('/pb-control/action', requirePBAdmin, requirePBCsrf, express.json({limi
     console.error('PB control action error:',error.message);
     return res.status(500).json({ok:false,error:'No se pudo guardar el cambio.'});
   }
+});
+
+app.post('/api/pb-ads/impression', pbArtisanMetricsLimiter, express.json({limit:'2kb'}), (req,res) => {
+  const campaign = sanitize(req.body?.campaign || '');
+  const placement = sanitize(req.body?.placement || '').slice(0,80);
+  if (!/^pbad-[a-z0-9-]+$/i.test(campaign) || !pbAds.placements.includes(placement)) return res.status(400).json({ok:false});
+  try {
+    if (!pbAds.recordMetric(campaign,'impression',{placement})) return res.status(404).json({ok:false});
+    return res.status(204).end();
+  } catch (error) {
+    console.error('PB Ads impression error:',error.message);
+    return res.status(500).json({ok:false});
+  }
+});
+
+app.get('/pb-ads/click/:campaign', (req,res) => {
+  const campaign = pbAds.findActive(req.params.campaign);
+  if (!campaign) return res.status(404).send('Campaña no disponible');
+  const placement = pbAds.placements.includes(String(req.query.placement || '')) ? String(req.query.placement) : 'unknown';
+  try { pbAds.recordMetric(campaign.id,'click',{placement}); }
+  catch (error) { console.error('PB Ads click error:',error.message); }
+  res.set('Cache-Control','no-store');
+  res.redirect(302,campaign.destinationUrl);
 });
 
 app.get('/go/:campaign', (req,res) => {
@@ -2825,6 +2892,26 @@ app.post("/start", async (req, res) => {
 // CLOUDINARY PHOTO UPLOAD
 // ==========================================
 const cloudinary = require('cloudinary').v2;
+const PB_ARTISAN_GALLERY_LIMIT = 5;
+const PB_ARTISAN_IMAGE_MAX_BYTES = 5 * 1024 * 1024;
+
+function isSafePBArtisanImage(value) {
+  try {
+    const url = new URL(String(value || '').trim());
+    return url.protocol === 'https:' && url.hostname === 'res.cloudinary.com' && url.pathname.includes('/image/upload/');
+  } catch (_) { return false; }
+}
+
+function sanitizePBArtisanGallery(value, mainPhoto = '') {
+  let items = value;
+  if (typeof value === 'string') {
+    try { items = JSON.parse(value || '[]'); } catch (_) { items = []; }
+  }
+  if (!Array.isArray(items)) return [];
+  const main = String(mainPhoto || '').trim();
+  return [...new Set(items.map(item => String(item || '').trim()).filter(item => item !== main && isSafePBArtisanImage(item)))].slice(0, PB_ARTISAN_GALLERY_LIMIT);
+}
+
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
@@ -2834,20 +2921,26 @@ cloudinary.config({
 app.post("/api/upload-photo", express.json({ limit: '10mb' }), async (req, res) => {
   try {
     const { data } = req.body; // base64 image
-    if (!data) return res.json({ ok: false, error: 'No image data' });
+    if (!data) return res.status(400).json({ ok: false, error: 'No se recibió una imagen.' });
+    const match = String(data).match(/^data:image\/(jpeg|png|webp);base64,([A-Za-z0-9+/=]+)$/i);
+    if (!match) return res.status(415).json({ ok:false, error:'Usa una imagen JPG, PNG o WebP válida.' });
+    const estimatedBytes = Math.floor(match[2].length * 3 / 4);
+    if (estimatedBytes > PB_ARTISAN_IMAGE_MAX_BYTES) return res.status(413).json({ok:false,error:'La imagen debe pesar 5 MB o menos.'});
     
     const result = await cloudinary.uploader.upload(data, {
-      folder: 'caribex-listings',
+      folder: 'planeta-boricua/artesanos',
+      resource_type: 'image',
+      allowed_formats: ['jpg','jpeg','png','webp'],
       transformation: [
-        { width: 800, height: 600, crop: 'fill', gravity: 'auto' },
-        { fetch_format: 'auto', quality: 'auto' }
+        { width: 1200, height: 900, crop: 'limit' },
+        { fetch_format: 'auto', quality: 'auto:good' }
       ]
     });
     
     return res.json({ ok: true, url: result.secure_url });
   } catch(e) {
     console.error('Upload error:', e);
-    return res.json({ ok: false, error: e.message });
+    return res.status(400).json({ ok: false, error: 'No se pudo procesar esa imagen.' });
   }
 });
 
@@ -3246,11 +3339,6 @@ app.get("/terminos", (req, res) => res.send(caribexTerms));
 app.get("/privacidad", (req, res) => res.redirect(301, "/privacidad-boricua"));
 app.get("/terminos", (req, res) => res.redirect(301, "/terminos-boricua"));
 
-app.get("/ads.txt", (req, res) => {
-  res.set("Content-Type", "text/plain");
-  res.send("google.com, pub-2526350815852271, DIRECT, f08c47fec0942fa0");
-});
-
 app.get("/caribex-sitemap.xml", async (req, res) => {
   const base = "https://www.yourcaribbeanexpert.com";
   const destinations = [
@@ -3333,6 +3421,7 @@ app.use("/blog", (req, res, next) => {
   res.locals.pbExploreRecommendations = pbExploreRecommendations({
     currentBlogSlug:req.params?.slug || String(req.path || '').replace(/^\//, '')
   });
+  res.locals.pbAds = pbAds;
   next();
 }, pbBlogRouter);
 
@@ -3373,7 +3462,9 @@ app.get('/lo-mas-reciente/:slug', (req, res) => {
   if (!item) return res.status(404).send(loMasRecientePB(null));
   const comments = readPBComments('approved.json').filter(comment => comment.articleSlug === item.slug && (comment.section || 'latest') === 'latest').sort((a,b) => new Date(b.approvedAt) - new Date(a.approvedAt)).map(publicPBComment);
   const recommendations = pbExploreRecommendations({currentSlug:item.slug});
-  res.send(loMasRecientePB({...publicPBLatest(item),body:blogContentHtml(item.body)}, comments, recommendations));
+  const firstAd = pbAds.select({section:'latest',placement:'latest.inline_1',category:pbLatestTopic(item),pageSlug:item.slug});
+  const secondAd = pbAds.select({section:'latest',placement:'latest.inline_2',category:pbLatestTopic(item),pageSlug:item.slug,excludeIds:firstAd ? [firstAd.id] : []});
+  res.send(loMasRecientePB({...publicPBLatest(item),body:blogContentHtml(item.body)}, comments, recommendations, {first:firstAd,second:secondAd}));
 });
 
 app.get('/api/pb-comments/:slug', (req, res) => {
@@ -3541,7 +3632,7 @@ app.get("/sitemap.xml", async (req, res) => {
   } catch(e) { console.error('Sitemap artisans error:', e.message); }
   const latestUrls = readPBLatest('approved.json').map(item => `<url><loc>https://www.masboricuaqueunmofongo.com/lo-mas-reciente/${item.slug}</loc><lastmod>${String(item.publishedAt || '').slice(0,10)}</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>`).join('');
   const eventUrls = readPBEvents('approved.json').map(event => `<url><loc>${pbEventTools.eventPageUrl(event)}</loc><lastmod>${String(event.approvedAt || event.startDate || '').slice(0,10)}</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>`).join('');
-  const staticUrls = `<url><loc>https://www.masboricuaqueunmofongo.com/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/blog</loc><changefreq>weekly</changefreq><priority>0.9</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/lo-mas-reciente</loc><changefreq>daily</changefreq><priority>0.9</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/tienda-boricua</loc><changefreq>weekly</changefreq><priority>0.9</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/recursos</loc><changefreq>weekly</changefreq><priority>0.9</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/mudarse-de-pr</loc><changefreq>monthly</changefreq><priority>0.8</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/regresar-a-pr</loc><changefreq>monthly</changefreq><priority>0.8</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/feria-artesanos</loc><changefreq>weekly</changefreq><priority>0.8</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/quienes-somos</loc><changefreq>monthly</changefreq><priority>0.7</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/privacidad-boricua</loc><changefreq>monthly</changefreq><priority>0.5</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/terminos-boricua</loc><changefreq>monthly</changefreq><priority>0.5</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/afiliados-boricua</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>`;
+  const staticUrls = `<url><loc>https://www.masboricuaqueunmofongo.com/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/blog</loc><changefreq>weekly</changefreq><priority>0.9</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/lo-mas-reciente</loc><changefreq>daily</changefreq><priority>0.9</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/recursos</loc><changefreq>weekly</changefreq><priority>0.9</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/mudarse-de-pr</loc><changefreq>monthly</changefreq><priority>0.8</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/regresar-a-pr</loc><changefreq>monthly</changefreq><priority>0.8</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/feria-artesanos</loc><changefreq>weekly</changefreq><priority>0.8</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/quienes-somos</loc><changefreq>monthly</changefreq><priority>0.7</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/privacidad-boricua</loc><changefreq>monthly</changefreq><priority>0.5</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/terminos-boricua</loc><changefreq>monthly</changefreq><priority>0.5</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/afiliados-boricua</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>`;
   const agendaUrl = `<url><loc>https://www.masboricuaqueunmofongo.com/agenda-boricua</loc><changefreq>daily</changefreq><priority>0.8</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/sala-de-prensa</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>`;
   res.set('Content-Type','application/xml');
   res.send(`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${staticUrls}${agendaUrl}${eventUrls}${latestUrls}${postUrls}${artisanUrls}</urlset>`);
@@ -3742,12 +3833,14 @@ app.get('/artesanos/:slug', (req, res, next) => {
   const categories = {'tallado-madera':'Tallado en madera','joyeria':'Joyería artesanal','ceramica':'Cerámica y alfarería','textiles':'Textiles y costura','pintura':'Pintura y arte','santos':'Santos y tallas religiosas','cuero':'Trabajo en cuero','vejigantes':'Máscaras y vejigantes','instrumentos':'Instrumentos musicales','reciclado':'Arte con material reciclado','velas-jabones':'Velas y jabones artesanales','otro':'Artesanía puertorriqueña'};
   const locationLabel = `${item.city || item.location || 'Puerto Rico'}${PB_US_LOCATIONS.has(item.location) ? ', USA' : ', Puerto Rico'}`;
   const events = readPBEvents('approved.json').map(publicPBEvent).filter(event => event.artisanSlug === canonicalSlug && new Date(`${event.endDate || event.startDate}T23:59:59`) >= new Date());
+  const ad = pbAds.select({section:'artisan',placement:'artisan.after_profile',pageSlug:canonicalSlug,artisanCategory:item.category});
   res.send(artesanoPerfilPB(item, {
     categoryLabel:categories[item.category] || 'Artesanía puertorriqueña',
     locationLabel,
     slug:canonicalSlug,
     events,
-    recommendations:pbExploreRecommendations({currentArtisanSlug:canonicalSlug})
+    recommendations:pbExploreRecommendations({currentArtisanSlug:canonicalSlug}),
+    ad
   }));
 });
 
@@ -4225,7 +4318,12 @@ app.post('/pb-control/artesanos/:id', requirePBAdmin, requirePBCsrf, express.jso
   if (!record) return res.status(404).json({ok:false,error:'Artesano no encontrado.'});
   const fields=['name','ownerName','category','location','city','zip','address','desc','fullDesc','email','whatsapp','website','instagram','facebook','tiktok','etsy','logo','photo','price'];
   const changes={}; fields.forEach(key=>changes[key]=sanitize(req.body?.[key]||'').trim());
+  changes.gallery=Object.prototype.hasOwnProperty.call(req.body||{},'gallery')
+    ? sanitizePBArtisanGallery(req.body.gallery,changes.photo)
+    : sanitizePBArtisanGallery(record.item.gallery,changes.photo);
   if(!changes.name||!changes.category||!changes.location||!changes.city||!changes.desc||!changes.fullDesc||!changes.email||!changes.photo) return res.status(400).json({ok:false,error:'Completa los campos requeridos.'});
+  if (changes.photo !== String(record.item.photo || '') && !isSafePBArtisanImage(changes.photo)) return res.status(400).json({ok:false,error:'La foto principal debe subirse desde el formulario.'});
+  if (changes.logo && changes.logo !== String(record.item.logo || '') && !isSafePBArtisanImage(changes.logo)) return res.status(400).json({ok:false,error:'El logo debe subirse desde el formulario.'});
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(changes.email)) return res.status(400).json({ok:false,error:'El email no es válido.'});
   const duplicate=findPBArtisanDuplicate({email:changes.email,whatsapp:changes.whatsapp},{approvedOnly:true,excludeId:record.item.id});
   if(duplicate)return res.status(409).json({ok:false,error:pbArtisanDuplicateMessage(duplicate.reason)});
@@ -4302,7 +4400,12 @@ app.post('/api/pb-artesano-update/:token', pbArtisanLimiter, express.json({limit
   if (!record || normalizePBArtisanEmail(record.item.email) !== auth.email) return res.status(404).json({ok:false,error:'Perfil no encontrado.'});
   const fields = ['name','ownerName','category','location','city','zip','address','desc','fullDesc','whatsapp','website','instagram','facebook','tiktok','etsy','logo','photo','price'];
   const changes = {}; fields.forEach(key => changes[key] = sanitize(req.body?.[key] || '').trim());
+  changes.gallery = Object.prototype.hasOwnProperty.call(req.body || {}, 'gallery')
+    ? sanitizePBArtisanGallery(req.body.gallery, changes.photo)
+    : sanitizePBArtisanGallery(record.item.gallery, changes.photo);
   if (!changes.name || !changes.category || !changes.location || !changes.city || !changes.desc || !changes.fullDesc || !changes.photo) return res.status(400).json({ok:false,error:'Completa los campos requeridos, incluyendo la foto principal.'});
+  if (changes.photo !== String(record.item.photo || '') && !isSafePBArtisanImage(changes.photo)) return res.status(400).json({ok:false,error:'La foto principal debe subirse desde el formulario.'});
+  if (changes.logo && changes.logo !== String(record.item.logo || '') && !isSafePBArtisanImage(changes.logo)) return res.status(400).json({ok:false,error:'El logo debe subirse desde el formulario.'});
   const duplicate = findPBArtisanDuplicate({email:record.item.email,whatsapp:changes.whatsapp},{approvedOnly:true,excludeId:record.item.id});
   if (duplicate) return res.status(409).json({ok:false,error:pbArtisanDuplicateMessage(duplicate.reason)});
   const stableSlug = pbArtisanSlug(record.item);
@@ -4339,11 +4442,13 @@ app.post("/api/pb-negocio-submit", pbArtisanLimiter, express.json({limit:'80kb'}
   const etsy = sanitize(req.body.etsy || '');
   const logo = sanitize(req.body.logo || '');
   const photo = sanitize(req.body.photo);
+  const gallery = sanitizePBArtisanGallery(req.body.gallery, photo);
   const price = sanitize(req.body.price || '');
 
   if (!name || !ownerName || !category || !location || !city || !desc || !fullDesc || !email || !photo) {
     return res.status(400).json({ ok: false, error: "Faltan campos requeridos" });
   }
+  if (!isSafePBArtisanImage(photo) || (logo && !isSafePBArtisanImage(logo))) return res.status(400).json({ok:false,error:'Las imágenes deben subirse desde el formulario.'});
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return res.status(400).json({ok:false,error:'El email no parece válido. Revísalo antes de enviar.'});
 
   const duplicate = findPBArtisanDuplicate({ email, whatsapp });
@@ -4369,7 +4474,7 @@ app.post("/api/pb-negocio-submit", pbArtisanLimiter, express.json({limit:'80kb'}
       status: 'pending',
       submittedAt: new Date().toISOString(),
       name, ownerName, category, location, city, zip, address, desc, fullDesc,
-      email, whatsapp, website, instagram, facebook, tiktok, etsy, logo, photo, price,
+      email, whatsapp, website, instagram, facebook, tiktok, etsy, logo, photo, gallery, price,
       approveToken: crypto.randomBytes(32).toString('hex'),
       rejectToken: crypto.randomBytes(32).toString('hex')
     };

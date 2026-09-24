@@ -8,7 +8,6 @@ module.exports = `<!DOCTYPE html>
 <meta name="keywords" content="recursos boricuas, mudarse Puerto Rico USA, regresar Puerto Rico, boricua diáspora guía">
 <link rel="canonical" href="https://www.masboricuaqueunmofongo.com/recursos">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2526350815852271" crossorigin="anonymous"></script>
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
@@ -64,7 +63,6 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;}
 .direction-card.usa-pr .direction-btn:hover{background:#a80e1f;}
 
 /* AD */
-.ad-strip{text-align:center;margin-bottom:2rem;}
 
 /* FOOTER */
 .pb-footer{background:var(--white);border-top:3px solid var(--red);margin-top:auto;}
@@ -154,12 +152,6 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;}
     </a>
   </div>
 
-  <!-- AD -->
-  <div class="ad-strip">
-    <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-2526350815852271" data-ad-slot="auto" data-ad-format="auto" data-full-width-responsive="true"></ins>
-    <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
-  </div>
-
 </div>
 
 <!-- FOOTER -->
@@ -168,11 +160,6 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;}
     <div>
       <div style="font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:800;color:#111;margin-bottom:0.3rem;">🇵🇷 Planeta Boricua</div>
       <div style="font-size:0.72rem;color:#666;margin-bottom:1rem;">Más Boricua Que Un Mofongo</div>
-      <div style="display:flex;gap:0.8rem;">
-        <a href="https://www.tiktok.com/@planetaboricua4" target="_blank" style="font-size:0.8rem;color:#CE1126;text-decoration:none;">📱 TikTok</a>
-        <a href="https://www.instagram.com/miplanetaboricua" target="_blank" style="font-size:0.8rem;color:#CE1126;text-decoration:none;">📸 IG</a>
-        <a href="https://www.facebook.com/elplanetaboricua" target="_blank" style="font-size:0.8rem;color:#CE1126;text-decoration:none;">👍 FB</a>
-      </div>
     </div>
     <div class="pb-footer-col">
       <h4>Portal</h4>
