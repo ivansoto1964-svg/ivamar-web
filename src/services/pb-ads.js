@@ -4,6 +4,7 @@ const path = require('path');
 
 const TYPES = new Set(['direct', 'affiliate', 'internal']);
 const STATUSES = new Set(['draft', 'active', 'inactive', 'archived']);
+const VERTICALS = new Set(['general', 'retail', 'travel', 'internal']);
 const TYPE_RANK = { direct:3, affiliate:2, internal:1 };
 const PLACEMENTS = new Set([
   'blog.inline_1', 'blog.inline_2',
@@ -28,7 +29,7 @@ function cleanList(value, allowed, max = 30) {
 
 function safeDestination(value, type) {
   const raw = String(value || '').trim();
-  if (type === 'internal' && /^\/[a-z0-9/_?&=.%+-]*$/i.test(raw) && !raw.startsWith('//')) return raw;
+  if (type === 'internal' && /^\/[a-z0-9/_?&=.%+#-]*$/i.test(raw) && !raw.startsWith('//')) return raw;
   let url;
   try { url = new URL(raw); } catch (_) { throw new Error('Incluye un enlace de destino válido.'); }
   if (url.protocol !== 'https:') throw new Error('El enlace de destino debe usar HTTPS.');
@@ -42,6 +43,10 @@ function safeImage(value) {
   if (/^\/media\/pb-ads\/[a-f0-9-]+\.(?:jpg|png|webp)$/i.test(raw)) return raw;
   if (/^\/img\/[a-z0-9/_-]+\.(?:jpg|jpeg|png|webp)$/i.test(raw)) return raw;
   throw new Error('Sube un banner JPG, PNG o WebP para servirlo directamente desde Planeta Boricua.');
+}
+
+function artisanEligible(campaign) {
+  return campaign?.type === 'internal' || campaign?.vertical === 'travel';
 }
 
 function isoDate(value, label) {
@@ -59,8 +64,12 @@ function validateCampaign(input, current = null) {
   const internalName = cleanText(input.internalName,120);
   const headline = cleanText(input.headline,140);
   const description = cleanText(input.description,240);
+  const cta = cleanText(input.cta || current?.cta || 'Conocer más',60);
   const imageAlt = cleanText(input.imageAlt,180);
-  if (!internalName || !headline || !imageAlt) throw new Error('Completa nombre interno, titular y texto alternativo.');
+  if (!internalName || !headline || !cta || !imageAlt) throw new Error('Completa nombre interno, titular, CTA y texto alternativo.');
+  const requestedVertical = cleanText(input.vertical || current?.vertical || (type === 'internal' ? 'internal' : 'general'),20);
+  const vertical = type === 'internal' ? 'internal' : requestedVertical;
+  if (!VERTICALS.has(vertical)) throw new Error('Selecciona una clasificación de inventario válida.');
   const startsAt = isoDate(input.startsAt, 'La fecha de inicio');
   const endsAt = isoDate(input.endsAt, 'La fecha de finalización');
   if (startsAt && endsAt && new Date(endsAt) <= new Date(startsAt)) throw new Error('La fecha final debe ser posterior al inicio.');
@@ -68,16 +77,19 @@ function validateCampaign(input, current = null) {
   const placements = cleanList(input.placements, PLACEMENTS);
   if (!sections.length || !placements.length) throw new Error('Selecciona por lo menos una sección y una posición.');
   if (placements.some(item => !sections.includes(item.split('.')[0]))) throw new Error('Cada posición debe pertenecer a una sección seleccionada.');
+  if (sections.includes('artisan') && !artisanEligible({type,vertical})) throw new Error('Los perfiles de artesanos solo aceptan promociones internas o campañas de viajes.');
   const now = new Date().toISOString();
   return {
     id:current?.id || `pbad-${Date.now()}-${crypto.randomBytes(3).toString('hex')}`,
     internalName,
     headline,
     description,
+    cta,
     image:safeImage(input.image || current?.image || ''),
     imageAlt,
     destinationUrl:safeDestination(input.destinationUrl, type),
     type,
+    vertical,
     status,
     startsAt,
     endsAt,
@@ -171,6 +183,7 @@ function createPBAds(options = {}) {
       if (item.startsAt && now < new Date(item.startsAt)) return false;
       if (item.endsAt && now >= new Date(item.endsAt)) return false;
       if (!item.sections?.includes(section) || !item.placements?.includes(placement)) return false;
+      if (section === 'artisan' && !artisanEligible(item)) return false;
       if (item.categories?.length && !item.categories.some(value => value.toLowerCase() === category)) return false;
       if (section === 'artisan' && artisanCategory && item.excludedArtisanCategories?.some(value => value.toLowerCase() === artisanCategory)) return false;
       return true;
@@ -242,4 +255,4 @@ function createPBAds(options = {}) {
   return {list,save,setStatus,remove,select,findActive,saveImageData,recordMetric,summary,wordCount,mediaDir,placements:[...PLACEMENTS],sections:[...SECTIONS]};
 }
 
-module.exports = {createPBAds,validateCampaign,wordCount,disclosure,TYPES,STATUSES,PLACEMENTS,SECTIONS};
+module.exports = {createPBAds,validateCampaign,wordCount,disclosure,artisanEligible,TYPES,STATUSES,VERTICALS,PLACEMENTS,SECTIONS};
