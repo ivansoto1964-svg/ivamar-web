@@ -66,5 +66,5 @@ module.exports = function loMasReciente(item, comments = [], recommendations = [
     finally { button.disabled = false; }
   });
 })();
-</script><script src="/js/pb-ads.js?v=1" defer></script><script src="/js/pb-instagram-share.js?v=5"></script></body></html>`;
+</script><script src="/js/pb-ads.js?v=2" defer></script><script src="/js/pb-instagram-share.js?v=5"></script></body></html>`;
 };

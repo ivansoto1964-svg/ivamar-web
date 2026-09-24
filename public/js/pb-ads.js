@@ -1,6 +1,18 @@
 (() => {
   const cards = [...document.querySelectorAll('[data-pb-campaign][data-pb-placement]')];
   if (!cards.length) return;
+  const fitCreative = card => {
+    const image = card.querySelector('.pb-sponsor-media img');
+    if (!image) return;
+    const apply = () => {
+      if (image.naturalWidth > 0 && image.naturalHeight > 0 && image.naturalWidth / image.naturalHeight >= 3) {
+        card.classList.add('pb-sponsor-card--wide');
+      }
+    };
+    if (image.complete) apply();
+    else image.addEventListener('load',apply,{once:true});
+  };
+  cards.forEach(fitCreative);
   const send = card => {
     const campaign = card.dataset.pbCampaign;
     const placement = card.dataset.pbPlacement;

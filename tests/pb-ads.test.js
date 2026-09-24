@@ -12,6 +12,7 @@ const renderControl = require('../src/views/pb-ads-control');
 
 const repositorySeed = JSON.parse(fs.readFileSync(path.join(__dirname,'../data/pb-ads/campaigns.json'),'utf8'));
 const adStyles = fs.readFileSync(path.join(__dirname,'../public/css/pb-ads.css'),'utf8');
+const adScript = fs.readFileSync(path.join(__dirname,'../public/js/pb-ads.js'),'utf8');
 repositorySeed.forEach(campaign => assert.doesNotThrow(() => validateCampaign(campaign,campaign)));
 assert.ok(repositorySeed.every(campaign => campaign.status === 'draft'),'starter campaigns must require an explicit activation');
 assert.ok(repositorySeed.every(campaign => campaign.cta && campaign.vertical),'starter campaigns must define a CTA and inventory vertical');
@@ -19,6 +20,10 @@ assert.ok(repositorySeed.filter(campaign => campaign.sections.includes('artisan'
 assert.ok(repositorySeed.filter(campaign => campaign.advertiser === 'Amazon').every(campaign => !campaign.sections.includes('artisan')),'Amazon must never be eligible on artisan profiles');
 assert.match(adStyles, /@media\(max-width:620px\)[\s\S]*\.pb-sponsor-link\{grid-template-columns:minmax\(0,1fr\)/, 'mobile ads must use a full-width stacked layout');
 assert.match(adStyles, /@media\(max-width:620px\)[\s\S]*\.pb-sponsor-media\{width:100%;aspect-ratio:16\/9\}/, 'mobile ad images must fill the available card width');
+assert.match(adStyles, /\.pb-sponsor-card--wide \.pb-sponsor-media\{[^}]*width:100%;aspect-ratio:auto/, 'wide affiliate banners must preserve their complete aspect ratio');
+assert.match(adStyles, /\.pb-sponsor-card--wide \.pb-sponsor-media img\{[^}]*height:auto;object-fit:contain/, 'wide affiliate banners must never be cropped');
+assert.match(adScript, /naturalWidth \/ image\.naturalHeight >= 3/, 'PB Ads must detect ultra-wide creatives automatically');
+assert.doesNotThrow(() => new Function(adScript));
 
 const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(),'pb-ads-test-'));
 const seedFile = path.join(tempRoot,'seed.json');
