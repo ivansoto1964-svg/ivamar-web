@@ -11,11 +11,14 @@ const renderArtisan = require('../src/views/planetaboricua/artesano-perfil');
 const renderControl = require('../src/views/pb-ads-control');
 
 const repositorySeed = JSON.parse(fs.readFileSync(path.join(__dirname,'../data/pb-ads/campaigns.json'),'utf8'));
+const adStyles = fs.readFileSync(path.join(__dirname,'../public/css/pb-ads.css'),'utf8');
 repositorySeed.forEach(campaign => assert.doesNotThrow(() => validateCampaign(campaign,campaign)));
 assert.ok(repositorySeed.every(campaign => campaign.status === 'draft'),'starter campaigns must require an explicit activation');
 assert.ok(repositorySeed.every(campaign => campaign.cta && campaign.vertical),'starter campaigns must define a CTA and inventory vertical');
 assert.ok(repositorySeed.filter(campaign => campaign.sections.includes('artisan')).every(artisanEligible),'artisan inventory must be internal or travel');
 assert.ok(repositorySeed.filter(campaign => campaign.advertiser === 'Amazon').every(campaign => !campaign.sections.includes('artisan')),'Amazon must never be eligible on artisan profiles');
+assert.match(adStyles, /@media\(max-width:620px\)[\s\S]*\.pb-sponsor-link\{grid-template-columns:minmax\(0,1fr\)/, 'mobile ads must use a full-width stacked layout');
+assert.match(adStyles, /@media\(max-width:620px\)[\s\S]*\.pb-sponsor-media\{width:100%;aspect-ratio:16\/9\}/, 'mobile ad images must fill the available card width');
 
 const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(),'pb-ads-test-'));
 const seedFile = path.join(tempRoot,'seed.json');
