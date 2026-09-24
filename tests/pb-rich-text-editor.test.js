@@ -74,6 +74,7 @@ for (const rendered of [blogIndexHtml, latestIndexHtml, blogHtml, latestHtml]) {
 }
 assert.match(blogIndexHtml, /class="story-img pb-editorial-card-media"[\s\S]*class="pb-editorial-card-image"/, 'El Balcón cards must use the shared card treatment.');
 assert.match(latestIndexHtml, /class="latest-media pb-editorial-card-media"[\s\S]*class="pb-editorial-card-image"/, 'Latest cards must use the shared card treatment.');
+assert.doesNotMatch(latestIndexHtml, /\/go\/travel-flights|presentado por <span>Trip\.com/, 'Latest index must not bypass PB Ads with a fixed affiliate block.');
 
 new vm.Script(asset, { filename:'pb-rich-text-editor.js' });
 console.log('PB rich text editor contract: OK');
