@@ -65,6 +65,13 @@ assert.match(server, /PB_ARTISAN_CREATION_LIMITS/);
 assert.ok(server.includes('jpeg|png|webp'), 'server must validate the supported image MIME types');
 assert.match(server, /quality: 'auto:good'/);
 assert.match(server, /renderPBSocialFollow/);
+const artisanAccessStart = server.indexOf("app.post('/api/pb-artesano-access'");
+const artisanAccessEnd = server.indexOf("app.get('/artesanos/mi-perfil/:token'", artisanAccessStart);
+assert.ok(artisanAccessStart >= 0 && artisanAccessEnd > artisanAccessStart, 'artisan access route must exist');
+const artisanAccessRoute = server.slice(artisanAccessStart, artisanAccessEnd);
+assert.match(artisanAccessRoute, /const delivery = await resend\.emails\.send/);
+assert.match(artisanAccessRoute, /delivery\?\.error \|\| !delivery\?\.data\?\.id/);
+assert.match(artisanAccessRoute, /return res\.status\(503\)\.json\(\{ok:false,message:'No pudimos enviar el email/);
 
 const galleryClient = fs.readFileSync(path.join(root,'public/js/pb-artisan-gallery.js'),'utf8');
 assert.match(galleryClient, /const MAX_IMAGES = 12/);
