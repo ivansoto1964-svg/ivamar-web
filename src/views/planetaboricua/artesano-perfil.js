@@ -14,6 +14,27 @@ const socialUrl = (value, network) => {
   if (/^(https?:\/\/|www\.)/i.test(raw) || raw.includes(`${network}.com/`)) return safeUrl(raw);
   return /^[a-zA-Z0-9._]+$/.test(raw) ? `https://${network}.com/${raw}` : '';
 };
+const normalizeCreation = value => {
+  if (typeof value === 'string') return {image:safeUrl(value),title:'',description:'',alt:''};
+  if (!value || typeof value !== 'object') return null;
+  return {
+    image:safeUrl(value.image || value.url),
+    title:String(value.title || '').trim(),
+    description:String(value.description || '').trim(),
+    alt:String(value.alt || '').trim()
+  };
+};
+const primaryArtisanContact = item => {
+  const phone = String(item.whatsapp || '').replace(/[^0-9]/g,'');
+  if (phone) return {href:`https://wa.me/${phone}`,label:'Contactar al artesano',track:'whatsapp'};
+  const website = safeUrl(item.website);
+  if (website) return {href:website,label:'Conoce más sobre su trabajo',track:'website'};
+  const instagram = socialUrl(item.instagram,'instagram');
+  if (instagram) return {href:instagram,label:'Conoce más sobre su trabajo',track:'instagram'};
+  const facebook = socialUrl(item.facebook,'facebook');
+  if (facebook) return {href:facebook,label:'Conoce más sobre su trabajo',track:'facebook'};
+  return null;
+};
 const { renderExplorePB } = require('./explore-pb');
 const { renderPBAd } = require('./pb-ad');
 const { isIndexablePBArtisan } = require('../../utils/pb-seo');
@@ -48,12 +69,19 @@ function artesanoPerfil(item, helpers) {
 
 module.exports = function artesanoPerfilConResponsable(item, helpers) {
   let html = artesanoPerfil(item, helpers);
-  const gallery = [...new Set((Array.isArray(item.gallery) ? item.gallery : []).map(safeUrl).filter(Boolean))].filter(url => url !== safeUrl(item.photo)).slice(0, 5);
+  const seen = new Set();
+  const gallery = (Array.isArray(item.gallery) ? item.gallery : []).map(normalizeCreation).filter(creation => {
+    if (!creation?.image || creation.image === safeUrl(item.photo) || seen.has(creation.image)) return false;
+    seen.add(creation.image);
+    return true;
+  }).slice(0, 12);
   if (gallery.length) {
-    const galleryHtml = `<section class="artisan-gallery" aria-labelledby="artisan-gallery-title"><div class="eyebrow">Más de su trabajo</div><h2 id="artisan-gallery-title">Galería</h2><div class="artisan-gallery-grid">${gallery.map((url,index) => `<a href="${esc(url)}" target="_blank" rel="noopener" aria-label="Abrir imagen ${index + 1} de la galería"><img src="${esc(url)}" alt="Trabajo adicional de ${esc(item.name)}" width="600" height="450" loading="lazy" decoding="async"></a>`).join('')}</div></section>`;
+    const contact = primaryArtisanContact(item);
+    const contactHtml = contact ? `<div class="artisan-gallery-contact"><p>¿Quieres conocer más sobre estas creaciones?</p><a class="btn" data-pb-track="${esc(contact.track)}" href="${esc(contact.href)}" target="_blank" rel="ugc nofollow noopener noreferrer">${esc(contact.label)}</a></div>` : '';
+    const galleryHtml = `<section class="artisan-gallery" aria-labelledby="artisan-gallery-title"><div class="eyebrow">Una vitrina de su trabajo</div><h2 id="artisan-gallery-title">👐 Mis creaciones</h2><p class="artisan-gallery-intro">Conoce algunas de las piezas y el proceso creativo de ${esc(item.ownerName || item.name)}.</p><div class="artisan-gallery-grid">${gallery.map((creation,index) => `<article class="artisan-creation${creation.title || creation.description ? '' : ' artisan-creation-image-only'}"><a class="artisan-creation-image" href="${esc(creation.image)}" target="_blank" rel="noopener" aria-label="Ver en grande: ${esc(creation.title || `creación ${index + 1}`)}"><img src="${esc(creation.image)}" alt="${esc(creation.alt || `Trabajo adicional de ${item.name}`)}" width="640" height="480" loading="lazy" decoding="async" fetchpriority="low"></a>${creation.title || creation.description ? `<div class="artisan-creation-copy">${creation.title ? `<h3>${esc(creation.title)}</h3>` : ''}${creation.description ? `<p>${esc(creation.description)}</p>` : ''}</div>` : ''}</article>`).join('')}</div>${contactHtml}</section>`;
     html = html.replace(
       '.upcoming{margin:1.3rem 0;background:#fff;border-radius:12px;padding:1.3rem}',
-      '.artisan-gallery{margin:1.3rem 0;background:#fff;border-radius:12px;padding:1.3rem}.artisan-gallery h2{color:#002d62}.artisan-gallery-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.75rem;margin-top:1rem}.artisan-gallery-grid a{display:block;aspect-ratio:4/3;overflow:hidden;border-radius:9px;background:#edf1f5}.artisan-gallery-grid img{display:block;width:100%;height:100%;object-fit:cover}.upcoming{margin:1.3rem 0;background:#fff;border-radius:12px;padding:1.3rem}'
+      '.artisan-gallery{margin:1.3rem 0;background:#fff;border-radius:12px;padding:clamp(1.15rem,3vw,1.7rem)}.artisan-gallery h2{color:#002d62}.artisan-gallery-intro{color:#596273;line-height:1.6;margin:.35rem 0 1.1rem}.artisan-gallery-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}.artisan-creation{border:1px solid #e1e6ec;border-radius:12px;overflow:hidden;background:#fff;box-shadow:0 5px 16px #002d620a}.artisan-creation-image{display:block;aspect-ratio:4/3;overflow:hidden;background:#edf1f5}.artisan-creation-image img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .2s ease}.artisan-creation-image:hover img{transform:scale(1.025)}.artisan-creation-copy{padding:.85rem}.artisan-creation-copy h3{font-family:Georgia,serif;color:#002d62;font-size:1.08rem;margin:0 0 .4rem}.artisan-creation-copy p{white-space:pre-line;color:#4f5968;font-size:.88rem;line-height:1.55;margin:0}.artisan-gallery-contact{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-top:1.2rem;padding-top:1.1rem;border-top:1px solid #e3e7ed}.artisan-gallery-contact p{margin:0;color:#4f5968;font-weight:700}@media(max-width:760px){.artisan-gallery-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:520px){.artisan-gallery-grid{grid-template-columns:1fr}.artisan-creation{display:grid;grid-template-columns:120px 1fr}.artisan-creation-image{height:100%;min-height:120px}.artisan-creation-image-only{display:block}.artisan-creation-image-only .artisan-creation-image{height:auto}.artisan-gallery-contact{align-items:stretch;flex-direction:column}.artisan-gallery-contact .btn{text-align:center}}.upcoming{margin:1.3rem 0;background:#fff;border-radius:12px;padding:1.3rem}'
     ).replace('</article>', `</article>${galleryHtml}`);
   }
   html = html.replace(

@@ -326,14 +326,15 @@ footer{background:var(--blue);padding:2rem;text-align:center;}
         <input type="hidden" id="biz-photo" value="">
         <div id="upload-status" style="font-size:0.78rem;margin-top:0.5rem;"></div>
       </div>
-      <div class="form-group" data-pb-gallery-editor>
-        <label for="gallery-files">Galería adicional (opcional)</label>
-        <p style="font-size:.78rem;color:var(--mid);line-height:1.5;margin:.2rem 0 .7rem">Puedes añadir hasta 5 fotos más. Se optimizan al subir y cargarán solamente cuando el visitante se acerque a la galería.</p>
-        <input type="file" id="gallery-files" data-pb-gallery-files accept="image/jpeg,image/png,image/webp" multiple>
+      <div class="form-group" data-pb-gallery-editor data-pb-gallery-all-new>
+        <h3 id="gallery-files-label" style="color:var(--blue);margin-bottom:.35rem">👐 Mis creaciones (opcional)</h3>
+        <p style="font-size:.78rem;color:var(--mid);line-height:1.5;margin:.2rem 0 .7rem">Puedes añadir hasta 12 creaciones. Las fotos se optimizan al subir y cargan solamente cuando el visitante se acerca a esta sección.</p>
+        <div class="pb-gallery-guidance"><strong>Cuéntanos sobre cada creación</strong><p>Puedes mencionar qué es, cómo la creaste, los materiales y técnicas que utilizaste, qué inspiró su diseño, su conexión con Puerto Rico o qué hace especial la pieza.</p><p><strong>En lugar de:</strong> “Pulsera azul.”<br><strong>Podrías contar:</strong> “Pulsera elaborada a mano utilizando cuentas en tonos azules y blancos. Su diseño está inspirado en los colores del mar que rodea Puerto Rico.”</p><small>El ejemplo es orientación y no se copiará automáticamente.</small></div>
+        <input type="file" id="gallery-files" data-pb-gallery-files aria-labelledby="gallery-files-label" accept="image/jpeg,image/png,image/webp" multiple>
         <input type="hidden" id="biz-gallery" data-pb-gallery-value value="[]">
         <div data-pb-gallery-preview style="display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:.65rem;margin-top:.8rem"></div>
         <div data-pb-gallery-status style="font-size:.78rem;margin-top:.5rem" role="status"></div>
-        <style>.pb-gallery-thumb{position:relative;aspect-ratio:4/3}.pb-gallery-thumb img{width:100%;height:100%;object-fit:cover;border-radius:8px}.pb-gallery-thumb button{position:absolute;right:.3rem;bottom:.3rem;border:0;border-radius:6px;background:#8d1020;color:#fff;padding:.35rem .5rem;font-weight:800}</style>
+        <style>.pb-gallery-guidance{background:#f5f8fc;border-left:4px solid var(--red);border-radius:8px;padding:1rem;margin:.8rem 0 1rem}.pb-gallery-guidance p{font-size:.82rem;line-height:1.5;margin:.45rem 0}.pb-gallery-guidance small{color:var(--mid)}[data-pb-gallery-preview]{display:grid!important;gap:1rem!important}.pb-creation-editor-card{display:grid;grid-template-columns:minmax(150px,220px) 1fr;gap:1rem;border:1px solid #dde3ea;border-radius:12px;padding:.8rem;background:#fff}.pb-creation-editor-media{position:relative;aspect-ratio:4/3}.pb-creation-editor-media img{width:100%;height:100%;object-fit:cover;border-radius:8px}.pb-creation-remove{position:absolute;right:.35rem;bottom:.35rem;border:0;border-radius:6px;background:#8d1020;color:#fff;padding:.4rem .6rem;font-weight:800}.pb-creation-editor-fields{display:grid;gap:.7rem}.pb-creation-field{display:block}.pb-creation-field>label{display:block;font-size:.76rem;font-weight:800;margin-bottom:.3rem}.pb-creation-field small{display:block;color:var(--mid);font-size:.72rem;line-height:1.4;margin-top:.25rem}.pb-creation-field textarea{min-height:90px}.pb-prompt-refresh{border:0;background:transparent;color:var(--blue);padding:.25rem 0;font-size:.76rem;font-weight:800;cursor:pointer;text-decoration:underline}@media(max-width:620px){.pb-creation-editor-card{grid-template-columns:1fr}.pb-creation-editor-media{max-width:320px}}</style>
       </div>
       <div class="form-group">
         <label>Rango de Precios</label>
@@ -480,6 +481,8 @@ async function submitNegocio() {
   const values={name:document.getElementById('biz-name').value.trim(),ownerName:document.getElementById('biz-owner-name').value.trim(),category:document.getElementById('biz-category').value,location:document.getElementById('biz-location').value,city:document.getElementById('biz-city').value.trim(),zip:document.getElementById('biz-zip').value.trim(),address:document.getElementById('biz-address').value.trim(),desc:document.getElementById('biz-desc').value.trim(),fullDesc:document.getElementById('biz-full-desc').value.trim(),email:normalizeEmailInput(document.getElementById('biz-email').value),whatsapp:document.getElementById('biz-whatsapp').value.trim(),website:document.getElementById('biz-website').value.trim(),instagram:document.getElementById('biz-instagram').value.trim(),facebook:document.getElementById('biz-facebook').value.trim(),tiktok:document.getElementById('biz-tiktok').value.trim(),etsy:document.getElementById('biz-etsy').value.trim(),logo:document.getElementById('biz-logo').value.trim(),photo:document.getElementById('biz-photo').value.trim(),gallery:document.getElementById('biz-gallery').value,price:document.getElementById('biz-price').value};
   const required=[['name','biz-name','Escribe el nombre del negocio o taller.'],['ownerName','biz-owner-name','Escribe el nombre del artesano o artesana.'],['category','biz-category','Selecciona una categoría.'],['location','biz-location','Selecciona tu estado o pueblo.'],['city','biz-city','Escribe tu ciudad, pueblo o sector.'],['desc','biz-desc','Añade una descripción corta.'],['fullDesc','biz-full-desc','Cuéntanos un poco más sobre tu trabajo.'],['email','biz-email','Escribe tu email.'],['photo','photo-upload-area','Sube una foto principal de tu trabajo.']];
   for(const [key,id,msg] of required){if(!values[key]){showRegistrationError('⚠️ '+msg,id);return}}
+  const incompleteCreation=document.querySelector('[data-pb-gallery-editor] input[required]:placeholder-shown,[data-pb-gallery-editor] textarea[required]:placeholder-shown')||[...document.querySelectorAll('[data-pb-gallery-editor] input[required],[data-pb-gallery-editor] textarea[required]')].find(field=>!field.value.trim());
+  if(incompleteCreation){showRegistrationError('⚠️ Cada creación nueva necesita título y descripción. Completa los campos marcados con * antes de enviar.');incompleteCreation.focus();incompleteCreation.scrollIntoView({behavior:'smooth',block:'center'});return}
   if(!validEmail(values.email)){showRegistrationError('⚠️ El email no parece válido. Revísalo antes de enviar.','biz-email');return}
   if(!document.getElementById('terms-agree').checked){showRegistrationError('⚠️ Debes aceptar los términos antes de enviar.','terms-agree');return}
   const btn=document.getElementById('submit-btn');btn.disabled=true;btn.textContent='Enviando… no cierres esta página';
@@ -493,7 +496,7 @@ async function submitNegocio() {
 }
 
 document.addEventListener('DOMContentLoaded',()=>{restoreArtisanDraft();document.querySelectorAll('input,select,textarea').forEach(el=>{el.addEventListener('input',saveArtisanDraft);el.addEventListener('change',saveArtisanDraft)})});
-</script><script src="/js/pb-artisan-gallery.js?v=1" defer></script>
+</script><script src="/js/pb-artisan-gallery.js?v=2" defer></script>
 
 </body>
 </html>

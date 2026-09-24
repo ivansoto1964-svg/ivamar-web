@@ -4,6 +4,7 @@ const helmet = require("helmet");
 const express = require("express");
 const sanitizeHtml = require('sanitize-html');
 const sanitize = (str) => str ? sanitizeHtml(str, { allowedTags: [], allowedAttributes: {} }) : '';
+const { hasRequiredDetailsForNewCreations } = require('./utils/pb-artisan-creations');
 const pbBlogStore = require('./services/pb-blog-store');
 const pbSiteAnalytics = require('./services/pb-site-analytics');
 const { buildPBExploreRecommendations } = require('./services/pb-ecosystem-explore');
@@ -2892,8 +2893,9 @@ app.post("/start", async (req, res) => {
 // CLOUDINARY PHOTO UPLOAD
 // ==========================================
 const cloudinary = require('cloudinary').v2;
-const PB_ARTISAN_GALLERY_LIMIT = 5;
+const PB_ARTISAN_GALLERY_LIMIT = 12;
 const PB_ARTISAN_IMAGE_MAX_BYTES = 5 * 1024 * 1024;
+const PB_ARTISAN_CREATION_LIMITS = Object.freeze({title:120,description:700,alt:180});
 
 function isSafePBArtisanImage(value) {
   try {
@@ -2909,7 +2911,22 @@ function sanitizePBArtisanGallery(value, mainPhoto = '') {
   }
   if (!Array.isArray(items)) return [];
   const main = String(mainPhoto || '').trim();
-  return [...new Set(items.map(item => String(item || '').trim()).filter(item => item !== main && isSafePBArtisanImage(item)))].slice(0, PB_ARTISAN_GALLERY_LIMIT);
+  const creations = [];
+  const seen = new Set();
+  for (const item of items) {
+    const legacyImage = typeof item === 'string' ? item : '';
+    const image = String(legacyImage || item?.image || item?.url || '').trim();
+    if (!image || image === main || seen.has(image) || !isSafePBArtisanImage(image)) continue;
+    seen.add(image);
+    creations.push({
+      image,
+      title:sanitize(typeof item === 'object' ? item?.title : '').trim().slice(0,PB_ARTISAN_CREATION_LIMITS.title),
+      description:sanitize(typeof item === 'object' ? item?.description : '').trim().slice(0,PB_ARTISAN_CREATION_LIMITS.description),
+      alt:sanitize(typeof item === 'object' ? item?.alt : '').trim().slice(0,PB_ARTISAN_CREATION_LIMITS.alt)
+    });
+    if (creations.length >= PB_ARTISAN_GALLERY_LIMIT) break;
+  }
+  return creations;
 }
 
 cloudinary.config({
@@ -4321,6 +4338,7 @@ app.post('/pb-control/artesanos/:id', requirePBAdmin, requirePBCsrf, express.jso
   changes.gallery=Object.prototype.hasOwnProperty.call(req.body||{},'gallery')
     ? sanitizePBArtisanGallery(req.body.gallery,changes.photo)
     : sanitizePBArtisanGallery(record.item.gallery,changes.photo);
+  if(!hasRequiredDetailsForNewCreations(changes.gallery,record.item.gallery)) return res.status(400).json({ok:false,error:'Las creaciones nuevas necesitan título y descripción.'});
   if(!changes.name||!changes.category||!changes.location||!changes.city||!changes.desc||!changes.fullDesc||!changes.email||!changes.photo) return res.status(400).json({ok:false,error:'Completa los campos requeridos.'});
   if (changes.photo !== String(record.item.photo || '') && !isSafePBArtisanImage(changes.photo)) return res.status(400).json({ok:false,error:'La foto principal debe subirse desde el formulario.'});
   if (changes.logo && changes.logo !== String(record.item.logo || '') && !isSafePBArtisanImage(changes.logo)) return res.status(400).json({ok:false,error:'El logo debe subirse desde el formulario.'});
@@ -4403,6 +4421,7 @@ app.post('/api/pb-artesano-update/:token', pbArtisanLimiter, express.json({limit
   changes.gallery = Object.prototype.hasOwnProperty.call(req.body || {}, 'gallery')
     ? sanitizePBArtisanGallery(req.body.gallery, changes.photo)
     : sanitizePBArtisanGallery(record.item.gallery, changes.photo);
+  if (!hasRequiredDetailsForNewCreations(changes.gallery, record.item.gallery)) return res.status(400).json({ok:false,error:'Las creaciones nuevas necesitan título y descripción.'});
   if (!changes.name || !changes.category || !changes.location || !changes.city || !changes.desc || !changes.fullDesc || !changes.photo) return res.status(400).json({ok:false,error:'Completa los campos requeridos, incluyendo la foto principal.'});
   if (changes.photo !== String(record.item.photo || '') && !isSafePBArtisanImage(changes.photo)) return res.status(400).json({ok:false,error:'La foto principal debe subirse desde el formulario.'});
   if (changes.logo && changes.logo !== String(record.item.logo || '') && !isSafePBArtisanImage(changes.logo)) return res.status(400).json({ok:false,error:'El logo debe subirse desde el formulario.'});
@@ -4443,6 +4462,7 @@ app.post("/api/pb-negocio-submit", pbArtisanLimiter, express.json({limit:'80kb'}
   const logo = sanitize(req.body.logo || '');
   const photo = sanitize(req.body.photo);
   const gallery = sanitizePBArtisanGallery(req.body.gallery, photo);
+  if (!hasRequiredDetailsForNewCreations(gallery)) return res.status(400).json({ok:false,error:'Cada creación necesita título y descripción.'});
   const price = sanitize(req.body.price || '');
 
   if (!name || !ownerName || !category || !location || !city || !desc || !fullDesc || !email || !photo) {
