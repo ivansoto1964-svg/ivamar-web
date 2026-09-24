@@ -4396,7 +4396,12 @@ app.post('/api/pb-artesano-access', pbArtisanLimiter, express.json({limit:'10kb'
   const token = createPBArtisanToken(item);
   if (!token) return res.status(503).json({ok:false,message:'El acceso de artesanos todavía no está configurado. Intenta más tarde.'});
   try {
-    await resend.emails.send({from:`Planeta Boricua <${PB_SENDER_EMAIL}>`,to:email,subject:'🇵🇷 Enlace para administrar tu perfil en Planeta Boricua',html:`<div style="font-family:system-ui;max-width:600px"><h2>Administra tu perfil</h2><p>Hola <strong>${emailEscForResponse(item.ownerName || item.name)}</strong>. Usa este enlace para actualizar la información de <strong>${emailEscForResponse(item.name)}</strong>. El enlace vence en 2 horas.</p><p><a href="https://www.masboricuaqueunmofongo.com/artesanos/mi-perfil/${encodeURIComponent(token)}" style="display:inline-block;background:#002d62;color:#fff;padding:12px 18px;border-radius:7px;text-decoration:none;font-weight:700">Abrir mi perfil</a></p><p style="color:#777;font-size:13px">Si no solicitaste este acceso, puedes ignorar este mensaje.</p></div>`});
+    const delivery = await resend.emails.send({from:`Planeta Boricua <${PB_SENDER_EMAIL}>`,to:email,subject:'🇵🇷 Enlace para administrar tu perfil en Planeta Boricua',html:`<div style="font-family:system-ui;max-width:600px"><h2>Administra tu perfil</h2><p>Hola <strong>${emailEscForResponse(item.ownerName || item.name)}</strong>. Usa este enlace para actualizar la información de <strong>${emailEscForResponse(item.name)}</strong>. El enlace vence en 2 horas.</p><p><a href="https://www.masboricuaqueunmofongo.com/artesanos/mi-perfil/${encodeURIComponent(token)}" style="display:inline-block;background:#002d62;color:#fff;padding:12px 18px;border-radius:7px;text-decoration:none;font-weight:700">Abrir mi perfil</a></p><p style="color:#777;font-size:13px">Si no solicitaste este acceso, puedes ignorar este mensaje.</p></div>`});
+    if (delivery?.error || !delivery?.data?.id) {
+      const reason = delivery?.error?.message || 'Resend no devolvió confirmación del envío.';
+      console.error('PB artisan access email rejected:', reason);
+      return res.status(503).json({ok:false,message:'No pudimos enviar el email en este momento. Intenta de nuevo más tarde.'});
+    }
   } catch (error) { console.error('PB artisan access email:',error.message); return res.status(503).json({ok:false,message:'No pudimos enviar el email en este momento. Intenta de nuevo más tarde.'}); }
   res.json({ok:true,message:generic});
 });
