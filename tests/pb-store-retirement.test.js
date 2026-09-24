@@ -14,4 +14,11 @@ assert.doesNotMatch(home, /href="\/tienda-boricua"|Tienda Boricua|Explorar la Ti
 assert.doesNotMatch(statePage, /Tienda Boricua|Ver Tienda en Amazon/);
 assert.equal(fs.existsSync(path.join(root,'src/views/tienda-boricua.js')),false);
 
+const blogPostsDir = path.join(root,'data/pb-blog/posts');
+const retiredCommercialPattern = /Tienda Boricua|Tienda PB|amazon\.com\/shop\/planetaboricua|amzn\.to|booking\.tpo\.lu|trip\.tpo\.lu|kiwi\.tpo\.lu|us\.trip\.com/i;
+for (const filename of fs.readdirSync(blogPostsDir).filter(name => name.endsWith('.json'))) {
+  const post = fs.readFileSync(path.join(blogPostsDir,filename),'utf8');
+  assert.doesNotMatch(post,retiredCommercialPattern,`${filename} must not contain retired store or travel promotion blocks`);
+}
+
 console.log('PB store retirement and redirect tests passed');
