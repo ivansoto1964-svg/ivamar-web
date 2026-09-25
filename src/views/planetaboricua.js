@@ -1,3 +1,5 @@
+const { renderPBSiteFooter } = require('./planetaboricua/site-footer');
+
 module.exports = `<!DOCTYPE html>
 <html lang="es">
 <head>
@@ -722,40 +724,7 @@ async function loadDirectorio() {
 </section>
 
 <!-- FOOTER -->
-<footer class="pb-footer">
-  <div class="pb-footer-main">
-    <div class="pb-footer-brand">
-      <div class="pb-footer-logo">🇵🇷 Planeta Boricua</div>
-      <div class="pb-footer-tagline">Más Boricua Que Un Mofongo</div>
-    </div>
-    <div class="pb-footer-col">
-      <h4>Portal</h4>
-      <a href="/blog">El Balcón</a>
-      <a href="#recursos">Recursos</a>
-      <a href="/feria-artesanos">Artesanos Puertorriqueños</a>
-      <a href="/agenda-boricua">Agenda Boricua</a>
-      <a href="#viajes">Viajes</a>
-    </div>
-    <div class="pb-footer-col">
-      <h4>Comunidad</h4>
-      <a href="/feria-artesanos">Feria Digital de Artesanías 🎨</a>
-      <a href="/compartir-evento-boricua">Comparte un evento gratis</a>
-      <a href="mailto:masboricuaqueunmofongo@gmail.com">Contacto</a>
-    </div>
-    <div class="pb-footer-col">
-      <h4>Legal</h4>
-      <a href="/quienes-somos">Quiénes Somos</a>
-      <a href="/privacidad-boricua">Privacidad</a>
-      <a href="/terminos-boricua">Términos</a>
-    </div>
-  </div>
-  <div class="pb-footer-bottom">
-    <div class="pb-footer-bottom-inner">
-      <div class="pb-footer-copy">© 2026 Planeta Boricua · masboricuaqueunmofongo.com · Todos los derechos reservados</div>
-      <div class="pb-footer-owner">Proyecto independiente de Iván Soto · Florida, USA</div>
-    </div>
-  </div>
-</footer>
+${renderPBSiteFooter()}
 
 <script>
 let pbInstallPrompt = null;

@@ -48,6 +48,7 @@ const primaryArtisanContact = item => {
 };
 const { renderExplorePB } = require('./explore-pb');
 const { renderPBAd } = require('./pb-ad');
+const { renderPBSiteFooter } = require('./site-footer');
 const { isIndexablePBArtisan } = require('../../utils/pb-seo');
 
 function artesanoPerfil(item, helpers) {
@@ -81,6 +82,20 @@ function artesanoPerfil(item, helpers) {
 
 module.exports = function artesanoPerfilConResponsable(item, helpers) {
   let html = artesanoPerfil(item, helpers);
+  html = html.replace(/<footer class="pb-footer">[\s\S]*?<\/footer>/, renderPBSiteFooter());
+  const profileShareUrl = `https://www.masboricuaqueunmofongo.com/a/${helpers.slug}`;
+  const profileShareText = `Conoce el trabajo artesanal de ${item.name} en Planeta Boricua.`;
+  const whatsappShareUrl = `https://wa.me/?text=${encodeURIComponent(`${profileShareText} ${profileShareUrl}`)}`;
+  html = html.replace(
+    '.share{text-align:center;margin:2rem 0}.share a{color:#ce1126;font-weight:700}',
+    '.share{margin:2rem 0;padding:1.25rem;background:#fff;border:1px solid #dfe4eb;border-radius:12px;text-align:center}.share h2{margin:0;color:#002d62;font-size:1.25rem}.share p{margin:.35rem 0 1rem;color:#596273;line-height:1.5}.share-actions{display:flex;justify-content:center;gap:.65rem;flex-wrap:wrap}.share-action{min-height:44px;border:1px solid #cbd4df;border-radius:8px;background:#fff;color:#002d62;padding:.72rem 1rem;font:800 .82rem Inter,system-ui,sans-serif;text-decoration:none;cursor:pointer}.share-action.primary{background:#002d62;color:#fff;border-color:#002d62}.share-action.whatsapp{background:#178c49;color:#fff;border-color:#178c49}.share-action:focus-visible{outline:3px solid #ce1126;outline-offset:3px}.share-status{min-height:1.2em;margin:.75rem 0 0!important;color:#36516e!important;font-size:.8rem}@media(max-width:520px){.share-actions{align-items:stretch;flex-direction:column}.share-action{width:100%}}'
+  );
+  html = html.replace(
+    /<div class="share">[\s\S]*?<\/div>/,
+    `<section class="share" aria-labelledby="artisan-share-title"><h2 id="artisan-share-title">Comparte este perfil</h2><p>Ayuda a más personas a descubrir el trabajo de ${esc(item.name)}.</p><div class="share-actions"><button class="share-action primary" id="pb-share-profile" type="button" data-pb-track="share">📤 Compartir este perfil</button><a class="share-action whatsapp" data-pb-track="share" href="${esc(whatsappShareUrl)}" target="_blank" rel="noopener noreferrer">WhatsApp</a><button class="share-action" id="pb-copy-profile" type="button" data-pb-track="share">🔗 Copiar enlace</button></div><p class="share-status" id="pb-share-status" role="status" aria-live="polite"></p></section>`
+  );
+  const shareScript = `<script>(()=>{const shareButton=document.getElementById('pb-share-profile'),copyButton=document.getElementById('pb-copy-profile'),status=document.getElementById('pb-share-status'),url=${JSON.stringify(profileShareUrl)},title=${JSON.stringify(item.name)},text=${JSON.stringify(profileShareText)};async function copyProfile(){try{await navigator.clipboard.writeText(url)}catch(_){const area=document.createElement('textarea');area.value=url;area.setAttribute('readonly','');area.style.position='fixed';area.style.opacity='0';document.body.appendChild(area);area.select();document.execCommand('copy');area.remove()}status.textContent='Enlace copiado. Ya puedes compartirlo.'}if(shareButton)shareButton.addEventListener('click',async()=>{if(navigator.share){try{await navigator.share({title,text,url});status.textContent='Perfil compartido.';return}catch(error){if(error&&error.name==='AbortError')return}}await copyProfile()});if(copyButton)copyButton.addEventListener('click',copyProfile)})();</script>`;
+  html = html.replace('</body>', shareScript + '</body>');
   const seen = new Set();
   const gallery = (Array.isArray(item.gallery) ? item.gallery : []).map(normalizeCreation).filter(creation => {
     if (!creation?.image || creation.image === safeUrl(item.photo) || seen.has(creation.image)) return false;
