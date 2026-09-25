@@ -57,7 +57,7 @@ footer p{color:rgba(255,255,255,0.3);font-size:0.75rem;margin-top:0.5rem;}
     <div class="nav-links">
       <a href="/">Portal</a>
       <a href="/blog">El Balcón</a>
-      <a href="/#directorio">Feria de Artesanías</a>
+      <a href="/feria-artesanos">Feria de Artesanos</a>
       <a href="/quienes-somos" style="color:var(--red)">Quiénes Somos</a>
       <a href="/pb/add-negocio" class="nav-cta">Únete</a>
     </div>

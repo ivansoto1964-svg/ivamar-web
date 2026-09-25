@@ -140,7 +140,7 @@ nav{background:var(--white);border-bottom:2px solid var(--red);padding:0 2rem;di
   </a>
   <div class="nav-links">
     <a href="/#noticias">Noticias</a>
-    <a href="/#directorio">Directorio</a>
+    <a href="/feria-artesanos">Feria de Artesanos</a>
     <a href="/pb/add-negocio" class="nav-cta">+ Registrar Negocio</a>
   </div>
 </nav>
@@ -269,7 +269,7 @@ nav{background:var(--white);border-bottom:2px solid var(--red);padding:0 2rem;di
 <div class="estado-footer">
   <a href="/">🇵🇷 Planeta Boricua</a>
   <a href="/#noticias">Noticias</a>
-  <a href="/#directorio">Directorio</a>
+  <a href="/feria-artesanos">Feria de Artesanos</a>
   <a href="/pb/add-negocio">Registrar Negocio</a>
   <a href="/#viajes">Viajes</a>
 </div>

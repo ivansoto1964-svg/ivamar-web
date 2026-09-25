@@ -56,6 +56,7 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
 
 footer.pb-footer{background:var(--dark);color:rgba(255,255,255,0.6);padding:2rem;text-align:center;font-size:0.8rem;margin-top:2rem;}
 footer.pb-footer a{color:rgba(255,255,255,0.8);text-decoration:none;margin:0 0.5rem;}
+@media(max-width:640px){.nav-top{padding:.75rem 1rem;align-items:flex-start}.nav-back{font-size:.72rem}.hero-feria{padding:3rem 1rem 2.4rem}.hero-actions{align-items:stretch;flex-direction:column}.hero-btn{width:100%;line-height:1.35}.directorio-wrap{padding:1.5rem 1rem}.dir-filters{display:grid;grid-template-columns:1fr}.dir-filters select{width:100%}}
 </style>
 </head>
 <body>
@@ -76,7 +77,7 @@ footer.pb-footer a{color:rgba(255,255,255,0.8);text-decoration:none;margin:0 0.5
 <section class="hero-feria">
   <h1>Feria Digital de Artesanías Puertorriqueñas 🇵🇷</h1>
   <p><strong>Manos boricuas, arte que cuenta nuestra historia.</strong> Una exposición gratuita y permanente que conecta a nuestros artesanos con Puerto Rico y la diáspora.</p>
-  <div class="hero-actions"><a class="hero-btn secondary" href="#artesanos">Explorar artesanos</a><a class="hero-btn secondary" href="/agenda-boricua">Ver Agenda Boricua</a><a class="hero-btn" href="/pb/add-negocio">Registrar mi artesanía gratis</a></div>
+  <div class="hero-actions"><a class="hero-btn secondary" href="#artesanos">Explorar la Feria</a><a class="hero-btn secondary" href="/agenda-boricua">Ver Agenda Boricua</a><a class="hero-btn" href="/pb/add-negocio">¿Eres artesano? Crea tu espacio digital gratis</a></div>
 </section>
 
 <div class="directorio-wrap" id="artesanos">
@@ -120,7 +121,7 @@ footer.pb-footer a{color:rgba(255,255,255,0.8);text-decoration:none;margin:0 0.5
   </div>
 
   <div style="text-align:center;margin-top:2rem;">
-    <a href="/pb/add-negocio" style="display:inline-block;background:var(--blue);color:#fff;padding:0.9rem 1.8rem;border-radius:8px;text-decoration:none;font-weight:700;font-size:0.92rem;">🎨 Regístrate Gratis →</a>
+    <a href="/pb/add-negocio" style="display:inline-block;background:var(--blue);color:#fff;padding:0.9rem 1.8rem;border-radius:8px;text-decoration:none;font-weight:700;font-size:0.92rem;">¿Eres artesano? Crea tu espacio digital gratis →</a>
   </div>
   <div class="fair-note"><strong>Una vitrina, no un intermediario.</strong> Planeta Boricua ayuda a descubrir y contactar artesanos. No procesa pagos ni participa en las transacciones; las compras, los pedidos, los envíos, las entregas y demás acuerdos se coordinan directamente entre el comprador y cada artesano, fuera de PB.</div>
   <section class="fair-faq" aria-labelledby="fair-faq-title">
@@ -162,8 +163,31 @@ const categoryLabels = {
   'tallado-madera':'Tallado en madera','joyeria':'Joyería artesanal','ceramica':'Cerámica y alfarería','textiles':'Textiles y costura','pintura':'Pintura y arte','santos':'Santos y tallas religiosas','cuero':'Trabajo en cuero','vejigantes':'Máscaras y vejigantes','instrumentos':'Instrumentos musicales','reciclado':'Arte con material reciclado','velas-jabones':'Velas y jabones artesanales','otro':'Otra artesanía'
 };
 function escapeHtml(value){return String(value||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
-function safeExternalUrl(value){var raw=String(value||'').trim();var lower=raw.toLowerCase();if(!raw||lower.startsWith('javascript:')||lower.startsWith('data:'))return '';return lower.startsWith('http://')||lower.startsWith('https://')?raw:'https://'+raw;}
-function instagramUrl(value){var handle=String(value||'').trim();if(handle.startsWith('@'))handle=handle.slice(1);var marker='instagram.com/';var index=handle.toLowerCase().indexOf(marker);if(index>=0)handle=handle.slice(index+marker.length);while(handle.endsWith('/'))handle=handle.slice(0,-1);return handle?'https://instagram.com/'+encodeURIComponent(handle):'';}
+function safeExternalUrl(value){
+  var raw=String(value||'').replace(/[\u200B-\u200D\u2060\uFEFF]/g,'').replace(/&amp;/g,'&').trim();
+  if(!raw||/^(n\/?a|no\.?|ninguno|no tengo|notengo)$/i.test(raw)||/^(javascript|data):/i.test(raw)||/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(raw))return '';
+  try{
+    var url=new URL(/^https?:\/\//i.test(raw)?raw:'https://'+raw);
+    var validHost=/^(?:[a-z0-9-]+\.)+[a-z]{2,}$/i.test(url.hostname);
+    return /^https?:$/.test(url.protocol)&&validHost&&!url.username&&!url.password?url.href:'';
+  }catch(_){return '';}
+}
+function instagramUrl(value){
+  var raw=String(value||'').replace(/&amp;/g,'&').trim().replace(/^@/,'');
+  if(!raw||/^(n\/?a|no\.?|ninguno|no tengo|notengo)$/i.test(raw))return '';
+  var handle=raw;
+  if(/^(https?:\/\/|www\.)/i.test(raw)||raw.toLowerCase().indexOf('instagram.com/')>=0){
+    var cleaned=safeExternalUrl(raw);
+    if(!cleaned)return '';
+    try{
+      var url=new URL(cleaned);
+      if(!(url.hostname==='instagram.com'||url.hostname.endsWith('.instagram.com')))return '';
+      handle=decodeURIComponent(url.pathname.split('/').filter(Boolean)[0]||'').replace(/^@/,'');
+    }catch(_){return '';}
+  }
+  handle=handle.split(/[?#]/)[0].replace(/\/$/,'');
+  return /^[a-zA-Z0-9._]+$/.test(handle)?'https://www.instagram.com/'+handle:'';
+}
 
 function searchDirectorio() {
   loadDirectorio();
@@ -259,12 +283,15 @@ async function loadDirectorio() {
           ? '<img src="' + escapeHtml(safeExternalUrl(n.photo)) + '" class="dir-card-photo" alt="Trabajo artesanal de ' + escapeHtml(n.name) + '" loading="lazy">' : '<div class="dir-card-photo" style="display:grid;place-items:center;font-size:3rem">🎨</div>';
         var descText = n.desc && n.desc !== ''
           ? '<div class="dir-card-desc">' + escapeHtml(n.desc) + '</div>' : '';
-        var waLink = n.whatsapp && n.whatsapp !== ''
-          ? '<a href="https://wa.me/' + String(n.whatsapp).replace(/[^0-9]/g,'') + '" target="_blank" rel="noopener">Contactar</a>' : '';
-        var igLink = n.instagram && n.instagram !== '' && n.instagram.toLowerCase() !== 'no'
-          ? '<a href="' + escapeHtml(instagramUrl(n.instagram)) + '" target="_blank" rel="noopener">Ver Instagram</a>' : '';
-        var webLink = n.website && n.website !== '' && n.website.toLowerCase() !== 'no' && n.website.toLowerCase() !== 'nan'
-          ? '<a href="' + escapeHtml(safeExternalUrl(n.website)) + '" target="_blank" rel="noopener">Visitar su página</a>' : '';
+        var phone = String(n.whatsapp||'').replace(/[^0-9]/g,'');
+        var instagram = instagramUrl(n.instagram);
+        var website = safeExternalUrl(n.website);
+        var waLink = /^[0-9]{10,15}$/.test(phone)
+          ? '<a href="https://wa.me/' + phone + '" target="_blank" rel="ugc nofollow noopener noreferrer">Contactar</a>' : '';
+        var igLink = instagram
+          ? '<a href="' + escapeHtml(instagram) + '" target="_blank" rel="ugc nofollow noopener noreferrer">Ver Instagram</a>' : '';
+        var webLink = website
+          ? '<a href="' + escapeHtml(website) + '" target="_blank" rel="ugc nofollow noopener noreferrer">Visitar su página</a>' : '';
         html += '<div class="dir-card">';
         html += photoImg;
         html += '<div class="dir-card-body">';
@@ -286,6 +313,8 @@ async function loadDirectorio() {
   }
 }
 
+const initialSearch = new URLSearchParams(window.location.search).get('q');
+if (initialSearch) document.getElementById('dir-search').value = initialSearch.slice(0, 120);
 loadDirectorio();
 </script>
 

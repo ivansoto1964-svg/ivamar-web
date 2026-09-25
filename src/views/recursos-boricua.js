@@ -165,7 +165,7 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;}
       <h4>Portal</h4>
       <a href="/">Inicio</a>
       <a href="/blog">El Balcón</a>
-      <a href="/#feria">Feria de Artesanías</a>
+      <a href="/feria-artesanos">Feria de Artesanos</a>
       <a href="/recursos">Recursos PR↔USA</a>
       <a href="/regresar-a-pr">Regresar a PR</a>
     </div>

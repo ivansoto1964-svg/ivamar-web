@@ -59,6 +59,7 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
 .nav-links a:hover{color:var(--red);}
 .nav-cta{background:var(--red);color:#fff!important;padding:0.45rem 1rem;border-radius:3px;font-weight:700;}
 .nav-cta:hover{background:#a80e1f!important;}
+.nav-menu-toggle{display:none;border:1px solid var(--border);border-radius:6px;background:#fff;color:var(--blue);padding:.55rem .75rem;font:800 .76rem 'Inter',sans-serif;cursor:pointer;}
 .nav-ticker{background:var(--red);padding:0.3rem 0;overflow:hidden;}
 .nav-ticker-inner{max-width:1200px;margin:0 auto;padding:0 2rem;display:flex;align-items:center;gap:1rem;}
 .nav-ticker-label{font-size:0.62rem;font-weight:800;color:#fff;text-transform:uppercase;letter-spacing:0.1em;white-space:nowrap;background:rgba(0,0,0,0.2);padding:0.15rem 0.5rem;}
@@ -84,6 +85,17 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
 .hero-side-cat{font-size:0.6rem;font-weight:800;color:var(--red);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.3rem;}
 .hero-side-title{font-family:'Playfair Display',serif;font-size:0.95rem;font-weight:700;color:var(--dark);line-height:1.3;transition:color 0.2s;}
 .hero-side-date{font-size:0.65rem;color:#999;margin-top:0.3rem;}
+
+/* FERIA PROMO */
+.fair-promo{background:linear-gradient(135deg,#002D62,#CE1126);padding:2.5rem 2rem;}
+.fair-promo-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1.5rem;}
+.fair-promo-eyebrow{font-size:.68rem;font-weight:800;color:rgba(255,255,255,.68);letter-spacing:.15em;text-transform:uppercase;margin-bottom:.5rem;}
+.fair-promo h2{font-family:'Playfair Display',serif;font-size:clamp(1.4rem,3vw,2rem);font-weight:700;color:#fff;line-height:1.2;margin-bottom:.5rem;}
+.fair-promo p{font-size:.9rem;color:rgba(255,255,255,.82);max-width:560px;line-height:1.6;}
+.fair-promo-actions{display:flex;gap:1rem;flex-wrap:wrap;}
+.fair-promo-btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;padding:.85rem 1.35rem;border-radius:25px;font-size:.86rem;font-weight:800;text-decoration:none;text-align:center;}
+.fair-promo-btn.primary{background:#fff;color:#002D62;}
+.fair-promo-btn.secondary{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.35);}
 
 /* SECTION DIVIDER */
 .sec-divider{max-width:1200px;margin:0 auto;padding:0 2rem;}
@@ -230,8 +242,12 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
 @media(max-width:768px){
 .recursos-inner{grid-template-columns:1fr!important;}
 
-  .nav-links{display:none;}
-  .nav-top{padding:0.8rem 1rem;}
+  .nav-menu-toggle{display:inline-flex;align-items:center;justify-content:center;}
+  .nav-links{display:none;width:100%;flex-direction:column;align-items:stretch;gap:0;padding:.55rem 0 .15rem;border-top:1px solid var(--border);}
+  .nav-links.is-open{display:flex;}
+  .nav-links a{padding:.7rem .15rem;font-size:.76rem;}
+  .nav-cta{text-align:center;margin-top:.25rem;}
+  .nav-top{flex-wrap:wrap;padding:0.8rem 1rem;}
   .hero-inner{grid-template-columns:1fr;gap:1.5rem;padding:0 1rem;}
   .hero-sidebar{border-left:none;border-top:1px solid var(--border);padding-left:0;padding-top:1rem;}
   .noticias-inner{padding:0 1rem;}
@@ -244,6 +260,10 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
   .viajes-grid{grid-template-columns:1fr;}
   .pb-footer-main{grid-template-columns:1fr 1fr;padding:2rem 1rem;}
   .pb-footer-bottom{padding:1rem;}
+  .fair-promo{padding:2rem 1rem;}
+  .fair-promo-inner{align-items:stretch;}
+  .fair-promo-actions{width:100%;flex-direction:column;}
+  .fair-promo-btn{width:100%;white-space:normal;line-height:1.35;}
 }
 
 /* NOTICIAS EN VIVO */
@@ -283,7 +303,9 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
         <div class="nav-logo-sub">Más Boricua Que Un Mofongo</div>
       </div>
     </a>
-    <div class="nav-links">
+    <button class="nav-menu-toggle" id="pb-nav-toggle" type="button" aria-expanded="false" aria-controls="pb-nav-links">Menú</button>
+    <div class="nav-links" id="pb-nav-links">
+      <a href="/lo-mas-reciente">Lo más reciente</a>
       <a href="/blog">El Balcón</a>
       <a href="/agenda-boricua">Agenda</a>
       <a href="#recursos">Recursos</a>
@@ -314,16 +336,16 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
 </section>
 
 <!-- BANNER FERIA DE ARTESANÍAS -->
-<section style="background:linear-gradient(135deg,#002D62,#CE1126);padding:2.5rem 2rem;">
-  <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1.5rem;">
+<section class="fair-promo" aria-labelledby="fair-promo-title">
+  <div class="fair-promo-inner">
     <div>
-      <div style="font-size:0.68rem;font-weight:800;color:rgba(255,255,255,0.6);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:0.5rem;">🌍 Planeta Boricua</div>
-      <h2 style="font-family:'Playfair Display',serif;font-size:clamp(1.4rem,3vw,2rem);font-weight:700;color:#fff;line-height:1.2;margin-bottom:0.5rem;">Manos boricuas, arte con historia 🇵🇷</h2>
-      <p style="font-size:0.9rem;color:rgba(255,255,255,0.75);max-width:500px;">Una exposición gratuita para conectar artesanos puertorriqueños con nuestra gente en la isla y la diáspora.</p>
+      <div class="fair-promo-eyebrow">Feria Digital · Abierta 24/7</div>
+      <h2 id="fair-promo-title">Visita la Feria Digital de Artesanos Boricuas 🇵🇷</h2>
+      <p>Descubre artesanos de Puerto Rico y la diáspora, conoce sus creaciones y contáctalos directamente.</p>
     </div>
-    <div style="display:flex;gap:1rem;flex-wrap:wrap;">
-      <a href="/pb/add-negocio" style="display:inline-flex;align-items:center;gap:0.5rem;background:#fff;color:#002D62;padding:0.85rem 1.8rem;border-radius:25px;font-size:0.88rem;font-weight:800;text-decoration:none;white-space:nowrap;">🎨 Registra tu artesanía gratis →</a>
-      <a href="/feria-artesanos" style="display:inline-flex;align-items:center;gap:0.5rem;background:rgba(255,255,255,0.15);color:#fff;padding:0.85rem 1.8rem;border-radius:25px;font-size:0.88rem;font-weight:700;text-decoration:none;border:1px solid rgba(255,255,255,0.3);white-space:nowrap;">Explorar artesanos</a>
+    <div class="fair-promo-actions">
+      <a href="/feria-artesanos" class="fair-promo-btn primary">Explorar la Feria →</a>
+      <a href="/pb/add-negocio" class="fair-promo-btn secondary">¿Eres artesano? Crea tu espacio digital gratis</a>
     </div>
   </div>
 </section>
@@ -334,6 +356,7 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
     <div class="sec-divider-inner">
       <span class="sec-divider-label">Lo más reciente</span>
       <div class="sec-divider-line"></div>
+      <a href="/lo-mas-reciente" class="sec-divider-link">Ver todas →</a>
     </div>
     <p style="font-size:.85rem;color:var(--mid);line-height:1.6;margin-bottom:1rem;">Acontecimientos seleccionados, verificados y explicados con contexto por Planeta Boricua.</p>
     <div class="latest-grid" id="latest-grid"><div style="color:#999;font-size:.8rem;padding:1rem 0;">Buscando actualizaciones…</div></div>
@@ -560,13 +583,13 @@ async function loadDirectorio() {
   <div class="feria-inner">
     <div>
       <div class="feria-eyebrow">Feria Digital Permanente 🎨</div>
-      <h2 class="feria-title">Muestra tu <span class="accent">Arte</span> al Mundo 🇵🇷</h2>
-      <p class="feria-sub">Un espacio gratuito para que artesanos puertorriqueños muestren su trabajo — tu tipo de artesanía, tu historia, tus contactos — para que la diáspora y la gente en Puerto Rico te encuentren.</p>
+      <h2 class="feria-title">¿Eres artesano <span class="accent">puertorriqueño</span>? 🇵🇷</h2>
+      <p class="feria-sub">Crea gratuitamente tu espacio digital y presenta tus creaciones a visitantes de Puerto Rico y la diáspora.</p>
       <div style="background:rgba(255,255,255,0.12);border-radius:10px;padding:1rem 1.2rem;margin:1.2rem 0;display:flex;align-items:center;gap:0.8rem;">
         <div style="font-size:1.5rem;">📅</div>
-        <div style="font-size:0.85rem;color:#fff;line-height:1.5;">La feria digital está abierta todo el año. El <strong>23 de septiembre</strong>, Día del Grito de Lares, celebramos su presentación especial como proyecto cultural permanente.</div>
+        <div style="font-size:0.85rem;color:#fff;line-height:1.5;">La Feria está abierta las <strong>24 horas, los 7 días de la semana</strong>.</div>
       </div>
-      <a href="/pb/add-negocio" class="btn-white">🎨 Regístrate Gratis →</a>
+      <a href="/pb/add-negocio" class="btn-white">¿Eres artesano? Crea tu espacio digital gratis →</a>
     </div>
   </div>
 </section>
@@ -577,11 +600,11 @@ async function loadDirectorio() {
     <div class="sec-divider-inner">
       <span class="sec-divider-label">Viajes & Destinos</span>
       <div style="flex:1;height:2px;background:var(--red);margin:0 1rem;"></div>
-      <span style="font-size:0.72rem;color:var(--mid);">Powered by Trip.com</span>
+      <span style="font-size:0.72rem;color:var(--mid);">Enlace afiliado · Trip.com</span>
     </div>
     <div class="viajes-dest-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:1.5rem;">
 
-      <a href="https://us.trip.com/hotels/list?flexType=1&cityId=-1&countryId=208&destName=Puerto%20Rico&searchType=C&optionId=208&crn=1&adult=2&curr=USD&locale=es-US&SID=2209817&allianceid=1094387&utm_campaign=520530" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;background:#fff;border-radius:10px;overflow:hidden;border:1px solid var(--border);display:block;">
+      <a href="https://us.trip.com/hotels/list?flexType=1&cityId=-1&countryId=208&destName=Puerto%20Rico&searchType=C&optionId=208&crn=1&adult=2&curr=USD&locale=es-US&SID=2209817&allianceid=1094387&utm_campaign=520530" target="_blank" rel="sponsored noopener noreferrer" style="text-decoration:none;color:inherit;background:#fff;border-radius:10px;overflow:hidden;border:1px solid var(--border);display:block;">
         <div id="vimg-pr" role="img" aria-label="Foto del destino" style="height:140px;background-image:url('/img/travel-destinations.webp');background-size:400% 200%;background-position:0% 0%;background-repeat:no-repeat;"></div>
         <div style="padding:1rem;">
           <div style="font-size:0.6rem;font-weight:800;color:var(--red);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.3rem;">Destino Principal</div>
@@ -591,7 +614,7 @@ async function loadDirectorio() {
         </div>
       </a>
 
-      <a href="https://us.trip.com/hotels/list?flexType=1&cityId=633&countryId=66&destName=Nueva%20York&searchType=CT&optionId=633&crn=1&adult=2&curr=USD&locale=es-US&SID=2209817&allianceid=1094387&utm_campaign=520530" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;background:#fff;border-radius:10px;overflow:hidden;border:1px solid var(--border);display:block;">
+      <a href="https://us.trip.com/hotels/list?flexType=1&cityId=633&countryId=66&destName=Nueva%20York&searchType=CT&optionId=633&crn=1&adult=2&curr=USD&locale=es-US&SID=2209817&allianceid=1094387&utm_campaign=520530" target="_blank" rel="sponsored noopener noreferrer" style="text-decoration:none;color:inherit;background:#fff;border-radius:10px;overflow:hidden;border:1px solid var(--border);display:block;">
         <div id="vimg-ny" role="img" aria-label="Foto del destino" style="height:140px;background-image:url('/img/travel-destinations.webp');background-size:400% 200%;background-position:33.333% 0%;background-repeat:no-repeat;"></div>
         <div style="padding:1rem;">
           <div style="font-size:0.6rem;font-weight:800;color:var(--red);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.3rem;">La Gran Manzana</div>
@@ -601,7 +624,7 @@ async function loadDirectorio() {
         </div>
       </a>
 
-      <a href="https://us.trip.com/hotels/list?flexType=1&cityId=1187&countryId=66&destName=Orlando&searchType=CT&optionId=1187&crn=1&adult=2&curr=USD&locale=es-US&SID=2209817&allianceid=1094387&utm_campaign=520530" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;background:#fff;border-radius:10px;overflow:hidden;border:1px solid var(--border);display:block;">
+      <a href="https://us.trip.com/hotels/list?flexType=1&cityId=1187&countryId=66&destName=Orlando&searchType=CT&optionId=1187&crn=1&adult=2&curr=USD&locale=es-US&SID=2209817&allianceid=1094387&utm_campaign=520530" target="_blank" rel="sponsored noopener noreferrer" style="text-decoration:none;color:inherit;background:#fff;border-radius:10px;overflow:hidden;border:1px solid var(--border);display:block;">
         <div id="vimg-orlando" role="img" aria-label="Foto del destino" style="height:140px;background-image:url('/img/travel-destinations.webp');background-size:400% 200%;background-position:66.667% 0%;background-repeat:no-repeat;"></div>
         <div style="padding:1rem;">
           <div style="font-size:0.6rem;font-weight:800;color:var(--red);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.3rem;">Florida</div>
@@ -611,7 +634,7 @@ async function loadDirectorio() {
         </div>
       </a>
 
-      <a href="https://us.trip.com/hotels/list?flexType=1&cityId=20436&countryId=66&destName=Miami&searchType=CT&optionId=20436&crn=1&adult=2&curr=USD&locale=es-US&SID=2209817&allianceid=1094387&utm_campaign=520530" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;background:#fff;border-radius:10px;overflow:hidden;border:1px solid var(--border);display:block;">
+      <a href="https://us.trip.com/hotels/list?flexType=1&cityId=20436&countryId=66&destName=Miami&searchType=CT&optionId=20436&crn=1&adult=2&curr=USD&locale=es-US&SID=2209817&allianceid=1094387&utm_campaign=520530" target="_blank" rel="sponsored noopener noreferrer" style="text-decoration:none;color:inherit;background:#fff;border-radius:10px;overflow:hidden;border:1px solid var(--border);display:block;">
         <div id="vimg-miami" role="img" aria-label="Foto del destino" style="height:140px;background-image:url('/img/travel-destinations.webp');background-size:400% 200%;background-position:100% 0%;background-repeat:no-repeat;"></div>
         <div style="padding:1rem;">
           <div style="font-size:0.6rem;font-weight:800;color:var(--red);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.3rem;">Sur de Florida</div>
@@ -621,7 +644,7 @@ async function loadDirectorio() {
         </div>
       </a>
 
-      <a href="https://us.trip.com/hotels/list?flexType=1&cityId=5677&countryId=276&destName=Punta%20Cana&searchType=CT&optionId=5677&crn=1&adult=2&curr=USD&locale=es-US&SID=2209817&allianceid=1094387&utm_campaign=520530" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;background:#fff;border-radius:10px;overflow:hidden;border:1px solid var(--border);display:block;">
+      <a href="https://us.trip.com/hotels/list?flexType=1&cityId=5677&countryId=276&destName=Punta%20Cana&searchType=CT&optionId=5677&crn=1&adult=2&curr=USD&locale=es-US&SID=2209817&allianceid=1094387&utm_campaign=520530" target="_blank" rel="sponsored noopener noreferrer" style="text-decoration:none;color:inherit;background:#fff;border-radius:10px;overflow:hidden;border:1px solid var(--border);display:block;">
         <div id="vimg-puntacana" role="img" aria-label="Foto del destino" style="height:140px;background-image:url('/img/travel-destinations.webp');background-size:400% 200%;background-position:0% 100%;background-repeat:no-repeat;"></div>
         <div style="padding:1rem;">
           <div style="font-size:0.6rem;font-weight:800;color:var(--red);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.3rem;">Caribe</div>
@@ -631,7 +654,7 @@ async function loadDirectorio() {
         </div>
       </a>
 
-      <a href="https://us.trip.com/hotels/list?flexType=1&cityId=-1&countryId=37&destName=Colombia&searchType=C&optionId=37&crn=1&adult=2&curr=USD&locale=es-US&SID=2209817&allianceid=1094387&utm_campaign=520530" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;background:#fff;border-radius:10px;overflow:hidden;border:1px solid var(--border);display:block;">
+      <a href="https://us.trip.com/hotels/list?flexType=1&cityId=-1&countryId=37&destName=Colombia&searchType=C&optionId=37&crn=1&adult=2&curr=USD&locale=es-US&SID=2209817&allianceid=1094387&utm_campaign=520530" target="_blank" rel="sponsored noopener noreferrer" style="text-decoration:none;color:inherit;background:#fff;border-radius:10px;overflow:hidden;border:1px solid var(--border);display:block;">
         <div id="vimg-colombia" role="img" aria-label="Foto del destino" style="height:140px;background-image:url('/img/travel-destinations.webp');background-size:400% 200%;background-position:33.333% 100%;background-repeat:no-repeat;"></div>
         <div style="padding:1rem;">
           <div style="font-size:0.6rem;font-weight:800;color:var(--red);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.3rem;">Sudamérica</div>
@@ -641,7 +664,7 @@ async function loadDirectorio() {
         </div>
       </a>
 
-      <a href="https://us.trip.com/hotels/list?flexType=1&cityId=357&countryId=95&destName=Madrid&searchType=CT&optionId=357&crn=1&adult=2&curr=USD&locale=es-US&SID=2209817&allianceid=1094387&utm_campaign=520530" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;background:#fff;border-radius:10px;overflow:hidden;border:1px solid var(--border);display:block;">
+      <a href="https://us.trip.com/hotels/list?flexType=1&cityId=357&countryId=95&destName=Madrid&searchType=CT&optionId=357&crn=1&adult=2&curr=USD&locale=es-US&SID=2209817&allianceid=1094387&utm_campaign=520530" target="_blank" rel="sponsored noopener noreferrer" style="text-decoration:none;color:inherit;background:#fff;border-radius:10px;overflow:hidden;border:1px solid var(--border);display:block;">
         <div id="vimg-madrid" role="img" aria-label="Foto del destino" style="height:140px;background-image:url('/img/travel-destinations.webp');background-size:400% 200%;background-position:66.667% 100%;background-repeat:no-repeat;"></div>
         <div style="padding:1rem;">
           <div style="font-size:0.6rem;font-weight:800;color:var(--red);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.3rem;">Europa</div>
@@ -651,7 +674,7 @@ async function loadDirectorio() {
         </div>
       </a>
 
-      <a href="https://us.trip.com/?SID=2209817&allianceid=1094387&utm_campaign=520530&locale=es-US" target="_blank" rel="noopener" style="text-decoration:none;color:inherit;background:linear-gradient(135deg,var(--blue),#001a4d);border-radius:10px;overflow:hidden;border:1px solid var(--blue);display:block;">
+      <a href="https://us.trip.com/?SID=2209817&allianceid=1094387&utm_campaign=520530&locale=es-US" target="_blank" rel="sponsored noopener noreferrer" style="text-decoration:none;color:inherit;background:linear-gradient(135deg,var(--blue),#001a4d);border-radius:10px;overflow:hidden;border:1px solid var(--blue);display:block;">
         <div id="vimg-generic" role="img" aria-label="Foto del destino" style="height:140px;background-image:url('/img/travel-destinations.webp');background-size:400% 200%;background-position:100% 100%;background-repeat:no-repeat;"></div>
         <div style="padding:1rem;">
           <div style="font-size:0.6rem;font-weight:800;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.3rem;">Busca tu destino</div>
@@ -736,6 +759,16 @@ async function loadDirectorio() {
 
 <script>
 let pbInstallPrompt = null;
+
+const pbNavToggle = document.getElementById('pb-nav-toggle');
+const pbNavLinks = document.getElementById('pb-nav-links');
+if (pbNavToggle && pbNavLinks) {
+  pbNavToggle.addEventListener('click', function () {
+    const open = pbNavLinks.classList.toggle('is-open');
+    pbNavToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    pbNavToggle.textContent = open ? 'Cerrar' : 'Menú';
+  });
+}
 
 function pbShowStatus(message) {
   const status = document.getElementById('pb-app-status');

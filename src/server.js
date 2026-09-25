@@ -621,7 +621,7 @@ function pbArtisanMailHtml(name, message, optOutUrl = '', slug = '') {
   const safeSlug = encodeURIComponent(String(slug || '').trim());
   const profileUrl = safeSlug ? `https://www.masboricuaqueunmofongo.com/artesanos/${safeSlug}` : 'https://www.masboricuaqueunmofongo.com/feria-artesanos';
   const editUrl = 'https://www.masboricuaqueunmofongo.com/artesanos/mi-perfil';
-  const eventUrl = safeSlug ? `${profileUrl}/compartir-evento` : 'https://www.masboricuaqueunmofongo.com/enviar-evento-boricua';
+  const eventUrl = safeSlug ? `${profileUrl}/compartir-evento` : 'https://www.masboricuaqueunmofongo.com/compartir-evento-boricua';
   const qrButton = safeSlug ? `<a href="${profileUrl}/qr" style="display:inline-block;background:#ce1126;color:#fff;text-decoration:none;padding:11px 15px;border-radius:8px;font-weight:700;margin:5px">Ver y descargar mi QR</a>` : '';
   const optOut = optOutUrl ? `<br><a href="${escMail(optOutUrl)}" style="color:#666">No deseo recibir más comunicaciones generales</a><br><span>Tu perfil continuará publicado en la Feria.</span>` : '';
   return `<div style="font-family:Arial,sans-serif;max-width:640px;margin:0 auto;color:#253247">
@@ -1105,6 +1105,11 @@ h1{font-size:1.4rem;font-weight:600;}
 
 app.get("/", (req, res) => res.send(planetaboricua));
 app.get("/tienda-boricua", (_req, res) => res.redirect(301, "/recursos"));
+app.get("/buscar", (req, res) => {
+  const query = sanitize(req.query?.q || '').trim().slice(0, 120);
+  const target = query ? `/feria-artesanos?q=${encodeURIComponent(query)}` : '/feria-artesanos';
+  res.redirect(301, target);
+});
 app.get("/es", (req, res) => res.send(layout({ title: "Ivamar AI · Español", body: homeES })));
 app.get("/en", (req, res) => res.send(layout({  lang: "en", title: "Ivamar AI · English", body: homeEN })));
 app.get("/about", (req, res) => {
@@ -3719,6 +3724,7 @@ app.post('/api/pb-evento-metrica/:slug', pbArtisanMetricsLimiter, express.json({
   }
 });
 app.get('/compartir-evento-boricua', (_req, res) => res.send(enviarEventoBoricuaPB()));
+app.get('/enviar-evento-boricua', (_req, res) => res.redirect(301, '/compartir-evento-boricua'));
 
 app.get('/artesanos/:slug/compartir-evento', (req, res) => {
   const canonicalSlug = canonicalPBArtisanSlug(req.params.slug);
