@@ -165,18 +165,18 @@ const categoryLabels = {
 function escapeHtml(value){return String(value||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
 function safeExternalUrl(value){
   var raw=String(value||'').replace(/[\u200B-\u200D\u2060\uFEFF]/g,'').replace(/&amp;/g,'&').trim();
-  if(!raw||/^(n\/?a|no\.?|ninguno|no tengo|notengo)$/i.test(raw)||/^(javascript|data):/i.test(raw)||/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(raw))return '';
+  if(!raw||/^(n\\/?a|no\\.?|ninguno|no tengo|notengo)$/i.test(raw)||/^(javascript|data):/i.test(raw)||/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(raw))return '';
   try{
-    var url=new URL(/^https?:\/\//i.test(raw)?raw:'https://'+raw);
-    var validHost=/^(?:[a-z0-9-]+\.)+[a-z]{2,}$/i.test(url.hostname);
+    var url=new URL(/^https?:\\/\\//i.test(raw)?raw:'https://'+raw);
+    var validHost=/^(?:[a-z0-9-]+\\.)+[a-z]{2,}$/i.test(url.hostname);
     return /^https?:$/.test(url.protocol)&&validHost&&!url.username&&!url.password?url.href:'';
   }catch(_){return '';}
 }
 function instagramUrl(value){
   var raw=String(value||'').replace(/&amp;/g,'&').trim().replace(/^@/,'');
-  if(!raw||/^(n\/?a|no\.?|ninguno|no tengo|notengo)$/i.test(raw))return '';
+  if(!raw||/^(n\\/?a|no\\.?|ninguno|no tengo|notengo)$/i.test(raw))return '';
   var handle=raw;
-  if(/^(https?:\/\/|www\.)/i.test(raw)||raw.toLowerCase().indexOf('instagram.com/')>=0){
+  if(/^(https?:\\/\\/|www\\.)/i.test(raw)||raw.toLowerCase().indexOf('instagram.com/')>=0){
     var cleaned=safeExternalUrl(raw);
     if(!cleaned)return '';
     try{
@@ -185,7 +185,7 @@ function instagramUrl(value){
       handle=decodeURIComponent(url.pathname.split('/').filter(Boolean)[0]||'').replace(/^@/,'');
     }catch(_){return '';}
   }
-  handle=handle.split(/[?#]/)[0].replace(/\/$/,'');
+  handle=handle.split(/[?#]/)[0].replace(/\\/$/,'');
   return /^[a-zA-Z0-9._]+$/.test(handle)?'https://www.instagram.com/'+handle:'';
 }
 
@@ -241,7 +241,7 @@ async function loadDirectorio() {
         'pintura':['pintura','pinturas','arte','cuadro','cuadros','pintado','pintados']
       };
       const q = normalize(searchTerm);
-      const terms = new Set(q.split(/\s+/).filter(Boolean));
+      const terms = new Set(q.split(/\\s+/).filter(Boolean));
       Array.from(terms).forEach(term => (synonyms[term] || []).forEach(s => terms.add(normalize(s))));
       negocios = negocios.filter(n => {
         const haystack = normalize([

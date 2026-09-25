@@ -8,6 +8,7 @@ const home = fs.readFileSync(path.join(root, 'src/views/planetaboricua.js'), 'ut
 const fair = fs.readFileSync(path.join(root, 'src/views/planetaboricua/feriaartesanos.js'), 'utf8');
 const profileSource = fs.readFileSync(path.join(root, 'src/views/planetaboricua/artesano-perfil.js'), 'utf8');
 const artisanProfile = require('../src/views/planetaboricua/artesano-perfil');
+const fairPage = require('../src/views/planetaboricua/feriaartesanos');
 
 assert.match(home, /Feria Digital · Abierta 24\/7/);
 assert.match(home, /Visita la Feria Digital de Artesanos Boricuas/);
@@ -31,6 +32,11 @@ assert.match(profileSource, /href="\/compartir-evento-boricua"/);
 assert.match(fair, /new URLSearchParams\(window\.location\.search\)\.get\('q'\)/);
 assert.match(fair, /initialSearch\.slice\(0, 120\)/);
 assert.match(fair, /validHost/);
+
+const renderedFair = fairPage;
+const inlineScripts = [...renderedFair.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi)].map(match => match[1]);
+assert.doesNotThrow(() => inlineScripts.forEach(script => new Function(script)));
+assert.ok(renderedFair.includes('q.split(/\\s+/)'));
 
 const baseItem = {
   name:'Perfil de prueba', category:'pintura', location:'caguas', city:'Caguas',
