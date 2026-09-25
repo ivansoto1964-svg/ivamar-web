@@ -63,17 +63,19 @@ const blogHtml = renderBlogPost({
 assert.match(blogHtml, /<p>Primer párrafo\.<\/p><figure><img src="\/media\/pb-blog\/blog\.webp" alt="Mesa con artesanías"><figcaption>/, 'El Balcón must preserve inline images between paragraphs.');
 assert.match(blogHtml, /\.post-body figure img\{display:block;width:100%;max-width:100%;height:auto/, 'El Balcón inline images must be responsive.');
 assert.match(blogHtml, /class="post-hero pb-editorial-cover"><img class="pb-editorial-cover-image"/, 'El Balcón must use the same non-cropping article cover system.');
-assert.match(editorialImages, /\.pb-editorial-card-image[\s\S]*object-fit: cover/, 'Editorial cards must share one moderate-crop rule.');
+assert.match(editorialImages, /\.pb-editorial-card-image[\s\S]*object-fit: contain/, 'Editorial cards must preserve the complete image without cropping.');
 assert.match(editorialImages, /\.pb-editorial-cover-image[\s\S]*object-fit: contain/, 'Individual articles must share one proportion-preserving cover rule.');
 
 const sample = { slug:'muestra', title:'Muestra editorial', excerpt:'Resumen', summary:'Resumen', image:'/media/pb-blog/sample.webp', category:'Cultura', topic:'Cultura', publishedAt:'2026-09-19T12:00:00.000Z' };
 const blogIndexHtml = renderBlogIndex([sample, sample], 1, 1, '', '', ['Cultura'], 2, []);
 const latestIndexHtml = renderLatestIndex([sample], 1, 1, '', '', ['Cultura'], 1);
 for (const rendered of [blogIndexHtml, latestIndexHtml, blogHtml, latestHtml]) {
-  assert.match(rendered, /\/css\/pb-editorial-images\.css/, 'Every editorial view must load the shared image system.');
+  assert.match(rendered, /\/css\/pb-editorial-images\.css\?v=2/, 'Every editorial view must load the fresh shared image system.');
 }
 assert.match(blogIndexHtml, /class="story-img pb-editorial-card-media"[\s\S]*class="pb-editorial-card-image"/, 'El Balcón cards must use the shared card treatment.');
+assert.match(blogIndexHtml, /\.story-img img\{[^}]*object-fit:contain/, 'El Balcón previews must show the complete image.');
 assert.match(latestIndexHtml, /class="latest-media pb-editorial-card-media"[\s\S]*class="pb-editorial-card-image"/, 'Latest cards must use the shared card treatment.');
+assert.match(latestIndexHtml, /\.latest-media img\{[^}]*object-fit:contain/, 'Latest previews must show the complete image.');
 assert.doesNotMatch(latestIndexHtml, /\/go\/travel-flights|presentado por <span>Trip\.com/, 'Latest index must not bypass PB Ads with a fixed affiliate block.');
 
 new vm.Script(asset, { filename:'pb-rich-text-editor.js' });

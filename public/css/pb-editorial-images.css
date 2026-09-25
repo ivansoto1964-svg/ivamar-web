@@ -11,9 +11,8 @@
   width: 100%;
   height: 100%;
   max-width: 100%;
-  object-fit: cover;
+  object-fit: contain;
   object-position: center;
-  transition: transform .3s ease;
 }
 
 .pb-editorial-cover {
@@ -38,8 +37,4 @@
 @media (max-width: 620px) {
   .pb-editorial-cover { min-height: 220px; }
   .pb-editorial-cover-image { max-height: min(68vh, 640px); }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .pb-editorial-card-image { transition: none; }
 }
