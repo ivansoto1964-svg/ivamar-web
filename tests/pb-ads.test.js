@@ -95,6 +95,7 @@ try {
 
   const latest = renderLatest({slug:'noticia',title:'Noticia',summary:'Resumen',body:'<p>Contenido corto.</p>',sources:[],publishedAt:now},[],[],{first:affiliateAd,second:directAd});
   assert.strictEqual((latest.match(/class="pb-sponsor-card"/g)||[]).length,1,'short latest posts may show one ad after the content');
+  assert.ok(latest.includes('/css/pb-ads.css?v=3'),'latest posts must bypass stale mobile ad styles');
 
   const artisan = renderArtisan({name:'Taller Boricua',desc:'Trabajo artesanal puertorriqueño hecho a mano con mucho cuidado y tradición.',photo:'https://example.com/foto.jpg'},
     {categoryLabel:'Artesanía',locationLabel:'Ponce, Puerto Rico',slug:'taller-boricua',events:[],recommendations:[],ad:{...campaigns[0],sections:['artisan'],placements:['artisan.after_profile'],disclosure:'Promoción de Planeta Boricua'}});

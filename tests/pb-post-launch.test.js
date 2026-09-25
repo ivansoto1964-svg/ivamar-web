@@ -45,6 +45,8 @@ assert.match(profile, /Creada a mano con cuentas azules y blancas/);
 assert.match(profile, /alt="Pulsera azul y blanca sobre una mesa de madera"/);
 assert.match(profile, /loading="lazy" decoding="async" fetchpriority="low"/);
 assert.match(profile, /width="640" height="480"/);
+assert.match(profile, /@media\(max-width:520px\)\{\.artisan-gallery-grid\{grid-template-columns:1fr\}\.artisan-creation\{display:block\}/);
+assert.doesNotMatch(profile, /grid-template-columns:120px 1fr/);
 assert.match(profile, />Contactar al artesano</);
 assert.doesNotMatch(profile, />Comprar</);
 
