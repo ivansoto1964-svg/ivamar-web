@@ -24,7 +24,10 @@ module.exports = `<!DOCTYPE html>
 <meta property="og:url" content="https://www.masboricuaqueunmofongo.com/">
 <meta property="og:title" content="Planeta Boricua — Más Boricua Que Un Mofongo">
 <meta property="og:description" content="Cultura, identidad, Feria de Artesanías y recursos prácticos para la comunidad puertorriqueña dentro y fuera de la isla.">
-<meta property="og:image" content="https://www.masboricuaqueunmofongo.com/img/og-planetaboricua.jpg">
+<meta property="og:image" content="https://www.masboricuaqueunmofongo.com/img/og-planeta-boricua-logo.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Logo oficial de Planeta Boricua">
 <meta property="og:locale" content="es_PR">
 <meta property="og:site_name" content="Planeta Boricua">
 
@@ -33,7 +36,8 @@ module.exports = `<!DOCTYPE html>
 <meta name="twitter:url" content="https://www.masboricuaqueunmofongo.com/">
 <meta name="twitter:title" content="Planeta Boricua — Más Boricua Que Un Mofongo">
 <meta name="twitter:description" content="Cultura, identidad, Feria de Artesanías y recursos para la comunidad puertorriqueña dentro y fuera de la isla.">
-<meta name="twitter:image" content="https://www.masboricuaqueunmofongo.com/img/og-planetaboricua.jpg">
+<meta name="twitter:image" content="https://www.masboricuaqueunmofongo.com/img/og-planeta-boricua-logo.jpg">
+<meta name="twitter:image:alt" content="Logo oficial de Planeta Boricua">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}

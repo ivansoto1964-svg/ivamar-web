@@ -13,6 +13,10 @@ const fairPage = require('../src/views/planetaboricua/feriaartesanos');
 const { renderPBSiteFooter } = require('../src/views/planetaboricua/site-footer');
 
 assert.match(home, /Feria Digital · Abierta 24\/7/);
+assert.match(home, /og-planeta-boricua-logo\.jpg/);
+assert.match(home, /og:image:width" content="1200/);
+assert.match(home, /og:image:height" content="630/);
+assert.match(home, /twitter:image:alt" content="Logo oficial de Planeta Boricua/);
 assert.match(home, /Visita la Feria Digital de Artesanos Boricuas/);
 assert.match(home, /Explorar la Feria →/);
 assert.match(home, /¿Eres artesano\? Crea tu espacio digital gratis/);
