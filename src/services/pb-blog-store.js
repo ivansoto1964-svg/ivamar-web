@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const { CATEGORIES, editorialCategory } = require('../utils/pb-editorial');
+const { cleanBlogDirectory } = require('./pb-legacy-commercial-cleanup');
 
 const SEED_POSTS_DIR = path.join(__dirname, '../../data/pb-blog/posts');
 const DATA_DIR = process.env.PB_BLOG_DATA_DIR || '/data/pb-blog';
@@ -24,6 +25,13 @@ function initialize() {
   for (const file of fs.readdirSync(SEED_POSTS_DIR).filter(name => name.endsWith('.json'))) {
     const destination = path.join(POSTS_DIR, file);
     if (!fs.existsSync(destination)) fs.copyFileSync(path.join(SEED_POSTS_DIR, file), destination);
+  }
+
+  try {
+    const changed = cleanBlogDirectory(POSTS_DIR, '/data/pb-migrations/legacy-commercial-backup/blog');
+    if (changed) console.log(`[PBBlog] Removed legacy commercial blocks from ${changed} stored posts.`);
+  } catch (error) {
+    console.error('[PBBlog] Legacy commercial cleanup failed:', error.message);
   }
 }
 

@@ -10,6 +10,7 @@ const pbSiteAnalytics = require('./services/pb-site-analytics');
 const { buildPBExploreRecommendations } = require('./services/pb-ecosystem-explore');
 const pbArtisanMailBatches = require('./services/pb-artisan-mail-batches');
 const pbLatestEditor = require('./services/pb-latest-editor');
+const { cleanLatestFile } = require('./services/pb-legacy-commercial-cleanup');
 const pbPressRoom = require('./services/pb-press-room');
 const pbEventAdmin = require('./services/pb-event-admin');
 const pbEventTools = require('./services/pb-event-tools');
@@ -450,6 +451,19 @@ function repairPBLatestTitleTypo() {
   }
 }
 repairPBLatestTitleTypo();
+
+function repairPBLegacyCommercialBlocks() {
+  try {
+    const changed = cleanLatestFile(
+      path.join(PB_LATEST_DIR, 'approved.json'),
+      '/data/pb-migrations/legacy-commercial-backup/latest'
+    );
+    if (changed) console.log(`Removed legacy commercial blocks from ${changed} Lo Más Reciente posts.`);
+  } catch (error) {
+    console.error('PB latest legacy commercial cleanup error:',error.message);
+  }
+}
+repairPBLegacyCommercialBlocks();
 
 function publicPBListing(listing) {
   return {
