@@ -51,11 +51,12 @@ function eventRows(items, pending) {
   return items.map(item => {
     const metrics = item.metrics || {};
     const action = metrics.actions || {};
+    const attribution = item.artisanSlug ? `<br><strong>Relación artesanal:</strong> ${item.artisanRole === 'contributor' ? 'Colaborador comunitario — no participa' : 'Artesano participante'} · ${esc(item.artisanName || '')}` : '';
     const performance = pending ? '' : `<br><strong>Rendimiento:</strong> ${esc(metrics.views || 0)} vistas · ${esc((action.share || 0)+(action.whatsapp || 0)+(action.facebook || 0)+(action.copy || 0))} compartidos · ${esc((action.calendar || 0)+(action['google-calendar'] || 0))} calendarios · ${esc(action.directions || 0)} direcciones · ${esc(action.official || 0)} fuente oficial`;
     const controls = pending
       ? actionButton('Aprobar','event-approve',item.id,'good') + actionButton('Rechazar','event-reject',item.id,'danger')
       : `<a class="action" href="${esc(eventPath(item))}" target="_blank">Ver</a>` + actionButton('Eliminar','event-delete',item.id,'danger');
-    return `<article class="item"><div><span class="eyebrow">${esc(item.startDate || '')} · ${esc(item.city || item.region || item.country || '')}</span><h3>${esc(item.name)}</h3><p>${esc(item.description || '')}${performance}</p></div><div class="actions">${controls}</div></article>`;
+    return `<article class="item"><div><span class="eyebrow">${esc(item.startDate || '')} · ${esc(item.city || item.region || item.country || '')}</span><h3>${esc(item.name)}</h3><p>${esc(item.description || '')}${attribution}${performance}</p></div><div class="actions">${controls}</div></article>`;
   }).join('');
 }
 

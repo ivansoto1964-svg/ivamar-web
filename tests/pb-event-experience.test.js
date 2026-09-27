@@ -6,6 +6,7 @@ const tools = require('../src/services/pb-event-tools');
 const metrics = require('../src/services/pb-event-metrics');
 const renderAgenda = require('../src/views/planetaboricua/agenda-artesanal');
 const renderEvent = require('../src/views/planetaboricua/evento-boricua');
+const renderArtisanEventForm = require('../src/views/planetaboricua/enviar-evento');
 const renderPBControl = require('../src/views/pb-control');
 
 const event = {
@@ -63,6 +64,28 @@ assert.match(agendaHtml, /Ver evento/);
 assert.match(agendaHtml, /Publica un evento gratis/);
 assert.doesNotMatch(agendaHtml, /wa\.me\/\?text=[^"']*\/agenda-boricua["']/);
 
+const contributorEvent = {
+  ...event,
+  id:'event-contributor',
+  name:'Festival comunitario compartido',
+  artisanSlug:'taller-prueba',
+  artisanName:'Taller de prueba',
+  artisanRole:'contributor'
+};
+const contributorPage = renderEvent(contributorEvent,{relatedEvents:[]});
+assert.match(contributorPage, /Compartido con Agenda Boricua por:/);
+assert.doesNotMatch(contributorPage, /<strong>Participa:<\/strong>/);
+assert.match(contributorPage, /href="\/artesanos\/taller-prueba"/);
+const contributorAgenda = renderAgenda([contributorEvent]);
+assert.match(contributorAgenda, /Compartido con Agenda Boricua por/);
+assert.doesNotMatch(contributorAgenda, /Presentado por/);
+const artisanEventForm = renderArtisanEventForm({name:'Taller de prueba',slug:'taller-prueba'});
+assert.match(artisanEventForm, /¿Participas en este evento\?/);
+assert.match(artisanEventForm, /name="artisanRole" value="participant"/);
+assert.match(artisanEventForm, /name="artisanRole" value="contributor"/);
+assert.match(artisanEventForm, /No participo; lo comparto para ayudar a la comunidad/);
+assert.match(artisanEventForm, /name="organizerName"/);
+
 const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'pb-event-metrics-'));
 const metricsFile = path.join(tempDir, 'metrics.json');
 assert.equal(metrics.record(slug, 'view', { file:metricsFile }), true);
@@ -75,16 +98,19 @@ assert.equal(measured.metrics.actions.calendar, 1);
 const controlHtml = renderPBControl({
   counts:{}, siteAnalytics:{},
   latestPending:[], latestApproved:[], commentsPending:[], commentsApproved:[],
-  artisansPending:[], artisansApproved:[], eventsPending:[], eventsApproved:[measured],
+  artisansPending:[], artisansApproved:[], eventsPending:[contributorEvent], eventsApproved:[measured],
   subscribers:[], blogPosts:[], affiliates:[], artisanMetrics:[], artisanMailHistory:[],
   artisanEmailAudit:{ counts:{}, issues:[] }, pressRoom:{ contacts:[], releases:[], distributions:[], entities:[], options:{}, controlSummary:{} }
 });
 assert.match(controlHtml, /Rendimiento:/);
+assert.match(controlHtml, /Colaborador comunitario — no participa/);
 assert.match(controlHtml, new RegExp(`/agenda-boricua/${slug}`));
 
 const serverSource = fs.readFileSync(path.join(__dirname, '../src/server.js'), 'utf8');
 assert.match(serverSource, /agenda-boricua\/:slug\/calendario\.ics/);
 assert.match(serverSource, /api\/pb-evento-metrica\/:slug/);
 assert.match(serverSource, /eventUrls/);
+assert.match(serverSource, /artisanRole:event\.artisanRole === 'contributor' \? 'contributor' : 'participant'/);
+assert.match(serverSource, /event\.artisanRole !== 'contributor'/);
 
 console.log('PB event experience contract: OK');

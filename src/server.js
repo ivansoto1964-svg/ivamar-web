@@ -409,7 +409,7 @@ function writePBEvents(file, events) {
   fs.writeFileSync(path.join(PB_EVENTS_DIR, file), JSON.stringify(events, null, 2));
 }
 function publicPBEvent(event) {
-  return { id:event.id,name:event.name,type:event.type,startDate:event.startDate,endDate:event.endDate,time:event.time,venue:event.venue,address:event.address,city:event.city,region:event.region,country:event.country,description:event.description,eventUrl:event.eventUrl,cost:event.cost,image:event.image,virtual:Boolean(event.virtual),artisanSlug:event.artisanSlug,artisanName:event.artisanName,organizerName:event.organizerName,sourceLabel:event.sourceLabel,approvedAt:event.approvedAt,url:pbEventTools.eventPath(event) };
+  return { id:event.id,name:event.name,type:event.type,startDate:event.startDate,endDate:event.endDate,time:event.time,venue:event.venue,address:event.address,city:event.city,region:event.region,country:event.country,description:event.description,eventUrl:event.eventUrl,cost:event.cost,image:event.image,virtual:Boolean(event.virtual),artisanSlug:event.artisanSlug,artisanName:event.artisanName,artisanRole:event.artisanRole === 'contributor' ? 'contributor' : 'participant',organizerName:event.organizerName,sourceLabel:event.sourceLabel,approvedAt:event.approvedAt,url:pbEventTools.eventPath(event) };
 }
 
 const PB_LATEST_DIR = '/data/pb-latest';
@@ -3787,9 +3787,10 @@ app.post('/api/pb-evento-submit', formLimiter, express.json(), async (req, res) 
   if (!artisan) return res.status(404).json({ ok:false, error:'Perfil de artesano no encontrado.' });
   const email = sanitize(req.body.email).toLowerCase();
   if (!artisan.email || email !== String(artisan.email).trim().toLowerCase()) return res.status(403).json({ ok:false, error:'El email no coincide con el registro del artesano.' });
-  const fields = ['name','type','startDate','endDate','time','venue','address','city','region','description','eventUrl','cost','image'];
+  const fields = ['name','type','startDate','endDate','time','venue','address','city','region','organizerName','description','eventUrl','cost','image'];
   const event = {}; fields.forEach(key => event[key] = sanitize(req.body[key] || ''));
-  if (!event.name || !event.type || !event.startDate || !event.city || !event.region || !event.description) return res.status(400).json({ ok:false,error:'Completa todos los campos requeridos.' });
+  const artisanRole = sanitize(req.body.artisanRole || 'participant') === 'contributor' ? 'contributor' : 'participant';
+  if (!event.name || !event.type || !event.startDate || !event.city || !event.region || !event.organizerName || !event.description) return res.status(400).json({ ok:false,error:'Completa todos los campos requeridos.' });
   if (!req.body.rights) return res.status(400).json({ ok:false,error:'Debes confirmar que puedes compartir la información y el afiche.' });
   if (event.cost && !/^(gratis|free|\$?0(?:\.00)?)$/i.test(event.cost)) return res.status(400).json({ok:false,error:'La publicación gratuita está disponible únicamente para eventos sin costo de entrada.'});
   if (!/^\d{4}-\d{2}-\d{2}$/.test(event.startDate) || (event.endDate && !/^\d{4}-\d{2}-\d{2}$/.test(event.endDate))) return res.status(400).json({ ok:false,error:'Fecha inválida.' });
@@ -3798,10 +3799,10 @@ app.post('/api/pb-evento-submit', formLimiter, express.json(), async (req, res) 
   for (const key of ['eventUrl','image']) if (event[key] && !/^https?:\/\//i.test(event[key])) event[key] = '';
   event.cost = 'Gratis';
   const crypto = require('crypto');
-  Object.assign(event,{id:Date.now().toString(),artisanSlug,artisanName:artisan.name,email,virtual:Boolean(req.body.virtual),status:'pending',submittedAt:new Date().toISOString(),approveToken:crypto.randomBytes(24).toString('hex'),rejectToken:crypto.randomBytes(24).toString('hex')});
+  Object.assign(event,{id:Date.now().toString(),artisanSlug,artisanName:artisan.name,artisanRole,email,virtual:Boolean(req.body.virtual),status:'pending',submittedAt:new Date().toISOString(),approveToken:crypto.randomBytes(24).toString('hex'),rejectToken:crypto.randomBytes(24).toString('hex')});
   const pending = readPBEvents('pending.json'); pending.push(event); writePBEvents('pending.json',pending);
   try {
-    await resend.emails.send({from:`Planeta Boricua <${PB_SENDER_EMAIL}>`,to:PB_CONTACT_EMAIL,subject:`📅 Nuevo evento artesanal: ${event.name}`,html:`<h2>${event.name}</h2><p>Enviado por <strong>${event.artisanName}</strong></p><p>${event.startDate} · ${event.city}, ${event.region}</p><p>${event.description}</p><p><a href="https://www.masboricuaqueunmofongo.com/admin/pb-event-approve/${event.approveToken}">✅ Aprobar</a> &nbsp; <a href="https://www.masboricuaqueunmofongo.com/admin/pb-event-reject/${event.rejectToken}">❌ Rechazar</a></p>`});
+    await resend.emails.send({from:`Planeta Boricua <${PB_SENDER_EMAIL}>`,to:PB_CONTACT_EMAIL,subject:`📅 Nuevo evento artesanal: ${event.name}`,html:`<h2>${event.name}</h2><p>Enviado por <strong>${event.artisanName}</strong></p><p>Relación: <strong>${event.artisanRole === 'contributor' ? 'Colaborador comunitario — no indica participación' : 'Artesano participante'}</strong></p><p>${event.startDate} · ${event.city}, ${event.region}</p><p>${event.description}</p><p><a href="https://www.masboricuaqueunmofongo.com/admin/pb-event-approve/${event.approveToken}">✅ Aprobar</a> &nbsp; <a href="https://www.masboricuaqueunmofongo.com/admin/pb-event-reject/${event.rejectToken}">❌ Rechazar</a></p>`});
   } catch (error) { console.error('PB event notification error:',error.message); }
   res.json({ok:true});
 });
@@ -3872,15 +3873,15 @@ app.get('/artesanos/:slug/manifest.json', (req, res) => {
 });
 
 app.get('/artesanos/:slug', (req, res, next) => {
-  // Reserve /artesanos/mi-perfil for the artisan self-service login route defined below.
-  if (req.params.slug === 'mi-perfil') return next();
+  // Reserve private artisan-space routes defined below.
+  if (req.params.slug === 'mi-perfil' || req.params.slug === 'herramientas') return next();
   const canonicalSlug = canonicalPBArtisanSlug(req.params.slug);
   if (canonicalSlug !== req.params.slug) return res.redirect(301, `/artesanos/${encodeURIComponent(canonicalSlug)}`);
   const item = loadApprovedPBListings().find(entry => pbArtisanSlug(entry) === canonicalSlug);
   if (!item) return res.status(404).send('Artesano no encontrado');
   const categories = {'tallado-madera':'Tallado en madera','joyeria':'Joyería artesanal','ceramica':'Cerámica y alfarería','textiles':'Textiles y costura','pintura':'Pintura y arte','santos':'Santos y tallas religiosas','cuero':'Trabajo en cuero','vejigantes':'Máscaras y vejigantes','instrumentos':'Instrumentos musicales','reciclado':'Arte con material reciclado','velas-jabones':'Velas y jabones artesanales','otro':'Artesanía puertorriqueña'};
   const locationLabel = `${item.city || item.location || 'Puerto Rico'}${PB_US_LOCATIONS.has(item.location) ? ', USA' : ', Puerto Rico'}`;
-  const events = readPBEvents('approved.json').map(publicPBEvent).filter(event => event.artisanSlug === canonicalSlug && new Date(`${event.endDate || event.startDate}T23:59:59`) >= new Date());
+  const events = readPBEvents('approved.json').map(publicPBEvent).filter(event => event.artisanSlug === canonicalSlug && event.artisanRole !== 'contributor' && new Date(`${event.endDate || event.startDate}T23:59:59`) >= new Date());
   const ad = pbAds.select({section:'artisan',placement:'artisan.after_profile',pageSlug:canonicalSlug,artisanCategory:item.category});
   res.send(artesanoPerfilPB(item, {
     categoryLabel:categories[item.category] || 'Artesanía puertorriqueña',
@@ -4445,6 +4446,21 @@ app.get('/artesanos/mi-perfil/:token', (req,res) => {
   if (!record || normalizePBArtisanEmail(record.item.email) !== auth.email) return res.status(404).send('Perfil no encontrado.');
   const slug = pbArtisanSlug(record.item);
   res.send(artesanoMiPerfilPB.editPage(record.item, req.params.token, `/artesanos/${encodeURIComponent(slug)}`));
+});
+
+app.get('/artesanos/herramientas', (_req,res) => {
+  res.set('Cache-Control','no-store, private');
+  res.redirect(302, '/artesanos/mi-perfil');
+});
+
+app.get('/artesanos/herramientas/:token', (req,res) => {
+  res.set('Cache-Control','no-store, private');
+  const auth = verifyPBArtisanToken(req.params.token);
+  if (!auth) return res.status(401).send('<div style="font-family:system-ui;max-width:600px;margin:3rem auto"><h2>Este enlace venció o no es válido.</h2><p><a href="/artesanos/mi-perfil">Solicita un enlace nuevo.</a></p></div>');
+  const record = loadPBApprovedArtisanRecord(auth.id);
+  if (!record || normalizePBArtisanEmail(record.item.email) !== auth.email) return res.status(404).send('Perfil no encontrado.');
+  const slug = pbArtisanSlug(record.item);
+  res.send(artesanoMiPerfilPB.toolsPage(record.item, req.params.token, `/artesanos/${encodeURIComponent(slug)}`));
 });
 
 app.post('/api/pb-artesano-update/:token', pbArtisanLimiter, express.json({limit:'80kb'}), async (req,res) => {

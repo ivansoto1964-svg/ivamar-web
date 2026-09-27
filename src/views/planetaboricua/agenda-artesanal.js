@@ -20,7 +20,7 @@ function eventCards(events) {
       ? 'Evento virtual'
       : [event.venue, event.city, event.region].filter(Boolean).join(' · ');
     const presenter = event.artisanSlug
-      ? `Presentado por <a href="/artesanos/${encodeURIComponent(event.artisanSlug)}">${esc(event.artisanName)}</a>`
+      ? `${event.artisanRole === 'contributor' ? 'Compartido con Agenda Boricua por' : 'Participa'} <a href="/artesanos/${encodeURIComponent(event.artisanSlug)}">${esc(event.artisanName)}</a>`
       : `Organizado por <strong>${esc(event.organizerName || event.sourceLabel || 'Organización comunitaria')}</strong>`;
     const region = areaOf(event) === 'pr'
       ? event.city
