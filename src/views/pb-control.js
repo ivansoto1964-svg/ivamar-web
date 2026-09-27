@@ -43,7 +43,7 @@ function commentRows(items, pending) {
 
 function listingRows(items, pending) {
   if (!items.length) return empty(pending ? 'No hay artesanos pendientes.' : 'No hay artesanos aprobados.');
-  return items.map(item => `<article class="item"><div><span class="eyebrow">${esc(item.category || 'Artesano')} · ${esc(item.city || item.location || '')}</span><h3>${esc(item.name)}</h3><p>${esc(item.desc || '')}</p></div><div class="actions">${pending ? actionButton('Aprobar','artisan-approve',item.id,'good') + actionButton('Rechazar','artisan-reject',item.id,'danger') : `<a class="action good" href="/pb-control/artesanos/${encodeURIComponent(item.id)}">Editar</a><a class="action" href="/artesanos/${encodeURIComponent(item.slug)}" target="_blank">Ver</a>` + actionButton('Retirar','artisan-delete',item.id,'danger')}</div></article>`).join('');
+  return items.map(item => `<article class="item"><div><span class="eyebrow">${esc(item.category || 'Artesano')} · ${esc(item.city || item.location || '')}</span><h3>${esc(item.name)}</h3><p>${esc(item.desc || '')}</p></div><div class="actions">${pending ? actionButton('Aprobar','artisan-approve',item.id,'good') + actionButton('Rechazar','artisan-reject',item.id,'danger') : `<a class="action good" href="/pb-control/artesanos/${encodeURIComponent(item.id)}">Editar</a><a class="action" href="/pb-control/artesanos/herramientas?id=${encodeURIComponent(item.id)}">Herramientas</a><a class="action" href="/artesanos/${encodeURIComponent(item.slug)}" target="_blank">Ver</a>` + actionButton('Retirar','artisan-delete',item.id,'danger')}</div></article>`).join('');
 }
 
 function eventRows(items, pending) {

@@ -4356,6 +4356,20 @@ app.get('/pb-control/artesanos', requirePBAdmin, (req,res) => {
   res.send(artesanoAdminPB.list(items.slice(0,300),q,{needsImprovement,total,needsCount,wordCount}));
 });
 
+app.get('/pb-control/artesanos/herramientas', requirePBAdmin, (req,res) => {
+  const requestedId = sanitize(req.query?.id || '').trim();
+  const record = requestedId ? loadPBApprovedArtisanRecord(requestedId) : null;
+  const item = record?.item || {
+    id: '',
+    name: 'Vista general para artesanos',
+    ownerName: 'artesano o artesana',
+    slug: ''
+  };
+  const slug = record ? pbArtisanSlug(item) : '';
+  const publicUrl = slug ? `/artesanos/${encodeURIComponent(slug)}` : '/feria-artesanos';
+  res.send(artesanoMiPerfilPB.toolsPage({...item,slug}, '', publicUrl, {mode:'admin'}));
+});
+
 app.get('/pb-control/artesanos/:id', requirePBAdmin, (req,res) => {
   const record = loadPBApprovedArtisanRecord(req.params.id);
   if (!record) return res.status(404).send('Artesano no encontrado.');

@@ -78,6 +78,12 @@ assert.match(artisanTools, /Más tráfico para la comunidad/);
 assert.match(artisanTools, /\/artesanos\/taller-prueba\/qr/);
 assert.match(artisanTools, /\/artesanos\/taller-prueba\/compartir-evento/);
 assert.doesNotMatch(artisanTools, />Comprar</);
+const adminTools = artisanSelfService.toolsPage({...item,id:'artisan-1'}, '', '/artesanos/taller-prueba', {mode:'admin'});
+assert.match(adminTools, /Vista administrativa/);
+assert.match(adminTools, /No has iniciado sesión como el artesano/);
+assert.match(adminTools, /href="\/pb-control\/artesanos\/artisan-1"/);
+assert.match(adminTools, /href="\/pb-control#artesanos"/);
+assert.doesNotMatch(adminTools, /\/artesanos\/mi-perfil\/token/);
 const adminEdit = artisanAdmin.edit({...item,slug:'taller-prueba'}, 'csrf');
 assert.match(adminEdit, /name="gallery"/);
 assert.match(adminEdit, /pb-artisan-gallery\.js/);
@@ -91,7 +97,12 @@ assert.match(server, /quality: 'auto:good'/);
 assert.match(server, /renderPBSocialFollow/);
 assert.match(server, /app\.get\('\/artesanos\/herramientas',/);
 assert.match(server, /app\.get\('\/artesanos\/herramientas\/:token',/);
+assert.match(server, /app\.get\('\/pb-control\/artesanos\/herramientas', requirePBAdmin/);
 assert.match(server, /artesanoMiPerfilPB\.toolsPage/);
+assert.ok(
+  server.indexOf("app.get('/pb-control/artesanos/herramientas'") < server.indexOf("app.get('/pb-control/artesanos/:id'"),
+  'admin tools route must be declared before the dynamic artisan editor route'
+);
 const artisanToolsStart = server.indexOf("app.get('/artesanos/herramientas/:token'");
 const artisanToolsEnd = server.indexOf("app.post('/api/pb-artesano-update/:token'", artisanToolsStart);
 assert.ok(artisanToolsStart >= 0 && artisanToolsEnd > artisanToolsStart, 'private artisan tools route must exist');
