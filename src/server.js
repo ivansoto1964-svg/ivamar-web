@@ -16,6 +16,7 @@ const pbEventAdmin = require('./services/pb-event-admin');
 const pbEventTools = require('./services/pb-event-tools');
 const pbEventMetrics = require('./services/pb-event-metrics');
 const { createPBAds } = require('./services/pb-ads');
+const { buildArtisanManifest } = require('./services/pb-artisan-pwa');
 const salaPrensaPB = require('./views/planetaboricua/sala-prensa');
 const { renderPBSocialFollow } = require('./views/planetaboricua/social-follow');
 const { isIndexablePBArtisan, wordCount } = require('./utils/pb-seo');
@@ -509,7 +510,7 @@ const PB_ARTISAN_MAIL_HISTORY_FILE = '/data/pb-artisan-mail-history.json';
 const PB_ARTISAN_MAIL_DELIVERIES_FILE = '/data/pb-artisan-mail-deliveries.json';
 const PB_ARTISAN_EMAIL_OPTOUTS_FILE = '/data/pb-artisan-email-optouts.json';
 const PB_ARTISAN_METRICS_FILE = '/data/pb-artisan-metrics.json';
-const PB_ARTISAN_METRIC_EVENTS = new Set(['view','whatsapp','website','instagram','facebook','store','share','event','edit','qr']);
+const PB_ARTISAN_METRIC_EVENTS = new Set(['view','whatsapp','website','instagram','facebook','store','share','event','edit','qr','install']);
 
 function pbArtisanEmailOptOuts() {
   return readJsonFile(PB_ARTISAN_EMAIL_OPTOUTS_FILE,[]).filter(item => item && normalizePBArtisanEmail(item.email));
@@ -3858,6 +3859,16 @@ app.post('/admin/pb-event-delete/:token', (req, res) => {
   const event = approved.splice(index, 1)[0];
   writePBEvents('approved.json', approved);
   res.send(`<h2>✅ Evento eliminado</h2><p>${sanitize(event.name)} ya no aparece en la agenda.</p><p><a href="/agenda-boricua">Ver agenda</a></p>`);
+});
+
+app.get('/artesanos/:slug/manifest.json', (req, res) => {
+  const canonicalSlug = canonicalPBArtisanSlug(req.params.slug);
+  if (canonicalSlug !== req.params.slug) return res.redirect(301, `/artesanos/${encodeURIComponent(canonicalSlug)}/manifest.json`);
+  const item = loadApprovedPBListings().find(entry => pbArtisanSlug(entry) === canonicalSlug);
+  if (!item) return res.status(404).json({error:'Artesano no encontrado'});
+  res.set('Content-Type', 'application/manifest+json; charset=utf-8');
+  res.set('Cache-Control', 'public, max-age=3600');
+  return res.json(buildArtisanManifest(item, canonicalSlug));
 });
 
 app.get('/artesanos/:slug', (req, res, next) => {

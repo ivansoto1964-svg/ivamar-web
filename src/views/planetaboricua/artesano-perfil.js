@@ -81,6 +81,7 @@ function artesanoPerfil(item, helpers) {
 
 module.exports = function artesanoPerfilConResponsable(item, helpers) {
   let html = artesanoPerfil(item, helpers);
+  html = html.replace('href="/manifest-pb.json"', `href="/artesanos/${encodeURIComponent(helpers.slug)}/manifest.json"`);
   html = html.replace(/<footer class="pb-footer">[\s\S]*?<\/footer>/, renderPBSiteFooter());
   const profileShareUrl = `https://www.masboricuaqueunmofongo.com/a/${helpers.slug}`;
   const profileShareText = `Conoce el trabajo artesanal de ${item.name} en Planeta Boricua.`;
@@ -96,8 +97,27 @@ module.exports = function artesanoPerfilConResponsable(item, helpers) {
     /<div class="share">[\s\S]*?<\/div>/,
     `<section class="share" aria-labelledby="artisan-share-title"><h2 id="artisan-share-title">Promociona este perfil</h2><p>Compártelo en tus redes o descarga el QR para materiales impresos.</p><div class="share-actions"><button class="share-action primary" id="pb-share-profile" type="button" data-pb-track="share">📤 Más opciones</button><a class="share-action facebook" id="pb-share-facebook" data-pb-track="share" href="${facebookUrl}" target="_blank" rel="noopener noreferrer">Facebook</a><button class="share-action instagram" id="pb-share-instagram" type="button" data-pb-track="share">Instagram</button><a class="share-action whatsapp" data-pb-track="share" href="${esc(whatsappShareUrl)}" target="_blank" rel="noopener noreferrer">WhatsApp</a><button class="share-action" id="pb-copy-profile" type="button" data-pb-track="share">🔗 Copiar enlace</button><a class="share-action qr" data-pb-track="qr" href="${esc(qrDownloadUrl)}">⬇️ Descargar QR</a></div><p class="share-status" id="pb-share-status" role="status" aria-live="polite"></p></section>`
   );
+  html = html
+    .replace('<section class="share" aria-labelledby="artisan-share-title">', '<section class="share" id="compartir" aria-labelledby="artisan-share-title">')
+    .replace('Compártelo en tus redes o descarga el QR para materiales impresos.', 'Compártelo con clientes, guárdalo en tu teléfono o descarga el QR para materiales impresos.')
+    .replace(
+      /<section class="install-card"[\s\S]*?<\/section>/,
+      `<div class="install-card" id="pb-profile-install"><img src="/icons/pb/icon-192.png" alt=""><div class="install-copy"><strong>📲 Guarda este perfil en tu teléfono</strong><p>Abre el perfil de ${esc(item.name)} directamente desde tu pantalla y compártelo rápido con tus clientes.</p><div class="install-status" id="pb-profile-install-status" role="status" aria-live="polite"></div></div><button class="install-action" id="pb-profile-install-btn" type="button" data-pb-track="install">Guardar perfil</button></div>`
+    );
+  const installCard = html.match(/<div class="install-card" id="pb-profile-install">[\s\S]*?<\/button><\/div>/)?.[0];
+  if (installCard) {
+    html = html.replace(installCard, '').replace(
+      '<p class="share-status" id="pb-share-status" role="status" aria-live="polite"></p></section>',
+      `<p class="share-status" id="pb-share-status" role="status" aria-live="polite"></p>${installCard}</section>`
+    );
+  }
+  html = html.replace(
+    '</style>',
+    '.share .install-card{margin:1rem 0 0;text-align:left}.share .install-card p{margin:.25rem 0;color:#526174;font-size:.85rem}.share .install-action{white-space:nowrap}.share-action:focus-visible,.install-action:focus-visible{outline:3px solid #ce1126;outline-offset:3px}@media(max-width:720px){.share .install-card{align-items:flex-start}.share .install-action{width:100%}}</style>'
+  );
   const shareScript = `<script>(()=>{const shareButton=document.getElementById('pb-share-profile'),facebookButton=document.getElementById('pb-share-facebook'),instagramButton=document.getElementById('pb-share-instagram'),copyButton=document.getElementById('pb-copy-profile'),status=document.getElementById('pb-share-status'),url=${JSON.stringify(profileShareUrl)},title=${JSON.stringify(item.name)},text=${JSON.stringify(profileShareText)},instagramUrl=${JSON.stringify(instagramUrl)};async function copyProfile(message='Enlace copiado. Ya puedes compartirlo.'){try{await navigator.clipboard.writeText(url)}catch(_){const area=document.createElement('textarea');area.value=url;area.setAttribute('readonly','');area.style.position='fixed';area.style.opacity='0';document.body.appendChild(area);area.select();document.execCommand('copy');area.remove()}status.textContent=message}async function nativeShare(message){if(navigator.share){try{await navigator.share({title,text,url});status.textContent='Menú para compartir abierto.';return true}catch(error){if(error&&error.name==='AbortError')return true}}await copyProfile(message);return false}if(shareButton)shareButton.addEventListener('click',()=>nativeShare('Enlace copiado. Puedes pegarlo en la red que prefieras.'));if(copyButton)copyButton.addEventListener('click',()=>copyProfile());if(facebookButton)facebookButton.addEventListener('click',()=>copyProfile('Enlace copiado. Pégalo en tu publicación de Facebook.'));if(instagramButton)instagramButton.addEventListener('click',async()=>{const shared=await nativeShare('Enlace copiado. Pégalo en tu historia, mensaje o biografía de Instagram.');if(!shared)window.open(instagramUrl,'_blank','noopener,noreferrer')})})();</script>`;
   html = html.replace('</body>', shareScript + '</body>');
+  html = html.replace('</body>', `<script>(()=>{const card=document.getElementById('pb-profile-install');if(card&&(window.matchMedia('(display-mode: standalone)').matches||window.navigator.standalone===true))card.hidden=true})();</script></body>`);
   const seen = new Set();
   const gallery = (Array.isArray(item.gallery) ? item.gallery : []).map(normalizeCreation).filter(creation => {
     if (!creation?.image || creation.image === safeUrl(item.photo) || seen.has(creation.image)) return false;

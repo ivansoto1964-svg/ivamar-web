@@ -1,6 +1,7 @@
 const assert = require('assert');
 const fs = require('fs');
 const qr = require('../src/services/pb-artisan-qr');
+const { buildArtisanManifest } = require('../src/services/pb-artisan-pwa');
 
 (async () => {
   const slug = 'crochet-by-sany-664508';
@@ -17,15 +18,18 @@ const qr = require('../src/services/pb-artisan-qr');
   assert.match(view,/Descargar QR/);
   assert.match(view,/\/artesanos\/\$\{encodeURIComponent\(helpers\.slug\)\}\/qr\.png/);
   assert.match(view,/compartir-evento/);
-  assert.match(view,/manifest-pb\.json/);
-  assert.match(view,/Ten Planeta Boricua a un toque/);
+  assert.match(view,/\/artesanos\/\$\{encodeURIComponent\(helpers\.slug\)\}\/manifest\.json/);
+  assert.match(view,/Guarda este perfil en tu teléfono/);
+  assert.match(view,/data-pb-track="install"/);
   assert.match(view,/beforeinstallprompt/);
   assert.match(view,/Añadir a pantalla de inicio/);
+  assert.match(server,/\/artesanos\/:slug\/manifest\.json/);
+  assert.match(server,/application\/manifest\+json/);
   assert.match(server,/\/artesanos\/:slug\/qr['"]/);
   assert.match(server,/\/artesanos\/:slug\/qr\.png/);
   assert.match(server,/Ver y descargar mi QR/);
   assert.match(server,/Content-Disposition/);
-  assert.match(server,/PB_ARTISAN_METRIC_EVENTS[^\n]+['"]qr['"]/);
+  assert.match(server,/PB_ARTISAN_METRIC_EVENTS[^\n]+['"]qr['"][^\n]+['"]install['"]/);
   const preview = qrPreviewView({name:'Crochet by Sany',slug,qrDataUri:`data:image/png;base64,${png.toString('base64')}`});
   assert.match(preview,/Este es tu código QR permanente/);
   assert.match(preview,/Crochet by Sany/);
@@ -33,6 +37,13 @@ const qr = require('../src/services/pb-artisan-qr');
   assert.match(preview,/Aunque luego actualices/);
   const manifest = JSON.parse(fs.readFileSync(require.resolve('../public/manifest-pb.json'),'utf8'));
   assert.ok(manifest.shortcuts.some(item => item.url === '/artesanos/mi-perfil'));
+  const artisanManifest = buildArtisanManifest({name:'Crochet by Sany'},slug);
+  assert.equal(artisanManifest.id,`/artesanos/${slug}`);
+  assert.equal(artisanManifest.start_url,`/artesanos/${slug}?source=homescreen`);
+  assert.equal(artisanManifest.scope,'/');
+  assert.match(artisanManifest.name,/Crochet by Sany/);
+  assert.ok(artisanManifest.shortcuts.some(item => item.url === `/artesanos/${slug}#compartir`));
+  assert.throws(() => buildArtisanManifest({name:'Prueba'},'../bad'),/Invalid artisan slug/);
   console.log('PB artisan QR tests passed');
 })().catch(error => {
   console.error(error);
