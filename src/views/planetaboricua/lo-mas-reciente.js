@@ -3,6 +3,7 @@ const { renderSubscriberForm } = require('./subscriber-form');
 const { renderExplorePB } = require('./explore-pb');
 const { renderPBAd, insertAfterBlocks } = require('./pb-ad');
 const { wordCount } = require('../../services/pb-ads');
+const { hasTravelIntent, renderStay22 } = require('./stay22');
 
 module.exports = function loMasReciente(item, comments = [], recommendations = [], ads = {}) {
   if (!item) return '<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Publicación no encontrada</title></head><body><main><h1>Publicación no encontrada</h1><a href="/">Volver a Planeta Boricua</a></main></body></html>';
@@ -66,5 +67,5 @@ module.exports = function loMasReciente(item, comments = [], recommendations = [
     finally { button.disabled = false; }
   });
 })();
-</script><script src="/js/pb-ads.js?v=2" defer></script><script src="/js/pb-instagram-share.js?v=5"></script></body></html>`;
+</script><script src="/js/pb-ads.js?v=2" defer></script><script src="/js/pb-instagram-share.js?v=5"></script>${renderStay22({enabled:hasTravelIntent(item)})}</body></html>`;
 };

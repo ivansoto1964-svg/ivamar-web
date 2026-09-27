@@ -233,6 +233,7 @@ nav{background:#fff;border-bottom:3px solid #CE1126;padding:0;}
   <ul>
     <li><strong>Programa de Asociados de Amazon</strong> — enlaces a productos seleccionados en Amazon</li>
     <li><strong>Travelpayouts</strong> — plataforma de afiliados de viajes (Expedia, Booking.com, Aviasales, etc.)</li>
+    <li><strong>Stay22</strong> — tecnología de afiliados de viajes que puede presentar opciones de alojamiento y reservaciones de distintos proveedores en páginas relacionadas con viajes y eventos</li>
     <li>Otros programas de viajes y servicios que puedan añadirse en el futuro</li>
   </ul>
 
