@@ -49,6 +49,6 @@ assert(control.includes('Inicio: <strong>1</strong>'), 'PB Control debe tratar e
 
 const server = fs.readFileSync(require.resolve('../src/server'), 'utf8');
 assert(server.includes("new Set(['blog', 'lo_mas_reciente', 'agenda', 'inicio'])"), 'El servidor debe limitar los orígenes aceptados.');
-assert(server.includes("trim().toLowerCase() === email"), 'El servidor debe evitar duplicados sin distinguir mayúsculas.');
+assert(server.includes('pbSubscriberWelcome.findSubscriber(subscribers, email)'), 'El servidor debe evitar duplicados normalizados mediante el servicio compartido.');
 
 console.log('PB subscriber capture tests passed.');

@@ -15,6 +15,7 @@ const pbPressRoom = require('./services/pb-press-room');
 const pbEventAdmin = require('./services/pb-event-admin');
 const pbEventTools = require('./services/pb-event-tools');
 const pbEventMetrics = require('./services/pb-event-metrics');
+const pbSubscriberWelcome = require('./services/pb-subscriber-welcome');
 const { createPBAds } = require('./services/pb-ads');
 const { buildArtisanManifest } = require('./services/pb-artisan-pwa');
 const salaPrensaPB = require('./views/planetaboricua/sala-prensa');
@@ -416,6 +417,7 @@ const PB_LATEST_DIR = '/data/pb-latest';
 const PB_COMMENTS_DIR = '/data/pb-comments';
 const PB_CONTACT_EMAIL = process.env.PB_CONTACT_EMAIL || 'masboricuaqueunmofongo@gmail.com';
 const PB_SENDER_EMAIL = process.env.PB_SENDER_EMAIL || 'notificaciones@masboricuaqueunmofongo.com';
+const PB_SUBSCRIBERS_FILE = '/data/pb-subscribers.json';
 function readPBLatest(file) {
   try { return JSON.parse(fs.readFileSync(path.join(PB_LATEST_DIR, file), 'utf8')); } catch (_) { return []; }
 }
@@ -5195,81 +5197,118 @@ app.get("/sitemap-boricua.xml", (req, res) => {
 </urlset>`);
 });
 
+function pbSubscriberUnsubscribePage({email = '', confirmed = false, invalid = false} = {}) {
+  const masked = email ? email.replace(/^(.{1,2}).*(@.*)$/,'$1••••$2') : '';
+  const title = invalid ? 'Enlace no válido' : confirmed ? 'Suscripción cancelada' : 'Confirmar baja';
+  const body = invalid
+    ? '<p>Este enlace no es válido. Si necesitas ayuda, escríbenos a <a href="mailto:masboricuaqueunmofongo@gmail.com">masboricuaqueunmofongo@gmail.com</a>.</p>'
+    : confirmed
+      ? `<p><strong>${emailEscForResponse(masked)}</strong> ya no recibirá los correos de suscripción de Planeta Boricua.</p><p><a class="button" href="/">Volver a Planeta Boricua</a></p>`
+      : `<p>¿Deseas que <strong>${emailEscForResponse(masked)}</strong> deje de recibir los correos de suscripción de Planeta Boricua?</p><form method="post"><button type="submit">Sí, darme de baja</button></form>`;
+  return `<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex,nofollow"><title>${title} · Planeta Boricua</title><style>body{margin:0;background:#f4f5f7;color:#162033;font-family:system-ui,sans-serif}.wrap{max-width:620px;margin:8vh auto;padding:1rem}.box{background:#fff;border:1px solid #e5e8ee;border-radius:16px;padding:clamp(1.5rem,5vw,2.5rem);box-shadow:0 12px 30px #001a3e14}h1{color:#002d62}p{line-height:1.65}button,.button{display:inline-block;border:0;border-radius:9px;background:#ce1126;color:#fff;padding:.8rem 1rem;font-weight:800;text-decoration:none;cursor:pointer}</style></head><body><main class="wrap"><div class="box"><div>🇵🇷 Planeta Boricua</div><h1>${title}</h1>${body}</div></main></body></html>`;
+}
+
+app.get('/suscripcion/salir/:token', (req, res) => {
+  res.set('Cache-Control', 'no-store, private');
+  const email = pbSubscriberWelcome.verifyUnsubscribeToken(req.params.token, pbArtisanMagicSecret());
+  if (!email) return res.status(400).send(pbSubscriberUnsubscribePage({invalid:true}));
+  res.send(pbSubscriberUnsubscribePage({email}));
+});
+
+app.post('/suscripcion/salir/:token', formLimiter, express.urlencoded({extended:false,limit:'5kb'}), async (req, res) => {
+  res.set('Cache-Control', 'no-store, private');
+  const email = pbSubscriberWelcome.verifyUnsubscribeToken(req.params.token, pbArtisanMagicSecret());
+  if (!email) return res.status(400).send(pbSubscriberUnsubscribePage({invalid:true}));
+  const subscribers = readJsonFile(PB_SUBSCRIBERS_FILE, []);
+  const subscriber = pbSubscriberWelcome.findSubscriber(subscribers, email);
+  if (subscriber && subscriber.status !== 'unsubscribed') {
+    subscriber.status = 'unsubscribed';
+    subscriber.unsubscribedAt = new Date().toISOString();
+    writeJsonFile(PB_SUBSCRIBERS_FILE, subscribers);
+  }
+  if (process.env.BREVO_API_KEY) {
+    try {
+      const brevoResponse = await fetch('https://api.brevo.com/v3/contacts/lists/4/contacts/remove', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json','api-key':process.env.BREVO_API_KEY},
+        body: JSON.stringify({emails:[email]})
+      });
+      if (!brevoResponse.ok) console.error('Brevo PB unsubscribe error: HTTP ' + brevoResponse.status);
+    } catch (error) {
+      console.error('Brevo PB unsubscribe error:', error.message);
+    }
+  }
+  res.send(pbSubscriberUnsubscribePage({email,confirmed:true}));
+});
+
 app.post('/api/newsletter-boricua', express.json(), formLimiter, async (req, res) => {
   try {
     const body = req.body || {};
-    const email = String(body.email || '').trim().toLowerCase();
+    const email = pbSubscriberWelcome.normalizeSubscriberEmail(body.email);
     const requestedSource = String(body.source || '').trim().toLowerCase();
     const sourceAliases = { landing: 'inicio' };
     const source = sourceAliases[requestedSource] || requestedSource;
     const allowedSources = new Set(['blog', 'lo_mas_reciente', 'agenda', 'inicio']);
     const savedSource = allowedSources.has(source) ? source : 'inicio';
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return res.status(400).json({ ok: false, error: 'Email inválido' });
+    if (!pbSubscriberWelcome.isValidSubscriberEmail(email)) return res.status(400).json({ok:false,error:'Email inválido'});
 
-    // Save to file
-    const subscribersFile = '/data/pb-subscribers.json';
-    let subscribers = [];
-    if (require('fs').existsSync(subscribersFile)) {
-      subscribers = JSON.parse(require('fs').readFileSync(subscribersFile, 'utf8'));
+    const subscribers = readJsonFile(PB_SUBSCRIBERS_FILE, []);
+    if (pbSubscriberWelcome.findSubscriber(subscribers, email)) return res.json({ok:true,existing:true});
+    if (!process.env.RESEND_API_KEY || !pbArtisanMagicSecret()) {
+      return res.status(503).json({ok:false,error:'La suscripción no está disponible en este momento.'});
     }
-    if (subscribers.find(s => String(s.email || '').trim().toLowerCase() === email)) return res.json({ ok: true, existing: true });
-    subscribers.push({ email, source: savedSource, subscribedAt: new Date().toISOString() });
-    require('fs').writeFileSync(subscribersFile, JSON.stringify(subscribers, null, 2));
 
-    // Notify Ivan
-    await resend.emails.send({
-      from: `Planeta Boricua <${PB_SENDER_EMAIL}>`,
-      to: PB_CONTACT_EMAIL,
-      subject: '🇵🇷 Nuevo suscriptor Planeta Boricua: ' + email,
-      html: '<p>Nuevo suscriptor: <strong>' + email + '</strong></p><p>Fuente: ' + savedSource + '</p><p>Total: ' + subscribers.length + '</p>'
-    });
+    const subscriber = pbSubscriberWelcome.createSubscriberRecord(email, savedSource);
+    subscribers.push(subscriber);
+    writeJsonFile(PB_SUBSCRIBERS_FILE, subscribers);
 
-    // Add to Brevo list 4 (Planeta Boricua)
+    let welcomeSent = false;
     try {
-      await fetch('https://api.brevo.com/v3/contacts', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'api-key': process.env.BREVO_API_KEY },
-        body: JSON.stringify({ email, listIds: [4], updateEnabled: true })
+      const delivery = await resend.emails.send(pbSubscriberWelcome.welcomeEmail({
+        email,
+        from: `Planeta Boricua <${PB_SENDER_EMAIL}>`,
+        secret: pbArtisanMagicSecret()
+      }));
+      if (delivery?.error || !delivery?.data?.id) throw new Error(delivery?.error?.message || 'Resend no confirmó el envío.');
+      subscriber.welcomeStatus = 'sent';
+      subscriber.welcomeSentAt = new Date().toISOString();
+      subscriber.welcomeEmailId = delivery.data.id;
+      welcomeSent = true;
+    } catch (error) {
+      subscriber.welcomeStatus = 'failed';
+      subscriber.welcomeFailedAt = new Date().toISOString();
+      subscriber.welcomeError = String(error.message || 'Error de envío').slice(0, 300);
+      console.error('PB subscriber welcome error:', error.message);
+    }
+    writeJsonFile(PB_SUBSCRIBERS_FILE, subscribers);
+
+    try {
+      await resend.emails.send({
+        from: `Planeta Boricua <${PB_SENDER_EMAIL}>`,
+        to: PB_CONTACT_EMAIL,
+        subject: '🇵🇷 Nuevo suscriptor Planeta Boricua: ' + email,
+        html: '<p>Nuevo suscriptor: <strong>' + emailEscForResponse(email) + '</strong></p><p>Fuente: ' + emailEscForResponse(savedSource) + '</p><p>Total: ' + subscribers.length + '</p>'
       });
-    } catch(brevoErr) {
-      console.error('Brevo PB error:', brevoErr.message);
+    } catch (error) {
+      console.error('PB subscriber notification error:', error.message);
     }
 
-    // Welcome email in Spanish
-    await resend.emails.send({
-      from: `Planeta Boricua <${PB_SENDER_EMAIL}>`,
-      to: email,
-      subject: '🇵🇷 ¡Bienvenido/a a Planeta Boricua!',
-      html: `<div style="font-family:sans-serif;max-width:600px;margin:0 auto;">
-        <div style="background:linear-gradient(135deg,#002D62,#CE1126);padding:2rem;text-align:center;border-radius:12px 12px 0 0;">
-          <h1 style="color:#fff;font-size:1.5rem;margin:0">🇵🇷 ¡Bienvenido/a a Planeta Boricua!</h1>
-          <p style="color:rgba(255,255,255,0.8);margin-top:0.5rem;font-size:0.9rem;">Más Boricua Que Un Mofongo</p>
-        </div>
-        <div style="padding:2rem;background:#fff;border:1px solid #e5e5e0;">
-          <p style="font-size:1rem;color:#333">¡Wepa! 🎉 Ya eres parte de la comunidad de Planeta Boricua — un espacio de cultura, identidad y orgullo boricua.</p>
-          <p style="font-size:0.9rem;color:#555;margin-top:1rem;">Recibirás historias originales, cultura, gastronomía, recursos útiles y novedades de nuestra comunidad.</p>
-          <div style="background:#f5f5f0;border-radius:8px;padding:1.2rem;margin:1.5rem 0;">
-            <p style="font-size:0.85rem;color:#444;margin:0;"><strong>¿Sabías que tenemos?</strong></p>
-            <ul style="font-size:0.85rem;color:#555;margin:0.5rem 0 0 1.2rem;">
-              <li>📋 Centro de Recursos PR↔USA — guías de mudanza, licencias y más</li>
-              <li>🎨 Feria de Artesanías — talento hecho por manos boricuas</li>
-              <li>✍️ El Balcón — historias y artículos propios</li>
-            </ul>
-          </div>
-          <div style="text-align:center;margin:2rem 0;">
-            <a href="https://www.masboricuaqueunmofongo.com" style="background:#CE1126;color:#fff;padding:12px 24px;border-radius:6px;text-decoration:none;font-weight:700;">Visitar Planeta Boricua →</a>
-          </div>
-        </div>
-        <div style="padding:1rem;text-align:center;background:#f5f5f0;border-radius:0 0 12px 12px;">
-          <p style="font-size:0.75rem;color:#888;">© 2026 Planeta Boricua · masboricuaqueunmofongo.com · Proyecto independiente de Iván Soto</p>
-          <p style="font-size:0.7rem;color:#aaa;margin-top:0.3rem;">Recibiste este email porque te suscribiste en Planeta Boricua.</p>
-        </div>
-      </div>`
-    });
+    if (process.env.BREVO_API_KEY) {
+      try {
+        const brevoResponse = await fetch('https://api.brevo.com/v3/contacts', {
+          method: 'POST',
+          headers: {'Content-Type':'application/json','api-key':process.env.BREVO_API_KEY},
+          body: JSON.stringify({email,listIds:[4],updateEnabled:true})
+        });
+        if (!brevoResponse.ok) console.error('Brevo PB error: HTTP ' + brevoResponse.status);
+      } catch (error) {
+        console.error('Brevo PB error:', error.message);
+      }
+    }
 
-    return res.json({ ok: true });
-  } catch(e) {
-    console.error('PB Subscribe error:', e.message);
-    return res.status(500).json({ ok: false, error: 'No se pudo completar la suscripción.' });
+    return res.json({ok:true,welcomeSent});
+  } catch (error) {
+    console.error('PB Subscribe error:', error.message);
+    return res.status(500).json({ok:false,error:'No se pudo completar la suscripción.'});
   }
 });

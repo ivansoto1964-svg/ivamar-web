@@ -4,6 +4,7 @@ const crypto = require('crypto');
 const sanitizeHtml = require('sanitize-html');
 const rateLimit = require('express-rate-limit');
 const { Resend } = require('resend');
+const pbSubscriberWelcome = require('../services/pb-subscriber-welcome');
 
 const DATA_DIR = process.env.PB_STORIES_DATA_DIR || '/data/pb-stories';
 const PB_CONTACT_EMAIL = process.env.PB_CONTACT_EMAIL || 'masboricuaqueunmofongo@gmail.com';
@@ -75,7 +76,30 @@ module.exports = function registerPBStories(app) {
     pending.push(item); write('pending.json',pending);
     if (newsletter) {
       const subscribersFile='/data/pb-subscribers.json';
-      try { const list=JSON.parse(fs.readFileSync(subscribersFile,'utf8')); if(!list.some(x=>String(x.email).toLowerCase()===email)) { list.push({email,source:`Historias de ${townName(town)}`,subscribedAt:new Date().toISOString()}); fs.writeFileSync(subscribersFile,JSON.stringify(list,null,2)); } } catch (_) {}
+      try {
+        const list=JSON.parse(fs.readFileSync(subscribersFile,'utf8'));
+        if (!pbSubscriberWelcome.findSubscriber(list,email)) {
+          const secret=String(process.env.PB_ARTISAN_MAGIC_SECRET||process.env.PB_ADMIN_PASS||'').trim();
+          if (process.env.RESEND_API_KEY && secret) {
+            const subscriber=pbSubscriberWelcome.createSubscriberRecord(email,`Historias de ${townName(town)}`);
+            list.push(subscriber);
+            fs.writeFileSync(subscribersFile,JSON.stringify(list,null,2));
+            try {
+              const delivery=await resend.emails.send(pbSubscriberWelcome.welcomeEmail({email,from:`Planeta Boricua <${PB_SENDER_EMAIL}>`,secret}));
+              if(delivery?.error||!delivery?.data?.id) throw new Error(delivery?.error?.message||'Resend no confirmó el envío.');
+              subscriber.welcomeStatus='sent'; subscriber.welcomeSentAt=new Date().toISOString(); subscriber.welcomeEmailId=delivery.data.id;
+            } catch(error) {
+              subscriber.welcomeStatus='failed'; subscriber.welcomeFailedAt=new Date().toISOString(); subscriber.welcomeError=String(error.message||'Error de envío').slice(0,300);
+              console.error('PB story subscriber welcome error:',error.message);
+            }
+            fs.writeFileSync(subscribersFile,JSON.stringify(list,null,2));
+            if(process.env.BREVO_API_KEY) {
+              try { await fetch('https://api.brevo.com/v3/contacts',{method:'POST',headers:{'Content-Type':'application/json','api-key':process.env.BREVO_API_KEY},body:JSON.stringify({email,listIds:[4],updateEnabled:true})}); }
+              catch(error) { console.error('PB story subscriber Brevo error:',error.message); }
+            }
+          }
+        }
+      } catch (error) { console.error('PB story subscriber error:',error.message); }
     }
     try {
       const approve=`https://www.masboricuaqueunmofongo.com/admin/pb-story-approve/${item.approveToken}`;
