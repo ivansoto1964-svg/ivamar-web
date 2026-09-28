@@ -89,7 +89,7 @@ function eventoBoricua(event, { relatedEvents = [], recommendations = [] } = {})
 
 module.exports = function eventoBoricuaConAtribucion(event, options = {}) {
   const html = eventoBoricua(event, options);
-  if (!event.artisanSlug || event.artisanRole !== 'contributor') return html;
+  if (!event || !event.artisanSlug || event.artisanRole !== 'contributor') return html;
   const profileLink = `<a href="/artesanos/${encodeURIComponent(event.artisanSlug)}">${esc(event.artisanName || 'Artesano de Planeta Boricua')}</a>`;
   return html.replace(
     `<p><strong>Participa:</strong> ${profileLink}</p>`,
