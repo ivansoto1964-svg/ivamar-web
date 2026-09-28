@@ -141,8 +141,11 @@ function analyticsBlogHistoryRows(items, startedAt) {
   return items.map(item => {
     const activity = item.lastView
       ? `Primera visita medida: ${shortDate(item.firstView)} · Última: ${shortDate(item.lastView)}`
-      : `Sin visitas medidas desde ${shortDate(startedAt)}`;
-    return `<article class="item compact"><div><span class="eyebrow">${Number(item.viewsTotal) || 0} acumuladas · ${Number(item.views30) || 0} en 30 días</span><h3>${esc(item.title)}</h3><p>${esc(activity)}</p></div><a class="action" href="${esc(item.path)}" target="_blank">Abrir</a></article>`;
+      : `Sin visitas nuevas medidas desde ${shortDate(startedAt)}`;
+    const breakdown = item.bloggerViews
+      ? `${Number(item.bloggerViews)} históricas de Blogger · ${Number(item.pbViews) || 0} medidas por PB`
+      : `${Number(item.pbViews) || 0} medidas por PB`;
+    return `<article class="item compact"><div><span class="eyebrow">${Number(item.viewsTotal) || 0} totales · ${Number(item.views30) || 0} en 30 días</span><h3>${esc(item.title)}</h3><p><strong>${esc(item.origin || 'PB')}:</strong> ${esc(breakdown)}<br>${esc(activity)}</p></div><a class="action" href="${esc(item.path)}" target="_blank">Abrir</a></article>`;
   }).join('');
 }
 
@@ -157,8 +160,9 @@ function siteAnalyticsPanel(stats = {}) {
     ['Cambio semanal', last7.change === null || last7.change === undefined ? '—' : `${last7.change > 0 ? '+' : ''}${last7.change}%`, analyticsChange(last7.change)]
   ].map(card => `<div class="card"><span>${esc(card[0])}</span><strong>${esc(card[1])}</strong><small>${esc(card[2])}</small></div>`).join('');
   const blogHistory = stats.blogHistory || [];
-  const measuredCount = blogHistory.filter(item => item.viewsTotal > 0).length;
-  return `<section class="panel" id="estadisticas"><div class="section"><div class="sectionhead"><div><h2>📊 Visitas de Planeta Boricua</h2><p class="sectionnote">Medición propia desde ${shortDate(stats.startedAt)}. No guarda nombres, emails, direcciones IP ni identificadores persistentes.</p></div></div><div class="cards">${cards}</div><p class="sectionnote">La cifra de visitantes se cuenta una vez por navegador cada día. Las páginas vistas cuentan cada artículo o sección abierta.</p></div><div class="section"><h2>Páginas más visitadas · 30 días</h2>${analyticsRankRows(stats.topPages || [], 'Las páginas más visitadas aparecerán aquí.')}</div><div class="section"><h2>Artículos más leídos · 30 días</h2>${analyticsRankRows(stats.topArticles || [], 'Los artículos más leídos aparecerán aquí.')}</div><details class="section"><summary><strong>Historial completo de El Balcón — ${measuredCount} de ${blogHistory.length} artículos con visitas medidas</strong></summary><p class="sectionnote">Incluye todos los artículos publicados, aunque tengan cero visitas. El acumulado comienza cuando PB activó su medición propia; no inventa ni recupera contadores antiguos de Blogger.</p>${analyticsBlogHistoryRows(blogHistory,stats.startedAt)}</details><div class="section"><h2>Actividad diaria · últimos 14 días</h2>${analyticsDailyRows(stats.daily || [])}</div></section>`;
+  const historicalTotal = blogHistory.reduce((sum,item) => sum + (Number(item.bloggerViews) || 0),0);
+  const pbBlogTotal = blogHistory.reduce((sum,item) => sum + (Number(item.pbViews) || 0),0);
+  return `<section class="panel" id="estadisticas"><div class="section"><div class="sectionhead"><div><h2>📊 Visitas de Planeta Boricua</h2><p class="sectionnote">Medición propia desde ${shortDate(stats.startedAt)}. No guarda nombres, emails, direcciones IP ni identificadores persistentes.</p></div></div><div class="cards">${cards}</div><p class="sectionnote">La cifra de visitantes se cuenta una vez por navegador cada día. Las páginas vistas cuentan cada artículo o sección abierta.</p></div><div class="section"><h2>Páginas más visitadas · 30 días</h2>${analyticsRankRows(stats.topPages || [], 'Las páginas más visitadas aparecerán aquí.')}</div><div class="section"><h2>Artículos más leídos · 30 días</h2>${analyticsRankRows(stats.topArticles || [], 'Los artículos más leídos aparecerán aquí.')}</div><div class="section"><div class="sectionhead"><div><h2>El Balcón · historial editorial completo</h2><p class="sectionnote">${blogHistory.length} artículos publicados · ${historicalTotal} vistas históricas verificadas de Blogger · ${pbBlogTotal} vistas medidas por PB. Las cifras históricas se conservan por título, pero no se suman retroactivamente a los visitantes generales de PB.</p></div></div>${analyticsBlogHistoryRows(blogHistory,stats.startedAt)}</div><div class="section"><h2>Actividad diaria · últimos 14 días</h2>${analyticsDailyRows(stats.daily || [])}</div></section>`;
 }
 
 

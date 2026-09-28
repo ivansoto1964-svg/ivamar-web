@@ -23,6 +23,7 @@ const { renderPBSocialFollow } = require('./views/planetaboricua/social-follow')
 const { isIndexablePBArtisan, wordCount } = require('./utils/pb-seo');
 const { CATEGORIES:PB_BLOG_CATEGORIES, categorySlug:pbBlogCategorySlug } = require('./utils/pb-editorial');
 const PB_ARTISAN_DESCRIPTION_REPAIRS = require('./data/pb-artisan-description-repairs');
+const PB_BLOG_LEGACY_VIEWS = require('./data/pb-blog-legacy-views.json');
 
 
 
@@ -1006,6 +1007,9 @@ app.use(cookieParser());
 // Puerto Rico date; no IP address or persistent visitor identifier is saved.
 app.use((req, res, next) => {
   if (!pbSiteAnalytics.shouldTrackRequest(req)) return next();
+  // Capture before mounted routers temporarily strip their prefix from req.url.
+  // Reading req.path inside "finish" stored /slug instead of /blog/slug.
+  const pagePath = req.path;
   const dayKey = pbSiteAnalytics.puertoRicoDateKey();
   const newVisitor = req.cookies?.pbVisitDay !== dayKey;
   if (newVisitor) {
@@ -1020,7 +1024,7 @@ app.use((req, res, next) => {
     const contentType = String(res.getHeader('content-type') || '');
     if (res.statusCode < 200 || res.statusCode >= 300 || !contentType.includes('text/html')) return;
     try {
-      pbSiteAnalytics.recordPageView({ pagePath:req.path, newVisitor });
+      pbSiteAnalytics.recordPageView({ pagePath, newVisitor });
     } catch (error) {
       console.error('[pb-analytics] Could not record page view:', error.message);
     }
@@ -1827,18 +1831,45 @@ function buildPBControlModel(csrf) {
   const publishedBlogPosts = blogPosts.filter(post => (post.status || 'published') === 'published');
   const last30Pages = siteAnalytics.last30?.pages || {};
   const measuredPages = siteAnalytics.pageHistory || {};
+  const blogSlugs = new Set(publishedBlogPosts.map(post => post.slug));
+  const normalizedLast30Pages = {};
+  Object.entries(last30Pages).forEach(([storedPath,count]) => {
+    const rootSlug = storedPath.startsWith('/') && !storedPath.slice(1).includes('/') ? storedPath.slice(1) : '';
+    const normalizedPath = blogSlugs.has(rootSlug) ? `/blog/${rootSlug}` : storedPath;
+    normalizedLast30Pages[normalizedPath] = (normalizedLast30Pages[normalizedPath] || 0) + (Number(count) || 0);
+  });
+  siteAnalytics.topPages = Object.entries(normalizedLast30Pages).map(([pagePath,views]) => ({
+    path:pagePath,label:pbSiteAnalytics.pageLabel(pagePath),views
+  })).sort((a,b) => b.views - a.views || a.label.localeCompare(b.label,'es')).slice(0,12);
   siteAnalytics.blogHistory = publishedBlogPosts.map(post => {
     const pagePath = `/blog/${post.slug}`;
-    const measured = measuredPages[pagePath] || {};
+    const legacyPBPath = `/${post.slug}`;
+    const canonicalMeasured = measuredPages[pagePath] || {};
+    const misplacedMeasured = measuredPages[legacyPBPath] || {};
+    const bloggerViews = Number(PB_BLOG_LEGACY_VIEWS[post.slug]) || 0;
+    const pbViews = (Number(canonicalMeasured.views) || 0) + (Number(misplacedMeasured.views) || 0);
+    const firstViews = [canonicalMeasured.firstView,misplacedMeasured.firstView].filter(Boolean).sort();
+    const lastViews = [canonicalMeasured.lastView,misplacedMeasured.lastView].filter(Boolean).sort();
     return {
       title:post.title,
       path:pagePath,
-      views30:Number(last30Pages[pagePath]) || 0,
-      viewsTotal:Number(measured.views) || 0,
-      firstView:measured.firstView || '',
-      lastView:measured.lastView || ''
+      origin:bloggerViews ? 'Blogger → PB' : 'PB',
+      bloggerViews,
+      pbViews,
+      views30:(Number(last30Pages[pagePath]) || 0) + (Number(last30Pages[legacyPBPath]) || 0),
+      viewsTotal:bloggerViews + pbViews,
+      firstView:firstViews[0] || '',
+      lastView:lastViews.at(-1) || ''
     };
   }).sort((a,b) => b.viewsTotal - a.viewsTotal || b.views30 - a.views30 || a.title.localeCompare(b.title,'es'));
+  const latestTopArticles = (siteAnalytics.topArticles || []).filter(item => item.path.startsWith('/lo-mas-reciente/'));
+  const blogTopArticles = siteAnalytics.blogHistory.filter(item => item.views30 > 0).map(item => ({
+    path:item.path,
+    label:`El Balcón · ${item.title}`,
+    views:item.views30
+  }));
+  siteAnalytics.topArticles = latestTopArticles.concat(blogTopArticles)
+    .sort((a,b) => b.views - a.views || a.label.localeCompare(b.label,'es')).slice(0,10);
   const pressRoom = pbPressRoom.read();
   pressRoom.options = {
     mediaTypes:pbPressRoom.MEDIA_TYPES, reaches:pbPressRoom.REACHES, tags:pbPressRoom.TAGS,

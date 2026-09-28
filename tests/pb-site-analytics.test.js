@@ -3,8 +3,12 @@ const fs = require('node:fs');
 const os = require('node:os');
 const path = require('node:path');
 const analytics = require('../src/services/pb-site-analytics');
+const legacyBlogViews = require('../src/data/pb-blog-legacy-views.json');
 const renderPBControl = require('../src/views/pb-control');
 const serverSource = fs.readFileSync(path.join(__dirname, '../src/server.js'), 'utf8');
+
+assert.equal(Object.keys(legacyBlogViews).length, 29, 'The verified Blogger baseline must include the 29 published articles supplied by the owner.');
+assert.equal(Object.values(legacyBlogViews).reduce((sum,value) => sum + value,0), 3254, 'The verified Blogger baseline must total 3,254 views.');
 
 function request({ method='GET', hostname='www.masboricuaqueunmofongo.com', pagePath='/', userAgent='Mozilla/5.0', accept='text/html' } = {}) {
   return {
@@ -27,6 +31,8 @@ assert.equal(analytics.shouldTrackRequest(request({ hostname:'example.com' })), 
 assert.match(serverSource, /app\.use\(cookieParser\(\)\);[\s\S]*pbSiteAnalytics\.shouldTrackRequest\(req\)/, 'Analytics middleware must run after cookie parsing.');
 assert.match(serverSource, /res\.once\('finish'/, 'A visit must be recorded only after the response finishes.');
 assert.match(serverSource, /contentType\.includes\('text\/html'\)/, 'Only successful HTML pages must be counted.');
+assert.match(serverSource, /const pagePath = req\.path;[\s\S]*recordPageView\(\{ pagePath, newVisitor \}\)/, 'The full path must be captured before mounted routers strip their prefix.');
+assert.match(serverSource, /const legacyPBPath = `\/\$\{post\.slug\}`/, 'Previously misplaced El Balcón paths must be recovered.');
 
 const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'pb-site-analytics-'));
 const file = path.join(tempDir, 'metrics.json');
@@ -67,8 +73,20 @@ assert.match(html, /Visitantes hoy/);
 assert.match(html, /Últimos 7 días/);
 assert.match(html, /Páginas más visitadas/);
 assert.match(html, /Artículos más leídos/);
-assert.match(html, /Historial completo de El Balcón/);
-assert.match(html, /Incluye todos los artículos publicados/);
+assert.match(html, /El Balcón · historial editorial completo/);
 assert.match(html, /No guarda nombres, emails, direcciones IP ni identificadores persistentes/);
+
+const unifiedHtml = renderPBControl({
+  counts:{}, latestPending:[],latestApproved:[],commentsPending:[],commentsApproved:[],
+  artisansPending:[],artisansApproved:[],eventsPending:[],eventsApproved:[],subscribers:[],
+  blogPosts:[],affiliates:[],artisanMetrics:[],artisanMailHistory:[],artisanEmailAudit:{counts:{},issues:[]},
+  siteAnalytics:{...summary,blogHistory:[{
+    title:'Artículo migrado',path:'/blog/articulo-migrado',origin:'Blogger → PB',
+    bloggerViews:399,pbViews:28,viewsTotal:427,views30:28,firstView:'2026-08-27',lastView:'2026-09-28'
+  }]}
+});
+assert.match(unifiedHtml, /427 totales/);
+assert.match(unifiedHtml, /399 históricas de Blogger · 28 medidas por PB/);
+assert.doesNotMatch(unifiedHtml, /<details class="section">/);
 
 console.log('PB site analytics contract: OK');
