@@ -17,6 +17,8 @@ const latest = renderLatest({
 });
 
 assert.match(blog, /\/js\/pb-instagram-share\.js\?v=5/, 'Blog posts must load the current social sharing helper.');
+assert.match(blog, /property="og:image" content="https:\/\/www\.masboricuaqueunmofongo\.com\/img\/pb-logo\.png\?v=2026-08-27"/, 'The social image URL must be versioned so networks refresh replaced covers.');
+assert.match(blog, /name="twitter:image" content="https:\/\/www\.masboricuaqueunmofongo\.com\/img\/pb-logo\.png\?v=2026-08-27"/, 'Twitter/X must receive the same current cover image.');
 assert.match(blog, /<h1 class="post-title">Prueba<\/h1><p class="post-summary">Resumen<\/p><div class="post-meta">/, 'El resumen de El Balcón debe aparecer debajo del título y antes del contenido.');
 assert.ok(blog.indexOf('post-summary') < blog.indexOf('<div class="post-body">'), 'El resumen debe aparecer antes del contenido del artículo.');
 assert.match(latest, /\/js\/pb-instagram-share\.js\?v=5/, 'Latest posts must load the current social sharing helper.');
