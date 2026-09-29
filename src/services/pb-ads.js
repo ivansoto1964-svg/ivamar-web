@@ -7,11 +7,14 @@ const STATUSES = new Set(['draft', 'active', 'inactive', 'archived']);
 const VERTICALS = new Set(['general', 'retail', 'travel', 'internal']);
 const TYPE_RANK = { direct:3, affiliate:2, internal:1 };
 const PLACEMENTS = new Set([
+  'home.after_hero', 'home.middle', 'home.before_footer',
+  'blog.top',
   'blog.inline_1', 'blog.inline_2',
+  'latest.top',
   'latest.inline_1', 'latest.inline_2',
   'artisan.after_profile'
 ]);
-const SECTIONS = new Set(['blog', 'latest', 'artisan']);
+const SECTIONS = new Set(['home', 'blog', 'latest', 'artisan']);
 const IMAGE_TYPES = [
   { mime:'image/jpeg', ext:'jpg', test:buffer => buffer[0] === 0xff && buffer[1] === 0xd8 && buffer[2] === 0xff },
   { mime:'image/png', ext:'png', test:buffer => buffer.slice(0,8).equals(Buffer.from([0x89,0x50,0x4e,0x47,0x0d,0x0a,0x1a,0x0a])) },

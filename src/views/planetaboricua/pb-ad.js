@@ -25,4 +25,27 @@ function insertAfterBlocks(html, insertion, target = 3) {
   return source + insertion;
 }
 
-module.exports = {renderPBAd,insertAfterBlocks};
+function insertAdsAfterBlocks(html, insertions = []) {
+  const source = String(html || '');
+  const byTarget = new Map(insertions.filter(item => item?.html).map(item => [Number(item.target),item.html]));
+  if (!byTarget.size) return source;
+  const closing = /<\/(?:p|h2|h3|blockquote|figure|ul|ol)>/gi;
+  let result = '';
+  let last = 0;
+  let count = 0;
+  let match;
+  while ((match = closing.exec(source))) {
+    count += 1;
+    const insertion = byTarget.get(count);
+    if (!insertion) continue;
+    const end = match.index + match[0].length;
+    result += source.slice(last,end) + insertion;
+    last = end;
+    byTarget.delete(count);
+  }
+  result += source.slice(last);
+  for (const insertion of byTarget.values()) result += insertion;
+  return result;
+}
+
+module.exports = {renderPBAd,insertAfterBlocks,insertAdsAfterBlocks};

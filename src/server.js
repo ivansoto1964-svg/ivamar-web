@@ -245,6 +245,26 @@ const cookieParser = require("cookie-parser");
 const crypto = require("crypto");
 const pbAds = createPBAds();
 
+function selectHomeAd(placement, excludeIds = []) {
+  const direct = pbAds.select({section:'home',placement,pageSlug:'portada',excludeIds});
+  if (direct) return direct;
+  // Keep the existing active inventory useful until each campaign is explicitly
+  // assigned to the new homepage positions in PB Control.
+  return pbAds.select({section:'blog',placement:'blog.inline_1',pageSlug:`portada-${placement}`,excludeIds})
+    || pbAds.select({section:'latest',placement:'latest.inline_1',pageSlug:`portada-${placement}`,excludeIds});
+}
+
+function renderPBHome() {
+  const { renderPBAd } = require('./views/planetaboricua/pb-ad');
+  const top = selectHomeAd('home.after_hero');
+  const middle = selectHomeAd('home.middle',[top?.id].filter(Boolean));
+  const bottom = selectHomeAd('home.before_footer',[top?.id,middle?.id].filter(Boolean));
+  return planetaboricua
+    .replace('<!--PB_AD_HOME_AFTER_HERO-->',renderPBAd(top,{placement:'home.after_hero',pageSlug:'portada'}))
+    .replace('<!--PB_AD_HOME_MIDDLE-->',renderPBAd(middle,{placement:'home.middle',pageSlug:'portada'}))
+    .replace('<!--PB_AD_HOME_BEFORE_FOOTER-->',renderPBAd(bottom,{placement:'home.before_footer',pageSlug:'portada'}));
+}
+
 // Feria de Artesanías launches at midnight in Puerto Rico (UTC-4).
 const FERIA_LAUNCH_AT = new Date('2026-09-23T04:00:00.000Z');
 
@@ -1100,7 +1120,7 @@ h1{font-size:1.4rem;font-weight:600;}
       return res.send('User-agent: *\nAllow: /\nDisallow: /api/\n\nSitemap: https://www.masboricuaqueunmofongo.com/sitemap.xml');
     }
     if (req.path === '/' || req.path === '') {
-      return res.send(planetaboricua);
+      return res.send(renderPBHome());
     }
     if (req.path === '/recursos' || req.path === '/centro-de-recursos') {
       return res.send(recursosBoriuca);
@@ -1124,7 +1144,7 @@ h1{font-size:1.4rem;font-weight:600;}
   next();
 });
 
-app.get("/", (req, res) => res.send(planetaboricua));
+app.get("/", (req, res) => res.send(renderPBHome()));
 app.get("/tienda-boricua", (_req, res) => res.redirect(301, "/recursos"));
 app.get("/buscar", (req, res) => {
   const query = sanitize(req.query?.q || '').trim().slice(0, 120);
@@ -3532,9 +3552,13 @@ app.get('/lo-mas-reciente/:slug', (req, res) => {
   if (!item) return res.status(404).send(loMasRecientePB(null));
   const comments = readPBComments('approved.json').filter(comment => comment.articleSlug === item.slug && (comment.section || 'latest') === 'latest').sort((a,b) => new Date(b.approvedAt) - new Date(a.approvedAt)).map(publicPBComment);
   const recommendations = pbExploreRecommendations({currentSlug:item.slug});
-  const firstAd = pbAds.select({section:'latest',placement:'latest.inline_1',category:pbLatestTopic(item),pageSlug:item.slug});
-  const secondAd = pbAds.select({section:'latest',placement:'latest.inline_2',category:pbLatestTopic(item),pageSlug:item.slug,excludeIds:firstAd ? [firstAd.id] : []});
-  res.send(loMasRecientePB({...publicPBLatest(item),body:blogContentHtml(item.body)}, comments, recommendations, {first:firstAd,second:secondAd}));
+  const topic = pbLatestTopic(item);
+  const topAd = pbAds.select({section:'latest',placement:'latest.top',category:topic,pageSlug:item.slug})
+    || pbAds.select({section:'latest',placement:'latest.inline_1',category:topic,pageSlug:`${item.slug}-top`});
+  const firstAd = pbAds.select({section:'latest',placement:'latest.inline_1',category:topic,pageSlug:item.slug,excludeIds:topAd ? [topAd.id] : []});
+  const excluded = [topAd?.id,firstAd?.id].filter(Boolean);
+  const secondAd = pbAds.select({section:'latest',placement:'latest.inline_2',category:topic,pageSlug:item.slug,excludeIds:excluded});
+  res.send(loMasRecientePB({...publicPBLatest(item),body:blogContentHtml(item.body)}, comments, recommendations, {top:topAd,first:firstAd,second:secondAd}));
 });
 
 app.get('/api/pb-comments/:slug', (req, res) => {

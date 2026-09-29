@@ -1,7 +1,7 @@
 const esc = (value) => String(value || "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]);
 const { renderSubscriberForm } = require('./subscriber-form');
 const { renderExplorePB } = require('./explore-pb');
-const { renderPBAd, insertAfterBlocks } = require('./pb-ad');
+const { renderPBAd, insertAdsAfterBlocks } = require('./pb-ad');
 const { wordCount } = require('../../services/pb-ads');
 const { hasTravelIntent, renderStay22 } = require('./stay22');
 
@@ -10,11 +10,11 @@ module.exports = function loMasReciente(item, comments = [], recommendations = [
   const canonical = `https://www.masboricuaqueunmofongo.com/lo-mas-reciente/${encodeURIComponent(item.slug)}`;
   const bodyContent = String(item.body || "");
   const bodyWords = wordCount(bodyContent);
-  const firstAd = renderPBAd(ads.first,{placement:'latest.inline_1',pageSlug:item.slug});
-  const secondAd = bodyWords >= 900 ? renderPBAd(ads.second,{placement:'latest.inline_2',pageSlug:item.slug}) : '';
-  const articleBody = bodyWords >= 450 ? insertAfterBlocks(bodyContent,firstAd,3) : bodyContent;
-  const afterBodyAd = bodyWords < 450 ? firstAd : secondAd;
-  const paragraphs = articleBody + afterBodyAd + renderSubscriberForm('lo_mas_reciente');
+  const topAd = renderPBAd(ads.top,{placement:'latest.top',pageSlug:item.slug});
+  const firstAd = bodyWords >= 450 ? renderPBAd(ads.first,{placement:'latest.inline_1',pageSlug:item.slug}) : '';
+  const secondAd = bodyWords >= 750 ? renderPBAd(ads.second,{placement:'latest.inline_2',pageSlug:item.slug}) : '';
+  const articleBody = insertAdsAfterBlocks(bodyContent,[{target:3,html:firstAd},{target:7,html:secondAd}]);
+  const paragraphs = topAd + articleBody + renderSubscriberForm('lo_mas_reciente');
   const image = item.image === "/img/og-planetaboricua.jpg" ? "" : (item.image || "");
   const socialImage = image || "/img/pb-logo.png";
   const absoluteImage = socialImage.startsWith("/") ? `https://www.masboricuaqueunmofongo.com${socialImage}` : socialImage;

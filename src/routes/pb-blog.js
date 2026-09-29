@@ -78,9 +78,12 @@ router.get("/:slug", (req, res) => {
     const prevPost = currentIndex < allPosts.length - 1 ? allPosts[currentIndex + 1] : null;
     const nextPost = currentIndex > 0 ? allPosts[currentIndex - 1] : null;
     const ads = res.locals.pbAds;
-    const firstAd = ads?.select({section:'blog',category:post.category,placement:'blog.inline_1',pageSlug:post.slug}) || null;
-    const secondAd = ads?.select({section:'blog',category:post.category,placement:'blog.inline_2',pageSlug:post.slug,excludeIds:firstAd ? [firstAd.id] : []}) || null;
-    res.send(pbBlogPost(post, related, prevPost, nextPost, loadCommentsForPost(post.slug), res.locals.pbExploreRecommendations || [], {first:firstAd,second:secondAd}));
+    const topAd = ads?.select({section:'blog',category:post.category,placement:'blog.top',pageSlug:post.slug})
+      || ads?.select({section:'blog',category:post.category,placement:'blog.inline_1',pageSlug:`${post.slug}-top`}) || null;
+    const firstAd = ads?.select({section:'blog',category:post.category,placement:'blog.inline_1',pageSlug:post.slug,excludeIds:topAd ? [topAd.id] : []}) || null;
+    const excluded = [topAd?.id,firstAd?.id].filter(Boolean);
+    const secondAd = ads?.select({section:'blog',category:post.category,placement:'blog.inline_2',pageSlug:post.slug,excludeIds:excluded}) || null;
+    res.send(pbBlogPost(post, related, prevPost, nextPost, loadCommentsForPost(post.slug), res.locals.pbExploreRecommendations || [], {top:topAd,first:firstAd,second:secondAd}));
   } catch(e) {
     res.status(500).send("Error cargando el artículo");
   }

@@ -4,7 +4,7 @@ const os = require('os');
 const path = require('path');
 
 const { createPBAds, validateCampaign, wordCount, artisanEligible } = require('../src/services/pb-ads');
-const { renderPBAd, insertAfterBlocks } = require('../src/views/planetaboricua/pb-ad');
+const { renderPBAd, insertAfterBlocks, insertAdsAfterBlocks } = require('../src/views/planetaboricua/pb-ad');
 const renderBlogPost = require('../src/views/pb-blog/post');
 const renderLatest = require('../src/views/planetaboricua/lo-mas-reciente');
 const renderArtisan = require('../src/views/planetaboricua/artesano-perfil');
@@ -51,6 +51,8 @@ try {
   assert.strictEqual(service.select({section:'blog',placement:'blog.inline_1',now,pageSlug:'uno',excludeIds:['pbad-direct']}).id,'pbad-affiliate');
   assert.strictEqual(service.select({section:'artisan',placement:'artisan.after_profile',artisanCategory:'joyeria',now,pageSlug:'joya'}),null,'competitor exclusions must be honored');
   assert.strictEqual(service.select({section:'artisan',placement:'artisan.after_profile',artisanCategory:'ceramica',now,pageSlug:'barro'}).id,'pbad-artisan');
+  const homeDraft = service.save({...base,internalName:'Portada',type:'internal',vertical:'internal',destinationUrl:'/blog',sections:['home'],placements:['home.after_hero','home.middle','home.before_footer'],status:'draft'});
+  assert.deepStrictEqual(homeDraft.placements,['home.after_hero','home.middle','home.before_footer']);
   assert.strictEqual(artisanEligible(campaigns[0]),true);
   assert.strictEqual(artisanEligible(campaigns[4]),true);
   assert.strictEqual(artisanEligible(campaigns[5]),false);
@@ -81,19 +83,22 @@ try {
   assert.ok(card.includes('rel="sponsored noopener noreferrer"'));
   assert.ok(!card.includes('<script>alert(1)</script>'));
   assert.ok(insertAfterBlocks('<p>Uno</p><p>Dos</p><p>Tres</p><p>Cuatro</p>','<aside>AD</aside>',3).indexOf('<aside>AD</aside>') > insertAfterBlocks('<p>Uno</p><p>Dos</p><p>Tres</p>','<aside>AD</aside>',3).indexOf('<p>Tres</p>'));
+  const distributed = insertAdsAfterBlocks('<p>Uno</p><p>Dos</p><p>Tres</p><p>Cuatro</p><p>Cinco</p>',[{target:2,html:'<aside>A</aside>'},{target:4,html:'<aside>B</aside>'}]);
+  assert.ok(distributed.indexOf('<p>Dos</p><aside>A</aside>') > -1);
+  assert.ok(distributed.indexOf('<p>Cuatro</p><aside>B</aside>') > -1);
 
   const repeated = count => Array.from({length:count},(_,index) => `<p>Palabra ${index} contenido adicional del artículo.</p>`).join('');
   const blogBase = {slug:'articulo',title:'Artículo',excerpt:'Resumen',date:'22 de septiembre de 2026',dateISO:'2026-09-22',content:'',tags:[]};
-  const shortBlog = renderBlogPost({...blogBase,content:repeated(20)},[],null,null,[],[],{first:affiliateAd,second:directAd});
-  assert.strictEqual((shortBlog.match(/class="pb-sponsor-card"/g)||[]).length,0,'short blog posts must not show ads');
-  const mediumBlog = renderBlogPost({...blogBase,content:repeated(100)},[],null,null,[],[],{first:affiliateAd,second:directAd});
-  assert.strictEqual((mediumBlog.match(/class="pb-sponsor-card"/g)||[]).length,1,'medium blog posts may show one ad');
-  const longBlog = renderBlogPost({...blogBase,content:repeated(200)},[],null,null,[],[],{first:affiliateAd,second:directAd});
-  assert.strictEqual((longBlog.match(/class="pb-sponsor-card"/g)||[]).length,2,'long blog posts may show two ads');
+  const shortBlog = renderBlogPost({...blogBase,content:repeated(20)},[],null,null,[],[],{top:affiliateAd,first:directAd,second:campaigns[0]});
+  assert.strictEqual((shortBlog.match(/class="pb-sponsor-card"/g)||[]).length,1,'short blog posts may show one top ad');
+  const mediumBlog = renderBlogPost({...blogBase,content:repeated(100)},[],null,null,[],[],{top:affiliateAd,first:directAd,second:campaigns[0]});
+  assert.strictEqual((mediumBlog.match(/class="pb-sponsor-card"/g)||[]).length,2,'medium blog posts may show two ads');
+  const longBlog = renderBlogPost({...blogBase,content:repeated(200)},[],null,null,[],[],{top:affiliateAd,first:directAd,second:campaigns[0]});
+  assert.strictEqual((longBlog.match(/class="pb-sponsor-card"/g)||[]).length,3,'long blog posts may show three ads');
   assert.ok(!longBlog.includes('class="post-affiliate"'));
   assert.ok(!longBlog.includes('class="post-amazon"'));
 
-  const latest = renderLatest({slug:'noticia',title:'Noticia',summary:'Resumen',body:'<p>Contenido corto.</p>',sources:[],publishedAt:now},[],[],{first:affiliateAd,second:directAd});
+  const latest = renderLatest({slug:'noticia',title:'Noticia',summary:'Resumen',body:'<p>Contenido corto.</p>',sources:[],publishedAt:now},[],[],{top:affiliateAd,first:directAd,second:campaigns[0]});
   assert.strictEqual((latest.match(/class="pb-sponsor-card"/g)||[]).length,1,'short latest posts may show one ad after the content');
   assert.ok(latest.includes('/css/pb-ads.css?v=3'),'latest posts must bypass stale mobile ad styles');
 
@@ -104,6 +109,9 @@ try {
 
   const controlHtml = renderControl({csrf:'csrf-token',campaigns:[{...directAd,startsAt:now}],metrics:[]});
   assert.ok(controlHtml.includes('Nueva campaña'));
+  assert.ok(controlHtml.includes('Portada · Debajo del hero'));
+  assert.ok(controlHtml.includes('Portada · Zona intermedia'));
+  assert.ok(controlHtml.includes('Portada · Antes del footer'));
   assert.ok(controlHtml.includes('hora de Puerto Rico'));
   assert.ok(controlHtml.includes('2026-09-22T08%3A00'),'campaign dates must be edited in Puerto Rico time');
   const inlineScript = (controlHtml.match(/<script>([\s\S]*?)<\/script>/)||[])[1];

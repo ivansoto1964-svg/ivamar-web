@@ -39,6 +39,7 @@ module.exports = `<!DOCTYPE html>
 <meta name="twitter:image" content="https://www.masboricuaqueunmofongo.com/img/og-planeta-boricua-logo.jpg">
 <meta name="twitter:image:alt" content="Logo oficial de Planeta Boricua">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/css/pb-ads.css?v=4">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 html{scroll-behavior:smooth;}
@@ -103,6 +104,7 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
 .fair-promo-btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;padding:.85rem 1.35rem;border-radius:25px;font-size:.86rem;font-weight:800;text-decoration:none;text-align:center;}
 .fair-promo-btn.primary{background:#fff;color:#002D62;}
 .fair-promo-btn.secondary{background:rgba(255,255,255,.15);color:#fff;border:1px solid rgba(255,255,255,.35);}
+.pb-home-ad{max-width:1200px;margin:0 auto;padding:0 2rem}.pb-home-ad:empty{display:none}.pb-home-ad .pb-sponsor-card{margin:1.5rem 0}
 
 /* SECTION DIVIDER */
 .sec-divider{max-width:1200px;margin:0 auto;padding:0 2rem;}
@@ -220,6 +222,7 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
 .pb-app-alerts{background:#CE1126;color:#fff;}
 .pb-app-status{font-size:.7rem;color:#f5c842;margin-top:.5rem;display:none;}
 @media(max-width:700px){.pb-app-inner{align-items:flex-start;flex-direction:column}.pb-app-actions{width:100%;justify-content:stretch}.pb-app-btn{flex:1}.pb-app-icon{width:58px;height:58px}}
+@media(max-width:700px){.pb-home-ad{padding:0 1rem}}
 
 /* BUTTONS */
 .btn-red{display:inline-flex;align-items:center;gap:0.5rem;background:var(--red);color:#fff;padding:0.75rem 1.5rem;border-radius:4px;font-size:0.85rem;font-weight:700;text-decoration:none;transition:all 0.2s;}
@@ -342,6 +345,8 @@ ${renderStay22()}
   </div>
 </section>
 
+<div class="pb-home-ad" aria-label="Publicidad destacada"><!--PB_AD_HOME_AFTER_HERO--></div>
+
 <!-- BANNER FERIA DE ARTESANÍAS -->
 <section class="fair-promo" aria-labelledby="fair-promo-title">
   <div class="fair-promo-inner">
@@ -399,6 +404,8 @@ ${renderStay22()}
     </div>
   </div>
 </section>
+
+<div class="pb-home-ad" aria-label="Publicidad"><!--PB_AD_HOME_MIDDLE--></div>
 
 <!-- DIRECTORIO -->
 
@@ -728,8 +735,11 @@ async function loadDirectorio() {
   </div>
 </section>
 
+<div class="pb-home-ad" aria-label="Publicidad"><!--PB_AD_HOME_BEFORE_FOOTER--></div>
+
 <!-- FOOTER -->
 ${renderPBSiteFooter()}
+<script src="/js/pb-ads.js?v=3" defer></script>
 
 <script>
 let pbInstallPrompt = null;
