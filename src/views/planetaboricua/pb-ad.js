@@ -55,7 +55,7 @@ function insertAdsByProgress(html, insertions = []) {
 
   const closing = /<\/(?:p|h2|h3|blockquote|figure|ul|ol)>/gi;
   const blocks = Array.from(source.matchAll(closing));
-  if (!blocks.length) return source + active.map(item => item.html).join('');
+  if (blocks.length < active.length + 1) return insertAdsByTextProgress(source,active);
 
   const lastContentBlock = Math.max(1,blocks.length - 1);
   const minimumGap = blocks.length >= active.length * 4 ? 2 : 1;
@@ -71,6 +71,47 @@ function insertAdsByProgress(html, insertions = []) {
   });
 
   return insertAdsAfterBlocks(source,placements);
+}
+
+function insertAdsByTextProgress(source, insertions) {
+  const tokens = /<[^>]*>|[^\s<]+/g;
+  const words = [];
+  const sentenceBreaks = [];
+  let anchorDepth = 0;
+  let match;
+  while ((match = tokens.exec(source))) {
+    const token = match[0];
+    if (token.startsWith('<')) {
+      if (/^<a\b/i.test(token)) anchorDepth += 1;
+      if (/^<\/a\b/i.test(token)) anchorDepth = Math.max(0,anchorDepth - 1);
+      continue;
+    }
+    if (anchorDepth) continue;
+    const word = {end:match.index + token.length,index:words.length};
+    words.push(word);
+    if (/[.!?]["'”’)]?$/.test(token)) sentenceBreaks.push(word);
+  }
+  if (!words.length) return source;
+
+  const candidates = sentenceBreaks.length >= insertions.length ? sentenceBreaks : words;
+  let previousIndex = -1;
+  const placements = insertions.map((item,index) => {
+    const progress = Math.min(.95,Math.max(.05,Number(item.progress) || ((index + 1) / (insertions.length + 1))));
+    const desiredWord = Math.round((words.length - 1) * progress);
+    const remaining = insertions.length - index - 1;
+    const eligible = candidates.filter(candidate => candidate.index > previousIndex && candidate.index < words.length - remaining);
+    const chosen = eligible.reduce((best,candidate) => (
+      !best || Math.abs(candidate.index - desiredWord) < Math.abs(best.index - desiredWord) ? candidate : best
+    ),null) || words[Math.min(words.length - 1,Math.max(previousIndex + 1,desiredWord))];
+    previousIndex = chosen.index;
+    return {offset:chosen.end,html:item.html};
+  });
+
+  let result = source;
+  for (const placement of placements.reverse()) {
+    result = result.slice(0,placement.offset) + placement.html + result.slice(placement.offset);
+  }
+  return result;
 }
 
 module.exports = {renderPBAd,insertAfterBlocks,insertAdsAfterBlocks,insertAdsByProgress};
