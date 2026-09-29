@@ -4,7 +4,7 @@ const os = require('os');
 const path = require('path');
 
 const { createPBAds, validateCampaign, wordCount, artisanEligible } = require('../src/services/pb-ads');
-const { renderPBAd, insertAfterBlocks, insertAdsAfterBlocks } = require('../src/views/planetaboricua/pb-ad');
+const { renderPBAd, insertAfterBlocks, insertAdsAfterBlocks, insertAdsByProgress } = require('../src/views/planetaboricua/pb-ad');
 const renderBlogPost = require('../src/views/pb-blog/post');
 const renderLatest = require('../src/views/planetaboricua/lo-mas-reciente');
 const renderArtisan = require('../src/views/planetaboricua/artesano-perfil');
@@ -86,6 +86,10 @@ try {
   const distributed = insertAdsAfterBlocks('<p>Uno</p><p>Dos</p><p>Tres</p><p>Cuatro</p><p>Cinco</p>',[{target:2,html:'<aside>A</aside>'},{target:4,html:'<aside>B</aside>'}]);
   assert.ok(distributed.indexOf('<p>Dos</p><aside>A</aside>') > -1);
   assert.ok(distributed.indexOf('<p>Cuatro</p><aside>B</aside>') > -1);
+  const twentyBlocks = Array.from({length:20},(_,index) => `<p>Bloque ${index + 1}</p>`).join('');
+  const byProgress = insertAdsByProgress(twentyBlocks,[{progress:.4,html:'<aside>A</aside>'},{progress:.75,html:'<aside>B</aside>'}]);
+  assert.ok(byProgress.includes('Bloque 8</p><aside>A</aside><p>Bloque 9'));
+  assert.ok(byProgress.includes('Bloque 15</p><aside>B</aside><p>Bloque 16'));
 
   const repeated = count => Array.from({length:count},(_,index) => `<p>Palabra ${index} contenido adicional del artículo.</p>`).join('');
   const blogBase = {slug:'articulo',title:'Artículo',excerpt:'Resumen',date:'22 de septiembre de 2026',dateISO:'2026-09-22',content:'',tags:[]};

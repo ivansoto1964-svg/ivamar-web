@@ -48,4 +48,29 @@ function insertAdsAfterBlocks(html, insertions = []) {
   return result;
 }
 
-module.exports = {renderPBAd,insertAfterBlocks,insertAdsAfterBlocks};
+function insertAdsByProgress(html, insertions = []) {
+  const source = String(html || '');
+  const active = insertions.filter(item => item?.html);
+  if (!active.length) return source;
+
+  const closing = /<\/(?:p|h2|h3|blockquote|figure|ul|ol)>/gi;
+  const blocks = Array.from(source.matchAll(closing));
+  if (!blocks.length) return source + active.map(item => item.html).join('');
+
+  const lastContentBlock = Math.max(1,blocks.length - 1);
+  const minimumGap = blocks.length >= active.length * 4 ? 2 : 1;
+  let previousTarget = 0;
+  const placements = active.map((item,index) => {
+    const progress = Math.min(.95,Math.max(.05,Number(item.progress) || ((index + 1) / (active.length + 1))));
+    const remaining = active.length - index - 1;
+    const latestTarget = Math.max(1,lastContentBlock - (remaining * minimumGap));
+    const desiredTarget = Math.round(blocks.length * progress);
+    const target = Math.min(latestTarget,Math.max(previousTarget + minimumGap,desiredTarget));
+    previousTarget = target;
+    return {target,html:item.html};
+  });
+
+  return insertAdsAfterBlocks(source,placements);
+}
+
+module.exports = {renderPBAd,insertAfterBlocks,insertAdsAfterBlocks,insertAdsByProgress};
