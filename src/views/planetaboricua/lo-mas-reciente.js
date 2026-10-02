@@ -7,7 +7,8 @@ const { hasTravelIntent, renderStay22 } = require('./stay22');
 
 function normalizeSources(sources = []) {
   return (Array.isArray(sources) ? sources : []).flatMap(source => {
-    const urls = String(source?.url || '').match(/https?:\/\/\S+/g) || [];
+    const raw = String(source?.url || '').replace(/(?:%20){2,}(?=https?:\/\/)/gi,'  ');
+    const urls = raw.split(/\s{2,}(?=https?:\/\/)/i).filter(value => /^https?:\/\//i.test(value));
     if (urls.length <= 1) return source?.url ? [source] : [];
     return urls.map(url => {
       let label = url;

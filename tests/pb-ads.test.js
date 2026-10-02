@@ -119,6 +119,8 @@ try {
   assert.ok(repairedLatest.includes('href="https://dos.example/otra"'));
   assert.ok(repairedLatest.includes('uno.example'));
   assert.ok(repairedLatest.includes('dos.example'));
+  const encodedSources = renderLatest.normalizeSources([{label:'Fuentes pegadas',url:'https://uno.example/fuente/%20%20https://dos.example/otra'}]);
+  assert.deepStrictEqual(encodedSources.map(source => source.url),['https://uno.example/fuente/','https://dos.example/otra']);
 
   const artisan = renderArtisan({name:'Taller Boricua',desc:'Trabajo artesanal puertorriqueño hecho a mano con mucho cuidado y tradición.',photo:'https://example.com/foto.jpg'},
     {categoryLabel:'Artesanía',locationLabel:'Ponce, Puerto Rico',slug:'taller-boricua',events:[],recommendations:[],ad:{...campaigns[0],sections:['artisan'],placements:['artisan.after_profile'],disclosure:'Promoción de Planeta Boricua'}});
