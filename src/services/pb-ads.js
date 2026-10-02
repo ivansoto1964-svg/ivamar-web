@@ -194,11 +194,20 @@ function createPBAds(options = {}) {
     eligible.sort((a,b) => (TYPE_RANK[b.type]-TYPE_RANK[a.type]) || (Number(b.priority)-Number(a.priority)) || a.id.localeCompare(b.id));
     if (!eligible.length) return null;
     const topRank = TYPE_RANK[eligible[0].type];
-    const topPriority = Number(eligible[0].priority) || 0;
-    const tied = eligible.filter(item => TYPE_RANK[item.type] === topRank && (Number(item.priority)||0) === topPriority);
+    // Preserve the commercial order (direct > affiliate > internal), but rotate
+    // through every eligible campaign in the winning type. Previously only
+    // campaigns tied at the exact highest priority could ever appear, which
+    // made a small group of PB Ads repeat indefinitely.
+    const pool = eligible.filter(item => TYPE_RANK[item.type] === topRank);
     const key = `${context.pageSlug || ''}|${placement}|${now.toISOString().slice(0,13)}`;
     const hash = crypto.createHash('sha256').update(key).digest().readUInt32BE(0);
-    const chosen = tied[hash % tied.length];
+    const weighted = pool.map(item => ({item,weight:Math.max(1,(Number(item.priority)||0) + 1)}));
+    const totalWeight = weighted.reduce((sum,entry) => sum + entry.weight,0);
+    let ticket = hash % totalWeight;
+    const chosen = weighted.find(entry => {
+      ticket -= entry.weight;
+      return ticket < 0;
+    })?.item || pool[0];
     return {...chosen,disclosure:disclosure(chosen)};
   }
   function findActive(id) {

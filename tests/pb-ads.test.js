@@ -92,10 +92,12 @@ try {
   assert.ok(byProgress.includes('Bloque 15</p><aside>B</aside><p>Bloque 16'));
   const legacyText = Array.from({length:20},(_,index) => `Esta es la oración número ${index + 1}.`).join(' ');
   const legacyProgress = insertAdsByProgress(legacyText,[{progress:.4,html:'<aside>A</aside>'},{progress:.75,html:'<aside>B</aside>'}]);
-  assert.ok(legacyProgress.includes('número 8.<aside>A</aside>'));
-  assert.ok(legacyProgress.includes('número 15.<aside>B</aside>'));
-  assert.ok(legacyProgress.indexOf('<aside>A</aside>') < legacyProgress.indexOf('<aside>B</aside>'));
-  assert.ok(legacyProgress.indexOf('<aside>B</aside>') < legacyProgress.lastIndexOf('Esta es la oración'));
+  assert.ok(legacyProgress.endsWith('<aside>A</aside><aside>B</aside>'),'plain text without safe block boundaries must remain valid');
+  const legacyParagraph = `<p>${Array.from({length:20},(_,index) => `Esta es la oración número ${index + 1}.<br />`).join('')}</p>`;
+  const legacyParagraphProgress = insertAdsByProgress(legacyParagraph,[{progress:.4,html:'<aside>A</aside>'},{progress:.75,html:'<aside>B</aside>'}]);
+  assert.ok(legacyParagraphProgress.includes('</p><aside>A</aside><p>'));
+  assert.ok(legacyParagraphProgress.includes('</p><aside>B</aside><p>'));
+  assert.strictEqual((legacyParagraphProgress.match(/<p>/g)||[]).length,(legacyParagraphProgress.match(/<\/p>/g)||[]).length,'legacy paragraph tags must remain balanced');
 
   const repeated = count => Array.from({length:count},(_,index) => `<p>Palabra ${index} contenido adicional del artículo.</p>`).join('');
   const blogBase = {slug:'articulo',title:'Artículo',excerpt:'Resumen',date:'22 de septiembre de 2026',dateISO:'2026-09-22',content:'',tags:[]};

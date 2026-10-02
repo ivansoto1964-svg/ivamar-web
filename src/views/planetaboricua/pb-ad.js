@@ -73,7 +73,69 @@ function insertAdsByProgress(html, insertions = []) {
   return insertAdsAfterBlocks(source,placements);
 }
 
+function splitSingleParagraphByProgress(source, insertions) {
+  const paragraph = String(source || '').match(/^(\s*)(<p\b[^>]*>)([\s\S]*)(<\/p>)(\s*)$/i);
+  if (!paragraph) return null;
+
+  const inner = paragraph[3];
+  const candidates = [];
+  const inlineStack = [];
+  const voidTags = new Set(['br','img','hr','input','meta','link','source','track','wbr']);
+  const tokens = /<[^>]+>|[^<]+/g;
+  let words = 0;
+  let match;
+  while ((match = tokens.exec(inner))) {
+    const token = match[0];
+    if (!token.startsWith('<')) {
+      words += token.trim().split(/\s+/).filter(Boolean).length;
+      continue;
+    }
+    if (/^<!--/.test(token)) continue;
+    const closing = token.match(/^<\/\s*([a-z0-9-]+)/i);
+    if (closing) {
+      const name = closing[1].toLowerCase();
+      const index = inlineStack.lastIndexOf(name);
+      if (index >= 0) inlineStack.splice(index,1);
+      continue;
+    }
+    const opening = token.match(/^<\s*([a-z0-9-]+)/i);
+    if (!opening) continue;
+    const name = opening[1].toLowerCase();
+    if (name === 'br' && inlineStack.length === 0 && words > 0) {
+      candidates.push({offset:match.index + token.length,words});
+    } else if (!voidTags.has(name) && !/\/$/.test(token.replace(/>$/,''))) {
+      inlineStack.push(name);
+    }
+  }
+  if (candidates.length < insertions.length || !words) return null;
+
+  let previousCandidate = -1;
+  const placements = insertions.map((item,index) => {
+    const progress = Math.min(.95,Math.max(.05,Number(item.progress) || ((index + 1) / (insertions.length + 1))));
+    const desiredWord = Math.round(words * progress);
+    const remaining = insertions.length - index - 1;
+    const eligible = candidates.filter((candidate,candidateIndex) => candidateIndex > previousCandidate && candidateIndex < candidates.length - remaining);
+    const chosen = eligible.reduce((best,candidate) => (
+      !best || Math.abs(candidate.words - desiredWord) < Math.abs(best.words - desiredWord) ? candidate : best
+    ),null);
+    previousCandidate = candidates.indexOf(chosen);
+    return {offset:chosen.offset,html:item.html};
+  });
+
+  let result = inner;
+  for (const placement of placements.reverse()) {
+    result = result.slice(0,placement.offset) + `${paragraph[4]}${placement.html}${paragraph[2]}` + result.slice(placement.offset);
+  }
+  return paragraph[1] + paragraph[2] + result + paragraph[4] + paragraph[5];
+}
+
 function insertAdsByTextProgress(source, insertions) {
+  // The legacy editor can store an entire article as one <p> separated by
+  // <br> tags. Never place a block-level ad inside that paragraph: browsers
+  // auto-close it and the remaining article loses its editorial typography.
+  const splitParagraph = splitSingleParagraphByProgress(source,insertions);
+  if (splitParagraph) return splitParagraph;
+
   const tokens = /<[^>]*>|[^\s<]+/g;
   const words = [];
   const sentenceBreaks = [];
@@ -107,11 +169,9 @@ function insertAdsByTextProgress(source, insertions) {
     return {offset:chosen.end,html:item.html};
   });
 
-  let result = source;
-  for (const placement of placements.reverse()) {
-    result = result.slice(0,placement.offset) + placement.html + result.slice(placement.offset);
-  }
-  return result;
+  // Without a safe block boundary, keep the document valid and place the ads
+  // after the content. A slightly later ad is better than broken article HTML.
+  return source + placements.map(placement => placement.html).join('');
 }
 
 module.exports = {renderPBAd,insertAfterBlocks,insertAdsAfterBlocks,insertAdsByProgress};
