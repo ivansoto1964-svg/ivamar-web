@@ -112,7 +112,7 @@ function affiliateRows(items) {
 
 function artisanMetricRows(items) {
   if (!items.length) return empty('La medición comenzará cuando se abra un perfil después del próximo deploy.');
-  const labels = {whatsapp:'WhatsApp',website:'Web',instagram:'Instagram',facebook:'Facebook',store:'Tienda',share:'Compartir',event:'Evento',edit:'Editar'};
+  const labels = {whatsapp:'WhatsApp',website:'Web',instagram:'Instagram',facebook:'Facebook',tiktok:'TikTok',pinterest:'Pinterest',store:'Tienda',share:'Compartir',event:'Evento',edit:'Editar'};
   return items.map(item => {
     const detail = Object.entries(item.clicks || {}).filter(([,count]) => Number(count) > 0).map(([key,count]) => `${labels[key] || key}: ${Number(count)}`).join(' · ') || 'Todavía sin clics';
     return `<article class="item compact"><div><span class="eyebrow">${item.views} vistas · ${item.clickTotal} clics</span><h3>${esc(item.name)}</h3><p>${esc(detail)}<br>Última actividad: ${shortDate(item.lastActivity)}</p></div><a class="action" href="/artesanos/${encodeURIComponent(item.slug)}" target="_blank">Ver perfil</a></article>`;

@@ -291,6 +291,10 @@ footer{background:var(--blue);padding:2rem;text-align:center;}
         </div>
       </div>
       <div class="form-group">
+        <label>Pinterest</label>
+        <input type="text" id="biz-pinterest" placeholder="@tuartesania o pinterest.com/tuartesania">
+      </div>
+      <div class="form-group">
         <label>Enlace a tienda externa (Etsy u otra)</label>
         <input type="url" id="biz-etsy" placeholder="https://etsy.com/shop/tutienda">
       </div>
@@ -467,7 +471,7 @@ async function handleLogoUpload(input) {
 }
 
 const PB_ARTISAN_DRAFT_V1='pbArtisanRegistrationDraftV1';
-const draftIds=['biz-name','biz-owner-name','biz-category','biz-location','biz-city','biz-zip','biz-address','biz-desc','biz-full-desc','biz-email','biz-whatsapp','biz-website','biz-instagram','biz-facebook','biz-tiktok','biz-etsy','biz-logo','biz-photo','biz-gallery','biz-price'];
+const draftIds=['biz-name','biz-owner-name','biz-category','biz-location','biz-city','biz-zip','biz-address','biz-desc','biz-full-desc','biz-email','biz-whatsapp','biz-website','biz-instagram','biz-facebook','biz-tiktok','biz-pinterest','biz-etsy','biz-logo','biz-photo','biz-gallery','biz-price'];
 let draftTimer=null;
 function saveArtisanDraft(){clearTimeout(draftTimer);draftTimer=setTimeout(()=>{const d={};draftIds.forEach(id=>{const el=document.getElementById(id);if(el)d[id]=el.value});d.terms=document.getElementById('terms-agree').checked;localStorage.setItem(PB_ARTISAN_DRAFT_V1,JSON.stringify(d));},350)}
 function restoreArtisanDraft(){try{const d=JSON.parse(localStorage.getItem(PB_ARTISAN_DRAFT_V1)||'null');if(!d)return;draftIds.forEach(id=>{const el=document.getElementById(id);if(el&&d[id]!==undefined)el.value=d[id]});document.getElementById('terms-agree').checked=Boolean(d.terms);if(d['biz-photo']){document.getElementById('preview-img').src=d['biz-photo'];document.getElementById('photo-preview').style.display='block';document.getElementById('photo-placeholder').style.display='none';document.getElementById('upload-status').textContent='✅ Foto recuperada del borrador';document.getElementById('upload-status').style.color='green'}if(d['biz-logo']){document.getElementById('preview-logo').src=d['biz-logo'];document.getElementById('logo-preview').style.display='block';document.getElementById('logo-placeholder').style.display='none';document.getElementById('logo-upload-status').textContent='✅ Logo recuperado del borrador';document.getElementById('logo-upload-status').style.color='green'}}catch(_){}}
@@ -475,15 +479,23 @@ function showRegistrationError(message,fieldId){const box=document.getElementByI
 function clearRegistrationError(){const box=document.getElementById('registration-error');box.style.display='none';box.textContent=''}
 function normalizeEmailInput(v){return String(v||'').normalize('NFKC').replace(/[\\s\\u200B-\\u200D\\u2060\\uFEFF]/g,'').toLowerCase()}
 function validEmail(v){return /^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(v)}
+function contactLinkError(values){
+  if(values.whatsapp&&!/^\\d{10,15}$/.test(values.whatsapp.replace(/\\D/g,'')))return ['WhatsApp debe tener entre 10 y 15 dígitos, incluyendo el código de país.','biz-whatsapp'];
+  for(const [key,id,label] of [['website','biz-website','Sitio web'],['etsy','biz-etsy','Tienda externa']]){if(values[key]){try{const u=new URL(values[key]);if(!/^https?:$/.test(u.protocol)||!u.hostname.includes('.'))throw new Error()}catch(_){return [label+': escribe una dirección completa que comience con https://.',id]}}}
+  const networks=[['instagram','biz-instagram','instagram.com'],['facebook','biz-facebook','facebook.com'],['tiktok','biz-tiktok','tiktok.com'],['pinterest','biz-pinterest','pinterest.com']];
+  for(const [key,id,host] of networks){const raw=values[key];if(!raw)continue;if(key==='facebook'&&/facebook\\.com\\/share(?:\\/|$)/i.test(raw))return ['Facebook: copia el enlace permanente de tu página o perfil, no el enlace de “Compartir”.',id];if(/^@?[a-zA-Z0-9._]+$/.test(raw))continue;try{const u=new URL(/^https?:\\/\\//i.test(raw)?raw:'https://'+raw);if(!(u.hostname===host||u.hostname.endsWith('.'+host))||!u.pathname.replace(/\\//g,''))throw new Error()}catch(_){return ['En '+key+' escribe @usuario o el enlace permanente de tu perfil.',id]}}
+  return null;
+}
 
 async function submitNegocio() {
   clearRegistrationError();
-  const values={name:document.getElementById('biz-name').value.trim(),ownerName:document.getElementById('biz-owner-name').value.trim(),category:document.getElementById('biz-category').value,location:document.getElementById('biz-location').value,city:document.getElementById('biz-city').value.trim(),zip:document.getElementById('biz-zip').value.trim(),address:document.getElementById('biz-address').value.trim(),desc:document.getElementById('biz-desc').value.trim(),fullDesc:document.getElementById('biz-full-desc').value.trim(),email:normalizeEmailInput(document.getElementById('biz-email').value),whatsapp:document.getElementById('biz-whatsapp').value.trim(),website:document.getElementById('biz-website').value.trim(),instagram:document.getElementById('biz-instagram').value.trim(),facebook:document.getElementById('biz-facebook').value.trim(),tiktok:document.getElementById('biz-tiktok').value.trim(),etsy:document.getElementById('biz-etsy').value.trim(),logo:document.getElementById('biz-logo').value.trim(),photo:document.getElementById('biz-photo').value.trim(),gallery:document.getElementById('biz-gallery').value,price:document.getElementById('biz-price').value};
+  const values={name:document.getElementById('biz-name').value.trim(),ownerName:document.getElementById('biz-owner-name').value.trim(),category:document.getElementById('biz-category').value,location:document.getElementById('biz-location').value,city:document.getElementById('biz-city').value.trim(),zip:document.getElementById('biz-zip').value.trim(),address:document.getElementById('biz-address').value.trim(),desc:document.getElementById('biz-desc').value.trim(),fullDesc:document.getElementById('biz-full-desc').value.trim(),email:normalizeEmailInput(document.getElementById('biz-email').value),whatsapp:document.getElementById('biz-whatsapp').value.trim(),website:document.getElementById('biz-website').value.trim(),instagram:document.getElementById('biz-instagram').value.trim(),facebook:document.getElementById('biz-facebook').value.trim(),tiktok:document.getElementById('biz-tiktok').value.trim(),pinterest:document.getElementById('biz-pinterest').value.trim(),etsy:document.getElementById('biz-etsy').value.trim(),logo:document.getElementById('biz-logo').value.trim(),photo:document.getElementById('biz-photo').value.trim(),gallery:document.getElementById('biz-gallery').value,price:document.getElementById('biz-price').value};
   const required=[['name','biz-name','Escribe el nombre del negocio o taller.'],['ownerName','biz-owner-name','Escribe el nombre del artesano o artesana.'],['category','biz-category','Selecciona una categoría.'],['location','biz-location','Selecciona tu estado o pueblo.'],['city','biz-city','Escribe tu ciudad, pueblo o sector.'],['desc','biz-desc','Añade una descripción corta.'],['fullDesc','biz-full-desc','Cuéntanos un poco más sobre tu trabajo.'],['email','biz-email','Escribe tu email.'],['photo','photo-upload-area','Sube una foto principal de tu trabajo.']];
   for(const [key,id,msg] of required){if(!values[key]){showRegistrationError('⚠️ '+msg,id);return}}
   const incompleteCreation=document.querySelector('[data-pb-gallery-editor] input[required]:placeholder-shown,[data-pb-gallery-editor] textarea[required]:placeholder-shown')||[...document.querySelectorAll('[data-pb-gallery-editor] input[required],[data-pb-gallery-editor] textarea[required]')].find(field=>!field.value.trim());
   if(incompleteCreation){showRegistrationError('⚠️ Cada creación nueva necesita título y descripción. Completa los campos marcados con * antes de enviar.');incompleteCreation.focus();incompleteCreation.scrollIntoView({behavior:'smooth',block:'center'});return}
   if(!validEmail(values.email)){showRegistrationError('⚠️ El email no parece válido. Revísalo antes de enviar.','biz-email');return}
+  const linkProblem=contactLinkError(values);if(linkProblem){showRegistrationError('⚠️ '+linkProblem[0],linkProblem[1]);return}
   if(!document.getElementById('terms-agree').checked){showRegistrationError('⚠️ Debes aceptar los términos antes de enviar.','terms-agree');return}
   const btn=document.getElementById('submit-btn');btn.disabled=true;btn.textContent='Enviando… no cierres esta página';
   try{

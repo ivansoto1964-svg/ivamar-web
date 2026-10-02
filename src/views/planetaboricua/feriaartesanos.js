@@ -285,7 +285,7 @@ async function loadDirectorio(requestId) {
       let ranked = negocios.map(n => {
         const name = normalize(n.name);
         const haystack = normalize([
-          n.name,n.category,n.desc,n.fullDesc,n.city,n.location,n.address,n.website,n.instagram,n.facebook,n.etsy
+          n.name,n.category,n.desc,n.fullDesc,n.city,n.location,n.address,n.website,n.instagram,n.facebook,n.tiktok,n.pinterest,n.etsy
         ].filter(Boolean).join(' '));
         const matchesAll = value => groups.every(group => group.some(term => value.includes(term)));
         let score = 0;

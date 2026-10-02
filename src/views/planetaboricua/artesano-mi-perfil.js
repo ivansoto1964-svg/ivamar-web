@@ -43,6 +43,9 @@ function editPageWithOwner(item, token, publicUrl) {
     '</div><div class="field"><label>Categoría *</label>',
     `</div><div class="field full"><label>Nombre del artesano o artesana</label><input name="ownerName" value="${esc(item.ownerName)}" placeholder="Tu nombre completo"></div><div class="field"><label>Categoría *</label>`
   ).replace(
+    '<div class="field"><label>Etsy / tienda online</label>',
+    `<div class="field"><label>Pinterest</label><input name="pinterest" value="${esc(item.pinterest)}" placeholder="@usuario o enlace permanente"></div><div class="field"><label>Etsy / tienda online</label>`
+  ).replace(
     '</div></div><div class="actions">',
     `</div><section class="field full pb-creations-editor" data-pb-gallery-editor aria-labelledby="pb-creations-title"><h2 id="pb-creations-title">👐 Mis creaciones</h2><p class="muted">Añade hasta 12 creaciones. JPG, PNG o WebP; máximo 5 MB por imagen.</p><div class="pb-gallery-guidance"><strong>Cuéntanos sobre cada creación</strong><p>Puedes mencionar qué es, cómo la creaste, los materiales y técnicas que utilizaste, qué inspiró su diseño, su conexión con Puerto Rico o qué hace especial la pieza.</p><p><strong>En lugar de:</strong> “Pulsera azul.”<br><strong>Podrías contar:</strong> “Pulsera elaborada a mano utilizando cuentas en tonos azules y blancos. Su diseño está inspirado en los colores del mar que rodea Puerto Rico.”</p><small>Este ejemplo es solamente orientación. No se copiará automáticamente.</small></div><label class="pb-gallery-file-label">Añadir fotografías<input type="file" data-pb-gallery-files accept="image/jpeg,image/png,image/webp" multiple></label><input type="hidden" name="gallery" data-pb-gallery-value value="${gallery}"><div class="pb-gallery-preview" data-pb-gallery-preview></div><div class="muted" data-pb-gallery-status role="status" aria-live="polite"></div></section></div><div class="actions">`
   ).replace(

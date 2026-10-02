@@ -62,6 +62,16 @@ assert.doesNotMatch(invalidLinks, />Contactar por WhatsApp</);
 const cleanedInstagram = artisanProfile({...baseItem,instagram:'https://instagram.com/alysboutique.bohostyle?utm_source=qr'},helpers);
 assert.match(cleanedInstagram, /href="https:\/\/www\.instagram\.com\/alysboutique\.bohostyle"/);
 assert.doesNotMatch(cleanedInstagram, /%3Futm_source/);
+const expandedSocials = artisanProfile({...baseItem,
+  facebook:'https://www.facebook.com/share/1CFLwvX5Wd/?mibextid=wwXIfr',
+  tiktok:'https://www.tiktok.com/@artesana.pr',
+  pinterest:'@artesana_pr'
+},helpers);
+assert.match(expandedSocials, /href="https:\/\/www\.facebook\.com\/share\/1CFLwvX5Wd\/\?mibextid=wwXIfr"/);
+assert.match(expandedSocials, /data-pb-track="tiktok"[^>]*>Ver TikTok<\/a>/);
+assert.match(expandedSocials, /href="https:\/\/www\.tiktok\.com\/@artesana\.pr"/);
+assert.match(expandedSocials, /data-pb-track="pinterest"[^>]*>Ver Pinterest<\/a>/);
+assert.match(expandedSocials, /href="https:\/\/www\.pinterest\.com\/artesana_pr"/);
 const decodedLegacyName = artisanProfile({...baseItem,name:'K&amp;N Creations'},helpers);
 assert.match(decodedLegacyName, /<h1>K&amp;N Creations<\/h1>/);
 assert.doesNotMatch(decodedLegacyName, /K&amp;amp;N/);

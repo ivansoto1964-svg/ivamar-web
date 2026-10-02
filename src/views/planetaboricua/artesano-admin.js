@@ -24,6 +24,9 @@ function editWithOwner(item,csrf){
     '</div><div class="field"><label>Categoría *</label>',
     `</div><div class="field full"><label>Nombre del artesano o artesana</label><input name="ownerName" value="${esc(item.ownerName)}" placeholder="Nombre de la persona responsable"></div><div class="field"><label>Categoría *</label>`
   ).replace(
+    '<div class="field"><label>Etsy / tienda</label>',
+    `<div class="field"><label>Pinterest</label><input name="pinterest" value="${esc(item.pinterest)}"></div><div class="field"><label>Etsy / tienda</label>`
+  ).replace(
     '</div></div><button id="save"',
     `</div><section class="field full pb-creations-editor" data-pb-gallery-editor aria-labelledby="pb-creations-title"><h2 id="pb-creations-title">👐 Mis creaciones</h2><p>Hasta 12 creaciones; JPG, PNG o WebP y máximo 5 MB por imagen.</p><div class="pb-gallery-guidance"><strong>Cuéntanos sobre cada creación</strong><p>Sugiere al artesano explicar qué es, materiales, técnica, inspiración, conexión con Puerto Rico y qué hace especial la pieza.</p><p><strong>Ejemplo orientativo:</strong> en vez de “Pulsera azul”, puede explicar que fue elaborada a mano, sus materiales y la inspiración de sus colores. El ejemplo no se copia automáticamente.</p></div><label class="pb-gallery-file-label">Añadir fotografías<input type="file" data-pb-gallery-files accept="image/jpeg,image/png,image/webp" multiple></label><input type="hidden" name="gallery" data-pb-gallery-value value="${gallery}"><div class="pb-gallery-preview" data-pb-gallery-preview></div><div data-pb-gallery-status role="status" aria-live="polite"></div></section></div><button id="save"`
   ).replace(

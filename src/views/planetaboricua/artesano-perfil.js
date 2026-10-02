@@ -10,32 +10,7 @@ const normalizeArtisanTextFields = item => ({...item,
   name:decodeStoredText(item.name), ownerName:decodeStoredText(item.ownerName),
   desc:decodeStoredText(item.desc), fullDesc:decodeStoredText(item.fullDesc), city:decodeStoredText(item.city)
 });
-const safeUrl = value => {
-  const raw = String(value || '').replace(/[\u200B-\u200D\u2060\uFEFF]/g, '').replace(/&amp;/g, '&').trim();
-  if (!raw || /^(n\/?a|no\.?|ninguno|no tengo|notengo|facebook)$/i.test(raw) || /^(javascript|data):/i.test(raw) || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(raw)) return '';
-  try {
-    const url = new URL(/^https?:\/\//i.test(raw) ? raw : `https://${raw}`);
-    const validHost = /^(?:[a-z0-9-]+\.)+[a-z]{2,}$/i.test(url.hostname);
-    return /^https?:$/.test(url.protocol) && validHost && !url.username && !url.password ? url.href : '';
-  } catch (_) { return '';
-  }
-};
-const socialUrl = (value, network) => {
-  const raw = String(value || '').replace(/&amp;/g, '&').trim().replace(/^@/, '');
-  if (!raw || /^(n\/?a|no|ninguno|no tengo|notengo)$/i.test(raw)) return '';
-  let handle = raw;
-  if (/^(https?:\/\/|www\.)/i.test(raw) || raw.includes(`${network}.com/`)) {
-    const cleaned = safeUrl(raw);
-    if (!cleaned) return '';
-    try {
-      const url = new URL(cleaned);
-      if (!(url.hostname === `${network}.com` || url.hostname.endsWith(`.${network}.com`))) return '';
-      handle = decodeURIComponent(url.pathname.split('/').filter(Boolean)[0] || '').replace(/^@/, '');
-    } catch (_) { return ''; }
-  }
-  handle = handle.split(/[?#]/)[0].replace(/\/$/, '');
-  return /^[a-zA-Z0-9._]+$/.test(handle) ? `https://www.${network}.com/${handle}` : '';
-};
+const {artisanSocialUrl: socialUrl, safePublicUrl: safeUrl} = require('../../utils/pb-artisan-links');
 const normalizeCreation = value => {
   if (typeof value === 'string') return {image:safeUrl(value),title:'',description:'',alt:''};
   if (!value || typeof value !== 'object') return null;
@@ -77,10 +52,14 @@ function artesanoPerfil(item, helpers) {
   const websiteUrl = safeUrl(item.website);
   const instagramUrl = socialUrl(item.instagram, 'instagram');
   const facebookUrl = socialUrl(item.facebook, 'facebook');
+  const tiktokUrl = socialUrl(item.tiktok, 'tiktok');
+  const pinterestUrl = socialUrl(item.pinterest, 'pinterest');
   const storeUrl = safeUrl(item.etsy);
   if (websiteUrl) social.push(`<a class="btn" data-pb-track="website" href="${esc(websiteUrl)}" target="_blank" rel="ugc nofollow noopener noreferrer">Visitar su página</a>`);
   if (instagramUrl) social.push(`<a class="btn secondary" data-pb-track="instagram" href="${esc(instagramUrl)}" target="_blank" rel="ugc nofollow noopener noreferrer">Ver Instagram</a>`);
   if (facebookUrl) social.push(`<a class="btn secondary" data-pb-track="facebook" href="${esc(facebookUrl)}" target="_blank" rel="ugc nofollow noopener noreferrer">Ver Facebook</a>`);
+  if (tiktokUrl) social.push(`<a class="btn secondary" data-pb-track="tiktok" href="${esc(tiktokUrl)}" target="_blank" rel="ugc nofollow noopener noreferrer">Ver TikTok</a>`);
+  if (pinterestUrl) social.push(`<a class="btn secondary" data-pb-track="pinterest" href="${esc(pinterestUrl)}" target="_blank" rel="ugc nofollow noopener noreferrer">Ver Pinterest</a>`);
   if (storeUrl && storeUrl !== websiteUrl) social.push(`<a class="btn secondary" data-pb-track="store" href="${esc(storeUrl)}" target="_blank" rel="ugc nofollow noopener noreferrer">Visitar su tienda</a>`);
   social.push(`<a class="btn secondary" data-pb-track="event" href="/artesanos/${encodeURIComponent(slug)}/compartir-evento">Publicar evento</a>`);
   social.push(`<a class="btn secondary" data-pb-track="edit" href="/artesanos/mi-perfil">✏️ Editar mi información</a>`);

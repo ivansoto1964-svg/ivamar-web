@@ -226,6 +226,7 @@ const feriaArtesanosPB = require("./views/planetaboricua/feriaartesanos");
 const artesanoPerfilPB = require("./views/planetaboricua/artesano-perfil");
 const artesanoQrPB = require("./views/planetaboricua/artesano-qr");
 const pbArtisanQr = require("./services/pb-artisan-qr");
+const {validateArtisanContactLinks} = require("./utils/pb-artisan-links");
 const artesanoMiPerfilPB = require("./views/planetaboricua/artesano-mi-perfil");
 const artesanoAdminPB = require("./views/planetaboricua/artesano-admin");
 const agendaArtesanalPB = require("./views/planetaboricua/agenda-artesanal");
@@ -512,6 +513,7 @@ function publicPBListing(listing) {
     instagram: listing.instagram,
     facebook: listing.facebook,
     tiktok: listing.tiktok,
+    pinterest: listing.pinterest,
     etsy: listing.etsy,
     whatsapp: listing.whatsapp,
     logo: listing.logo,
@@ -543,7 +545,7 @@ const PB_ARTISAN_MAIL_HISTORY_FILE = '/data/pb-artisan-mail-history.json';
 const PB_ARTISAN_MAIL_DELIVERIES_FILE = '/data/pb-artisan-mail-deliveries.json';
 const PB_ARTISAN_EMAIL_OPTOUTS_FILE = '/data/pb-artisan-email-optouts.json';
 const PB_ARTISAN_METRICS_FILE = '/data/pb-artisan-metrics.json';
-const PB_ARTISAN_METRIC_EVENTS = new Set(['view','whatsapp','website','instagram','facebook','store','share','event','edit','qr','install']);
+const PB_ARTISAN_METRIC_EVENTS = new Set(['view','whatsapp','website','instagram','facebook','tiktok','pinterest','store','share','event','edit','qr','install']);
 
 function pbArtisanEmailOptOuts() {
   return readJsonFile(PB_ARTISAN_EMAIL_OPTOUTS_FILE,[]).filter(item => item && normalizePBArtisanEmail(item.email));
@@ -779,7 +781,7 @@ function runPBArtisanCleanupMigration() {
     });
 
     const retiredIds = new Set();
-    const mergeMissingFields = ['website','instagram','facebook','tiktok','etsy','logo','whatsapp','city','zip','address','fullDesc','desc'];
+    const mergeMissingFields = ['website','instagram','facebook','tiktok','pinterest','etsy','logo','whatsapp','city','zip','address','fullDesc','desc'];
     PB_ARTISAN_CLEANUP_PAIRS.forEach(pair => {
       const canonical = byId.get(pair.keepId)?.item;
       const duplicate = byId.get(pair.removeId)?.item;
@@ -4446,7 +4448,7 @@ app.get('/pb-control/artesanos/:id', requirePBAdmin, (req,res) => {
 app.post('/pb-control/artesanos/:id', requirePBAdmin, requirePBCsrf, express.json({limit:'80kb'}), async (req,res) => {
   const record = loadPBApprovedArtisanRecord(req.params.id);
   if (!record) return res.status(404).json({ok:false,error:'Artesano no encontrado.'});
-  const fields=['name','ownerName','category','location','city','zip','address','desc','fullDesc','email','whatsapp','website','instagram','facebook','tiktok','etsy','logo','photo','price'];
+  const fields=['name','ownerName','category','location','city','zip','address','desc','fullDesc','email','whatsapp','website','instagram','facebook','tiktok','pinterest','etsy','logo','photo','price'];
   const changes={}; fields.forEach(key=>changes[key]=sanitize(req.body?.[key]||'').trim());
   changes.gallery=Object.prototype.hasOwnProperty.call(req.body||{},'gallery')
     ? sanitizePBArtisanGallery(req.body.gallery,changes.photo)
@@ -4456,6 +4458,8 @@ app.post('/pb-control/artesanos/:id', requirePBAdmin, requirePBCsrf, express.jso
   if (changes.photo !== String(record.item.photo || '') && !isSafePBArtisanImage(changes.photo)) return res.status(400).json({ok:false,error:'La foto principal debe subirse desde el formulario.'});
   if (changes.logo && changes.logo !== String(record.item.logo || '') && !isSafePBArtisanImage(changes.logo)) return res.status(400).json({ok:false,error:'El logo debe subirse desde el formulario.'});
   if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(changes.email)) return res.status(400).json({ok:false,error:'El email no es válido.'});
+  const linkError=validateArtisanContactLinks(changes,record.item);
+  if(linkError)return res.status(400).json({ok:false,error:linkError});
   const duplicate=findPBArtisanDuplicate({email:changes.email,whatsapp:changes.whatsapp},{approvedOnly:true,excludeId:record.item.id});
   if(duplicate)return res.status(409).json({ok:false,error:pbArtisanDuplicateMessage(duplicate.reason)});
   const stableSlug=pbArtisanSlug(record.item);
@@ -4549,7 +4553,7 @@ app.post('/api/pb-artesano-update/:token', pbArtisanLimiter, express.json({limit
   if (!auth) return res.status(401).json({ok:false,error:'Tu enlace de acceso venció. Solicita uno nuevo.'});
   const record = loadPBApprovedArtisanRecord(auth.id);
   if (!record || normalizePBArtisanEmail(record.item.email) !== auth.email) return res.status(404).json({ok:false,error:'Perfil no encontrado.'});
-  const fields = ['name','ownerName','category','location','city','zip','address','desc','fullDesc','whatsapp','website','instagram','facebook','tiktok','etsy','logo','photo','price'];
+  const fields = ['name','ownerName','category','location','city','zip','address','desc','fullDesc','whatsapp','website','instagram','facebook','tiktok','pinterest','etsy','logo','photo','price'];
   const changes = {}; fields.forEach(key => changes[key] = sanitize(req.body?.[key] || '').trim());
   changes.gallery = Object.prototype.hasOwnProperty.call(req.body || {}, 'gallery')
     ? sanitizePBArtisanGallery(req.body.gallery, changes.photo)
@@ -4558,6 +4562,8 @@ app.post('/api/pb-artesano-update/:token', pbArtisanLimiter, express.json({limit
   if (!changes.name || !changes.category || !changes.location || !changes.city || !changes.desc || !changes.fullDesc || !changes.photo) return res.status(400).json({ok:false,error:'Completa los campos requeridos, incluyendo la foto principal.'});
   if (changes.photo !== String(record.item.photo || '') && !isSafePBArtisanImage(changes.photo)) return res.status(400).json({ok:false,error:'La foto principal debe subirse desde el formulario.'});
   if (changes.logo && changes.logo !== String(record.item.logo || '') && !isSafePBArtisanImage(changes.logo)) return res.status(400).json({ok:false,error:'El logo debe subirse desde el formulario.'});
+  const linkError = validateArtisanContactLinks(changes,record.item);
+  if (linkError) return res.status(400).json({ok:false,error:linkError});
   const duplicate = findPBArtisanDuplicate({email:record.item.email,whatsapp:changes.whatsapp},{approvedOnly:true,excludeId:record.item.id});
   if (duplicate) return res.status(409).json({ok:false,error:pbArtisanDuplicateMessage(duplicate.reason)});
   const stableSlug = pbArtisanSlug(record.item);
@@ -4591,6 +4597,7 @@ app.post("/api/pb-negocio-submit", pbArtisanLimiter, express.json({limit:'80kb'}
   const instagram = sanitize(req.body.instagram || '');
   const facebook = sanitize(req.body.facebook || '');
   const tiktok = sanitize(req.body.tiktok || '');
+  const pinterest = sanitize(req.body.pinterest || '');
   const etsy = sanitize(req.body.etsy || '');
   const logo = sanitize(req.body.logo || '');
   const photo = sanitize(req.body.photo);
@@ -4603,6 +4610,8 @@ app.post("/api/pb-negocio-submit", pbArtisanLimiter, express.json({limit:'80kb'}
   }
   if (!isSafePBArtisanImage(photo) || (logo && !isSafePBArtisanImage(logo))) return res.status(400).json({ok:false,error:'Las imágenes deben subirse desde el formulario.'});
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return res.status(400).json({ok:false,error:'El email no parece válido. Revísalo antes de enviar.'});
+  const linkError = validateArtisanContactLinks({whatsapp,website,instagram,facebook,tiktok,pinterest,etsy});
+  if (linkError) return res.status(400).json({ok:false,error:linkError});
 
   const duplicate = findPBArtisanDuplicate({ email, whatsapp });
   if (duplicate) {
@@ -4627,7 +4636,7 @@ app.post("/api/pb-negocio-submit", pbArtisanLimiter, express.json({limit:'80kb'}
       status: 'pending',
       submittedAt: new Date().toISOString(),
       name, ownerName, category, location, city, zip, address, desc, fullDesc,
-      email, whatsapp, website, instagram, facebook, tiktok, etsy, logo, photo, gallery, price,
+      email, whatsapp, website, instagram, facebook, tiktok, pinterest, etsy, logo, photo, gallery, price,
       approveToken: crypto.randomBytes(32).toString('hex'),
       rejectToken: crypto.randomBytes(32).toString('hex')
     };
@@ -4669,6 +4678,7 @@ app.post("/api/pb-negocio-submit", pbArtisanLimiter, express.json({limit:'80kb'}
               <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold">Instagram</td><td style="padding:8px;border:1px solid #ddd">${instagram || 'N/A'}</td></tr>
               <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold">Facebook</td><td style="padding:8px;border:1px solid #ddd">${facebook || 'N/A'}</td></tr>
               <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold">TikTok</td><td style="padding:8px;border:1px solid #ddd">${tiktok || 'N/A'}</td></tr>
+              <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold">Pinterest</td><td style="padding:8px;border:1px solid #ddd">${pinterest || 'N/A'}</td></tr>
               <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold">Etsy/Tienda</td><td style="padding:8px;border:1px solid #ddd">${etsy || 'N/A'}</td></tr>
               <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold">Precio</td><td style="padding:8px;border:1px solid #ddd">${price || 'N/A'}</td></tr>
               <tr><td style="padding:8px;border:1px solid #ddd;font-weight:bold">Descripción</td><td style="padding:8px;border:1px solid #ddd">${desc}</td></tr>
