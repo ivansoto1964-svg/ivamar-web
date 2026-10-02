@@ -189,11 +189,18 @@ function instagramUrl(value){
   return /^[a-zA-Z0-9._]+$/.test(handle)?'https://www.instagram.com/'+handle:'';
 }
 
+let directorySearchTimer = null;
+let directoryRequestId = 0;
+
 function searchDirectorio() {
-  loadDirectorio();
+  clearTimeout(directorySearchTimer);
+  const requestId = ++directoryRequestId;
+  directorySearchTimer = setTimeout(function(){ loadDirectorio(requestId); }, 180);
 }
 
-async function loadDirectorio() {
+async function loadDirectorio(requestId) {
+  clearTimeout(directorySearchTimer);
+  if (!requestId) requestId = ++directoryRequestId;
   const location = document.getElementById('dir-filter-location').value;
   const category = document.getElementById('dir-filter-category').value;
   const sort = document.getElementById('dir-sort').value;
@@ -212,7 +219,9 @@ async function loadDirectorio() {
 
     const res = await fetch(url);
     const data = await res.json();
+    if (requestId !== directoryRequestId) return;
     let negocios = data.negocios || [];
+    const searchScores = new Map();
 
     if (category && !location) {
       negocios = negocios.filter(n => n.category === category);
@@ -241,14 +250,34 @@ async function loadDirectorio() {
         'pintura':['pintura','pinturas','arte','cuadro','cuadros','pintado','pintados']
       };
       const q = normalize(searchTerm);
-      const terms = new Set(q.split(/\\s+/).filter(Boolean));
-      Array.from(terms).forEach(term => (synonyms[term] || []).forEach(s => terms.add(normalize(s))));
-      negocios = negocios.filter(n => {
+      const stopWords = new Set(['a','al','and','by','con','de','del','el','en','la','las','los','of','the','y']);
+      const rawTerms = q.split(/\\s+/).filter(Boolean);
+      const usefulTerms = rawTerms.filter(term => !stopWords.has(term));
+      const terms = usefulTerms.length ? usefulTerms : rawTerms;
+      const groups = terms.map(term => Array.from(new Set([term].concat(synonyms[term] || []).map(normalize).filter(Boolean))));
+      let ranked = negocios.map(n => {
+        const name = normalize(n.name);
         const haystack = normalize([
           n.name,n.category,n.desc,n.fullDesc,n.city,n.location,n.address,n.website,n.instagram,n.facebook,n.etsy
         ].filter(Boolean).join(' '));
-        return Array.from(terms).some(term => haystack.includes(term));
-      });
+        const matchesAll = value => groups.every(group => group.some(term => value.includes(term)));
+        let score = 0;
+        if (name === q) score = 10000;
+        else if (name.startsWith(q)) score = 9000;
+        else if (name.includes(q)) score = 8000;
+        else if (matchesAll(name)) score = 7000;
+        else if (haystack.includes(q)) score = 6000;
+        else if (matchesAll(haystack)) score = 4000;
+        else if (groups.length === 1 && groups[0].some(term => haystack.includes(term))) score = 2000;
+        return {negocio:n,score};
+      }).filter(item => item.score > 0);
+      if (ranked.some(item => item.score === 10000)) ranked = ranked.filter(item => item.score === 10000);
+      ranked.forEach(item => searchScores.set(item.negocio,item.score));
+      negocios = ranked.map(item => item.negocio);
+    }
+
+    if (requestId !== directoryRequestId) {
+      return;
     }
 
     if (negocios.length === 0) {
@@ -262,6 +291,7 @@ async function loadDirectorio() {
     }
 
     negocios.sort(function(a,b){
+      if(searchTerm && searchScores.get(a)!==searchScores.get(b)) return (searchScores.get(b)||0)-(searchScores.get(a)||0);
       if(sort==='name') return String(a.name||'').localeCompare(String(b.name||''),'es');
       if(sort==='location') return String(a.city||a.location||'').localeCompare(String(b.city||b.location||''),'es');
       if (a.destacado && !b.destacado) return -1;
@@ -309,6 +339,7 @@ async function loadDirectorio() {
     grid.innerHTML = html;
 
   } catch(e) {
+    if (requestId !== directoryRequestId) return;
     grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:2rem;color:var(--mid);">Error cargando el directorio. Intenta de nuevo.</div>';
   }
 }
