@@ -22,5 +22,8 @@ const server = fs.readFileSync(path.join(__dirname,'..','src/server.js'),'utf8')
 assert.match(server,/runPBArtisanDescriptionMigration\(\)/);
 assert.match(server,/before-\$\{PB_ARTISAN_DESCRIPTION_MIGRATION\}/);
 assert.match(server,/req\.query\?\.needs === '1'/);
+assert.match(server,/loadApprovedPBListings\(\{strict:true\}\)/);
+assert.match(server,/res\.status\(500\)\.json\(\{ ok:false, error:'No se pudo cargar el directorio\.'/);
+assert.match(server,/public, max-age=60, stale-while-revalidate=300/);
 
 console.log('PB artisan quality improvements tests passed');

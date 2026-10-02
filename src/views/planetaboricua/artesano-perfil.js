@@ -1,4 +1,15 @@
+const decodeStoredText = value => String(value || '').replace(/&(#x[0-9a-f]+|#\d+|amp|lt|gt|quot|apos|nbsp);/gi, (match, entity) => {
+  const named = {amp:'&',lt:'<',gt:'>',quot:'"',apos:"'",nbsp:' '};
+  const key = entity.toLowerCase();
+  if (key.startsWith('#x')) return String.fromCodePoint(parseInt(key.slice(2), 16));
+  if (key.startsWith('#')) return String.fromCodePoint(parseInt(key.slice(1), 10));
+  return named[key] || match;
+});
 const esc = value => String(value || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const normalizeArtisanTextFields = item => ({...item,
+  name:decodeStoredText(item.name), ownerName:decodeStoredText(item.ownerName),
+  desc:decodeStoredText(item.desc), fullDesc:decodeStoredText(item.fullDesc), city:decodeStoredText(item.city)
+});
 const safeUrl = value => {
   const raw = String(value || '').replace(/[\u200B-\u200D\u2060\uFEFF]/g, '').replace(/&amp;/g, '&').trim();
   if (!raw || /^(n\/?a|no\.?|ninguno|no tengo|notengo|facebook)$/i.test(raw) || /^(javascript|data):/i.test(raw) || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(raw)) return '';
@@ -52,6 +63,7 @@ const { renderPBSiteFooter } = require('./site-footer');
 const { isIndexablePBArtisan } = require('../../utils/pb-seo');
 
 function artesanoPerfil(item, helpers) {
+  item = normalizeArtisanTextFields(item);
   const { categoryLabel, locationLabel, slug, events = [], recommendations = [], ad = null } = helpers;
   const title = esc(item.name);
   const description = esc(item.fullDesc || item.desc || 'Artesanía puertorriqueña hecha con dedicación.');
@@ -80,6 +92,7 @@ function artesanoPerfil(item, helpers) {
 }
 
 module.exports = function artesanoPerfilConResponsable(item, helpers) {
+  item = normalizeArtisanTextFields(item);
   let html = artesanoPerfil(item, helpers);
   html = html.replace('href="/manifest-pb.json"', `href="/artesanos/${encodeURIComponent(helpers.slug)}/manifest.json"`);
   html = html.replace(/<footer class="pb-footer">[\s\S]*?<\/footer>/, renderPBSiteFooter());

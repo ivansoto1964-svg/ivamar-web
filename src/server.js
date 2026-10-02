@@ -299,11 +299,21 @@ function canonicalPBArtisanSlug(slug) {
 }
 const PB_US_LOCATIONS = new Set('alabama alaska arizona arkansas california colorado connecticut delaware florida florida-us georgia hawaii idaho illinois indiana iowa kansas kentucky louisiana maine maryland massachusetts michigan minnesota mississippi missouri montana nebraska nevada new-hampshire new-jersey new-mexico nueva-york north-carolina north-dakota ohio oklahoma oregon pennsylvania rhode-island south-carolina south-dakota tennessee texas utah vermont virginia washington west-virginia wisconsin wyoming washington-dc'.split(' '));
 
-function loadApprovedPBListings() {
+function loadApprovedPBListings(options = {}) {
   const dir = '/data/pb-listings';
-  if (!fs.existsSync(dir)) return [];
+  if (!fs.existsSync(dir)) {
+    if (options.strict) throw new Error('PB listings directory is unavailable');
+    return [];
+  }
   return fs.readdirSync(dir).filter(file => file.endsWith('.json') && file !== 'pending.json').flatMap(file => {
-    try { return JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8')); } catch (_) { return []; }
+    try {
+      const records = JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8'));
+      if (!Array.isArray(records)) throw new Error(`Invalid PB listings file: ${file}`);
+      return records;
+    } catch (error) {
+      if (options.strict) throw error;
+      return [];
+    }
   });
 }
 
@@ -4815,29 +4825,15 @@ app.get("/api/pb-negocios/all", (req, res) => {
     res.set('Cache-Control', 'no-store');
     return res.json({ negocios: [], launchPending: true, launchAt: FERIA_LAUNCH_AT.toISOString() });
   }
-  if (feriaCanPreview(req)) res.set('Cache-Control', 'private, no-store');
+  res.set('Cache-Control', feriaCanPreview(req) ? 'private, no-store' : 'public, max-age=60, stale-while-revalidate=300');
   try {
-    const fs2 = require('fs');
-    const pathLib = require('path');
-    const listingsDir = '/data/pb-listings';
     const category = req.query.category;
-    let allNegocios = [];
-
-    if (fs2.existsSync(listingsDir)) {
-      fs2.readdirSync(listingsDir).forEach(file => {
-        if (file.endsWith('.json') && file !== 'pending.json') {
-          try {
-            const negocios = JSON.parse(fs2.readFileSync(pathLib.join(listingsDir, file), 'utf8'));
-            negocios.forEach(n => allNegocios.push(n));
-          } catch(e) {}
-        }
-      });
-    }
-
+    let allNegocios = loadApprovedPBListings({strict:true});
     if (category) allNegocios = allNegocios.filter(n => n.category === category);
     return res.json({ negocios: allNegocios.map(publicPBListing) });
   } catch(e) {
-    return res.json({ negocios: [] });
+    console.error('PB public directory error:', e.message);
+    return res.status(500).json({ ok:false, error:'No se pudo cargar el directorio.' });
   }
 });
 
@@ -4847,23 +4843,18 @@ app.get("/api/pb-negocios/:location", (req, res) => {
     res.set('Cache-Control', 'no-store');
     return res.json({ negocios: [], launchPending: true, launchAt: FERIA_LAUNCH_AT.toISOString() });
   }
-  if (feriaCanPreview(req)) res.set('Cache-Control', 'private, no-store');
+  res.set('Cache-Control', feriaCanPreview(req) ? 'private, no-store' : 'public, max-age=60, stale-while-revalidate=300');
   try {
-    const fs2 = require('fs');
-    const pathLib = require('path');
     const locations = req.params.location === 'florida-us'
       ? ['florida-us', 'florida']
       : [req.params.location];
-    const negocios = locations.flatMap(location => {
-      const approvedFile = pathLib.join('/data/pb-listings', location + '.json');
-      if (!fs2.existsSync(approvedFile)) return [];
-      return JSON.parse(fs2.readFileSync(approvedFile, 'utf8'));
-    });
+    const negocios = loadApprovedPBListings({strict:true}).filter(item => locations.includes(item.location));
     const category = req.query.category;
     const filtered = category ? negocios.filter(n => n.category === category) : negocios;
     return res.json({ negocios: filtered.map(publicPBListing) });
   } catch(e) {
-    return res.json({ negocios: [] });
+    console.error('PB public directory location error:', e.message);
+    return res.status(500).json({ ok:false, error:'No se pudo cargar el directorio.' });
   }
 });
 

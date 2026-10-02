@@ -51,6 +51,7 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
 .dir-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:0.8rem;padding:0 0.5rem;}
 .dir-card{background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;transition:transform .2s,box-shadow .2s}.dir-card:hover{transform:translateY(-3px);box-shadow:0 10px 24px #0001}
 .dir-card-photo{width:100%;height:210px;object-fit:cover;background:#eee;}
+.dir-card-photo-fallback{width:100%;height:210px;display:grid;place-items:center;background:#eef2f6;font-size:3rem;}
 .dir-card-body{padding:0.9rem;display:flex;flex-direction:column;gap:0.4rem;}
 .dir-card-desc{font-size:.8rem;color:var(--mid);line-height:1.55;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}.dir-card-actions{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:auto;padding-top:.5rem}.dir-card-actions a{font-size:.72rem;text-decoration:none;font-weight:800;padding:.45rem .6rem;border-radius:5px;background:#f0f4ff;color:var(--blue)}.dir-card-actions .profile-link{background:var(--blue);color:#fff}
 
@@ -81,14 +82,14 @@ footer.pb-footer a{color:rgba(255,255,255,0.8);text-decoration:none;margin:0 0.5
 </section>
 
 <div class="directorio-wrap" id="artesanos">
-  <div class="directory-heading"><div><h2>Descubre el talento boricua</h2><p style="color:var(--mid);font-size:.85rem;margin-top:.3rem">Busca por nombre, oficio o ubicación.</p></div><div id="result-count" class="result-count" aria-live="polite">Cargando participantes…</div></div>
+  <div class="directory-heading"><div><h2>Descubre el talento boricua</h2><p style="color:var(--mid);font-size:.85rem;margin-top:.3rem">Busca por nombre, oficio o ubicación.</p></div><div id="result-count" class="result-count" role="status" aria-live="polite">Cargando participantes…</div></div>
   <div class="dir-search-row">
-    <span class="dir-search-icon">🔍</span>
-    <input type="text" id="dir-search" placeholder="¿Buscas un tallador? ¿Joyería hecha a mano? ¿Un tejedor?..." oninput="searchDirectorio()">
+    <span class="dir-search-icon" aria-hidden="true">🔍</span>
+    <input type="search" id="dir-search" aria-label="Buscar artesanos por nombre, oficio o ubicación" autocomplete="off" placeholder="¿Buscas un tallador? ¿Joyería hecha a mano? ¿Un tejedor?..." oninput="searchDirectorio()">
   </div>
 
   <div class="dir-filters">
-    <select id="dir-filter-location" onchange="loadDirectorio()">
+    <select id="dir-filter-location" aria-label="Filtrar por ubicación" onchange="loadDirectorio()">
       <option value="">📍 Todas las ubicaciones</option>
       <optgroup label="🇵🇷 Puerto Rico — Municipios">
         <option value="adjuntas">Adjuntas</option><option value="aguada">Aguada</option><option value="aguadilla">Aguadilla</option><option value="aguas-buenas">Aguas Buenas</option><option value="aibonito">Aibonito</option><option value="anasco">Añasco</option><option value="arecibo">Arecibo</option><option value="arroyo">Arroyo</option><option value="barceloneta">Barceloneta</option><option value="barranquitas">Barranquitas</option><option value="bayamon">Bayamón</option><option value="cabo-rojo">Cabo Rojo</option><option value="caguas">Caguas</option><option value="camuy">Camuy</option><option value="canovanas">Canóvanas</option><option value="carolina">Carolina</option><option value="catano">Cataño</option><option value="cayey">Cayey</option><option value="ceiba">Ceiba</option><option value="ciales">Ciales</option><option value="cidra">Cidra</option><option value="coamo">Coamo</option><option value="comerio">Comerío</option><option value="corozal">Corozal</option><option value="culebra">Culebra</option><option value="dorado">Dorado</option><option value="fajardo">Fajardo</option><option value="florida-pr">Florida (PR)</option><option value="guanica">Guánica</option><option value="guayama">Guayama</option><option value="guayanilla">Guayanilla</option><option value="guaynabo">Guaynabo</option><option value="gurabo">Gurabo</option><option value="hatillo">Hatillo</option><option value="hormigueros">Hormigueros</option><option value="humacao">Humacao</option><option value="isabela">Isabela</option><option value="jayuya">Jayuya</option><option value="juana-diaz">Juana Díaz</option><option value="juncos">Juncos</option><option value="lajas">Lajas</option><option value="lares">Lares</option><option value="las-marias">Las Marías</option><option value="las-piedras">Las Piedras</option><option value="loiza">Loíza</option><option value="luquillo">Luquillo</option><option value="manati">Manatí</option><option value="maricao">Maricao</option><option value="maunabo">Maunabo</option><option value="mayaguez">Mayagüez</option><option value="moca">Moca</option><option value="morovis">Morovis</option><option value="naguabo">Naguabo</option><option value="naranjito">Naranjito</option><option value="orocovis">Orocovis</option><option value="patillas">Patillas</option><option value="penuelas">Peñuelas</option><option value="ponce">Ponce</option><option value="quebradillas">Quebradillas</option><option value="rincon">Rincón</option><option value="rio-grande">Río Grande</option><option value="sabana-grande">Sabana Grande</option><option value="salinas">Salinas</option><option value="san-german">San Germán</option><option value="san-juan">San Juan</option><option value="san-lorenzo">San Lorenzo</option><option value="san-sebastian">San Sebastián</option><option value="santa-isabel">Santa Isabel</option><option value="toa-alta">Toa Alta</option><option value="toa-baja">Toa Baja</option><option value="trujillo-alto">Trujillo Alto</option><option value="utuado">Utuado</option><option value="vega-alta">Vega Alta</option><option value="vega-baja">Vega Baja</option><option value="vieques">Vieques</option><option value="villalba">Villalba</option><option value="yabucoa">Yabucoa</option><option value="yauco">Yauco</option>
@@ -98,7 +99,7 @@ footer.pb-footer a{color:rgba(255,255,255,0.8);text-decoration:none;margin:0 0.5
       </optgroup>
     </select>
 
-    <select id="dir-filter-category" onchange="loadDirectorio()">
+    <select id="dir-filter-category" aria-label="Filtrar por categoría" onchange="loadDirectorio()">
       <option value="">🎨 Todas las categorías</option>
       <option value="tallado-madera">🪵 Tallado en Madera</option>
       <option value="joyeria">💍 Joyería Artesanal</option>
@@ -113,10 +114,10 @@ footer.pb-footer a{color:rgba(255,255,255,0.8);text-decoration:none;margin:0 0.5
       <option value="velas-jabones">🕯️ Velas / Jabones Artesanales</option>
       <option value="otro">📦 Otro</option>
     </select>
-    <select id="dir-sort" onchange="loadDirectorio()"><option value="featured">⭐ Destacados primero</option><option value="name">A–Z Nombre</option><option value="location">📍 Ubicación</option></select>
+    <select id="dir-sort" aria-label="Ordenar artesanos" onchange="loadDirectorio()"><option value="featured">⭐ Destacados primero</option><option value="name">A–Z Nombre</option><option value="location">📍 Ubicación</option></select>
   </div>
 
-  <div id="directorio-grid">
+  <div id="directorio-grid" aria-busy="true">
     <div style="grid-column:1/-1;text-align:center;padding:2rem;color:var(--mid);">⏳ Cargando artesanos...</div>
   </div>
 
@@ -163,6 +164,15 @@ const categoryLabels = {
   'tallado-madera':'Tallado en madera','joyeria':'Joyería artesanal','ceramica':'Cerámica y alfarería','textiles':'Textiles y costura','pintura':'Pintura y arte','santos':'Santos y tallas religiosas','cuero':'Trabajo en cuero','vejigantes':'Máscaras y vejigantes','instrumentos':'Instrumentos musicales','reciclado':'Arte con material reciclado','velas-jabones':'Velas y jabones artesanales','otro':'Otra artesanía'
 };
 function escapeHtml(value){return String(value||'').replace(/[&<>"']/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c];});}
+function decodeStoredText(value){
+  var entities={amp:'&',lt:'<',gt:'>',quot:'"',apos:"'",nbsp:' '};
+  return String(value||'').replace(/&(#x[0-9a-f]+|#\d+|amp|lt|gt|quot|apos|nbsp);/gi,function(match,entity){
+    var key=entity.toLowerCase();
+    if(key.indexOf('#x')===0)return String.fromCodePoint(parseInt(key.slice(2),16));
+    if(key.charAt(0)==='#')return String.fromCodePoint(parseInt(key.slice(1),10));
+    return entities[key]||match;
+  });
+}
 function safeExternalUrl(value){
   var raw=String(value||'').replace(/[\u200B-\u200D\u2060\uFEFF]/g,'').replace(/&amp;/g,'&').trim();
   if(!raw||/^(n\\/?a|no\\.?|ninguno|no tengo|notengo)$/i.test(raw)||/^(javascript|data):/i.test(raw)||/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(raw))return '';
@@ -191,6 +201,22 @@ function instagramUrl(value){
 
 let directorySearchTimer = null;
 let directoryRequestId = 0;
+const directoryDataCache = new Map();
+
+async function fetchDirectory(url) {
+  if (directoryDataCache.has(url)) return directoryDataCache.get(url);
+  const pending = fetch(url).then(async function(res){
+    if (res.ok === false) throw new Error('HTTP ' + res.status);
+    const data = await res.json();
+    if (!data || !Array.isArray(data.negocios)) throw new Error('Respuesta inválida del directorio');
+    return data;
+  }).catch(function(error){
+    directoryDataCache.delete(url);
+    throw error;
+  });
+  directoryDataCache.set(url,pending);
+  return pending;
+}
 
 function searchDirectorio() {
   clearTimeout(directorySearchTimer);
@@ -207,6 +233,7 @@ async function loadDirectorio(requestId) {
   const searchTerm = document.getElementById('dir-search').value.trim().toLowerCase();
   const grid = document.getElementById('directorio-grid');
 
+  grid.setAttribute('aria-busy','true');
   grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:2rem;color:var(--mid);">⏳ Buscando artesanos...</div>';
 
   try {
@@ -214,11 +241,10 @@ async function loadDirectorio(requestId) {
     const previewKey = urlParams.get('preview');
     const previewParam = previewKey ? 'preview=' + encodeURIComponent(previewKey) : '';
     const url = location
-      ? '/api/pb-negocios/' + location + '?' + [category ? 'category=' + category : '', previewParam].filter(Boolean).join('&')
-      : '/api/pb-negocios/all' + '?' + [category ? 'category=' + category : '', previewParam].filter(Boolean).join('&');
+      ? '/api/pb-negocios/' + encodeURIComponent(location) + '?' + [category ? 'category=' + encodeURIComponent(category) : '', previewParam].filter(Boolean).join('&')
+      : '/api/pb-negocios/all' + '?' + [category ? 'category=' + encodeURIComponent(category) : '', previewParam].filter(Boolean).join('&');
 
-    const res = await fetch(url);
-    const data = await res.json();
+    const data = await fetchDirectory(url);
     if (requestId !== directoryRequestId) return;
     let negocios = data.negocios || [];
     const searchScores = new Map();
@@ -227,7 +253,7 @@ async function loadDirectorio(requestId) {
       negocios = negocios.filter(n => n.category === category);
     }
     if (searchTerm) {
-      const normalize = value => String(value || '').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9ñ]+/g,' ').trim();
+      const normalize = value => decodeStoredText(value).normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9ñ]+/g,' ').trim();
       const synonyms = {
         'sombrero':['sombrero','sombreros','gorro','gorros','hat','hats','boina','boinas'],
         'gorro':['gorro','gorros','sombrero','sombreros','hat','hats','boina','boinas'],
@@ -282,10 +308,12 @@ async function loadDirectorio(requestId) {
 
     if (negocios.length === 0) {
       document.getElementById('result-count').textContent = '0 participantes';
+      grid.setAttribute('aria-busy','false');
+      const hasFilters = Boolean(searchTerm || location || category);
       grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:3rem;color:var(--mid);">' +
         '<div style="font-size:3rem;margin-bottom:1rem;">🎨</div>' +
-        '<div style="font-size:1rem;color:var(--dark);margin-bottom:1.5rem;line-height:1.6;">¡Wepa! Todavía no hay artesanos aquí. ¡Sé el primero en aparecer!</div>' +
-        '<a href="/pb/add-negocio" style="display:inline-block;background:var(--blue);color:#fff;padding:0.8rem 1.5rem;border-radius:8px;text-decoration:none;font-weight:700;font-size:0.9rem;">🎨 Regístrate Gratis →</a>' +
+        '<div style="font-size:1rem;color:var(--dark);margin-bottom:1.5rem;line-height:1.6;">' + (hasFilters ? 'No encontramos artesanos con esos criterios. Prueba otra búsqueda o elimina los filtros.' : '¡Wepa! Todavía no hay artesanos aquí. ¡Sé el primero en aparecer!') + '</div>' +
+        (hasFilters ? '<button type="button" onclick="clearDirectoryFilters()" style="border:0;background:var(--blue);color:#fff;padding:0.8rem 1.5rem;border-radius:8px;font-weight:700;font-size:0.9rem;cursor:pointer;">Limpiar búsqueda y filtros</button>' : '<a href="/pb/add-negocio" style="display:inline-block;background:var(--blue);color:#fff;padding:0.8rem 1.5rem;border-radius:8px;text-decoration:none;font-weight:700;font-size:0.9rem;">🎨 Regístrate Gratis →</a>') +
         '</div>';
       return;
     }
@@ -299,6 +327,7 @@ async function loadDirectorio(requestId) {
       return String(a.name||'').localeCompare(String(b.name||''),'es');
     });
     document.getElementById('result-count').textContent = negocios.length + ' participante' + (negocios.length===1?'':'s');
+    grid.setAttribute('aria-busy','false');
 
     var locationLabels = {
       'adjuntas':'Adjuntas, PR','aguada':'Aguada, PR','aguadilla':'Aguadilla, PR','aguas-buenas':'Aguas Buenas, PR','aibonito':'Aibonito, PR','anasco':'Añasco, PR','arecibo':'Arecibo, PR','arroyo':'Arroyo, PR','barceloneta':'Barceloneta, PR','barranquitas':'Barranquitas, PR','bayamon':'Bayamón, PR','cabo-rojo':'Cabo Rojo, PR','caguas':'Caguas, PR','camuy':'Camuy, PR','canovanas':'Canóvanas, PR','carolina':'Carolina, PR','catano':'Cataño, PR','cayey':'Cayey, PR','ceiba':'Ceiba, PR','ciales':'Ciales, PR','cidra':'Cidra, PR','coamo':'Coamo, PR','comerio':'Comerío, PR','corozal':'Corozal, PR','culebra':'Culebra, PR','dorado':'Dorado, PR','fajardo':'Fajardo, PR','florida-pr':'Florida, PR','guanica':'Guánica, PR','guayama':'Guayama, PR','guayanilla':'Guayanilla, PR','guaynabo':'Guaynabo, PR','gurabo':'Gurabo, PR','hatillo':'Hatillo, PR','hormigueros':'Hormigueros, PR','humacao':'Humacao, PR','isabela':'Isabela, PR','jayuya':'Jayuya, PR','juana-diaz':'Juana Díaz, PR','juncos':'Juncos, PR','lajas':'Lajas, PR','lares':'Lares, PR','las-marias':'Las Marías, PR','las-piedras':'Las Piedras, PR','loiza':'Loíza, PR','luquillo':'Luquillo, PR','manati':'Manatí, PR','maricao':'Maricao, PR','maunabo':'Maunabo, PR','mayaguez':'Mayagüez, PR','moca':'Moca, PR','morovis':'Morovis, PR','naguabo':'Naguabo, PR','naranjito':'Naranjito, PR','orocovis':'Orocovis, PR','patillas':'Patillas, PR','penuelas':'Peñuelas, PR','ponce':'Ponce, PR','quebradillas':'Quebradillas, PR','rincon':'Rincón, PR','rio-grande':'Río Grande, PR','sabana-grande':'Sabana Grande, PR','salinas':'Salinas, PR','san-german':'San Germán, PR','san-juan':'San Juan, PR','san-lorenzo':'San Lorenzo, PR','san-sebastian':'San Sebastián, PR','santa-isabel':'Santa Isabel, PR','toa-alta':'Toa Alta, PR','toa-baja':'Toa Baja, PR','trujillo-alto':'Trujillo Alto, PR','utuado':'Utuado, PR','vega-alta':'Vega Alta, PR','vega-baja':'Vega Baja, PR','vieques':'Vieques, PR','villalba':'Villalba, PR','yabucoa':'Yabucoa, PR','yauco':'Yauco, PR',
@@ -308,11 +337,13 @@ async function loadDirectorio(requestId) {
     var html = '<div class="dir-grid">';
     negocios.forEach(function(n) {
         var icon = categoryIcons[n.category] || '🎨';
-        var city = n.city || locationLabels[n.location] || 'Puerto Rico';
-        var photoImg = n.photo && n.photo !== ''
-          ? '<img src="' + escapeHtml(safeExternalUrl(n.photo)) + '" class="dir-card-photo" alt="Trabajo artesanal de ' + escapeHtml(n.name) + '" loading="lazy">' : '<div class="dir-card-photo" style="display:grid;place-items:center;font-size:3rem">🎨</div>';
+        var displayName = decodeStoredText(n.name);
+        var city = decodeStoredText(n.city || locationLabels[n.location] || 'Puerto Rico');
+        var photoUrl = safeExternalUrl(n.photo);
+        var photoImg = photoUrl
+          ? '<img src="' + escapeHtml(photoUrl) + '" class="dir-card-photo" alt="Trabajo artesanal de ' + escapeHtml(displayName) + '" width="640" height="420" loading="lazy" decoding="async" onerror="this.hidden=true;this.nextElementSibling.hidden=false"><div class="dir-card-photo-fallback" hidden aria-hidden="true">🎨</div>' : '<div class="dir-card-photo-fallback" aria-hidden="true">🎨</div>';
         var descText = n.desc && n.desc !== ''
-          ? '<div class="dir-card-desc">' + escapeHtml(n.desc) + '</div>' : '';
+          ? '<div class="dir-card-desc">' + escapeHtml(decodeStoredText(n.desc)) + '</div>' : '';
         var phone = String(n.whatsapp||'').replace(/[^0-9]/g,'');
         var instagram = instagramUrl(n.instagram);
         var website = safeExternalUrl(n.website);
@@ -328,7 +359,7 @@ async function loadDirectorio(requestId) {
         html += '<div style="display:flex;align-items:flex-start;gap:0.5rem;">';
         html += '<span style="font-size:1.2rem;">' + icon + '</span>';
         html += '<div style="flex:1;">';
-        html += '<div style="font-weight:800;font-size:1rem;color:var(--dark);line-height:1.3;">' + escapeHtml(n.name) + '</div>';
+        html += '<div style="font-weight:800;font-size:1rem;color:var(--dark);line-height:1.3;">' + escapeHtml(displayName) + '</div>';
         html += '<div style="font-size:0.72rem;color:var(--mid);margin-top:0.2rem;">' + escapeHtml(categoryLabels[n.category] || 'Artesanía puertorriqueña') + ' · 📍 ' + escapeHtml(city) + '</div>';
         html += '</div></div>';
         html += descText;
@@ -340,8 +371,22 @@ async function loadDirectorio(requestId) {
 
   } catch(e) {
     if (requestId !== directoryRequestId) return;
-    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:2rem;color:var(--mid);">Error cargando el directorio. Intenta de nuevo.</div>';
+    document.getElementById('result-count').textContent = 'No se pudo cargar';
+    grid.setAttribute('aria-busy','false');
+    grid.innerHTML = '<div role="alert" style="grid-column:1/-1;text-align:center;padding:2rem;color:var(--mid);">No pudimos cargar el directorio en este momento. <button type="button" onclick="retryDirectory()" style="border:0;background:none;color:var(--blue);font:inherit;font-weight:800;text-decoration:underline;cursor:pointer;">Intentar de nuevo</button></div>';
   }
+}
+
+function clearDirectoryFilters(){
+  document.getElementById('dir-search').value='';
+  document.getElementById('dir-filter-location').value='';
+  document.getElementById('dir-filter-category').value='';
+  loadDirectorio();
+}
+
+function retryDirectory(){
+  directoryDataCache.clear();
+  loadDirectorio();
 }
 
 const initialSearch = new URLSearchParams(window.location.search).get('q');
