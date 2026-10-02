@@ -113,6 +113,12 @@ try {
   const latest = renderLatest({slug:'noticia',title:'Noticia',summary:'Resumen',body:'<p>Contenido corto.</p>',sources:[],publishedAt:now},[],[],{top:affiliateAd,first:directAd,second:campaigns[0]});
   assert.strictEqual((latest.match(/class="pb-sponsor-card"/g)||[]).length,1,'short latest posts may show one ad after the content');
   assert.ok(latest.includes('/css/pb-ads.css?v=3'),'latest posts must bypass stale mobile ad styles');
+  const repairedLatest = renderLatest({slug:'fuentes',title:'Fuentes',summary:'Resumen',body:'<p>Texto dañado �.</p>',sources:[{label:'Fuentes pegadas',url:'https://uno.example/fuente  https://dos.example/otra'}],publishedAt:now});
+  assert.ok(!repairedLatest.includes('�'),'replacement characters must not leak into published articles');
+  assert.ok(repairedLatest.includes('href="https://uno.example/fuente"'));
+  assert.ok(repairedLatest.includes('href="https://dos.example/otra"'));
+  assert.ok(repairedLatest.includes('uno.example'));
+  assert.ok(repairedLatest.includes('dos.example'));
 
   const artisan = renderArtisan({name:'Taller Boricua',desc:'Trabajo artesanal puertorriqueño hecho a mano con mucho cuidado y tradición.',photo:'https://example.com/foto.jpg'},
     {categoryLabel:'Artesanía',locationLabel:'Ponce, Puerto Rico',slug:'taller-boricua',events:[],recommendations:[],ad:{...campaigns[0],sections:['artisan'],placements:['artisan.after_profile'],disclosure:'Promoción de Planeta Boricua'}});
