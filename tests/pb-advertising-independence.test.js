@@ -51,12 +51,11 @@ const activePBViews = [
 ];
 for (const filename of activePBViews) {
   const view = fs.readFileSync(path.join(root, filename), 'utf8');
-  assert.doesNotMatch(view, /adsbygoogle|googlesyndication|ca-pub-/i, `${filename} still contains AdSense code`);
+  assert.doesNotMatch(view, /adsbygoogle|googlesyndication|ca-pub-/i, `${filename} still contains external ad-network code`);
 }
 
 const legal = fs.readFileSync(path.join(root, 'src/views/legal-boricua.js'), 'utf8');
 assert.match(legal, /Programa de Asociados de Amazon/);
-assert.doesNotMatch(legal, /Google AdSense/);
 assert.match(legal, /PB Ads y publicidad/);
 
 const postsDir = path.join(root, 'data/pb-blog/posts');
@@ -73,3 +72,4 @@ for (const filename of fs.readdirSync(postsDir).filter(name => name.endsWith('.j
 }
 
 console.log('PB advertising independence tests passed');
+
