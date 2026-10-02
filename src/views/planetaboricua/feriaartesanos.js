@@ -52,6 +52,7 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
 .dir-card{background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;transition:transform .2s,box-shadow .2s}.dir-card:hover{transform:translateY(-3px);box-shadow:0 10px 24px #0001}
 .dir-card-photo{width:100%;height:210px;object-fit:cover;background:#eee;}
 .dir-card-photo-fallback{width:100%;height:210px;display:grid;place-items:center;background:#eef2f6;font-size:3rem;}
+.dir-card-photo-fallback[hidden]{display:none;}
 .dir-card-body{padding:0.9rem;display:flex;flex-direction:column;gap:0.4rem;}
 .dir-card-desc{font-size:.8rem;color:var(--mid);line-height:1.55;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}.dir-card-actions{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:auto;padding-top:.5rem}.dir-card-actions a{font-size:.72rem;text-decoration:none;font-weight:800;padding:.45rem .6rem;border-radius:5px;background:#f0f4ff;color:var(--blue)}.dir-card-actions .profile-link{background:var(--blue);color:#fff}
 

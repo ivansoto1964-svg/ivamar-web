@@ -2,6 +2,7 @@ const assert = require('node:assert/strict');
 const vm = require('node:vm');
 
 const html = require('../src/views/planetaboricua/feriaartesanos');
+assert.match(html, /\.dir-card-photo-fallback\[hidden\]\{display:none;\}/);
 const scripts = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)];
 assert.ok(scripts.length, 'The artisan fair must include its directory script.');
 
