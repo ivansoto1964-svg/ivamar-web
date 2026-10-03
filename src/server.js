@@ -21,6 +21,7 @@ const { createPBAds } = require('./services/pb-ads');
 const { buildArtisanManifest } = require('./services/pb-artisan-pwa');
 const salaPrensaPB = require('./views/planetaboricua/sala-prensa');
 const { renderPBSocialFollow } = require('./views/planetaboricua/social-follow');
+const { withPBSiteFooter } = require('./views/planetaboricua/site-footer');
 const { isIndexablePBArtisan, wordCount } = require('./utils/pb-seo');
 const { CATEGORIES:PB_BLOG_CATEGORIES, categorySlug:pbBlogCategorySlug } = require('./utils/pb-editorial');
 const PB_ARTISAN_DESCRIPTION_REPAIRS = require('./data/pb-artisan-description-repairs');
@@ -89,9 +90,9 @@ app.use((req, res, next) => {
   next();
 });
 
-// Keep every PB HTML page under one public identity and one canonical legal set.
-// Pages that already have the complete PB footer are left as-is; compact pages
-// and forms receive a small legal bar automatically.
+// Keep every public PB page under one identity and one canonical footer.
+// Legacy page-specific footers are removed from the response before the shared
+// footer is appended, so future footer changes only need to happen once.
 app.use((req, res, next) => {
   const host = String(req.hostname || '').toLowerCase();
   if (!host.includes('masboricuaqueunmofongo.com')) return next();
@@ -103,18 +104,8 @@ app.use((req, res, next) => {
         .replace(/href=(['"])\/privacidad\1/g, 'href=$1/privacidad-boricua$1')
         .replace(/href=(['"])\/contacto\1/g, 'href=$1/quienes-somos$1')
         .replace(/connect@ivamarai\.com/gi, 'masboricuaqueunmofongo@gmail.com');
-      const hasLegal = body.includes('/terminos-boricua') && body.includes('/privacidad-boricua');
-      if (!hasLegal && !body.includes('data-pb-legal-footer')) {
-        const legalBar = `<footer data-pb-legal-footer style="background:#002d62;color:#dbe5f2;padding:1.25rem 1rem;text-align:center;font:13px/1.6 system-ui,sans-serif"><strong style="color:#fff">🇵🇷 Planeta Boricua</strong> · Más Boricua que un Mofongo<br><a href="/quienes-somos" style="color:#fff">Quiénes Somos</a> · <a href="/privacidad-boricua" style="color:#fff">Privacidad</a> · <a href="/terminos-boricua" style="color:#fff">Términos</a> · <a href="/afiliados-boricua" style="color:#fff">Afiliados</a> · <a href="mailto:masboricuaqueunmofongo@gmail.com" style="color:#fff">Contacto</a><br><span style="font-size:12px">© 2026 Planeta Boricua · Proyecto independiente de Iván Soto · Florida, USA</span></footer>`;
-        body = body.replace('</body>', legalBar + '</body>');
-      }
       const privatePath = /^\/(?:pb-control|api|auth)(?:\/|$)/.test(String(req.path || ''));
-      if (!privatePath && !body.includes('data-pb-social-follow')) {
-        const social = renderPBSocialFollow();
-        body = /<footer\b/i.test(body)
-          ? body.replace(/<footer\b/i, `${social}<footer`)
-          : body.replace('</body>', social + '</body>');
-      }
+      if (!privatePath) body = withPBSiteFooter(body, { social: renderPBSocialFollow() });
     }
     return send(body);
   };
