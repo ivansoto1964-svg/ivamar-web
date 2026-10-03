@@ -4771,7 +4771,7 @@ app.get("/admin/pb-approve/:token", async (req, res) => {
               <p style="color:#555;line-height:1.6;margin-top:1rem;">Tu solicitud fue revisada y quedaste registrado como <strong>Participante de la Feria de Artesanías</strong> de Planeta Boricua.</p>
               <p style="color:#555;line-height:1.6;margin-top:1rem;">Tu ficha ya puede aparecer en la <a href="https://masboricuaqueunmofongo.com/feria-artesanos" style="color:#002D62;font-weight:700;">Feria Digital de Artesanías Puertorriqueñas</a>.</p>
               <p style="color:#555;line-height:1.6;margin-top:1rem;">¿Necesitas actualizar información? Entra a <a href="https://www.masboricuaqueunmofongo.com/artesanos/mi-perfil" style="color:#002D62;font-weight:700;">Mi Perfil</a> y solicita un enlace seguro con este mismo email.</p>
-              <p style="margin-top:2rem;font-size:0.85rem;color:#999;">© 2026 Planeta Boricua · Proyecto independiente de Iván Soto</p>
+              <p style="margin-top:2rem;font-size:0.85rem;color:#999;">© 2026 Planeta Boricua</p>
             </div>
           </div>
         `
@@ -4954,7 +4954,7 @@ app.post('/api/nayeli', aiLimiter, express.json(), async (req, res) => {
             <p style="font-size:0.85rem;color:#666;">También te suscribimos al Boletín Boricua para que no te pierdas nada de nuestra comunidad. Puedes cancelar cuando quieras.</p>
           </div>
           <div style="padding:1rem;text-align:center;background:#f5f5f0;border-radius:0 0 12px 12px;">
-            <p style="font-size:0.72rem;color:#999;">© 2026 Planeta Boricua · masboricuaqueunmofongo.com · Proyecto independiente de Iván Soto</p>
+            <p style="font-size:0.72rem;color:#999;">© 2026 Planeta Boricua · masboricuaqueunmofongo.com</p>
           </div>
         </div>`
       });

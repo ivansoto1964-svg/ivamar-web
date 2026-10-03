@@ -97,7 +97,7 @@ footer p{color:rgba(255,255,255,0.3);font-size:0.75rem;margin-top:0.5rem;}
 
   <h2>Contacto</h2>
   <p>Para colaboraciones, consultas o simplemente para decir wepa — escríbenos a <a href="mailto:masboricuaqueunmofongo@gmail.com">masboricuaqueunmofongo@gmail.com</a></p>
-  <p style="font-size:0.85rem;color:var(--mid);">Planeta Boricua es operado de manera independiente por Iván Soto · Florida, USA · masboricuaqueunmofongo.com</p>
+  <p style="font-size:0.85rem;color:var(--mid);">Proyecto cultural y editorial independiente · masboricuaqueunmofongo.com</p>
 
 </div>
 
@@ -107,7 +107,7 @@ footer p{color:rgba(255,255,255,0.3);font-size:0.75rem;margin-top:0.5rem;}
   <a href="/quienes-somos">Quiénes Somos</a>
   <a href="/privacidad-boricua">Privacidad</a>
   <a href="/terminos-boricua">Términos</a>
-  <p>© 2026 Planeta Boricua — Iván Soto · Más Boricua Que Un Mofongo 🇵🇷</p>
+  <p>© 2026 Planeta Boricua · Más Boricua Que Un Mofongo 🇵🇷</p>
 </footer>
 </body>
 </html>`;

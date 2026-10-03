@@ -15,7 +15,7 @@ module.exports = `<!DOCTYPE html>
 <title>Planeta Boricua — Más Boricua Que Un Mofongo</title>
 <meta name="description" content="Cultura, identidad y recursos prácticos para la comunidad puertorriqueña en Puerto Rico y la diáspora. Artículos originales, Feria de Artesanías y guías PR↔USA.">
 <meta name="keywords" content="Puerto Rico, cultura puertorriqueña, diáspora boricua, artesanos puertorriqueños, mudarse de Puerto Rico, recursos boricuas">
-<meta name="author" content="Planeta Boricua — Iván Soto">
+<meta name="author" content="Planeta Boricua">
 <meta name="robots" content="index, follow">
 <link rel="canonical" href="https://www.masboricuaqueunmofongo.com/">
 

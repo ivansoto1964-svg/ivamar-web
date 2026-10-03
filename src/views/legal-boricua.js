@@ -77,10 +77,9 @@ nav{background:#fff;border-bottom:3px solid #CE1126;padding:0;}
 
   <h2>9. Contacto</h2>
   <p>Para consultas relacionadas con estos Términos, puedes comunicarte a través de <a href="mailto:masboricuaqueunmofongo@gmail.com" style="color:#CE1126;">masboricuaqueunmofongo@gmail.com</a></p>
-  <p style="margin-top:1rem;font-size:0.82rem;color:#888;">Operador: Iván Soto · Florida, USA.</p>
 </div>
 <footer class="footer">
-  <p>© 2026 <a href="/">Planeta Boricua</a> · <a href="/privacidad-boricua">Privacidad</a> · <a href="/terminos-boricua">Términos</a> · <a href="/afiliados-boricua">Aviso de Afiliados</a> · Proyecto independiente de Iván Soto</p>
+  <p>© 2026 <a href="/">Planeta Boricua</a> · <a href="/privacidad-boricua">Privacidad</a> · <a href="/terminos-boricua">Términos</a> · <a href="/afiliados-boricua">Aviso de Afiliados</a></p>
 </footer>
 </body>
 </html>`;
@@ -162,10 +161,9 @@ nav{background:#fff;border-bottom:3px solid #CE1126;padding:0;}
 
   <h2>8. Contacto</h2>
   <p>Si tiene alguna pregunta sobre esta Política de Privacidad, puede contactarnos a través de: <a href="mailto:masboricuaqueunmofongo@gmail.com" style="color:#CE1126;">masboricuaqueunmofongo@gmail.com</a></p>
-  <p style="margin-top:1rem;font-size:0.82rem;color:#888;">Operador: Iván Soto · Florida, USA.</p>
 </div>
 <footer class="footer">
-  <p>© 2026 <a href="/">Planeta Boricua</a> · <a href="/privacidad-boricua">Privacidad</a> · <a href="/terminos-boricua">Términos</a> · <a href="/afiliados-boricua">Aviso de Afiliados</a> · Proyecto independiente de Iván Soto</p>
+  <p>© 2026 <a href="/">Planeta Boricua</a> · <a href="/privacidad-boricua">Privacidad</a> · <a href="/terminos-boricua">Términos</a> · <a href="/afiliados-boricua">Aviso de Afiliados</a></p>
 </footer>
 </body>
 </html>`;
@@ -247,10 +245,9 @@ nav{background:#fff;border-bottom:3px solid #CE1126;padding:0;}
 
   <h2>Contacto</h2>
   <p>Si tienes preguntas sobre este aviso de afiliados, puedes comunicarte a través de <a href="mailto:masboricuaqueunmofongo@gmail.com" style="color:#CE1126;">masboricuaqueunmofongo@gmail.com</a></p>
-  <p style="margin-top:1rem;font-size:0.82rem;color:#888;">Este sitio es un proyecto independiente operado por Iván Soto desde Florida, USA.</p>
 </div>
 <footer class="footer">
-  <p>© 2026 <a href="/">Planeta Boricua</a> · <a href="/privacidad-boricua">Privacidad</a> · <a href="/terminos-boricua">Términos</a> · <a href="/afiliados-boricua">Aviso de Afiliados</a> · Proyecto independiente de Iván Soto</p>
+  <p>© 2026 <a href="/">Planeta Boricua</a> · <a href="/privacidad-boricua">Privacidad</a> · <a href="/terminos-boricua">Términos</a> · <a href="/afiliados-boricua">Aviso de Afiliados</a></p>
 </footer>
 </body>
 </html>`;

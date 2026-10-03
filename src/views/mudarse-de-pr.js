@@ -1238,7 +1238,7 @@ nav{background:var(--white);border-bottom:3px solid var(--blue);padding:0;positi
   </div>
   <div class="pb-footer-bottom">
     <div class="pb-footer-copy">© 2026 Planeta Boricua · masboricuaqueunmofongo.com · Todos los derechos reservados</div>
-    <div class="pb-footer-owner">Proyecto independiente de Iván Soto · Florida, USA</div>
+    <div class="pb-footer-owner">Proyecto cultural y editorial independiente 🇵🇷</div>
   </div>
 </footer>
 
