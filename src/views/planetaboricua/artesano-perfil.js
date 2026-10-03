@@ -94,7 +94,7 @@ module.exports = function artesanoPerfilConResponsable(item, helpers) {
     .replace('Compártelo en tus redes o descarga el QR para materiales impresos.', 'Compártelo con clientes, guárdalo en tu teléfono o descarga el QR para materiales impresos.')
     .replace(
       /<section class="install-card"[\s\S]*?<\/section>/,
-      `<div class="install-card" id="pb-profile-install"><img src="/icons/pb/icon-192.png" alt=""><div class="install-copy"><strong>📲 Guarda este perfil en tu teléfono</strong><p>Abre el perfil de ${esc(item.name)} directamente desde tu pantalla y compártelo rápido con tus clientes.</p><div class="install-status" id="pb-profile-install-status" role="status" aria-live="polite"></div></div><button class="install-action" id="pb-profile-install-btn" type="button" data-pb-track="install">Guardar perfil</button></div>`
+      `<div class="install-card" id="pb-profile-install"><img src="/icons/pb/icon-192.png" alt=""><div class="install-copy"><strong>📲 Guarda este perfil en tu teléfono</strong><p>Ten el perfil de ${esc(item.name)} a un toque para abrirlo y compartirlo. Si usas iPhone, abre esta página en Safari, toca Compartir y luego “Añadir a pantalla de inicio”.</p><div class="install-status" id="pb-profile-install-status" role="status" aria-live="polite"></div></div><button class="install-action" id="pb-profile-install-btn" type="button" data-pb-track="install">Guardar perfil</button></div>`
     );
   const installCard = html.match(/<div class="install-card" id="pb-profile-install">[\s\S]*?<\/button><\/div>/)?.[0];
   if (installCard) {
