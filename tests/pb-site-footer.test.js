@@ -15,6 +15,8 @@ assert.match(canonical, /href="\/agenda-boricua"/);
 assert.match(canonical, /href="\/pueblos"/);
 assert.match(canonical, /href="\/afiliados-boricua"/);
 assert.match(canonical, /mailto:masboricuaqueunmofongo@gmail\.com/);
+assert.match(canonical, /\.pb-footer\{[^}]*text-align:left/);
+assert.match(canonical, /\.pb-footer-col a\{[^}]*text-align:left/);
 
 const legacy = '<!doctype html><html><head><title>Prueba</title></head><body><main>Contenido</main><footer class="old"><a href="/privacidad">Privacidad</a></footer><script>window.ok=true</script></body></html>';
 const normalized = withPBSiteFooter(legacy, { social: renderPBSocialFollow() });
