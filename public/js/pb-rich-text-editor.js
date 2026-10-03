@@ -159,6 +159,24 @@
     return sibling;
   }
 
+  function splitBreakParagraph(block) {
+    if (!block || block.tagName !== 'P' || !block.querySelector('br')) return false;
+    const groups = [[]];
+    for (const node of [...block.childNodes]) {
+      if (node.nodeName === 'BR') groups.push([]);
+      else groups.at(-1).push(node);
+    }
+    const meaningful = groups.filter(group => group.some(node => String(node.textContent || '').trim() || node.nodeType === Node.ELEMENT_NODE));
+    if (meaningful.length < 2) return false;
+    const paragraphs = meaningful.map(group => {
+      const paragraph = document.createElement('p');
+      paragraph.append(...group);
+      return paragraph;
+    });
+    block.replaceWith(...paragraphs);
+    return true;
+  }
+
   function decorateFigures(editor, sync) {
     editor.querySelectorAll('figure').forEach(figure => {
       figure.contentEditable = 'false';
@@ -167,10 +185,12 @@
       controls.className = 'rich-image-controls';
       controls.dataset.pbEditorOnly = 'true';
       const move = (label, title, direction) => makeButton(label, title, () => {
-        const sibling = meaningfulSibling(figure, direction);
+        let sibling = meaningfulSibling(figure, direction);
+        if (splitBreakParagraph(sibling)) sibling = meaningfulSibling(figure, direction);
         if (!sibling) return;
         if (direction < 0) sibling.before(figure); else sibling.after(figure);
         sync();
+        requestAnimationFrame(() => figure.scrollIntoView({ behavior:'smooth', block:'center' }));
       });
       const remove = makeButton('Eliminar', 'Eliminar esta imagen del artículo', () => {
         if (!window.confirm('¿Eliminar esta imagen del cuerpo del artículo?')) return;

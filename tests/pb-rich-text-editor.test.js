@@ -35,6 +35,8 @@ assert.match(asset, /Pie de foto \(opcional\)/, 'Inline images must support capt
 assert.match(asset, /Crédito o fuente \(opcional\)/, 'Inline images must support credit or source text.');
 assert.match(asset, /↑ Subir/);
 assert.match(asset, /↓ Bajar/);
+assert.match(asset, /splitBreakParagraph/, 'Image movement must split pasted text blocks so one tap moves one paragraph.');
+assert.match(asset, /scrollIntoView\(\{ behavior:'smooth', block:'center' \}\)/, 'The editor must keep the moved image in view.');
 assert.match(asset, /Eliminar esta imagen del artículo/);
 assert.match(asset, /uploadLatestImage\(file\)/, 'Inline images must reuse the existing protected uploader.');
 assert.match(asset, /'IMG', 'FIGURE', 'FIGCAPTION'/, 'Reopening a post must preserve inline media markup.');
