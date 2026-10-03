@@ -10,6 +10,7 @@ const pbSiteAnalytics = require('./services/pb-site-analytics');
 const { buildPBExploreRecommendations } = require('./services/pb-ecosystem-explore');
 const pbArtisanMailBatches = require('./services/pb-artisan-mail-batches');
 const pbLatestEditor = require('./services/pb-latest-editor');
+const pbControlDrafts = require('./services/pb-control-drafts');
 const { cleanLatestFile } = require('./services/pb-legacy-commercial-cleanup');
 const pbPressRoom = require('./services/pb-press-room');
 const pbEventAdmin = require('./services/pb-event-admin');
@@ -2002,6 +2003,19 @@ app.post('/pb-control/action', requirePBAdmin, requirePBCsrf, express.json({limi
   const ok = message => res.json({ok:true,message});
   const missing = () => res.status(404).json({ok:false,error:'El elemento ya no existe o fue procesado.'});
   try {
+    if (action === 'control-draft-get') {
+      if (!pbControlDrafts.validKey(id)) return res.status(400).json({ok:false,error:'El borrador no es válido.'});
+      return res.json({ok:true,draft:pbControlDrafts.get(id)});
+    }
+    if (action === 'control-draft-save') {
+      if (!pbControlDrafts.validKey(id)) return res.status(400).json({ok:false,error:'El borrador no es válido.'});
+      return res.json({ok:true,draft:pbControlDrafts.save(id,req.body.values),message:'Borrador sincronizado.'});
+    }
+    if (action === 'control-draft-delete') {
+      if (!pbControlDrafts.validKey(id)) return res.status(400).json({ok:false,error:'El borrador no es válido.'});
+      pbControlDrafts.remove(id);
+      return ok('Borrador sincronizado eliminado.');
+    }
     if (action === 'blog-save') {
       const originalSlug = sanitize(req.body.originalSlug || '').trim();
       const title = sanitize(req.body.title || '').replace(/\s+/g,' ').trim();
@@ -2033,6 +2047,7 @@ app.post('/pb-control/action', requirePBAdmin, requirePBCsrf, express.json({limi
         createdISO:current?.createdISO || now,legacyPath:current?.legacyPath || ''
       };
       pbBlogStore.writePost(post,originalSlug);
+      try { pbControlDrafts.remove(`blog:${originalSlug || 'new'}`); } catch (_) {}
       return ok(status==='draft'?'Borrador guardado.':'Artículo publicado en PB.');
     }
     if (action === 'blog-delete') {
@@ -2056,6 +2071,7 @@ app.post('/pb-control/action', requirePBAdmin, requirePBCsrf, express.json({limi
       if (!saved) return missing();
       if (!saved.item.image) return res.status(400).json({ok:false,error:'Añade una imagen antes de guardar.'});
       writePBLatest('approved.json',saved.items);
+      try { pbControlDrafts.remove(`latest:${id}`); } catch (_) {}
       return ok('Publicación actualizada sin cambiar su enlace.');
     }
     if (action === 'latest-create') {
@@ -2074,6 +2090,7 @@ app.post('/pb-control/action', requirePBAdmin, requirePBCsrf, express.json({limi
       const now = Date.now().toString();
       const item={id:now,slug:pbLatestSlug(title,now),title,summary,body,image,sources:[{label:sourceLabel,url:sourceUrl.toString()}],status:'approved',publishedAt:new Date().toISOString()};
       const approved=readPBLatest('approved.json');approved.push(item);writeJsonFile(path.join(PB_LATEST_DIR,'approved.json'),approved);
+      try { pbControlDrafts.remove('latest:new'); } catch (_) {}
       return ok('Publicación creada en Lo más reciente.');
     }
     if (action.startsWith('latest-')) {

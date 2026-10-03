@@ -16,6 +16,61 @@
       .map(paragraph => `<p>${escapeHtml(paragraph).replace(/\n/g, '<br>')}</p>`).join('');
   }
 
+  function markdownInline(value) {
+    const links = [];
+    const source = String(value || '').replace(/\[([^\]\n]+)\]\(((?:https?:\/\/|mailto:|\/)[^\s)]+)\)/gi, (_match, label, href) => {
+      const rel = /(?:amazon\.|amzn\.to)/i.test(href) ? 'sponsored noopener noreferrer' : 'noopener noreferrer';
+      const token = `PBMARKDOWNLINK${links.length}TOKEN`;
+      links.push(`<a href="${escapeHtml(href)}" target="_blank" rel="${rel}">${escapeHtml(label)}</a>`);
+      return token;
+    });
+    return escapeHtml(source)
+      .replace(/\*\*([^*\n]+)\*\*/g, '<strong>$1</strong>')
+      .replace(/__([^_\n]+)__/g, '<strong>$1</strong>')
+      .replace(/(^|[\s(])\*([^*\n]+)\*(?=$|[\s).,;:!?])/g, '$1<em>$2</em>')
+      .replace(/(^|[\s(])_([^_\n]+)_(?=$|[\s).,;:!?])/g, '$1<em>$2</em>')
+      .replace(/PBMARKDOWNLINK(\d+)TOKEN/g, (_match, index) => links[Number(index)] || '');
+  }
+
+  function markdownTextHtml(value) {
+    const lines = String(value || '').replace(/\r\n?/g, '\n').split('\n');
+    const output = [];
+    let paragraph = [];
+    let list = null;
+    const flushParagraph = () => {
+      if (!paragraph.length) return;
+      output.push(`<p>${paragraph.map(markdownInline).join('<br>')}</p>`);
+      paragraph = [];
+    };
+    const flushList = () => {
+      if (!list) return;
+      output.push(`<${list.tag}>${list.items.map(item => `<li>${markdownInline(item)}</li>`).join('')}</${list.tag}>`);
+      list = null;
+    };
+    for (const line of lines) {
+      const heading = line.match(/^#{1,3}\s+(.+)$/);
+      const bullet = line.match(/^\s*[-•]\s+(.+)$/);
+      const numbered = line.match(/^\s*\d+[.)]\s+(.+)$/);
+      if (heading) {
+        flushParagraph(); flushList();
+        output.push(`<${heading[0].startsWith('###') ? 'h3' : 'h2'}>${markdownInline(heading[1])}</${heading[0].startsWith('###') ? 'h3' : 'h2'}>`);
+      } else if (bullet || numbered) {
+        flushParagraph();
+        const tag = bullet ? 'ul' : 'ol';
+        if (list && list.tag !== tag) flushList();
+        if (!list) list = { tag, items:[] };
+        list.items.push((bullet || numbered)[1]);
+      } else if (!line.trim()) {
+        flushParagraph(); flushList();
+      } else {
+        flushList();
+        paragraph.push(line);
+      }
+    }
+    flushParagraph(); flushList();
+    return output.join('');
+  }
+
   function cleanHtml(value) {
     const template = document.createElement('template');
     template.innerHTML = String(value || '');
@@ -272,8 +327,9 @@
       event.preventDefault();
       const clipboard = event.clipboardData;
       const pastedHtml = clipboard && clipboard.getData('text/html');
+      const pastedMarkdown = clipboard && clipboard.getData('text/markdown');
       const pastedText = clipboard && clipboard.getData('text/plain');
-      insertHtml(pastedHtml ? cleanHtml(pastedHtml) : plainTextHtml(pastedText));
+      insertHtml(pastedHtml ? cleanHtml(pastedHtml) : markdownTextHtml(pastedMarkdown || pastedText));
       sync();
     });
     textarea.form.addEventListener('submit', event => {
