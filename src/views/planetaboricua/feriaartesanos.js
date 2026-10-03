@@ -48,17 +48,17 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
 .dir-filters select{padding:0.6rem 1rem;border:1px solid var(--border);border-radius:6px;font-size:0.85rem;background:#fff;cursor:pointer;}
 
 .dir-city-label{font-weight:800;font-size:0.85rem;color:var(--blue);text-transform:uppercase;letter-spacing:0.08em;padding:0.5rem 1rem;background:#f0f4ff;border-left:3px solid var(--blue);margin-bottom:0.5rem;}
-.dir-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:0.8rem;padding:0 0.5rem;}
-.dir-card{background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;transition:transform .2s,box-shadow .2s}.dir-card:hover{transform:translateY(-3px);box-shadow:0 10px 24px #0001}
-.dir-card-photo{width:100%;height:210px;object-fit:cover;background:#eee;}
-.dir-card-photo-fallback{width:100%;height:210px;display:grid;place-items:center;background:#eef2f6;font-size:3rem;}
+.dir-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(280px,100%),1fr));gap:0.8rem;padding:0 0.5rem;}
+.dir-card{min-width:0;background:#fff;border:1px solid var(--border);border-radius:10px;overflow:hidden;display:flex;flex-direction:column;transition:transform .2s,box-shadow .2s}.dir-card:hover{transform:translateY(-3px);box-shadow:0 10px 24px #0001}
+.dir-card-photo{display:block;width:100%;height:auto;aspect-ratio:4/3;object-fit:contain;background:#eef2f6;}
+.dir-card-photo-fallback{width:100%;aspect-ratio:4/3;display:grid;place-items:center;background:#eef2f6;font-size:3rem;}
 .dir-card-photo-fallback[hidden]{display:none;}
-.dir-card-body{padding:0.9rem;display:flex;flex-direction:column;gap:0.4rem;}
-.dir-card-desc{font-size:.8rem;color:var(--mid);line-height:1.55;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}.dir-card-actions{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:auto;padding-top:.5rem}.dir-card-actions a{font-size:.72rem;text-decoration:none;font-weight:800;padding:.45rem .6rem;border-radius:5px;background:#f0f4ff;color:var(--blue)}.dir-card-actions .profile-link{background:var(--blue);color:#fff}
+.dir-card-body{min-width:0;padding:0.9rem;display:flex;flex:1;flex-direction:column;gap:0.4rem;}
+.dir-card-body>div,.dir-card-body *{min-width:0}.dir-card-desc{font-size:.8rem;color:var(--mid);line-height:1.55;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}.dir-card-actions{display:block;margin-top:auto;padding-top:.65rem}.dir-card-actions a{display:flex;align-items:center;justify-content:center;width:100%;min-height:44px;font-size:.78rem;text-align:center;text-decoration:none;font-weight:800;padding:.65rem .8rem;border-radius:7px}.dir-card-actions .profile-link{background:var(--blue);color:#fff}.dir-card-actions .profile-link:focus-visible{outline:3px solid var(--red);outline-offset:3px}
 
 footer.pb-footer{background:var(--dark);color:rgba(255,255,255,0.6);padding:2rem;text-align:center;font-size:0.8rem;margin-top:2rem;}
 footer.pb-footer a{color:rgba(255,255,255,0.8);text-decoration:none;margin:0 0.5rem;}
-@media(max-width:640px){.nav-top{padding:.75rem 1rem;align-items:flex-start}.nav-back{font-size:.72rem}.hero-feria{padding:3rem 1rem 2.4rem}.hero-actions{align-items:stretch;flex-direction:column}.hero-btn{width:100%;line-height:1.35}.directorio-wrap{padding:1.5rem 1rem}.dir-filters{display:grid;grid-template-columns:1fr}.dir-filters select{width:100%}}
+@media(max-width:640px){.nav-top{padding:.75rem 1rem;align-items:flex-start}.nav-back{font-size:.72rem}.hero-feria{padding:3rem 1rem 2.4rem}.hero-actions{align-items:stretch;flex-direction:column}.hero-btn{width:100%;line-height:1.35}.directorio-wrap{padding:1.5rem .85rem}.dir-grid{grid-template-columns:1fr;padding:0}.dir-card{width:100%}.dir-card-photo,.dir-card-photo-fallback{aspect-ratio:4/3}.dir-filters{display:grid;grid-template-columns:1fr}.dir-filters select{width:100%}}
 </style>
 </head>
 <body>
@@ -345,15 +345,6 @@ async function loadDirectorio(requestId) {
           ? '<img src="' + escapeHtml(photoUrl) + '" class="dir-card-photo" alt="Trabajo artesanal de ' + escapeHtml(displayName) + '" width="640" height="420" loading="lazy" decoding="async" onerror="this.hidden=true;this.nextElementSibling.hidden=false"><div class="dir-card-photo-fallback" hidden aria-hidden="true">🎨</div>' : '<div class="dir-card-photo-fallback" aria-hidden="true">🎨</div>';
         var descText = n.desc && n.desc !== ''
           ? '<div class="dir-card-desc">' + escapeHtml(decodeStoredText(n.desc)) + '</div>' : '';
-        var phone = String(n.whatsapp||'').replace(/[^0-9]/g,'');
-        var instagram = instagramUrl(n.instagram);
-        var website = safeExternalUrl(n.website);
-        var waLink = /^[0-9]{10,15}$/.test(phone)
-          ? '<a href="https://wa.me/' + phone + '" target="_blank" rel="ugc nofollow noopener noreferrer">Contactar</a>' : '';
-        var igLink = instagram
-          ? '<a href="' + escapeHtml(instagram) + '" target="_blank" rel="ugc nofollow noopener noreferrer">Ver Instagram</a>' : '';
-        var webLink = website
-          ? '<a href="' + escapeHtml(website) + '" target="_blank" rel="ugc nofollow noopener noreferrer">Visitar su página</a>' : '';
         html += '<div class="dir-card">';
         html += photoImg;
         html += '<div class="dir-card-body">';
@@ -364,7 +355,7 @@ async function loadDirectorio(requestId) {
         html += '<div style="font-size:0.72rem;color:var(--mid);margin-top:0.2rem;">' + escapeHtml(categoryLabels[n.category] || 'Artesanía puertorriqueña') + ' · 📍 ' + escapeHtml(city) + '</div>';
         html += '</div></div>';
         html += descText;
-        html += '<div class="dir-card-actions"><a class="profile-link" href="/artesanos/' + encodeURIComponent(n.slug) + '">Conocer al artesano</a>' + waLink + webLink + igLink + '</div>';
+        html += '<div class="dir-card-actions"><a class="profile-link" href="/artesanos/' + encodeURIComponent(n.slug) + '">Conocer al artesano</a></div>';
         html += '</div></div>';
     });
     html += '</div>';
