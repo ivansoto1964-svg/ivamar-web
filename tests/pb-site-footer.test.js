@@ -14,6 +14,7 @@ assert.match(canonical, /href="\/feria-artesanos"/);
 assert.match(canonical, /href="\/agenda-boricua"/);
 assert.match(canonical, /href="\/pueblos"/);
 assert.match(canonical, /href="\/afiliados-boricua"/);
+assert.match(canonical, /href="\/anunciate-en-pb">Anúnciate en PB/);
 assert.match(canonical, /mailto:masboricuaqueunmofongo@gmail\.com/);
 assert.match(canonical, /\.pb-footer\{[^}]*text-align:left/);
 assert.match(canonical, /\.pb-footer-col a\{[^}]*text-align:left/);
