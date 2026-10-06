@@ -1,4 +1,4 @@
-const PB_CACHE = 'planeta-boricua-v2';
+const PB_CACHE = 'planeta-boricua-v3';
 const PB_STATIC = [
   '/manifest-pb.json',
   '/icons/pb/icon-192.png',
@@ -29,13 +29,13 @@ self.addEventListener('fetch', event => {
     return;
   }
   event.respondWith(
-    caches.match(event.request).then(cached => cached || fetch(event.request).then(response => {
+    fetch(event.request).then(response => {
       if (response.ok && /\.(css|js|png|jpe?g|webp|svg|woff2?)$/i.test(url.pathname)) {
         const copy = response.clone();
-        caches.open(PB_CACHE).then(cache => cache.put(event.request, copy));
+        event.waitUntil(caches.open(PB_CACHE).then(cache => cache.put(event.request, copy)));
       }
       return response;
-    }))
+    }).catch(() => caches.match(event.request))
   );
 });
 

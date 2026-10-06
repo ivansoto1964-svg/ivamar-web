@@ -1,4 +1,5 @@
 const assert = require('assert');
+require('./pb-service-worker.test');
 const fs = require('fs');
 const path = require('path');
 
