@@ -285,7 +285,8 @@ const PB_ARTISAN_SLUG_REDIRECTS = new Map([
   ['ivette-vargas-893766','ivette-vargas-893533'],
   ['normari-lopez-laboy-112088','normari-lopez-laboy-430040'],
   ['kenneth-a-melendez-padilla-mascaras-cabezudos-y-ritmos-370699','mascaras-cabezudos-y-ritmos-992425'],
-  ['griselle-abraham-tejidos-gris-151143','griselle-abraham-cancel-717023']
+  ['griselle-abraham-tejidos-gris-151143','griselle-abraham-cancel-717023'],
+  ['tejidos-a-crochet-974074','griselle-abraham-cancel-717023']
 ]);
 
 function canonicalPBArtisanSlug(slug) {
@@ -705,12 +706,13 @@ function loadPBApprovedArtisansWithFiles() {
   return fs.readdirSync(dir).filter(file => file.endsWith('.json') && file !== 'pending.json').flatMap(file => readJsonFile(path.join(dir,file),[]).map(item => ({...item,_file:file,slug:pbArtisanSlug(item)})));
 }
 
-const PB_ARTISAN_CLEANUP_MIGRATION = '2026-08-24-artisan-email-cleanup-v1';
+const PB_ARTISAN_CLEANUP_MIGRATION = '2026-10-06-artisan-duplicate-cleanup-v2';
 const PB_ARTISAN_CLEANUP_PAIRS = [
   {keepId:'1787355893533',removeId:'1787355893766',keepSlug:'ivette-vargas-893533'},
   {keepId:'1787399430040',removeId:'1787399112088',keepSlug:'normari-lopez-laboy-430040'},
   {keepId:'1787354992425',removeId:'1785301370699',keepSlug:'mascaras-cabezudos-y-ritmos-992425'},
-  {keepId:'1787351717023',removeId:'1785332151143',keepSlug:'griselle-abraham-cancel-717023'}
+  {keepId:'1787351717023',removeId:'1785332151143',keepSlug:'griselle-abraham-cancel-717023'},
+  {keepId:'1787351717023',removeId:'1785541974074',keepSlug:'griselle-abraham-cancel-717023'}
 ];
 
 function mergePBArtisanMetricEntries(current = {}, retired = {}) {

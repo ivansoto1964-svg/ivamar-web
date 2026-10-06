@@ -25,5 +25,8 @@ assert.match(server,/req\.query\?\.needs === '1'/);
 assert.match(server,/loadApprovedPBListings\(\{strict:true\}\)/);
 assert.match(server,/res\.status\(500\)\.json\(\{ ok:false, error:'No se pudo cargar el directorio\.'/);
 assert.match(server,/public, max-age=60, stale-while-revalidate=300/);
+assert.match(server,/\['tejidos-a-crochet-974074','griselle-abraham-cancel-717023'\]/, 'The retired Tejidos a Crochet URL must redirect to the canonical profile.');
+assert.match(server,/\{keepId:'1787351717023',removeId:'1785541974074',keepSlug:'griselle-abraham-cancel-717023'\}/, 'The confirmed duplicate must be retired through the backed-up migration.');
+assert.match(server,/2026-10-06-artisan-duplicate-cleanup-v2/, 'The new cleanup must run independently from the completed v1 migration.');
 
 console.log('PB artisan quality improvements tests passed');
