@@ -221,6 +221,7 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
 .pb-app-install{background:#fff;color:#002D62;}
 .pb-app-alerts{background:#CE1126;color:#fff;}
 .pb-app-status{font-size:.7rem;color:#f5c842;margin-top:.5rem;display:none;}
+.pb-coqui-alert{position:fixed;z-index:1000;top:calc(.75rem + env(safe-area-inset-top));left:50%;width:min(92vw,560px);transform:translate(-50%,-140%);opacity:0;display:flex;align-items:center;gap:.8rem;padding:.85rem 1rem;background:#002D62;color:#fff;border:2px solid #f5c842;border-radius:14px;box-shadow:0 12px 35px #001a3d66;transition:transform .28s ease,opacity .28s ease;pointer-events:none}.pb-coqui-alert.show{transform:translate(-50%,0);opacity:1;pointer-events:auto}.pb-coqui-alert-icon{display:grid;place-items:center;flex:0 0 46px;width:46px;height:46px;background:#fff;border-radius:50%;font-size:1.65rem}.pb-coqui-alert-copy{min-width:0;flex:1}.pb-coqui-alert-copy strong,.pb-coqui-alert-copy span{display:block}.pb-coqui-alert-copy strong{font-size:.88rem}.pb-coqui-alert-copy span{margin-top:.18rem;color:#e4edf8;font-size:.76rem;line-height:1.35;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.pb-coqui-alert-open{display:none;flex:0 0 auto;background:#CE1126;color:#fff;text-decoration:none;border-radius:8px;padding:.58rem .7rem;font-size:.7rem;font-weight:900}.pb-coqui-alert-open.show{display:block}
 @media(max-width:700px){.pb-app-inner{align-items:flex-start;flex-direction:column}.pb-app-actions{width:100%;justify-content:stretch}.pb-app-btn{flex:1}.pb-app-icon{width:58px;height:58px}}
 @media(max-width:700px){.pb-home-ad{padding:0 1rem}}
 
@@ -302,6 +303,11 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
 ${renderStay22()}
 </head>
 <body>
+<aside class="pb-coqui-alert" id="pb-coqui-alert" role="status" aria-live="assertive" aria-atomic="true">
+  <div class="pb-coqui-alert-icon" aria-hidden="true">🐸</div>
+  <div class="pb-coqui-alert-copy"><strong id="pb-coqui-alert-heading">¡Coquí de Planeta Boricua!</strong><span id="pb-coqui-alert-message">Hay algo nuevo para ti.</span></div>
+  <a class="pb-coqui-alert-open" id="pb-coqui-alert-open" href="/">Abrir</a>
+</aside>
 
 <!-- NAV -->
 <nav>
@@ -764,20 +770,42 @@ function pbIsStandalone() {
   return window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
 }
 
+let pbCoquiAlertTimer = null;
+
+function pbShowCoquiAlert(message, url) {
+  const alertBox = document.getElementById('pb-coqui-alert');
+  const alertMessage = document.getElementById('pb-coqui-alert-message');
+  const alertOpen = document.getElementById('pb-coqui-alert-open');
+  if (!alertBox || !alertMessage || !alertOpen) return;
+  alertMessage.textContent = message || 'Hay algo nuevo para ti.';
+  if (url) {
+    alertOpen.href = url;
+    alertOpen.classList.add('show');
+  } else {
+    alertOpen.classList.remove('show');
+  }
+  alertBox.classList.add('show');
+  clearTimeout(pbCoquiAlertTimer);
+  pbCoquiAlertTimer = setTimeout(() => alertBox.classList.remove('show'), 8500);
+}
+
 function playCoqui() {
   try {
     const AudioContext = window.AudioContext || window.webkitAudioContext;
     const ctx = new AudioContext();
     const start = ctx.currentTime + 0.03;
+    const master = ctx.createGain();
+    master.gain.value = .52;
+    master.connect(ctx.destination);
     [[1050, start, .09], [1650, start + .13, .16], [1050, start + .48, .09], [1650, start + .61, .16]].forEach(note => {
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
       osc.type = 'sine';
       osc.frequency.value = note[0];
       gain.gain.setValueAtTime(0, note[1]);
-      gain.gain.linearRampToValueAtTime(.18, note[1] + .015);
+      gain.gain.linearRampToValueAtTime(.72, note[1] + .015);
       gain.gain.exponentialRampToValueAtTime(.001, note[1] + note[2]);
-      osc.connect(gain).connect(ctx.destination);
+      osc.connect(gain).connect(master);
       osc.start(note[1]);
       osc.stop(note[1] + note[2] + .02);
     });
@@ -824,6 +852,8 @@ document.getElementById('pb-alerts-btn').addEventListener('click', async () => {
   if (permission === 'granted') {
     localStorage.setItem('pb_coqui_enabled', '1');
     playCoqui();
+    pbShowCoquiAlert('¡Listo! Así te avisará cuando publiquemos algo nuevo.');
+    if (navigator.vibrate) navigator.vibrate([120, 70, 180]);
     pbShowStatus('¡Coquí activado! Sonará dentro de la app cuando detectemos una publicación nueva.');
     document.getElementById('pb-alerts-btn').textContent = '✅ Coquí activado';
   } else {
@@ -837,12 +867,15 @@ async function pbCheckForUpdate(post) {
   localStorage.setItem('pb_latest_post', post.link);
   if (!previous || previous === post.link || localStorage.getItem('pb_coqui_enabled') !== '1') return;
   playCoqui();
+  pbShowCoquiAlert(post.title || 'Hay una publicación nueva.', post.link);
+  if (navigator.vibrate) navigator.vibrate([120, 70, 180]);
   if (Notification.permission === 'granted' && 'serviceWorker' in navigator) {
     const registration = await navigator.serviceWorker.ready;
     registration.showNotification('Algo nuevo en Planeta Boricua 🇵🇷', {
       body: post.title,
       icon: '/icons/pb/icon-192.png',
-      badge: '/icons/pb/icon-192.png',
+      badge: '/icons/pb/notification-badge.svg',
+      vibrate: [120, 70, 180],
       tag: 'pb-latest-post',
       data: { url: post.link }
     });

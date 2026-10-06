@@ -1,9 +1,10 @@
-const PB_CACHE = 'planeta-boricua-v3';
+const PB_CACHE = 'planeta-boricua-v4';
 const PB_STATIC = [
   '/manifest-pb.json',
   '/icons/pb/icon-192.png',
   '/icons/pb/icon-512.png',
   '/icons/pb/apple-touch-icon.png',
+  '/icons/pb/notification-badge.svg',
   '/img/og-planetaboricua.jpg',
   '/offline-pb.html'
 ];
@@ -44,7 +45,8 @@ self.addEventListener('push', event => {
   event.waitUntil(self.registration.showNotification(data.title || 'Planeta Boricua 🇵🇷', {
     body: data.body || 'Hay algo nuevo en nuestro Planeta Boricua.',
     icon: '/icons/pb/icon-192.png',
-    badge: '/icons/pb/icon-192.png',
+    badge: '/icons/pb/notification-badge.svg',
+    vibrate: [120, 70, 180],
     data: { url: data.url || '/' },
     tag: data.tag || 'pb-update'
   }));

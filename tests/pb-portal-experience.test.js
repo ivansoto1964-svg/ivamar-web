@@ -10,6 +10,7 @@ const fair = fs.readFileSync(path.join(root, 'src/views/planetaboricua/feriaarte
 const profileSource = fs.readFileSync(path.join(root, 'src/views/planetaboricua/artesano-perfil.js'), 'utf8');
 const artisanProfile = require('../src/views/planetaboricua/artesano-perfil');
 const fairPage = require('../src/views/planetaboricua/feriaartesanos');
+const serviceWorker = fs.readFileSync(path.join(root, 'public/sw-pb.js'), 'utf8');
 const { renderPBSiteFooter } = require('../src/views/planetaboricua/site-footer');
 
 assert.match(home, /Feria Digital · Abierta 24\/7/);
@@ -34,6 +35,12 @@ assert.match(renderedHome, /data-pb-site-footer/);
 
 assert.match(server, /app\.get\("\/buscar", \(req, res\) => \{/);
 assert.match(server, /`\/feria-artesanos\?q=\$\{encodeURIComponent\(query\)\}`/);
+assert.match(home, /id="pb-coqui-alert"/);
+assert.match(home, /pbShowCoquiAlert\(post\.title/);
+assert.match(home, /master\.gain\.value = \.52/);
+assert.match(home, /notification-badge\.svg/);
+assert.match(serviceWorker, /notification-badge\.svg/);
+assert.match(serviceWorker, /vibrate: \[120, 70, 180\]/);
 assert.match(server, /res\.redirect\(301, target\)/);
 assert.match(server, /app\.get\('\/enviar-evento-boricua', \(_req, res\) => res\.redirect\(301, '\/compartir-evento-boricua'\)\)/);
 assert.doesNotMatch(profileSource, /href="\/enviar-evento-boricua"/);

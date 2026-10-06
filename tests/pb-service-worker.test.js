@@ -5,7 +5,7 @@ const vm = require('node:vm');
 
 const asset = fs.readFileSync(path.join(__dirname, '..', 'public/sw-pb.js'), 'utf8');
 
-assert.match(asset, /const PB_CACHE = 'planeta-boricua-v3'/, 'A deployment must replace the previous PB cache.');
+assert.match(asset, /const PB_CACHE = 'planeta-boricua-v4'/, 'A deployment must replace the previous PB cache.');
 assert.match(asset, /fetch\(event\.request\)[\s\S]*\.catch\(\(\) => caches\.match\(event\.request\)\)/, 'Static files must be network-first so deployments are visible immediately.');
 assert.doesNotMatch(asset, /caches\.match\(event\.request\)\.then\(cached => cached \|\| fetch/, 'Static files must not remain cache-first indefinitely.');
 
