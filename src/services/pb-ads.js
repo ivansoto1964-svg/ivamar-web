@@ -264,7 +264,22 @@ function createPBAds(options = {}) {
     }
     return [...totals.values()].map(row => ({...row,ctr:row.impressions ? Number((row.clicks*100/row.impressions).toFixed(2)) : 0}));
   }
-  return {list,save,setStatus,remove,select,findActive,saveImageData,recordMetric,summary,wordCount,mediaDir,placements:[...PLACEMENTS],sections:[...SECTIONS]};
+  function resetMetrics(id) {
+    const campaignId = cleanText(id,120);
+    if (!campaignId || !list().some(item => item.id === campaignId)) return false;
+    ensureDir();
+    let metrics = {};
+    try { metrics = JSON.parse(fs.readFileSync(metricsFile,'utf8')); } catch (_) {}
+    if (!metrics || Array.isArray(metrics) || typeof metrics !== 'object') metrics = {};
+    for (const campaigns of Object.values(metrics)) {
+      if (campaigns && typeof campaigns === 'object') delete campaigns[campaignId];
+    }
+    const temp = `${metricsFile}.${process.pid}.${Date.now()}.tmp`;
+    fs.writeFileSync(temp,JSON.stringify(metrics,null,2));
+    fs.renameSync(temp,metricsFile);
+    return true;
+  }
+  return {list,save,setStatus,remove,select,findActive,saveImageData,recordMetric,resetMetrics,summary,wordCount,mediaDir,placements:[...PLACEMENTS],sections:[...SECTIONS]};
 }
 
 module.exports = {createPBAds,validateCampaign,wordCount,disclosure,artisanEligible,TYPES,STATUSES,VERTICALS,PLACEMENTS,SECTIONS};

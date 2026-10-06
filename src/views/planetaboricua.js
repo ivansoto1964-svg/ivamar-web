@@ -739,7 +739,7 @@ async function loadDirectorio() {
 
 <!-- FOOTER -->
 ${renderPBSiteFooter()}
-<script src="/js/pb-ads.js?v=3" defer></script>
+<script src="/js/pb-ads.js?v=4" defer></script>
 
 <script>
 let pbInstallPrompt = null;

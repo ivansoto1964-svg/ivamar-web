@@ -1962,6 +1962,10 @@ app.post('/pb-control/ads/action', requirePBAdmin, requirePBCsrf, express.json({
       if (!pbAds.remove(id)) return res.status(404).json({ok:false,error:'La campaña ya no existe.'});
       return res.json({ok:true,message:'Campaña archivada.'});
     }
+    if (action === 'metrics-reset') {
+      if (!pbAds.resetMetrics(id)) return res.status(404).json({ok:false,error:'La campaña ya no existe.'});
+      return res.json({ok:true,message:'Métricas reiniciadas. La campaña comienza a medir desde cero.'});
+    }
     return res.status(400).json({ok:false,error:'Acción no reconocida.'});
   } catch (error) {
     return res.status(400).json({ok:false,error:error.message || 'No se pudo guardar la campaña.'});
@@ -2230,12 +2234,22 @@ app.post('/api/pb-ads/impression', pbArtisanMetricsLimiter, express.json({limit:
   }
 });
 
+app.post('/api/pb-ads/click', pbArtisanMetricsLimiter, express.json({limit:'2kb'}), (req,res) => {
+  const campaign = sanitize(req.body?.campaign || '');
+  const placement = sanitize(req.body?.placement || '').slice(0,80);
+  if (!/^pbad-[a-z0-9-]+$/i.test(campaign) || !pbAds.placements.includes(placement)) return res.status(400).json({ok:false});
+  try {
+    if (!pbAds.recordMetric(campaign,'click',{placement})) return res.status(404).json({ok:false});
+    return res.status(204).end();
+  } catch (error) {
+    console.error('PB Ads click error:',error.message);
+    return res.status(500).json({ok:false});
+  }
+});
+
 app.get('/pb-ads/click/:campaign', (req,res) => {
   const campaign = pbAds.findActive(req.params.campaign);
   if (!campaign) return res.status(404).send('Campaña no disponible');
-  const placement = pbAds.placements.includes(String(req.query.placement || '')) ? String(req.query.placement) : 'unknown';
-  try { pbAds.recordMetric(campaign.id,'click',{placement}); }
-  catch (error) { console.error('PB Ads click error:',error.message); }
   res.set('Cache-Control','no-store');
   res.redirect(302,campaign.destinationUrl);
 });

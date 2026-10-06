@@ -23,6 +23,9 @@ assert.match(adStyles, /@media\(max-width:620px\)[\s\S]*\.pb-sponsor-media\{widt
 assert.match(adStyles, /\.pb-sponsor-card--wide \.pb-sponsor-media\{[^}]*width:100%;aspect-ratio:auto/, 'wide affiliate banners must preserve their complete aspect ratio');
 assert.match(adStyles, /\.pb-sponsor-card--wide \.pb-sponsor-media img\{[^}]*height:auto;object-fit:contain/, 'wide affiliate banners must never be cropped');
 assert.match(adScript, /naturalWidth \/ image\.naturalHeight >= 3/, 'PB Ads must detect ultra-wide creatives automatically');
+assert.match(adScript, /addEventListener\('click',[\s\S]*sendClick\(card\)/, 'click metrics must originate from a real browser click handler');
+assert.match(adScript, /sessionStorage\.getItem\(key\)/, 'ad events must be deduplicated in the browser session');
+assert.match(adScript, /\/api\/pb-ads\/click/, 'client clicks must use the dedicated metric endpoint');
 assert.doesNotThrow(() => new Function(adScript));
 
 const tempRoot = fs.mkdtempSync(path.join(os.tmpdir(),'pb-ads-test-'));
@@ -74,6 +77,10 @@ try {
   service.recordMetric('pbad-direct','click',{placement:'blog.inline_1'});
   const metrics = service.summary().find(item => item.id === 'pbad-direct');
   assert.deepStrictEqual({impressions:metrics.impressions,clicks:metrics.clicks,ctr:metrics.ctr},{impressions:1,clicks:1,ctr:100});
+  assert.strictEqual(service.resetMetrics('pbad-direct'),true);
+  const resetMetrics = service.summary().find(item => item.id === 'pbad-direct');
+  assert.deepStrictEqual({impressions:resetMetrics.impressions,clicks:resetMetrics.clicks,ctr:resetMetrics.ctr},{impressions:0,clicks:0,ctr:0});
+  assert.strictEqual(service.resetMetrics('pbad-missing'),false);
 
   const directAd = {...campaigns[2],disclosure:'Publicidad'};
   const affiliateAd = {...campaigns[1],disclosure:'Publicidad · Enlace afiliado'};

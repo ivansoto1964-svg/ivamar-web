@@ -22,6 +22,16 @@
     if (navigator.sendBeacon) navigator.sendBeacon('/api/pb-ads/impression',new Blob([payload],{type:'application/json'}));
     else fetch('/api/pb-ads/impression',{method:'POST',headers:{'Content-Type':'application/json'},body:payload,keepalive:true,credentials:'omit'}).catch(()=>{});
   };
+  const sendClick = card => {
+    const campaign = card.dataset.pbCampaign;
+    const placement = card.dataset.pbPlacement;
+    const key = `pb-ad-click:${campaign}:${placement}:${location.pathname}`;
+    try { if (sessionStorage.getItem(key)) return; sessionStorage.setItem(key,'1'); } catch (_) {}
+    const payload = JSON.stringify({campaign,placement,page:location.pathname.slice(0,180)});
+    if (navigator.sendBeacon) navigator.sendBeacon('/api/pb-ads/click',new Blob([payload],{type:'application/json'}));
+    else fetch('/api/pb-ads/click',{method:'POST',headers:{'Content-Type':'application/json'},body:payload,keepalive:true,credentials:'omit'}).catch(()=>{});
+  };
+  cards.forEach(card => card.querySelector('.pb-sponsor-link')?.addEventListener('click',() => sendClick(card)));
   if (!('IntersectionObserver' in window)) { cards.forEach(send); return; }
   const seen = new WeakMap();
   const observer = new IntersectionObserver(entries => entries.forEach(entry => {
