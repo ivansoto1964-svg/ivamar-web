@@ -16,6 +16,7 @@ const pbPressRoom = require('./services/pb-press-room');
 const pbEventAdmin = require('./services/pb-event-admin');
 const pbEventTools = require('./services/pb-event-tools');
 const pbEventMetrics = require('./services/pb-event-metrics');
+const pbArtisanMetrics = require('./services/pb-artisan-metrics');
 const pbSubscriberWelcome = require('./services/pb-subscriber-welcome');
 const { createPBAds } = require('./services/pb-ads');
 const { buildArtisanManifest } = require('./services/pb-artisan-pwa');
@@ -539,7 +540,7 @@ const PB_ARTISAN_MAIL_HISTORY_FILE = '/data/pb-artisan-mail-history.json';
 const PB_ARTISAN_MAIL_DELIVERIES_FILE = '/data/pb-artisan-mail-deliveries.json';
 const PB_ARTISAN_EMAIL_OPTOUTS_FILE = '/data/pb-artisan-email-optouts.json';
 const PB_ARTISAN_METRICS_FILE = '/data/pb-artisan-metrics.json';
-const PB_ARTISAN_METRIC_EVENTS = new Set(['view','whatsapp','website','instagram','facebook','tiktok','pinterest','store','share','event','edit','qr','install']);
+const PB_ARTISAN_METRIC_EVENTS = pbArtisanMetrics.EVENTS;
 
 function pbArtisanEmailOptOuts() {
   return readJsonFile(PB_ARTISAN_EMAIL_OPTOUTS_FILE,[]).filter(item => item && normalizePBArtisanEmail(item.email));
@@ -898,22 +899,7 @@ function pbAffiliateSummary() {
 }
 
 function pbArtisanMetricsSummary(artisans) {
-  const metrics = readJsonFile(PB_ARTISAN_METRICS_FILE,{});
-  const safeMetrics = metrics && !Array.isArray(metrics) && typeof metrics === 'object' ? metrics : {};
-  return artisans.map(item => {
-    const slug = pbArtisanSlug(item);
-    const entry = safeMetrics[slug] || {};
-    const clicks = entry.clicks && typeof entry.clicks === 'object' ? entry.clicks : {};
-    const clickTotal = Object.values(clicks).reduce((sum,value) => sum + (Number(value) || 0),0);
-    return {
-      slug,
-      name:item.name || 'Artesano/a',
-      views:Number(entry.views) || 0,
-      clickTotal,
-      clicks,
-      lastActivity:entry.lastActivity || null
-    };
-  }).sort((a,b) => (b.views + b.clickTotal) - (a.views + a.clickTotal) || String(a.name).localeCompare(String(b.name),'es'));
+  return pbArtisanMetrics.summary(artisans,pbArtisanSlug,{file:PB_ARTISAN_METRICS_FILE});
 }
 
 function blogContentHtml(value) {
@@ -3896,16 +3882,7 @@ app.post('/api/pb-artesano-metrica/:slug', pbArtisanMetricsLimiter, express.json
   const exists = loadApprovedPBListings().some(item => pbArtisanSlug(item) === slug);
   if (!exists) return res.status(404).json({ok:false});
   try {
-    const stored = readJsonFile(PB_ARTISAN_METRICS_FILE,{});
-    const metrics = stored && !Array.isArray(stored) && typeof stored === 'object' ? stored : {};
-    const current = metrics[slug] && typeof metrics[slug] === 'object' ? metrics[slug] : {views:0,clicks:{}};
-    current.views = Number(current.views) || 0;
-    current.clicks = current.clicks && typeof current.clicks === 'object' ? current.clicks : {};
-    if (event === 'view') current.views += 1;
-    else current.clicks[event] = (Number(current.clicks[event]) || 0) + 1;
-    current.lastActivity = new Date().toISOString();
-    metrics[slug] = current;
-    writeJsonFile(PB_ARTISAN_METRICS_FILE,metrics);
+    if (!pbArtisanMetrics.record(slug,event,{file:PB_ARTISAN_METRICS_FILE})) return res.status(400).json({ok:false});
   } catch (error) {
     console.error('PB artisan metric error:',error.message);
     return res.status(500).json({ok:false});

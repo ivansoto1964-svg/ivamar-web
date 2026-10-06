@@ -52,7 +52,8 @@ function eventRows(items, pending) {
     const metrics = item.metrics || {};
     const action = metrics.actions || {};
     const attribution = item.artisanSlug ? `<br><strong>Relación artesanal:</strong> ${item.artisanRole === 'contributor' ? 'Colaborador comunitario — no participa' : 'Artesano participante'} · ${esc(item.artisanName || '')}` : '';
-    const performance = pending ? '' : `<br><strong>Rendimiento:</strong> ${esc(metrics.views || 0)} vistas · ${esc((action.share || 0)+(action.whatsapp || 0)+(action.facebook || 0)+(action.copy || 0))} compartidos · ${esc((action.calendar || 0)+(action['google-calendar'] || 0))} calendarios · ${esc(action.directions || 0)} direcciones · ${esc(action.official || 0)} fuente oficial`;
+    const recent = metrics.last30 || {};
+    const performance = pending ? '' : `<br><strong>Rendimiento acumulado:</strong> ${esc(metrics.views || 0)} vistas · ${esc((action.share || 0)+(action.whatsapp || 0)+(action.facebook || 0)+(action.copy || 0))} compartidos · ${esc((action.calendar || 0)+(action['google-calendar'] || 0))} calendarios · ${esc(action.directions || 0)} direcciones · ${esc(action.official || 0)} fuente oficial<br><strong>Últimos 30 días:</strong> ${esc(recent.views || 0)} vistas · ${esc(recent.actionTotal || 0)} acciones`;
     const controls = pending
       ? actionButton('Aprobar','event-approve',item.id,'good') + actionButton('Rechazar','event-reject',item.id,'danger')
       : `<a class="action" href="${esc(eventPath(item))}" target="_blank">Ver</a>` + actionButton('Eliminar','event-delete',item.id,'danger');
@@ -120,7 +121,8 @@ function artisanMetricRows(items) {
   const labels = {whatsapp:'WhatsApp',website:'Web',instagram:'Instagram',facebook:'Facebook',tiktok:'TikTok',pinterest:'Pinterest',store:'Tienda',share:'Compartir',event:'Evento',edit:'Editar'};
   return items.map(item => {
     const detail = Object.entries(item.clicks || {}).filter(([,count]) => Number(count) > 0).map(([key,count]) => `${labels[key] || key}: ${Number(count)}`).join(' · ') || 'Todavía sin clics';
-    return `<article class="item compact"><div><span class="eyebrow">${item.views} vistas · ${item.clickTotal} clics</span><h3>${esc(item.name)}</h3><p>${esc(detail)}<br>Última actividad: ${shortDate(item.lastActivity)}</p></div><a class="action" href="/artesanos/${encodeURIComponent(item.slug)}" target="_blank">Ver perfil</a></article>`;
+    const period = item.last30 || {};
+    return `<article class="item compact"><div><span class="eyebrow">${item.views} vistas · ${item.clickTotal} clics acumulados</span><h3>${esc(item.name)}</h3><p><strong>Últimos 30 días:</strong> ${Number(period.views) || 0} vistas · ${Number(period.clickTotal) || 0} clics<br>${esc(detail)}<br>Última actividad: ${shortDate(item.lastActivity)}</p></div><a class="action" href="/artesanos/${encodeURIComponent(item.slug)}" target="_blank">Ver perfil</a></article>`;
   }).join('');
 }
 

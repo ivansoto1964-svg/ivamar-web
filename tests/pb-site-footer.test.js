@@ -1,5 +1,6 @@
 const assert = require('assert');
 require('./pb-service-worker.test');
+require('./pb-artisan-metrics.test');
 const fs = require('fs');
 const path = require('path');
 

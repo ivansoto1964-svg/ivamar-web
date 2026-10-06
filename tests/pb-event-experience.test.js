@@ -88,12 +88,15 @@ assert.match(artisanEventForm, /name="organizerName"/);
 
 const tempDir = fs.mkdtempSync(path.join(os.tmpdir(), 'pb-event-metrics-'));
 const metricsFile = path.join(tempDir, 'metrics.json');
-assert.equal(metrics.record(slug, 'view', { file:metricsFile }), true);
-assert.equal(metrics.record(slug, 'calendar', { file:metricsFile }), true);
+const metricNow = new Date('2026-10-06T16:00:00.000Z');
+assert.equal(metrics.record(slug, 'view', { file:metricsFile, date:metricNow }), true);
+assert.equal(metrics.record(slug, 'calendar', { file:metricsFile, date:metricNow }), true);
 assert.equal(metrics.record(slug, 'invalid', { file:metricsFile }), false);
-const measured = metrics.summary([event], tools.eventSlug, { file:metricsFile })[0];
+const measured = metrics.summary([event], tools.eventSlug, { file:metricsFile, date:metricNow })[0];
 assert.equal(measured.metrics.views, 1);
 assert.equal(measured.metrics.actions.calendar, 1);
+assert.equal(measured.metrics.last7.views, 1);
+assert.equal(measured.metrics.last30.actionTotal, 1);
 
 const controlHtml = renderPBControl({
   counts:{}, siteAnalytics:{},
@@ -102,7 +105,8 @@ const controlHtml = renderPBControl({
   subscribers:[], blogPosts:[], affiliates:[], artisanMetrics:[], artisanMailHistory:[],
   artisanEmailAudit:{ counts:{}, issues:[] }, pressRoom:{ contacts:[], releases:[], distributions:[], entities:[], options:{}, controlSummary:{} }
 });
-assert.match(controlHtml, /Rendimiento:/);
+  assert.match(controlHtml, /Rendimiento acumulado:/);
+  assert.match(controlHtml, /Últimos 30 días:/);
 assert.match(controlHtml, /Colaborador comunitario — no participa/);
 assert.match(controlHtml, new RegExp(`/agenda-boricua/${slug}`));
 
