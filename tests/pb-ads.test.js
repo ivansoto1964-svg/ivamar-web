@@ -22,7 +22,7 @@ assert.match(adStyles, /@media\(max-width:620px\)[\s\S]*\.pb-sponsor-link\{grid-
 assert.match(adStyles, /@media\(max-width:620px\)[\s\S]*\.pb-sponsor-media\{width:100%;aspect-ratio:16\/9\}/, 'mobile ad images must fill the available card width');
 assert.match(adStyles, /\.pb-sponsor-card--wide \.pb-sponsor-media\{[^}]*width:100%;aspect-ratio:auto/, 'wide affiliate banners must preserve their complete aspect ratio');
 assert.match(adStyles, /\.pb-sponsor-card--wide \.pb-sponsor-media img\{[^}]*height:auto;object-fit:contain/, 'wide affiliate banners must never be cropped');
-assert.match(adScript, /naturalWidth \/ image\.naturalHeight >= 3/, 'PB Ads must detect ultra-wide creatives automatically');
+assert.match(adScript, /naturalWidth \/ image\.naturalHeight >= 2\.2/, 'PB Ads must detect panoramic creatives automatically');
 assert.match(adScript, /addEventListener\('click',[\s\S]*sendClick\(card\)/, 'click metrics must originate from a real browser click handler');
 assert.match(adScript, /sessionStorage\.getItem\(key\)/, 'ad events must be deduplicated in the browser session');
 assert.match(adScript, /\/api\/pb-ads\/click/, 'client clicks must use the dedicated metric endpoint');

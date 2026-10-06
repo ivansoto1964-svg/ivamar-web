@@ -5,7 +5,7 @@
     const image = card.querySelector('.pb-sponsor-media img');
     if (!image) return;
     const apply = () => {
-      if (image.naturalWidth > 0 && image.naturalHeight > 0 && image.naturalWidth / image.naturalHeight >= 3) {
+      if (image.naturalWidth > 0 && image.naturalHeight > 0 && image.naturalWidth / image.naturalHeight >= 2.2) {
         card.classList.add('pb-sponsor-card--wide');
       }
     };

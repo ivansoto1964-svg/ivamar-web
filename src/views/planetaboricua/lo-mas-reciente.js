@@ -81,7 +81,7 @@ module.exports = function loMasReciente(item, comments = [], recommendations = [
     finally { button.disabled = false; }
   });
 })();
-</script><script src="/js/pb-ads.js?v=4" defer></script><script src="/js/pb-instagram-share.js?v=5"></script>${renderStay22({enabled:hasTravelIntent(item)})}</body></html>`;
+</script><script src="/js/pb-ads.js?v=5" defer></script><script src="/js/pb-instagram-share.js?v=5"></script>${renderStay22({enabled:hasTravelIntent(item)})}</body></html>`;
 };
 
 module.exports.normalizeSources = normalizeSources;
