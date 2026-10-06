@@ -2617,86 +2617,6 @@ RULES:
 // KIA DEALER DEMO ASSISTANT
 // ==========================================
 
-// ==========================================
-// GENERIC DEALER DEMO ASSISTANT
-// ==========================================
-app.post("/api/dealer-demo", express.json(), async (req, res) => {
-  const { message, history = [] } = req.body;
-  const lang = message.match(/[áéíóúñ¿¡]/i) ? 'es' : 'en';
-
-  const system = lang === 'es' ? `Eres un asistente virtual para un dealer de autos — este es un demo de Ivamar AI para mostrar cómo funciona un asistente digital para dealerships.
-
-ESTE ES UN DEMO:
-- Estás demostrando cómo funcionaría el asistente para cualquier dealer de autos
-- El dealer puede ser Toyota, Honda, Kia, Ford, Chevrolet o cualquier marca
-- El asistente se personaliza con la información real del dealer
-
-LO QUE PUEDES HACER:
-- Responder preguntas sobre inventario (nuevos y usados)
-- Explicar opciones de financiamiento
-- Guiar en el proceso de trade-in
-- Agendar pruebas de manejo
-- Responder en español e inglés automáticamente
-- Capturar leads: nombre, teléfono, vehículo de interés
-
-PLANES DISPONIBLES PARA DEALERS:
-- 1 dealer: $500 setup único + $149/mes
-- 3 dealers: $1,200 setup único + $349/mes
-- Grupo completo: $2,500 setup único + $599/mes
-- Sin contratos, cancela cuando quieras
-- Un QR y link directo por dealer
-- Setup en 48 horas
-
-REGLAS:
-1. Responde en español cuando el cliente escriba en español
-2. Sé amigable, profesional y conversacional
-3. Máximo 4 oraciones por respuesta
-4. Si preguntan por precios — menciona los planes enterprise
-5. Si preguntan cómo empezar — manda a connect@ivamarai.com`
-  : `You are a virtual assistant for a car dealership — this is an Ivamar AI demo showing how a digital assistant works for any dealership.
-
-THIS IS A DEMO:
-- You're demonstrating how an assistant would work for any car dealership
-- The dealer could be Toyota, Honda, Kia, Ford, Chevrolet or any brand
-- The assistant gets customized with the real dealer's information
-
-WHAT YOU CAN DO:
-- Answer questions about inventory (new and used)
-- Explain financing options
-- Guide through trade-in process
-- Schedule test drives
-- Respond in English and Spanish automatically
-- Capture leads: name, phone, vehicle of interest
-
-PLANS AVAILABLE FOR DEALERS:
-- 1 dealership: $500 one-time setup + $149/month
-- 3 dealerships: $1,200 one-time setup + $349/month
-- Full group: $2,500 one-time setup + $599/month
-- No contracts, cancel anytime
-- One QR code and direct link per dealer
-- Ready in 48 hours
-
-RULES:
-1. Respond in English when customer writes in English
-2. Respond in Spanish when customer writes in Spanish
-3. Be friendly, professional and conversational
-4. Maximum 4 sentences per response
-5. If asked about pricing — mention enterprise plans
-6. If asked how to get started — direct to connect@ivamarai.com`;
-
-  try {
-    const response = await anthropic.messages.create({
-      model: "claude-haiku-4-5-20251001",
-      max_tokens: 400,
-      system,
-      messages: [...history, { role: "user", content: message }]
-    });
-    return res.json({ reply: response.content[0].text });
-  } catch(e) {
-    return res.json({ reply: "I'm having a quick issue. Please email connect@ivamarai.com" });
-  }
-});
-
 app.post("/api/kia-demo", express.json(), async (req, res) => {
   const { message, history = [] } = req.body;
   const lang = message.match(/[áéíóúñ¿¡]/i) ? 'es' : 'en';
@@ -3425,45 +3345,11 @@ app.get("/api/blog-feed", async (req, res) => {
   }
 });
 
-
-// ==========================================
-// BLOGGER RSS PROXY
-// ==========================================
-app.get("/api/blog-feed", async (req, res) => {
-  try {
-    const r = await fetch("https://blog.yourcaribbeanexpert.com/feeds/posts/default?alt=json&max-results=4");
-    const data = await r.json();
-    const entries = (data.feed && data.feed.entry) || [];
-    const posts = entries.map(e => {
-      const title = e.title.$t.trim();
-      const slug = title.toLowerCase().replace(/[áàä]/g,'a').replace(/[éèë]/g,'e').replace(/[íìï]/g,'i').replace(/[óòö]/g,'o').replace(/[úùü]/g,'u').replace(/ñ/g,'n').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
-      const date = new Date(e.published.$t).toLocaleDateString('en-US', {year:'numeric',month:'long',day:'numeric'});
-      let image = '/img/og-caribex.jpg';
-      if (e.media$thumbnail) image = e.media$thumbnail.url.replace(/s72-[^/]*/,'s1200-c').replace(/w[0-9]+-h[0-9]+-c/,'s1200-c');
-      const content = e.content ? e.content.$t : '';
-      const imgMatch = content.match(/<img[^>]+src=["']([^"']+)["']/i);
-      if (imgMatch && !e.media$thumbnail) image = imgMatch[1];
-      const text = content.replace(/<[^>]+>/g,'').trim();
-      const excerpt = text.substring(0,150) + '...';
-      return { title, slug, date, image, excerpt, link: '/insights/' + slug };
-    });
-    res.set("Access-Control-Allow-Origin", "*");
-    res.json(posts);
-  } catch(e) {
-    res.status(500).json({ error: "Feed unavailable" });
-  }
-});
-
 // ==========================================
 // SEO — SITEMAP & ROBOTS
 // ==========================================
 app.get("/quienes-somos", (req, res) => res.send(quienesSomos));
 app.get("/anunciate-en-pb", (_req, res) => res.send(publicidadPB));
-
-app.get("/privacidad", (req, res) => res.send(caribexPrivacy));
-app.get("/terminos", (req, res) => res.send(caribexTerms));
-app.get("/privacidad", (req, res) => res.redirect(301, "/privacidad-boricua"));
-app.get("/terminos", (req, res) => res.redirect(301, "/terminos-boricua"));
 
 app.get("/caribex-sitemap.xml", async (req, res) => {
   const base = "https://www.yourcaribbeanexpert.com";

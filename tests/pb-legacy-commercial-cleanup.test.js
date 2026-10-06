@@ -1,4 +1,5 @@
 const assert = require('assert');
+require('./server-route-uniqueness.test');
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
