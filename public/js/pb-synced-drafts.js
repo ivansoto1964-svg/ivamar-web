@@ -98,13 +98,44 @@
       }
     }
 
+    async function clear() {
+      clearTimeout(timer);
+      generation += 1;
+      const key = keyFor(type, form);
+      try { localStorage.removeItem(prefix + key); } catch (_) {}
+      try {
+        await apiAction('control-draft-delete', key);
+        status.textContent = '✓ Publicado; editor listo para una publicación nueva.';
+      } catch (_) {
+        status.textContent = 'Publicado; el borrador local fue eliminado.';
+      }
+    }
+
     form.addEventListener('input', schedule);
     form.addEventListener('change', schedule);
-    return { restore, saveNow };
+    new MutationObserver(() => {
+      if (status.textContent.includes('Guardado definitivo')) clear();
+    }).observe(status, { childList:true, characterData:true, subtree:true });
+    const discard = document.createElement('button');
+    discard.type = 'button';
+    discard.className = 'action';
+    discard.textContent = 'Limpiar para escribir algo nuevo';
+    discard.addEventListener('click', async () => {
+      if (!window.confirm('Se eliminará este borrador del teléfono y la computadora. ¿Continuar?')) return;
+      discard.disabled = true;
+      await clear();
+      if (type === 'blog' && typeof resetBlogForm === 'function') resetBlogForm();
+      else if (type === 'latest' && typeof resetLatestForm === 'function') resetLatestForm();
+      setTimeout(() => window.pbRefreshRichEditors?.(), 0);
+      discard.disabled = false;
+    });
+    status.parentElement?.querySelector('.tools')?.append(discard);
+    return { restore, saveNow, clear };
   }
 
   const blog = controller('blog', blogForm, document.getElementById('blogDraftStatus'));
   const latest = controller('latest', latestForm, document.getElementById('latestDraftStatus'));
+  window.pbSyncedDrafts = { blog, latest };
   blog.restore();
   latest.restore();
 
