@@ -1848,6 +1848,15 @@ function buildPBControlModel(csrf) {
     pbEventTools.eventSlug
   );
   const subscribers = readJsonFile('/data/pb-subscribers.json',[]).sort((a,b) => new Date(b.subscribedAt || 0)-new Date(a.subscribedAt || 0));
+  const subscriberCutoff = Date.now() - (30 * 24 * 60 * 60 * 1000);
+  const subscriberStats = {
+    total:subscribers.length,
+    active:subscribers.filter(item => item.status !== 'unsubscribed').length,
+    unsubscribed:subscribers.filter(item => item.status === 'unsubscribed').length,
+    new30:subscribers.filter(item => new Date(item.subscribedAt || 0).getTime() >= subscriberCutoff).length,
+    unsubscribed30:subscribers.filter(item => item.status === 'unsubscribed' && new Date(item.unsubscribedAt || 0).getTime() >= subscriberCutoff).length
+  };
+  subscriberStats.net30 = subscriberStats.new30 - subscriberStats.unsubscribed30;
   const blogPosts = loadPBBlogPosts();
   const affiliates = pbAffiliateSummary();
   const artisanEmailCount = pbArtisanRecipients().length;
@@ -1909,7 +1918,7 @@ function buildPBControlModel(csrf) {
   pressRoom.releases.sort((a,b) => String(b.date || '').localeCompare(String(a.date || '')));
   pressRoom.distributions.sort((a,b) => String(b.updatedAt || '').localeCompare(String(a.updatedAt || '')));
   pressRoom.controlSummary = pbPressRoom.controlSummary(pressRoom);
-  return {csrf,latestPending,latestApproved,commentsPending,commentsApproved,artisansPending,artisansApproved,artisanNeedsImprovement,eventsPending,eventsApproved,subscribers,blogPosts,affiliates,artisanEmailCount,artisanEmailAudit,artisanMailHistory,artisanMetrics,siteAnalytics,pressRoom,counts:{pendingLatest:latestPending.length,pendingComments:commentsPending.length,pendingArtisans:artisansPending.length,pendingEvents:eventsPending.length,pendingTotal:latestPending.length+commentsPending.length+artisansPending.length+eventsPending.length,blogPosts:blogPosts.length,subscribers:subscribers.length,affiliateClicks:affiliates.reduce((sum,item)=>sum+item.clicks,0),artisanViews:artisanMetrics.reduce((sum,item)=>sum+item.views,0),artisanClicks:artisanMetrics.reduce((sum,item)=>sum+item.clickTotal,0)}};
+  return {csrf,latestPending,latestApproved,commentsPending,commentsApproved,artisansPending,artisansApproved,artisanNeedsImprovement,eventsPending,eventsApproved,subscribers,subscriberStats,blogPosts,affiliates,artisanEmailCount,artisanEmailAudit,artisanMailHistory,artisanMetrics,siteAnalytics,pressRoom,counts:{pendingLatest:latestPending.length,pendingComments:commentsPending.length,pendingArtisans:artisansPending.length,pendingEvents:eventsPending.length,pendingTotal:latestPending.length+commentsPending.length+artisansPending.length+eventsPending.length,blogPosts:blogPosts.length,subscribers:subscriberStats.active,affiliateClicks:affiliates.reduce((sum,item)=>sum+item.clicks,0),artisanViews:artisanMetrics.reduce((sum,item)=>sum+item.views,0),artisanClicks:artisanMetrics.reduce((sum,item)=>sum+item.clickTotal,0)}};
 }
 
 app.get('/pb-control/login', (req,res) => {
@@ -1986,10 +1995,10 @@ app.get('/pb-control/subscribers.csv', requirePBAdmin, (req,res) => {
     if (/^[=+\-@]/.test(text)) text = `'${text}`;
     return `"${text.replace(/"/g,'""')}"`;
   };
-  const rows = readJsonFile('/data/pb-subscribers.json',[]).map(item => [item.email,item.source,item.subscribedAt].map(safeCell).join(','));
+  const rows = readJsonFile('/data/pb-subscribers.json',[]).map(item => [item.email,item.source,item.subscribedAt,item.status || 'active',item.unsubscribedAt || ''].map(safeCell).join(','));
   res.set('Content-Type','text/csv; charset=utf-8');
   res.set('Content-Disposition','attachment; filename="suscriptores-planeta-boricua.csv"');
-  res.send('\ufeff"email","fuente","fecha"\n'+rows.join('\n'));
+  res.send('\ufeff"email","fuente","fecha","estado","fecha_baja"\n'+rows.join('\n'));
 });
 
 app.post('/pb-control/upload-image', requirePBAdmin, express.json({limit:'8mb'}), requirePBCsrf, (req,res) => {

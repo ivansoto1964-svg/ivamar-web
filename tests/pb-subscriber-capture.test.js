@@ -33,19 +33,21 @@ assert(agenda.includes('data-source="agenda"'), 'La Agenda debe identificar sus 
 assert(agenda.includes('Que no se te pase lo boricua'), 'La Agenda debe mostrar su mensaje contextual.');
 
 const baseControlModel = {
-  csrf: 'test', counts: { subscribers: 2 }, latestPending: [], latestApproved: [],
+  csrf: 'test', counts: { subscribers: 1 }, subscriberStats:{total:2,active:1,unsubscribed:1,new30:2,unsubscribed30:1,net30:1}, latestPending: [], latestApproved: [],
   commentsPending: [], commentsApproved: [], artisansPending: [], artisansApproved: [],
   eventsPending: [], eventsApproved: [], blogPosts: [], affiliates: [], artisanMetrics: [],
   artisanMailHistory: [], artisanEmailAudit: {}, siteAnalytics: {}, artisanEmailCount: 0,
   subscribers: [
     { email: 'blog@example.com', source: 'blog', subscribedAt: '2026-08-29T12:00:00Z' },
-    { email: 'home@example.com', source: 'landing', subscribedAt: '2026-08-29T13:00:00Z' }
+    { email: 'home@example.com', source: 'landing', subscribedAt: '2026-08-29T13:00:00Z', status:'unsubscribed', unsubscribedAt:'2026-09-01T13:00:00Z' }
   ]
 };
 const control = renderControl(baseControlModel);
-assert(control.includes('2 en total'), 'PB Control debe mostrar el total existente.');
+assert(control.includes('1 activos · 1 bajas · 2 registros históricos'), 'PB Control debe separar activos, bajas y registros históricos.');
+assert(control.includes('Crecimiento neto'), 'PB Control debe mostrar el crecimiento neto de 30 días.');
+assert(control.includes('Baja ·'), 'PB Control debe identificar las bajas en la lista.');
 assert(control.includes('El Balcón: <strong>1</strong>'), 'PB Control debe resumir el origen El Balcón.');
-assert(control.includes('Inicio: <strong>1</strong>'), 'PB Control debe tratar el origen histórico landing como Inicio.');
+assert(!control.includes('Inicio: <strong>1</strong>'), 'El resumen por origen no debe contar suscriptores dados de baja.');
 
 const server = fs.readFileSync(require.resolve('../src/server'), 'utf8');
 assert(server.includes("new Set(['blog', 'lo_mas_reciente', 'agenda', 'inicio'])"), 'El servidor debe limitar los orígenes aceptados.');
