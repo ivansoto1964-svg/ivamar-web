@@ -1937,6 +1937,12 @@ app.get('/pb-control/logout',(req,res) => {
 
 app.get('/pb-control', requirePBAdmin, (req,res) => res.send(pbControl(buildPBControlModel(req.pbAdminSession.csrf))));
 
+app.get('/pb-control/estadisticas.csv', requirePBAdmin, (_req,res) => {
+  res.set('Content-Type','text/csv; charset=utf-8');
+  res.set('Content-Disposition','attachment; filename="planeta-boricua-estadisticas-mensuales.csv"');
+  res.send('\uFEFF' + pbSiteAnalytics.csv());
+});
+
 app.get('/pb-control/ads', requirePBAdmin, (req,res) => {
   res.send(pbAdsControl({csrf:req.pbAdminSession.csrf,campaigns:pbAds.list(),metrics:pbAds.summary()}));
 });

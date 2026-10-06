@@ -14,9 +14,14 @@ function readData(file = DEFAULT_FILE) {
   try {
     const value = JSON.parse(fs.readFileSync(file, 'utf8'));
     if (!value || typeof value !== 'object' || Array.isArray(value)) throw new Error('invalid analytics data');
-    return { version:1, startedAt:value.startedAt || null, days:value.days && typeof value.days === 'object' && !Array.isArray(value.days) ? value.days : {} };
+    return {
+      version:2,
+      startedAt:value.startedAt || null,
+      days:value.days && typeof value.days === 'object' && !Array.isArray(value.days) ? value.days : {},
+      months:value.months && typeof value.months === 'object' && !Array.isArray(value.months) ? value.months : {}
+    };
   } catch (_) {
-    return { version:1, startedAt:null, days:{} };
+    return { version:2, startedAt:null, days:{}, months:{} };
   }
 }
 
@@ -75,7 +80,19 @@ function recordPageView({ file = DEFAULT_FILE, pagePath = '/', date = new Date()
   data.days[dayKey] = day;
   const newest = [...Object.keys(data.days), dayKey].sort().at(-1);
   const oldest = shiftDay(newest, -(RETENTION_DAYS - 1));
-  Object.keys(data.days).forEach(key => { if (key < oldest) delete data.days[key]; });
+  Object.keys(data.days).forEach(key => {
+    if (key >= oldest) return;
+    const archived = data.days[key] || {};
+    const monthKey = key.slice(0, 7);
+    const month = data.months[monthKey] || { visitors:0, pageViews:0, pages:{} };
+    month.visitors += Number(archived.visitors) || 0;
+    month.pageViews += Number(archived.pageViews) || 0;
+    Object.entries(archived.pages || {}).forEach(([archivedPath, count]) => {
+      month.pages[archivedPath] = (month.pages[archivedPath] || 0) + (Number(count) || 0);
+    });
+    data.months[monthKey] = month;
+    delete data.days[key];
+  });
   writeData(file, data);
   return day;
 }
@@ -92,6 +109,45 @@ function period(data, endKey, length) {
     });
   });
   return totals;
+}
+
+function addTotals(target, source) {
+  target.visitors += Number(source?.visitors) || 0;
+  target.pageViews += Number(source?.pageViews) || 0;
+  Object.entries(source?.pages || {}).forEach(([pagePath, count]) => {
+    target.pages[pagePath] = (target.pages[pagePath] || 0) + (Number(count) || 0);
+  });
+  return target;
+}
+
+function allTimePeriod(data) {
+  const totals = { visitors:0, pageViews:0, pages:{} };
+  Object.values(data.months || {}).forEach(month => addTotals(totals, month));
+  Object.values(data.days || {}).forEach(day => addTotals(totals, day));
+  return totals;
+}
+
+function monthlyBreakdown(data) {
+  const months = {};
+  Object.entries(data.months || {}).forEach(([key, value]) => {
+    months[key] = addTotals({ visitors:0, pageViews:0, pages:{} }, value);
+  });
+  Object.entries(data.days || {}).forEach(([dateKey, day]) => {
+    const monthKey = dateKey.slice(0, 7);
+    months[monthKey] = addTotals(months[monthKey] || { visitors:0, pageViews:0, pages:{} }, day);
+  });
+  return Object.entries(months).sort(([a], [b]) => b.localeCompare(a)).map(([month, value]) => ({
+    month,
+    visitors:value.visitors,
+    pageViews:value.pageViews
+  }));
+}
+
+function csv({ file = DEFAULT_FILE } = {}) {
+  const rows = monthlyBreakdown(readData(file));
+  return ['mes,visitas_diarias_acumuladas,paginas_vistas']
+    .concat(rows.map(row => [row.month, row.visitors, row.pageViews].join(',')))
+    .join('\n') + '\n';
 }
 
 function changePercent(current, previous) {
@@ -146,7 +202,9 @@ function summary({ file = DEFAULT_FILE, date = new Date() } = {}) {
   const previous7 = period(data, shiftDay(todayKey, -7), 7);
   const last30 = period(data, todayKey, 30);
   const previous30 = period(data, shiftDay(todayKey, -30), 30);
-  const allTime = period(data, todayKey, RETENTION_DAYS);
+  const last90 = period(data, todayKey, 90);
+  const last365 = period(data, todayKey, 365);
+  const allTime = allTimePeriod(data);
   const daily = Array.from({ length:14 }, (_, index) => shiftDay(todayKey, index - 13)).map(key => ({
     date:key,
     visitors:Number(data.days[key]?.visitors) || 0,
@@ -158,7 +216,10 @@ function summary({ file = DEFAULT_FILE, date = new Date() } = {}) {
     today,
     last7:{...last7, change:changePercent(last7.visitors, previous7.visitors)},
     last30:{...last30, change:changePercent(last30.visitors, previous30.visitors)},
+    last90,
+    last365,
     allTime,
+    months:monthlyBreakdown(data),
     pageHistory:pageHistory(data),
     topPages:rankedPages(last30.pages, () => true, 12),
     topArticles:rankedPages(last30.pages, isArticle, 10),
@@ -168,6 +229,7 @@ function summary({ file = DEFAULT_FILE, date = new Date() } = {}) {
 
 module.exports = {
   DEFAULT_FILE,
+  csv,
   normalizePagePath,
   pageLabel,
   puertoRicoDateKey,

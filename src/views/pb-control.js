@@ -153,16 +153,22 @@ function siteAnalyticsPanel(stats = {}) {
   const today = stats.today || {};
   const last7 = stats.last7 || {};
   const last30 = stats.last30 || {};
+  const last90 = stats.last90 || {};
+  const last365 = stats.last365 || {};
+  const allTime = stats.allTime || {};
   const cards = [
     ['Visitantes hoy', today.visitors || 0, `${today.pageViews || 0} páginas vistas`],
     ['Últimos 7 días', last7.visitors || 0, `${last7.pageViews || 0} páginas vistas`],
     ['Últimos 30 días', last30.visitors || 0, `${last30.pageViews || 0} páginas vistas`],
+    ['Últimos 90 días', last90.visitors || 0, `${last90.pageViews || 0} páginas vistas`],
+    ['Últimos 12 meses', last365.visitors || 0, `${last365.pageViews || 0} páginas vistas`],
+    ['Desde que comenzamos', allTime.visitors || 0, `${allTime.pageViews || 0} páginas vistas`],
     ['Cambio semanal', last7.change === null || last7.change === undefined ? '—' : `${last7.change > 0 ? '+' : ''}${last7.change}%`, analyticsChange(last7.change)]
   ].map(card => `<div class="card"><span>${esc(card[0])}</span><strong>${esc(card[1])}</strong><small>${esc(card[2])}</small></div>`).join('');
   const blogHistory = stats.blogHistory || [];
   const historicalTotal = blogHistory.reduce((sum,item) => sum + (Number(item.bloggerViews) || 0),0);
   const pbBlogTotal = blogHistory.reduce((sum,item) => sum + (Number(item.pbViews) || 0),0);
-  return `<section class="panel" id="estadisticas"><div class="section"><div class="sectionhead"><div><h2>📊 Visitas de Planeta Boricua</h2><p class="sectionnote">Medición propia desde ${shortDate(stats.startedAt)}. No guarda nombres, emails, direcciones IP ni identificadores persistentes.</p></div></div><div class="cards">${cards}</div><p class="sectionnote">La cifra de visitantes se cuenta una vez por navegador cada día. Las páginas vistas cuentan cada artículo o sección abierta.</p></div><div class="section"><h2>Páginas más visitadas · 30 días</h2>${analyticsRankRows(stats.topPages || [], 'Las páginas más visitadas aparecerán aquí.')}</div><div class="section"><h2>Artículos más leídos · 30 días</h2>${analyticsRankRows(stats.topArticles || [], 'Los artículos más leídos aparecerán aquí.')}</div><div class="section"><div class="sectionhead"><div><h2>El Balcón · historial editorial completo</h2><p class="sectionnote">${blogHistory.length} artículos publicados · ${historicalTotal} vistas históricas verificadas de Blogger · ${pbBlogTotal} vistas medidas por PB. Las cifras históricas se conservan por título, pero no se suman retroactivamente a los visitantes generales de PB.</p></div></div>${analyticsBlogHistoryRows(blogHistory,stats.startedAt)}</div><div class="section"><h2>Actividad diaria · últimos 14 días</h2>${analyticsDailyRows(stats.daily || [])}</div></section>`;
+  return `<section class="panel" id="estadisticas"><div class="section"><div class="sectionhead"><div><h2>📊 Visitas de Planeta Boricua</h2><p class="sectionnote">Medición propia desde ${shortDate(stats.startedAt)}. No guarda nombres, emails, direcciones IP ni identificadores persistentes.</p></div><a class="action" href="/pb-control/estadisticas.csv">Descargar CSV</a></div><div class="cards">${cards}</div><p class="sectionnote">Estas son visitas diarias acumuladas: un mismo navegador puede contarse nuevamente en días diferentes. Las páginas vistas cuentan cada artículo o sección abierta.</p></div><div class="section"><h2>Páginas más visitadas · 30 días</h2>${analyticsRankRows(stats.topPages || [], 'Las páginas más visitadas aparecerán aquí.')}</div><div class="section"><h2>Artículos más leídos · 30 días</h2>${analyticsRankRows(stats.topArticles || [], 'Los artículos más leídos aparecerán aquí.')}</div><div class="section"><div class="sectionhead"><div><h2>El Balcón · historial editorial completo</h2><p class="sectionnote">${blogHistory.length} artículos publicados · ${historicalTotal} vistas históricas verificadas de Blogger · ${pbBlogTotal} vistas medidas por PB. Las cifras históricas se conservan por título, pero no se suman retroactivamente a los visitantes generales de PB.</p></div></div>${analyticsBlogHistoryRows(blogHistory,stats.startedAt)}</div><div class="section"><h2>Actividad diaria · últimos 14 días</h2>${analyticsDailyRows(stats.daily || [])}</div></section>`;
 }
 
 

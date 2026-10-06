@@ -49,6 +49,8 @@ assert.equal(summary.today.pageViews, 2);
 assert.equal(summary.last7.visitors, 2);
 assert.equal(summary.last7.pageViews, 3);
 assert.equal(summary.last30.visitors, 3);
+assert.equal(summary.last90.visitors, 3);
+assert.equal(summary.last365.visitors, 3);
 assert.equal(summary.allTime.pageViews, 4);
 assert.equal(summary.pageHistory['/blog/cafe-boricua'].views, 2);
 assert.equal(summary.pageHistory['/blog/cafe-boricua'].firstView, '2026-08-26');
@@ -57,6 +59,8 @@ assert.equal(summary.topPages[0].path, '/blog/cafe-boricua');
 assert.equal(summary.topPages[0].views, 2);
 assert.equal(summary.topArticles.length, 2);
 assert.equal(summary.daily.at(-1).date, '2026-08-27');
+assert.equal(summary.months[0].month, '2026-08');
+assert.match(analytics.csv({ file }), /2026-08,3,4/);
 assert.match(analytics.pageLabel('/blog/cafe-boricua'), /El Balcón · Cafe Boricua/);
 assert.match(analytics.pageLabel('/agenda-boricua/festival-del-cafe-20260920'), /Evento · Festival Del Cafe/);
 
@@ -71,6 +75,10 @@ const html = renderPBControl({
 assert.match(html, /data-tab="estadisticas"/, 'PB Control must expose the analytics tab.');
 assert.match(html, /Visitantes hoy/);
 assert.match(html, /Últimos 7 días/);
+assert.match(html, /Últimos 90 días/);
+assert.match(html, /Últimos 12 meses/);
+assert.match(html, /Desde que comenzamos/);
+assert.match(html, /Descargar CSV/);
 assert.match(html, /Páginas más visitadas/);
 assert.match(html, /Artículos más leídos/);
 assert.match(html, /El Balcón · historial editorial completo/);
