@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+const sharp = require('sharp');
 const { CATEGORIES, editorialCategory } = require('../utils/pb-editorial');
 const { cleanBlogDirectory } = require('./pb-legacy-commercial-cleanup');
 
@@ -7,6 +8,7 @@ const SEED_POSTS_DIR = path.join(__dirname, '../../data/pb-blog/posts');
 const DATA_DIR = process.env.PB_BLOG_DATA_DIR || '/data/pb-blog';
 const POSTS_DIR = path.join(DATA_DIR, 'posts');
 const MEDIA_DIR = path.join(DATA_DIR, 'media');
+const OPTIMIZED_MEDIA_DIR = path.join(DATA_DIR, 'optimized-media');
 
 function ensureDirectory(directory) {
   if (!fs.existsSync(directory)) fs.mkdirSync(directory, { recursive: true });
@@ -17,6 +19,7 @@ function initialize() {
   try {
     ensureDirectory(POSTS_DIR);
     ensureDirectory(MEDIA_DIR);
+    ensureDirectory(OPTIMIZED_MEDIA_DIR);
   } catch (error) {
     console.error('[PBBlog] Persistent storage is unavailable:', error.message);
     return;
@@ -123,16 +126,43 @@ function saveImageData(dataUrl, slug) {
   return `/media/pb-blog/${filename}`;
 }
 
+function optimizedImageUrl(image = '') {
+  const prefix = '/media/pb-blog/';
+  const value = String(image || '').trim();
+  if (!value.startsWith(prefix)) return value;
+  const filename = value.slice(prefix.length);
+  if (!/^[a-zA-Z0-9._-]+\.(?:jpe?g|png|webp)$/i.test(filename)) return value;
+  return `/media/pb-blog-optimized/${encodeURIComponent(filename)}.webp`;
+}
+
+async function optimizedImageFile(filename = '') {
+  initialize();
+  const clean = String(filename || '').trim();
+  if (!/^[a-zA-Z0-9._-]+\.(?:jpe?g|png|webp)$/i.test(clean)) return null;
+  const source = path.join(MEDIA_DIR, clean);
+  if (!fs.existsSync(source)) return null;
+  const destination = path.join(OPTIMIZED_MEDIA_DIR, `${clean}.webp`);
+  const sourceStat = fs.statSync(source);
+  if (fs.existsSync(destination) && fs.statSync(destination).mtimeMs >= sourceStat.mtimeMs) return destination;
+  const temporary = `${destination}.${process.pid}.tmp.webp`;
+  await sharp(source).rotate().resize({width:1280,height:960,fit:'inside',withoutEnlargement:true}).webp({quality:78,effort:4}).toFile(temporary);
+  fs.renameSync(temporary,destination);
+  return destination;
+}
+
 initialize();
 
 module.exports = {
   POSTS_DIR,
   MEDIA_DIR,
+  OPTIMIZED_MEDIA_DIR,
   SEED_POSTS_DIR,
   slugify,
   loadPosts,
   readPost,
   writePost,
   deletePost,
-  saveImageData
+  saveImageData,
+  optimizedImageUrl,
+  optimizedImageFile
 };

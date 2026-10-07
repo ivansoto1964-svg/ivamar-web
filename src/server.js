@@ -269,7 +269,7 @@ function selectHomeAd(placement, excludeIds = []) {
 function renderPBHome() {
   const { renderPBAd } = require('./views/planetaboricua/pb-ad');
   const heroPost = pbBlogStore.loadPosts().find(post => post.image);
-  const heroImage = String(heroPost?.image || '').trim();
+  const heroImage = pbBlogStore.optimizedImageUrl(heroPost?.image);
   const escapedHeroImage = heroImage.replace(/[&<>"]/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[char]));
   const heroPreload = escapedHeroImage ? `<link rel="preload" as="image" href="${escapedHeroImage}" fetchpriority="high">` : '';
   const top = selectHomeAd('home.after_hero');
@@ -1037,6 +1037,17 @@ function requirePBCsrf(req, res, next) {
 app.use(express.static("public", { maxAge: "1y", immutable: true }));
 app.use('/media/pb-blog', express.static(pbBlogStore.MEDIA_DIR, { maxAge:'30d', immutable:true }));
 app.use('/media/pb-ads', express.static(pbAds.mediaDir, { maxAge:'1y', immutable:true }));
+app.get('/media/pb-blog-optimized/:filename', async (req,res) => {
+  try {
+    const file = await pbBlogStore.optimizedImageFile(req.params.filename);
+    if (!file) return res.status(404).send('Not found');
+    res.set('Cache-Control','public, max-age=31536000, immutable');
+    return res.type('webp').sendFile(file);
+  } catch (error) {
+    console.error('[PBBlog] Image optimization failed:',error.message);
+    return res.status(404).send('Not found');
+  }
+});
 app.use(cookieParser());
 
 // Private, aggregate PB traffic counts. The cookie stores only the current
@@ -5104,7 +5115,7 @@ No insistas más de dos veces total. Si no lo dan, despídete con calidez sin pr
 app.get('/api/planetaboricua-blog', (_req, res) => {
   const posts = pbBlogStore.loadPosts().slice(0,4).map(post => ({
     title:post.title,link:`/blog/${post.slug}`,date:post.date,
-    summary:post.excerpt,img:post.image,tag:post.category,slug:post.slug
+    summary:post.excerpt,img:pbBlogStore.optimizedImageUrl(post.image),tag:post.category,slug:post.slug
   }));
   res.set('Access-Control-Allow-Origin','*');
   res.set('Cache-Control','public, max-age=60, stale-while-revalidate=300');
