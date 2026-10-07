@@ -122,11 +122,14 @@ assert.match(cleanedInstagram, /Ten el perfil de Perfil de prueba a un toque par
 assert.match(cleanedInstagram, /Si usas iPhone, abre esta página en Safari, toca Compartir y luego “Añadir a pantalla de inicio”/);
 assert.match(cleanedInstagram, /id="pb-profile-install-btn"[^>]*data-pb-track="install"/);
 assert.match(cleanedInstagram, /href="\/artesanos\/perfil-prueba\/manifest\.json"/);
-assert.ok(cleanedInstagram.indexOf('Compra directamente al artesano') < cleanedInstagram.indexOf('Promociona este perfil'));
+assert.ok(cleanedInstagram.indexOf('</article>') < cleanedInstagram.indexOf('Promociona este perfil'));
+assert.ok(cleanedInstagram.indexOf('Promociona este perfil') < cleanedInstagram.indexOf('Guarda este perfil en tu teléfono'));
+assert.ok(cleanedInstagram.indexOf('Guarda este perfil en tu teléfono') < cleanedInstagram.indexOf('Compra directamente al artesano'));
 const profileWithGallery = artisanProfile({...baseItem,gallery:['https://res.cloudinary.com/demo/image/upload/second.jpg']},helpers);
 assert.ok(profileWithGallery.indexOf('👐 Mis creaciones') < profileWithGallery.indexOf('Promociona este perfil'));
 assert.ok(profileWithGallery.indexOf('</article>') < profileWithGallery.indexOf('👐 Mis creaciones'));
-assert.ok(profileWithGallery.indexOf('👐 Mis creaciones') < profileWithGallery.indexOf('Compra directamente al artesano'));
+assert.ok(profileWithGallery.indexOf('Promociona este perfil') < profileWithGallery.indexOf('Guarda este perfil en tu teléfono'));
+assert.ok(profileWithGallery.indexOf('Guarda este perfil en tu teléfono') < profileWithGallery.indexOf('Compra directamente al artesano'));
 assert.equal((cleanedInstagram.match(/Descargar QR/g) || []).length, 1);
 const profileScripts = [...cleanedInstagram.matchAll(/<script>([\s\S]*?)<\/script>/gi)].map(match => match[1]);
 assert.doesNotThrow(() => profileScripts.forEach(script => new Function(script)));

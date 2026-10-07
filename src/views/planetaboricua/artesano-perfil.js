@@ -128,6 +128,14 @@ module.exports = function artesanoPerfilConResponsable(item, helpers) {
       '.artisan-gallery{margin:1.3rem 0;background:#fff;border-radius:12px;padding:clamp(1.15rem,3vw,1.7rem)}.artisan-gallery h2{color:#002d62}.artisan-gallery-intro{color:#596273;line-height:1.6;margin:.35rem 0 1.1rem}.artisan-gallery-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}.artisan-creation{min-width:0;border:1px solid #e1e6ec;border-radius:12px;overflow:hidden;background:#fff;box-shadow:0 5px 16px #002d620a}.artisan-creation-image{display:block;min-width:0;aspect-ratio:4/3;overflow:hidden;background:#edf1f5}.artisan-creation-image img{display:block;width:100%;height:100%;object-fit:contain}.artisan-creation-copy{min-width:0;padding:.85rem}.artisan-creation-copy h3{font-family:Georgia,serif;color:#002d62;font-size:1.08rem;overflow-wrap:anywhere;margin:0 0 .4rem}.artisan-creation-copy p{white-space:pre-line;color:#4f5968;font-size:.88rem;line-height:1.55;overflow-wrap:anywhere;margin:0}.artisan-gallery-contact{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-top:1.2rem;padding-top:1.1rem;border-top:1px solid #e3e7ed}.artisan-gallery-contact p{margin:0;color:#4f5968;font-weight:700}@media(max-width:760px){.artisan-gallery-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:520px){.artisan-gallery-grid{grid-template-columns:1fr}.artisan-creation{display:block}.artisan-creation-image{width:100%;height:auto;min-height:0;aspect-ratio:4/3}.artisan-gallery-contact{align-items:stretch;flex-direction:column}.artisan-gallery-contact .btn{text-align:center}}.upcoming{margin:1.3rem 0;background:#fff;border-radius:12px;padding:1.3rem}'
     ).replace('</article>', `</article>${galleryHtml}`);
   }
+  const promotionSection = html.match(/<section class="share" id="compartir"[\s\S]*?<\/section>/)?.[0];
+  if (promotionSection) {
+    html = html.replace(promotionSection, '');
+    const gallerySection = html.match(/<section class="artisan-gallery"[\s\S]*?<\/section>/)?.[0];
+    html = gallerySection
+      ? html.replace(gallerySection, `${gallerySection}${promotionSection}`)
+      : html.replace('</article>', `</article>${promotionSection}`);
+  }
   html = html.replace(
     '.note{max-width:1000px;margin:1.2rem auto;padding:1rem;background:#fff;border-left:4px solid #002d62;color:#555;font-size:.82rem;line-height:1.6}',
     '.note{max-width:1000px;margin:1.2rem auto;padding:1rem;background:#fff;border-left:4px solid #002d62;border-radius:8px;color:#555;font-size:.82rem;line-height:1.6}.note strong{display:block;color:#002d62;font-size:.92rem;margin-bottom:.2rem}'
