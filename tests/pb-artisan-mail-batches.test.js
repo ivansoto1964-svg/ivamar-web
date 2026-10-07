@@ -48,5 +48,9 @@ assert.match(server,/if \(result\?\.error\)/);
 assert.match(server,/Editar mi información/);
 assert.match(view,/Enviar próximo lote \(máx\. 50\)/);
 assert.match(view,/un máximo de 50 artesanos pendientes/);
+assert.match(view,/🇵🇷 Tu espacio en Planeta Boricua tiene nuevas herramientas/);
+assert.match(view,/Tu espacio gratuito en la Feria Digital de Artesanos Boricuas ahora cuenta con nuevas herramientas/);
+assert.match(view,/localStorage\.removeItem\('pbControlDraftV1:artisan-mail-launch-2026-v2'\)/);
+assert.doesNotMatch(view,/value="🇵🇷 Bienvenido oficialmente a la Feria Digital de Artesanos Boricuas"/);
 
 console.log('PB artisan email batch tests passed');

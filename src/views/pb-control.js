@@ -331,46 +331,53 @@ module.exports = function pbControl(model) {
   <section class="panel" id="artesanos"><div class="section"><h2>Pendientes</h2>${listingRows(model.artisansPending || [],true)}</div><div class="section"><div class="sectionhead"><div><h2>En la Feria</h2><p class="sectionnote">${model.artisanNeedsImprovement || 0} perfiles todavía necesitan una descripción más completa.</p></div><a class="action" href="/pb-control/artesanos?needs=1">Revisar descripciones</a></div>${listingRows(model.artisansApproved || [],false)}</div></section>
   <section class="panel" id="auditoria-emails"><div class="section"><div class="sectionhead"><div><h2>📧 Auditoría de emails de artesanos</h2><p class="sectionnote">Informe privado y de solo lectura. No cambia perfiles ni envía mensajes.</p></div></div>${artisanEmailAuditRows(model.artisanEmailAudit)}</div></section>
   <section class="panel" id="rendimiento">${webVitalsPanel(model.siteAnalytics?.webVitals)}<div class="section"><div class="sectionhead"><div><h2>Embudo de la Feria</h2><p class="sectionnote">Mide si el visitante encuentra un artesano y decide contactarlo, sin guardar lo que escribió.</p></div></div>${fairFunnelPanel(model.fairFunnel)}</div><div class="section"><div class="sectionhead"><div><h2>Rendimiento de los perfiles</h2><p class="sectionnote">Conteo propio desde este deploy. No guarda nombres, IP ni datos personales de los visitantes. Una vista se cuenta una vez por perfil durante cada sesión del navegador.</p></div></div>${artisanMetricRows(model.artisanMetrics || [])}</div></section>
-  <section class="panel" id="comunicaciones"><div class="section"><div class="tools"><button class="action" type="button" data-scroll-target="artisanCommunications">📣 Emails a artesanos</button><button class="action good" type="button" data-scroll-target="pressRoom">📰 Sala de Prensa PB</button></div></div><div class="section" id="artisanCommunications"><div class="sectionhead"><div><h2>📣 Comunicaciones a Artesanos</h2><p class="sectionnote">${model.artisanEmailCount || 0} emails únicos entre los artesanos aprobados. Cada mensaje se envía individualmente.</p></div></div><p class="editor-note"><strong>Seguro:</strong> primero envía una prueba. Cada envío general procesa solamente los próximos 50 y recuerda quiénes ya recibieron exactamente ese comunicado.</p><form id="artisanMailForm" class="formgrid"><div class="field full"><label>Asunto</label><input name="subject" maxlength="140" value="🇵🇷 Bienvenido oficialmente a la Feria Digital de Artesanos Boricuas" required></div><div class="field full"><label>Mensaje</label><textarea class="editor" name="message" maxlength="6000" required>¡Ya formas parte oficialmente de la Feria Digital de Artesanos Boricuas de Planeta Boricua!
+  <section class="panel" id="comunicaciones"><div class="section"><div class="tools"><button class="action" type="button" data-scroll-target="artisanCommunications">📣 Emails a artesanos</button><button class="action good" type="button" data-scroll-target="pressRoom">📰 Sala de Prensa PB</button></div></div><div class="section" id="artisanCommunications"><div class="sectionhead"><div><h2>📣 Comunicaciones a Artesanos</h2><p class="sectionnote">${model.artisanEmailCount || 0} emails únicos entre los artesanos aprobados. Cada mensaje se envía individualmente.</p></div></div><p class="editor-note"><strong>Seguro:</strong> primero envía una prueba. Cada envío general procesa solamente los próximos 50 y recuerda quiénes ya recibieron exactamente ese comunicado.</p><form id="artisanMailForm" class="formgrid"><div class="field full"><label>Asunto</label><input name="subject" maxlength="140" value="🇵🇷 Tu espacio en Planeta Boricua tiene nuevas herramientas" required></div><div class="field full"><label>Mensaje</label><textarea class="editor" name="message" maxlength="6000" required>¡Saludos!
 
-Nuestro lanzamiento será el 23 de septiembre de 2026. Queremos que antes de esa fecha conozcas y aproveches las herramientas que hemos desarrollado para ayudarte a presentar y promocionar tu trabajo.
+Tu espacio gratuito en la Feria Digital de Artesanos Boricuas ahora cuenta con nuevas herramientas para ayudarte a presentar y promocionar tu trabajo.
 
-HERRAMIENTAS DISPONIBLES PARA TI
+Queremos que utilices tu perfil de Planeta Boricua como tu centro de distribución digital.
 
-🔐 Edita tu perfil de forma segura
-Puedes corregir el nombre de tu negocio, descripción, fotos, teléfono, ubicación y redes sociales mediante el acceso seguro asociado a tu correo electrónico.
+¿Qué significa eso?
 
-📱 Descarga tu propio código QR
-Cada artesano tiene un QR permanente que abre directamente su perfil. Puedes compartirlo en redes sociales, enviarlo por WhatsApp o imprimirlo para colocarlo en tu mesa, tarjetas, etiquetas y materiales promocionales.
+En lugar de enviar diferentes enlaces cada vez que alguien pregunte por tu trabajo, puedes compartir un solo perfil. Desde allí, las personas podrán:
 
-📅 Publica dónde estarás presentándote
-Desde tu perfil puedes enviarnos las ferias, festivales, mercados y actividades donde participarás. Así podremos considerarlas para Agenda Boricua y ayudar a que más personas sepan dónde encontrarte.
+• Conocer quién eres y qué haces.
+• Ver tus creaciones.
+• Contactarte por WhatsApp.
+• Visitar tus redes sociales.
+• Entrar a tu página web o tienda en línea.
+• Conocer los eventos donde participarás.
 
-🌎 Comparte tu perfil
-Tu perfil funciona como un espacio público para mostrar tu trabajo. Puedes compartirlo con clientes y seguidores sin tener que enviarles por separado todas tus fotos, teléfonos y redes sociales.
+Planeta Boricua no procesa ventas ni cobra comisiones.
 
-PREPÁRATE PARA EL LANZAMIENTO
+PB ayuda a que te encuentren. Tú decides dónde y cómo vendes.
 
-Por favor, revisa tu perfil y completa cualquier información pendiente antes del 12 de septiembre. Confirma especialmente:
+PRIMER PASO: REVISA TU PERFIL
 
-• El nombre de tu negocio
-• El nombre del artesano o artesana
-• La descripción de tus productos
-• Tus mejores fotografías
-• Tu teléfono, ubicación y redes sociales
-• Las próximas actividades donde participarás
+1. Entra aquí:
 
-Planeta Boricua estará promoviendo el lanzamiento mediante publicaciones, videos, redes sociales y comunicaciones con diferentes medios. Sin embargo, el recurso más importante de esta feria eres tú.
+https://www.masboricuaqueunmofongo.com/artesanos/mi-perfil
 
-Mientras más artesanos mantengan sus perfiles completos, compartan sus códigos QR y publiquen sus actividades, mayor será el alcance de todo el proyecto.
+2. Escribe el mismo email que utilizaste cuando te registraste.
 
-Esta feria fue creada para reunir, presentar y apoyar el talento de nuestra gente. Gracias por creer en esta iniciativa y ayudarnos a construirla juntos.
+3. Recibirás un enlace seguro por email.
 
-Un abrazo,
+4. Abre ese enlace y revisa tu información, fotografías, descripción y formas de contacto.
+
+5. Realiza los cambios necesarios y pulsa “Guardar cambios”.
+
+Dentro de tu espacio también encontrarás una sección llamada “Herramientas”, con instrucciones sencillas para aprender a usar tu perfil, tus creaciones, el código QR, los eventos y las opciones para compartir.
+
+En próximos mensajes explicaremos cada herramienta paso a paso.
+
+Tu perfil es gratuito y pertenece a tu espacio dentro de Planeta Boricua. Aprovéchalo y mantenlo actualizado.
+
+Con cariño,
 
 Iván Soto
-Planeta Boricua 🇵🇷
-Más Boricua que un Mofongo</textarea></div><div class="field full"><div class="tools"><button class="action" id="artisanMailTest" type="button">Enviar prueba</button><button class="primary" id="artisanMailSend" type="button">Enviar próximo lote (máx. 50)</button></div><p class="muted">La prueba llega solamente al correo administrativo de PB. Cada lote excluye las bajas, no repite destinatarios y no expone las direcciones de otros artesanos.</p><p class="draft-state" id="mailDraftStatus">Autoguardado local activo.</p></div></form></div><div class="section"><h2>Historial de comunicaciones</h2><p class="sectionnote">Últimos envíos realizados desde este Centro de Control.</p>${communicationRows(model.artisanMailHistory || [])}</div>${pressRoomPanel(model.pressRoom)}</section>
+Planeta Boricua
+Más Boricua que un Mofongo
+https://www.masboricuaqueunmofongo.com</textarea></div><div class="field full"><div class="tools"><button class="action" id="artisanMailTest" type="button">Enviar prueba</button><button class="primary" id="artisanMailSend" type="button">Enviar próximo lote (máx. 50)</button></div><p class="muted">La prueba llega solamente al correo administrativo de PB. Cada lote excluye las bajas, no repite destinatarios y no expone las direcciones de otros artesanos.</p><p class="draft-state" id="mailDraftStatus">Campaña de nuevas herramientas lista.</p></div></form><script>try{localStorage.removeItem('pbControlDraftV1:artisan-mail-launch-2026-v2')}catch(_){}</script></div><div class="section"><h2>Historial de comunicaciones</h2><p class="sectionnote">Últimos envíos realizados desde este Centro de Control.</p>${communicationRows(model.artisanMailHistory || [])}</div>${pressRoomPanel(model.pressRoom)}</section>
   <section class="panel" id="eventos"><details class="section" id="eventEditor"><summary><strong>Añadir evento verificado</strong></summary><p class="sectionnote">Publicación administrativa directa. No envía correos al organizador y bloquea duplicados por nombre y fecha.</p><form id="eventForm" class="formgrid" style="margin-top:1rem"><div class="field full"><label>Nombre del evento</label><input name="name" maxlength="120" required></div><div class="field"><label>Categoría</label><select name="type" required><option value="">Selecciona</option>${eventTypeOptions}</select></div><div class="field"><label>Área</label><select name="country" required><option value="">Selecciona</option>${eventCountryOptions}</select></div><div class="field"><label>Fecha inicial</label><input name="startDate" type="date" required></div><div class="field"><label>Fecha final</label><input name="endDate" type="date"></div><div class="field"><label>Horario</label><input name="time" maxlength="100" placeholder="10:00 a. m.–5:00 p. m."></div><div class="field"><label>Lugar</label><input name="venue" maxlength="180"></div><div class="field"><label>Estado o territorio</label><input name="region" maxlength="120" required placeholder="Puerto Rico, New York…"></div><div class="field"><label>Ciudad o pueblo</label><input name="city" maxlength="120"></div><div class="field full"><label>Dirección</label><input name="address" maxlength="240"></div><div class="field full"><label>Descripción</label><textarea name="description" maxlength="600" required></textarea></div><div class="field"><label>Nombre del organizador</label><input name="organizerName" maxlength="180" required></div><div class="field"><label>Enlace oficial</label><input name="eventUrl" type="url" maxlength="500" required placeholder="https://..."></div><div class="field full"><label>URL del afiche o imagen autorizada (opcional)</label><input name="image" type="url" maxlength="500" placeholder="https://..."></div><div class="field full"><button class="primary" type="submit">Publicar en Agenda</button></div></form></details><div class="section"><h2>Pendientes</h2>${eventRows(model.eventsPending || [],true)}</div><div class="section"><h2>En la Agenda</h2>${eventRows(model.eventsApproved || [],false)}</div></section>
   <section class="panel" id="suscriptores"><div class="section"><div class="sectionhead"><div><h2>Suscriptores</h2><p class="sectionnote">${subscriberStats.active || 0} activos · ${subscriberStats.unsubscribed || 0} bajas · ${subscriberStats.total || 0} registros históricos.</p></div><a class="action" href="/pb-control/subscribers.csv">Descargar CSV</a></div><div class="cards"><div class="card"><span>Nuevos · 30 días</span><strong>${subscriberStats.new30 || 0}</strong><small>Altas registradas</small></div><div class="card"><span>Bajas · 30 días</span><strong>${subscriberStats.unsubscribed30 || 0}</strong><small>Cancelaciones</small></div><div class="card"><span>Crecimiento neto</span><strong>${subscriberStats.net30 > 0 ? '+' : ''}${subscriberStats.net30 || 0}</strong><small>Últimos 30 días</small></div></div>${subscriberSourceSummary(model.subscribers || [])}${subscriberRows(model.subscribers || [])}</div></section>
   <section class="panel" id="afiliados"><div class="section"><h2>Clics por campaña</h2><p class="sectionnote">Conteo propio y económico. Son clics de salida, no ventas confirmadas por Amazon o Travelpayouts.</p>${affiliateRows(model.affiliates || [])}</div></section></main><div class="notice" id="notice" role="status"></div><script>
