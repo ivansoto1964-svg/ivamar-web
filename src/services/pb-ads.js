@@ -5,6 +5,8 @@ const path = require('path');
 const TYPES = new Set(['direct', 'affiliate', 'internal']);
 const STATUSES = new Set(['draft', 'active', 'inactive', 'archived']);
 const VERTICALS = new Set(['general', 'retail', 'travel', 'internal']);
+const BILLING_MODELS = new Set(['none', 'flat', 'monthly', 'cpm', 'cpc', 'affiliate']);
+const PAYMENT_STATUSES = new Set(['not_applicable', 'pending_invoice', 'invoiced', 'partially_paid', 'paid', 'overdue', 'void']);
 const TYPE_RANK = { direct:3, affiliate:2, internal:1 };
 const PLACEMENTS = new Set([
   'home.after_hero', 'home.middle', 'home.before_footer',
@@ -59,6 +61,20 @@ function isoDate(value, label) {
   return date.toISOString();
 }
 
+function dateOnly(value, label) {
+  const text = cleanText(value,10);
+  if (!text) return '';
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(text) || Number.isNaN(new Date(`${text}T00:00:00Z`).getTime())) throw new Error(`${label} no es válida.`);
+  return text;
+}
+
+function money(value, label) {
+  if (value === '' || value == null) return 0;
+  const amount = Number(value);
+  if (!Number.isFinite(amount) || amount < 0 || amount > 10000000) throw new Error(`${label} debe ser una cantidad válida mayor o igual a cero.`);
+  return Number(amount.toFixed(2));
+}
+
 function validateCampaign(input, current = null) {
   const type = cleanText(input.type,20);
   const status = cleanText(input.status,20);
@@ -82,6 +98,10 @@ function validateCampaign(input, current = null) {
   if (placements.some(item => !sections.includes(item.split('.')[0]))) throw new Error('Cada posición debe pertenecer a una sección seleccionada.');
   if (sections.includes('artisan') && !artisanEligible({type,vertical})) throw new Error('Los perfiles de artesanos solo aceptan promociones internas o campañas de viajes.');
   const now = new Date().toISOString();
+  const billingModel = cleanText(input.billingModel ?? current?.billingModel ?? 'none',30);
+  const paymentStatus = cleanText(input.paymentStatus ?? current?.paymentStatus ?? 'not_applicable',30);
+  if (!BILLING_MODELS.has(billingModel)) throw new Error('Selecciona un modelo de cobro válido.');
+  if (!PAYMENT_STATUSES.has(paymentStatus)) throw new Error('Selecciona un estado de pago válido.');
   return {
     id:current?.id || `pbad-${Date.now()}-${crypto.randomBytes(3).toString('hex')}`,
     internalName,
@@ -102,6 +122,17 @@ function validateCampaign(input, current = null) {
     priority:Math.max(0,Math.min(100,Number.parseInt(input.priority,10) || 0)),
     advertiser:cleanText(input.advertiser,120),
     affiliateNetwork:cleanText(input.affiliateNetwork,80),
+    billingModel,
+    currency:'USD',
+    rateAmount:money(input.rateAmount ?? current?.rateAmount, 'La tarifa'),
+    agreedAmount:money(input.agreedAmount ?? current?.agreedAmount, 'El importe acordado'),
+    invoiceNumber:cleanText(input.invoiceNumber ?? current?.invoiceNumber,80),
+    paymentStatus,
+    invoiceDate:dateOnly(input.invoiceDate ?? current?.invoiceDate, 'La fecha de factura'),
+    dueDate:dateOnly(input.dueDate ?? current?.dueDate, 'La fecha de vencimiento'),
+    paidAt:dateOnly(input.paidAt ?? current?.paidAt, 'La fecha de pago'),
+    amountPaid:money(input.amountPaid ?? current?.amountPaid, 'El ingreso confirmado'),
+    commercialNotes:cleanText(input.commercialNotes ?? current?.commercialNotes,500),
     excludedArtisanCategories:cleanList(input.excludedArtisanCategories,null,40),
     createdAt:current?.createdAt || now,
     updatedAt:now
@@ -264,6 +295,34 @@ function createPBAds(options = {}) {
     }
     return [...totals.values()].map(row => ({...row,ctr:row.impressions ? Number((row.clicks*100/row.impressions).toFixed(2)) : 0}));
   }
+  function commercialSummary() {
+    const rows = list().filter(item => item.status !== 'archived');
+    const totals = rows.reduce((result,item) => {
+      const agreed = Number(item.agreedAmount)||0;
+      const paid = Number(item.amountPaid)||0;
+      result.agreedAmount += agreed;
+      result.confirmedRevenue += paid;
+      result.outstanding += Math.max(agreed-paid,0);
+      result[item.paymentStatus || 'not_applicable'] = (result[item.paymentStatus || 'not_applicable'] || 0) + 1;
+      return result;
+    },{campaigns:rows.length,agreedAmount:0,confirmedRevenue:0,outstanding:0});
+    for (const key of ['agreedAmount','confirmedRevenue','outstanding']) totals[key] = Number(totals[key].toFixed(2));
+    return totals;
+  }
+  function commercialCsv() {
+    const metricRows = new Map(summary().map(item => [item.id,item]));
+    const safe = value => {
+      let text = String(value ?? '');
+      if (/^[=+\-@]/.test(text)) text = `'${text}`;
+      return `"${text.replace(/"/g,'""')}"`;
+    };
+    const headers = ['campaña','anunciante','tipo','estado','modelo_cobro','tarifa_usd','importe_acordado_usd','factura','estado_pago','fecha_factura','vence','fecha_pago','ingreso_confirmado_usd','impresiones_30_dias','clics_30_dias','ctr_30_dias','notas'];
+    const rows = list().map(item => {
+      const metric = metricRows.get(item.id) || {};
+      return [item.internalName,item.advertiser,item.type,item.status,item.billingModel || 'none',item.rateAmount || 0,item.agreedAmount || 0,item.invoiceNumber,item.paymentStatus || 'not_applicable',item.invoiceDate,item.dueDate,item.paidAt,item.amountPaid || 0,metric.impressions || 0,metric.clicks || 0,metric.ctr || 0,item.commercialNotes].map(safe).join(',');
+    });
+    return [headers.map(safe).join(','),...rows].join('\n');
+  }
   function resetMetrics(id) {
     const campaignId = cleanText(id,120);
     if (!campaignId || !list().some(item => item.id === campaignId)) return false;
@@ -279,7 +338,7 @@ function createPBAds(options = {}) {
     fs.renameSync(temp,metricsFile);
     return true;
   }
-  return {list,save,setStatus,remove,select,findActive,saveImageData,recordMetric,resetMetrics,summary,wordCount,mediaDir,placements:[...PLACEMENTS],sections:[...SECTIONS]};
+  return {list,save,setStatus,remove,select,findActive,saveImageData,recordMetric,resetMetrics,summary,commercialSummary,commercialCsv,wordCount,mediaDir,placements:[...PLACEMENTS],sections:[...SECTIONS]};
 }
 
-module.exports = {createPBAds,validateCampaign,wordCount,disclosure,artisanEligible,TYPES,STATUSES,VERTICALS,PLACEMENTS,SECTIONS};
+module.exports = {createPBAds,validateCampaign,wordCount,disclosure,artisanEligible,TYPES,STATUSES,VERTICALS,BILLING_MODELS,PAYMENT_STATUSES,PLACEMENTS,SECTIONS};

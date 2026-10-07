@@ -71,6 +71,16 @@ try {
   assert.throws(() => validateCampaign({...base,internalName:'Mala',type:'direct',image:'https://tracker.example/banner.webp'}),/Planeta Boricua/i);
   assert.throws(() => validateCampaign({...base,internalName:'Mala',type:'direct',endsAt:'2026-09-01',startsAt:'2026-09-02'}),/posterior/i);
   assert.throws(() => validateCampaign({...base,internalName:'Amazon en artesanos',type:'affiliate',vertical:'retail',sections:['artisan'],placements:['artisan.after_profile']}),/perfiles de artesanos/i);
+  const commercialCampaign = service.save({...base,internalName:'Cliente directo',type:'direct',billingModel:'monthly',rateAmount:'350',agreedAmount:'700',invoiceNumber:'PB-001',paymentStatus:'partially_paid',invoiceDate:'2026-10-01',dueDate:'2026-10-15',paidAt:'2026-10-03',amountPaid:'350',commercialNotes:'Primer pago confirmado'});
+  assert.deepStrictEqual({billingModel:commercialCampaign.billingModel,agreedAmount:commercialCampaign.agreedAmount,amountPaid:commercialCampaign.amountPaid},{billingModel:'monthly',agreedAmount:700,amountPaid:350});
+  assert.throws(() => validateCampaign({...base,internalName:'Cobro inválido',type:'direct',billingModel:'monthly',rateAmount:'-1'}),/tarifa/i);
+  assert.throws(() => validateCampaign({...base,internalName:'Pago inválido',type:'direct',paymentStatus:'inventado'}),/estado de pago/i);
+  const commercialTotals = service.commercialSummary();
+  assert.deepStrictEqual({agreedAmount:commercialTotals.agreedAmount,confirmedRevenue:commercialTotals.confirmedRevenue,outstanding:commercialTotals.outstanding},{agreedAmount:700,confirmedRevenue:350,outstanding:350});
+  const commercialCsv = service.commercialCsv();
+  assert.ok(commercialCsv.includes('ingreso_confirmado_usd'));
+  assert.ok(commercialCsv.includes('Cliente directo'));
+  assert.ok(commercialCsv.includes('PB-001'));
   assert.strictEqual(wordCount('<style>ignorar esto</style><p>Uno dos tres</p>'),3);
 
   service.recordMetric('pbad-direct','impression',{placement:'blog.inline_1'});
@@ -134,12 +144,15 @@ try {
   assert.strictEqual((artisan.match(/class="pb-sponsor-card"/g)||[]).length,1);
   assert.ok(artisan.indexOf('Compra directamente al artesano') < artisan.indexOf('class="pb-sponsor-card"'));
 
-  const controlHtml = renderControl({csrf:'csrf-token',campaigns:[{...directAd,startsAt:now}],metrics:[]});
+  const controlHtml = renderControl({csrf:'csrf-token',campaigns:[{...directAd,startsAt:now,billingModel:'monthly',agreedAmount:350,amountPaid:100,paymentStatus:'partially_paid'}],metrics:[],commercial:{agreedAmount:350,confirmedRevenue:100,outstanding:250}});
   assert.ok(controlHtml.includes('Nueva campaña'));
   assert.ok(controlHtml.includes('Portada · Debajo del hero'));
   assert.ok(controlHtml.includes('Portada · Zona intermedia'));
   assert.ok(controlHtml.includes('Portada · Antes del footer'));
   assert.ok(controlHtml.includes('hora de Puerto Rico'));
+  assert.ok(controlHtml.includes('Información comercial interna'));
+  assert.ok(controlHtml.includes('Descargar informe comercial CSV'));
+  assert.ok(controlHtml.includes('$250.00'));
   assert.ok(controlHtml.includes('2026-09-22T08%3A00'),'campaign dates must be edited in Puerto Rico time');
   const inlineScript = (controlHtml.match(/<script>([\s\S]*?)<\/script>/)||[])[1];
   assert.ok(inlineScript);

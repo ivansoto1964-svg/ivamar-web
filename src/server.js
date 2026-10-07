@@ -1954,7 +1954,13 @@ app.get('/pb-control/estadisticas.csv', requirePBAdmin, (_req,res) => {
 });
 
 app.get('/pb-control/ads', requirePBAdmin, (req,res) => {
-  res.send(pbAdsControl({csrf:req.pbAdminSession.csrf,campaigns:pbAds.list(),metrics:pbAds.summary()}));
+  res.send(pbAdsControl({csrf:req.pbAdminSession.csrf,campaigns:pbAds.list(),metrics:pbAds.summary(),commercial:pbAds.commercialSummary()}));
+});
+
+app.get('/pb-control/ads/informe.csv', requirePBAdmin, (_req,res) => {
+  res.set('Content-Type','text/csv; charset=utf-8');
+  res.set('Content-Disposition','attachment; filename="pb-ads-informe-comercial.csv"');
+  res.send('\uFEFF' + pbAds.commercialCsv());
 });
 
 app.post('/pb-control/ads/upload', requirePBAdmin, express.json({limit:'1mb'}), requirePBCsrf, (req,res) => {
