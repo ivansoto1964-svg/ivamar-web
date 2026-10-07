@@ -39,6 +39,16 @@ app.use(compression());
 app.use(helmet({ contentSecurityPolicy: false, crossOriginEmbedderPolicy: false }));
 app.set('trust proxy', 1);
 
+// Let search crawlers read API responses so they can honor this directive.
+// Blocking /api/ in robots.txt can leave previously discovered URLs indexed
+// because the crawler is unable to revisit them and see a noindex response.
+app.use((req, res, next) => {
+  if (String(req.path || '').startsWith('/api/')) {
+    res.set('X-Robots-Tag', 'noindex, nofollow');
+  }
+  next();
+});
+
 // Planeta Boricua is now the only active public platform on this service.
 // This gate prevents the retired Ivamar AI, Caribex/Sun and Nayeli routes from
 // executing or consuming third-party APIs while PB remains untouched.
@@ -1110,7 +1120,7 @@ h1{font-size:1.4rem;font-weight:600;}
     }
     if (req.path === '/robots.txt') {
       res.header('Content-Type', 'text/plain');
-      return res.send('User-agent: *\nAllow: /\nDisallow: /api/\n\nSitemap: https://www.masboricuaqueunmofongo.com/sitemap.xml');
+      return res.send('User-agent: *\nAllow: /\n\nSitemap: https://www.masboricuaqueunmofongo.com/sitemap.xml');
     }
     if (req.path === '/' || req.path === '') {
       return res.send(renderPBHome());
