@@ -1992,7 +1992,7 @@ app.post('/pb-control/metricas-externas', requirePBAdmin, requirePBCsrf, (req,re
 });
 
 app.get('/pb-control/ads', requirePBAdmin, (req,res) => {
-  res.send(pbAdsControl({csrf:req.pbAdminSession.csrf,campaigns:pbAds.list(),metrics:pbAds.summary(),commercial:pbAds.commercialSummary()}));
+  res.send(pbAdsControl({csrf:req.pbAdminSession.csrf,campaigns:pbAds.list(),metrics:pbAds.summary(),commercial:pbAds.commercialSummary(),inventory:pbAds.inventory()}));
 });
 
 app.get('/pb-control/ads/informe.csv', requirePBAdmin, (_req,res) => {

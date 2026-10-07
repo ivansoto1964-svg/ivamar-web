@@ -81,6 +81,11 @@ try {
   assert.ok(commercialCsv.includes('ingreso_confirmado_usd'));
   assert.ok(commercialCsv.includes('Cliente directo'));
   assert.ok(commercialCsv.includes('PB-001'));
+  const inventory = service.inventory(new Date(now));
+  assert.strictEqual(inventory.rows.length,10);
+  assert.strictEqual(inventory.rows.find(item => item.id === 'blog.inline_1').status,'occupied');
+  assert.strictEqual(inventory.rows.find(item => item.id === 'home.after_hero').status,'available');
+  assert.strictEqual(inventory.rows.find(item => item.id === 'artisan.after_profile').status,'occupied');
   assert.strictEqual(wordCount('<style>ignorar esto</style><p>Uno dos tres</p>'),3);
 
   service.recordMetric('pbad-direct','impression',{placement:'blog.inline_1'});
@@ -144,7 +149,7 @@ try {
   assert.strictEqual((artisan.match(/class="pb-sponsor-card"/g)||[]).length,1);
   assert.ok(artisan.indexOf('Compra directamente al artesano') < artisan.indexOf('class="pb-sponsor-card"'));
 
-  const controlHtml = renderControl({csrf:'csrf-token',campaigns:[{...directAd,startsAt:now,billingModel:'monthly',agreedAmount:350,amountPaid:100,paymentStatus:'partially_paid'}],metrics:[],commercial:{agreedAmount:350,confirmedRevenue:100,outstanding:250}});
+  const controlHtml = renderControl({csrf:'csrf-token',campaigns:[{...directAd,startsAt:now,billingModel:'monthly',agreedAmount:350,amountPaid:100,paymentStatus:'partially_paid'}],metrics:[],commercial:{agreedAmount:350,confirmedRevenue:100,outstanding:250},inventory});
   assert.ok(controlHtml.includes('Nueva campaña'));
   assert.ok(controlHtml.includes('Portada · Debajo del hero'));
   assert.ok(controlHtml.includes('Portada · Zona intermedia'));
@@ -153,6 +158,9 @@ try {
   assert.ok(controlHtml.includes('Información comercial interna'));
   assert.ok(controlHtml.includes('Descargar informe comercial CSV'));
   assert.ok(controlHtml.includes('$250.00'));
+  assert.ok(controlHtml.includes('Inventario de espacios'));
+  assert.ok(controlHtml.includes('10 espacios'));
+  assert.ok(controlHtml.includes('Disponible'));
   assert.ok(controlHtml.includes('2026-09-22T08%3A00'),'campaign dates must be edited in Puerto Rico time');
   const inlineScript = (controlHtml.match(/<script>([\s\S]*?)<\/script>/)||[])[1];
   assert.ok(inlineScript);

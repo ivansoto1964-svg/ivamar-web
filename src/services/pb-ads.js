@@ -8,14 +8,19 @@ const VERTICALS = new Set(['general', 'retail', 'travel', 'internal']);
 const BILLING_MODELS = new Set(['none', 'flat', 'monthly', 'cpm', 'cpc', 'affiliate']);
 const PAYMENT_STATUSES = new Set(['not_applicable', 'pending_invoice', 'invoiced', 'partially_paid', 'paid', 'overdue', 'void']);
 const TYPE_RANK = { direct:3, affiliate:2, internal:1 };
-const PLACEMENTS = new Set([
-  'home.after_hero', 'home.middle', 'home.before_footer',
-  'blog.top',
-  'blog.inline_1', 'blog.inline_2',
-  'latest.top',
-  'latest.inline_1', 'latest.inline_2',
-  'artisan.after_profile'
-]);
+const PLACEMENT_CATALOG = [
+  {id:'home.after_hero',section:'home',sectionLabel:'Portada',label:'Debajo del hero'},
+  {id:'home.middle',section:'home',sectionLabel:'Portada',label:'Zona intermedia'},
+  {id:'home.before_footer',section:'home',sectionLabel:'Portada',label:'Antes del footer'},
+  {id:'blog.top',section:'blog',sectionLabel:'El Balcón',label:'Debajo del encabezado'},
+  {id:'blog.inline_1',section:'blog',sectionLabel:'El Balcón',label:'Dentro del artículo 1'},
+  {id:'blog.inline_2',section:'blog',sectionLabel:'El Balcón',label:'Dentro del artículo 2'},
+  {id:'latest.top',section:'latest',sectionLabel:'Lo más reciente',label:'Debajo del encabezado'},
+  {id:'latest.inline_1',section:'latest',sectionLabel:'Lo más reciente',label:'Dentro de publicación 1'},
+  {id:'latest.inline_2',section:'latest',sectionLabel:'Lo más reciente',label:'Dentro de publicación 2'},
+  {id:'artisan.after_profile',section:'artisan',sectionLabel:'Perfil de artesano',label:'Después del perfil y sus herramientas'}
+];
+const PLACEMENTS = new Set(PLACEMENT_CATALOG.map(item => item.id));
 const SECTIONS = new Set(['home', 'blog', 'latest', 'artisan']);
 const IMAGE_TYPES = [
   { mime:'image/jpeg', ext:'jpg', test:buffer => buffer[0] === 0xff && buffer[1] === 0xd8 && buffer[2] === 0xff },
@@ -309,6 +314,41 @@ function createPBAds(options = {}) {
     for (const key of ['agreedAmount','confirmedRevenue','outstanding']) totals[key] = Number(totals[key].toFixed(2));
     return totals;
   }
+  function inventory(nowValue = new Date()) {
+    const now = nowValue instanceof Date ? nowValue : new Date(nowValue);
+    const campaigns = list().filter(item => item.status !== 'archived');
+    let metrics = {};
+    try { metrics = JSON.parse(fs.readFileSync(metricsFile,'utf8')); } catch (_) {}
+    const cutoff = new Date(); cutoff.setUTCHours(0,0,0,0); cutoff.setUTCDate(cutoff.getUTCDate()-29);
+    const placementMetrics = new Map();
+    for (const [day,dayCampaigns] of Object.entries(metrics || {})) {
+      if (new Date(`${day}T00:00:00Z`) < cutoff) continue;
+      for (const values of Object.values(dayCampaigns || {})) {
+        for (const [placement,counts] of Object.entries(values?.placements || {})) {
+          const total = placementMetrics.get(placement) || {impressions:0,clicks:0};
+          total.impressions += Number(counts?.impressions)||0;
+          total.clicks += Number(counts?.clicks)||0;
+          placementMetrics.set(placement,total);
+        }
+      }
+    }
+    const rows = PLACEMENT_CATALOG.map(slot => {
+      const assigned = campaigns.filter(item => item.placements?.includes(slot.id));
+      const live = assigned.filter(item => item.status === 'active'
+        && (!item.startsAt || now >= new Date(item.startsAt))
+        && (!item.endsAt || now < new Date(item.endsAt)));
+      const future = assigned.filter(item => item.status === 'active' && item.startsAt && now < new Date(item.startsAt));
+      const paused = assigned.filter(item => item.status === 'inactive');
+      const status = live.length ? 'occupied' : future.length ? 'reserved' : paused.length ? 'paused' : 'available';
+      const counts = placementMetrics.get(slot.id) || {impressions:0,clicks:0};
+      return {...slot,status,campaigns:assigned.length,liveCampaigns:live.map(item => item.internalName),futureCampaigns:future.map(item => item.internalName),impressions:counts.impressions,clicks:counts.clicks,ctr:counts.impressions ? Number((counts.clicks*100/counts.impressions).toFixed(2)) : 0};
+    });
+    const totals = rows.reduce((result,row) => {
+      result[row.status] += 1;
+      return result;
+    },{available:0,occupied:0,reserved:0,paused:0,total:rows.length});
+    return {rows,totals};
+  }
   function commercialCsv() {
     const metricRows = new Map(summary().map(item => [item.id,item]));
     const safe = value => {
@@ -338,7 +378,7 @@ function createPBAds(options = {}) {
     fs.renameSync(temp,metricsFile);
     return true;
   }
-  return {list,save,setStatus,remove,select,findActive,saveImageData,recordMetric,resetMetrics,summary,commercialSummary,commercialCsv,wordCount,mediaDir,placements:[...PLACEMENTS],sections:[...SECTIONS]};
+  return {list,save,setStatus,remove,select,findActive,saveImageData,recordMetric,resetMetrics,summary,commercialSummary,commercialCsv,inventory,wordCount,mediaDir,placements:[...PLACEMENTS],sections:[...SECTIONS]};
 }
 
-module.exports = {createPBAds,validateCampaign,wordCount,disclosure,artisanEligible,TYPES,STATUSES,VERTICALS,BILLING_MODELS,PAYMENT_STATUSES,PLACEMENTS,SECTIONS};
+module.exports = {createPBAds,validateCampaign,wordCount,disclosure,artisanEligible,TYPES,STATUSES,VERTICALS,BILLING_MODELS,PAYMENT_STATUSES,PLACEMENTS,PLACEMENT_CATALOG,SECTIONS};
