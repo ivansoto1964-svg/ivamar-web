@@ -17,6 +17,7 @@ const pbEventAdmin = require('./services/pb-event-admin');
 const pbEventTools = require('./services/pb-event-tools');
 const pbEventMetrics = require('./services/pb-event-metrics');
 const pbArtisanMetrics = require('./services/pb-artisan-metrics');
+const pbFairFunnelMetrics = require('./services/pb-fair-funnel-metrics');
 const pbSubscriberWelcome = require('./services/pb-subscriber-welcome');
 const { createPBAds } = require('./services/pb-ads');
 const { buildArtisanManifest } = require('./services/pb-artisan-pwa');
@@ -552,6 +553,7 @@ const PB_ARTISAN_MAIL_HISTORY_FILE = '/data/pb-artisan-mail-history.json';
 const PB_ARTISAN_MAIL_DELIVERIES_FILE = '/data/pb-artisan-mail-deliveries.json';
 const PB_ARTISAN_EMAIL_OPTOUTS_FILE = '/data/pb-artisan-email-optouts.json';
 const PB_ARTISAN_METRICS_FILE = '/data/pb-artisan-metrics.json';
+const PB_FAIR_FUNNEL_METRICS_FILE = '/data/pb-fair-funnel-metrics.json';
 const PB_ARTISAN_METRIC_EVENTS = pbArtisanMetrics.EVENTS;
 
 function pbArtisanEmailOptOuts() {
@@ -1861,6 +1863,7 @@ function buildPBControlModel(csrf) {
   const artisanEmailAudit = pbArtisanEmailAudit(artisansApproved);
   const artisanMailHistory = pbArtisanMailHistory();
   const artisanMetrics = pbArtisanMetricsSummary(artisansApproved);
+  const fairFunnel = pbFairFunnelMetrics.summary({file:PB_FAIR_FUNNEL_METRICS_FILE});
   const siteAnalytics = pbSiteAnalytics.summary();
   const publishedBlogPosts = blogPosts.filter(post => (post.status || 'published') === 'published');
   const last30Pages = siteAnalytics.last30?.pages || {};
@@ -1916,7 +1919,7 @@ function buildPBControlModel(csrf) {
   pressRoom.releases.sort((a,b) => String(b.date || '').localeCompare(String(a.date || '')));
   pressRoom.distributions.sort((a,b) => String(b.updatedAt || '').localeCompare(String(a.updatedAt || '')));
   pressRoom.controlSummary = pbPressRoom.controlSummary(pressRoom);
-  return {csrf,latestPending,latestApproved,commentsPending,commentsApproved,artisansPending,artisansApproved,artisanNeedsImprovement,eventsPending,eventsApproved,subscribers,subscriberStats,blogPosts,affiliates,artisanEmailCount,artisanEmailAudit,artisanMailHistory,artisanMetrics,siteAnalytics,pressRoom,counts:{pendingLatest:latestPending.length,pendingComments:commentsPending.length,pendingArtisans:artisansPending.length,pendingEvents:eventsPending.length,pendingTotal:latestPending.length+commentsPending.length+artisansPending.length+eventsPending.length,blogPosts:blogPosts.length,subscribers:subscriberStats.active,affiliateClicks:affiliates.reduce((sum,item)=>sum+item.clicks,0),artisanViews:artisanMetrics.reduce((sum,item)=>sum+item.views,0),artisanClicks:artisanMetrics.reduce((sum,item)=>sum+item.clickTotal,0)}};
+  return {csrf,latestPending,latestApproved,commentsPending,commentsApproved,artisansPending,artisansApproved,artisanNeedsImprovement,eventsPending,eventsApproved,subscribers,subscriberStats,blogPosts,affiliates,artisanEmailCount,artisanEmailAudit,artisanMailHistory,artisanMetrics,fairFunnel,siteAnalytics,pressRoom,counts:{pendingLatest:latestPending.length,pendingComments:commentsPending.length,pendingArtisans:artisansPending.length,pendingEvents:eventsPending.length,pendingTotal:latestPending.length+commentsPending.length+artisansPending.length+eventsPending.length,blogPosts:blogPosts.length,subscribers:subscriberStats.active,affiliateClicks:affiliates.reduce((sum,item)=>sum+item.clicks,0),artisanViews:artisanMetrics.reduce((sum,item)=>sum+item.views,0),artisanClicks:artisanMetrics.reduce((sum,item)=>sum+item.clickTotal,0)}};
 }
 
 app.get('/pb-control/login', (req,res) => {
@@ -3897,6 +3900,19 @@ app.post('/api/pb-artesano-metrica/:slug', pbArtisanMetricsLimiter, express.json
     if (!pbArtisanMetrics.record(slug,event,{file:PB_ARTISAN_METRICS_FILE})) return res.status(400).json({ok:false});
   } catch (error) {
     console.error('PB artisan metric error:',error.message);
+    return res.status(500).json({ok:false});
+  }
+  res.status(204).end();
+});
+
+app.post('/api/pb-feria-metrica', pbArtisanMetricsLimiter, express.json({limit:'2kb'}), (req,res) => {
+  const action=sanitize(req.body?.action||'').trim().toLowerCase();
+  const resultCount=Math.max(0,Math.min(500,Number(req.body?.resultCount)||0));
+  if(!pbFairFunnelMetrics.ACTIONS.has(action))return res.status(400).json({ok:false});
+  try{
+    if(!pbFairFunnelMetrics.record(action,{resultCount,file:PB_FAIR_FUNNEL_METRICS_FILE}))return res.status(400).json({ok:false});
+  }catch(error){
+    console.error('PB fair funnel metric error:',error.message);
     return res.status(500).json({ok:false});
   }
   res.status(204).end();

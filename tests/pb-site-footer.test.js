@@ -2,6 +2,7 @@ const assert = require('assert');
 require('./pb-service-worker.test');
 require('./pb-artisan-metrics.test');
 require('./pb-robots-indexing.test');
+require('./pb-fair-funnel-metrics.test');
 const fs = require('fs');
 const path = require('path');
 

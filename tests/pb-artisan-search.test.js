@@ -3,6 +3,9 @@ const vm = require('node:vm');
 
 const html = require('../src/views/planetaboricua/feriaartesanos');
 assert.match(html, /\.dir-card-photo-fallback\[hidden\]\{display:none;\}/);
+assert.match(html,/\/api\/pb-feria-metrica/);
+assert.match(html,/pbFairMetric\('search',negocios\.length\)/);
+assert.match(html,/pbFairMetric\('profile'\)/);
 const scripts = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)];
 assert.ok(scripts.length, 'The artisan fair must include its directory script.');
 
@@ -11,7 +14,7 @@ const elements = {
   'dir-filter-category': { value: '' },
   'dir-sort': { value: 'featured' },
   'dir-search': { value: 'Stitches By Lú' },
-  'directorio-grid': { innerHTML: '', setAttribute(name, value) { this[name] = value; } },
+  'directorio-grid': { innerHTML: '', setAttribute(name, value) { this[name] = value; }, querySelectorAll() { return []; } },
   'result-count': { textContent: '' }
 };
 
@@ -25,6 +28,9 @@ const negocios = [
 const context = {
   document: { getElementById: id => elements[id] },
   window: { location: { search: '' } },
+  navigator: { sendBeacon: () => true },
+  sessionStorage: { getItem: () => null, setItem: () => {} },
+  Blob,
   fetchCalls: 0,
   fetch: async () => { context.fetchCalls += 1; return { ok: true, json: async () => ({ negocios }) }; },
   URL,

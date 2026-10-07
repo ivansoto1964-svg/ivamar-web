@@ -126,6 +126,17 @@ function artisanMetricRows(items) {
   }).join('');
 }
 
+function fairFunnelPanel(summary = {}) {
+  const period=summary.last30||{};
+  const cards=[
+    ['Visitas a la Feria',period.views||0,'Últimos 30 días'],
+    ['Búsquedas',period.searches||0,`${period.zeroResultSearches||0} sin resultados`],
+    ['Perfiles seleccionados',period.profiles||0,`${period.profileRate||0}% de las visitas a la Feria`],
+    ['Contactos',period.contacts||0,`${period.contactRate||0}% desde perfiles seleccionados`]
+  ].map(card=>`<div class="card"><span>${esc(card[0])}</span><strong>${esc(card[1])}</strong><small>${esc(card[2])}</small></div>`).join('');
+  return `<div class="cards">${cards}</div><p class="sectionnote"><strong>${Number(period.searchSuccessRate)||0}%</strong> de las búsquedas encontró por lo menos un artesano. Se guardan solamente conteos agregados; PB no conserva las palabras buscadas, nombres, emails, IP ni identificadores de visitantes.</p>`;
+}
+
 function analyticsChange(value) {
   if (value === null || value === undefined) return 'Todavía sin periodo anterior';
   if (!value) return 'Sin cambio frente al periodo anterior';
@@ -304,7 +315,7 @@ module.exports = function pbControl(model) {
   <section class="panel" id="comentarios"><div class="section"><h2>Pendientes</h2>${commentRows(model.commentsPending || [],true)}</div><div class="section"><h2>Publicados</h2>${commentRows(model.commentsApproved || [],false)}</div></section>
   <section class="panel" id="artesanos"><div class="section"><h2>Pendientes</h2>${listingRows(model.artisansPending || [],true)}</div><div class="section"><div class="sectionhead"><div><h2>En la Feria</h2><p class="sectionnote">${model.artisanNeedsImprovement || 0} perfiles todavía necesitan una descripción más completa.</p></div><a class="action" href="/pb-control/artesanos?needs=1">Revisar descripciones</a></div>${listingRows(model.artisansApproved || [],false)}</div></section>
   <section class="panel" id="auditoria-emails"><div class="section"><div class="sectionhead"><div><h2>📧 Auditoría de emails de artesanos</h2><p class="sectionnote">Informe privado y de solo lectura. No cambia perfiles ni envía mensajes.</p></div></div>${artisanEmailAuditRows(model.artisanEmailAudit)}</div></section>
-  <section class="panel" id="rendimiento"><div class="section"><div class="sectionhead"><div><h2>Rendimiento de los perfiles</h2><p class="sectionnote">Conteo propio desde este deploy. No guarda nombres, IP ni datos personales de los visitantes. Una vista se cuenta una vez por perfil durante cada sesión del navegador.</p></div></div>${artisanMetricRows(model.artisanMetrics || [])}</div></section>
+  <section class="panel" id="rendimiento"><div class="section"><div class="sectionhead"><div><h2>Embudo de la Feria</h2><p class="sectionnote">Mide si el visitante encuentra un artesano y decide contactarlo, sin guardar lo que escribió.</p></div></div>${fairFunnelPanel(model.fairFunnel)}</div><div class="section"><div class="sectionhead"><div><h2>Rendimiento de los perfiles</h2><p class="sectionnote">Conteo propio desde este deploy. No guarda nombres, IP ni datos personales de los visitantes. Una vista se cuenta una vez por perfil durante cada sesión del navegador.</p></div></div>${artisanMetricRows(model.artisanMetrics || [])}</div></section>
   <section class="panel" id="comunicaciones"><div class="section"><div class="tools"><button class="action" type="button" data-scroll-target="artisanCommunications">📣 Emails a artesanos</button><button class="action good" type="button" data-scroll-target="pressRoom">📰 Sala de Prensa PB</button></div></div><div class="section" id="artisanCommunications"><div class="sectionhead"><div><h2>📣 Comunicaciones a Artesanos</h2><p class="sectionnote">${model.artisanEmailCount || 0} emails únicos entre los artesanos aprobados. Cada mensaje se envía individualmente.</p></div></div><p class="editor-note"><strong>Seguro:</strong> primero envía una prueba. Cada envío general procesa solamente los próximos 50 y recuerda quiénes ya recibieron exactamente ese comunicado.</p><form id="artisanMailForm" class="formgrid"><div class="field full"><label>Asunto</label><input name="subject" maxlength="140" value="🇵🇷 Bienvenido oficialmente a la Feria Digital de Artesanos Boricuas" required></div><div class="field full"><label>Mensaje</label><textarea class="editor" name="message" maxlength="6000" required>¡Ya formas parte oficialmente de la Feria Digital de Artesanos Boricuas de Planeta Boricua!
 
 Nuestro lanzamiento será el 23 de septiembre de 2026. Queremos que antes de esa fecha conozcas y aproveches las herramientas que hemos desarrollado para ayudarte a presentar y promocionar tu trabajo.

@@ -225,6 +225,16 @@ function searchDirectorio() {
   directorySearchTimer = setTimeout(function(){ loadDirectorio(requestId); }, 180);
 }
 
+let lastMeasuredDirectorySearch = '';
+function pbFairMetric(action,resultCount){
+  const body=JSON.stringify({action:action,resultCount:Number(resultCount)||0});
+  try{
+    if(navigator.sendBeacon){navigator.sendBeacon('/api/pb-feria-metrica',new Blob([body],{type:'application/json'}));return}
+    fetch('/api/pb-feria-metrica',{method:'POST',headers:{'Content-Type':'application/json'},body:body,keepalive:true,credentials:'omit'}).catch(function(){});
+  }catch(_){}
+}
+try{if(!sessionStorage.getItem('pb-fair-view')){sessionStorage.setItem('pb-fair-view','1');pbFairMetric('view')}}catch(_){pbFairMetric('view')}
+
 async function loadDirectorio(requestId) {
   clearTimeout(directorySearchTimer);
   if (!requestId) requestId = ++directoryRequestId;
@@ -316,6 +326,8 @@ async function loadDirectorio(requestId) {
         '<div style="font-size:1rem;color:var(--dark);margin-bottom:1.5rem;line-height:1.6;">' + (hasFilters ? 'No encontramos artesanos con esos criterios. Prueba otra búsqueda o elimina los filtros.' : '¡Wepa! Todavía no hay artesanos aquí. ¡Sé el primero en aparecer!') + '</div>' +
         (hasFilters ? '<button type="button" onclick="clearDirectoryFilters()" style="border:0;background:var(--blue);color:#fff;padding:0.8rem 1.5rem;border-radius:8px;font-weight:700;font-size:0.9rem;cursor:pointer;">Limpiar búsqueda y filtros</button>' : '<a href="/pb/add-negocio" style="display:inline-block;background:var(--blue);color:#fff;padding:0.8rem 1.5rem;border-radius:8px;text-decoration:none;font-weight:700;font-size:0.9rem;">🎨 Regístrate Gratis →</a>') +
         '</div>';
+      const emptySignature=[searchTerm,location,category].join('|');
+      if((searchTerm||location||category)&&emptySignature!==lastMeasuredDirectorySearch){lastMeasuredDirectorySearch=emptySignature;pbFairMetric('search',0)}
       return;
     }
 
@@ -360,6 +372,13 @@ async function loadDirectorio(requestId) {
     });
     html += '</div>';
     grid.innerHTML = html;
+    const searchSignature=[searchTerm,location,category].join('|');
+    if((searchTerm||location||category)&&searchSignature!==lastMeasuredDirectorySearch){lastMeasuredDirectorySearch=searchSignature;pbFairMetric('search',negocios.length)}
+    grid.querySelectorAll('.profile-link').forEach(function(link){link.addEventListener('click',function(){
+      pbFairMetric('profile');
+      const slug=decodeURIComponent((link.getAttribute('href')||'').split('/').pop()||'');
+      try{if(slug)sessionStorage.setItem('pb-fair-profile:'+slug,'1')}catch(_){}
+    },{passive:true})});
 
   } catch(e) {
     if (requestId !== directoryRequestId) return;
