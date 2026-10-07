@@ -62,3 +62,4 @@ assert.match(server, /withPBSiteFooter\(body, \{ social: renderPBSocialFollow\(\
 assert.doesNotMatch(server, /data-pb-legal-footer/);
 
 console.log('PB shared site footer tests passed');
+require('./pb-web-vitals.test');

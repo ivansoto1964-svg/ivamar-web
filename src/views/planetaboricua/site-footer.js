@@ -12,7 +12,8 @@ function withPBSiteFooter(html, { social = '' } = {}) {
     .replace(/<footer\b[^>]*>[\s\S]*?<\/footer>/gi, '');
 
   const socialHtml = output.includes('data-pb-social-follow') ? '' : social;
-  return output.replace('</body>', `${socialHtml}${renderPBSiteFooter()}</body>`);
+  const vitals = output.includes('/js/pb-web-vitals.js') ? '' : '<script src="/js/pb-web-vitals.js?v=1" defer></script>';
+  return output.replace('</body>', `${socialHtml}${renderPBSiteFooter()}${vitals}</body>`);
 }
 
 module.exports = { renderPBSiteFooter, withPBSiteFooter };

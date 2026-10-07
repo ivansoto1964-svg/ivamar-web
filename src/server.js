@@ -21,6 +21,7 @@ const pbFairFunnelMetrics = require('./services/pb-fair-funnel-metrics');
 const pbSubscriberWelcome = require('./services/pb-subscriber-welcome');
 const { createPBAds } = require('./services/pb-ads');
 const { createExternalMetrics } = require('./services/pb-external-metrics');
+const { createWebVitals } = require('./services/pb-web-vitals');
 const { buildArtisanManifest } = require('./services/pb-artisan-pwa');
 const salaPrensaPB = require('./views/planetaboricua/sala-prensa');
 const { renderPBSocialFollow } = require('./views/planetaboricua/social-follow');
@@ -254,6 +255,7 @@ const cookieParser = require("cookie-parser");
 const crypto = require("crypto");
 const pbAds = createPBAds();
 const pbExternalMetrics = createExternalMetrics();
+const pbWebVitals = createWebVitals();
 
 function selectHomeAd(placement, excludeIds = []) {
   const direct = pbAds.select({section:'home',placement,pageSlug:'portada',excludeIds});
@@ -1868,6 +1870,7 @@ function buildPBControlModel(csrf) {
   const fairFunnel = pbFairFunnelMetrics.summary({file:PB_FAIR_FUNNEL_METRICS_FILE});
   const siteAnalytics = pbSiteAnalytics.summary();
   const externalMetrics = {rows:pbExternalMetrics.list(),summary:pbExternalMetrics.summary()};
+  const webVitals = pbWebVitals.summary();
   const publishedBlogPosts = blogPosts.filter(post => (post.status || 'published') === 'published');
   const last30Pages = siteAnalytics.last30?.pages || {};
   const measuredPages = siteAnalytics.pageHistory || {};
@@ -1922,6 +1925,7 @@ function buildPBControlModel(csrf) {
   pressRoom.releases.sort((a,b) => String(b.date || '').localeCompare(String(a.date || '')));
   pressRoom.distributions.sort((a,b) => String(b.updatedAt || '').localeCompare(String(a.updatedAt || '')));
   pressRoom.controlSummary = pbPressRoom.controlSummary(pressRoom);
+  siteAnalytics.webVitals = webVitals;
   return {csrf,latestPending,latestApproved,commentsPending,commentsApproved,artisansPending,artisansApproved,artisanNeedsImprovement,eventsPending,eventsApproved,subscribers,subscriberStats,blogPosts,affiliates,artisanEmailCount,artisanEmailAudit,artisanMailHistory,artisanMetrics,fairFunnel,siteAnalytics,externalMetrics,pressRoom,counts:{pendingLatest:latestPending.length,pendingComments:commentsPending.length,pendingArtisans:artisansPending.length,pendingEvents:eventsPending.length,pendingTotal:latestPending.length+commentsPending.length+artisansPending.length+eventsPending.length,blogPosts:blogPosts.length,subscribers:subscriberStats.active,affiliateClicks:affiliates.reduce((sum,item)=>sum+item.clicks,0),artisanViews:artisanMetrics.reduce((sum,item)=>sum+item.views,0),artisanClicks:artisanMetrics.reduce((sum,item)=>sum+item.clickTotal,0)}};
 }
 
@@ -2260,6 +2264,16 @@ app.post('/pb-control/action', requirePBAdmin, requirePBCsrf, express.json({limi
   } catch(error) {
     console.error('PB control action error:',error.message);
     return res.status(500).json({ok:false,error:'No se pudo guardar el cambio.'});
+  }
+});
+
+app.post('/api/pb-web-vitals', pbArtisanMetricsLimiter, express.json({limit:'2kb',type:['application/json','text/plain']}), (req,res) => {
+  try {
+    pbWebVitals.record(req.body || {});
+    return res.status(204).end();
+  } catch (error) {
+    console.error('[pb-web-vitals]',error.message);
+    return res.status(204).end();
   }
 });
 
