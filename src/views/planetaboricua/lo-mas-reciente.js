@@ -4,6 +4,7 @@ const { renderExplorePB } = require('./explore-pb');
 const { renderPBAd, insertAdsByProgress } = require('./pb-ad');
 const { wordCount } = require('../../services/pb-ads');
 const { hasTravelIntent, renderStay22 } = require('./stay22');
+const { optimizedImageUrl } = require('../../services/pb-blog-store');
 
 function normalizeSources(sources = []) {
   return (Array.isArray(sources) ? sources : []).flatMap(source => {
@@ -32,7 +33,8 @@ module.exports = function loMasReciente(item, comments = [], recommendations = [
   const image = item.image === "/img/og-planetaboricua.jpg" ? "" : (item.image || "");
   const socialImage = image || "/img/pb-logo.png";
   const absoluteImage = socialImage.startsWith("/") ? `https://www.masboricuaqueunmofongo.com${socialImage}` : socialImage;
-  const hero = image ? `<div class="article-image pb-editorial-cover"><img class="pb-editorial-cover-image" src="${esc(image)}" alt="${esc(item.title)}"></div>` : '<div class="article-brand"><span>🇵🇷</span><strong>Planeta Boricua</strong><small>Lo más reciente</small></div>';
+  const displayImage = optimizedImageUrl(image);
+  const hero = displayImage ? `<div class="article-image pb-editorial-cover"><img class="pb-editorial-cover-image" src="${esc(displayImage)}" alt="${esc(item.title)}" width="1280" height="960" fetchpriority="high" decoding="async"></div>` : '<div class="article-brand"><span>🇵🇷</span><strong>Planeta Boricua</strong><small>Lo más reciente</small></div>';
   const date = new Date(item.publishedAt || item.submittedAt || Date.now()).toLocaleString("es-PR", { dateStyle: "long", timeStyle: "short", timeZone: "America/Puerto_Rico" });
   const approvedComments = Array.isArray(comments) ? comments : [];
   const explore = renderExplorePB(recommendations);

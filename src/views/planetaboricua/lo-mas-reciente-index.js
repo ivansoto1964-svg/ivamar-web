@@ -1,3 +1,5 @@
+const { optimizedImageUrl } = require('../../services/pb-blog-store');
+
 module.exports = function renderPBLatestIndex(items, page = 1, totalPages = 1, search = '', topic = '', topics = [], totalCount = 0) {
   const esc = value => String(value || "").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
   const qs = (nextPage, nextTopic = topic) => {
@@ -9,7 +11,7 @@ module.exports = function renderPBLatestIndex(items, page = 1, totalPages = 1, s
   };
   const cards = (items || []).map((item, index) => {
     const image = item.image && item.image !== '/img/og-planetaboricua.jpg'
-      ? `<img class="pb-editorial-card-image" src="${esc(item.image)}" alt="${esc(item.title)}" loading="${index < 3 ? 'eager' : 'lazy'}" decoding="async">`
+      ? `<img class="pb-editorial-card-image" src="${esc(optimizedImageUrl(item.image))}" alt="${esc(item.title)}" width="640" height="420" loading="${index < 2 ? 'eager' : 'lazy'}" decoding="async">`
       : `<div class="card-brand"><span>🇵🇷</span><strong>Planeta Boricua</strong></div>`;
     const date = item.publishedAt ? new Date(item.publishedAt).toLocaleString('es-PR',{dateStyle:'medium',timeStyle:'short'}) : '';
     return `<article class="latest-card"><a class="latest-media pb-editorial-card-media" href="/lo-mas-reciente/${encodeURIComponent(item.slug)}">${image}<span class="topic-badge">${esc(item.topic || 'Comunidad')}</span></a><div class="latest-copy"><div class="latest-label">Lo más reciente</div><h2><a href="/lo-mas-reciente/${encodeURIComponent(item.slug)}">${esc(item.title)}</a></h2><p>${esc(item.summary)}</p><div class="latest-meta"><time>${esc(date)}</time><a href="/lo-mas-reciente/${encodeURIComponent(item.slug)}">Leer y comentar →</a></div></div></article>`;

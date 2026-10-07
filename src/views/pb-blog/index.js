@@ -1,12 +1,14 @@
 const { categorySlug } = require('../../utils/pb-editorial');
+const { optimizedImageUrl } = require('../../services/pb-blog-store');
 const esc = value => String(value || '').replace(/[&<>"']/g,char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
 
 function articleCard(post,index = 0) {
-  return `<article class="story"><a class="story-img pb-editorial-card-media" href="/blog/${encodeURIComponent(post.slug)}"><img class="pb-editorial-card-image" src="${esc(post.image || '/img/og-planetaboricua.jpg')}" alt="${esc(post.title)}" loading="${index < 3 ? 'eager' : 'lazy'}"></a><div class="story-copy"><a class="story-cat" href="/blog/categoria/${categorySlug(post.category)}">${esc(post.category || 'Cultura e identidad')}</a><h2><a href="/blog/${encodeURIComponent(post.slug)}">${esc(post.title)}</a></h2><p>${esc(post.excerpt || '')}</p><div class="story-meta"><span>${esc(post.date || '')}</span><span>${esc(post.readTime || '5')} min</span><a href="/blog/${encodeURIComponent(post.slug)}">Leer artículo →</a></div></div></article>`;
+  return `<article class="story"><a class="story-img pb-editorial-card-media" href="/blog/${encodeURIComponent(post.slug)}"><img class="pb-editorial-card-image" src="${esc(optimizedImageUrl(post.image) || '/img/og-planetaboricua.jpg')}" alt="${esc(post.title)}" width="640" height="420" loading="${index < 2 ? 'eager' : 'lazy'}" decoding="async"></a><div class="story-copy"><a class="story-cat" href="/blog/categoria/${categorySlug(post.category)}">${esc(post.category || 'Cultura e identidad')}</a><h2><a href="/blog/${encodeURIComponent(post.slug)}">${esc(post.title)}</a></h2><p>${esc(post.excerpt || '')}</p><div class="story-meta"><span>${esc(post.date || '')}</span><span>${esc(post.readTime || '5')} min</span><a href="/blog/${encodeURIComponent(post.slug)}">Leer artículo →</a></div></div></article>`;
 }
 
 module.exports = function renderPBIndex(posts,page,totalPages,category,search,categories = [],totalCount = 0,archivePosts = []) {
   page = page || 1; totalPages = totalPages || 1;
+  posts = (posts || []).map(post => ({...post,image:optimizedImageUrl(post.image)}));
   const showFeature = page === 1 && !category && !search && posts.length;
   const featured = showFeature ? posts[0] : null;
   const stories = (featured ? posts.slice(1) : posts).map(articleCard).join('');

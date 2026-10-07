@@ -59,6 +59,8 @@ assert.match(latestHtml, /<figure><img src="\/media\/pb-blog\/interior\.webp" al
 assert.match(latestHtml, /\.body figure img\{display:block;width:100%;height:auto/, 'Latest inline images must scale responsively.');
 assert.match(latestHtml, /\.body figure img\{max-width:100%\}/, 'Latest inline images must never overflow their article container.');
 assert.match(latestHtml, /class="article-image pb-editorial-cover"><img class="pb-editorial-cover-image"/, 'Latest must use the shared non-cropping article cover system.');
+assert.match(latestHtml, /src="\/media\/pb-blog-optimized\/vertical\.webp\.webp"[^>]*fetchpriority="high"/, 'Latest visible cover must use the optimized high-priority image.');
+assert.match(latestHtml, /property="og:image" content="https:\/\/www\.masboricuaqueunmofongo\.com\/media\/pb-blog\/vertical\.webp"/, 'Latest social previews must keep the original stable image URL.');
 
 const blogHtml = renderBlogPost({
   slug:'prueba-blog', title:'Prueba El Balcón', excerpt:'Resumen', image:'/media/pb-blog/square.webp',
@@ -68,6 +70,8 @@ const blogHtml = renderBlogPost({
 assert.match(blogHtml, /<p>Primer párrafo\.<\/p><figure><img src="\/media\/pb-blog\/blog\.webp" alt="Mesa con artesanías"><figcaption>/, 'El Balcón must preserve inline images between paragraphs.');
 assert.match(blogHtml, /\.post-body figure img\{display:block;width:100%;max-width:100%;height:auto/, 'El Balcón inline images must be responsive.');
 assert.match(blogHtml, /class="post-hero pb-editorial-cover"><img class="pb-editorial-cover-image"/, 'El Balcón must use the same non-cropping article cover system.');
+assert.match(blogHtml, /src="\/media\/pb-blog-optimized\/square\.webp\.webp"[^>]*fetchpriority="high"/, 'El Balcón visible cover must use the optimized high-priority image.');
+assert.match(blogHtml, /property="og:image" content="https:\/\/www\.masboricuaqueunmofongo\.com\/media\/pb-blog\/square\.webp\?v=2026-09-07"/, 'El Balcón social previews must keep the original stable image URL.');
 assert.match(editorialImages, /\.pb-editorial-card-image[\s\S]*object-fit: contain/, 'Editorial cards must preserve the complete image without cropping.');
 assert.match(editorialImages, /\.pb-editorial-cover-image[\s\S]*object-fit: contain/, 'Individual articles must share one proportion-preserving cover rule.');
 
@@ -80,6 +84,8 @@ for (const rendered of [blogIndexHtml, latestIndexHtml, blogHtml, latestHtml]) {
 assert.match(blogIndexHtml, /class="story-img pb-editorial-card-media"[\s\S]*class="pb-editorial-card-image"/, 'El Balcón cards must use the shared card treatment.');
 assert.match(blogIndexHtml, /\.story-img img\{[^}]*object-fit:contain/, 'El Balcón previews must show the complete image.');
 assert.match(latestIndexHtml, /class="latest-media pb-editorial-card-media"[\s\S]*class="pb-editorial-card-image"/, 'Latest cards must use the shared card treatment.');
+assert.match(blogIndexHtml, /\/media\/pb-blog-optimized\/sample\.webp\.webp/, 'El Balcón cards must request optimized images.');
+assert.match(latestIndexHtml, /\/media\/pb-blog-optimized\/sample\.webp\.webp/, 'Latest cards must request optimized images.');
 assert.match(latestIndexHtml, /\.latest-media img\{[^}]*object-fit:contain/, 'Latest previews must show the complete image.');
 assert.doesNotMatch(latestIndexHtml, /\/go\/travel-flights|presentado por <span>Trip\.com/, 'Latest index must not bypass PB Ads with a fixed affiliate block.');
 

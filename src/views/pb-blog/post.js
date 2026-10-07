@@ -3,6 +3,7 @@ const { renderExplorePB } = require('../planetaboricua/explore-pb');
 const { qualifyAffiliateLinks } = require('../../utils/pb-seo');
 const { renderPBAd, insertAdsByProgress } = require('../planetaboricua/pb-ad');
 const { hasTravelIntent, renderStay22 } = require('../planetaboricua/stay22');
+const { optimizedImageUrl } = require('../../services/pb-blog-store');
 
 module.exports = function renderPBPost(post, relatedPosts, prevPost, nextPost, comments = [], recommendations = [], ads = {}) {
   const esc = value => String(value || "").replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -17,7 +18,7 @@ module.exports = function renderPBPost(post, relatedPosts, prevPost, nextPost, c
     : absoluteImage;
   const related = (relatedPosts || []).slice(0, 3).map(p => `
     <a href="/blog/${encodeURIComponent(p.slug)}" class="related-card">
-      <div class="related-img pb-editorial-card-media"><img class="pb-editorial-card-image" src="${esc(p.image || '/img/og-planetaboricua.jpg')}" alt="${esc(p.title)}" loading="lazy"></div>
+      <div class="related-img pb-editorial-card-media"><img class="pb-editorial-card-image" src="${esc(optimizedImageUrl(p.image) || '/img/og-planetaboricua.jpg')}" alt="${esc(p.title)}" width="640" height="420" loading="lazy" decoding="async"></div>
       <div class="related-body"><span class="related-cat">${esc(p.category || 'Cultura Boricua')}</span><h4>${esc(p.title)}</h4></div>
     </a>`).join('');
   const tags = (post.tags || []).map(t => `<a href="/blog/buscar?q=${encodeURIComponent(t)}" class="post-tag">${esc(t)}</a>`).join('');
@@ -31,7 +32,8 @@ module.exports = function renderPBPost(post, relatedPosts, prevPost, nextPost, c
   const seoTitle = post.seoTitle || post.title;
   const metaDescription = post.metaDescription || post.excerpt || post.title;
   const schema = JSON.stringify({"@context":"https://schema.org","@type":"BlogPosting",headline:post.title,description:metaDescription,image:socialImage,datePublished:post.dateISO||post.date||'',dateModified:post.updatedISO||post.dateISO||'',author:{"@type":"Person",name:"Iván Soto"},publisher:{"@type":"Organization",name:"Planeta Boricua",url:"https://www.masboricuaqueunmofongo.com"},mainEntityOfPage:pageUrl}).replace(/</g,'\\u003c');
-  const hero = post.image ? `<div class="post-hero pb-editorial-cover"><img class="pb-editorial-cover-image" src="${esc(post.image)}" alt="${esc(post.title)}"></div>` : `<div class="article-brand"><span>🇵🇷</span><strong>Planeta Boricua</strong><small>El Balcón</small></div>`;
+  const displayImage = optimizedImageUrl(post.image);
+  const hero = displayImage ? `<div class="post-hero pb-editorial-cover"><img class="pb-editorial-cover-image" src="${esc(displayImage)}" alt="${esc(post.title)}" width="1280" height="960" fetchpriority="high" decoding="async"></div>` : `<div class="article-brand"><span>🇵🇷</span><strong>Planeta Boricua</strong><small>El Balcón</small></div>`;
   const articleContent = qualifyAffiliateLinks(post.content || '');
   const topAd = renderPBAd(ads.top,{placement:'blog.top',pageSlug:post.slug});
   const firstAd = wordCount >= 450 ? renderPBAd(ads.first,{placement:'blog.inline_1',pageSlug:post.slug}) : '';
