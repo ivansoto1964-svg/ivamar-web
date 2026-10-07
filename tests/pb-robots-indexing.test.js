@@ -10,5 +10,7 @@ assert.doesNotMatch(pbRobots[0], /Disallow: \/api\//, 'PB robots.txt must not pr
 assert.match(pbRobots[0], /Sitemap: https:\/\/www\.masboricuaqueunmofongo\.com\/sitemap\.xml/, 'PB robots.txt must advertise the canonical sitemap');
 
 assert.match(server, /startsWith\('\/api\/'\)[\s\S]*?X-Robots-Tag', 'noindex, nofollow'/, 'Every API response must send an X-Robots-Tag noindex header');
+assert.match(server, /startsWith\('\/pb-ads\/click\/'\)/, 'PB Ads tracking redirects must be identified as non-indexable');
+assert.match(server, /startsWith\('\/go\/'\)/, 'Legacy affiliate tracking redirects must be identified as non-indexable');
 
 console.log('PB robots indexing contract: OK');

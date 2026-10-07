@@ -43,7 +43,9 @@ app.set('trust proxy', 1);
 // Blocking /api/ in robots.txt can leave previously discovered URLs indexed
 // because the crawler is unable to revisit them and see a noindex response.
 app.use((req, res, next) => {
-  if (String(req.path || '').startsWith('/api/')) {
+  const requestPath = String(req.path || '');
+  const isTrackingRedirect = requestPath.startsWith('/pb-ads/click/') || requestPath.startsWith('/go/');
+  if (requestPath.startsWith('/api/') || isTrackingRedirect) {
     res.set('X-Robots-Tag', 'noindex, nofollow');
   }
   next();
