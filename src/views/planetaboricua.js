@@ -38,6 +38,9 @@ module.exports = `<!DOCTYPE html>
 <meta name="twitter:description" content="Cultura, identidad, Feria de Artesanías y recursos para la comunidad puertorriqueña dentro y fuera de la isla.">
 <meta name="twitter:image" content="https://www.masboricuaqueunmofongo.com/img/og-planeta-boricua-logo.jpg">
 <meta name="twitter:image:alt" content="Logo oficial de Planeta Boricua">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<!--PB_HOME_HERO_PRELOAD-->
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="/css/pb-ads.css?v=4">
 <style>
@@ -906,7 +909,7 @@ async function pbCheckForUpdate(post) {
       const heroPost = posts.find(p => p.img) || posts[0];
       const heroImg = document.getElementById('hero-main-img');
       if (heroPost.img) {
-        heroImg.outerHTML = '<img id="hero-main-img" src="' + heroPost.img + '" alt="' + heroPost.title + '" style="width:100%;height:320px;object-fit:cover;border-radius:4px;margin-bottom:1rem;">';
+        heroImg.outerHTML = '<img id="hero-main-img" src="' + heroPost.img + '" alt="' + heroPost.title + '" width="768" height="320" fetchpriority="high" decoding="async" style="width:100%;height:320px;object-fit:cover;border-radius:4px;margin-bottom:1rem;">';
       }
       document.getElementById('hero-main-cat').textContent = heroPost.tag;
       document.getElementById('hero-main-title').textContent = heroPost.title;

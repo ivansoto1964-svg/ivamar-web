@@ -268,10 +268,15 @@ function selectHomeAd(placement, excludeIds = []) {
 
 function renderPBHome() {
   const { renderPBAd } = require('./views/planetaboricua/pb-ad');
+  const heroPost = pbBlogStore.loadPosts().find(post => post.image);
+  const heroImage = String(heroPost?.image || '').trim();
+  const escapedHeroImage = heroImage.replace(/[&<>"]/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[char]));
+  const heroPreload = escapedHeroImage ? `<link rel="preload" as="image" href="${escapedHeroImage}" fetchpriority="high">` : '';
   const top = selectHomeAd('home.after_hero');
   const middle = selectHomeAd('home.middle',[top?.id].filter(Boolean));
   const bottom = selectHomeAd('home.before_footer',[top?.id,middle?.id].filter(Boolean));
   return planetaboricua
+    .replace('<!--PB_HOME_HERO_PRELOAD-->',heroPreload)
     .replace('<!--PB_AD_HOME_AFTER_HERO-->',renderPBAd(top,{placement:'home.after_hero',pageSlug:'portada'}))
     .replace('<!--PB_AD_HOME_MIDDLE-->',renderPBAd(middle,{placement:'home.middle',pageSlug:'portada'}))
     .replace('<!--PB_AD_HOME_BEFORE_FOOTER-->',renderPBAd(bottom,{placement:'home.before_footer',pageSlug:'portada'}));
@@ -5102,6 +5107,7 @@ app.get('/api/planetaboricua-blog', (_req, res) => {
     summary:post.excerpt,img:post.image,tag:post.category,slug:post.slug
   }));
   res.set('Access-Control-Allow-Origin','*');
+  res.set('Cache-Control','public, max-age=60, stale-while-revalidate=300');
   res.json(posts);
 });
 
