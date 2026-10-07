@@ -20,6 +20,8 @@ assert.ok(asset.indexOf('uploadLatestImage(file)') < asset.indexOf("apiAction('b
 assert.match(asset, /latest-image-preview show/, 'A selected image must display a preview.');
 assert.equal(blogStore.optimizedImageUrl('/media/pb-blog/example.png'), '/media/pb-blog-optimized/example.png.webp');
 assert.equal(blogStore.optimizedImageUrl('https://res.cloudinary.com/demo/image/upload/example.jpg'), 'https://res.cloudinary.com/demo/image/upload/example.jpg');
+assert.equal(blogStore.sourceImageFilename('example.png.webp'), 'example.png');
+assert.equal(blogStore.sourceImageFilename('../example.png.webp'), '');
 new vm.Script(asset, { filename:'pb-blog-image-upload.js' });
 
 console.log('PB blog image upload contract: OK');

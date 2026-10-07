@@ -135,10 +135,16 @@ function optimizedImageUrl(image = '') {
   return `/media/pb-blog-optimized/${encodeURIComponent(filename)}.webp`;
 }
 
+function sourceImageFilename(filename = '') {
+  const requested = String(filename || '').trim();
+  const source = requested.toLowerCase().endsWith('.webp') ? requested.slice(0,-5) : requested;
+  return /^[a-zA-Z0-9._-]+\.(?:jpe?g|png|webp)$/i.test(source) ? source : '';
+}
+
 async function optimizedImageFile(filename = '') {
   initialize();
-  const clean = String(filename || '').trim();
-  if (!/^[a-zA-Z0-9._-]+\.(?:jpe?g|png|webp)$/i.test(clean)) return null;
+  const clean = sourceImageFilename(filename);
+  if (!clean) return null;
   const source = path.join(MEDIA_DIR, clean);
   if (!fs.existsSync(source)) return null;
   const destination = path.join(OPTIMIZED_MEDIA_DIR, `${clean}.webp`);
@@ -164,5 +170,6 @@ module.exports = {
   deletePost,
   saveImageData,
   optimizedImageUrl,
+  sourceImageFilename,
   optimizedImageFile
 };
