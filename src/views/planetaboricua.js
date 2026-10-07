@@ -313,7 +313,7 @@ ${renderStay22()}
 <nav>
   <div class="nav-top">
     <a href="/" class="nav-logo">
-      <img src="/img/pb-logo.png" alt="Planeta Boricua" style="height:44px;width:auto;mix-blend-mode:multiply;">
+      <img src="/img/pb-logo-header.webp" alt="Planeta Boricua" width="240" height="202" style="height:44px;width:auto;mix-blend-mode:multiply;">
       <div>
         <div class="nav-logo-text">Planeta Boricua</div>
         <div class="nav-logo-sub">Más Boricua Que Un Mofongo</div>

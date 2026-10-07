@@ -18,6 +18,8 @@ assert.match(home, /og-planeta-boricua-logo\.jpg/);
 assert.match(home, /og:image:width" content="1200/);
 assert.match(home, /og:image:height" content="630/);
 assert.match(home, /twitter:image:alt" content="Logo oficial de Planeta Boricua/);
+assert.match(home, /src="\/img\/pb-logo-header\.webp"[^>]*width="240"[^>]*height="202"/);
+assert.doesNotMatch(home, /<img[^>]+src="\/img\/pb-logo\.png"/);
 assert.match(home, /Visita la Feria Digital de Artesanos Boricuas/);
 assert.match(home, /PB_AD_HOME_AFTER_HERO/);
 assert.match(home, /PB_AD_HOME_MIDDLE/);

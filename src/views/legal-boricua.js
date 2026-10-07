@@ -33,7 +33,7 @@ nav{background:#fff;border-bottom:3px solid #CE1126;padding:0;}
 <nav>
   <div class="nav-top">
     <a href="/" class="nav-logo">
-      <img src="/img/pb-logo.png" alt="Planeta Boricua">
+      <img src="/img/pb-logo-header.webp" alt="Planeta Boricua" width="240" height="202">
       <span class="nav-logo-text">Planeta Boricua</span>
     </a>
     <a href="/" class="nav-back">← Volver al portal</a>
@@ -119,7 +119,7 @@ nav{background:#fff;border-bottom:3px solid #CE1126;padding:0;}
 <nav>
   <div class="nav-top">
     <a href="/" class="nav-logo">
-      <img src="/img/pb-logo.png" alt="Planeta Boricua">
+      <img src="/img/pb-logo-header.webp" alt="Planeta Boricua" width="240" height="202">
       <span class="nav-logo-text">Planeta Boricua</span>
     </a>
     <a href="/" class="nav-back">← Volver al portal</a>
@@ -203,7 +203,7 @@ nav{background:#fff;border-bottom:3px solid #CE1126;padding:0;}
 <nav>
   <div class="nav-top">
     <a href="/" class="nav-logo">
-      <img src="/img/pb-logo.png" alt="Planeta Boricua">
+      <img src="/img/pb-logo-header.webp" alt="Planeta Boricua" width="240" height="202">
       <span class="nav-logo-text">Planeta Boricua</span>
     </a>
     <a href="/" class="nav-back">← Volver al portal</a>
