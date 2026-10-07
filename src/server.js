@@ -20,6 +20,7 @@ const pbArtisanMetrics = require('./services/pb-artisan-metrics');
 const pbFairFunnelMetrics = require('./services/pb-fair-funnel-metrics');
 const pbSubscriberWelcome = require('./services/pb-subscriber-welcome');
 const { createPBAds } = require('./services/pb-ads');
+const { createExternalMetrics } = require('./services/pb-external-metrics');
 const { buildArtisanManifest } = require('./services/pb-artisan-pwa');
 const salaPrensaPB = require('./views/planetaboricua/sala-prensa');
 const { renderPBSocialFollow } = require('./views/planetaboricua/social-follow');
@@ -252,6 +253,7 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const crypto = require("crypto");
 const pbAds = createPBAds();
+const pbExternalMetrics = createExternalMetrics();
 
 function selectHomeAd(placement, excludeIds = []) {
   const direct = pbAds.select({section:'home',placement,pageSlug:'portada',excludeIds});
@@ -1865,6 +1867,7 @@ function buildPBControlModel(csrf) {
   const artisanMetrics = pbArtisanMetricsSummary(artisansApproved);
   const fairFunnel = pbFairFunnelMetrics.summary({file:PB_FAIR_FUNNEL_METRICS_FILE});
   const siteAnalytics = pbSiteAnalytics.summary();
+  const externalMetrics = {rows:pbExternalMetrics.list(),summary:pbExternalMetrics.summary()};
   const publishedBlogPosts = blogPosts.filter(post => (post.status || 'published') === 'published');
   const last30Pages = siteAnalytics.last30?.pages || {};
   const measuredPages = siteAnalytics.pageHistory || {};
@@ -1919,7 +1922,7 @@ function buildPBControlModel(csrf) {
   pressRoom.releases.sort((a,b) => String(b.date || '').localeCompare(String(a.date || '')));
   pressRoom.distributions.sort((a,b) => String(b.updatedAt || '').localeCompare(String(a.updatedAt || '')));
   pressRoom.controlSummary = pbPressRoom.controlSummary(pressRoom);
-  return {csrf,latestPending,latestApproved,commentsPending,commentsApproved,artisansPending,artisansApproved,artisanNeedsImprovement,eventsPending,eventsApproved,subscribers,subscriberStats,blogPosts,affiliates,artisanEmailCount,artisanEmailAudit,artisanMailHistory,artisanMetrics,fairFunnel,siteAnalytics,pressRoom,counts:{pendingLatest:latestPending.length,pendingComments:commentsPending.length,pendingArtisans:artisansPending.length,pendingEvents:eventsPending.length,pendingTotal:latestPending.length+commentsPending.length+artisansPending.length+eventsPending.length,blogPosts:blogPosts.length,subscribers:subscriberStats.active,affiliateClicks:affiliates.reduce((sum,item)=>sum+item.clicks,0),artisanViews:artisanMetrics.reduce((sum,item)=>sum+item.views,0),artisanClicks:artisanMetrics.reduce((sum,item)=>sum+item.clickTotal,0)}};
+  return {csrf,latestPending,latestApproved,commentsPending,commentsApproved,artisansPending,artisansApproved,artisanNeedsImprovement,eventsPending,eventsApproved,subscribers,subscriberStats,blogPosts,affiliates,artisanEmailCount,artisanEmailAudit,artisanMailHistory,artisanMetrics,fairFunnel,siteAnalytics,externalMetrics,pressRoom,counts:{pendingLatest:latestPending.length,pendingComments:commentsPending.length,pendingArtisans:artisansPending.length,pendingEvents:eventsPending.length,pendingTotal:latestPending.length+commentsPending.length+artisansPending.length+eventsPending.length,blogPosts:blogPosts.length,subscribers:subscriberStats.active,affiliateClicks:affiliates.reduce((sum,item)=>sum+item.clicks,0),artisanViews:artisanMetrics.reduce((sum,item)=>sum+item.views,0),artisanClicks:artisanMetrics.reduce((sum,item)=>sum+item.clickTotal,0)}};
 }
 
 app.get('/pb-control/login', (req,res) => {
@@ -1951,6 +1954,21 @@ app.get('/pb-control/estadisticas.csv', requirePBAdmin, (_req,res) => {
   res.set('Content-Type','text/csv; charset=utf-8');
   res.set('Content-Disposition','attachment; filename="planeta-boricua-estadisticas-mensuales.csv"');
   res.send('\uFEFF' + pbSiteAnalytics.csv());
+});
+
+app.get('/pb-control/metricas-externas.csv', requirePBAdmin, (_req,res) => {
+  res.set('Content-Type','text/csv; charset=utf-8');
+  res.set('Content-Disposition','attachment; filename="pb-metricas-externas-mensuales.csv"');
+  res.send('\uFEFF' + pbExternalMetrics.csv());
+});
+
+app.post('/pb-control/metricas-externas', requirePBAdmin, requirePBCsrf, (req,res) => {
+  try {
+    pbExternalMetrics.save(req.body);
+    return res.redirect('/pb-control#estadisticas');
+  } catch (error) {
+    return res.status(400).send(error.message || 'No se pudo guardar el cierre mensual.');
+  }
 });
 
 app.get('/pb-control/ads', requirePBAdmin, (req,res) => {

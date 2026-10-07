@@ -98,3 +98,4 @@ assert.match(unifiedHtml, /399 históricas de Blogger · 28 medidas por PB/);
 assert.doesNotMatch(unifiedHtml, /<details class="section">/);
 
 console.log('PB site analytics contract: OK');
+require('./pb-external-metrics.test');
