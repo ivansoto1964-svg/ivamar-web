@@ -3496,6 +3496,7 @@ app.get("/noticias", (req, res) => res.redirect(301, "/blog"));
 
 // PB town stories
 require("./routes/pb-towns")(app);
+require("./routes/pb-town-admin")(app);
 require("./routes/pb-stories")(app);
 
 // PB Blog routes
