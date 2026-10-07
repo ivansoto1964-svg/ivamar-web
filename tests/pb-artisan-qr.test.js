@@ -18,6 +18,7 @@ const { buildArtisanManifest } = require('../src/services/pb-artisan-pwa');
   const artisanMetrics = fs.readFileSync(require.resolve('../src/services/pb-artisan-metrics'),'utf8');
   assert.match(view,/pb-fair-profile:/);
   assert.match(view,/action:'contact'/);
+  assert.match(view,/contacts=new Set\(\['whatsapp','website','instagram','facebook','tiktok','pinterest','store'\]\)/);
   assert.match(view,/Descargar QR/);
   assert.match(view,/\/artesanos\/\$\{encodeURIComponent\(helpers\.slug\)\}\/qr\.png/);
   assert.match(view,/compartir-evento/);

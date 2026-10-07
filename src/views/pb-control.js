@@ -128,11 +128,12 @@ function artisanMetricRows(items) {
 
 function fairFunnelPanel(summary = {}) {
   const period=summary.last30||{};
+  const profilesPerVisit=period.views?Math.round((Number(period.profiles)||0)/(Number(period.views)||1)*10)/10:0;
   const cards=[
     ['Visitas a la Feria',period.views||0,'Últimos 30 días'],
     ['Búsquedas',period.searches||0,`${period.zeroResultSearches||0} sin resultados`],
-    ['Perfiles seleccionados',period.profiles||0,`${period.profileRate||0}% de las visitas a la Feria`],
-    ['Contactos',period.contacts||0,`${period.contactRate||0}% desde perfiles seleccionados`]
+    ['Perfiles abiertos',period.profiles||0,`${profilesPerVisit} perfiles por visita`],
+    ['Clics de contacto',period.contacts||0,`${period.contactRate||0}% desde perfiles abiertos`]
   ].map(card=>`<div class="card"><span>${esc(card[0])}</span><strong>${esc(card[1])}</strong><small>${esc(card[2])}</small></div>`).join('');
   return `<div class="cards">${cards}</div><p class="sectionnote"><strong>${Number(period.searchSuccessRate)||0}%</strong> de las búsquedas encontró por lo menos un artesano. Se guardan solamente conteos agregados; PB no conserva las palabras buscadas, nombres, emails, IP ni identificadores de visitantes.</p>`;
 }

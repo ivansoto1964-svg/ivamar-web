@@ -25,4 +25,8 @@ assert.equal(summary.total.contacts,1);
 assert.equal(summary.total.searchSuccessRate,50);
 assert.equal(summary.last30.contacts,1);
 assert.doesNotMatch(JSON.stringify(metrics.read(file)),/Stitches|consulta|query|email|ip/i);
+const controlView=fs.readFileSync(require.resolve('../src/views/pb-control'),'utf8');
+assert.match(controlView,/perfiles por visita/);
+assert.match(controlView,/Clics de contacto/);
+assert.doesNotMatch(controlView,/% de las visitas a la Feria/);
 console.log('PB fair funnel metrics: OK');
