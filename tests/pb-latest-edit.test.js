@@ -50,7 +50,7 @@ assert.match(html,/Cancelar edición/);
 assert.match(html,/latest-update/);
 assert.match(html,/pbRefreshRichEditors/);
 assert.match(html,/id="latestSaveDraft"/,'Lo más reciente must have a private draft button separate from publishing.');
-assert.match(html,/pb-synced-drafts\.js\?v=1/,'PB Control must load cross-device draft synchronization.');
+assert.match(html,/pb-synced-drafts\.js\?v=2/,'PB Control must load the current cross-device draft synchronization fix.');
 const inlineScripts = [...html.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(match => match[1]);
 assert.ok(inlineScripts.length,'PB Control must include its client-side controller.');
 inlineScripts.forEach((script,index) => new vm.Script(script,{filename:`pb-control-inline-${index}.js`}));

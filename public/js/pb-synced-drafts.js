@@ -48,9 +48,12 @@
   function controller(type, form, status) {
     let timer = null;
     let generation = 0;
+    let suspended = false;
 
     async function saveNow(announce = false) {
+      if (suspended) return null;
       const key = keyFor(type, form);
+      const currentGeneration = generation;
       const snapshot = { savedAt:new Date().toISOString(), values:values(form) };
       try {
         localStorage.setItem(prefix + key, JSON.stringify(snapshot));
@@ -58,6 +61,11 @@
       status.textContent = 'Guardando borrador…';
       try {
         const result = await apiAction('control-draft-save', key, { values:snapshot.values });
+        if (suspended || generation !== currentGeneration) {
+          try { localStorage.removeItem(prefix + key); } catch (_) {}
+          try { await apiAction('control-draft-delete', key); } catch (_) {}
+          return null;
+        }
         const saved = result.draft || snapshot;
         try { localStorage.setItem(prefix + key, JSON.stringify(saved)); } catch (_) {}
         const time = new Date(saved.savedAt || Date.now()).toLocaleTimeString('es-PR', { hour:'numeric', minute:'2-digit' });
@@ -72,11 +80,13 @@
     }
 
     function schedule() {
+      if (suspended) return;
       clearTimeout(timer);
       timer = setTimeout(() => saveNow(false), 1400);
     }
 
     async function restore() {
+      if (suspended) return;
       const currentGeneration = ++generation;
       const key = keyFor(type, form);
       let local = localDraft(key);
@@ -99,6 +109,7 @@
     }
 
     async function clear() {
+      suspended = true;
       clearTimeout(timer);
       generation += 1;
       const key = keyFor(type, form);
@@ -109,6 +120,10 @@
       } catch (_) {
         status.textContent = 'Publicado; el borrador local fue eliminado.';
       }
+    }
+
+    function resume() {
+      suspended = false;
     }
 
     form.addEventListener('input', schedule);
@@ -126,11 +141,12 @@
       await clear();
       if (type === 'blog' && typeof resetBlogForm === 'function') resetBlogForm();
       else if (type === 'latest' && typeof resetLatestForm === 'function') resetLatestForm();
+      resume();
       setTimeout(() => window.pbRefreshRichEditors?.(), 0);
       discard.disabled = false;
     });
     status.parentElement?.querySelector('.tools')?.append(discard);
-    return { restore, saveNow, clear };
+    return { restore, saveNow, clear, resume };
   }
 
   const blog = controller('blog', blogForm, document.getElementById('blogDraftStatus'));

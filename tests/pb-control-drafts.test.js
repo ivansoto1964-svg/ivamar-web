@@ -35,6 +35,9 @@ const server = fs.readFileSync(path.join(root, 'src/server.js'), 'utf8');
 new vm.Script(browserSync, { filename:'pb-synced-drafts.js' });
 assert.match(browserSync, /control-draft-save/);
 assert.match(browserSync, /control-draft-get/);
+assert.match(browserSync, /let suspended = false/);
+assert.match(browserSync, /if \(suspended \|\| generation !== currentGeneration\)/, 'An in-flight autosave must not recreate a published draft.');
+assert.match(browserSync, /suspended = true;\s+clearTimeout\(timer\)/, 'Publishing must stop autosave before deleting the draft.');
 assert.match(server, /action === 'control-draft-save'/);
 assert.match(server, /pbControlDrafts\.remove\('latest:new'\)/, 'Publishing must remove the synchronized private draft.');
 
