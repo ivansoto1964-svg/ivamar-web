@@ -71,7 +71,8 @@
     return output.join('');
   }
 
-  function cleanHtml(value) {
+  function cleanHtml(value, options = {}) {
+    const pasted = options.pasted === true;
     const template = document.createElement('template');
     template.innerHTML = String(value || '');
     template.content.querySelectorAll('[data-pb-editor-only]').forEach(node => node.remove());
@@ -80,7 +81,8 @@
       const inlineStyle = String(node.getAttribute('style') || '').toLowerCase();
       const fontSize = Number.parseFloat((inlineStyle.match(/font-size\s*:\s*([0-9.]+)px/) || [])[1] || '0');
       let semanticTag = node.tagName;
-      if (semanticTag === 'H1' || ((semanticTag === 'P' || semanticTag === 'DIV') && fontSize >= 20)) semanticTag = 'H2';
+      if (semanticTag === 'H1') semanticTag = pasted ? 'P' : 'H2';
+      else if ((semanticTag === 'P' || semanticTag === 'DIV') && fontSize >= 20) semanticTag = pasted ? 'P' : 'H2';
       else if (semanticTag === 'DIV') semanticTag = 'P';
       else if (semanticTag === 'SPAN' && /font-style\s*:\s*italic/.test(inlineStyle)) semanticTag = 'EM';
       else if (semanticTag === 'SPAN' && /font-weight\s*:\s*(bold|[6-9]00)/.test(inlineStyle)) semanticTag = 'STRONG';
@@ -349,7 +351,7 @@
       const pastedHtml = clipboard && clipboard.getData('text/html');
       const pastedMarkdown = clipboard && clipboard.getData('text/markdown');
       const pastedText = clipboard && clipboard.getData('text/plain');
-      insertHtml(pastedHtml ? cleanHtml(pastedHtml) : markdownTextHtml(pastedMarkdown || pastedText));
+      insertHtml(pastedHtml ? cleanHtml(pastedHtml, { pasted:true }) : markdownTextHtml(pastedMarkdown || pastedText));
       sync();
     });
     textarea.form.addEventListener('submit', event => {

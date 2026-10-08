@@ -19,13 +19,15 @@ const html = renderControl({
   artisanEmailAudit:{}, artisanMetrics:[], artisanMailHistory:[]
 });
 
-assert.match(html, /\/js\/pb-rich-text-editor\.js\?v=3/, 'PB Control must load the current visual editor.');
+assert.match(html, /\/js\/pb-rich-text-editor\.js\?v=4/, 'PB Control must load the current visual editor.');
 assert.match(asset, /Negrita/);
 assert.match(asset, /Cursiva/);
 assert.match(asset, /Título grande/);
 assert.match(asset, /insertUnorderedList/);
 assert.match(asset, /text\/html/, 'Rich clipboard HTML must be read when pasting.');
 assert.match(asset, /text\/markdown/, 'ChatGPT Markdown clipboard content must be recognized when rich HTML is unavailable.');
+assert.match(asset, /cleanHtml\(pastedHtml, \{ pasted:true \}\)/, 'Pasted rich text must use paste-safe heading normalization.');
+assert.match(asset, /semanticTag = pasted \? 'P' : 'H2'/, 'Hidden clipboard font sizing must not turn opening sentences into headings.');
 assert.match(asset, /<strong>\$1<\/strong>/, 'Markdown bold markers must become real bold formatting.');
 assert.match(asset, /PBMARKDOWNLINK/, 'Markdown links copied from ChatGPT must remain clickable.');
 assert.match(asset, /sponsored noopener noreferrer/, 'Affiliate links must remain disclosed and protected.');

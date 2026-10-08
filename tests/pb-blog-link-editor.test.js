@@ -14,7 +14,7 @@ const html = render({
   artisanEmailAudit:{}, artisanMetrics:[], artisanMailHistory:[]
 });
 
-assert.match(html, /\/js\/pb-rich-text-editor\.js\?v=3/, 'PB Control must load the editor that owns the link button.');
+assert.match(html, /\/js\/pb-rich-text-editor\.js\?v=4/, 'PB Control must load the editor that owns the link button.');
 assert.match(asset, /makeButton\('🔗 Enlace'/, 'The visual editor must expose the link button.');
 assert.match(asset, /insertHtml\(`<a href=/, 'The tool must turn the selected text into a link.');
 assert.match(asset, /sponsored noopener noreferrer/, 'Affiliate links must be marked as sponsored.');
