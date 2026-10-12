@@ -7,6 +7,11 @@ const server = fs.readFileSync(path.join(root,'src/server.js'),'utf8');
 const home = fs.readFileSync(path.join(root,'src/views/planetaboricua.js'),'utf8');
 const statePage = fs.readFileSync(path.join(root,'src/views/planetaboricua/estado-template.js'),'utf8');
 
+const retiredGateIndex = server.indexOf("const RETIRED_PATHS = [");
+const aecRouteIndex = server.indexOf('app.post("/api/aec-chat"');
+assert(retiredGateIndex >= 0 && aecRouteIndex > retiredGateIndex, 'The retired-route gate must run before the legacy AEC handler.');
+assert.match(server.slice(retiredGateIndex,aecRouteIndex), /['"]\/api\/aec-chat['"]/, 'The legacy AEC chat route must remain behind the HTTP 410 retirement gate.');
+
 assert.match(server, /app\.get\("\/tienda-boricua", \(_req, res\) => res\.redirect\(301, "\/recursos"\)\)/);
 assert.doesNotMatch(server, /require\("\.\/views\/tienda-boricua"\)/);
 assert.doesNotMatch(server, /masboricuaqueunmofongo\.com\/tienda-boricua<\/loc>/);

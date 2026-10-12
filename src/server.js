@@ -65,7 +65,7 @@ const RETIRED_HOSTS = new Set([
 ]);
 const RETIRED_PATHS = [
   '/caribex', '/insights', '/caribex-sitemap.xml', '/manifest-caribex.json',
-  '/api/caribex', '/api/blog-feed', '/api/nayeli',
+  '/api/caribex', '/api/blog-feed', '/api/nayeli', '/api/aec-chat',
   '/api/iva', '/api/demo', '/api/dealer-demo', '/api/kia-demo', '/api/assistant',
   '/start', '/quote', '/cotizar', '/pricing', '/demo-dealers', '/demo-dealers-es',
   '/demo-autos', '/mr-frappe', '/adis', '/dyerkia', '/autoridad-energia-criolla',
