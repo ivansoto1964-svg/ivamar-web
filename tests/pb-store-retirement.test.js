@@ -4,13 +4,16 @@ const path = require('path');
 
 const root = path.join(__dirname,'..');
 const server = fs.readFileSync(path.join(root,'src/server.js'),'utf8');
+const packageJson = JSON.parse(fs.readFileSync(path.join(root,'package.json'),'utf8'));
 const home = fs.readFileSync(path.join(root,'src/views/planetaboricua.js'),'utf8');
 const statePage = fs.readFileSync(path.join(root,'src/views/planetaboricua/estado-template.js'),'utf8');
 
 const retiredGateIndex = server.indexOf("const RETIRED_PATHS = [");
-const aecRouteIndex = server.indexOf('app.post("/api/aec-chat"');
-assert(retiredGateIndex >= 0 && aecRouteIndex > retiredGateIndex, 'The retired-route gate must run before the legacy AEC handler.');
-assert.match(server.slice(retiredGateIndex,aecRouteIndex), /['"]\/api\/aec-chat['"]/, 'The legacy AEC chat route must remain behind the HTTP 410 retirement gate.');
+assert(retiredGateIndex >= 0, 'The retired-route gate must exist.');
+assert.match(server.slice(retiredGateIndex,server.indexOf('const RETIRED_EXACT_PATHS')), /['"]\/api\/aec-chat['"]/, 'The legacy AEC chat path must remain behind the HTTP 410 retirement gate.');
+assert.doesNotMatch(server, /app\.post\(['"]\/api\/aec-chat['"]/, 'The legacy AEC Claude handler must not be registered.');
+assert.doesNotMatch(server, /Anthropic|api\.anthropic\.com|ANTHROPIC_API_KEY|claude-/i, 'The server must not contain executable Anthropic integration code.');
+assert.equal(packageJson.dependencies?.['@anthropic-ai/sdk'], undefined, 'The Anthropic SDK must not be a production dependency.');
 
 assert.match(server, /app\.get\("\/tienda-boricua", \(_req, res\) => res\.redirect\(301, "\/recursos"\)\)/);
 assert.doesNotMatch(server, /require\("\.\/views\/tienda-boricua"\)/);
