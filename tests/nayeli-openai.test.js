@@ -16,6 +16,8 @@ assert.match(assistant,/No solicites email, teléfono, dirección, pago ni infor
 
 assert.deepEqual(nayeliOpenAI.configuration({}),{enabled:false,hasApiKey:false,model:'gpt-6-luna'});
 assert.deepEqual(nayeliOpenAI.configuration({NAYELI_PREVIEW_ENABLED:'true'}),{enabled:true,hasApiKey:false,model:'gpt-6-luna'});
+assert.equal(nayeliOpenAI.normalizeMode('profile'),'profile');
+assert.equal(nayeliOpenAI.normalizeMode('unknown'),'general');
 
 const context = buildNayeliContext({
   message:'Busco una artesana de crochet en Arecibo',
@@ -40,6 +42,7 @@ assert.ok(history.every(item => item.role === 'user' || item.role === 'assistant
   const result = await nayeliOpenAI.reply({
     message:'¿Qué artesanos hay?',
     history:[{role:'user',content:'Estoy en Florida'}],
+    mode:'product',
     context:'ARTESANOS:\n- Ejemplo',
     client,
     env:{NAYELI_PREVIEW_ENABLED:'true'}
@@ -50,5 +53,7 @@ assert.ok(history.every(item => item.role === 'user' || item.role === 'assistant
   assert.equal(request.max_output_tokens,450);
   assert.deepEqual(request.reasoning,{effort:'none'});
   assert.equal(request.input.length,2);
+  assert.match(request.instructions,/descripción clara y atractiva de una creación artesanal/);
+  assert.equal(result.mode,'product');
   console.log('Nayeli OpenAI recovery tests passed');
 })().catch(error => { console.error(error); process.exitCode=1; });

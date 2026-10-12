@@ -24,6 +24,12 @@ assert.doesNotMatch(disabled,/OPENAI_API_KEY|sk-[A-Za-z0-9]/);
 const enabled = render({csrf:'private-csrf',enabled:true,hasApiKey:true,model:'gpt-6-luna'});
 assert.match(enabled,/Lista para una prueba privada/);
 assert.match(enabled,/fetch\('\/pb-control\/nayeli\/preview'/);
+assert.match(enabled,/data-mode="profile"/);
+assert.match(enabled,/data-mode="product"/);
+assert.match(enabled,/data-mode="promotion"/);
+assert.match(enabled,/JSON\.stringify\(\{message,mode,history:/);
+assert.match(enabled,/pruebas hoy/);
+assert.match(enabled,/tokens medidos/);
 assert.doesNotMatch(enabled,/<textarea[^>]+disabled/);
 assert.doesNotMatch(enabled,/<button type="submit" disabled>/);
 

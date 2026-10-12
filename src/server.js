@@ -20,6 +20,7 @@ const pbArtisanMetrics = require('./services/pb-artisan-metrics');
 const pbFairFunnelMetrics = require('./services/pb-fair-funnel-metrics');
 const pbSubscriberWelcome = require('./services/pb-subscriber-welcome');
 const nayeliOpenAI = require('./services/nayeli-openai');
+const nayeliUsage = require('./services/nayeli-usage');
 const { buildNayeliContext } = require('./services/nayeli-context');
 const { createPBAds } = require('./services/pb-ads');
 const { createExternalMetrics } = require('./services/pb-external-metrics');
@@ -1802,7 +1803,7 @@ app.get('/pb-control/logout',(req,res) => {
 app.get('/pb-control', requirePBAdmin, (req,res) => res.send(pbControl(buildPBControlModel(req.pbAdminSession.csrf))));
 
 app.get('/pb-control/nayeli', requirePBAdmin, (req,res) => {
-  res.send(pbNayeliPreview({csrf:req.pbAdminSession.csrf,...nayeliOpenAI.configuration()}));
+  res.send(pbNayeliPreview({csrf:req.pbAdminSession.csrf,...nayeliOpenAI.configuration(),usage:nayeliUsage.summary()}));
 });
 
 // Private, disabled-by-default recovery path for Nayeli. This route is not
@@ -1813,6 +1814,9 @@ app.post('/pb-control/nayeli/preview', requirePBAdmin, aiLimiter, express.json({
   const config = nayeliOpenAI.configuration();
   if (!config.enabled) return res.status(404).json({ok:false,error:'La vista previa de Nayeli está desactivada.'});
   if (!config.hasApiKey) return res.status(503).json({ok:false,error:'OpenAI no está configurado.'});
+  const before = nayeliUsage.summary();
+  if (!before.allowed) return res.status(429).json({ok:false,error:'Nayeli alcanzó el límite privado de pruebas de hoy.',usage:before});
+  const mode = nayeliOpenAI.normalizeMode(req.body?.mode);
   try {
     const artisans = loadApprovedPBListings().map(item => ({...item,slug:pbArtisanSlug(item)}));
     const context = buildNayeliContext({
@@ -1822,12 +1826,14 @@ app.post('/pb-control/nayeli/preview', requirePBAdmin, aiLimiter, express.json({
       events:readPBEvents('approved.json').map(publicPBEvent),
       artisans
     });
-    const result = await nayeliOpenAI.reply({message:req.body?.message,history:req.body?.history,context});
-    return res.json({ok:true,...result});
+    const result = await nayeliOpenAI.reply({message:req.body?.message,history:req.body?.history,mode,context});
+    const usage = nayeliUsage.record({ok:true,usage:result.usage,mode});
+    return res.json({ok:true,reply:result.reply,model:result.model,mode:result.mode,usage});
   } catch (error) {
     if (error?.code === 'NAYELI_INVALID_MESSAGE') return res.status(400).json({ok:false,error:error.message});
+    const usage = nayeliUsage.record({ok:false,mode});
     console.error('Nayeli private preview:',error?.message || error);
-    return res.status(502).json({ok:false,error:'Nayeli no pudo responder en este momento.'});
+    return res.status(502).json({ok:false,error:'Nayeli no pudo responder en este momento.',usage});
   }
 });
 

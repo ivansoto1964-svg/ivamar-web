@@ -4,6 +4,12 @@ const nayeli = require('../assistants/nayeli');
 const MAX_MESSAGE_CHARS = 1200;
 const MAX_HISTORY_ITEMS = 6;
 const MAX_HISTORY_CHARS = 1200;
+const MODES = new Set(['general','profile','product','promotion']);
+
+function normalizeMode(value) {
+  const mode = String(value || '').trim().toLowerCase();
+  return MODES.has(mode) ? mode : 'general';
+}
 
 function cleanMessage(value, limit) {
   return String(value || '').replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F\u007F]/g,'').trim().slice(0,limit);
@@ -25,7 +31,7 @@ function configuration(env = process.env) {
   };
 }
 
-async function reply({message,history,context,client,env = process.env}) {
+async function reply({message,history,context,mode,client,env = process.env}) {
   const config = configuration(env);
   if (!config.enabled) {
     const error = new Error('La vista previa de Nayeli está desactivada.');
@@ -46,15 +52,16 @@ async function reply({message,history,context,client,env = process.env}) {
 
   const openai = client || new OpenAI({apiKey:env.OPENAI_API_KEY});
   const input = [...safeHistory(history),{role:'user',content:cleanedMessage}];
+  const selectedMode = normalizeMode(mode);
   const response = await openai.responses.create({
     model:config.model,
-    instructions:nayeli.instructions(String(context || '').slice(0,6000)),
+    instructions:nayeli.instructions(String(context || '').slice(0,6000),selectedMode),
     input,
     max_output_tokens:450,
     reasoning:{effort:'none'},
     store:false
   });
-  return {reply:String(response.output_text || '').trim(),model:config.model};
+  return {reply:String(response.output_text || '').trim(),model:config.model,mode:selectedMode,usage:response.usage || {}};
 }
 
-module.exports = { configuration, reply, safeHistory, MAX_MESSAGE_CHARS, MAX_HISTORY_ITEMS };
+module.exports = { configuration, reply, safeHistory, normalizeMode, MAX_MESSAGE_CHARS, MAX_HISTORY_ITEMS };
