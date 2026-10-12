@@ -225,6 +225,7 @@ const adminDashboard = require("./views/admin-dashboard");
 const adminEdit = require("./views/admin-edit");
 const pbControl = require("./views/pb-control");
 const pbControlLogin = require("./views/pb-control-login");
+const pbNayeliPreview = require("./views/pb-nayeli-preview");
 const pbAdsControl = require("./views/pb-ads-control");
 const { Resend } = require("resend");
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -1799,6 +1800,10 @@ app.get('/pb-control/logout',(req,res) => {
 });
 
 app.get('/pb-control', requirePBAdmin, (req,res) => res.send(pbControl(buildPBControlModel(req.pbAdminSession.csrf))));
+
+app.get('/pb-control/nayeli', requirePBAdmin, (req,res) => {
+  res.send(pbNayeliPreview({csrf:req.pbAdminSession.csrf,...nayeliOpenAI.configuration()}));
+});
 
 // Private, disabled-by-default recovery path for Nayeli. This route is not
 // linked from PB, requires an authenticated PB Control session and cannot call
