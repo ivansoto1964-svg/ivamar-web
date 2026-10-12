@@ -30,4 +30,5 @@ for (const filename of fs.readdirSync(blogPostsDir).filter(name => name.endsWith
 }
 
 console.log('PB store retirement and redirect tests passed');
+require('./nayeli-openai.test');
 require('./pb-legacy-commercial-cleanup.test');

@@ -19,6 +19,8 @@ const pbEventMetrics = require('./services/pb-event-metrics');
 const pbArtisanMetrics = require('./services/pb-artisan-metrics');
 const pbFairFunnelMetrics = require('./services/pb-fair-funnel-metrics');
 const pbSubscriberWelcome = require('./services/pb-subscriber-welcome');
+const nayeliOpenAI = require('./services/nayeli-openai');
+const { buildNayeliContext } = require('./services/nayeli-context');
 const { createPBAds } = require('./services/pb-ads');
 const { createExternalMetrics } = require('./services/pb-external-metrics');
 const { createWebVitals } = require('./services/pb-web-vitals');
@@ -1797,6 +1799,32 @@ app.get('/pb-control/logout',(req,res) => {
 });
 
 app.get('/pb-control', requirePBAdmin, (req,res) => res.send(pbControl(buildPBControlModel(req.pbAdminSession.csrf))));
+
+// Private, disabled-by-default recovery path for Nayeli. This route is not
+// linked from PB, requires an authenticated PB Control session and cannot call
+// OpenAI unless both NAYELI_PREVIEW_ENABLED=true and OPENAI_API_KEY exist.
+// The retired public /api/nayeli endpoint intentionally remains HTTP 410.
+app.post('/pb-control/nayeli/preview', requirePBAdmin, aiLimiter, express.json({limit:'12kb'}), requirePBCsrf, async (req,res) => {
+  const config = nayeliOpenAI.configuration();
+  if (!config.enabled) return res.status(404).json({ok:false,error:'La vista previa de Nayeli está desactivada.'});
+  if (!config.hasApiKey) return res.status(503).json({ok:false,error:'OpenAI no está configurado.'});
+  try {
+    const artisans = loadApprovedPBListings().map(item => ({...item,slug:pbArtisanSlug(item)}));
+    const context = buildNayeliContext({
+      message:req.body?.message,
+      posts:pbBlogStore.loadPosts(),
+      latest:readPBLatest('approved.json'),
+      events:readPBEvents('approved.json').map(publicPBEvent),
+      artisans
+    });
+    const result = await nayeliOpenAI.reply({message:req.body?.message,history:req.body?.history,context});
+    return res.json({ok:true,...result});
+  } catch (error) {
+    if (error?.code === 'NAYELI_INVALID_MESSAGE') return res.status(400).json({ok:false,error:error.message});
+    console.error('Nayeli private preview:',error?.message || error);
+    return res.status(502).json({ok:false,error:'Nayeli no pudo responder en este momento.'});
+  }
+});
 
 app.get('/pb-control/estadisticas.csv', requirePBAdmin, (_req,res) => {
   res.set('Content-Type','text/csv; charset=utf-8');
