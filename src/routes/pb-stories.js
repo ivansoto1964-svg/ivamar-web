@@ -79,7 +79,7 @@ module.exports = function registerPBStories(app) {
       try {
         const list=JSON.parse(fs.readFileSync(subscribersFile,'utf8'));
         if (!pbSubscriberWelcome.findSubscriber(list,email)) {
-          const secret=String(process.env.PB_ARTISAN_MAGIC_SECRET||process.env.PB_ADMIN_PASS||'').trim();
+          const secret=String(process.env.PB_ARTISAN_MAGIC_SECRET||'').trim();
           if (process.env.RESEND_API_KEY && secret) {
             const subscriber=pbSubscriberWelcome.createSubscriberRecord(email,`Historias de ${townName(town)}`);
             list.push(subscriber);

@@ -259,6 +259,7 @@ const crypto = require("crypto");
 const pbAds = createPBAds();
 const pbExternalMetrics = createExternalMetrics();
 const pbWebVitals = createWebVitals();
+const { runtimeHealth: pbRuntimeHealth } = require('./services/pb-runtime-health');
 
 function selectHomeAd(placement, excludeIds = []) {
   const direct = pbAds.select({section:'home',placement,pageSlug:'portada',excludeIds});
@@ -410,7 +411,7 @@ function backupPBArtisans(reason = 'automatic') {
 }
 
 function pbArtisanMagicSecret() {
-  return String(process.env.PB_ARTISAN_MAGIC_SECRET || process.env.PB_ADMIN_PASS || '').trim();
+  return String(process.env.PB_ARTISAN_MAGIC_SECRET || '').trim();
 }
 
 function createPBArtisanToken(item) {
@@ -1774,7 +1775,7 @@ function buildPBControlModel(csrf) {
   pressRoom.distributions.sort((a,b) => String(b.updatedAt || '').localeCompare(String(a.updatedAt || '')));
   pressRoom.controlSummary = pbPressRoom.controlSummary(pressRoom);
   siteAnalytics.webVitals = webVitals;
-  return {csrf,latestPending,latestApproved,commentsPending,commentsApproved,artisansPending,artisansApproved,artisanNeedsImprovement,eventsPending,eventsApproved,subscribers,subscriberStats,blogPosts,affiliates,artisanEmailCount,artisanEmailAudit,artisanMailHistory,artisanMetrics,fairFunnel,siteAnalytics,externalMetrics,pressRoom,counts:{pendingLatest:latestPending.length,pendingComments:commentsPending.length,pendingArtisans:artisansPending.length,pendingEvents:eventsPending.length,pendingTotal:latestPending.length+commentsPending.length+artisansPending.length+eventsPending.length,blogPosts:blogPosts.length,subscribers:subscriberStats.active,affiliateClicks:affiliates.reduce((sum,item)=>sum+item.clicks,0),artisanViews:artisanMetrics.reduce((sum,item)=>sum+item.views,0),artisanClicks:artisanMetrics.reduce((sum,item)=>sum+item.clickTotal,0)}};
+  return {csrf,runtimeHealth:pbRuntimeHealth(),latestPending,latestApproved,commentsPending,commentsApproved,artisansPending,artisansApproved,artisanNeedsImprovement,eventsPending,eventsApproved,subscribers,subscriberStats,blogPosts,affiliates,artisanEmailCount,artisanEmailAudit,artisanMailHistory,artisanMetrics,fairFunnel,siteAnalytics,externalMetrics,pressRoom,counts:{pendingLatest:latestPending.length,pendingComments:commentsPending.length,pendingArtisans:artisansPending.length,pendingEvents:eventsPending.length,pendingTotal:latestPending.length+commentsPending.length+artisansPending.length+eventsPending.length,blogPosts:blogPosts.length,subscribers:subscriberStats.active,affiliateClicks:affiliates.reduce((sum,item)=>sum+item.clicks,0),artisanViews:artisanMetrics.reduce((sum,item)=>sum+item.views,0),artisanClicks:artisanMetrics.reduce((sum,item)=>sum+item.clickTotal,0)}};
 }
 
 app.get('/pb-control/login', (req,res) => {
