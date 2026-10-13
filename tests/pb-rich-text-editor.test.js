@@ -19,7 +19,7 @@ const html = renderControl({
   artisanEmailAudit:{}, artisanMetrics:[], artisanMailHistory:[]
 });
 
-assert.match(html, /\/js\/pb-rich-text-editor\.js\?v=4/, 'PB Control must load the current visual editor.');
+assert.match(html, /\/js\/pb-rich-text-editor\.js\?v=5/, 'PB Control must load the current visual editor without reusing an immutable cached copy.');
 assert.match(asset, /Negrita/);
 assert.match(asset, /Cursiva/);
 assert.match(asset, /Título grande/);
@@ -38,6 +38,8 @@ assert.match(asset, /Crédito o fuente \(opcional\)/, 'Inline images must suppor
 assert.match(asset, /↑ Subir/);
 assert.match(asset, /↓ Bajar/);
 assert.match(asset, /splitBreakParagraph/, 'Image movement must split pasted text blocks so one tap moves one paragraph.');
+assert.match(asset, /\['P', 'DIV'\]\.includes\(block\.tagName\)/, 'Image movement must split paragraph blocks created by desktop and mobile editors.');
+assert.match(asset, /\['P', 'DIV'\]\.includes\(sibling\.tagName\)/, 'Image movement must skip empty desktop and mobile blocks consistently.');
 assert.match(asset, /scrollIntoView\(\{ behavior:'smooth', block:'center' \}\)/, 'The editor must keep the moved image in view.');
 assert.match(asset, /Eliminar esta imagen del artículo/);
 assert.match(asset, /uploadLatestImage\(file\)/, 'Inline images must reuse the existing protected uploader.');
@@ -81,7 +83,7 @@ const sample = { slug:'muestra', title:'Muestra editorial', excerpt:'Resumen', s
 const blogIndexHtml = renderBlogIndex([sample, sample], 1, 1, '', '', ['Cultura'], 2, []);
 const latestIndexHtml = renderLatestIndex([sample], 1, 1, '', '', ['Cultura'], 1);
 for (const rendered of [blogIndexHtml, latestIndexHtml, blogHtml, latestHtml]) {
-  assert.match(rendered, /\/css\/pb-editorial-images\.css\?v=2/, 'Every editorial view must load the fresh shared image system.');
+  assert.match(rendered, /\/css\/pb-editorial-images\.css\?v=3/, 'Every editorial view must load the fresh shared image system without reusing an immutable cached copy.');
 }
 assert.match(blogIndexHtml, /class="story-img pb-editorial-card-media"[\s\S]*class="pb-editorial-card-image"/, 'El Balcón cards must use the shared card treatment.');
 assert.match(blogIndexHtml, /\.story-img img\{[^}]*object-fit:contain/, 'El Balcón previews must show the complete image.');

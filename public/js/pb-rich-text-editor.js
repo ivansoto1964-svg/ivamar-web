@@ -155,14 +155,17 @@
 
   function meaningfulSibling(figure, direction) {
     let sibling = direction < 0 ? figure.previousElementSibling : figure.nextElementSibling;
-    while (sibling && sibling.tagName === 'P' && !sibling.textContent.trim()) {
+    while (sibling && ['P', 'DIV'].includes(sibling.tagName) && !sibling.textContent.trim()) {
       sibling = direction < 0 ? sibling.previousElementSibling : sibling.nextElementSibling;
     }
     return sibling;
   }
 
   function splitBreakParagraph(block) {
-    if (!block || block.tagName !== 'P' || !block.querySelector('br')) return false;
+    // Mobile contenteditable commonly creates DIV blocks while desktop browsers
+    // create P blocks. Treat both alike so one tap never moves an image across a
+    // whole pasted/mobile text block.
+    if (!block || !['P', 'DIV'].includes(block.tagName) || !block.querySelector('br')) return false;
     const groups = [[]];
     for (const node of [...block.childNodes]) {
       if (node.nodeName === 'BR') groups.push([]);
