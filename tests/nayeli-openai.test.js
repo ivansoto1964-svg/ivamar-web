@@ -7,12 +7,16 @@ const nayeliOpenAI = require('../src/services/nayeli-openai');
 const root = path.join(__dirname,'..');
 const server = fs.readFileSync(path.join(root,'src/server.js'),'utf8');
 const assistant = fs.readFileSync(path.join(root,'src/assistants/nayeli.js'),'utf8');
+const editorial = fs.readFileSync(path.join(root,'src/assistants/nayeli.editorial.md'),'utf8');
 
 assert.match(server,/['"]\/api\/nayeli['"]/, 'The old public Nayeli route must remain retired.');
 assert.doesNotMatch(server,/app\.post\(['"]\/api\/nayeli['"]/, 'No public Nayeli handler may be restored.');
 assert.match(server,/app\.post\(['"]\/pb-control\/nayeli\/preview['"], requirePBAdmin, aiLimiter/, 'Preview must require PB admin authentication and rate limiting.');
 assert.match(server,/if \(!config\.enabled\) return res\.status\(404\)/, 'Preview must be hidden while disabled.');
 assert.match(assistant,/No solicites email, teléfono, dirección, pago ni información privada/, 'Nayeli must not solicit private information.');
+assert.match(assistant,/GUÍA EDITORIAL DE PLANETA BORICUA/, 'Nayeli must load the PB editorial guide.');
+assert.match(editorial,/Cuenta primero por qué algo importa/, 'The editorial guide must prioritize story and relevance before promotion.');
+assert.match(editorial,/No prometas calidad/, 'The editorial guide must prohibit unverified quality claims.');
 
 assert.deepEqual(nayeliOpenAI.configuration({}),{enabled:false,hasApiKey:false,model:'gpt-6-luna'});
 assert.deepEqual(nayeliOpenAI.configuration({NAYELI_PREVIEW_ENABLED:'true'}),{enabled:true,hasApiKey:false,model:'gpt-6-luna'});
@@ -50,10 +54,21 @@ assert.ok(history.every(item => item.role === 'user' || item.role === 'assistant
   assert.equal(result.reply,'¡Wepa! Encontré una opción.');
   assert.equal(request.model,'gpt-6-luna');
   assert.equal(request.store,false);
-  assert.equal(request.max_output_tokens,450);
+  assert.equal(request.max_output_tokens,650);
   assert.deepEqual(request.reasoning,{effort:'none'});
   assert.equal(request.input.length,2);
   assert.match(request.instructions,/descripción clara y atractiva de una creación artesanal/);
   assert.equal(result.mode,'product');
+
+  await nayeliOpenAI.reply({
+    message:'Redacta una publicación completa para Lo más reciente',
+    mode:'promotion',
+    context:'LO MÁS RECIENTE:\n- Ejemplo',
+    client,
+    env:{NAYELI_PREVIEW_ENABLED:'true'}
+  });
+  assert.equal(request.max_output_tokens,1200);
+  assert.match(request.instructions,/Si solicitan una publicación completa/);
+  assert.match(request.instructions,/Guía editorial de Planeta Boricua/i);
   console.log('Nayeli OpenAI recovery tests passed');
 })().catch(error => { console.error(error); process.exitCode=1; });

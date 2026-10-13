@@ -5,6 +5,12 @@ const MAX_MESSAGE_CHARS = 1200;
 const MAX_HISTORY_ITEMS = 6;
 const MAX_HISTORY_CHARS = 1200;
 const MODES = new Set(['general','profile','product','promotion']);
+const MAX_OUTPUT_TOKENS = {
+  general:450,
+  profile:750,
+  product:650,
+  promotion:1200
+};
 
 function normalizeMode(value) {
   const mode = String(value || '').trim().toLowerCase();
@@ -57,11 +63,11 @@ async function reply({message,history,context,mode,client,env = process.env}) {
     model:config.model,
     instructions:nayeli.instructions(String(context || '').slice(0,6000),selectedMode),
     input,
-    max_output_tokens:450,
+    max_output_tokens:MAX_OUTPUT_TOKENS[selectedMode],
     reasoning:{effort:'none'},
     store:false
   });
   return {reply:String(response.output_text || '').trim(),model:config.model,mode:selectedMode,usage:response.usage || {}};
 }
 
-module.exports = { configuration, reply, safeHistory, normalizeMode, MAX_MESSAGE_CHARS, MAX_HISTORY_ITEMS };
+module.exports = { configuration, reply, safeHistory, normalizeMode, MAX_MESSAGE_CHARS, MAX_HISTORY_ITEMS, MAX_OUTPUT_TOKENS };
