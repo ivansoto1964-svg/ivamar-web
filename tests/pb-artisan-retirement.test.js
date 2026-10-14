@@ -1,0 +1,40 @@
+const assert = require('assert');
+const fs = require('fs');
+const os = require('os');
+const path = require('path');
+const retirement = require('../src/services/pb-artisan-retirement');
+const admin = require('../src/views/planetaboricua/artesano-admin');
+const root = fs.mkdtempSync(path.join(os.tmpdir(),'pb-retire-'));
+try {
+  const directory = path.join(root,'listings');
+  fs.mkdirSync(directory);
+  const full = path.join(directory,'cidra.json');
+  const archiveFile = path.join(root,'retired.json');
+  const item = {id:'1',name:'HopebyJdMar',email:'hopebyjdmar@gmail.com',slug:'hope-1',gallery:[{url:'photo',title:'Mi creación'}]};
+  const other = {id:'2',name:'Otro artesano',email:'other@example.com'};
+  fs.writeFileSync(full,JSON.stringify([item,other]));
+  retirement.retire({record:{item,items:[item,other],full,file:'cidra.json'},archiveFile,slug:'hope-1'});
+  assert.deepEqual(JSON.parse(fs.readFileSync(full)),[other]);
+  assert.deepEqual(retirement.read(archiveFile)[0].item,item);
+  assert.throws(()=>retirement.restore({id:'1',archiveFile,directory,approved:[{id:'3',email:'HOPEBYJDMAR@gmail.com'}]}),/duplicados/);
+  assert.deepEqual(JSON.parse(fs.readFileSync(full)),[other]);
+  retirement.restore({id:'1',archiveFile,directory,approved:[other]});
+  assert.deepEqual(JSON.parse(fs.readFileSync(full)),[other,item]);
+  assert.deepEqual(retirement.read(archiveFile),[]);
+  assert.throws(()=>retirement.restore({id:'1',archiveFile,directory,approved:[]}),/no encontrado/);
+  // A broken archive must not cause an active profile to disappear.
+  fs.writeFileSync(archiveFile,'invalid json');
+  assert.throws(()=>retirement.retire({record:{item,items:[other,item],full,file:'cidra.json'},archiveFile,slug:'hope-1'}));
+  assert.deepEqual(JSON.parse(fs.readFileSync(full)),[other,item]);
+  const edit = admin.edit(item,'csrf');
+  assert.match(edit,/Retirar de la Feria/);
+  assert.match(edit,/\/pb-control\/artesanos\/1\/retirar/);
+  assert.match(admin.retired([{item,retiredAt:'now'}],'csrf'),/Restaurar perfil/);
+  assert.match(admin.edit({...item,name:'<script>bad</script>'},'csrf'),/&lt;script&gt;bad&lt;\/script&gt;/);
+  const server = fs.readFileSync(path.join(__dirname,'../src/server.js'),'utf8');
+  assert.match(server,/artesanos\/:id\/retirar', requirePBAdmin, requirePBCsrf/);
+  assert.match(server,/source:'admin-profile-retirement'/);
+  assert.match(server,/before-admin-retire/);
+  assert.match(server,/artesanos\/:id\/restaurar', requirePBAdmin, requirePBCsrf/);
+  console.log('PB artisan retirement tests passed');
+} finally { fs.rmSync(root,{recursive:true,force:true}); }
