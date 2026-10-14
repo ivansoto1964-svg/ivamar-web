@@ -9,6 +9,7 @@ const pbBlogStore = require('./services/pb-blog-store');
 const pbSiteAnalytics = require('./services/pb-site-analytics');
 const { buildPBExploreRecommendations } = require('./services/pb-ecosystem-explore');
 const pbArtisanMailBatches = require('./services/pb-artisan-mail-batches');
+const pbArtisanRetirement = require('./services/pb-artisan-retirement');
 const pbLatestEditor = require('./services/pb-latest-editor');
 const pbControlDrafts = require('./services/pb-control-drafts');
 const { cleanLatestFile } = require('./services/pb-legacy-commercial-cleanup');
@@ -380,6 +381,7 @@ function pbArtisanDuplicateMessage(reason) {
 
 const PB_ARTISAN_DIR = '/data/pb-listings';
 const PB_ARTISAN_BACKUP_DIR = '/data/pb-backups';
+const PB_ARTISAN_ARCHIVE_FILE = '/data/pb-retired-artisans.json';
 
 function loadPBApprovedArtisanRecord(id) {
   if (!fs.existsSync(PB_ARTISAN_DIR)) return null;
@@ -3698,6 +3700,13 @@ function ivaSendSugg(el){document.getElementById('ivaInput').value=el.textConten
 // PB Control artisan editor.
 app.get('/pb-control/artesanos', requirePBAdmin, (req,res) => {
   const q = sanitize(req.query?.q || '').trim().toLowerCase();
+  if (req.query?.retired === '1') {
+    try {
+      const active = new Set(loadApprovedPBListings({strict:true}).map(item => String(item.id)));
+      const archived = pbArtisanRetirement.read(PB_ARTISAN_ARCHIVE_FILE).filter(entry => !active.has(String(entry.item.id)));
+      return res.send(artesanoAdminPB.retired(archived, req.pbAdminSession.csrf));
+    } catch (error) { return res.status(500).send('No se pudieron cargar los perfiles retirados.'); }
+  }
   const needsImprovement = req.query?.needs === '1';
   let items = loadPBApprovedArtisansWithFiles().map(item => ({...item,slug:pbArtisanSlug(item)}));
   const total = items.length;
@@ -3720,6 +3729,36 @@ app.get('/pb-control/artesanos/herramientas', requirePBAdmin, (req,res) => {
   const slug = record ? pbArtisanSlug(item) : '';
   const publicUrl = slug ? `/artesanos/${encodeURIComponent(slug)}` : '/feria-artesanos';
   res.send(artesanoMiPerfilPB.toolsPage({...item,slug}, '', publicUrl, {mode:'admin'}));
+});
+
+app.post('/pb-control/artesanos/:id/retirar', requirePBAdmin, requirePBCsrf, (req,res) => {
+  const record = loadPBApprovedArtisanRecord(req.params.id);
+  if (!record) return res.status(404).json({ok:false,error:'Artesano no encontrado.'});
+  try {
+    if (!backupPBArtisans(`before-admin-retire-${record.item.id}`)) throw new Error('No se pudo crear la copia de seguridad.');
+    const email = normalizePBArtisanEmail(record.item.email);
+    const optOuts = pbArtisanEmailOptOuts();
+    if (email && !optOuts.some(item => normalizePBArtisanEmail(item.email) === email)) {
+      optOuts.push({email,optedOutAt:new Date().toISOString(),source:'admin-profile-retirement'});
+      writeJsonFile(PB_ARTISAN_EMAIL_OPTOUTS_FILE,optOuts);
+    }
+    pbArtisanRetirement.retire({record,archiveFile:PB_ARTISAN_ARCHIVE_FILE,slug:pbArtisanSlug(record.item)});
+    return res.json({ok:true,message:'Perfil retirado de la Feria y excluido de comunicaciones generales.'});
+  } catch (error) {
+    console.error('PB artisan retirement:',error.message);
+    return res.status(500).json({ok:false,error:'No se pudo completar el retiro. Revisa el perfil antes de intentar nuevamente.'});
+  }
+});
+
+app.post('/pb-control/artesanos/:id/restaurar', requirePBAdmin, requirePBCsrf, (req,res) => {
+  try {
+    if (!backupPBArtisans(`before-admin-restore-${req.params.id}`)) throw new Error('No se pudo crear la copia de seguridad.');
+    pbArtisanRetirement.restore({id:req.params.id,archiveFile:PB_ARTISAN_ARCHIVE_FILE,directory:PB_ARTISAN_DIR,approved:loadApprovedPBListings({strict:true})});
+    return res.json({ok:true,message:'Perfil restaurado. Su baja de correos generales se mantiene.'});
+  } catch (error) {
+    console.error('PB artisan restore:',error.message);
+    return res.status(400).json({ok:false,error:error.message});
+  }
 });
 
 app.get('/pb-control/artesanos/:id', requirePBAdmin, (req,res) => {
