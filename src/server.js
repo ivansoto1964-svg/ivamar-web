@@ -132,13 +132,6 @@ app.use((req, res, next) => {
   next();
 });
 
-// Handle malformed URI errors from bots/scanners
-app.use((err, req, res, next) => {
-  if (err instanceof URIError) {
-    return res.status(400).send('Bad Request');
-  }
-  next(err);
-});
 
 
 // AI endpoints — max 20 requests per 10 minutes per IP
@@ -4436,4 +4429,14 @@ app.post('/api/newsletter-boricua', express.json(), formLimiter, async (req, res
     console.error('PB Subscribe error:', error.message);
     return res.status(500).json({ok:false,error:'No se pudo completar la suscripción.'});
   }
+});
+
+// Error handlers must follow every route, including those registered after listen().
+// The router marks malformed encoded path parameters as URIError with status 400.
+app.use((err, req, res, next) => {
+  if (err instanceof URIError && err.status === 400) {
+    if (res.headersSent) return next(err);
+    return res.status(400).type('text').send('Bad Request');
+  }
+  return next(err);
 });
