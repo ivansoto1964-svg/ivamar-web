@@ -80,8 +80,8 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
 .hero{background:var(--white);border-bottom:1px solid var(--border);padding:2rem 0;}
 .hero-inner{max-width:1200px;margin:0 auto;padding:0 2rem;display:grid;grid-template-columns:1.6fr 1fr;gap:2rem;align-items:start;}
 .hero-main{}
-.hero-main-img{width:100%;height:320px;object-fit:cover;border-radius:4px;margin-bottom:1rem;background:linear-gradient(135deg,var(--blue),var(--red));display:flex;align-items:center;justify-content:center;font-size:5rem;}
-.hero-main-img img{width:100%;height:100%;object-fit:cover;border-radius:4px;}
+.hero-main-img{width:100%;height:320px;object-fit:contain;border-radius:4px;margin-bottom:1rem;background:linear-gradient(135deg,var(--blue),var(--red));display:flex;align-items:center;justify-content:center;font-size:5rem;}
+.hero-main-img img{width:100%;height:100%;object-fit:contain;border-radius:4px;}
 .hero-cat{font-size:0.65rem;font-weight:800;color:var(--red);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:0.5rem;}
 .hero-title{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,3vw,2.4rem);font-weight:800;line-height:1.2;color:var(--dark);margin-bottom:0.8rem;}
 .hero-excerpt{font-size:0.92rem;color:var(--mid);line-height:1.7;margin-bottom:1rem;}
@@ -123,8 +123,7 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
 .noticia-card{background:var(--white);border-radius:4px;overflow:hidden;text-decoration:none;color:inherit;display:flex;flex-direction:column;transition:box-shadow 0.2s;}
 .noticia-card:hover{box-shadow:0 4px 20px rgba(0,0,0,0.08);}
 .noticia-img{height:160px;overflow:hidden;background:linear-gradient(135deg,#e5e5e0,#d0d0ca);}
-.noticia-img img{width:100%;height:100%;object-fit:cover;transition:transform 0.3s;}
-.noticia-card:hover .noticia-img img{transform:scale(1.03);}
+.noticia-img img{display:block;width:100%;height:100%;object-fit:contain;object-position:center;}
 .noticia-body{padding:1.2rem;flex:1;display:flex;flex-direction:column;}
 .noticia-cat{font-size:0.6rem;font-weight:800;color:var(--red);text-transform:uppercase;letter-spacing:0.1em;margin-bottom:0.4rem;}
 .noticia-title{font-family:'Playfair Display',serif;font-size:1rem;font-weight:700;color:var(--dark);line-height:1.3;margin-bottom:0.5rem;flex:1;}
@@ -136,7 +135,7 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
 .latest-home-inner{max-width:1200px;margin:0 auto;padding:0 2rem;}
 .latest-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:.5rem;}
 .latest-card{display:flex;flex-direction:column;background:#f7f7f3;border:1px solid var(--border);border-radius:8px;overflow:hidden;color:inherit;text-decoration:none;}
-.latest-card img{width:100%;height:155px;object-fit:cover;}
+.latest-card img{display:block;width:100%;height:155px;object-fit:contain;object-position:center;background:#eef1f5;}
 .latest-placeholder{height:155px;background:linear-gradient(135deg,#002d62 0%,#064886 62%,#ce1126 100%);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;text-align:center;gap:.35rem;}
 .latest-placeholder strong{font-family:'Playfair Display',serif;font-size:1.15rem;}
 .latest-placeholder span{font-size:2rem;}
@@ -909,7 +908,7 @@ async function pbCheckForUpdate(post) {
       const heroPost = posts.find(p => p.img) || posts[0];
       const heroImg = document.getElementById('hero-main-img');
       if (heroPost.img) {
-        heroImg.outerHTML = '<img id="hero-main-img" src="' + heroPost.img + '" alt="' + heroPost.title + '" width="768" height="320" fetchpriority="high" decoding="async" style="width:100%;height:320px;object-fit:cover;border-radius:4px;margin-bottom:1rem;">';
+        heroImg.outerHTML = '<img id="hero-main-img" src="' + heroPost.img + '" alt="' + heroPost.title + '" width="768" height="320" fetchpriority="high" decoding="async" style="display:block;width:100%;height:320px;object-fit:contain;object-position:center;background:#eef1f5;border-radius:4px;margin-bottom:1rem;">';
       }
       document.getElementById('hero-main-cat').textContent = heroPost.tag;
       document.getElementById('hero-main-title').textContent = heroPost.title;
