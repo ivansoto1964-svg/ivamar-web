@@ -17,6 +17,7 @@ module.exports = `<!DOCTYPE html>
 <meta name="keywords" content="Puerto Rico, cultura puertorriqueña, diáspora boricua, artesanos puertorriqueños, mudarse de Puerto Rico, recursos boricuas">
 <meta name="author" content="Planeta Boricua">
 <meta name="robots" content="index, follow">
+<meta name="p:domain_verify" content="2591e6434fbe571ecc8889dc10061d14"/>
 <link rel="canonical" href="https://www.masboricuaqueunmofongo.com/">
 
 <!-- Open Graph -->
