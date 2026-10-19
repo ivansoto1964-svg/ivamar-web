@@ -34,14 +34,14 @@ try {
   const first = store.upsert(a,member,product);
   assert.equal(store.list(b).length,0);
   assert.throws(() => store.upsert(b,{...member,artisanId:'b'},{...product,id:first.id}),/encontrado/);
-  for (let i=1;i<15;i++) store.upsert(a,member,product);
+  for (let i=1;i<20;i++) store.upsert(a,member,product);
   assert.throws(() => store.upsert(a,member,product),/límite/);
   const plus = {...member,plan:'plus'};
-  for (let i=15;i<50;i++) store.upsert(a,plus,{...product,category:'Tejidos',images:[...product.images,'https://res.cloudinary.com/demo/image/upload/second.jpg']});
+  for (let i=20;i<50;i++) store.upsert(a,plus,{...product,category:'Tejidos',images:[...product.images,'https://res.cloudinary.com/demo/image/upload/second.jpg']});
   assert.throws(() => store.upsert(a,plus,product),/límite/);
   assert.equal(store.publicProducts('a',plus).length,50);
   const basic = store.publicProducts('a',member);
-  assert.equal(basic.length,15);
+  assert.equal(basic.length,20);
   assert.ok(basic.every(item => item.images.length <= 1 && item.category === ''));
   assert.equal(store.publicProducts('a',{...member,status:'canceled'}).length,0);
   assert.equal(store.list(a).length,50); // Downgrade/cancel never deletes data.
