@@ -45,9 +45,9 @@ function scripts(html){for(const s of html.matchAll(/<script>([\s\S]*?)<\/script
   for(const pagePath of ['/talento-boricua/registro','/talento-boricua/acceso','/talento-boricua/acceso/secret','/talento-boricua/mi-perfil'])assert.equal(analytics.shouldTrackRequest({method:'GET',hostname:'www.masboricuaqueunmofongo.com',path:pagePath,headers:{'user-agent':'Mozilla/5.0',accept:'text/html'}}),false);
   assert.equal(talent.isPrivatePath('/talento-boricua/mi-trovador-abc'),false);
 
-  const httpStore=talent.createStore({directory:path.join(root,'http'),now}),messages=[],notifications=[];let failNotification=false;
+  const httpStore=talent.createStore({directory:path.join(root,'http'),now}),messages=[],notifications=[];let failNotification=false,publicEnabled=true;
   const origin='https://www.masboricuaqueunmofongo.com',app=express();
-  app.use(createRouter({store:httpStore,secret,origin,now,sendAccess:async(email,link)=>messages.push({email,link}),notifyStatus:async(email,action)=>{if(failNotification)throw Error('simulated mail failure');notifications.push({email,action});},upload:async(data,nonce)=>image(nonce),requireAdmin:(req,res,next)=>{if(req.get('X-Test-Admin')!=='yes')return res.sendStatus(401);req.pbAdminSession={csrf:'admin-csrf'};next();},requireAdminCsrf:(req,res,next)=>req.get('X-CSRF-Token')==='admin-csrf'?next():res.sendStatus(403)}));
+  app.use(createRouter({store:httpStore,secret,origin,now,publicEnabled:()=>publicEnabled,sendAccess:async(email,link)=>messages.push({email,link}),notifyStatus:async(email,action)=>{if(failNotification)throw Error('simulated mail failure');notifications.push({email,action});},upload:async(data,nonce)=>image(nonce),requireAdmin:(req,res,next)=>{if(req.get('X-Test-Admin')!=='yes')return res.sendStatus(401);req.pbAdminSession={csrf:'admin-csrf'};next();},requireAdminCsrf:(req,res,next)=>req.get('X-CSRF-Token')==='admin-csrf'?next():res.sendStatus(403)}));
   const server=app.listen(0,'127.0.0.1');await new Promise(resolve=>server.once('listening',resolve));const base='http://127.0.0.1:'+server.address().port;
   const get=(url,headers={})=>fetch(base+url,{headers,redirect:'manual'});
   const post=(url,body,headers={})=>fetch(base+url,{method:'POST',headers:{'Content-Type':'application/json',Origin:origin,...headers},body:JSON.stringify(body),redirect:'manual'});
@@ -85,6 +85,15 @@ function scripts(html){for(const s of html.matchAll(/<script>([\s\S]*?)<\/script
    assert.equal((await post('/api/pb-talento/perfil',{...fixture(),photo:photoUrl,name:'Cambio pendiente'},ownerHeaders)).status,200);
    assert.equal(httpStore.publicRecord(httpStore.get(record.id)).name,original);
    failNotification=true;const review=await post('/pb-control/talento/accion',{id:record.id,action:'reject'},adminHeaders);assert.equal(review.status,200);assert.match((await review.json()).warning,/correo/);assert.equal(httpStore.publicRecord(httpStore.get(record.id)).name,original);failNotification=false;
+   publicEnabled=false;
+   assert.equal((await get('/talento-boricua')).status,404);
+   assert.equal((await get('/talento-boricua/'+record.slug)).status,404);
+   assert.equal((await get('/talento-boricua/'+record.slug+'/calendario/'+entry.id+'.ics')).status,404);
+   assert.equal((await get('/talento-boricua/registro')).status,200);
+   assert.equal((await get('/talento-boricua/acceso')).status,200);
+   const prelaunch=await get('/talento-boricua/mi-perfil',{Cookie:cookie});assert.equal(prelaunch.status,200);assert.match(await prelaunch.text(),/pendiente de apertura/);
+   assert.equal((await get('/pb-control/talento',{'X-Test-Admin':'yes'})).status,200);
+   publicEnabled=true;
    const calendar=await get('/talento-boricua/'+record.slug+'/calendario/'+entry.id+'.ics');assert.equal(calendar.status,200);assert.match(calendar.headers.get('content-type'),/text\/calendar/);
    assert.equal((await post('/api/pb-talento/calendario/eliminar',{id:entry.id},ownerHeaders)).status,200);
    assert.equal((await get('/talento-boricua/'+record.slug+'/calendario/'+entry.id+'.ics')).status,404);
