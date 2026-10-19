@@ -3077,7 +3077,7 @@ app.get("/sitemap.xml", async (req, res) => {
   const eventUrls = readPBEvents('approved.json').map(event => `<url><loc>${pbEventTools.eventPageUrl(event)}</loc><lastmod>${String(event.approvedAt || event.startDate || '').slice(0,10)}</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>`).join('');
   const staticUrls = `<url><loc>https://www.masboricuaqueunmofongo.com/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/blog</loc><changefreq>weekly</changefreq><priority>0.9</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/lo-mas-reciente</loc><changefreq>daily</changefreq><priority>0.9</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/recursos</loc><changefreq>weekly</changefreq><priority>0.9</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/mudarse-de-pr</loc><changefreq>monthly</changefreq><priority>0.8</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/regresar-a-pr</loc><changefreq>monthly</changefreq><priority>0.8</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/feria-artesanos</loc><changefreq>weekly</changefreq><priority>0.8</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/quienes-somos</loc><changefreq>monthly</changefreq><priority>0.7</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/para-artesanos</loc><changefreq>monthly</changefreq><priority>0.7</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/anunciate-en-pb</loc><changefreq>monthly</changefreq><priority>0.6</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/privacidad-boricua</loc><changefreq>monthly</changefreq><priority>0.5</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/terminos-boricua</loc><changefreq>monthly</changefreq><priority>0.5</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/afiliados-boricua</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>`;
   let talentUrls = '';
-  if (process.env.PB_TALENT_ENABLED !== 'false') {
+  if (process.env.PB_TALENT_ENABLED === 'true') {
     try {
       talentUrls = '<url><loc>https://www.masboricuaqueunmofongo.com/talento-boricua</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>' + pbTalentStore.all().filter(item => item.status === 'approved').map(item => `<url><loc>https://www.masboricuaqueunmofongo.com/talento-boricua/${item.slug}</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>`).join('');
     } catch(error) { console.error('PB talent sitemap unavailable:',error.message); }
@@ -3276,7 +3276,7 @@ app.post('/admin/pb-event-delete/:token', (req, res) => {
 });
 
 // Cultural profiles are independent of artisan listings and paid catalogs.
-if (process.env.PB_TALENT_ENABLED !== 'false') {
+if (process.env.PB_TALENT_ENABLED === 'true') {
   app.use(createPBTalentRouter({
     store:pbTalentStore,
     secret:String(process.env.PB_TALENT_MAGIC_SECRET || process.env.PB_ARTISAN_MAGIC_SECRET || '').trim(),
