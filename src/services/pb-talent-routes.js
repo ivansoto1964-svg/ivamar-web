@@ -5,11 +5,12 @@ const view=require('../views/planetaboricua/talento-boricua');
 const COOKIE='__Host-pbTalent';
 const hash=token=>crypto.createHash('sha256').update('talent-csrf:'+token).digest('hex');
 const equal=(a,b)=>{a=Buffer.from(String(a||''));b=Buffer.from(String(b||''));return a.length===b.length&&crypto.timingSafeEqual(a,b);};
-function createRouter({store,secret,sendAccess,notifyStatus,upload,requireAdmin,requireAdminCsrf,origin='https://www.masboricuaqueunmofongo.com',now=()=>new Date()}){
+function createRouter({store,secret,sendAccess,notifyStatus,upload,requireAdmin,requireAdminCsrf,publicEnabled=()=>false,origin='https://www.masboricuaqueunmofongo.com',now=()=>new Date()}){
  const router=express.Router(),wrap=fn=>(req,res,next)=>Promise.resolve().then(()=>fn(req,res,next)).catch(next);
  const publicLimit=rateLimit({windowMs:3600000,limit:8,standardHeaders:true,legacyHeaders:false});
  const photoLimit=rateLimit({windowMs:3600000,limit:15,standardHeaders:true,legacyHeaders:false});
  const ownerLimit=rateLimit({windowMs:15*60000,limit:60,standardHeaders:true,legacyHeaders:false});
+ const publicOnly=(req,res,next)=>publicEnabled()?next():res.status(404).send(view.notice('Talento Boricua está en preparación','La sección pública todavía no está abierta. Puedes completar tu solicitud desde el enlace de registro.','/talento-boricua/registro'));
  const privateHeaders=(req,res,next)=>{res.set({'Cache-Control':'no-store, private','X-Robots-Tag':'noindex, nofollow','Referrer-Policy':'no-referrer'});next();};
  const ready=(req,res,next)=>secret?next():res.status(503).send(view.notice('Registro en preparación','El acceso seguro todavía no está configurado. Comunícate con Planeta Boricua.'));
  const sameOrigin=(req,res,next)=>req.get('Origin')===origin&&req.get('Sec-Fetch-Site')!=='cross-site'?next():res.status(403).json({error:'No se pudo verificar el origen de la solicitud.'});
@@ -73,7 +74,7 @@ function createRouter({store,secret,sendAccess,notifyStatus,upload,requireAdmin,
  }
  router.post('/api/pb-talento/foto-registro',privateHeaders,ready,photoLimit,sameOrigin,formTicket,express.json({limit:'7mb'}),wrap((req,res)=>photo(req,res,req.talentForm.nonce)));
  router.post('/api/pb-talento/foto',privateHeaders,ready,photoLimit,sameOrigin,wrap(owner),ownerCsrf,express.json({limit:'7mb'}),wrap((req,res)=>photo(req,res,req.talent.record.folder)));
- router.get('/talento-boricua/mi-perfil',privateHeaders,ready,wrap((req,res,next)=>{if(!talent.verify(secret,cookie(req),'session',now()))return res.redirect('/talento-boricua/acceso');owner(req,res,next);}),wrap((req,res)=>res.send(view.owner({record:req.talent.record,csrf:hash(req.talent.token)}))));
+ router.get('/talento-boricua/mi-perfil',privateHeaders,ready,wrap((req,res,next)=>{if(!talent.verify(secret,cookie(req),'session',now()))return res.redirect('/talento-boricua/acceso');owner(req,res,next);}),wrap((req,res)=>res.send(view.owner({record:req.talent.record,csrf:hash(req.talent.token),publicEnabled:publicEnabled()}))));
  router.post('/api/pb-talento/perfil',privateHeaders,ready,ownerLimit,sameOrigin,wrap(owner),ownerCsrf,express.json({limit:'30kb'}),wrap((req,res)=>{
   try{if(!validPhoto(req.body?.photo,req.talent.record.folder))return res.status(400).json({error:'Usa una foto subida desde tu perfil.'});store.saveDraft(req.talent.record.id,req.body||{});res.json({message:'Cambios enviados para revisión. Tu calendario sigue disponible en este panel.'});}catch(error){return errorResponse(res,error);}
  }));
@@ -87,7 +88,7 @@ function createRouter({store,secret,sendAccess,notifyStatus,upload,requireAdmin,
   if(req.body?.confirmed!==true)return res.status(400).json({error:'Confirma el retiro del perfil.'});store.retire(req.talent.record.id);res.clearCookie(COOKIE,{httpOnly:true,secure:true,sameSite:'lax',path:'/'});res.json({redirect:'/talento-boricua'});
  }));
  router.post('/api/pb-talento/salir',privateHeaders,ready,sameOrigin,wrap(owner),ownerCsrf,(req,res)=>{res.clearCookie(COOKIE,{httpOnly:true,secure:true,sameSite:'lax',path:'/'});res.json({redirect:'/talento-boricua/acceso'});});
- router.get('/pb-control/talento',privateHeaders,requireAdmin,wrap((req,res)=>res.send(view.admin({records:store.all(),csrf:req.pbAdminSession.csrf}))));
+ router.get('/pb-control/talento',privateHeaders,requireAdmin,wrap((req,res)=>res.send(view.admin({records:store.all(),csrf:req.pbAdminSession.csrf,publicEnabled:publicEnabled()}))));
  router.post('/pb-control/talento/accion',privateHeaders,requireAdmin,sameOrigin,express.json({limit:'3kb'}),requireAdminCsrf,wrap(async(req,res)=>{
   try{
    const {id,action,entryId}=req.body||{};
@@ -100,12 +101,12 @@ function createRouter({store,secret,sendAccess,notifyStatus,upload,requireAdmin,
    res.json({ok:true});
   }catch(error){return errorResponse(res,error);}
  }));
- router.get('/talento-boricua',(req,res)=>res.send(view.directory(store.all().map(r=>store.publicRecord(r)).filter(Boolean))));
- router.get('/talento-boricua/:slug/calendario/:id.ics',wrap((req,res)=>{
+ router.get('/talento-boricua',publicOnly,(req,res)=>res.send(view.directory(store.all().map(r=>store.publicRecord(r)).filter(Boolean))));
+ router.get('/talento-boricua/:slug/calendario/:id.ics',publicOnly,wrap((req,res)=>{
   const r=store.publicRecord(store.bySlug(req.params.slug)),entry=r?.calendar.find(e=>e.id===req.params.id&&e.kind==='performance');if(!entry)return res.sendStatus(404);
   res.set({'Content-Type':'text/calendar; charset=utf-8','Content-Disposition':'attachment; filename="presentacion-pb.ics"'});res.send(talent.ics(r,entry));
  }));
- router.get('/talento-boricua/:slug',wrap((req,res)=>{const r=store.publicRecord(store.bySlug(req.params.slug));if(!r)return res.status(404).send(view.notice('Perfil no disponible','Este perfil no está publicado.','/talento-boricua'));res.send(view.publicProfile(r,req.query.month,now()));}));
+ router.get('/talento-boricua/:slug',publicOnly,wrap((req,res)=>{const r=store.publicRecord(store.bySlug(req.params.slug));if(!r)return res.status(404).send(view.notice('Perfil no disponible','Este perfil no está publicado.','/talento-boricua'));res.send(view.publicProfile(r,req.query.month,now()));}));
  router.use((error,req,res,next)=>{if(!req.path.startsWith('/talento-boricua')&&!req.path.startsWith('/api/pb-talento')&&!req.path.startsWith('/pb-control/talento'))return next(error);const status=error.type==='entity.too.large'?413:error.type==='entity.parse.failed'?400:500;res.status(status).json({error:status===413?'La solicitud es demasiado grande.':status===400?'Solicitud inválida.':'No pudimos completar la operación. Intenta nuevamente.'});});
  return router;
 }
