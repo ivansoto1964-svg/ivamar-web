@@ -3264,6 +3264,31 @@ app.post('/admin/pb-event-delete/:token', (req, res) => {
   res.send(`<h2>✅ Evento eliminado</h2><p>${sanitize(event.name)} ya no aparece en la agenda.</p><p><a href="/agenda-boricua">Ver agenda</a></p>`);
 });
 
+// Catalog pilot: disabled by default, including all new owner/public routes.
+// Sales payments always stay on each artisan's own external checkout.
+const pbCatalogFoundation = require('./services/pb-catalog-foundation');
+const pbCatalogRoutes = require('./services/pb-catalog-routes');
+if (pbCatalogFoundation.configuration().catalog) {
+  const catalogStore = pbCatalogFoundation.createStore({directory:'/data/pb-catalogs'});
+  const catalogItem = item => item ? {...item,slug:pbArtisanSlug(item)} : null;
+  app.use(pbCatalogRoutes.createCatalogRouter({
+    store:catalogStore,
+    verifyToken:verifyPBArtisanToken,
+    getArtisan:id => catalogItem(loadPBApprovedArtisanRecord(id)?.item),
+    getArtisanBySlug:slug => catalogItem(loadApprovedPBListings().find(item => pbArtisanSlug(item) === slug)),
+    getMembership:id => pbCatalogRoutes.readMembership('/data/pb-catalog-memberships.json',id),
+    requireAdmin:requirePBAdmin,
+    upload:async (data,id) => {
+      const result = await cloudinary.uploader.upload(data, {
+        folder:`planeta-boricua/catalogos/${id}`,resource_type:'image',
+        allowed_formats:['jpg','jpeg','png','webp'],
+        transformation:[{width:1200,height:1200,crop:'limit'},{fetch_format:'auto',quality:'auto:good'}]
+      });
+      return result.secure_url;
+    }
+  }));
+}
+
 app.get('/artesanos/:slug/manifest.json', (req, res) => {
   const canonicalSlug = canonicalPBArtisanSlug(req.params.slug);
   if (canonicalSlug !== req.params.slug) return res.redirect(301, `/artesanos/${encodeURIComponent(canonicalSlug)}/manifest.json`);
