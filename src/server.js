@@ -10,6 +10,8 @@ const pbSiteAnalytics = require('./services/pb-site-analytics');
 const { buildPBExploreRecommendations } = require('./services/pb-ecosystem-explore');
 const pbArtisanMailBatches = require('./services/pb-artisan-mail-batches');
 const pbArtisanRetirement = require('./services/pb-artisan-retirement');
+const pbTalent = require('./services/pb-talent');
+const {createRouter:createPBTalentRouter} = require('./services/pb-talent-routes');
 const pbLatestEditor = require('./services/pb-latest-editor');
 const pbControlDrafts = require('./services/pb-control-drafts');
 const { cleanLatestFile } = require('./services/pb-legacy-commercial-cleanup');
@@ -95,6 +97,7 @@ app.use((req, res, next) => {
 
 // PB analytics: set PB_GA_MEASUREMENT_ID=G-XXXXXXXXXX in Render to activate.
 app.use((req, res, next) => {
+  if (pbTalent.isPrivatePath(req.path)) return next();
   const measurementId = String(process.env.PB_GA_MEASUREMENT_ID || '').trim();
   if (!/^G-[A-Z0-9]+$/i.test(measurementId)) return next();
   const host = String(req.hostname || '').toLowerCase();
@@ -124,7 +127,7 @@ app.use((req, res, next) => {
         .replace(/href=(['"])\/privacidad\1/g, 'href=$1/privacidad-boricua$1')
         .replace(/href=(['"])\/contacto\1/g, 'href=$1/quienes-somos$1')
         .replace(/connect@ivamarai\.com/gi, 'masboricuaqueunmofongo@gmail.com');
-      const privatePath = /^\/(?:pb-control|api|auth)(?:\/|$)/.test(String(req.path || ''));
+      const privatePath = /^\/(?:pb-control|api|auth)(?:\/|$)/.test(String(req.path || '')) || pbTalent.isPrivatePath(req.path);
       if (!privatePath) body = withPBSiteFooter(body, { social: renderPBSocialFollow() });
     }
     return send(body);
@@ -249,6 +252,7 @@ const stripe = process.env.STRIPE_SECRET_KEY ? Stripe(process.env.STRIPE_SECRET_
 const { searchPlacesByText } = require("./helpers/googlePlaces");
 const { sendLeadNotification } = require("./services/notificationService");
 const path = require("path");
+const pbTalentStore = pbTalent.createStore({directory:'/data/pb-talento'});
 const cookieParser = require("cookie-parser");
 const crypto = require("crypto");
 const pbAds = createPBAds();
@@ -2148,6 +2152,7 @@ app.post('/pb-control/action', requirePBAdmin, requirePBCsrf, express.json({limi
 });
 
 app.post('/api/pb-web-vitals', pbArtisanMetricsLimiter, express.json({limit:'2kb',type:['application/json','text/plain']}), (req,res) => {
+  if (pbTalent.isPrivatePath(req.body?.path)) return res.status(204).end();
   try {
     pbWebVitals.record(req.body || {});
     return res.status(204).end();
@@ -3071,9 +3076,15 @@ app.get("/sitemap.xml", async (req, res) => {
   const latestUrls = readPBLatest('approved.json').map(item => `<url><loc>https://www.masboricuaqueunmofongo.com/lo-mas-reciente/${item.slug}</loc><lastmod>${String(item.publishedAt || '').slice(0,10)}</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>`).join('');
   const eventUrls = readPBEvents('approved.json').map(event => `<url><loc>${pbEventTools.eventPageUrl(event)}</loc><lastmod>${String(event.approvedAt || event.startDate || '').slice(0,10)}</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>`).join('');
   const staticUrls = `<url><loc>https://www.masboricuaqueunmofongo.com/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/blog</loc><changefreq>weekly</changefreq><priority>0.9</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/lo-mas-reciente</loc><changefreq>daily</changefreq><priority>0.9</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/recursos</loc><changefreq>weekly</changefreq><priority>0.9</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/mudarse-de-pr</loc><changefreq>monthly</changefreq><priority>0.8</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/regresar-a-pr</loc><changefreq>monthly</changefreq><priority>0.8</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/feria-artesanos</loc><changefreq>weekly</changefreq><priority>0.8</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/quienes-somos</loc><changefreq>monthly</changefreq><priority>0.7</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/para-artesanos</loc><changefreq>monthly</changefreq><priority>0.7</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/anunciate-en-pb</loc><changefreq>monthly</changefreq><priority>0.6</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/privacidad-boricua</loc><changefreq>monthly</changefreq><priority>0.5</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/terminos-boricua</loc><changefreq>monthly</changefreq><priority>0.5</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/afiliados-boricua</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>`;
+  let talentUrls = '';
+  if (process.env.PB_TALENT_ENABLED !== 'false') {
+    try {
+      talentUrls = '<url><loc>https://www.masboricuaqueunmofongo.com/talento-boricua</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>' + pbTalentStore.all().filter(item => item.status === 'approved').map(item => `<url><loc>https://www.masboricuaqueunmofongo.com/talento-boricua/${item.slug}</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>`).join('');
+    } catch(error) { console.error('PB talent sitemap unavailable:',error.message); }
+  }
   const agendaUrl = `<url><loc>https://www.masboricuaqueunmofongo.com/agenda-boricua</loc><changefreq>daily</changefreq><priority>0.8</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/sala-de-prensa</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>`;
   res.set('Content-Type','application/xml');
-  res.send(`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${staticUrls}${agendaUrl}${eventUrls}${latestUrls}${postUrls}${artisanUrls}</urlset>`);
+  res.send(`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${staticUrls}${agendaUrl}${eventUrls}${latestUrls}${postUrls}${artisanUrls}${talentUrls}</urlset>`);
 });
 
 app.get('/sala-de-prensa', (_req, res) => res.send(salaPrensaPB()));
@@ -3263,6 +3274,35 @@ app.post('/admin/pb-event-delete/:token', (req, res) => {
   writePBEvents('approved.json', approved);
   res.send(`<h2>✅ Evento eliminado</h2><p>${sanitize(event.name)} ya no aparece en la agenda.</p><p><a href="/agenda-boricua">Ver agenda</a></p>`);
 });
+
+// Cultural profiles are independent of artisan listings and paid catalogs.
+if (process.env.PB_TALENT_ENABLED !== 'false') {
+  app.use(createPBTalentRouter({
+    store:pbTalentStore,
+    secret:String(process.env.PB_TALENT_MAGIC_SECRET || process.env.PB_ARTISAN_MAGIC_SECRET || '').trim(),
+    requireAdmin:requirePBAdmin,
+    requireAdminCsrf:requirePBCsrf,
+    sendAccess:async (email,link) => {
+      const result = await resend.emails.send({
+        from:`Planeta Boricua <${PB_SENDER_EMAIL}>`,to:email,
+        subject:'Tu acceso a Talento Boricua — Planeta Boricua',
+        html:`<div style="font-family:system-ui;max-width:600px"><h2>Tu espacio en Talento Boricua</h2><p>Confirma tu correo y administra tu perfil y calendario con este enlace. Vence en dos horas.</p><p><a href="${link}">Confirmar y entrar a mi perfil</a></p><p>El perfil se publica después de la revisión de Planeta Boricua. Si no solicitaste este acceso, puedes ignorar este mensaje.</p></div>`
+      });
+      if(result?.error || !result?.data?.id) throw new Error('No se confirmó el envío del acceso cultural.');
+    },
+    notifyStatus:async (email,action,link) => {
+      const approved = action === 'approve';
+      const result = await resend.emails.send({from:`Planeta Boricua <${PB_SENDER_EMAIL}>`,to:email,
+        subject:approved?'Tu perfil cultural fue aprobado — Planeta Boricua':'Revisión de tu solicitud — Talento Boricua',
+        html:approved?`<p>Tu perfil o actualización en Talento Boricua fue aprobado.</p><p><a href="${link}">Ver mi perfil público</a></p><p>Puedes administrar tu calendario desde <a href="https://www.masboricuaqueunmofongo.com/talento-boricua/acceso">tu acceso seguro</a>.</p>`:'<p>Revisamos tu solicitud o actualización de Talento Boricua y no fue aprobada. Si ya tenías una versión publicada, se conserva.</p><p>Para consultar o corregir la información, escribe a masboricuaqueunmofongo@gmail.com.</p>'});
+      if(result?.error || !result?.data?.id) throw new Error('No se confirmó el aviso de revisión cultural.');
+    },
+    upload:async (data,folder) => {
+      const result = await cloudinary.uploader.upload(data,{folder:`planeta-boricua/talento/${folder}`,resource_type:'image',allowed_formats:['jpg','jpeg','png','webp'],transformation:[{width:1200,height:1200,crop:'limit'},{fetch_format:'auto',quality:'auto:good'}]});
+      return result.secure_url;
+    }
+  }));
+}
 
 app.get('/artesanos/:slug/manifest.json', (req, res) => {
   const canonicalSlug = canonicalPBArtisanSlug(req.params.slug);
