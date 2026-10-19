@@ -329,6 +329,7 @@ ${renderStay22()}
       <a href="#recursos">Recursos</a>
       <a href="/feria-artesanos">Artesanos</a>
       ${process.env.PB_TALENT_ENABLED !== 'true' ? '' : '<a href="/talento-boricua">Talento Boricua</a>'}
+      ${process.env.PB_DIRECTORY_ENABLED === 'true' && process.env.PB_DIRECTORY_PUBLIC_ENABLED === 'true' ? '<a href="/quien-hace">¿Quién hace?</a>' : ''}
       <a href="#viajes">Viajes</a>
       <a href="#newsletter" class="nav-cta">Boletín →</a>
     </div>

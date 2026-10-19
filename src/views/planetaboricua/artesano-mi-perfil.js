@@ -19,7 +19,7 @@ function options(list,current){return list.map(([v,l])=>`<option value="${esc(v)
 
 function privateNavigation(token, publicUrl, active) {
   const encodedToken = encodeURIComponent(token);
-  return `<nav class="artisan-space-nav" aria-label="Mi espacio de artesano"><a class="${active==='profile'?'active':''}" href="/artesanos/mi-perfil/${encodedToken}">✏️ Mi perfil</a><a class="${active==='tools'?'active':''}" href="/artesanos/herramientas/${encodedToken}">🧰 Herramientas</a><a href="${esc(publicUrl)}" target="_blank" rel="noopener">👁️ Ver perfil público</a></nav>`;
+  return `<nav class="artisan-space-nav" aria-label="Mi espacio de artesano"><a class="${active==='profile'?'active':''}" href="/artesanos/mi-perfil/${encodedToken}">✏️ Mi perfil</a><a class="${active==='tools'?'active':''}" href="/artesanos/herramientas/${encodedToken}">🧰 Herramientas</a>${process.env.PB_CATALOG_ENABLED === 'true' ? `<a href="/artesanos/catalogo/${encodedToken}">🛍️ Mi catálogo</a>` : ''}<a href="${esc(publicUrl)}" target="_blank" rel="noopener">👁️ Ver perfil público</a></nav>`;
 }
 
 function addPrivateNavigation(html, token, publicUrl, active) {

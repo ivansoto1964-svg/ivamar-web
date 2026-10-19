@@ -1,0 +1,70 @@
+'use strict';
+const assert=require('node:assert/strict'),fs=require('node:fs'),os=require('node:os'),path=require('node:path'),crypto=require('node:crypto'),vm=require('node:vm'),express=require('express');
+const domain=require('../src/services/pb-directory'),talent=require('../src/services/pb-talent'),{createRouter}=require('../src/services/pb-directory-routes'),view=require('../src/views/planetaboricua/quien-hace'),analytics=require('../src/services/pb-site-analytics');
+const now=()=>new Date('2026-10-19T16:00:00Z'),secret='directory-test-only',folder='a'.repeat(32),origin='https://www.masboricuaqueunmofongo.com';
+const photo=(f=folder)=>`https://res.cloudinary.com/demo/image/upload/v1/planeta-boricua/directorio/${f}/photo.png`;
+const fixture=()=>({name:'Bizcochos de Prueba',ownerName:'Responsable de prueba',email:'negocio@example.com',category:'Repostería',country:'PR',region:'Puerto Rico',city:'Arecibo',zip:'00612',area:'Pueblos vecinos',bio:'Bizcochos artesanales para actividades de la comunidad.',connection:'Negocio de una persona boricua',phone:'7875550100',website:'',instagram:'',facebook:'',tiktok:'',photo:photo(),gallery:[{url:photo(),caption:'Una pieza de muestra'}],seasonStart:'',seasonEnd:'',adultRepresentative:true,rulesAccepted:true,privacyAcknowledged:true,publicationAuthorized:true,socialPromotionAuthorized:false,policyVersion:domain.POLICY_VERSION});
+function scripts(html){for(const match of html.matchAll(/<script>([\s\S]*?)<\/script>/g))new vm.Script(match[1]);}
+const data=(html,id)=>JSON.parse(html.match(new RegExp('<script[^>]*id="'+id+'"[^>]*>([\\s\\S]*?)<\\/script>'))[1]);
+const root=fs.mkdtempSync(path.join(os.tmpdir(),'pb-directory-'));
+(async()=>{try{
+ const store=domain.createStore({directory:path.join(root,'model'),now});
+ assert.equal(fs.existsSync(path.join(root,'model')),false);
+ assert.throws(()=>store.create({...fixture(),rulesAccepted:false},folder),/aceptar/);
+ assert.throws(()=>domain.profile({...fixture(),country:'MX'}),/Puerto Rico/);
+ assert.throws(()=>domain.profile({...fixture(),country:'US',region:''}),/Estado/);
+ assert.throws(()=>domain.profile({...fixture(),country:'US',region:'No es estado'}),/estado/);
+ assert.throws(()=>domain.profile({...fixture(),zip:'123'}),/cinco/);
+ assert.throws(()=>domain.profile({...fixture(),phone:'',website:''}),/contacten/);
+ assert.throws(()=>domain.profile({...fixture(),seasonStart:'2026-02-30',seasonEnd:'2026-11-01'}),/fechas/);
+ assert.throws(()=>domain.profile({...fixture(),seasonEnd:'2026-11-01'}),/fechas/);
+ assert.throws(()=>domain.profile({...fixture(),gallery:Array.from({length:13},()=>({url:photo()}))}),/12 fotos/);
+ const r=store.create(fixture(),folder);assert.equal(store.publicRecord(r),null);assert.equal(r.consent.socialPromotionAuthorized,false);
+ assert.throws(()=>store.moderate(r.id,'approve'),/correo/);store.verifyEmail(r.id);store.moderate(r.id,'approve');
+ let pub=store.publicRecord(store.get(r.id));assert.equal(pub.name,fixture().name);assert.doesNotMatch(JSON.stringify(pub),/negocio@example|ownerName|consentHistory|sessionVersion|folder/);
+ assert.equal(domain.search([pub],{city:'ARECIBO',zip:'00612',country:'PR',category:'Repostería'}).length,1);
+ assert.equal(domain.search([pub],{q:'bizcochos'}).length,1);assert.equal(domain.search([pub],{city:'Carolina'}).length,0);
+ store.setPaused(r.id,true);assert.equal(store.publicRecord(store.get(r.id)),null);store.setPaused(r.id,false);assert.ok(store.publicRecord(store.get(r.id)));
+ store.saveDraft(r.id,{...fixture(),name:'Nombre nuevo',seasonStart:'2026-11-01',seasonEnd:'2026-12-31'});assert.equal(store.publicRecord(store.get(r.id)).name,fixture().name);store.moderate(r.id,'approve');assert.equal(store.publicRecord(store.get(r.id)),null);
+ store.saveDraft(r.id,fixture());store.moderate(r.id,'approve');
+ const token=domain.token(secret,'email',{id:r.id},now());assert.ok(domain.verify(secret,token,'email',now()));assert.equal(talent.verify(secret,token,'email',now()),null);assert.equal(domain.verify(secret,talent.token(secret,'email',{id:r.id},now()),'email',now()),null);
+ const privateHTML=view.owner({record:store.get(r.id),csrf:'test'});scripts(privateHTML);assert.match(privateHTML,/pendiente de apertura/);scripts(view.admin({records:store.all(),csrf:'test'}));scripts(view.publicProfile({...pub,name:'</script><img onerror=alert(1)>'},{preview:true}));assert.match(view.publicProfile({...pub,name:'<img>'}),/&lt;img&gt;/);
+ for(const p of ['/quien-hace/registro','/quien-hace/acceso/token','/quien-hace/mi-perfil','/quien-hace/vista-previa','/artesanos/catalogo/secret']){assert.equal(analytics.shouldTrackRequest({method:'GET',hostname:'www.masboricuaqueunmofongo.com',path:p,headers:{'user-agent':'Mozilla/5.0',accept:'text/html'}}),false);}
+ const footer=require('../src/views/planetaboricua/site-footer');
+ const oldMaster=process.env.PB_DIRECTORY_ENABLED,oldPublic=process.env.PB_DIRECTORY_PUBLIC_ENABLED;
+ try {delete process.env.PB_DIRECTORY_ENABLED;delete process.env.PB_DIRECTORY_PUBLIC_ENABLED;assert.doesNotMatch(footer.renderPBSiteFooter(),/href="\/quien-hace"/);process.env.PB_DIRECTORY_PUBLIC_ENABLED='true';assert.doesNotMatch(footer.renderPBSiteFooter(),/href="\/quien-hace"/);process.env.PB_DIRECTORY_ENABLED='true';assert.match(footer.renderPBSiteFooter(),/href="\/quien-hace"/);}finally{if(oldMaster===undefined)delete process.env.PB_DIRECTORY_ENABLED;else process.env.PB_DIRECTORY_ENABLED=oldMaster;if(oldPublic===undefined)delete process.env.PB_DIRECTORY_PUBLIC_ENABLED;else process.env.PB_DIRECTORY_PUBLIC_ENABLED=oldPublic;}
+ const registrationConfig=data(view.registration({ticket:'<test>',csrf:'x'}),'directory-config');assert.equal(registrationConfig.ticket,'<test>');
+ const httpStore=domain.createStore({directory:path.join(root,'http'),now}),messages=[];let enabled=false,publicEnabled=false;
+ const app=express();app.use(createRouter({store:httpStore,secret,origin,now,enabled:()=>enabled,publicEnabled:()=>publicEnabled,sendAccess:async(email,link)=>messages.push({email,link}),notifyStatus:async()=>{},upload:async(_,nonce)=>photo(nonce),requireAdmin:(req,res,next)=>{if(req.get('X-Test-Admin')!=='yes')return res.sendStatus(401);req.pbAdminSession={csrf:'admin-csrf'};next();},requireAdminCsrf:(req,res,next)=>req.get('X-CSRF-Token')==='admin-csrf'?next():res.sendStatus(403)}));
+ const server=app.listen(0,'127.0.0.1');await new Promise(resolve=>server.once('listening',resolve));const base='http://127.0.0.1:'+server.address().port;
+ const get=(url,headers={})=>fetch(base+url,{headers,redirect:'manual'}),post=(url,body,headers={})=>fetch(base+url,{method:'POST',headers:{'Content-Type':'application/json',Origin:origin,...headers},body:JSON.stringify(body),redirect:'manual'});
+ try{
+ for(const p of ['/quien-hace','/quien-hace/registro','/quien-hace/politicas','/quien-hace/acceso','/quien-hace/vista-previa','/pb-control/directorio'])assert.equal((await get(p)).status,404);
+ assert.equal((await post('/api/pb-directorio/registro',fixture())).status,404);assert.equal(httpStore.all().length,0);
+ enabled=true;const reg=await get('/quien-hace/registro');assert.equal(reg.status,200);assert.match(reg.headers.get('cache-control'),/no-store/);assert.match(reg.headers.get('x-robots-tag'),/noindex/);const regHtml=await reg.text();scripts(regHtml);assert.doesNotMatch(regHtml,/<input[^>]*type="checkbox"[^>]*checked/);const cfg=data(regHtml,'directory-config'),headers={'X-PB-Directory-Ticket':cfg.ticket,'X-CSRF-Token':cfg.csrf};
+ const upload=await post('/api/pb-directorio/foto-registro',{data:'data:image/png;base64,iVBORw0KGgo='},headers);assert.equal(upload.status,200);const ownPhoto=(await upload.json()).url,input={...fixture(),photo:ownPhoto,gallery:[{url:ownPhoto,caption:'Foto de prueba'}]};
+ assert.equal((await post('/api/pb-directorio/registro',input,{...headers,Origin:'https://evil.test'})).status,403);
+ assert.equal((await post('/api/pb-directorio/registro',{...input,gallery:[{url:photo('b'.repeat(32))}]},headers)).status,400);
+ assert.equal((await post('/api/pb-directorio/registro',input,headers)).status,200);const record=httpStore.all()[0];assert.equal(messages.length,1);
+ assert.equal((await get('/quien-hace/'+record.slug)).status,404);
+ const admin={'X-Test-Admin':'yes','X-CSRF-Token':'admin-csrf'};assert.equal((await get('/pb-control/directorio')).status,401);
+ assert.equal((await post('/pb-control/directorio/accion',{id:record.id,action:'approve'},admin)).status,400);
+ const confirm=await get(new URL(messages[0].link).pathname),confirmHtml=await confirm.text();scripts(confirmHtml);assert.equal(httpStore.get(record.id).emailVerifiedAt,null);
+ const confirmData=data(confirmHtml,'confirm-data');assert.equal((await post('/api/pb-directorio/confirmar',{...confirmData,csrf:'wrong'})).status,401);
+ const confirmed=await post('/api/pb-directorio/confirmar',confirmData);assert.equal(confirmed.status,200);const setCookie=confirmed.headers.get('set-cookie');assert.match(setCookie,/__Host-pbDirectory=/);assert.match(setCookie,/HttpOnly/);assert.match(setCookie,/Secure/);const cookie=setCookie.split(';')[0];
+ const owner=await get('/quien-hace/mi-perfil',{Cookie:cookie});assert.equal(owner.status,200);const html=await owner.text();scripts(html);const ownerConfig=data(html,'directory-config'),ownerHeaders={Cookie:cookie,'X-CSRF-Token':ownerConfig.csrf};
+ assert.equal((await get('/quien-hace/vista-previa')).status,401);const preview=await get('/quien-hace/vista-previa',{Cookie:cookie});assert.equal(preview.status,200);assert.match(await preview.text(),/Vista previa privada/);
+ assert.equal((await get('/pb-control/directorio/'+record.id+'/vista')).status,401);assert.equal((await get('/pb-control/directorio/'+record.id+'/vista',admin)).status,200);
+ assert.equal((await post('/pb-control/directorio/accion',{id:record.id,action:'approve'},admin)).status,200);
+ assert.equal((await get('/quien-hace/'+record.slug)).status,404);assert.equal((await get('/quien-hace')).status,404);
+ publicEnabled=true;assert.equal((await get('/quien-hace/'+record.slug)).status,200);assert.match(await (await get('/quien-hace?city=Arecibo&country=PR')).text(),/Bizcochos de Prueba/);assert.doesNotMatch(await (await get('/quien-hace?city=Carolina')).text(),/Bizcochos de Prueba/);
+ assert.equal((await post('/api/pb-directorio/pausa',{paused:true},{Cookie:cookie,'X-CSRF-Token':'wrong'})).status,403);
+ assert.equal((await post('/api/pb-directorio/pausa',{paused:true},ownerHeaders)).status,200);assert.equal((await get('/quien-hace/'+record.slug)).status,404);
+ assert.equal((await post('/api/pb-directorio/pausa',{paused:false},ownerHeaders)).status,200);assert.equal((await get('/quien-hace/'+record.slug)).status,200);
+ assert.equal((await post('/api/pb-directorio/perfil',{...input,gallery:[{url:photo('b'.repeat(32))}]},ownerHeaders)).status,400);
+ assert.equal((await post('/api/pb-directorio/perfil',{...input,name:'Cambio pendiente'},ownerHeaders)).status,200);assert.equal(httpStore.publicRecord(httpStore.get(record.id)).name,input.name);
+ publicEnabled=false;assert.equal((await get('/quien-hace/'+record.slug)).status,404);assert.equal((await get('/quien-hace/vista-previa',{Cookie:cookie})).status,200);
+ assert.equal((await post('/api/pb-directorio/retirar',{confirmed:true},ownerHeaders)).status,200);assert.equal((await get('/quien-hace/vista-previa',{Cookie:cookie})).status,401);
+ }finally{await new Promise(resolve=>server.close(resolve));}
+ console.log('PASS: closed defaults; PR/US location/search; reviewed drafts; gallery ownership; seasons/pause; separate secure sessions; private previews; email confirmation; admin controls; retirement; analytics privacy.');
+}finally{fs.rmSync(root,{recursive:true,force:true});}})().catch(error=>{console.error(error);process.exitCode=1;});
