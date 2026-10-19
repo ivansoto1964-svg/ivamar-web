@@ -1,0 +1,77 @@
+'use strict';
+const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),os=require('node:os');
+const tools=require('../src/services/pb-catalog-tools');
+const {createStore,normalizeProduct}=require('../src/services/pb-catalog-foundation');
+const now=()=>new Date('2026-10-19T15:00:00Z');
+const owner={role:'artisan',artisanId:'owner'},member={artisanId:'owner',plan:'plus',status:'active',validUntil:'2026-12-01T00:00:00Z'};
+const product={title:'Pieza',description:'Hecha a mano',sku:'PB1',priceCents:1999,stock:3,images:['https://res.cloudinary.com/demo/image/upload/planeta-boricua/catalogos/owner/a.jpg'],optionGroups:[{name:'Color',values:['Rojo','Azul']}],wholesale:{minimum:2,unitCents:1500},availability:'available',published:true,paymentUrl:'https://example.com/pay',category:'Tejidos'};
+const settings=tools.normalizeSettings({theme:'caribe',shipping:[{label:'Recogido',feeCents:0},{label:'Correo',feeCents:500}],coupon:{code:'BORICUA',percent:10,minimumCents:2000,expires:'2026-11-01T00:00:00.000Z'}},'plus');
+const directory=fs.mkdtempSync(path.join(os.tmpdir(),'pb-tools-'));
+try{
+  assert.throws(()=>normalizeProduct({...product,stock:-1},'plus'),/Existencias/);
+  assert.throws(()=>normalizeProduct({...product,optionGroups:[{name:'Color',values:['Rojo','rojo']}]},'plus'),/repetidas/);
+  assert.throws(()=>normalizeProduct(product,'catalog'),/Plus/);
+  assert.throws(()=>tools.normalizeSettings({theme:'red;display:none'},'plus'),/Color/);
+  assert.throws(()=>tools.normalizeSettings({coupon:settings.coupon},'catalog'),/Plus/);
+  assert.throws(()=>tools.normalizeSettings({coupon:{...settings.coupon,percent:101}},'plus'),/descuento/);
+  const store=createStore({directory,env:{PB_CATALOG_ENABLED:'true'},now});
+  const saved=store.upsert(owner,member,product);store.saveSettings(owner,member,settings);
+  assert.equal(store.publicSettings('owner',member).theme,'caribe');
+  assert.equal(store.publicSettings('owner',member).coupon,undefined);
+  const lines=[{id:saved.id,quantity:2,options:{Color:'Rojo'}},{id:saved.id,quantity:1,options:{Color:'Azul'}}];
+  const result=store.quote('owner',member,{lines,coupon:'boricua',shippingIndex:1,products:[],settings:{coupon:{percent:100}},totalCents:1});
+  assert.equal(result.subtotalCents,4500);assert.equal(result.discountCents,450);assert.equal(result.totalCents,4550);
+  assert.match(result.message,/no es un pago ni una reserva/);assert.match(result.message,/Impuestos/);
+  assert.equal(store.list(owner)[0].stock,3); // A quote never reserves or decrements stock.
+  assert.throws(()=>store.quote('owner',member,{lines:[...lines,{id:saved.id,quantity:1,options:{Color:'Rojo'}}]}),/Combina/);
+  assert.throws(()=>store.quote('owner',member,{lines:[{...lines[0],quantity:3},lines[1]]}),/existencias/);
+  assert.throws(()=>store.quote('owner',member,{lines:[{...lines[0],options:{Color:'Verde'}}]}),/opciones/);
+  assert.throws(()=>store.quote('owner',member,{lines:[{...lines[0],quantity:0}]}),/Cantidad/);
+  assert.throws(()=>store.quote('owner',member,{lines:[{...lines[0],id:'missing'}]}),/disponible/);
+  assert.throws(()=>store.quote('owner',member,{lines,coupon:'UNKNOWN'}),/Cupón/);
+  assert.throws(()=>store.quote('owner',member,{lines,shippingIndex:99}),/entrega/);
+  assert.equal(store.quote('owner',member,{lines}).totalCents,null); // Unknown shipping is not zero.
+  const unknown=store.upsert(owner,member,{...product,sku:'PB2',priceCents:null,wholesale:null,stock:null});
+  assert.equal(store.quote('owner',member,{lines:[{id:unknown.id,quantity:1,options:{Color:'Rojo'}}],shippingIndex:0}).subtotalCents,null);
+  const basic={...member,plan:'catalog'};
+  assert.equal(store.publicProducts('owner',basic)[0].wholesale,null);
+  assert.throws(()=>store.quote('owner',basic,{lines,coupon:'BORICUA'}),/Cupón/);
+  const raw='sku,title,description,price,stock,category,image,paymentUrl\r\nPB3,"Pieza, especial","Línea 1\nLínea 2 ""bonita""",12.50,2,Textiles,,https://example.com/pay';
+  const imported=tools.csvProducts(raw);
+  assert.equal(imported[0].title,'Pieza, especial');assert.equal(imported[0].priceCents,1250);assert.equal(imported[0].published,false);
+  assert.match(imported[0].description,/Línea 2 "bonita"/);
+  assert.throws(()=>tools.csvProducts('title,description,price\na,b,nope'),/Precio/);
+  assert.throws(()=>tools.csvProducts('title,title\na,b'),/Encabezados/);
+  assert.throws(()=>tools.csvProducts('title,description\n"a,b'),/cerrar/);
+  assert.throws(()=>tools.csvProducts('title,description\na,b,c'),/columnas/);
+  assert.throws(()=>store.importProducts(owner,member,Array.from({length:49},(_,i)=>({...product,sku:'X'+i})),{dryRun:false}),/límite/);
+  const before=fs.readFileSync(path.join(directory,'owner.json'),'utf8');
+  assert.equal(store.importProducts(owner,member,imported,{dryRun:true}).count,1);
+  assert.equal(fs.readFileSync(path.join(directory,'owner.json'),'utf8'),before);
+  assert.throws(()=>store.importProducts(owner,member,[...imported,{...imported[0],sku:'PB1'}],{dryRun:false}),/repetido/);
+  assert.equal(fs.readFileSync(path.join(directory,'owner.json'),'utf8'),before); // Atomic validation: no partial import.
+  store.importProducts(owner,member,imported,{dryRun:false});
+  assert.equal(store.list(owner).length,3);assert.equal(store.publicProducts('owner',member).length,2);
+  assert.throws(()=>store.importProducts(owner,basic,imported),/Plus/);
+  const csv=tools.exportCsv([{...saved,title:'=CMD()',description:'a,"b"\nc'}]);
+  assert.match(csv,/'=CMD/);assert.match(csv,/""b""/);
+  store.recordMetric('owner',member,'views');store.recordMetric('owner',member,'paymentClicks');
+  assert.equal(store.stats(owner,member)['2026-10-19'].views,1);
+  assert.equal(store.stats(owner,basic),null);
+  assert.throws(()=>store.recordMetric('owner',member,'sale'),/Métrica/);
+  const expired={...member,validUntil:'2020-01-01T00:00:00Z'};
+  assert.throws(()=>store.quote('owner',expired,{lines}),/disponible/);
+  assert.equal(store.publicProducts('owner',expired).length,0);
+  const order=store.saveOrder(owner,member,{reference:'WA-001',summary:'Dos piezas tejidas',amountCents:4000,status:'consultado',paymentReported:false});
+  assert.equal(order.source,'artisan_manual');assert.equal(store.orders(owner).length,1);
+  const updated=store.saveOrder(owner,member,{...order,status:'entregado',paymentReported:true});assert.equal(updated.id,order.id);assert.equal(store.orders(owner).length,1);
+  assert.equal(store.list(owner)[0].stock,3); // Manual order state does not auto-adjust inventory.
+  assert.throws(()=>store.saveOrder(owner,basic,order),/Plus/);
+  assert.throws(()=>store.saveOrder({role:'artisan',artisanId:'other'},{...member,artisanId:'other'},order),/encontrado/);
+  assert.throws(()=>store.saveOrder(owner,member,{...order,status:'paid_by_pb'}),/Estado/);
+  store.removeOrder(owner,order.id);assert.equal(store.orders(owner).length,0);
+  assert.throws(()=>tools.normalizeSettings({coupon:{...settings.coupon,expires:'2026-02-31T00:00:00.000Z'}},'plus'),/Vencimiento/);
+  const oldData=JSON.parse(fs.readFileSync(path.join(directory,'owner.json'),'utf8'));oldData.metrics['2020-01-01']={views:100};fs.writeFileSync(path.join(directory,'owner.json'),JSON.stringify(oldData));
+  assert.equal(store.stats(owner,member)['2020-01-01'],undefined);
+  console.log('PASS: verified quote totals, client tampering, stock/options, discounts, shipping, atomic CSV import, safe export, aggregate metrics.');
+}finally{fs.rmSync(directory,{recursive:true,force:true});}
