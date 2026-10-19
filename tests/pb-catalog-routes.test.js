@@ -60,6 +60,30 @@ const view=require('../src/views/planetaboricua/artesano-catalogo');
     assert.equal((await post('a','foto',{data})).status,200);assert.equal(uploadCalls,1);
     assert.equal((await post('b','foto',{data})).status,403);assert.equal(uploadCalls,1);
     assert.equal((await post('a','foto',{data:'data:image/svg+xml;base64,abc='})).status,400);
+    const baseCsv='sku,title,description,price,stock,category,image,paymentUrl\nCSV1,Pieza CSV,Borrador,10,2,Tejidos,,';
+    assert.equal((await post('a','importar',{csv:baseCsv,dryRun:true})).status,400); // Basic cannot import.
+    memberships.a.plan='plus';
+    assert.equal((await post('a','configuracion',{theme:'caribe',shipping:[{label:'Recogido',feeCents:0}],coupon:{code:'PR10',percent:10,minimumCents:0,expires:'2026-11-01T00:00:00.000Z'}})).status,200);
+    const quoteHeaders={'Content-Type':'application/json',Origin:origin};
+    const quoteRequest=()=>request('/api/pb-catalogo-publico/tejidos/cotizar',{method:'POST',headers:quoteHeaders,body:JSON.stringify({lines:[{id,quantity:1,options:{}}],coupon:'PR10',shippingIndex:0,products:[],subtotalCents:1})});
+    const quoted=await quoteRequest();assert.equal(quoted.status,200);const quoteData=await quoted.json();assert.equal(quoteData.quote.totalCents,1799);assert.match(quoteData.whatsappUrl,/^https:\/\/wa.me\/17875550100/);
+    const metric=await request('/api/pb-catalogo-publico/tejidos/metrica',{method:'POST',headers:quoteHeaders,body:JSON.stringify({event:'paymentClicks'})});assert.equal(metric.status,204);
+    assert.equal(store.stats({role:'artisan',artisanId:'a'},memberships.a)['2026-10-19'].quotePreparations,1);
+    const statsBefore=JSON.stringify(store.stats({role:'artisan',artisanId:'a'},memberships.a));
+    assert.equal((await post('a','cotizar',{lines:[{id,quantity:1,options:{}}]})).status,200);
+    assert.equal(JSON.stringify(store.stats({role:'artisan',artisanId:'a'},memberships.a)),statsBefore); // Private preview not counted.
+    const csvPreview=await post('a','importar',{csv:baseCsv,dryRun:true});assert.equal(csvPreview.status,200);assert.equal(store.list({role:'artisan',artisanId:'a'}).length,1);
+    const imported=await post('a','importar',{csv:baseCsv,dryRun:false});assert.equal(imported.status,200);const importedId=(await imported.json()).products[0].id;
+    assert.equal(store.publicProducts('a',memberships.a).length,1); // Imported rows are drafts.
+    assert.equal((await post('a','importar',{csv:baseCsv,dryRun:false})).status,400); // No duplicate SKU / partial writes.
+    assert.equal((await request('/api/pb-catalogo/a/exportar.csv')).status,200);
+    const complete=await request('/api/pb-catalogo/a/exportar.json');assert.equal(complete.status,200);const completeData=await complete.json();assert.equal(completeData.products.length,2);assert.doesNotMatch(JSON.stringify(completeData),/csrf|token|email/);
+    const order=await post('a','pedido',{reference:'WA1',summary:'Una pieza',amountCents:1999,status:'consultado',paymentReported:false});assert.equal(order.status,200);const orderId=(await order.json()).order.id;
+    assert.equal((await post('b','eliminar-pedido',{id:orderId})).status,400);
+    assert.equal((await post('a','eliminar-pedido',{id:orderId})).status,200);
+    const plusPanel=await (await request('/artesanos/catalogo/a')).text();for(const script of plusPanel.matchAll(/<script>([\s\S]*?)<\/script>/g))new vm.Script(script[1]);
+    const publicHtml=await (await request('/catalogos/tejidos')).text();assert.doesNotMatch(publicHtml,/PR10/);assert.match(publicHtml,/Preparar consulta/);for(const script of publicHtml.matchAll(/<script>([\s\S]*?)<\/script>/g))new vm.Script(script[1]);
+    assert.equal((await post('a','eliminar',{id:importedId})).status,200);
     memberships.a.status='canceled';
     assert.equal((await request('/catalogos/tejidos')).status,404);
     assert.equal((await post('a','guardar',product)).status,403);
