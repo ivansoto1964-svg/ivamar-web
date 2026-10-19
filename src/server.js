@@ -3276,9 +3276,10 @@ app.post('/admin/pb-event-delete/:token', (req, res) => {
 });
 
 // Cultural profiles are independent of artisan listings and paid catalogs.
-if (process.env.PB_TALENT_ENABLED === 'true') {
-  app.use(createPBTalentRouter({
+// Registration stays available by direct link; public discovery is gated separately.
+app.use(createPBTalentRouter({
     store:pbTalentStore,
+    publicEnabled:() => process.env.PB_TALENT_ENABLED === 'true',
     secret:String(process.env.PB_TALENT_MAGIC_SECRET || process.env.PB_ARTISAN_MAGIC_SECRET || '').trim(),
     requireAdmin:requirePBAdmin,
     requireAdminCsrf:requirePBCsrf,
@@ -3294,15 +3295,14 @@ if (process.env.PB_TALENT_ENABLED === 'true') {
       const approved = action === 'approve';
       const result = await resend.emails.send({from:`Planeta Boricua <${PB_SENDER_EMAIL}>`,to:email,
         subject:approved?'Tu perfil cultural fue aprobado — Planeta Boricua':'Revisión de tu solicitud — Talento Boricua',
-        html:approved?`<p>Tu perfil o actualización en Talento Boricua fue aprobado.</p><p><a href="${link}">Ver mi perfil público</a></p><p>Puedes administrar tu calendario desde <a href="https://www.masboricuaqueunmofongo.com/talento-boricua/acceso">tu acceso seguro</a>.</p>`:'<p>Revisamos tu solicitud o actualización de Talento Boricua y no fue aprobada. Si ya tenías una versión publicada, se conserva.</p><p>Para consultar o corregir la información, escribe a masboricuaqueunmofongo@gmail.com.</p>'});
+        html:approved?(process.env.PB_TALENT_ENABLED === 'true'?`<p>Tu perfil o actualización en Talento Boricua fue aprobado.</p><p><a href="${link}">Ver mi perfil público</a></p><p>Puedes administrar tu calendario desde <a href="https://www.masboricuaqueunmofongo.com/talento-boricua/acceso">tu acceso seguro</a>.</p>`:'<p>Tu perfil de Talento Boricua fue aprobado y queda preparado para la apertura de la sección. Todavía no está publicado.</p><p>Puedes administrar tu información y calendario desde <a href="https://www.masboricuaqueunmofongo.com/talento-boricua/acceso">tu acceso seguro</a>.</p>'):'<p>Revisamos tu solicitud o actualización de Talento Boricua y no fue aprobada. Si ya tenías una versión publicada, se conserva.</p><p>Para consultar o corregir la información, escribe a masboricuaqueunmofongo@gmail.com.</p>'});
       if(result?.error || !result?.data?.id) throw new Error('No se confirmó el aviso de revisión cultural.');
     },
     upload:async (data,folder) => {
       const result = await cloudinary.uploader.upload(data,{folder:`planeta-boricua/talento/${folder}`,resource_type:'image',allowed_formats:['jpg','jpeg','png','webp'],transformation:[{width:1200,height:1200,crop:'limit'},{fetch_format:'auto',quality:'auto:good'}]});
       return result.secure_url;
     }
-  }));
-}
+}));
 
 app.get('/artesanos/:slug/manifest.json', (req, res) => {
   const canonicalSlug = canonicalPBArtisanSlug(req.params.slug);
