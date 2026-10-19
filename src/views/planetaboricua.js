@@ -328,6 +328,7 @@ ${renderStay22()}
       <a href="/agenda-boricua">Agenda</a>
       <a href="#recursos">Recursos</a>
       <a href="/feria-artesanos">Artesanos</a>
+      ${process.env.PB_TALENT_ENABLED === 'false' ? '' : '<a href="/talento-boricua">Talento Boricua</a>'}
       <a href="#viajes">Viajes</a>
       <a href="#newsletter" class="nav-cta">Boletín →</a>
     </div>
