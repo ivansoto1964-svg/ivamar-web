@@ -5,6 +5,7 @@ const pbBlogIndex = require("../views/pb-blog/index");
 const pbBlogPost = require("../views/pb-blog/post");
 const { CATEGORIES, categorySlug } = require("../utils/pb-editorial");
 const blogStore = require("../services/pb-blog-store");
+const { renderFeed } = require("../services/pb-blog-feed");
 const POSTS_PER_PAGE = 9;
 const COMMENTS_FILE = "/data/pb-comments/approved.json";
 
@@ -50,10 +51,14 @@ router.get("/sitemap.xml", (req, res) => {
 });
 
 router.get("/feed.xml", (req, res) => {
-  const posts = loadPosts().slice(0,20);
-  const items = posts.map(p => `<item><title><![CDATA[${p.title}]]></title><link>https://www.masboricuaqueunmofongo.com/blog/${p.slug}</link><description><![CDATA[${p.excerpt||""}]]></description><pubDate>${new Date(p.dateISO||p.date||Date.now()).toUTCString()}</pubDate><guid>https://www.masboricuaqueunmofongo.com/blog/${p.slug}</guid></item>`).join("");
-  res.set("Content-Type","application/rss+xml");
-  res.send(`<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"><channel><title>Los Temas del Balcón — Planeta Boricua</title><link>https://www.masboricuaqueunmofongo.com/blog</link><description>Artículos sobre cultura boricua, identidad y diáspora.</description><language>es-PR</language>${items}</channel></rss>`);
+  res.set("Content-Type","application/rss+xml; charset=utf-8");
+  res.send(renderFeed(loadPosts()));
+});
+
+// Separate small feed for a user-connected Pinterest pilot; never posts by itself.
+router.get("/pinterest.xml", (req, res) => {
+  res.set("Content-Type","application/rss+xml; charset=utf-8");
+  res.send(renderFeed(loadPosts(),{pinterest:true}));
 });
 
 router.get("/categoria/:cat", (req, res) => {
