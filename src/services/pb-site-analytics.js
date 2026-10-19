@@ -6,7 +6,8 @@ const RETENTION_DAYS = 400;
 const BOT_PATTERN = /bot|crawler|spider|slurp|facebookexternalhit|whatsapp|preview|monitor|uptime|headless/i;
 const EXCLUDED_PREFIXES = [
   '/pb-control', '/admin', '/api', '/media', '/health', '/metrics',
-  '/artesanos/metric', '/artesanos/mi-perfil', '/artesanos/acceso'
+  '/artesanos/metric', '/artesanos/mi-perfil', '/artesanos/acceso',
+  '/talento-boricua/registro', '/talento-boricua/acceso', '/talento-boricua/mi-perfil'
 ];
 const STATIC_EXTENSION = /\.(?:avif|css|gif|ico|jpe?g|js|json|map|mp3|mp4|pdf|png|svg|txt|webmanifest|webp|xml|woff2?)$/i;
 
