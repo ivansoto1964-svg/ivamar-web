@@ -6,7 +6,7 @@ const path = require('node:path');
 const crypto = require('node:crypto');
 const PLANS = Object.freeze({
   free: Object.freeze({monthlyCents:0, products:0, photosPerProduct:0, categories:false, clickStats:false}),
-  catalog: Object.freeze({monthlyCents:999, products:15, photosPerProduct:1, categories:false, clickStats:false}),
+  catalog: Object.freeze({monthlyCents:999, products:20, photosPerProduct:1, categories:false, clickStats:false}),
   plus: Object.freeze({monthlyCents:1999, products:50, photosPerProduct:4, categories:true, clickStats:true})
 });
 
