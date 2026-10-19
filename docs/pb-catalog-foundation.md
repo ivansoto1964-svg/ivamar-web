@@ -9,7 +9,7 @@ Preparada el 19 de octubre de 2026 para evaluar su integración después del 8 d
 | Plan propuesto | USD/mes | Productos | Fotos/producto | Categorías | Estadísticas de clics |
 | --- | ---: | ---: | ---: | --- | --- |
 | free | 0 | 0 en el catálogo nuevo | 0 | No | No |
-| catalog | 9.99 | 15 | 1 | No | No |
+| catalog | 9.99 | 20 | 1 | No | No |
 | plus | 19.99 | 50 | 4 | Sí | Sí |
 
 El perfil gratuito conserva todos sus beneficios actuales, incluyendo su galería. Estos límites y prestaciones comerciales son provisionales. El indicador de estadísticas es una declaración de capacidad futura: no se ha construido la medición.
@@ -43,7 +43,7 @@ Nayeli no queda incluida automáticamente en $19.99: precio, alcance, límites d
 
 ## Validación
 
-Ejecutar `node tests/pb-catalog-foundation.test.js`. Prueba configuración cerrada sin escritura, aislamiento entre artesanos, enlaces e imágenes inválidos, precios en centavos, vencimientos, límites 15/50, preservación al bajar de plan y error ante archivos corruptos.
+Ejecutar `node tests/pb-catalog-foundation.test.js`. Prueba configuración cerrada sin escritura, aislamiento entre artesanos, enlaces e imágenes inválidos, precios en centavos, vencimientos, límites 20/50, preservación al bajar de plan y error ante archivos corruptos.
 
 Ejecutar `npm run test:catalog` con las dependencias instaladas. Las pruebas nuevas también forman parte de `npm test`, cuya suite existente pasó en esta revisión. Prueba el flujo HTTP de guardado, consulta, eliminación, cancelación, fotos de propietario, origen/CSRF, separación de vista privada y pública, escapado de texto y sintaxis del JavaScript de la interfaz. El proveedor de fotos está simulado en estas pruebas.
 
