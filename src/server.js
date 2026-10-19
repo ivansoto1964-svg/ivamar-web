@@ -11,6 +11,8 @@ const { buildPBExploreRecommendations } = require('./services/pb-ecosystem-explo
 const pbArtisanMailBatches = require('./services/pb-artisan-mail-batches');
 const pbArtisanRetirement = require('./services/pb-artisan-retirement');
 const pbTalent = require('./services/pb-talent');
+const pbDirectory = require('./services/pb-directory');
+const {createRouter:createPBDirectoryRouter} = require('./services/pb-directory-routes');
 const {createRouter:createPBTalentRouter} = require('./services/pb-talent-routes');
 const pbLatestEditor = require('./services/pb-latest-editor');
 const pbControlDrafts = require('./services/pb-control-drafts');
@@ -97,7 +99,7 @@ app.use((req, res, next) => {
 
 // PB analytics: set PB_GA_MEASUREMENT_ID=G-XXXXXXXXXX in Render to activate.
 app.use((req, res, next) => {
-  if (pbTalent.isPrivatePath(req.path)) return next();
+  if ((pbTalent.isPrivatePath(req.path) || pbDirectory.isPrivatePath(req.path) || /^\/(?:artesanos\/catalogo|api\/pb-catalogo)(?:\/|$)/.test(req.path))) return next();
   const measurementId = String(process.env.PB_GA_MEASUREMENT_ID || '').trim();
   if (!/^G-[A-Z0-9]+$/i.test(measurementId)) return next();
   const host = String(req.hostname || '').toLowerCase();
@@ -127,7 +129,7 @@ app.use((req, res, next) => {
         .replace(/href=(['"])\/privacidad\1/g, 'href=$1/privacidad-boricua$1')
         .replace(/href=(['"])\/contacto\1/g, 'href=$1/quienes-somos$1')
         .replace(/connect@ivamarai\.com/gi, 'masboricuaqueunmofongo@gmail.com');
-      const privatePath = /^\/(?:pb-control|api|auth)(?:\/|$)/.test(String(req.path || '')) || pbTalent.isPrivatePath(req.path);
+      const privatePath = /^\/(?:pb-control|api|auth)(?:\/|$)/.test(String(req.path || '')) || (pbTalent.isPrivatePath(req.path) || pbDirectory.isPrivatePath(req.path) || /^\/(?:artesanos\/catalogo|api\/pb-catalogo)(?:\/|$)/.test(req.path));
       if (!privatePath) body = withPBSiteFooter(body, { social: renderPBSocialFollow() });
     }
     return send(body);
@@ -253,6 +255,7 @@ const { searchPlacesByText } = require("./helpers/googlePlaces");
 const { sendLeadNotification } = require("./services/notificationService");
 const path = require("path");
 const pbTalentStore = pbTalent.createStore({directory:'/data/pb-talento'});
+let pbDirectoryStore = null;
 const cookieParser = require("cookie-parser");
 const crypto = require("crypto");
 const pbAds = createPBAds();
@@ -2152,7 +2155,7 @@ app.post('/pb-control/action', requirePBAdmin, requirePBCsrf, express.json({limi
 });
 
 app.post('/api/pb-web-vitals', pbArtisanMetricsLimiter, express.json({limit:'2kb',type:['application/json','text/plain']}), (req,res) => {
-  if (pbTalent.isPrivatePath(req.body?.path)) return res.status(204).end();
+  if ((pbTalent.isPrivatePath(req.body?.path) || pbDirectory.isPrivatePath(req.body?.path) || /^\/(?:artesanos\/catalogo|api\/pb-catalogo)(?:\/|$)/.test(String(req.body?.path||'')))) return res.status(204).end();
   try {
     pbWebVitals.record(req.body || {});
     return res.status(204).end();
@@ -3084,7 +3087,13 @@ app.get("/sitemap.xml", async (req, res) => {
   }
   const agendaUrl = `<url><loc>https://www.masboricuaqueunmofongo.com/agenda-boricua</loc><changefreq>daily</changefreq><priority>0.8</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/sala-de-prensa</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>`;
   res.set('Content-Type','application/xml');
-  res.send(`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${staticUrls}${agendaUrl}${eventUrls}${latestUrls}${postUrls}${artisanUrls}${talentUrls}</urlset>`);
+  let directoryUrls = '';
+  if (process.env.PB_DIRECTORY_ENABLED === 'true' && process.env.PB_DIRECTORY_PUBLIC_ENABLED === 'true' && pbDirectoryStore) {
+    try {
+      directoryUrls = '<url><loc>https://www.masboricuaqueunmofongo.com/quien-hace</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>' + pbDirectoryStore.all().map(item=>pbDirectoryStore.publicRecord(item)).filter(Boolean).map(item=>`<url><loc>https://www.masboricuaqueunmofongo.com/quien-hace/${item.slug}</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>`).join('');
+    } catch (_) { console.error('[PB Directory] No se pudo construir la lista pública del sitemap.'); }
+  }
+  res.send(`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${staticUrls}${agendaUrl}${eventUrls}${latestUrls}${postUrls}${artisanUrls}${talentUrls}${directoryUrls}</urlset>`);
 });
 
 app.get('/sala-de-prensa', (_req, res) => res.send(salaPrensaPB()));
@@ -3303,6 +3312,54 @@ app.use(createPBTalentRouter({
       return result.secure_url;
     }
 }));
+
+// Directory preparation: no routes or public links until explicitly enabled.
+// Never auto-activate by date. No membership billing is installed here.
+if (process.env.PB_DIRECTORY_ENABLED === 'true') {
+ const directoryStore=pbDirectoryStore=pbDirectory.createStore({directory:'/data/pb-directorio'});
+ app.use(createPBDirectoryRouter({
+  store:directoryStore,
+  enabled:()=>process.env.PB_DIRECTORY_ENABLED === 'true',
+  publicEnabled:()=>process.env.PB_DIRECTORY_PUBLIC_ENABLED === 'true',
+  secret:String(process.env.PB_DIRECTORY_MAGIC_SECRET || process.env.PB_ARTISAN_MAGIC_SECRET || '').trim(),
+  requireAdmin:requirePBAdmin,requireAdminCsrf:requirePBCsrf,
+  sendAccess:async(email,link)=>{
+   const result=await resend.emails.send({from:`Planeta Boricua <${PB_SENDER_EMAIL}>`,to:email,subject:'Tu acceso a ¿Quién hace? — Planeta Boricua',html:`<p>Confirma tu correo y administra tu solicitud con este enlace, válido por dos horas.</p><p><a href="${link}">Confirmar y entrar</a></p><p>Las solicitudes requieren revisión y apertura de la sección. Este registro no realiza cobros. Si no lo solicitaste, ignora este mensaje.</p>`});
+   if(result?.error || !result?.data?.id)throw new Error('No se confirmó el correo del directorio.');
+  },
+  notifyStatus:async(email,action,link)=>{
+   const published=process.env.PB_DIRECTORY_PUBLIC_ENABLED === 'true';
+   const result=await resend.emails.send({from:`Planeta Boricua <${PB_SENDER_EMAIL}>`,to:email,subject:'Revisión de tu perfil — ¿Quién hace?',html:action==='approve'?(published?`<p>Tu perfil o actualización fue aprobado. La pausa y temporada pueden mantenerlo oculto.</p><p><a href="${link}">Consultar perfil</a></p>`:'<p>Tu perfil fue aprobado y queda pendiente de apertura. Todavía no está publicado.</p>'):'<p>Tu solicitud o cambios no fueron aprobados. Si tenías una versión aprobada, se conserva. Puedes corregir desde tu panel o comunicarte con PB.</p>'});
+   if(result?.error || !result?.data?.id)throw new Error('No se confirmó el aviso del directorio.');
+  },
+  upload:async(data,folder)=>{const result=await cloudinary.uploader.upload(data,{folder:`planeta-boricua/directorio/${folder}`,resource_type:'image',allowed_formats:['jpg','jpeg','png','webp'],transformation:[{width:1200,height:1200,crop:'limit'},{fetch_format:'auto',quality:'auto:good'}]});return result.secure_url;}
+ }));
+}
+
+// Catalog pilot: disabled by default, including all new owner/public routes.
+// Sales payments always stay on each artisan's own external checkout.
+const pbCatalogFoundation = require('./services/pb-catalog-foundation');
+const pbCatalogRoutes = require('./services/pb-catalog-routes');
+if (pbCatalogFoundation.configuration().catalog) {
+  const catalogStore = pbCatalogFoundation.createStore({directory:'/data/pb-catalogs'});
+  const catalogItem = item => item ? {...item,slug:pbArtisanSlug(item)} : null;
+  app.use(pbCatalogRoutes.createCatalogRouter({
+    store:catalogStore,
+    verifyToken:verifyPBArtisanToken,
+    getArtisan:id => catalogItem(loadPBApprovedArtisanRecord(id)?.item),
+    getArtisanBySlug:slug => catalogItem(loadApprovedPBListings().find(item => pbArtisanSlug(item) === slug)),
+    getMembership:id => pbCatalogRoutes.readMembership('/data/pb-catalog-memberships.json',id),
+    requireAdmin:requirePBAdmin,
+    upload:async (data,id) => {
+      const result = await cloudinary.uploader.upload(data, {
+        folder:`planeta-boricua/catalogos/${id}`,resource_type:'image',
+        allowed_formats:['jpg','jpeg','png','webp'],
+        transformation:[{width:1200,height:1200,crop:'limit'},{fetch_format:'auto',quality:'auto:good'}]
+      });
+      return result.secure_url;
+    }
+  }));
+}
 
 app.get('/artesanos/:slug/manifest.json', (req, res) => {
   const canonicalSlug = canonicalPBArtisanSlug(req.params.slug);
