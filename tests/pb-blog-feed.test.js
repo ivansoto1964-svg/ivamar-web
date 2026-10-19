@@ -1,0 +1,22 @@
+'use strict';
+const assert=require('node:assert/strict'),express=require('express');
+const {renderFeed,coverUrl}=require('../src/services/pb-blog-feed');
+const posts=Array.from({length:24},(_,i)=>({slug:'historia-'+i,title:'Historia '+i,dateISO:'2026-10-'+String(i+1).padStart(2,'0'),excerpt:'Resumen fiel.',status:'published',image:'/media/pb-blog/portada-'+i+'.jpg'}));
+const count=(xml,tag)=>(xml.match(new RegExp('<'+tag+'(?:>| )','g'))||[]).length;
+const full=renderFeed(posts),pilot=renderFeed(posts,{pinterest:true});
+assert.equal(count(full,'item'),20);assert.equal(count(pilot,'item'),5);assert.equal(count(pilot,'media:content'),5);
+assert.match(pilot,/xmlns:media="http:\/\/search.yahoo.com\/mrss\/"/);assert.match(pilot,/<link>https:\/\/www.masboricuaqueunmofongo.com\/blog\/historia-23<\/link>/);
+assert.doesNotMatch(pilot,/historia-18</);assert.match(pilot,/medium="image"/);
+assert.equal(coverUrl('/img/pb-logo.png'),'');assert.equal(coverUrl('https://www.masboricuaqueunmofongo.com/img/og-planetaboricua.jpg?v=1'),'');
+for(const bad of ['javascript:alert(1)','http://example.com/a.jpg','//evil.test/a.jpg','https://user:pass@example.com/a.jpg'])assert.equal(coverUrl(bad),'');
+assert.equal(coverUrl('/media/pb-blog/original.png'), 'https://www.masboricuaqueunmofongo.com/media/pb-blog/original.png');
+const special={slug:'historia-especial',title:'Piña & café <prueba> ]]>\u0001',excerpt:'Una historia & su cultura.',image:'https://res.cloudinary.com/demo/image/upload/v1/imagen.png?x=1&y=2',dateISO:'bad'};
+const escaped=renderFeed([special],{pinterest:true});assert.match(escaped,/Piña &amp; café &lt;prueba&gt; ]]&gt;/);assert.match(escaped,/x=1&amp;y=2/);assert.doesNotMatch(escaped,/Invalid Date|<pubDate>|\u0001/);
+const filtered=renderFeed([{...special,status:'draft'},{...special,slug:'../../privado'},{...special,slug:'sin-imagen',image:''},{...special,slug:'marca',image:'/img/pb-logo.png'},special,special],{pinterest:true});assert.equal(count(filtered,'item'),1);assert.equal(count(filtered,'media:content'),1);
+assert.equal(count(renderFeed([{...special,image:''}]),'item'),1,'The existing reader feed keeps public articles without covers.');
+assert.equal(count(renderFeed(null),'item'),0);
+// Exercise the actual RSS endpoints with public data supplied by a store stub.
+const storePath=require.resolve('../src/services/pb-blog-store'),previous=require.cache[storePath];
+require.cache[storePath]={id:storePath,filename:storePath,loaded:true,exports:{loadPosts:()=>posts,optimizedImageUrl:v=>v}};
+const router=require('../src/routes/pb-blog');if(previous)require.cache[storePath]=previous;else delete require.cache[storePath];
+(async()=>{const app=express();app.use('/blog',router);const server=app.listen(0,'127.0.0.1');await new Promise(resolve=>server.once('listening',resolve));try{const base='http://127.0.0.1:'+server.address().port;for(const [route,n] of [['/feed.xml',20],['/pinterest.xml',5]]){const response=await fetch(base+'/blog'+route);assert.equal(response.status,200);assert.match(response.headers.get('content-type'),/application\/rss\+xml/);assert.equal(count(await response.text(),'item'),n);}}finally{await new Promise(resolve=>server.close(resolve));}console.log('PASS: RSS covers, XML escaping, stable article identity, public-only filtering, small pilot, original images and HTTP endpoints.');})().catch(error=>{console.error(error);process.exitCode=1;});
