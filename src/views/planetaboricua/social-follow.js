@@ -3,6 +3,7 @@ const NETWORKS = Object.freeze([
   { name: 'Instagram', href: 'https://www.instagram.com/miplanetaboricua/', icon: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle class="pb-social-icon-fill" cx="17.5" cy="6.5" r="1"/></svg>' },
   { name: 'TikTok', href: 'https://www.tiktok.com/@planetaboricua4', icon: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 3c.4 2.3 1.7 3.7 4 4v4c-1.5 0-2.8-.4-4-1.1V16a6 6 0 1 1-6-6h1v4a3 3 0 1 0 1 2V3h4Z"/></svg>' },
   { name: 'YouTube', href: 'https://www.youtube.com/@planetaboricua', icon: '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="4"/><path class="pb-social-icon-fill" d="m10 9 6 3-6 3Z"/></svg>' },
+  { name: 'Pinterest', href: 'https://www.pinterest.com/PlanetaBoricua/', icon: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 21 12 8m-1 6c1 2 5 2 6-2 1-5-6-7-9-3-1 2-1 4 0 5" fill="none" stroke-linecap="round"/><circle cx="12" cy="11" r="9" fill="none"/></svg>' },
   { name: 'Telegram', href: 'https://t.me/planetaboricua', icon: '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m21 4-3 16-6-4-3 3-1-5-5-2 18-8Zm-11 9 .7 2.6.2-1.8L17 8l-7 5Z"/></svg>' }
 ]);
 
