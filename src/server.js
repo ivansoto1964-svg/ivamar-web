@@ -12,6 +12,7 @@ const pbArtisanMailBatches = require('./services/pb-artisan-mail-batches');
 const pbArtisanRetirement = require('./services/pb-artisan-retirement');
 const pbTalent = require('./services/pb-talent');
 const {createRouter:createPBTalentRouter} = require('./services/pb-talent-routes');
+const pbTourismSection = require('./services/pb-tourism-section');
 const {createRouter:createPBVisitGuideRouter} = require('./services/pb-visit-guide-routes');
 const {createRouter:createPBTravelPermissionRouter} = require('./services/pb-travel-permission-routes');
 const pbLatestEditor = require('./services/pb-latest-editor');
@@ -3086,7 +3087,7 @@ app.get("/sitemap.xml", async (req, res) => {
   }
   const agendaUrl = `<url><loc>https://www.masboricuaqueunmofongo.com/agenda-boricua</loc><changefreq>daily</changefreq><priority>0.8</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/sala-de-prensa</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>`;
   res.set('Content-Type','application/xml');
-  res.send(`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${staticUrls}${agendaUrl}${eventUrls}${latestUrls}${postUrls}${artisanUrls}${talentUrls}</urlset>`);
+  res.send(`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${staticUrls}${agendaUrl}${eventUrls}${latestUrls}${postUrls}${artisanUrls}${talentUrls}${pbTourismSection.sitemap()}</urlset>`);
 });
 
 app.get('/sala-de-prensa', (_req, res) => res.send(salaPrensaPB()));
@@ -3276,6 +3277,8 @@ app.post('/admin/pb-event-delete/:token', (req, res) => {
   writePBEvents('approved.json', approved);
   res.send(`<h2>✅ Evento eliminado</h2><p>${sanitize(event.name)} ya no aparece en la agenda.</p><p><a href="/agenda-boricua">Ver agenda</a></p>`);
 });
+
+app.use(pbTourismSection.router({requireAdmin:requirePBAdmin,requireAdminCsrf:requirePBCsrf}));
 
 // Private visit notes and evidence; never published through this router.
 app.use(createPBVisitGuideRouter({requireAdmin:requirePBAdmin,requireAdminCsrf:requirePBCsrf}));
