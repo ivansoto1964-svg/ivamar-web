@@ -2,37 +2,119 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const crypto = require('node:crypto');
-const VERSION = '2026-10-26.5';
+const VERSION = '2026-10-26.6';
 const hash = value => crypto.createHash('sha256').update(value).digest('hex');
 const COPY = {
- en: {
-  title:'Let’s discover your place', eyebrow:'A personal introduction',
-  intro:'My name is Iván Soto. Planeta Boricua — Más Boricua Que Un Mofongo is a Spanish-language cultural website for Puerto Ricans on the island and throughout the United States. In Turistiando con Iván Soto, I share personal travel, dining and local experiences, along with practical details to help readers discover places like yours.',
-  visit:'I am visiting as a customer and am prepared to pay for my visit. No interview is needed. With your permission, I would like to photograph the food, premises and views, and share my experience in Spanish on Planeta Boricua and its social media. If your establishment offers media discounts or hosted experiences, we would be happy to hear about them; they are entirely optional.',
-  distribution:'We also share our published stories on our social media and in Puerto Rican community groups, some with thousands of members, where group rules allow. This gives readers more opportunities to discover your establishment. Group membership does not represent guaranteed views, reach, visits or sales.',
-  discretionTitle:'Discretion during our visit',
-  discretion:'We kindly ask the manager or person in charge to handle our visit discreetly and, where possible, avoid announcing the coverage to the service staff. We would like to experience the usual service any customer would receive, without special treatment. Please inform staff as needed to coordinate photography or follow the establishment’s policies.',
-  policy:'There is no charge for this editorial coverage. Any discount, complimentary meal, accommodation or service is entirely voluntary and is not required for coverage. It does not guarantee a favorable review or grant advance approval of the content. Any benefit related to the coverage will be clearly disclosed, following U.S. Federal Trade Commission (FTC) guidance.',
-  permission:'For the visit and location identified below, I authorize Iván Soto / Planeta Boricua to take photographs of the food, premises and views in areas permitted by the establishment, and to publish those photographs with editorial coverage on Planeta Boricua and its social media, subject to the restrictions below. This permission does not include identifiable guests or staff without their separate permission, private or restricted areas, interviews, or use in unrelated advertising. It does not grant editorial approval or transfer ownership of our brand.',
-  authority:'I confirm that I am authorized to give this permission on behalf of this establishment. I have read and accept the permission and editorial transparency terms above.',
-  privacy:'Your name, role, establishment, visit details, email, restrictions and the accepted text will be stored privately by Planeta Boricua as a record of permission. A copy will be emailed to you and to Planeta Boricua. This does not subscribe you to marketing. For questions, corrections or requests concerning future photography or use, contact masboricuaqueunmofongo@gmail.com. This record documents your declaration; it does not independently verify your identity or authority.',
-  copy:'As soon as the article is published, we will email you a link to read and share it.',
-  form:'Permission for this visit', business:'Establishment name', location:'Location / address', visitDate:'Visit date', name:'Your full name', role:'Your role', email:'Email for your copy', restrictions:'Restrictions or areas to avoid (optional)', consent:'Permission', approve:'Approve & save permission', saving:'Saving permission…', success:'Permission recorded', reference:'Reference', saved:'Recorded', pending:'The permission is saved. One or more email copies could not yet be accepted for sending. Planeta Boricua can retry them from its private panel.', accepted:'Both email copies were accepted by the email service. Check your inbox and spam folder; acceptance is not proof of delivery.', emailLabel:'Email copies', venue:'Establishment', pb:'Planeta Boricua', print:'Print / save this receipt as PDF', error:'We could not save your permission. Nothing is confirmed. Please try again.', expired:'The form expired. Reload this page before approving.', timezone:'Time zone', statusAccepted:'Accepted for sending', statusFailed:'Pending / retry needed', statusSending:'Pending', review:'Please review the terms before approving.', language:'Español', privacyTitle:'Your information', policyTitle:'Transparency & independence', allowTitle:'What you authorize'
- },
- es: {
-  title:'Vamos a conocer tu espacio', eyebrow:'Una presentación personal',
-  intro:'Soy Iván Soto. Planeta Boricua — Más Boricua Que Un Mofongo es un portal cultural en español para los puertorriqueños en la Isla y en Estados Unidos. En Turistiando con Iván Soto comparto experiencias personales de viajes, gastronomía y lugares, junto con información práctica para que nuestros lectores puedan descubrir espacios como el tuyo.',
-  visit:'Te visito como cliente y estoy preparado para pagar mi visita. No hace falta una entrevista. Con tu permiso, quisiera fotografiar la comida, el establecimiento y las vistas, y compartir mi experiencia en español en Planeta Boricua y sus redes sociales. Si el establecimiento ofrece descuentos o experiencias de cortesía para medios, agradeceremos conocer esas opciones; son completamente voluntarias.',
-  distribution:'Además del portal, compartimos nuestras publicaciones en nuestras redes sociales y en grupos de comunidades boricuas, algunos con miles de miembros, cuando sus reglas lo permiten. Esto ofrece más oportunidades para que los lectores descubran tu establecimiento. La cantidad de miembros de un grupo no equivale a vistas ni garantiza alcance, visitas o ventas.',
-  discretionTitle:'Discreción durante la visita',
-  discretion:'Agradecemos que el gerente o encargado maneje nuestra visita con discreción y, cuando sea posible, evite anunciar la cobertura al personal de servicio. Queremos conocer la experiencia habitual de cualquier cliente, sin atenciones especiales. Esto no impide comunicar al personal lo necesario para coordinar las fotografías o respetar las normas del establecimiento.',
-  policy:'Esta cobertura editorial no tiene costo. Cualquier descuento, comida, estadía o servicio de cortesía es voluntario y no es condición para la cobertura. No garantiza una opinión favorable ni concede aprobación previa del contenido. Cualquier beneficio relacionado con la cobertura se indicará claramente, siguiendo las orientaciones de la Comisión Federal de Comercio de Estados Unidos (FTC).',
-  permission:'Para la visita y ubicación identificadas abajo, autorizo a Iván Soto / Planeta Boricua a tomar fotografías de la comida, el establecimiento y las vistas en las áreas permitidas por el negocio, y a publicarlas junto con su cobertura editorial en Planeta Boricua y sus redes sociales, sujeto a las restricciones indicadas abajo. Este permiso no incluye clientes o empleados identificables sin su autorización separada, áreas privadas o restringidas, entrevistas ni uso en publicidad ajena a esta cobertura. No concede aprobación editorial ni transfiere la propiedad de nuestra marca.',
-  authority:'Confirmo que estoy autorizado para conceder este permiso en nombre del establecimiento. He leído y acepto el permiso y las condiciones de transparencia editorial anteriores.',
-  privacy:'Planeta Boricua guardará de forma privada tu nombre, cargo, negocio, detalles de la visita, email, restricciones y texto aceptado como registro del permiso. Se enviará una copia a tu correo y otra a Planeta Boricua. Esto no te suscribe a publicidad. Para preguntas, correcciones o solicitudes sobre futuras fotografías o usos, escribe a masboricuaqueunmofongo@gmail.com. Este registro documenta tu declaración; no verifica de forma independiente tu identidad o facultad para autorizar.',
-  copy:'Tan pronto se publique el artículo, te enviaremos un email con el enlace para leerlo y compartirlo.',
-  form:'Permiso para esta visita', business:'Nombre del establecimiento', location:'Ubicación / dirección', visitDate:'Fecha de la visita', name:'Tu nombre completo', role:'Tu cargo', email:'Email para recibir tu copia', restrictions:'Restricciones o áreas que debemos evitar (opcional)', consent:'Permiso', approve:'Aprobar y guardar permiso', saving:'Guardando permiso…', success:'Autorización registrada', reference:'Referencia', saved:'Registro', pending:'El permiso quedó guardado. Una o ambas copias por correo están pendientes de envío. Planeta Boricua puede reintentarlo desde su panel privado.', accepted:'El servicio de correo aceptó ambas copias para envío. Revisa tu buzón y Spam; la aceptación no confirma la entrega.', emailLabel:'Copias por correo', venue:'Establecimiento', pb:'Planeta Boricua', print:'Imprimir / guardar comprobante en PDF', error:'No pudimos guardar el permiso. No hay confirmación. Intenta nuevamente.', expired:'El formulario venció. Recarga esta página antes de aprobar.', timezone:'Zona horaria', statusAccepted:'Aceptado para envío', statusFailed:'Pendiente / requiere reenvío', statusSending:'Pendiente', review:'Revisa las condiciones antes de aprobar.', language:'English', privacyTitle:'Tus datos', policyTitle:'Transparencia e independencia', allowTitle:'Lo que autorizas'
- }
+  "en": {
+    "title": "Let’s discover your establishment",
+    "eyebrow": "A personal introduction",
+    "intro": "I’m Iván Soto, a communicator with experience in radio, television and tourism. Through Turistiando con Iván Soto on Planeta Boricua, I share experiences and places with our Puerto Rican community in Spanish.",
+    "visit": "We would love to discover your establishment and share our experience in an article featuring our own photographs and helpful information for readers who may wish to visit.",
+    "distribution": "The article on our social media and in Puerto Rican community groups.",
+    "discretionTitle": "About our visit",
+    "discretion": "We would like to enjoy your establishment and experience the usual service without interrupting operations or requesting special treatment. We will not conduct interviews or photograph employees, the kitchen, or private or prohibited areas. We will avoid including identifiable customers or other people in photographs. We appreciate the manager handling our visit discreetly. Staff may be informed as needed to facilitate photography and follow the establishment’s policies.",
+    "policy": "There is no charge for this editorial coverage. Any invitation, discount or full or partial courtesy is welcome and appreciated, but completely optional and will be arranged with the person in charge beforehand. Permission for photography and publication does not imply an offer of complimentary services. We will share our experience honestly. Courtesies do not guarantee a favorable review or grant advance approval of the content. Any benefit received in connection with this coverage will be clearly disclosed in the article as part of our commitment to transparency with our readers.",
+    "permission": "For the visit and location identified in this form, I authorize Iván Soto / Planeta Boricua to photograph dishes, the establishment and its views in permitted areas and use those photographs in the article and in sharing that coverage on Planeta Boricua’s social media, subject to the restrictions provided. There will be no interviews or photographs of employees, the kitchen, or private or prohibited areas. Identifiable customers or other people will be avoided in photographs. This permission does not include future visits or advertising uses unrelated to this publication, grant editorial approval, or transfer ownership of our brand.",
+    "authority": "I confirm that I am authorized to give this permission on behalf of the establishment and accept the conditions for the visit, photography and publication described above.",
+    "privacy": "We will privately store the form details and accepted text as a record of permission, including the date and time of acceptance. A copy will be emailed to the address provided and to Planeta Boricua. Your email will not be published or subscribed to marketing. We will use it to manage this permission and send you the published article link. For questions or corrections: masboricuaqueunmofongo@gmail.com.",
+    "copy": "As soon as we publish the article, we will email you the link so you can share it too.",
+    "form": "Permission for this visit",
+    "business": "Establishment name",
+    "location": "Location / address",
+    "visitDate": "Visit date",
+    "name": "Your full name",
+    "role": "Your role",
+    "email": "Email for your copy",
+    "restrictions": "Restrictions or areas to avoid (optional)",
+    "consent": "Permission",
+    "approve": "Authorize this visit",
+    "saving": "Saving permission…",
+    "success": "Permission recorded",
+    "reference": "Reference",
+    "saved": "Recorded",
+    "pending": "The permission is saved. One or more email copies could not yet be accepted for sending. Planeta Boricua can retry them from its private panel.",
+    "accepted": "Both email copies were accepted by the email service. Check your inbox and spam folder; acceptance is not proof of delivery.",
+    "emailLabel": "Email copies",
+    "venue": "Establishment",
+    "pb": "Planeta Boricua",
+    "print": "Print / save this receipt as PDF",
+    "error": "We could not save your permission. Nothing is confirmed. Please try again.",
+    "expired": "The form expired. Reload this page before approving.",
+    "timezone": "Time zone",
+    "statusAccepted": "Accepted for sending",
+    "statusFailed": "Pending / retry needed",
+    "statusSending": "Pending",
+    "review": "The manager or authorized representative may record permission and specify any additional restrictions.",
+    "language": "Español",
+    "privacyTitle": "Your information",
+    "policyTitle": "Collaborations",
+    "allowTitle": "What you authorize",
+    "benefitsTitle": "What will we share?",
+    "benefits": [
+      "Our experience with the food, atmosphere and location.",
+      "Photographs of the dishes, establishment and views, with your permission.",
+      "Your address, website and contact options.",
+      "The article on our social media and in Puerto Rican community groups."
+    ],
+    "portalLabel": "Discover Planeta Boricua",
+    "corrections": "You may contact us to correct factual details such as your address, opening hours or contact information.",
+    "thanks": "Thank you for welcoming us and letting us discover your establishment."
+  },
+  "es": {
+    "title": "Conozcamos tu establecimiento",
+    "eyebrow": "Una presentación personal",
+    "intro": "Soy Iván Soto, comunicador con experiencia en radio, televisión y turismo. En Turistiando con Iván Soto, dentro de Planeta Boricua, comparto experiencias y lugares con nuestra comunidad puertorriqueña en español.",
+    "visit": "Nos gustaría conocer tu establecimiento y contar nuestra experiencia mediante una publicación con fotografías propias e información útil para quienes deseen visitarlo.",
+    "distribution": "La publicación en nuestras redes sociales y en grupos de comunidades boricuas.",
+    "discretionTitle": "Sobre nuestra visita",
+    "discretion": "Queremos disfrutar del lugar y conocer el servicio habitual, sin interrumpir las operaciones ni solicitar atención especial. No realizaremos entrevistas ni tomaremos fotografías de empleados, la cocina o zonas privadas o no permitidas. Evitaremos incluir clientes u otras personas identificables en las imágenes. Agradecemos que el gerente o encargado maneje nuestra visita con discreción. Puede informar al personal lo necesario para facilitar las fotografías y respetar las normas del establecimiento.",
+    "policy": "Esta cobertura editorial no tiene costo. Cualquier invitación, descuento o cortesía, total o parcial, será bienvenida y agradecida, pero es completamente opcional y se coordinará previamente con el encargado. Autorizar las fotografías y la publicación no implica ofrecer una cortesía. Compartiremos nuestra experiencia con honestidad. Las cortesías no garantizan una evaluación favorable ni conceden aprobación previa del contenido. Cualquier beneficio recibido relacionado con esta cobertura se indicará claramente en la publicación, como parte de nuestro compromiso de transparencia con los lectores.",
+    "permission": "Para la visita y ubicación indicadas en este formulario, autorizo a Iván Soto / Planeta Boricua a tomar fotografías de los platos, el establecimiento y sus vistas en las áreas permitidas, y a utilizarlas en el artículo y en la difusión de esa cobertura en las redes de Planeta Boricua, sujeto a las restricciones indicadas. No se realizarán entrevistas ni se tomarán fotografías de empleados, la cocina o zonas privadas o no permitidas. Se evitará incluir clientes u otras personas identificables en las imágenes. Esta autorización no incluye futuras visitas ni usos publicitarios ajenos a esta publicación, no concede aprobación editorial ni transfiere la propiedad de nuestra marca.",
+    "authority": "Confirmo que estoy autorizado para conceder este permiso en nombre del establecimiento y acepto las condiciones de la visita, las fotografías y su publicación descritas arriba.",
+    "privacy": "Guardaremos de forma privada los datos del formulario y el texto aceptado como registro de la autorización, con la fecha y hora de aceptación. Enviaremos una copia al correo indicado y otra a Planeta Boricua. Tu correo no se publicará ni se utilizará para suscribirte a promociones. Lo usaremos para gestionar esta autorización y enviarte el enlace del artículo publicado. Para preguntas o correcciones: masboricuaqueunmofongo@gmail.com.",
+    "copy": "Tan pronto publiquemos el artículo, te enviaremos un email con el enlace para que también puedas compartirlo.",
+    "form": "Autorización para esta visita",
+    "business": "Nombre del establecimiento",
+    "location": "Ubicación / dirección",
+    "visitDate": "Fecha de la visita",
+    "name": "Tu nombre completo",
+    "role": "Tu cargo",
+    "email": "Email para recibir tu copia",
+    "restrictions": "Restricciones o áreas que debemos evitar (opcional)",
+    "consent": "Permiso",
+    "approve": "Autorizar esta visita",
+    "saving": "Guardando permiso…",
+    "success": "Autorización registrada",
+    "reference": "Referencia",
+    "saved": "Registro",
+    "pending": "El permiso quedó guardado. Una o ambas copias por correo están pendientes de envío. Planeta Boricua puede reintentarlo desde su panel privado.",
+    "accepted": "El servicio de correo aceptó ambas copias para envío. Revisa tu buzón y Spam; la aceptación no confirma la entrega.",
+    "emailLabel": "Copias por correo",
+    "venue": "Establecimiento",
+    "pb": "Planeta Boricua",
+    "print": "Imprimir / guardar comprobante en PDF",
+    "error": "No pudimos guardar el permiso. No hay confirmación. Intenta nuevamente.",
+    "expired": "El formulario venció. Recarga esta página antes de aprobar.",
+    "timezone": "Zona horaria",
+    "statusAccepted": "Aceptado para envío",
+    "statusFailed": "Pendiente / requiere reenvío",
+    "statusSending": "Pendiente",
+    "review": "El gerente o representante autorizado puede registrar el permiso e indicar cualquier restricción adicional.",
+    "language": "English",
+    "privacyTitle": "Tu información",
+    "policyTitle": "Colaboraciones",
+    "allowTitle": "Lo que autorizas",
+    "benefitsTitle": "¿Qué compartiremos?",
+    "benefits": [
+      "Nuestra experiencia con la comida, el ambiente y el lugar.",
+      "Fotografías de los platos, el establecimiento y sus vistas, con tu autorización.",
+      "Dirección, sitio web y opciones de contacto.",
+      "La publicación en nuestras redes sociales y en grupos de comunidades boricuas."
+    ],
+    "portalLabel": "Conoce Planeta Boricua",
+    "corrections": "Puedes comunicarnos cualquier corrección de datos objetivos, como dirección, horarios o información de contacto.",
+    "thanks": "Gracias por recibirnos y permitirnos conocer su espacio."
+  }
 };
 function fail(message){const error=new Error(message);error.validation=true;throw error;}
 function clean(value,max,required=true,multiline=false){if(typeof value!=='string'||value.length>max)fail('Invalid field / Campo inválido');const out=value.trim();if((required&&!out)||/[\u0000-\u001f\u007f]/.test((multiline?out.replace(/\n/g,''):out)))fail('Invalid field / Campo inválido');return out;}
@@ -47,7 +129,7 @@ function ticket(secret,now=Date.now()){const payload=Buffer.from(JSON.stringify(
 function verifyTicket(secret,value,now=Date.now()){
  try{if(!secret||typeof value!=='string'||value.length>500)return null;const [p,s]=value.split('.');const expected=crypto.createHmac('sha256',secret).update('pb-travel:'+p).digest('hex');if(!s||s.length!==expected.length||!crypto.timingSafeEqual(Buffer.from(s),Buffer.from(expected)))return null;const claims=JSON.parse(Buffer.from(p,'base64url').toString());return /^[a-f0-9]{48}$/.test(claims.nonce)&&claims.expires>now?claims:null;}catch(_){return null;}
 }
-function snapshot(lang){const c=COPY[lang];return {version:VERSION,language:lang,introduction:c.intro,visit:c.visit,distribution:c.distribution,discretion:c.discretion,transparency:c.policy,permission:c.permission,authority:c.authority,privacy:c.privacy,copyOffer:c.copy};}
+function snapshot(lang){const c=COPY[lang];return {version:VERSION,language:lang,introduction:c.intro,visit:c.visit,benefits:c.benefits,corrections:c.corrections,distribution:c.distribution,discretion:c.discretion,transparency:c.policy,permission:c.permission,authority:c.authority,privacy:c.privacy,copyOffer:c.copy};}
 function createStore(directory){
  const file=id=>{if(!/^TP-[a-f0-9]{32}$/.test(id))throw Error('Invalid reference');return path.join(directory,id+'.json');};
  function save(record){fs.mkdirSync(directory,{recursive:true,mode:0o700});const target=file(record.id),tmp=target+'.'+crypto.randomBytes(8).toString('hex')+'.tmp';try{fs.writeFileSync(tmp,JSON.stringify(record,null,2),{mode:0o600,flag:'wx'});fs.renameSync(tmp,target);}finally{if(fs.existsSync(tmp))fs.unlinkSync(tmp);}}
