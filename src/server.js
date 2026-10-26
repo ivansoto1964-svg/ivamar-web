@@ -12,6 +12,7 @@ const pbArtisanMailBatches = require('./services/pb-artisan-mail-batches');
 const pbArtisanRetirement = require('./services/pb-artisan-retirement');
 const pbTalent = require('./services/pb-talent');
 const {createRouter:createPBTalentRouter} = require('./services/pb-talent-routes');
+const {createRouter:createPBTravelPermissionRouter} = require('./services/pb-travel-permission-routes');
 const pbLatestEditor = require('./services/pb-latest-editor');
 const pbControlDrafts = require('./services/pb-control-drafts');
 const { cleanLatestFile } = require('./services/pb-legacy-commercial-cleanup');
@@ -97,7 +98,7 @@ app.use((req, res, next) => {
 
 // PB analytics: set PB_GA_MEASUREMENT_ID=G-XXXXXXXXXX in Render to activate.
 app.use((req, res, next) => {
-  if (pbTalent.isPrivatePath(req.path)) return next();
+  if (pbTalent.isPrivatePath(req.path) || req.path === '/turistiando/presentacion') return next();
   const measurementId = String(process.env.PB_GA_MEASUREMENT_ID || '').trim();
   if (!/^G-[A-Z0-9]+$/i.test(measurementId)) return next();
   const host = String(req.hostname || '').toLowerCase();
@@ -127,7 +128,7 @@ app.use((req, res, next) => {
         .replace(/href=(['"])\/privacidad\1/g, 'href=$1/privacidad-boricua$1')
         .replace(/href=(['"])\/contacto\1/g, 'href=$1/quienes-somos$1')
         .replace(/connect@ivamarai\.com/gi, 'masboricuaqueunmofongo@gmail.com');
-      const privatePath = /^\/(?:pb-control|api|auth)(?:\/|$)/.test(String(req.path || '')) || pbTalent.isPrivatePath(req.path);
+      const privatePath = req.path === '/turistiando/presentacion' || /^\/(?:pb-control|api|auth)(?:\/|$)/.test(String(req.path || '')) || pbTalent.isPrivatePath(req.path);
       if (!privatePath) body = withPBSiteFooter(body, { social: renderPBSocialFollow() });
     }
     return send(body);
@@ -1056,7 +1057,7 @@ app.use(cookieParser());
 // Private, aggregate PB traffic counts. The cookie stores only the current
 // Puerto Rico date; no IP address or persistent visitor identifier is saved.
 app.use((req, res, next) => {
-  if (!pbSiteAnalytics.shouldTrackRequest(req)) return next();
+  if (req.path === '/turistiando/presentacion' || !pbSiteAnalytics.shouldTrackRequest(req)) return next();
   // Capture before mounted routers temporarily strip their prefix from req.url.
   // Reading req.path inside "finish" stored /slug instead of /blog/slug.
   const pagePath = req.path;
@@ -3274,6 +3275,17 @@ app.post('/admin/pb-event-delete/:token', (req, res) => {
   writePBEvents('approved.json', approved);
   res.send(`<h2>✅ Evento eliminado</h2><p>${sanitize(event.name)} ya no aparece en la agenda.</p><p><a href="/agenda-boricua">Ver agenda</a></p>`);
 });
+
+// Direct-link, bilingual visit permissions. Private records share PB's persistent disk.
+app.use(createPBTravelPermissionRouter({
+  secret:pbArtisanMagicSecret(),
+  ready:() => Boolean(process.env.RESEND_API_KEY),
+  pbEmail:PB_CONTACT_EMAIL,
+  from:`Planeta Boricua <${PB_SENDER_EMAIL}>`,
+  requireAdmin:requirePBAdmin,
+  requireAdminCsrf:requirePBCsrf,
+  send:(message,options) => resend.emails.send(message,options)
+}));
 
 // Cultural profiles are independent of artisan listings and paid catalogs.
 // Registration stays available by direct link; public discovery is gated separately.
