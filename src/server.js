@@ -12,6 +12,7 @@ const pbArtisanMailBatches = require('./services/pb-artisan-mail-batches');
 const pbArtisanRetirement = require('./services/pb-artisan-retirement');
 const pbTalent = require('./services/pb-talent');
 const {createRouter:createPBTalentRouter} = require('./services/pb-talent-routes');
+const {createRouter:createPBVisitGuideRouter} = require('./services/pb-visit-guide-routes');
 const {createRouter:createPBTravelPermissionRouter} = require('./services/pb-travel-permission-routes');
 const pbLatestEditor = require('./services/pb-latest-editor');
 const pbControlDrafts = require('./services/pb-control-drafts');
@@ -3275,6 +3276,9 @@ app.post('/admin/pb-event-delete/:token', (req, res) => {
   writePBEvents('approved.json', approved);
   res.send(`<h2>✅ Evento eliminado</h2><p>${sanitize(event.name)} ya no aparece en la agenda.</p><p><a href="/agenda-boricua">Ver agenda</a></p>`);
 });
+
+// Private visit notes and evidence; never published through this router.
+app.use(createPBVisitGuideRouter({requireAdmin:requirePBAdmin,requireAdminCsrf:requirePBCsrf}));
 
 // Direct-link, bilingual visit permissions. Private records share PB's persistent disk.
 app.use(createPBTravelPermissionRouter({
