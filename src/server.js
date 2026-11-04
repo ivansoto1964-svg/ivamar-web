@@ -2780,6 +2780,10 @@ app.get("/api/blog-feed", async (req, res) => {
 app.get("/quienes-somos", (req, res) => res.send(quienesSomos));
 app.get("/anunciate-en-pb", (_req, res) => res.send(publicidadPB));
 
+const renderMenuLanding = require('./views/planetaboricua/crea-tu-menu');
+app.get('/crea-tu-menu', (_req, res) => res.send(renderMenuLanding('es')));
+app.get('/crea-tu-menu/en', (_req, res) => res.send(renderMenuLanding('en')));
+
 app.get("/caribex-sitemap.xml", async (req, res) => {
   const base = "https://www.yourcaribbeanexpert.com";
   const destinations = [
