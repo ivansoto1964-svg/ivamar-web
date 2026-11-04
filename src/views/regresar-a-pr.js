@@ -9,7 +9,7 @@ module.exports = `<!DOCTYPE html>
 <meta property="og:title" content="Regresar a Puerto Rico — Guía Completa para Boricuas">
 <meta property="og:description" content="Todo lo que necesitas saber para regresar a Puerto Rico desde Estados Unidos. Mudanza, licencias, vivienda, empleo y más.">
 <meta property="og:url" content="https://www.masboricuaqueunmofongo.com/regresar-a-pr">
-<meta property="og:image" content="https://www.masboricuaqueunmofongo.com/img/og-planetaboricua.jpg">
+<meta property="og:image" content="https://www.masboricuaqueunmofongo.com/img/og-planeta-boricua-logo.jpg">
 <link rel="canonical" href="https://www.masboricuaqueunmofongo.com/regresar-a-pr">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,800;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
