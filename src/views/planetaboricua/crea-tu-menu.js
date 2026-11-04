@@ -1,6 +1,5 @@
 const basePath = '/crea-tu-menu';
 const site = 'https://www.masboricuaqueunmofongo.com';
-const contact = 'masboricuaqueunmofongo@gmail.com';
 
 const copy = {
   es: {
@@ -8,10 +7,8 @@ const copy = {
     headline: 'Tu food truck. Tu menú. Tus pedidos.',
     intro: 'Actualiza tu menú desde el celular y compártelo con un enlace o un QR. Tus clientes pueden armar su pedido y enviártelo por WhatsApp.',
     price: '$49 de configuración inicial',
-    renewal: 'Primer mes sin mensualidad desde la publicación. Luego $9.99 al mes. PB no cobra comisión por pedido.',
-    cta: 'Me interesa el piloto',
-    subject: 'Me interesa el piloto de menú para food trucks',
-    status: 'Estamos preparando el piloto. Puedes escribirnos para expresar tu interés.',
+    renewal: 'Primer mes sin mensualidad desde la publicación. Luego $9.99 al mes. Tu mensualidad sigue igual: si vendes $1,000 o más, pagas $9.99. Si vendes $10,000, pagas los mismos $9.99.',
+    cta: 'Crear mi menú',
     aboutTitle: '¿Qué es Planeta Boricua?',
     about: 'Somos un portal de cultura, artesanía, gastronomía y comunidad boricua. Nuestra audiencia sigue creciendo. Cuando publiques tu menú, tu negocio también aparecerá en Dónde Comer, organizado por estado o territorio y ciudad o municipio.',
     stepsTitle: 'Cómo funciona',
@@ -23,8 +20,8 @@ const copy = {
     ],
     faqTitle: 'Preguntas frecuentes',
     faq: [
-      ['¿Cuánto cuesta?', 'Pagas $49 una sola vez por la configuración inicial. El primer mes desde la publicación va sin mensualidad. A partir del segundo mes pagas $9.99 al mes. PB no cobra comisión por pedido.'],
-      ['¿En qué se diferencia de DoorDash y Uber Eats?', 'Sus marketplaces permiten encontrar negocios y ordenar desde sus apps, con opciones de entrega o recogido según el servicio. PB te da un menú editable, un enlace propio y un QR para recibir pedidos directos por WhatsApp. Puedes usar ambos canales. PB no ofrece reparto en este piloto.'],
+      ['¿Cuánto cuesta?', 'Pagas $49 una sola vez por la configuración inicial. El primer mes desde la publicación va sin mensualidad. A partir del segundo mes pagas $9.99 al mes. Tu mensualidad sigue igual: si vendes $1,000 o más, pagas $9.99. Si vendes $10,000, pagas los mismos $9.99.'],
+      ['¿En qué se diferencia de DoorDash y Uber Eats?', 'Sus marketplaces permiten encontrar negocios y ordenar desde sus apps, con opciones de entrega o recogido según el servicio. PB te da un menú editable, un enlace propio y un QR para recibir pedidos directos por WhatsApp. Puedes usar ambos canales. PB no ofrece reparto.'],
       ['¿Cómo cobro los pedidos?', 'Tú eliges qué métodos aceptas, como Zelle si tu banco lo permite para tu negocio, un enlace de pago o pago al recoger. Tú confirmas el cobro.'],
       ['¿Qué pasa si cambio de ubicación?', 'Tu dirección habitual se muestra por defecto. Si vas a un evento, podrás indicar una ubicación temporal y cuándo termina. Tu enlace y tu QR siguen siendo los mismos.'],
       ['¿Tengo que imprimir un QR nuevo si cambio el menú?', 'No. El QR abre el mismo enlace y los clientes ven el menú actualizado.']
@@ -35,10 +32,8 @@ const copy = {
     headline: 'Your food truck. Your menu. Your orders.',
     intro: 'Update your menu from your phone and share it with a link or QR code. Customers can build their order and send it to you on WhatsApp.',
     price: '$49 one-time setup',
-    renewal: 'No monthly fee for the first month after publishing. Then $9.99 per month. PB charges no commission per order.',
-    cta: 'I’m interested in the pilot',
-    subject: 'I’m interested in the food truck menu pilot',
-    status: 'We’re getting the pilot ready. Email us if you’re interested.',
+    renewal: 'No monthly fee for the first month after publishing. Then $9.99 per month. Your monthly price stays the same: sell $1,000 or more and pay $9.99. Sell $10,000 and still pay $9.99.',
+    cta: 'Create my menu',
     aboutTitle: 'What is Planeta Boricua?',
     about: 'We’re a growing portal for Puerto Rican culture, makers, food, and community. When you publish your menu, your business will also appear in our Where to Eat directory, organized by state or territory and city or municipality.',
     stepsTitle: 'How it works',
@@ -50,8 +45,8 @@ const copy = {
     ],
     faqTitle: 'Frequently asked questions',
     faq: [
-      ['How much does it cost?', 'Setup is a one-time $49 payment. There’s no monthly fee for the first month after publishing. Starting in month two, it’s $9.99 per month. PB charges no commission per order.'],
-      ['How is it different from DoorDash and Uber Eats?', 'Their marketplaces let customers discover businesses and order in their apps, with delivery or pickup depending on the service. PB gives you an editable menu, your own link, and a QR code for direct WhatsApp orders. You can use both channels. PB does not offer delivery in this pilot.'],
+      ['How much does it cost?', 'Setup is a one-time $49 payment. There’s no monthly fee for the first month after publishing. Starting in month two, it’s $9.99 per month. Your monthly price stays the same: sell $1,000 or more and pay $9.99. Sell $10,000 and still pay $9.99.'],
+      ['How is it different from DoorDash and Uber Eats?', 'Their marketplaces let customers discover businesses and order in their apps, with delivery or pickup depending on the service. PB gives you an editable menu, your own link, and a QR code for direct WhatsApp orders. You can use both channels. PB does not offer delivery.'],
       ['How do I get paid for orders?', 'You choose which payment methods to accept, such as Zelle if your bank supports it for your business, a payment link, or pay at pickup. You confirm payment.'],
       ['What if I change locations?', 'Your usual address is displayed by default. If you’re attending an event, you’ll be able to set a temporary location and an end time. Your link and QR code stay the same.'],
       ['Do I need to print a new QR code when I update my menu?', 'No. The QR code opens the same link and customers see your updated menu.']
@@ -85,8 +80,7 @@ function renderMenuLanding(language = 'es') {
 <h1>${t.headline}</h1>
 <p>${t.intro}</p>
 <p class="price">${t.price}</p><p>${t.renewal}</p>
-<a class="cta" href="mailto:${contact}?subject=${encodeURIComponent(t.subject)}">${t.cta}</a>
-<p class="status">${t.status}</p>
+<a class="cta" href="${basePath}/acceso">${t.cta}</a>
 </section>
 <section><h2>${t.aboutTitle}</h2><p>${t.about}</p></section>
 <section><h2>${t.stepsTitle}</h2><ol>${t.steps.map(([title, body]) => `<li><h3>${title}</h3><p>${body}</p></li>`).join('')}</ol></section>
