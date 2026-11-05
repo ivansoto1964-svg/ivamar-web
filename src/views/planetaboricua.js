@@ -294,6 +294,28 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
 .noticia-vivo-body{padding:1rem;display:flex;flex-direction:column;gap:0.4rem;border-left:3px solid var(--red);}
 @media(max-width:768px){.noticias-vivo-grid{grid-template-columns:1fr;}}
 @media(max-width:640px){.viajes-dest-grid{grid-template-columns:repeat(2,1fr)!important;}}
+
+/* Compact homepage organization; retain the current PB identity. */
+.home-section-inner{max-width:1180px;margin:0 auto;padding:0 24px}
+.home-creations,.home-resources{padding:28px 0;background:#fff;border-bottom:1px solid var(--border)}
+.home-section-copy{font-size:.9rem;line-height:1.6;color:var(--mid);margin:10px 0 18px}
+.home-creations-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}
+.home-creation{display:block;min-width:0;color:var(--dark);text-decoration:none;border:1px solid var(--border);border-radius:4px;overflow:hidden;background:#fff}
+.home-creation img{display:block;width:100%;height:190px;object-fit:contain;background:#f5f5f0}
+.home-creation-copy{padding:12px}.home-creation h3{font-family:'Playfair Display',Georgia,serif;font-size:1rem;line-height:1.35;margin:0 0 6px}.home-creation p{font-size:.8rem;line-height:1.5;color:#555}.home-creation small{display:block;font-size:.75rem;color:#666;margin-top:4px}.home-creation span{display:block;font-size:.75rem;color:var(--red);font-weight:700;margin-top:10px}
+.home-register{font-size:.8rem;margin-top:18px}.home-register a{color:var(--blue)}
+.home-resource-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:18px}.home-resource-grid>a{padding:20px;border:1px solid var(--border);border-top:3px solid var(--blue);background:#fff;color:var(--dark);text-decoration:none;border-radius:4px}.home-resource-grid h3{font-family:'Playfair Display',Georgia,serif;font-size:1.1rem;line-height:1.35}.home-resource-grid p{font-size:.85rem;line-height:1.6;color:var(--mid);margin:10px 0}.home-resource-grid span{font-size:.8rem;color:var(--red);font-weight:700}
+.home-sidebar-heading{font-family:'Playfair Display',Georgia,serif;font-size:1.2rem;margin-bottom:8px;color:var(--dark)}
+.hero-sidebar .latest-grid{display:block}.hero-sidebar .latest-card{display:block;border:0;border-bottom:1px solid var(--border);border-radius:0;box-shadow:none;margin:0}.hero-sidebar .latest-card img,.hero-sidebar .latest-placeholder,.hero-sidebar .latest-copy p,.hero-sidebar .latest-label{display:none}.hero-sidebar .latest-copy{padding:16px 0}.hero-sidebar .latest-copy h3{font-size:1.05rem;line-height:1.4}.hero-sidebar .sec-divider-link{margin-top:16px;align-self:flex-start}.hero-sidebar .latest-date{margin-top:8px}
+.home-travel>summary{cursor:pointer;color:var(--blue);font-size:.9rem;padding:12px 0}.home-travel:not([open])>.viajes-dest-grid{display:none!important}
+.home-feed-fallback{padding:20px;color:var(--blue)}
+.noticia-excerpt{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.hero-sidebar .latest-card{background:transparent}
+.hero-inner,.noticias-inner,.agenda-home-inner{max-width:1180px}
+.home-creations a:focus-visible,.home-resources a:focus-visible,.home-travel>summary:focus-visible{outline:3px solid var(--blue);outline-offset:3px}
+@media(max-width:900px){.home-creations-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.home-resource-grid{grid-template-columns:1fr}}
+@media(max-width:640px){.home-section-inner{padding:0 16px}.home-creations-grid{gap:12px}.home-creation img{height:150px}.home-creation-copy{padding:10px}.home-creation h3{font-size:.9rem}.sec-divider-inner{flex-wrap:wrap;gap:8px}.hero-sidebar{padding-top:16px}.home-creations,.home-resources{padding:24px 0}}
+
 </style>
 <script nowprocket data-noptimize="1" data-cfasync="false" data-wpfc-render="false" seraph-accel-crit="1" data-no-defer="1">
   (function () {
@@ -349,39 +371,24 @@ ${renderStay22()}
         <a href="#" id="hero-main-link" class="hero-read">Leer artículo →</a>
       </div>
     </div>
-    <div class="hero-sidebar" id="hero-sidebar">
-      <div style="padding:1rem 0;color:#999;font-size:0.82rem;">Cargando artículos...</div>
-    </div>
+    <aside class="hero-sidebar" id="hero-sidebar" aria-labelledby="home-latest-title">
+      <h2 id="home-latest-title" class="home-sidebar-heading">Lo más reciente</h2>
+      <div id="latest-grid" class="latest-grid"><p>Cargando novedades…</p></div>
+      <a href="/lo-mas-reciente" class="sec-divider-link">Ver todas →</a>
+    </aside>
   </div>
 </section>
 
 <div class="pb-home-ad" aria-label="Publicidad destacada"><!--PB_AD_HOME_AFTER_HERO--></div>
 
-<!-- BANNER FERIA DE ARTESANÍAS -->
-<section class="fair-promo" aria-labelledby="fair-promo-title">
-  <div class="fair-promo-inner">
-    <div>
-      <div class="fair-promo-eyebrow">Feria Digital · Abierta 24/7</div>
-      <h2 id="fair-promo-title">Visita la Feria Digital de Artesanos Boricuas 🇵🇷</h2>
-      <p>Descubre artesanos de Puerto Rico y la diáspora, conoce sus creaciones y contáctalos directamente.</p>
-    </div>
-    <div class="fair-promo-actions">
-      <a href="/feria-artesanos" class="fair-promo-btn primary">Explorar la Feria →</a>
-      <a href="/pb/add-negocio" class="fair-promo-btn secondary">¿Eres artesano? Crea tu espacio digital gratis</a>
-    </div>
-  </div>
-</section>
-
-<!-- LO MÁS RECIENTE -->
-<section class="latest-home" id="lo-mas-reciente">
-  <div class="latest-home-inner">
-    <div class="sec-divider-inner">
-      <span class="sec-divider-label">Lo más reciente</span>
-      <div class="sec-divider-line"></div>
-      <a href="/lo-mas-reciente" class="sec-divider-link">Ver todas →</a>
-    </div>
-    <p style="font-size:.85rem;color:var(--mid);line-height:1.6;margin-bottom:1rem;">Acontecimientos seleccionados, verificados y explicados con contexto por Planeta Boricua.</p>
-    <div class="latest-grid" id="latest-grid"><div style="color:#999;font-size:.8rem;padding:1rem 0;">Buscando actualizaciones…</div></div>
+<!-- CREACIONES REALES DE LA FERIA -->
+<section class="home-creations" id="feria" aria-labelledby="fair-promo-title">
+  <div class="home-section-inner">
+    <p class="home-section-copy">Feria Digital · Abierta 24/7</p>
+    <div class="sec-divider-inner"><h2 id="fair-promo-title" class="sec-divider-label">Creaciones de nuestra gente</h2><div class="sec-divider-line"></div><a href="/feria-artesanos" class="sec-divider-link">Explorar la Feria →</a></div>
+    <p class="home-section-copy">Visita la Feria Digital de Artesanos Boricuas: conoce sus piezas y contáctalos directamente.</p>
+    <!--PB_HOME_CREATIONS-->
+    <p class="home-register"><a href="/pb/add-negocio">¿Eres artesano? Crea tu espacio digital gratis →</a></p>
   </div>
 </section>
 
@@ -389,7 +396,7 @@ ${renderStay22()}
 <section class="agenda-home" id="agenda">
   <div class="agenda-home-inner">
     <div class="sec-divider-inner">
-      <span class="sec-divider-label">Agenda Boricua</span>
+      <span class="sec-divider-label">Esta semana en nuestra comunidad</span>
       <div class="sec-divider-line"></div>
       <a href="/agenda-boricua" class="sec-divider-link">Ver todos →</a>
     </div>
@@ -403,7 +410,7 @@ ${renderStay22()}
 <section class="noticias" id="articulos">
   <div class="noticias-inner">
     <div class="sec-divider-inner">
-      <span class="sec-divider-label">Los Temas del Balcón</span>
+      <span class="sec-divider-label">Más historias del Balcón</span>
       <div style="flex:1;height:2px;background:var(--red);margin:0 1rem;"></div>
       <a href="/blog" class="sec-divider-link">Ver todos →</a>
     </div>
@@ -569,51 +576,13 @@ async function loadDirectorio() {
 </script>
 
 <!-- RECURSOS -->
-<section id="recursos" style="background:linear-gradient(135deg,var(--blue),#001a4d);padding:2rem 0;">
-  <div style="max-width:1200px;margin:0 auto;padding:0 2rem;display:grid;grid-template-columns:1fr 1fr;gap:2rem;align-items:center;" class="recursos-inner">
-    <div>
-      <div style="font-size:0.65rem;font-weight:800;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.12em;margin-bottom:0.6rem;">Centro de Recursos</div>
-      <h2 style="font-family:'Playfair Display',serif;font-size:clamp(1.5rem,2.5vw,2rem);font-weight:800;color:#fff;margin-bottom:0.8rem;line-height:1.2;">¿Te mudas entre PR y USA? <span style="color:#f5c842;">Tenemos tu guía.</span></h2>
-      <p style="font-size:0.88rem;color:rgba(255,255,255,0.65);line-height:1.7;margin-bottom:1.5rem;">Licencias de conducir por estado, mudanzas, escuelas, servicios públicos, bancos, crédito y más — todo en español boricua y verificado.</p>
-      <a href="/mudarse-de-pr" style="display:inline-flex;align-items:center;gap:0.5rem;background:#CE1126;color:#fff;padding:0.75rem 1.5rem;border-radius:4px;font-size:0.88rem;font-weight:700;text-decoration:none;margin-right:0.8rem;">PR → USA 🇺🇸</a><a href="/regresar-a-pr" style="display:inline-flex;align-items:center;gap:0.5rem;background:#002D62;color:#fff;padding:0.75rem 1.5rem;border-radius:4px;font-size:0.88rem;font-weight:700;text-decoration:none;">USA → PR 🇵🇷</a>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.8rem;">
-      <div style="background:rgba(255,255,255,0.08);border-radius:6px;padding:1rem;text-align:center;">
-        <div style="font-size:1.5rem;margin-bottom:0.3rem;">🚗</div>
-        <div style="font-size:0.78rem;font-weight:700;color:#fff;">Licencias</div>
-        <div style="font-size:0.68rem;color:rgba(255,255,255,0.5);">6 estados</div>
-      </div>
-      <div style="background:rgba(255,255,255,0.08);border-radius:6px;padding:1rem;text-align:center;">
-        <div style="font-size:1.5rem;margin-bottom:0.3rem;">🚚</div>
-        <div style="font-size:0.78rem;font-weight:700;color:#fff;">Mudanzas</div>
-        <div style="font-size:0.68rem;color:rgba(255,255,255,0.5);">PR ↔ USA</div>
-      </div>
-      <div style="background:rgba(255,255,255,0.08);border-radius:6px;padding:1rem;text-align:center;">
-        <div style="font-size:1.5rem;margin-bottom:0.3rem;">🏦</div>
-        <div style="font-size:0.78rem;font-weight:700;color:#fff;">Bancos</div>
-        <div style="font-size:0.68rem;color:rgba(255,255,255,0.5);">Crédito & finanzas</div>
-      </div>
-      <div style="background:rgba(255,255,255,0.08);border-radius:6px;padding:1rem;text-align:center;">
-        <div style="font-size:1.5rem;margin-bottom:0.3rem;">🏥</div>
-        <div style="font-size:0.78rem;font-weight:700;color:#fff;">Salud</div>
-        <div style="font-size:0.68rem;color:rgba(255,255,255,0.5);">Seguros médicos</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- FERIA DE ARTESANÍAS -->
-<section class="feria-section" id="feria">
-  <div class="feria-inner">
-    <div>
-      <div class="feria-eyebrow">Feria Digital Permanente 🎨</div>
-      <h2 class="feria-title">¿Eres artesano <span class="accent">puertorriqueño</span>? 🇵🇷</h2>
-      <p class="feria-sub">Crea gratuitamente tu espacio digital y presenta tus creaciones a visitantes de Puerto Rico y la diáspora.</p>
-      <div style="background:rgba(255,255,255,0.12);border-radius:10px;padding:1rem 1.2rem;margin:1.2rem 0;display:flex;align-items:center;gap:0.8rem;">
-        <div style="font-size:1.5rem;">📅</div>
-        <div style="font-size:0.85rem;color:#fff;line-height:1.5;">La Feria está abierta las <strong>24 horas, los 7 días de la semana</strong>.</div>
-      </div>
-      <a href="/pb/add-negocio" class="btn-white">¿Eres artesano? Crea tu espacio digital gratis →</a>
+<section id="recursos" class="home-resources" aria-labelledby="home-resources-title">
+  <div class="home-section-inner">
+    <div class="sec-divider-inner"><h2 id="home-resources-title" class="sec-divider-label">Guías que ayudan</h2><div class="sec-divider-line"></div><a href="/recursos" class="sec-divider-link">Todos los recursos →</a></div>
+    <div class="home-resource-grid">
+      <a href="/mudarse-de-pr"><h3>De Puerto Rico a Estados Unidos</h3><p>Orientación para preparar tu mudanza y comenzar esta etapa.</p><span>Consultar la guía →</span></a>
+      <a href="/regresar-a-pr"><h3>Regresar a Puerto Rico</h3><p>Información práctica para organizar tu regreso a la isla.</p><span>Preparar el regreso →</span></a>
+      <a href="/recursos"><h3>Encuentra el recurso que necesitas</h3><p>Explora las guías disponibles para la vida entre PR y USA.</p><span>Explorar recursos →</span></a>
     </div>
   </div>
 </section>
@@ -626,6 +595,7 @@ async function loadDirectorio() {
       <div style="flex:1;height:2px;background:var(--red);margin:0 1rem;"></div>
       <span style="font-size:0.72rem;color:var(--mid);">Enlace afiliado · Trip.com</span>
     </div>
+    <details class="home-travel"><summary>Explorar hoteles y destinos · enlaces afiliados</summary>
     <div class="viajes-dest-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:1.5rem;">
 
       <a href="https://us.trip.com/hotels/list?flexType=1&cityId=-1&countryId=208&destName=Puerto%20Rico&searchType=C&optionId=208&crn=1&adult=2&curr=USD&locale=es-US&SID=2209817&allianceid=1094387&utm_campaign=520530" target="_blank" rel="sponsored noopener noreferrer" style="text-decoration:none;color:inherit;background:#fff;border-radius:10px;overflow:hidden;border:1px solid var(--border);display:block;">
@@ -709,6 +679,7 @@ async function loadDirectorio() {
       </a>
 
     </div>
+    </details>
   </div>
 </section>
 
@@ -903,7 +874,7 @@ async function pbCheckForUpdate(post) {
   fetch('/api/planetaboricua-blog')
     .then(r => r.json())
     .then(posts => {
-      if (!posts || !posts.length) return;
+      if (!Array.isArray(posts) || !posts.length) throw new Error('No published posts');
       pbCheckForUpdate(posts[0]);
 
       // Hero main — first post WITH image, fallback to first post
@@ -917,18 +888,6 @@ async function pbCheckForUpdate(post) {
       document.getElementById('hero-main-excerpt').textContent = heroPost.summary;
       document.getElementById('hero-main-date').textContent = heroPost.date;
       document.getElementById('hero-main-link').href = heroPost.link;
-
-      // Hero sidebar — remaining posts excluding hero
-      const sidebarPosts = posts.filter(p => p.link !== heroPost.link).slice(0, 4);
-      const sidebar = document.getElementById('hero-sidebar');
-      sidebar.innerHTML = sidebarPosts.map((p, i) =>
-        '<a href="' + p.link + '" class="hero-side-card">' +
-        '<div class="hero-side-num">0' + (i + 1) + '</div>' +
-        '<div class="hero-side-cat">' + p.tag + '</div>' +
-        '<div class="hero-side-title">' + p.title + '</div>' +
-        '<div class="hero-side-date">' + p.date + '</div>' +
-        '</a>'
-      ).join('');
 
       // Selección editorial — publicaciones del blog (excepto la principal)
       const grid = document.getElementById('noticias-grid');
@@ -946,7 +905,12 @@ async function pbCheckForUpdate(post) {
         '</div></a>'
       ).join('');
     })
-    .catch(e => console.log('Blog error:', e));
+    .catch(() => {
+      document.getElementById('hero-main-cat').textContent = 'El Balcón';
+      document.getElementById('hero-main-excerpt').textContent = 'Explora las historias y experiencias de nuestra comunidad.';
+      document.getElementById('hero-main-link').href = '/blog';
+      document.getElementById('noticias-grid').innerHTML = '<a href="/blog" class="home-feed-fallback">Visita El Balcón para leer nuestras historias →</a>';
+    });
 })();
 
 setInterval(() => {
@@ -962,7 +926,7 @@ setInterval(() => {
   if(!grid)return;
   const safe=value=>String(value||'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
   fetch('/api/pb-eventos-proximos').then(response=>response.json()).then(data=>{
-    const events=data.events||[];
+    const events=(data.events||[]).slice(0,3);
     if(!events.length){grid.innerHTML='<div style="grid-column:1/-1;background:var(--light);border-radius:8px;padding:1.5rem;color:var(--mid);">La agenda está comenzando. ¿Conoces una actividad boricua gratuita? Compártela con nosotros.</div>';return;}
     grid.innerHTML=events.map(event=>{const date=new Date(event.startDate+'T12:00:00');const month=date.toLocaleDateString('es-PR',{month:'short'}).replace('.','');const location=event.virtual?'Virtual':[event.city,event.region].filter(Boolean).join(', ');return '<a class="agenda-mini" href="'+safe(event.url||'/agenda-boricua')+'"><div class="agenda-mini-date"><strong>'+date.getDate()+'</strong><span>'+safe(month)+'</span></div><div><div class="agenda-mini-type">'+safe(event.type||'Evento boricua')+'</div><h3>'+safe(event.name)+'</h3><p>📍 '+safe(location)+'</p></div></a>'}).join('');
   }).catch(()=>{grid.innerHTML='<div style="color:var(--mid);font-size:.8rem;">No pudimos cargar la agenda en este momento.</div>'});

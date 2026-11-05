@@ -1,5 +1,5 @@
 (() => {
-  const menus = [...document.querySelectorAll('.pb-shell-more')];
+  const menus = [...document.querySelectorAll('.pb-site-menu')];
   menus.forEach(menu => menu.addEventListener('toggle', () => {
     if (menu.open) menus.forEach(other => { if (other !== menu) other.open = false; });
   }));
@@ -12,3 +12,9 @@
     menus.forEach(menu => { if (!menu.contains(event.target)) menu.open = false; });
   });
 })();
+
+// A mobile selection closes its menu, including links to the current page.
+document.querySelectorAll('.pb-site-panel a').forEach(link => link.addEventListener('click', () => {
+  const menu = link.closest('details');
+  if (menu) menu.open = false;
+}));

@@ -1,26 +1,26 @@
-# Refresh de navegación y presentación · noviembre 2026
+# Organización de PB · 5 de noviembre de 2026
 
-Iván autorizó adelantar el trabajo que esperaba al 8 de noviembre y priorizar la navegación sobre nuevas campañas. El alcance incluye portada, lectura, Feria, perfiles públicos de artesanos, Agenda y Recursos.
+## Dirección aprobada
 
-## Implementación
+Conservar la imagen actual (logo, blanco, rojo, azul y tipografías). Portada editorial compacta, con una feria integrada para descubrir creaciones. El alcance implementado es navegación compartida y organización de la portada; las páginas interiores conservan su diseño y funciones.
 
-- Un encabezado público y una hoja de estilos compartidos se aplican desde el mismo middleware que normaliza el pie del portal.
-- Escritorio: Inicio, Historias, Artesanos, Agenda, Recursos y Más. Historias abre El Balcón; Más mantiene Lo más reciente, viajes, boletín y otros accesos existentes.
-- Celular: barra inferior con Inicio, Historias, Artesanos, Agenda y Más; menú superior alternativo, foco visible, salto al contenido y Escape para cerrar.
-- Portada con introducción breve, cuatro accesos claros y una composición editorial renovada.
-- Feria con buscador, filtros y tarjetas conservados; perfiles con regreso a la Feria, accesos a creaciones/contacto/compartir y nuevas superficies visuales. Las imágenes siguen completas, sin recortar.
-- Se conservan los datos, rutas, QR, galerías, contactos, acceso de artesanos, publicidad y contadores. No se activan tiendas, Talento, Turistiando ni food trucks.
-- La rama previa `codex/pb-food-truck-landing` permanece independiente: contiene el menú/carrito piloto, no un rediseño completo ya integrado.
+## Cambios
 
-## Validación
+- Menú consistente: Inicio, El Balcón, Artesanos, Agenda, Recursos y Más. Desplegable nativo en celular, cierre con Escape o al seleccionar un enlace y salto al contenido.
+- Apertura: una historia de El Balcón y tres novedades de Lo más reciente. Las fuentes cargan por separado y ninguna sustituye a la otra.
+- Feria: hasta cuatro creaciones de distintos artesanos aprobados, con título, autor y ubicación; selección diaria estable. Solo se toman creaciones con imagen segura, título y descripción existentes. Los enlaces llevan a la galería pública. No se publican registros, emails ni campos privados. Si faltan creaciones se ofrece un enlace a la feria.
+- Se conserva una sola invitación al registro artesanal.
+- Agenda: hasta tres próximos eventos; después tres historias del Balcón y tres accesos a guías.
+- Viajes conserva sus ocho enlaces afiliados dentro de un desplegable compacto; boletín y aplicación siguen disponibles al final.
+- Se conservan los espacios actuales de publicidad, sin cambiar campañas o rotación.
+- Los artículos ya incluyen lecturas y recomendaciones de otras secciones; se conserva ese mecanismo.
 
-- `npm test` y test nuevo de preservación de navegación, paginación, formularios y funciones del perfil.
-- El test histórico de redes sociales omitía Pinterest, ya presente en producción; se actualizó su expectativa y el conteo usa NETWORKS.length.
-- El servidor completo no se arrancó para validación funcional: la revisión automática bloqueó una conexión externa durante su arranque.
-- Se generaron vistas HTML estáticas sin integraciones ni peticiones externas. La previsualización en el navegador remoto quedó limitada por acceso a loopback/archivos locales. Falta QA visual real en escritorio y móvil; no declarar ese control realizado.
+No hay migraciones, nuevas dependencias, escrituras de datos, cambios en QR, contactos, galerías, administración, pagos o envíos. No se activan tiendas ni secciones pendientes.
 
-## Publicación
+## Verificación y publicación
 
-El código se prepara en `codex/pb-refresh-navigation`. Producción continúa en `main` y el despliegue en Render sigue siendo manual por Iván. Revisar la vista antes de integrar; después de publicar comprobar portada, lectura, filtros, perfiles con/sin creaciones, contacto, QR y menú móvil.
-
-La rotación y prioridades de PB Ads se revisan después del refresh. Esta entrega no las modifica.
+- `npm test` completo y prueba de hidratación independiente de los feeds, orden de secciones, selección de creaciones, escape de texto y ausencia de campos privados.
+- Navegación compartida verificada contra formularios, paginación y funciones del perfil.
+- QA visual: portada en laptop y vista de 390 píxeles mediante iframe; menú móvil abre y cierra con Escape. La muestra estática usa dos galerías públicas verificadas; producción selecciona hasta cuatro del conjunto aprobado.
+- Vista estática aislada con contenido público real para QA mediante el servicio oficial de previsualización. No se inicia el servidor completo ni sus integraciones externas.
+- Producción se despliega manualmente en Render por Iván. Tras el despliegue comprobar portada, selección de creaciones, menú, páginas interiores y ausencia de errores públicos.

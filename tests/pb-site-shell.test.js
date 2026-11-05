@@ -15,12 +15,14 @@ for (const route of ['/','/blog','/blog/prueba','/lo-mas-reciente','/agenda-bori
   assert.match(output,/aria-label="Navegación móvil"/);
   assert.equal(withPBSiteShell(output,route),output,'Applying shell twice must be harmless');
   assert.ok(output.indexOf('id="pb-page-content"')>output.indexOf('aria-label="Navegación móvil"'));
+  assert.doesNotMatch(output,/pb-shell-intro|pb-shell-mobile|Un planeta\./);
+  assert.match(output, /href="\/blog"[^>]*>El Balcón/);
   assert.doesNotMatch(output,/href="\/(?:talento-boricua|donde-comer|crea-tu-menu)"/,'Deferred sections must not be activated');
 }
 const artisan={name:'Taller de prueba',ownerName:'Persona de prueba',desc:'Trabajo artesanal.',photo:'https://example.com/photo.jpg',whatsapp:'17875551212',gallery:[{image:'https://example.com/pieza.jpg',title:'Creación',description:'Detalle de la pieza.'}]};
 const original=profile(artisan,{slug:'taller-prueba',categoryLabel:'Artesanía',locationLabel:'Puerto Rico',events:[],recommendations:[]});
 const output=withPBSiteShell(original,'/artesanos/taller-prueba');
 for (const existing of ['https://wa.me/17875551212','/a/taller-prueba','/artesanos/taller-prueba/manifest.json','id="artisan-gallery-title"','Creación','Detalle de la pieza.','id="pb-share-profile"']) assert.ok(output.includes(existing),existing);
-assert.match(output,/id="pb-artisan-contact"/);
-assert.match(output,/href="#artisan-gallery-title"/);
+assert.ok(output.includes('<article class="profile">'));
+assert.doesNotMatch(output,/pb-shell-profile-trail/);
 console.log('PB shared navigation and profile preservation tests passed');
