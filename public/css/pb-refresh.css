@@ -1,0 +1,20 @@
+/* Navigation shares PB's existing white, red and blue identity. */
+.pb-site-header{position:sticky;top:0;z-index:100;background:#fff;border-bottom:3px solid #ce1126;color:#111;font-family:Inter,Arial,sans-serif}
+.pb-site-header *{box-sizing:border-box}
+.pb-site-header-inner{max-width:1180px;margin:0 auto;padding:12px 24px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+.pb-site-brand{display:flex;align-items:center;gap:10px;text-decoration:none!important;color:#111!important;flex-shrink:0}
+.pb-site-brand img{width:52px;height:44px;object-fit:contain;mix-blend-mode:multiply}
+.pb-site-brand strong{display:block;font-family:'Playfair Display',Georgia,serif;font-size:22px;line-height:1.15}
+.pb-site-brand small{display:block;font-size:9px;letter-spacing:.08em;line-height:1.5;color:#666}
+.pb-site-header .pb-site-nav{position:static;background:transparent;border:0;padding:0;margin:0;display:flex;flex-direction:row;align-items:center;gap:22px;width:auto;overflow:visible}
+.pb-site-nav>a,.pb-site-menu>summary{font:600 13px/1.4 Inter,Arial,sans-serif;color:#444;text-decoration:none;text-transform:none;letter-spacing:0;white-space:nowrap;padding:10px 0;cursor:pointer}
+.pb-site-header a[aria-current=page],.pb-site-header a:hover{color:#ce1126;text-decoration:underline;text-underline-offset:5px}
+.pb-site-menu{position:relative}.pb-site-menu>summary{list-style:none}.pb-site-menu>summary::-webkit-details-marker{display:none}
+.pb-site-header .pb-site-panel{position:absolute;top:100%;right:0;z-index:101;display:flex;flex-direction:column;align-items:stretch;gap:0;width:250px;max-height:70vh;overflow-y:auto;background:#fff;border:1px solid #ddd;border-radius:4px;padding:8px;box-shadow:0 6px 18px #0002;margin:0}
+.pb-site-panel>a{display:block;padding:11px 12px;color:#333;text-decoration:none;font:500 14px/1.4 Inter,Arial,sans-serif;white-space:normal}
+.pb-site-panel>a:hover{background:#f5f5f0}
+.pb-site-header details:not([open])>.pb-site-panel{display:none}.pb-site-mobile{display:none}
+.pb-site-header a:focus-visible,.pb-site-header summary:focus-visible{outline:3px solid #002d62;outline-offset:4px}
+.pb-site-skip{position:fixed;top:-100px;left:16px;background:#fff;color:#002d62;padding:12px;z-index:1000}.pb-site-skip:focus{top:8px}
+#pb-page-content{scroll-margin-top:85px}
+@media(max-width:1000px){.pb-site-header .pb-site-nav{display:none}.pb-site-mobile{display:block}.pb-site-header-inner{padding:10px 16px;gap:12px}.pb-site-brand strong{font-size:20px}.pb-site-brand img{width:45px;height:40px}.pb-site-menu>summary{border:1px solid #ddd;border-radius:4px;padding:9px 12px}.pb-site-header .pb-site-panel{width:min(300px,calc(100vw - 32px))}}

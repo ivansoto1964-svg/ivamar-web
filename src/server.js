@@ -35,6 +35,7 @@ const { buildArtisanManifest } = require('./services/pb-artisan-pwa');
 const salaPrensaPB = require('./views/planetaboricua/sala-prensa');
 const { renderPBSocialFollow } = require('./views/planetaboricua/social-follow');
 const { withPBSiteFooter } = require('./views/planetaboricua/site-footer');
+const { withPBSiteShell } = require('./views/planetaboricua/site-shell');
 const { isIndexablePBArtisan, wordCount } = require('./utils/pb-seo');
 const { CATEGORIES:PB_BLOG_CATEGORIES, categorySlug:pbBlogCategorySlug } = require('./utils/pb-editorial');
 const PB_ARTISAN_DESCRIPTION_REPAIRS = require('./data/pb-artisan-description-repairs');
@@ -131,7 +132,10 @@ app.use((req, res, next) => {
         .replace(/href=(['"])\/contacto\1/g, 'href=$1/quienes-somos$1')
         .replace(/connect@ivamarai\.com/gi, 'masboricuaqueunmofongo@gmail.com');
       const privatePath = req.path === '/turistiando/presentacion' || /^\/(?:pb-control|api|auth)(?:\/|$)/.test(String(req.path || '')) || pbTalent.isPrivatePath(req.path);
-      if (!privatePath) body = withPBSiteFooter(body, { social: renderPBSocialFollow() });
+      if (!privatePath) {
+        body = withPBSiteFooter(body, { social: renderPBSocialFollow() });
+        body = withPBSiteShell(body, req.path);
+      }
     }
     return send(body);
   };
@@ -281,7 +285,13 @@ function renderPBHome() {
   const top = selectHomeAd('home.after_hero');
   const middle = selectHomeAd('home.middle',[top?.id].filter(Boolean));
   const bottom = selectHomeAd('home.before_footer',[top?.id,middle?.id].filter(Boolean));
+  const { renderHomeCreations } = require('./views/planetaboricua/home-creations');
+  const creations = loadApprovedPBListings().filter(item => !item.status || item.status === 'approved').map(item => ({
+    slug:pbArtisanSlug(item),name:item.name,city:item.city,location:item.location,
+    gallery:sanitizePBArtisanGallery(item.gallery,item.photo)
+  }));
   return planetaboricua
+    .replace('<!--PB_HOME_CREATIONS-->',()=>renderHomeCreations(creations))
     .replace('<!--PB_HOME_HERO_PRELOAD-->',heroPreload)
     .replace('<!--PB_AD_HOME_AFTER_HERO-->',renderPBAd(top,{placement:'home.after_hero',pageSlug:'portada'}))
     .replace('<!--PB_AD_HOME_MIDDLE-->',renderPBAd(middle,{placement:'home.middle',pageSlug:'portada'}))

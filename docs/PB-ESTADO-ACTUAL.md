@@ -187,3 +187,7 @@ Usar esta frase:
 > Continúa trabajando en Planeta Boricua. Lee primero `README.md` y `docs/PB-ESTADO-ACTUAL.md`, revisa `git status` y el último commit, y dime cuál es la próxima tarea pendiente antes de cambiar código.
 
 Las conexiones de Gmail y GitHub pertenecen a la cuenta de ChatGPT, pero este documento conserva las decisiones, prioridades y comprobaciones que no deben depender de la memoria de un chat.
+
+## Organización de portada y navegación · 5 nov 2026
+
+Se mantiene la imagen actual de PB. La portada reúne historia principal y novedades, muestra hasta cuatro creaciones reales de artesanos aprobados, tres próximos eventos, tres historias y accesos a recursos. Se eliminan invitaciones artesanales repetidas; viajes queda en un desplegable con sus enlaces actuales. El menú público se comparte entre secciones sin cambiar el diseño interior ni las funciones de perfiles. Detalles y verificación en `PB-REFRESH-2026-11.md`. El despliegue continúa siendo manual por Iván en Render; la preparación del código no implica publicación.

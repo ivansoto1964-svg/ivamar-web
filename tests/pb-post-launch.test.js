@@ -15,15 +15,16 @@ assert.deepEqual(NETWORKS.map(item => [item.name, item.href]), [
   ['Instagram','https://www.instagram.com/miplanetaboricua/'],
   ['TikTok','https://www.tiktok.com/@planetaboricua4'],
   ['YouTube','https://www.youtube.com/@planetaboricua'],
+  ['Pinterest','https://www.pinterest.com/PlanetaBoricua/'],
   ['Telegram','https://t.me/planetaboricua']
 ]);
 const social = renderPBSocialFollow();
 assert.match(social, /Síguenos en:/);
-assert.equal((social.match(/<a href=/g) || []).length, 5);
-assert.equal((social.match(/target="_blank"/g) || []).length, 5);
-assert.equal((social.match(/rel="noopener noreferrer"/g) || []).length, 5);
-assert.equal((social.match(/aria-label="Seguir a Planeta Boricua en /g) || []).length, 5);
-assert.equal((social.match(/<svg /g) || []).length, 5);
+assert.equal((social.match(/<a href=/g) || []).length, NETWORKS.length);
+assert.equal((social.match(/target="_blank"/g) || []).length, NETWORKS.length);
+assert.equal((social.match(/rel="noopener noreferrer"/g) || []).length, NETWORKS.length);
+assert.equal((social.match(/aria-label="Seguir a Planeta Boricua en /g) || []).length, NETWORKS.length);
+assert.equal((social.match(/<svg /g) || []).length, NETWORKS.length);
 
 const item = {
   id:'artisan-1', name:'Taller de prueba', ownerName:'Artesana', category:'joyeria', location:'caguas', city:'Caguas',
