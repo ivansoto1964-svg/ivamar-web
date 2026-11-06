@@ -220,3 +220,7 @@ Artículo de Arecibo preparado como borrador en El Balcón, sin publicación aut
 ## Artesano de la Semana en portada · 6 noviembre 2026
 
 Bloque propio inmediatamente antes de Creaciones de nuestra gente. Muestra una sola entrevista: la más reciente seleccionada del archivo editorial, con foto real existente, nombre/proyecto verificados, resumen, enlace a la entrevista y acceso a todas las historias. Se actualiza al publicar y seleccionar una nueva entrevista; no rota por día ni inventa un artesano para una semana sin material. Si no hay entrevistas seleccionadas se oculta; no modifica perfiles ni publicaciones. El cambio de código requiere el deploy manual habitual de Iván.
+
+## Acceso a Nuestros pueblos · 6 noviembre 2026
+
+Se añade **Nuestros pueblos** (`/pueblos`) al menú principal compartido y al menú móvil; antes solo estaba en el footer. Se conserva el acceso del footer y el índice existente de los 78 municipios, desde el cual se llega a Arecibo. Cambio de código preparado para el deploy manual de Iván.

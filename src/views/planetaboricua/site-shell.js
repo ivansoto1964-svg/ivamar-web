@@ -5,7 +5,7 @@ function isPublicShellPath(pathname) {
     || /^\/artesanos\/(?!mi-perfil(?:\/|$)|comunicaciones(?:\/|$))[^/]+$/.test(pathname);
 }
 function renderSiteHeader(pathname) {
-  const links = [['/','Inicio'],['/blog','El Balcón'],['/feria-artesanos','Artesanos'],['/agenda-boricua','Agenda'],['/recursos','Recursos']];
+  const links = [['/','Inicio'],['/blog','El Balcón'],['/feria-artesanos','Artesanos'],['/agenda-boricua','Agenda'],['/pueblos','Nuestros pueblos'],['/recursos','Recursos']];
   const active = href => href === '/' ? pathname === '/' : href === '/feria-artesanos' ? pathname === href || pathname.startsWith('/artesanos/') : href === '/recursos' ? ['/recursos','/mudarse-de-pr','/regresar-a-pr'].includes(pathname) : pathname === href || pathname.startsWith(href+'/');
   const more = [['/lo-mas-reciente','Lo más reciente'],['/#viajes','Viajes y destinos'],['/#newsletter','Boletín'],['/quienes-somos','Quiénes somos'],['/anunciate-en-pb','Anúnciate en PB'],['mailto:masboricuaqueunmofongo@gmail.com','Contacto'],['/artesanos/mi-perfil','Administrar mi perfil']];
   const render = ([href,label]) => `<a href="${href}"${active(href)?' aria-current="page"':''}>${label}</a>`;
