@@ -388,6 +388,7 @@ ${renderStay22()}
     <div class="sec-divider-inner"><h2 id="fair-promo-title" class="sec-divider-label">Creaciones de nuestra gente</h2><div class="sec-divider-line"></div><a href="/feria-artesanos" class="sec-divider-link">Explorar la Feria →</a></div>
     <p class="home-section-copy">Visita la Feria Digital de Artesanos Boricuas: conoce sus piezas y contáctalos directamente.</p>
     <!--PB_HOME_CREATIONS-->
+    <p class="home-register"><a href="/artesano-de-la-semana">Artesano de la Semana: conoce las historias detrás de las piezas →</a></p>
     <p class="home-register"><a href="/pb/add-negocio">¿Eres artesano? Crea tu espacio digital gratis →</a></p>
   </div>
 </section>
