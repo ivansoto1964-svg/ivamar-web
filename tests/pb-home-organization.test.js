@@ -39,3 +39,22 @@ const context = {document:{getElementById:element},console,Date,encodeURICompone
   assert.equal(element('hero-sidebar').innerHTML,'','Blog feed must leave the news sidebar intact');
   console.log('PB homepage: selection, privacy, escaping, section order and independent feed hydration passed');
 })().catch(error=>{console.error(error);process.exitCode=1});
+
+// The interview feature follows the curated archive rather than daily photo rotation.
+const {renderHomeWeeklyArtisan}=require('../src/views/planetaboricua/home-weekly-artisan');
+const {LUIS_SLUG,HISTORICAL_STORY_SLUGS}=require('../src/services/pb-artisan-stories');
+const interviews=[{slug:LUIS_SLUG,title:'Luis: caretas de vejigante',summary:'Su historia artesanal.',image:'/media/pb-blog/luis.webp',publishedAt:'2026-10-31T12:00:00Z'}, {slug:HISTORICAL_STORY_SLUGS[4],title:'Luzangel',summary:'Tallas.',image:'/media/pb-blog/luzangel.webp',publishedAt:'2026-10-24T12:00:00Z'}, {slug:'noticia-reciente',title:'Noticia',publishedAt:'2026-11-06T12:00:00Z'}];
+const feature=renderHomeWeeklyArtisan(interviews);
+assert.match(feature,/Luis Carrasquillo/);
+assert.match(feature,/Artesanía LC/);
+assert.match(feature,/href="\/lo-mas-reciente\/luis-carrasquillo/);
+assert.match(feature,/Todas las historias/);
+assert.doesNotMatch(feature,/noticia-reciente|Luzangel/);
+assert.equal((feature.match(/<article /g)||[]).length,1);
+assert.equal(renderHomeWeeklyArtisan([]),'');
+const nextInterview={slug:'nueva-entrevista',artisanWeekly:true,title:'Nuevo <taller>',summary:'Una historia & cultura.',image:'javascript:alert(1)',publishedAt:'2026-11-07T12:00:00Z'};
+const updatedFeature=renderHomeWeeklyArtisan([...interviews,nextInterview]);
+assert.match(updatedFeature,/Nuevo &lt;taller&gt;/);
+assert.match(updatedFeature,/Una historia &amp; cultura/);
+assert.doesNotMatch(updatedFeature,/Luis Carrasquillo|javascript:|<img/);
+assert.ok(home.indexOf('<!--PB_HOME_WEEKLY_ARTISAN-->')<home.indexOf('id="feria"'));
