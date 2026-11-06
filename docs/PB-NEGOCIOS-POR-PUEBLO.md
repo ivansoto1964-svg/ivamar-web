@@ -80,3 +80,9 @@ Configurar también recuperación de pagos fallidos y avisos al cliente en Strip
 ## Despliegue
 
 Código en `main` y **Deploy latest commit** manual por Iván en Render. Luego verificar registro, email, fotos, panel y perfil en producción. No anunciar cobro operativo hasta configurar las variables y completar una prueba de pago en un entorno de pruebas separado. No usar una compra real sin autorización de un titular para la validación.
+
+## Configuración en Render · actualización 6 noviembre
+
+Servicio confirmado `srv-d6f2ahn5r7bs738fuhlg` en el workspace de Iván. Se guardaron tarifa, portal, cuenta y firma mediante merge, conservando otras variables. El webhook real `we_1UYsRTDjCGKYfj5TbIYy1FxW` existe con API `2026-09-30.endive` y está desactivado. `PB_BUSINESS_BILLING_ENABLED=false`. Falta comprobar/configurar una clave restringida del servidor, permisos, fiscalidad y prueba aislada antes de habilitar. El conector no permite leer las variables existentes; no declarar ausente una clave sin verificar.
+
+Guardar variables desde Render MCP disparó automáticamente el deploy `dep-dbn29sjncjis73dv66lg` del commit `c6d54d0`. No repetir ese deploy. No hay claves ni firmas secretas en este documento.
