@@ -352,6 +352,7 @@ ${renderStay22()}
       <a href="/lo-mas-reciente">Lo más reciente</a>
       <a href="/blog">El Balcón</a>
       <a href="/agenda-boricua">Agenda</a>
+      <a href="/pueblos">Nuestros pueblos</a>
       <a href="#recursos">Recursos</a>
       <a href="/feria-artesanos">Artesanos</a>
       ${process.env.PB_TALENT_ENABLED !== 'true' ? '' : '<a href="/talento-boricua">Talento Boricua</a>'}
