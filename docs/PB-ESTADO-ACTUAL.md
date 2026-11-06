@@ -191,3 +191,15 @@ Las conexiones de Gmail y GitHub pertenecen a la cuenta de ChatGPT, pero este do
 ## Organización de portada y navegación · 5 nov 2026
 
 Se mantiene la imagen actual de PB. La portada reúne historia principal y novedades, muestra hasta cuatro creaciones reales de artesanos aprobados, tres próximos eventos, tres historias y accesos a recursos. Se eliminan invitaciones artesanales repetidas; viajes queda en un desplegable con sus enlaces actuales. El menú público se comparte entre secciones sin cambiar el diseño interior ni las funciones de perfiles. Detalles y verificación en `PB-REFRESH-2026-11.md`. El despliegue continúa siendo manual por Iván en Render; la preparación del código no implica publicación.
+
+
+## Guía de Arecibo · 6 de noviembre de 2026
+
+- `/pueblos/arecibo/` conserva historia, relatos comunitarios y formulario existentes, y añade portada fotográfica, navegación por secciones y guía de viernes a domingo.
+- Integra faro, Poza del Obispo, casco urbano y Auto Cine Santana con fotos suministradas por Iván, optimizadas a WebP, ALT y pies descriptivos. No se atribuye autoría no confirmada.
+- La entrada del autocine muestra carteles antiguos; se aclara expresamente que no son la cartelera actual.
+- Foto `arecibo-rio.jpg` reservada hasta identificar el sitio; originales conservados por Iván.
+- No se destaca un hotel ni se anuncia una reserva, precio o descuento acordado. El widget de hospedaje y los enlaces afiliados de actividades siguen pendientes de recibir y validar; no se inventan identificadores.
+- Accesos a la Feria y Agenda llevan a sus secciones generales, sin afirmar que ya filtran Arecibo automáticamente.
+- El índice de pueblos enlaza la guía; el acceso antiguo `?pueblo=arecibo` conduce a la misma página.
+- Cambios limitados a Arecibo y su enlace en el índice; otros municipios conservan su página actual. Deploy manual de Iván en Render.
