@@ -1,0 +1,14 @@
+/* Original PB interpretation of Puerto Rico souvenir license plates. */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:24px 18px}
+.town{display:block;min-width:0;text-decoration:none;border-radius:14px;color:#171717;transition:transform .15s ease}
+.town:hover{transform:translateY(-3px)}.town:focus-visible{outline:3px solid #002d62;outline-offset:6px}
+.town-plate{aspect-ratio:2/1;position:relative;isolation:isolate;background:linear-gradient(160deg,#fff 65%,#f2f1ec);border:2px solid #171717;border-radius:14px;box-shadow:0 3px 0 #c6c5bf,0 7px 15px #0000000d;display:flex;flex-direction:column;justify-content:space-between;padding:6.5% 4% 4%;overflow:hidden}
+.town-plate:before{content:'';position:absolute;inset:4px;border:3px solid #171717;border-radius:9px;pointer-events:none;z-index:-1}
+.plate-country{position:relative;text-align:center;font-size:clamp(12px,1.4vw,18px);line-height:1;font-weight:850;letter-spacing:.03em;text-transform:uppercase;z-index:2}
+.plate-name{position:relative;width:100%;margin:1% 0 0;z-index:2;line-height:1;color:#111}.plate-name svg{display:block;width:100%;height:auto;overflow:visible}.plate-name text{font-family:'Arial Narrow',Impact,'Liberation Sans Narrow',sans-serif;font-weight:800;fill:currentColor}
+.plate-garita{position:absolute;width:30%;height:84%;left:45%;top:8%;color:#9b633d;opacity:.19;z-index:-1;pointer-events:none}
+.plate-bottom{display:flex;align-items:center;justify-content:space-between;gap:4px;position:relative;z-index:2}.plate-bottom span{font-size:clamp(11px,1.25vw,16px);font-weight:800;line-height:1.1;white-space:nowrap}.plate-flag{width:13%;height:auto;aspect-ratio:3/2;flex-shrink:0}
+.plate-slot{position:absolute;width:8%;height:3.5%;border-radius:10px;background:#171717;z-index:1}.plate-slot.tl{top:6%;left:15%}.plate-slot.tr{top:6%;right:15%}.plate-slot.bl{bottom:5%;left:17%}.plate-slot.br{bottom:5%;right:17%}
+.town-meta{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:12px 2px 5px;font-size:.72rem}.town-region{color:#8a4a2e;font-weight:800;letter-spacing:.06em;text-transform:uppercase}.town-explore{color:#002d62;font-weight:750}.town small{display:block;font-size:.75rem;color:#64645d;line-height:1.5;margin:0 2px}.plate-sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
+@media(max-width:600px){.grid{gap:24px;grid-template-columns:1fr}.town-plate{max-width:440px;margin:auto}.plate-country{font-size:clamp(14px,4.3vw,22px)}.plate-bottom span{font-size:clamp(14px,3.8vw,20px)}.town-meta,.town small{max-width:436px;margin-left:auto;margin-right:auto}.town-meta{font-size:.78rem}.town small{font-size:.8rem}}
+@media(prefers-reduced-motion:reduce){.town{transition:none}.town:hover{transform:none}}

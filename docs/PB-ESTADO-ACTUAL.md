@@ -224,3 +224,9 @@ Bloque propio inmediatamente antes de Creaciones de nuestra gente. Muestra una s
 ## Acceso a Nuestros pueblos · 6 noviembre 2026
 
 Se añade **Nuestros pueblos** (`/pueblos`) al menú principal compartido y al menú móvil; antes solo estaba en el footer. Se conserva el acceso del footer y el índice existente de los 78 municipios, desde el cual se llega a Arecibo. Cambio de código preparado para el deploy manual de Iván.
+
+## Tablillas en Nuestros pueblos · 6 noviembre 2026
+
+El índice conserva sus 78 municipios y rutas, buscador y filtro de zona. Las tarjetas se presentan como tablillas originales de PB inspiradas en Puerto Rico: fondo claro, doble borde, nombre grande adaptable, garita tenue, banderas y lema Isla del Encanto. SVG decorativo compartido y texto vectorial accesible; no son 78 imágenes ni se reutiliza el bundle comercial de referencia. La región y estado de la guía se mantienen debajo. Búsqueda admite nombres sin acentos. Respeta reducción de movimiento y teclado. Cambio preparado para deploy manual.
+
+Verificación: `npm test` pasó; prueba específica ejecuta el render de los 78 pueblos, enlaces canónicos, nombres accesibles, búsqueda sin acentos, filtro de islas y estado sin resultados. La previsualización local no estuvo disponible en el navegador; comprobar el diseño en producción después del deploy.
