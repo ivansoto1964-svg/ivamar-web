@@ -11,6 +11,9 @@ const { buildPBExploreRecommendations } = require('./services/pb-ecosystem-explo
 const pbArtisanMailBatches = require('./services/pb-artisan-mail-batches');
 const pbArtisanRetirement = require('./services/pb-artisan-retirement');
 const pbTalent = require('./services/pb-talent');
+const pbBusinesses = require('./services/pb-businesses');
+const pbBusinessRoutes = require('./services/pb-business-routes');
+const {createBilling:createPBBusinessBilling} = require('./services/pb-business-billing');
 const {createRouter:createPBTalentRouter} = require('./services/pb-talent-routes');
 const pbTourismSection = require('./services/pb-tourism-section');
 const {createRouter:createPBVisitGuideRouter} = require('./services/pb-visit-guide-routes');
@@ -131,7 +134,7 @@ app.use((req, res, next) => {
         .replace(/href=(['"])\/privacidad\1/g, 'href=$1/privacidad-boricua$1')
         .replace(/href=(['"])\/contacto\1/g, 'href=$1/quienes-somos$1')
         .replace(/connect@ivamarai\.com/gi, 'masboricuaqueunmofongo@gmail.com');
-      const privatePath = req.path === '/turistiando/presentacion' || /^\/(?:pb-control|api|auth)(?:\/|$)/.test(String(req.path || '')) || pbTalent.isPrivatePath(req.path);
+      const privatePath = req.path === '/turistiando/presentacion' || /^\/(?:pb-control|api|auth)(?:\/|$)/.test(String(req.path || '')) || pbTalent.isPrivatePath(req.path) || pbBusinessRoutes.privatePath(req.path);
       if (!privatePath) {
         body = withPBSiteFooter(body, { social: renderPBSocialFollow() });
         body = withPBSiteShell(body, req.path);
@@ -256,6 +259,10 @@ const pbBlogIndex = require("./views/pb-blog/index");
 const pbBlogPost = require("./views/pb-blog/post");
 const Stripe = require("stripe");
 const stripe = process.env.STRIPE_SECRET_KEY ? Stripe(process.env.STRIPE_SECRET_KEY) : null;
+const pbBusinessStore = pbBusinesses.createStore(process.env.PB_BUSINESS_DATA_DIR || '/data/pb-negocios');
+const pbBusinessStripeKey = process.env.PB_BUSINESS_STRIPE_KEY || process.env.STRIPE_SECRET_KEY;
+const pbBusinessStripe = pbBusinessStripeKey ? new Stripe(pbBusinessStripeKey,{apiVersion:'2026-09-30.endive'}) : null;
+const pbBusinessBilling = createPBBusinessBilling({store:pbBusinessStore,stripe:pbBusinessStripe});
 const { searchPlacesByText } = require("./helpers/googlePlaces");
 const { sendLeadNotification } = require("./services/notificationService");
 const path = require("path");
@@ -977,6 +984,8 @@ if (!fs.existsSync(agreementsDir)) {
 
 
 
+// Signature verification requires the original bytes, before all JSON parsers.
+app.use(pbBusinessRoutes.webhookRouter(pbBusinessBilling));
 app.use(express.json({ limit: '15mb' }));
 app.use(express.urlencoded({ limit: '15mb', extended: true }));
 app.use((err, req, res, next) => {
@@ -2862,7 +2871,28 @@ app.get("/autoridad-energia-criolla", (req, res) => res.send(aecDemo));
 app.get("/noticias", (req, res) => res.redirect(301, "/blog"));
 
 // PB town stories
-require("./routes/pb-towns")(app);
+app.use(pbBusinessRoutes.createRouter({
+  store:pbBusinessStore,billing:pbBusinessBilling,
+  secret:String(process.env.PB_BUSINESS_MAGIC_SECRET || process.env.PB_ARTISAN_MAGIC_SECRET || '').trim(),
+  cloudName:process.env.CLOUDINARY_CLOUD_NAME,
+  requireAdmin:requirePBAdmin,requireAdminCsrf:requirePBCsrf,
+  sendAccess:async(email,link)=>{
+    const result=await resend.emails.send({from:`Planeta Boricua <${PB_SENDER_EMAIL}>`,to:email,replyTo:PB_CONTACT_EMAIL,subject:'Tu acceso al perfil de negocio en Planeta Boricua',html:`<h2>Administra tu negocio</h2><p>Este enlace seguro vence en dos horas y solo puede confirmarse una vez.</p><p><a href="${link}">Entrar a mi perfil</a></p><p>Si no solicitaste este acceso, ignora el mensaje. No se ha realizado ningún cobro.</p>`});
+    if(result?.error||!result?.data?.id)throw Error('No se pudo entregar el acceso del negocio.');
+  },
+  notifyReview:async(record)=>{
+    const result=await resend.emails.send({from:`Planeta Boricua <${PB_SENDER_EMAIL}>`,to:PB_CONTACT_EMAIL,subject:'Negocio pendiente de revisión: '+record.draft.name,html:`<h2>Solicitud o actualización de negocio</h2><p>${pbBusinessEsc(record.draft.name)} · ${pbBusinessEsc(pbBusinesses.towns.get(record.draft.town))}</p><p><a href="https://www.masboricuaqueunmofongo.com/pb-control/negocios">Revisar en PB Control</a></p>`});
+    if(result?.error||!result?.data?.id)throw Error('No se pudo avisar de la solicitud.');
+  },
+  notifyStatus:async(record,action)=>{
+    const messages={approve:'Tu perfil fue aprobado. Entra para activar la mensualidad de $9.99, o consultar el estado de tu publicación si ya estabas suscrito.',reject:'Revisa la información de tu perfil y envía una actualización desde tu panel.',hide:'La publicación de tu perfil está pausada. Escríbenos para revisar el caso. Puedes administrar o cancelar la próxima renovación desde tu panel.',show:'Se levantó la pausa editorial. Tu publicación depende de que la mensualidad esté al día.'};
+    const result=await resend.emails.send({from:`Planeta Boricua <${PB_SENDER_EMAIL}>`,to:record.email,replyTo:PB_CONTACT_EMAIL,subject:'Actualización de tu negocio en Planeta Boricua',html:`<p>${messages[action]}</p><p><a href="https://www.masboricuaqueunmofongo.com/negocios/acceso">Entrar a mi negocio</a></p>`});
+    if(result?.error||!result?.data?.id)throw Error('No se pudo entregar el aviso de revisión.');
+  },
+  upload:async(data,folder)=>{const result=await cloudinary.uploader.upload(data,{folder:`planeta-boricua/negocios/${folder}`,resource_type:'image',allowed_formats:['jpg','jpeg','png','webp'],transformation:[{width:1600,height:1200,crop:'limit'},{fetch_format:'webp',quality:'auto:good'}]});return result.secure_url;}
+}));
+function pbBusinessEsc(value){return String(value||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
+require("./routes/pb-towns")(app,{businessStore:pbBusinessStore});
 require("./routes/pb-town-admin")(app);
 require("./routes/pb-stories")(app);
 
@@ -3095,9 +3125,11 @@ app.get("/sitemap.xml", async (req, res) => {
       talentUrls = '<url><loc>https://www.masboricuaqueunmofongo.com/talento-boricua</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>' + pbTalentStore.all().filter(item => item.status === 'approved').map(item => `<url><loc>https://www.masboricuaqueunmofongo.com/talento-boricua/${item.slug}</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>`).join('');
     } catch(error) { console.error('PB talent sitemap unavailable:',error.message); }
   }
+  let businessUrls='';
+  try { businessUrls=pbBusinessStore.publicAll().map(item=>`<url><loc>https://www.masboricuaqueunmofongo.com/negocios/${item.slug}</loc><changefreq>weekly</changefreq></url>`).join(''); } catch(error) { console.error('PB business sitemap unavailable:',error.message); }
   const agendaUrl = `<url><loc>https://www.masboricuaqueunmofongo.com/agenda-boricua</loc><changefreq>daily</changefreq><priority>0.8</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/sala-de-prensa</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>`;
   res.set('Content-Type','application/xml');
-  res.send(`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${staticUrls}${agendaUrl}${eventUrls}${latestUrls}${postUrls}${artisanUrls}${talentUrls}${pbTourismSection.sitemap()}</urlset>`);
+  res.send(`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${staticUrls}${agendaUrl}${eventUrls}${latestUrls}${postUrls}${artisanUrls}${talentUrls}${businessUrls}${pbTourismSection.sitemap()}</urlset>`);
 });
 
 app.get('/sala-de-prensa', (_req, res) => res.send(salaPrensaPB()));

@@ -203,3 +203,10 @@ Se mantiene la imagen actual de PB. La portada reúne historia principal y noved
 - Accesos a la Feria y Agenda llevan a sus secciones generales, sin afirmar que ya filtran Arecibo automáticamente.
 - El índice de pueblos enlaza la guía; el acceso antiguo `?pueblo=arecibo` conduce a la misma página.
 - Cambios limitados a Arecibo y su enlace en el índice; otros municipios conservan su página actual. Deploy manual de Iván en Render.
+
+
+## Directorio comercial por pueblo · 6 de noviembre de 2026
+
+Implementado un directorio separado de Artesanos: $9.99 USD mensuales por perfil comercial, categorías para visitantes, fotos, redes, menú/reservas externos, acceso por email y revisión en `/pb-control/negocios`. Los 78 municipios pueden enlazar el registro y sus categorías. Detalles en `PB-NEGOCIOS-POR-PUEBLO.md`.
+
+La publicación requiere email confirmado, aprobación y periodo pagado validado por webhooks de Stripe. El desarrollo no crea suscripciones de clientes ni cargos. La conexión del plugin de Stripe no configura por sí misma las claves ni la firma de webhooks de Render: mantener `PB_BUSINESS_BILLING_ENABLED` sin activar hasta completar y verificar esa configuración. El deploy de código continúa siendo manual por Iván. Artesanos, sus perfiles, datos y transacciones quedan separados.

@@ -200,3 +200,8 @@ Proyecto comercial independiente del concurso de mudanzas.
 - Considerar invertir $200 de los $500 en publicidad de la publicación, dejando un balance estimado de $300 para PB antes de otros costos.
 - Identificar claramente a los restaurantes participantes y acordar por escrito oferta, restricciones, vigencia, fotos y condiciones antes de publicar.
 - Si el piloto funciona, repetir el formato con otros temas gastronómicos sin mezclarlo con otros concursos o auspicios.
+
+
+## Negocios por pueblo
+
+Directorio de perfiles comerciales con categorías de visitantes, registro y edición por email, revisión en PB Control y suscripción de $9.99 USD al mes. No cambia el registro gratuito de artesanos ni procesa pedidos o pagos del negocio. Ver [configuración, controles y activación](docs/PB-NEGOCIOS-POR-PUEBLO.md). El cobro permanece deshabilitado hasta configurar y verificar Stripe en Render.
