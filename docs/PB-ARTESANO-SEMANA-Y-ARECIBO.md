@@ -25,10 +25,16 @@ El archivo semilla entra al almacenamiento persistente mediante el inicializador
 
 ## Stripe y Render
 
-La tarifa y el portal están creados (ver `PB-NEGOCIOS-POR-PUEBLO.md`). El 6 de noviembre el listado real de webhooks de Stripe está vacío. No hay cobros de clientes creados durante esta tarea.
+La tarifa y el portal están creados (ver `PB-NEGOCIOS-POR-PUEBLO.md`). El 6 de noviembre se creó el webhook `we_1UYsRTDjCGKYfj5TbIYy1FxW` (API 2026-09-30.endive), con los 12 eventos del directorio. Permanece **desactivado** hasta completar la clave del servidor y las pruebas. La firma se transfirió directamente a Render, sin incluirla en Git ni en documentación. No hay cobros de clientes creados durante esta tarea.
 
-Render fue conectado por Iván el 6 de noviembre, pero la sesión aún no expone herramientas operativas de Render para leer servicios o editar variables. No pedir que conecte de nuevo ni afirmar que se instaló una clave en el servidor. Al reanudar, descubrir sus herramientas y completar la conexión segura del servidor y el webhook, con el plan fiscal y pruebas separados antes de habilitar cobros. Mantener `PB_BUSINESS_BILLING_ENABLED` desactivado hasta validar.
+Render conectado y servicio confirmado: `ivamar-web`, `srv-d6f2ahn5r7bs738fuhlg`, workspace `tea-d5609km3jp1c73a4ulh0`, repo correcto, rama main, una instancia y disco `/data`. Se guardaron por merge (sin sustituir otras variables) la tarifa, portal, cuenta, firma del webhook y `PB_BUSINESS_BILLING_ENABLED=false`.
+
+La herramienta de actualización de variables **disparó automáticamente** el deploy `dep-dbn29sjncjis73dv66lg`, commit `c6d54d04ecd6c392077e7d662d1fcbc667f98aa4`. No volver a lanzar ese deploy manualmente. Para próximas modificaciones de variables, advertir que este método de Render despliega automáticamente; el flujo manual habitual del repositorio se conserva para cambios de código.
+
+El conector de Render no expone lectura de variables existentes. No se pudo comprobar ni instalar una clave `PB_BUSINESS_STRIPE_KEY`/`STRIPE_SECRET_KEY` mediante los conectores disponibles. Falta configurar o verificar una clave restringida de Stripe en el servidor, validar permisos y entorno de pruebas, resolver tratamiento fiscal y entonces habilitar el webhook y los cobros. No afirmar que Stripe está operativo solo por tener precio, portal y firma configurados.
+
+GetYourGuide: se intentó el acceso mediante el formulario seguro del navegador; el proveedor devolvió **Invalid email or password**. No se inició sesión ni se obtuvo un identificador de afiliado. No repetir credenciales automáticamente ni cambiar la contraseña.
 
 ## Validación y despliegue
 
-`npm test` incluye pruebas del archivo editorial, selección/retirada explícita, proyección pública sin datos privados, escape de contenido, enlaces de afiliación y estado borrador. El deploy sigue siendo manual por Iván. La prueba de interfaz local no pudo completarse porque la superficie de navegador no accede al servidor local; no presentar esa vista como verificada en navegador.
+`npm test` incluye pruebas del archivo editorial, selección/retirada explícita, proyección pública sin datos privados, escape de contenido, enlaces de afiliación y estado borrador. La previsualización local no pudo completarse. Después del deploy automático de configuración, Render confirmó estado **live** el 6 de noviembre a las 19:06:17 UTC. Se verificaron en el navegador de producción la nueva sección con la foto e historia de Luis y el bloque de afiliados Trip.com en Arecibo. La publicación de Arecibo sigue siendo un borrador; no se hizo pública ni se envió por email.
