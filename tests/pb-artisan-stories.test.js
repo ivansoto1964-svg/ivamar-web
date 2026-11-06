@@ -1,12 +1,25 @@
 const test = require('node:test');
 const assert = require('node:assert/strict');
-const { selectStories, isWeeklyStory, LUIS_SLUG } = require('../src/services/pb-artisan-stories');
+const { selectStories, isWeeklyStory, LUIS_SLUG, HISTORICAL_STORY_SLUGS } = require('../src/services/pb-artisan-stories');
 const view = require('../src/views/planetaboricua/artesano-semana');
 const { ARECIBO_HOTELS, getAreciboActivitiesUrl, areciboTravelLinks } = require('../src/services/pb-town-travel-links');
 test('curation preserves the published Luis story and allows explicit removal', () => {
   assert.equal(isWeeklyStory({slug:LUIS_SLUG}),true);
   assert.equal(isWeeklyStory({slug:LUIS_SLUG,artisanWeekly:false}),false);
   assert.equal(isWeeklyStory({title:'Entrevista a un artesano'}),false);
+});
+test('every previously published artisan feature appears once without retagging live articles', () => {
+  const records = HISTORICAL_STORY_SLUGS.map((slug,i) => ({slug,title:slug,publishedAt:new Date(Date.UTC(2026,8,19+i*7)).toISOString()}));
+  const unrelated = {slug:'jose-jun-martinez-el-artista-boricua-que-lleva-los-paisajes-de-puerto-rico-al-corazon-de-londres-847952',publishedAt:'2026-10-19T18:00:00Z'};
+  const before = JSON.stringify(records);
+  const stories = selectStories([...records,unrelated]);
+  assert.equal(stories.length,6);
+  assert.deepEqual(stories.map(x=>x.slug),[...HISTORICAL_STORY_SLUGS].reverse());
+  assert.equal(JSON.stringify(records),before);
+  const html = view(stories);
+  for(const {slug} of records) assert.ok(html.includes('/lo-mas-reciente/'+slug));
+  assert.ok(!html.includes(unrelated.slug));
+  assert.equal(selectStories(records.map(x=>({...x,artisanWeekly:false}))).length,0);
 });
 test('archive projects only public metadata in publication order and validates links', () => {
   const selected = selectStories([
