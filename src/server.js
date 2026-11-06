@@ -2894,6 +2894,7 @@ app.use(pbBusinessRoutes.createRouter({
 function pbBusinessEsc(value){return String(value||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));}
 require("./routes/pb-towns")(app,{businessStore:pbBusinessStore});
 require("./routes/pb-town-admin")(app);
+require("./routes/pb-towns")(app);
 require("./routes/pb-stories")(app);
 
 // PB Blog routes
