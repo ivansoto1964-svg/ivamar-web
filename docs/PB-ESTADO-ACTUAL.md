@@ -210,3 +210,9 @@ Se mantiene la imagen actual de PB. La portada reúne historia principal y noved
 Implementado un directorio separado de Artesanos: $9.99 USD mensuales por perfil comercial, categorías para visitantes, fotos, redes, menú/reservas externos, acceso por email y revisión en `/pb-control/negocios`. Los 78 municipios pueden enlazar el registro y sus categorías. Detalles en `PB-NEGOCIOS-POR-PUEBLO.md`.
 
 La publicación requiere email confirmado, aprobación y periodo pagado validado por webhooks de Stripe. El desarrollo no crea suscripciones de clientes ni cargos. La conexión del plugin de Stripe no configura por sí misma las claves ni la firma de webhooks de Render: mantener `PB_BUSINESS_BILLING_ENABLED` sin activar hasta completar y verificar esa configuración. El deploy de código continúa siendo manual por Iván. Artesanos, sus perfiles, datos y transacciones quedan separados.
+
+## Artesano de la Semana y promoción de Arecibo · 6 noviembre 2026
+
+Archivo editorial `/artesano-de-la-semana`, conectado con Feria, Inicio y footer; conserva las entrevistas y sus enlaces originales. Selección manual desde las publicaciones aprobadas en PB Control. Luis Carrasquillo entra como historia existente; falta el material del próximo artesano. No es un carrusel de selección diaria.
+
+Artículo de Arecibo preparado como borrador en El Balcón, sin publicación automática. Se incorpora un enlace Trip.com específico del destino con los identificadores PB. GetYourGuide espera un enlace auténtico generado por la cuenta. Stripe aún no está activo: tarifa y portal creados, webhook y configuración del servidor pendientes. Render ya está conectado; no pedir reconexión. Detalles operativos y límites en `PB-ARTESANO-SEMANA-Y-ARECIBO.md`.

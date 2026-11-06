@@ -205,3 +205,7 @@ Proyecto comercial independiente del concurso de mudanzas.
 ## Negocios por pueblo
 
 Directorio de perfiles comerciales con categorías de visitantes, registro y edición por email, revisión en PB Control y suscripción de $9.99 USD al mes. No cambia el registro gratuito de artesanos ni procesa pedidos o pagos del negocio. Ver [configuración, controles y activación](docs/PB-NEGOCIOS-POR-PUEBLO.md). El cobro permanece deshabilitado hasta configurar y verificar Stripe en Render.
+
+## Artesano de la Semana y guía de Arecibo
+
+El archivo `/artesano-de-la-semana` reúne entrevistas publicadas, conservando sus enlaces. PB Control permite añadir o retirar cada historia de la sección sin eliminarla. La publicación promocional de Arecibo se prepara como borrador de El Balcón. Estado de afiliados, Stripe y operación en [`docs/PB-ARTESANO-SEMANA-Y-ARECIBO.md`](docs/PB-ARTESANO-SEMANA-Y-ARECIBO.md).

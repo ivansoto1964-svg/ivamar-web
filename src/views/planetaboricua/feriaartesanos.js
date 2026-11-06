@@ -79,7 +79,7 @@ footer.pb-footer a{color:rgba(255,255,255,0.8);text-decoration:none;margin:0 0.5
 <section class="hero-feria">
   <h1>Feria Digital de Artesanías Puertorriqueñas 🇵🇷</h1>
   <p><strong>Manos boricuas, arte que cuenta nuestra historia.</strong> Una exposición gratuita y permanente que conecta a nuestros artesanos con Puerto Rico y la diáspora.</p>
-  <div class="hero-actions"><a class="hero-btn secondary" href="#artesanos">Explorar la Feria</a><a class="hero-btn secondary" href="/agenda-boricua">Ver Agenda Boricua</a><a class="hero-btn" href="/pb/add-negocio">¿Eres artesano? Crea tu espacio digital gratis</a></div>
+  <div class="hero-actions"><a class="hero-btn secondary" href="/artesano-de-la-semana">Artesano de la Semana</a><a class="hero-btn secondary" href="#artesanos">Explorar la Feria</a><a class="hero-btn secondary" href="/agenda-boricua">Ver Agenda Boricua</a><a class="hero-btn" href="/pb/add-negocio">¿Eres artesano? Crea tu espacio digital gratis</a></div>
 </section>
 
 <div class="directorio-wrap" id="artesanos">
