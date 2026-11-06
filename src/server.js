@@ -295,11 +295,13 @@ function renderPBHome() {
   const middle = selectHomeAd('home.middle',[top?.id].filter(Boolean));
   const bottom = selectHomeAd('home.before_footer',[top?.id,middle?.id].filter(Boolean));
   const { renderHomeCreations } = require('./views/planetaboricua/home-creations');
+  const { renderHomeWeeklyArtisan } = require('./views/planetaboricua/home-weekly-artisan');
   const creations = loadApprovedPBListings().filter(item => !item.status || item.status === 'approved').map(item => ({
     slug:pbArtisanSlug(item),name:item.name,city:item.city,location:item.location,
     gallery:sanitizePBArtisanGallery(item.gallery,item.photo)
   }));
   return planetaboricua
+    .replace('<!--PB_HOME_WEEKLY_ARTISAN-->',()=>renderHomeWeeklyArtisan(readPBLatest('approved.json')))
     .replace('<!--PB_HOME_CREATIONS-->',()=>renderHomeCreations(creations))
     .replace('<!--PB_HOME_HERO_PRELOAD-->',heroPreload)
     .replace('<!--PB_AD_HOME_AFTER_HERO-->',renderPBAd(top,{placement:'home.after_hero',pageSlug:'portada'}))

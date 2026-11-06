@@ -296,6 +296,9 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
 @media(max-width:640px){.viajes-dest-grid{grid-template-columns:repeat(2,1fr)!important;}}
 
 /* Compact homepage organization; retain the current PB identity. */
+
+.home-weekly{padding:30px 0;background:#f7f4ec;border-bottom:1px solid var(--border)}.home-weekly .sec-divider-inner{margin-bottom:18px}.home-weekly-card{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.3fr);border:1px solid #e3ded2;border-radius:16px;overflow:hidden;background:#fff}.home-weekly-photo{display:block;background:#eee9df;min-height:280px}.home-weekly-photo img{width:100%;height:100%;max-height:360px;display:block;object-fit:contain}.home-weekly-copy{padding:clamp(22px,3vw,36px);align-self:center;min-width:0}.home-weekly-kicker{font-size:.66rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--red);margin-bottom:10px}.home-weekly-copy h3{font-family:'Playfair Display',Georgia,serif;font-size:clamp(1.5rem,3vw,2rem);line-height:1.2;margin:0 0 8px}.home-weekly-copy h3 a{color:var(--blue);text-decoration:none}.home-weekly-project{font-size:.88rem;font-weight:700;color:#6b573d;margin:0 0 12px}.home-weekly-summary{font-size:.93rem;color:#50575b;line-height:1.65;margin:12px 0 20px;max-width:64ch}.home-weekly-read{display:inline-block;padding:11px 18px;background:var(--blue);color:#fff;border-radius:7px;text-decoration:none;font-size:.83rem;font-weight:750}.home-weekly a:focus-visible{outline:3px solid var(--red);outline-offset:4px}.home-weekly-card.no-photo{grid-template-columns:1fr}@media(max-width:640px){.home-weekly{padding:24px 0}.home-weekly-card{grid-template-columns:1fr}.home-weekly-photo{min-height:0}.home-weekly-photo img{height:260px;max-height:none}.home-weekly-copy{padding:22px}.home-weekly .sec-divider-label{font-size:1rem}}
+
 .home-section-inner{max-width:1180px;margin:0 auto;padding:0 24px}
 .home-creations,.home-resources{padding:28px 0;background:#fff;border-bottom:1px solid var(--border)}
 .home-section-copy{font-size:.9rem;line-height:1.6;color:var(--mid);margin:10px 0 18px}
@@ -381,6 +384,8 @@ ${renderStay22()}
 
 <div class="pb-home-ad" aria-label="Publicidad destacada"><!--PB_AD_HOME_AFTER_HERO--></div>
 
+<!--PB_HOME_WEEKLY_ARTISAN-->
+
 <!-- CREACIONES REALES DE LA FERIA -->
 <section class="home-creations" id="feria" aria-labelledby="fair-promo-title">
   <div class="home-section-inner">
@@ -388,7 +393,6 @@ ${renderStay22()}
     <div class="sec-divider-inner"><h2 id="fair-promo-title" class="sec-divider-label">Creaciones de nuestra gente</h2><div class="sec-divider-line"></div><a href="/feria-artesanos" class="sec-divider-link">Explorar la Feria →</a></div>
     <p class="home-section-copy">Visita la Feria Digital de Artesanos Boricuas: conoce sus piezas y contáctalos directamente.</p>
     <!--PB_HOME_CREATIONS-->
-    <p class="home-register"><a href="/artesano-de-la-semana">Artesano de la Semana: conoce las historias detrás de las piezas →</a></p>
     <p class="home-register"><a href="/pb/add-negocio">¿Eres artesano? Crea tu espacio digital gratis →</a></p>
   </div>
 </section>
