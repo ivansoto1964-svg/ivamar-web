@@ -234,3 +234,8 @@ Verificación: `npm test` pasó; prueba específica ejecuta el render de los 78 
 ## Iconos del menú · 6 noviembre 2026
 
 Iconos SVG originales de trazo uniforme junto a los nombres visibles del menú compartido, en computadora y celular: casa, balcón, manos artesanas, calendario, tablilla y carpeta; maleta para viajes y manos/estrella para Artesano de la Semana dentro de Más. Noticias, boletín, información, publicidad, contacto y perfil también tienen símbolos coherentes. Se añade al desplegable el acceso al archivo de entrevistas. Los SVG son decorativos, no alteran los nombres accesibles y no requieren fuentes ni imágenes externas. Los enlaces principales presentan icono arriba y nombre debajo; desplegables y menú móvil, icono a la izquierda. Se conserva teclado, menú nativo y ruta activa. Deploy manual habitual.
+
+
+## Foto de portada en borradores de Lo más reciente · 7 noviembre 2026
+
+El guardado sincronizado ahora sube la foto de portada seleccionada antes de guardar el borrador y conserva su enlace permanente. Antes, el selector solo mostraba la foto localmente y la subida ocurría al publicar, por lo que Guardar borrador retenía el enlace anterior. Se reutiliza el cargador protegido existente (JPG/PNG/WebP, 5 MB). Un fallo conserva la portada anterior y el texto local, muestra el error y permite reintentar. Guardados simultáneos comparten la subida; una subida que termina después de cambiar de artículo no modifica el otro borrador. No publica automáticamente ni modifica entrevistas existentes. Deploy manual de Iván; verificar guardar, recargar y recuperar la nueva portada después del deploy.
