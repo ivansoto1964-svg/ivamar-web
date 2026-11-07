@@ -49,15 +49,52 @@
     let timer = null;
     let generation = 0;
     let suspended = false;
+    const coverUploads = new WeakMap();
 
     async function saveNow(announce = false) {
       if (suspended) return null;
       const key = keyFor(type, form);
       const currentGeneration = generation;
-      const snapshot = { savedAt:new Date().toISOString(), values:values(form) };
+      let snapshot = { savedAt:new Date().toISOString(), values:values(form) };
       try {
         localStorage.setItem(prefix + key, JSON.stringify(snapshot));
       } catch (_) {}
+      const imageFile = type === 'latest' ? form.elements.imageFile : null;
+      const file = imageFile?.files?.[0];
+      if (file) {
+        status.textContent = 'Subiendo foto de portada…';
+        try {
+          let upload = coverUploads.get(file);
+          if (!upload) {
+            const publish = form.querySelector('button.primary[type="submit"]');
+            const wasDisabled = publish?.disabled;
+            if (publish) publish.disabled = true;
+            upload = Promise.resolve().then(() => uploadLatestImage(file)).finally(() => {
+              if (publish) publish.disabled = wasDisabled;
+            });
+            coverUploads.set(file, upload);
+          }
+          const image = await upload;
+          if (suspended || generation !== currentGeneration || keyFor(type, form) !== key) return null;
+          if (imageFile.files[0] && imageFile.files[0] !== file) return null;
+          form.elements.image.value = image;
+          imageFile.value = '';
+          const preview = document.getElementById('latestImagePreview');
+          if (preview) {
+            preview.src = image;
+            preview.className = 'latest-image-preview show';
+          }
+          // Include edits made while the photo was uploading, not just the earlier snapshot.
+          snapshot = { savedAt:new Date().toISOString(), values:values(form) };
+          try { localStorage.setItem(prefix + key, JSON.stringify(snapshot)); } catch (_) {}
+        } catch (error) {
+          coverUploads.delete(file);
+          if (suspended || generation !== currentGeneration || keyFor(type, form) !== key) return null;
+          status.textContent = 'No se guardó la portada. El texto sigue en este dispositivo; vuelve a guardar el borrador.';
+          if (typeof show === 'function') show(error.message || 'No se pudo subir la foto de portada.', true);
+          return null;
+        }
+      }
       status.textContent = 'Guardando borrador…';
       try {
         const result = await apiAction('control-draft-save', key, { values:snapshot.values });
