@@ -287,7 +287,7 @@ function selectHomeAd(placement, excludeIds = []) {
 
 function renderPBHome() {
   const { renderPBAd } = require('./views/planetaboricua/pb-ad');
-  const heroPost = pbBlogStore.loadPosts().find(post => post.image);
+  const heroPost = readPBLatest('approved.json').sort((a,b) => new Date(b.publishedAt) - new Date(a.publishedAt))[0];
   const heroImage = pbBlogStore.optimizedImageUrl(heroPost?.image);
   const escapedHeroImage = heroImage.replace(/[&<>"]/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[char]));
   const heroPreload = escapedHeroImage ? `<link rel="preload" as="image" href="${escapedHeroImage}" fetchpriority="high">` : '';

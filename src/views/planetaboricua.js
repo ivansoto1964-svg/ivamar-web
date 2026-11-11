@@ -367,12 +367,12 @@ ${renderStay22()}
   <div class="hero-inner">
     <div class="hero-main" id="hero-main">
       <div class="hero-main-img" id="hero-main-img" style="display:flex;align-items:center;justify-content:center;font-size:5rem;">🇵🇷</div>
-      <div class="hero-cat" id="hero-main-cat">Cargando...</div>
-      <h1 class="hero-title" id="hero-main-title">Historias de nuestro Planeta Boricua</h1>
+      <div class="hero-cat" id="hero-main-cat">Lo más reciente</div>
+      <h1 class="hero-title" id="hero-main-title">Lo más reciente de nuestro Planeta Boricua</h1>
       <p class="hero-excerpt" id="hero-main-excerpt"></p>
       <div class="hero-meta">
         <span id="hero-main-date"></span>
-        <a href="#" id="hero-main-link" class="hero-read">Leer artículo →</a>
+        <a href="/lo-mas-reciente" id="hero-main-link" class="hero-read">Leer artículo →</a>
       </div>
     </div>
     <aside class="hero-sidebar" id="hero-sidebar" aria-labelledby="home-latest-title">
@@ -416,7 +416,7 @@ ${renderStay22()}
 <section class="noticias" id="articulos">
   <div class="noticias-inner">
     <div class="sec-divider-inner">
-      <span class="sec-divider-label">Más historias del Balcón</span>
+      <span class="sec-divider-label">Historias del Balcón</span>
       <div style="flex:1;height:2px;background:var(--red);margin:0 1rem;"></div>
       <a href="/blog" class="sec-divider-link">Ver todos →</a>
     </div>
@@ -869,9 +869,21 @@ async function pbCheckForUpdate(post) {
   if(!grid)return;
   const safe=value=>String(value||'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
   fetch('/api/pb-lo-mas-reciente').then(response=>response.json()).then(data=>{
-    const items=(data.items||[]).slice(0,3);
+    const items=(data.items||[]).slice(0,4);
     if(!items.length){grid.innerHTML='<div style="grid-column:1/-1;background:var(--light);border-radius:8px;padding:1.3rem;color:var(--mid);">Aquí aparecerán las actualizaciones importantes verificadas por Planeta Boricua.</div>';return;}
-    grid.innerHTML=items.map(item=>'<a class="latest-card" href="/lo-mas-reciente/'+encodeURIComponent(item.slug)+'">'+(item.image&&item.image!=='/img/og-planetaboricua.jpg'?'<img src="'+safe(item.image)+'" alt="'+safe(item.title)+'" loading="lazy">':'<div class="latest-placeholder"><span>🇵🇷</span><strong>Planeta Boricua</strong></div>')+'<div class="latest-copy"><div class="latest-label">Lo más reciente</div><h3>'+safe(item.title)+'</h3><p>'+safe(item.summary)+'</p><div class="latest-date">'+new Date(item.publishedAt).toLocaleString('es-PR',{dateStyle:'medium',timeStyle:'short'})+'</div></div></a>').join('');
+    // La publicación más nueva abre la portada; las siguientes van al lado.
+    const heroPost=items[0];
+    const heroLink='/lo-mas-reciente/'+encodeURIComponent(heroPost.slug);
+    const heroImg=document.getElementById('hero-main-img');
+    if(heroPost.image&&heroPost.image!=='/img/og-planetaboricua.jpg'){
+      heroImg.outerHTML='<img id="hero-main-img" src="'+safe(heroPost.image)+'" alt="'+safe(heroPost.title)+'" width="768" height="320" fetchpriority="high" decoding="async" style="display:block;width:100%;height:320px;object-fit:contain;object-position:center;background:#eef1f5;border-radius:4px;margin-bottom:1rem;">';
+    }
+    document.getElementById('hero-main-cat').textContent='Lo más reciente';
+    document.getElementById('hero-main-title').textContent=heroPost.title;
+    document.getElementById('hero-main-excerpt').textContent=heroPost.summary;
+    document.getElementById('hero-main-date').textContent=new Date(heroPost.publishedAt).toLocaleString('es-PR',{dateStyle:'medium',timeStyle:'short'});
+    document.getElementById('hero-main-link').href=heroLink;
+    grid.innerHTML=items.slice(1).map(item=>'<a class="latest-card" href="/lo-mas-reciente/'+encodeURIComponent(item.slug)+'">'+(item.image&&item.image!=='/img/og-planetaboricua.jpg'?'<img src="'+safe(item.image)+'" alt="'+safe(item.title)+'" loading="lazy">':'<div class="latest-placeholder"><span>🇵🇷</span><strong>Planeta Boricua</strong></div>')+'<div class="latest-copy"><div class="latest-label">Lo más reciente</div><h3>'+safe(item.title)+'</h3><p>'+safe(item.summary)+'</p><div class="latest-date">'+new Date(item.publishedAt).toLocaleString('es-PR',{dateStyle:'medium',timeStyle:'short'})+'</div></div></a>').join('');
   }).catch(()=>{grid.innerHTML='<div style="color:var(--mid);font-size:.8rem;">No pudimos cargar las actualizaciones.</div>'});
 })();
 
@@ -883,21 +895,9 @@ async function pbCheckForUpdate(post) {
       if (!Array.isArray(posts) || !posts.length) throw new Error('No published posts');
       pbCheckForUpdate(posts[0]);
 
-      // Hero main — first post WITH image, fallback to first post
-      const heroPost = posts.find(p => p.img) || posts[0];
-      const heroImg = document.getElementById('hero-main-img');
-      if (heroPost.img) {
-        heroImg.outerHTML = '<img id="hero-main-img" src="' + heroPost.img + '" alt="' + heroPost.title + '" width="768" height="320" fetchpriority="high" decoding="async" style="display:block;width:100%;height:320px;object-fit:contain;object-position:center;background:#eef1f5;border-radius:4px;margin-bottom:1rem;">';
-      }
-      document.getElementById('hero-main-cat').textContent = heroPost.tag;
-      document.getElementById('hero-main-title').textContent = heroPost.title;
-      document.getElementById('hero-main-excerpt').textContent = heroPost.summary;
-      document.getElementById('hero-main-date').textContent = heroPost.date;
-      document.getElementById('hero-main-link').href = heroPost.link;
-
-      // Selección editorial — publicaciones del blog (excepto la principal)
+      // Selección editorial — El Balcón conserva sus historias más recientes
       const grid = document.getElementById('noticias-grid');
-      const noticiaPosts = posts.filter(p => p.link !== heroPost.link).slice(0, 3);
+      const noticiaPosts = posts.slice(0, 3);
       grid.innerHTML = noticiaPosts.map(p =>
         '<a href="' + p.link + '" class="noticia-card">' +
         '<div class="noticia-img">' +
@@ -912,9 +912,6 @@ async function pbCheckForUpdate(post) {
       ).join('');
     })
     .catch(() => {
-      document.getElementById('hero-main-cat').textContent = 'El Balcón';
-      document.getElementById('hero-main-excerpt').textContent = 'Explora las historias y experiencias de nuestra comunidad.';
-      document.getElementById('hero-main-link').href = '/blog';
       document.getElementById('noticias-grid').innerHTML = '<a href="/blog" class="home-feed-fallback">Visita El Balcón para leer nuestras historias →</a>';
     });
 })();
