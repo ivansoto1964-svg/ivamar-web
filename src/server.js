@@ -1885,6 +1885,8 @@ app.post('/pb-control/metricas-externas', requirePBAdmin, requirePBCsrf, (req,re
   }
 });
 
+app.use(require('./services/pb-radio-routes').createRadioRouter({ requireAdmin:requirePBAdmin, requireAdminCsrf:requirePBCsrf }));
+
 app.get('/pb-control/ads', requirePBAdmin, (req,res) => {
   res.send(pbAdsControl({csrf:req.pbAdminSession.csrf,campaigns:pbAds.list(),metrics:pbAds.summary(),commercial:pbAds.commercialSummary(),inventory:pbAds.inventory()}));
 });
