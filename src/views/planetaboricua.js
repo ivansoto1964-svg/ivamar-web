@@ -309,7 +309,19 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
 .home-register{font-size:.8rem;margin-top:18px}.home-register a{color:var(--blue)}
 .home-resource-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:18px}.home-resource-grid>a{padding:20px;border:1px solid var(--border);border-top:3px solid var(--blue);background:#fff;color:var(--dark);text-decoration:none;border-radius:4px}.home-resource-grid h3{font-family:'Playfair Display',Georgia,serif;font-size:1.1rem;line-height:1.35}.home-resource-grid p{font-size:.85rem;line-height:1.6;color:var(--mid);margin:10px 0}.home-resource-grid span{font-size:.8rem;color:var(--red);font-weight:700}
 .home-sidebar-heading{font-family:'Playfair Display',Georgia,serif;font-size:1.2rem;margin-bottom:8px;color:var(--dark)}
-.hero-sidebar .latest-grid{display:block}.hero-sidebar .latest-card{display:block;border:0;border-bottom:1px solid var(--border);border-radius:0;box-shadow:none;margin:0}.hero-sidebar .latest-card img,.hero-sidebar .latest-placeholder,.hero-sidebar .latest-copy p,.hero-sidebar .latest-label{display:none}.hero-sidebar .latest-copy{padding:16px 0}.hero-sidebar .latest-copy h3{font-size:1.05rem;line-height:1.4}.hero-sidebar .sec-divider-link{margin-top:16px;align-self:flex-start}.hero-sidebar .latest-date{margin-top:8px}
+.hero-sidebar .latest-grid{display:block}
+.hero-sidebar .latest-card{
+  display:flex;flex-direction:row;align-items:center;gap:clamp(10px,1.2vw,16px);
+  padding:14px 0;border:0;border-bottom:1px solid var(--border);border-radius:0;
+}
+.hero-sidebar .latest-card img,.hero-sidebar .latest-placeholder{
+  flex:none;width:clamp(84px,9vw,112px);height:auto;aspect-ratio:4/3;border-radius:4px;
+}
+.hero-sidebar .latest-card img{object-fit:contain}
+.hero-sidebar .latest-copy{min-width:0;padding:0}
+.hero-sidebar .latest-copy h3{font-size:1.05rem;line-height:1.35;margin:0;overflow-wrap:anywhere}
+.hero-sidebar .sec-divider-link{margin-top:16px;align-self:flex-start}
+.hero-sidebar .latest-date{margin-top:6px;padding-top:0}
 .home-travel>summary{cursor:pointer;color:var(--blue);font-size:.9rem;padding:12px 0}.home-travel:not([open])>.viajes-dest-grid{display:none!important}
 .home-feed-fallback{padding:20px;color:var(--blue)}
 .noticia-excerpt{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
@@ -883,7 +895,15 @@ async function pbCheckForUpdate(post) {
     document.getElementById('hero-main-excerpt').textContent=heroPost.summary;
     document.getElementById('hero-main-date').textContent=new Date(heroPost.publishedAt).toLocaleString('es-PR',{dateStyle:'medium',timeStyle:'short'});
     document.getElementById('hero-main-link').href=heroLink;
-    grid.innerHTML=items.slice(1).map(item=>'<a class="latest-card" href="/lo-mas-reciente/'+encodeURIComponent(item.slug)+'">'+(item.image&&item.image!=='/img/og-planetaboricua.jpg'?'<img src="'+safe(item.image)+'" alt="'+safe(item.title)+'" loading="lazy">':'<div class="latest-placeholder"><span>🇵🇷</span><strong>Planeta Boricua</strong></div>')+'<div class="latest-copy"><div class="latest-label">Lo más reciente</div><h3>'+safe(item.title)+'</h3><p>'+safe(item.summary)+'</p><div class="latest-date">'+new Date(item.publishedAt).toLocaleString('es-PR',{dateStyle:'medium',timeStyle:'short'})+'</div></div></a>').join('');
+    grid.innerHTML=items.slice(1).map(item=>{
+      const href='/lo-mas-reciente/'+encodeURIComponent(item.slug);
+      const image=item.image&&item.image!=='/img/og-planetaboricua.jpg'
+        ? '<img src="'+safe(item.image)+'" alt="" width="112" height="84" loading="lazy" decoding="async">'
+        : '<div class="latest-placeholder" aria-hidden="true"><span>🇵🇷</span></div>';
+      const date=new Date(item.publishedAt).toLocaleString('es-PR',{dateStyle:'medium',timeStyle:'short'});
+      return '<a class="latest-card" href="'+href+'">'+image+
+        '<div class="latest-copy"><h3>'+safe(item.title)+'</h3><div class="latest-date">'+safe(date)+'</div></div></a>';
+    }).join('');
   }).catch(()=>{grid.innerHTML='<div style="color:var(--mid);font-size:.8rem;">No pudimos cargar las actualizaciones.</div>'});
 })();
 
