@@ -6,13 +6,13 @@
 
 **Responsable:** Iván Soto
 
-**Última actualización documental:** 14 de septiembre de 2026
+**Última actualización documental:** 11 de noviembre de 2026
 
 **Repositorio:** `ivansoto1964-svg/ivamar-web`
 
 **Rama de producción:** `main`
 
-Este documento es la fuente central de continuidad técnica y operativa. Debe actualizarse cuando se complete una función importante, cambie una integración o se reordenen las prioridades.
+Consulta primero el [resumen vigente del README](../README.md#estado-de-la-plataforma--11-de-noviembre-de-2026). Este documento conserva el contexto técnico y el historial operativo. Las fechas y pendientes de cada fase describen el momento en que se registraron.
 
 ## Decisión principal
 
@@ -30,7 +30,7 @@ Planeta Boricua es el único proyecto activo de este repositorio.
 |---|---|
 | Dominio público | `masboricuaqueunmofongo.com` |
 | Repositorio | GitHub: `ivansoto1964-svg/ivamar-web` |
-| Producción | Render; despliegue manual por Iván |
+| Producción | Render, servicio `ivamar-web` con despliegue manual y disco persistente en `/data` |
 | Servidor | Node.js + Express |
 | Imágenes | Cloudinary y recursos locales según la sección |
 | Email transaccional | Resend |
@@ -52,7 +52,7 @@ Nunca guardar contraseñas, claves API, códigos de acceso ni secretos en este d
 4. Ejecutar `npm test` antes de subir código.
 5. Revisar el diff y confirmar que no incluya secretos ni archivos de datos accidentales.
 6. Subir el cambio a GitHub solamente cuando esté verificado.
-7. Iván ejecuta **Deploy latest commit** manualmente en Render.
+7. Para cambios funcionales, ejecutar **Deploy latest commit** manualmente en el servicio de producción cuando corresponda.
 8. Después del deploy, verificar en producción la función afectada.
 9. No declarar una tarea terminada solo porque compiló; debe comprobarse el resultado público o privado correspondiente.
 
@@ -90,7 +90,7 @@ La cantidad de artesanos es dinámica. Consultar PB Control antes de citar una c
 ### Contenido y administración
 
 - Blog oficial alojado dentro de PB.
-- Archivo de 30 artículos propios observado en PB Control.
+- Archivo editorial con un conteo dinámico de artículos en PB Control.
 - El índice de El Balcón mantiene las tarjetas principales y expone los demás títulos en un archivo compacto, para que todas las historias tengan un enlace directo desde la primera página.
 - Las páginas paginadas y categorías tienen canonical propio; las rutas mensuales y de etiquetas heredadas de Blogger redirigen hacia El Balcón en lugar de responder 404.
 - PB Control presenta el historial completo de cada artículo publicado: total medido, últimos 30 días, primera actividad y última actividad. También incluye artículos con cero visitas para que ninguno quede invisible en el informe.
@@ -110,7 +110,7 @@ La cantidad de artesanos es dinámica. Consultar PB Control antes de citar una c
 - Sistema único de suscriptores con total y origen de captación en PB Control.
 - Formularios contextuales de suscripción preparados para Inicio, Blog, Lo más reciente y Agenda Boricua, sin popups ni un sistema paralelo.
 - Sala de Prensa PB integrada administrativamente dentro de Comunicaciones: contactos verificados, filtros, comunicados, asociaciones y seguimiento manual.
-- La Sala de Prensa usa almacenamiento separado con respaldos; no altera Artesanos, no envía emails y todavía no tiene una página pública.
+- La Sala de Prensa privada usa almacenamiento separado con respaldos. En `/sala-de-prensa` se publica únicamente material aprobado.
 - La recopilación inicial de contactos se cerró el 7 de septiembre de 2026 mediante un Paquete Maestro. PB Control puede analizarlo sin escribir, consolidarlo de forma idempotente y mostrar el Resumen de Control.
 - Las organizaciones, festivales, instituciones culturales, amplificadores y servicios de distribución se conservan en categorías separadas de prensa para uso futuro; no existe todavía un directorio público.
 - La lista **LISTOS PARA ENVÍO — FERIA DIGITAL DE ARTESANOS** exige email, estado Activo y prioridad A+ o A. Los contactos nuevos no se consideran verificados automáticamente.
@@ -137,7 +137,7 @@ La cantidad de artesanos es dinámica. Consultar PB Control antes de citar una c
 - La validación de Google puede tardar entre varios días y semanas; no repetir cambios mientras Google procesa una versión ya corregida.
 - El commit funcional de referencia antes de añadir esta documentación es `65da45f` (`Repair server and separate artisan names`). Los commits posteriores que solo modifican documentos no requieren deploy ni cambian el funcionamiento público.
 
-## Plan operativo hacia el lanzamiento
+## Plan operativo original hacia el lanzamiento · septiembre de 2026
 
 - **Lanzamiento inaugural:** 23 de septiembre de 2026, presentado como **la primera feria de artesanos boricuas en línea 24/7**.
 - La inscripción de artesanos continúa gratis y la Feria permanecerá disponible al público después del lanzamiento.
@@ -148,7 +148,7 @@ La cantidad de artesanos es dinámica. Consultar PB Control antes de citar una c
 - Mantener imágenes y comunicación naturales, humanas y fáciles de entender; evitar visuales de IA que puedan confundir.
 - Continuar actualizando la Agenda mediante investigación de eventos gratuitos, verificación de fuente, publicación y aprobación. No publicar eventos que indiquen costo de entrada.
 
-## Pendientes inmediatos
+## Pendientes registrados antes del lanzamiento · septiembre de 2026
 
 1. Completar y desplegar la captación contextual de suscriptores en Inicio, Blog, Lo más reciente y Agenda Boricua.
 2. Enviar y comprobar la prueba de la campaña de revisión de perfiles; después enviar el primer lote de hasta 50, respetando las bajas y verificando entregas antes del siguiente lote.
@@ -179,6 +179,13 @@ Ninguna fase futura debe presentar a PB como vendedor, intermediario comercial o
 - [`PB-BLOG-MIGRATION.md`](PB-BLOG-MIGRATION.md)
 - [`pb-78-pueblos-prototype.md`](pb-78-pueblos-prototype.md)
 - [`pb-78-pueblos-checklist.md`](pb-78-pueblos-checklist.md)
+
+## Portada, radio y publicidad · 11 de noviembre de 2026
+
+- La portada toma la historia principal de **Lo más reciente**. Los demás titulares muestran una miniatura cuando la publicación tiene imagen. La guía de Arecibo también tiene [una historia publicada en El Balcón](https://www.masboricuaqueunmofongo.com/blog/arecibo-un-fin-de-semana-entre-el-faro-el-mar-y-el-autocine).
+- **Radio PB** está desplegada en el servicio existente. Se verificaron `/radio`, la API pública de programación y el acceso protegido al editor. La parrilla está vacía hasta activar programas con fuente autorizada. Ver [operación de Radio PB](../README.md#cómo-se-opera-radio-pb).
+- **PB Ads** rota campañas y registra impresiones visibles y clics. Las cuatro campañas de Expedia y las dos de Trip.com cuentan con nuevas imágenes, verificadas en el panel y en muestras de páginas públicas.
+- La activación del cobro del **directorio de negocios por pueblo** continúa pendiente según el registro de configuración. Consultar [la guía de Stripe](PB-NEGOCIOS-POR-PUEBLO.md) antes de cambiar ese estado.
 
 ## Instrucción para continuar en un chat nuevo
 
