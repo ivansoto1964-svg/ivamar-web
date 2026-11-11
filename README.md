@@ -3,18 +3,45 @@
 Repositorio principal de **Planeta Boricua — Más Boricua que un Mofongo**.
 
 - Sitio público: <https://www.masboricuaqueunmofongo.com>
-- Producción: Render
+- Producción: servicio `ivamar-web` en Render, con disco persistente en `/data`.
 - Código fuente: GitHub, rama `main`
 - Administración privada: PB Control
 - Responsable: Iván Soto
 
 Aunque el repositorio conserva el nombre técnico histórico `ivamar-web`, el proyecto activo es exclusivamente **Planeta Boricua**. Ivamar AI, Nayeli y los asistentes anteriores están retirados y no forman parte de la dirección actual del producto.
 
+## Estado de la plataforma · 11 de noviembre de 2026
+
+| Área | Qué está disponible y dónde se administra |
+| --- | --- |
+| Inicio y Lo más reciente | La portada abre con la publicación más reciente aprobada, su imagen principal y una lista de titulares con miniaturas cuando tienen foto. [Lo más reciente](https://www.masboricuaqueunmofongo.com/lo-mas-reciente) y [El Balcón](https://www.masboricuaqueunmofongo.com/blog) se trabajan en PB Control → Publicaciones. Lo más reciente requiere una fuente verificable y conserva la portada en los borradores sincronizados. |
+| Feria Digital y Artesano de la Semana | Registro gratuito, perfiles que cada artesano puede editar por email, creaciones y QR permanente. El [archivo de entrevistas](https://www.masboricuaqueunmofongo.com/artesano-de-la-semana) conserva las publicaciones originales. La entrevista seleccionada más reciente aparece en Inicio. La compra se coordina directamente con el artesano. |
+| Agenda y Nuestros pueblos | [Agenda Boricua](https://www.masboricuaqueunmofongo.com/agenda-boricua) ofrece una página por evento. [Nuestros pueblos](https://www.masboricuaqueunmofongo.com/pueblos) está en el menú compartido, con buscador, filtro por zona y tablillas para los 78 municipios. Arecibo tiene guía de fin de semana y contenido comunitario. |
+| Radio PB | [Radio Planeta Boricua](https://www.masboricuaqueunmofongo.com/radio) está publicada. La programación se edita en [PB Control → Radio PB](https://www.masboricuaqueunmofongo.com/pb-control/radio). La parrilla pública está vacía al cierre de esta actualización. |
+| Publicidad y afiliados | [PB Ads](https://www.masboricuaqueunmofongo.com/pb-control/ads) gestiona campañas directas, afiliadas e internas, con ubicaciones y métricas. Las campañas de Expedia para vuelos, cruceros, hoteles y hoteles en Puerto Rico están activas, con imágenes por categoría. Las dos campañas de Trip.com recibieron imágenes nuevas. |
+| Estadísticas y comunicaciones | PB Control reúne métricas propias, suscriptores, moderación y comunicaciones. GA4 y Search Console complementan la medición. La [Sala de Prensa pública](https://www.masboricuaqueunmofongo.com/sala-de-prensa) comparte material aprobado. Los contactos y el seguimiento viven en el panel privado. |
+| Negocios por pueblo | El directorio y el flujo de suscripción están implementados. El cobro de $9.99 USD al mes sigue pendiente de activar y verificar en Stripe. Ver [configuración de cobros](docs/PB-NEGOCIOS-POR-PUEBLO.md). |
+
+### Cómo se opera Radio PB
+
+1. En PB Control → Radio PB, edita un borrador o añade un programa. Configura emisora, día, inicio y cierre en hora de Puerto Rico. El horario se repite cada semana.
+2. Añade el enlace HTTPS autorizado de audio directo para escuchar dentro de PB. Si tienes la página oficial para escuchar, ese enlace abre la emisora.
+3. Marca **Activar este espacio en la parrilla pública** y guarda. El reproductor consulta qué programa corresponde al horario. Puedes añadir un audio de respaldo para los espacios sin señal.
+4. Verifica la página pública al comenzar el bloque. WMSW, Católica Radio, Radio Raíces y Éxitos 1530 AM arrancaron como borradores. Para activar cada señal faltan los enlaces autorizados y la confirmación del horario completo.
+
+La configuración de radio se guarda en `/data/pb-radio/schedule.json`. Con audio directo, la emisora sirve el audio al navegador y PB maneja la parrilla. Esta versión funciona en el servicio existente de Render.
+
+### Cómo se leen las métricas de PB Ads
+
+- Las impresiones visibles, los clics y el CTR se consultan por campaña en PB Ads. El inventario agrega actividad por ubicación durante los últimos 30 días.
+- Los cambios de imagen, estado y ubicación se guardan desde el panel. La selección usa las fechas, ubicaciones y prioridades de cada campaña.
+- Para verificar reservas, ventas o comisiones, consultar el panel del programa de afiliación. El CTR de PB mide clics sobre impresiones, y las campañas recién activadas pueden tener poca muestra.
+
 ## Continuidad del proyecto
 
 Antes de trabajar en una sesión o chat nuevo, leer:
 
-1. [`docs/PB-ESTADO-ACTUAL.md`](docs/PB-ESTADO-ACTUAL.md) — estado operativo, decisiones, tareas y reglas de despliegue.
+1. [`docs/PB-ESTADO-ACTUAL.md`](docs/PB-ESTADO-ACTUAL.md) — continuidad técnica y registro de decisiones y fases anteriores.
 2. [`docs/PB-EDITORIAL-GUIDE.md`](docs/PB-EDITORIAL-GUIDE.md) — voz y método editorial.
 3. [`docs/PB-BLOG-MIGRATION.md`](docs/PB-BLOG-MIGRATION.md) — migración del blog y verificaciones relacionadas.
 
@@ -26,7 +53,7 @@ Los documentos de prototipo de los 78 pueblos permanecen en `docs/` como referen
 npm test
 ```
 
-El despliegue de producción lo inicia manualmente Iván desde Render. Un cambio subido a GitHub no debe considerarse publicado hasta que Render termine y se verifique la página afectada.
+Producción toma el código de `main`. Para cambios funcionales, iniciar el despliegue manual en Render cuando corresponda, verificar que quede en estado `live` y comprobar la página o función afectada. Los cambios de contenido, horarios y campañas realizados en PB Control se aplican desde el panel. Los cambios de documentación se consultan en GitHub.
 
 ## Sala de Prensa PB
 
@@ -43,7 +70,6 @@ La implementación reutiliza la sesión privada, protección CSRF, componentes, 
 - No contiene contactos inventados ni un comunicado precargado.
 - No envía emails ni se conecta a Resend u otros servicios externos.
 - No modificar el envío actual de comunicaciones a Artesanos al trabajar esta función.
-- No construir todavía la Sala de Prensa pública.
 - Antes de cada cambio: inspeccionar la arquitectura vigente y ejecutar `npm test`.
 - Después de cada cambio: comprobar Comunicaciones, Artesanos, contactos, comunicados, asociaciones y seguimiento antes del deploy manual de Render.
 
@@ -109,12 +135,12 @@ La recopilación inicial se declaró terminada el **7 de septiembre de 2026**. P
 
 La primera fase pública quedó autorizada e implementada el **14 de septiembre de 2026** en `/sala-de-prensa`. Publica únicamente material aprobado: ocho fotografías oficiales de la Feria Digital con identificación, ubicación, pie de foto, crédito y descarga individual. No expone contactos, seguimientos, borradores ni otros datos internos del panel administrativo.
 
-## Operación inmediata de emails · septiembre de 2026
+## Historial de emails · septiembre de 2026
 
 - Asunto vigente: **🇵🇷 Bienvenido oficialmente a la Feria Digital de Artesanos Boricuas**.
 - Lotes enviados: 50 el 1 de septiembre, 50 el 2 de septiembre y un tercer lote el 3 de septiembre.
 - Resultado conocido del primer lote: 49 entregados y un rebote, `velarecolectionpr@outlook.com`.
-- Antes del próximo envío, hacer el lunes el inventario completo de destinatarios únicos, entregados, rebotados, quejas y pendientes.
+- Antes de un nuevo lote, revisar destinatarios únicos, entregas, rebotes, quejas y pendientes en PB Control.
 - No repetir destinatarios y no enviar otro lote hasta revisar ese inventario.
 - PB Control selecciona automáticamente los próximos destinatarios pendientes en lotes de hasta 50.
 - Todo envío necesita autorización expresa de Iván; la Sala de Prensa no participa en este proceso.
@@ -208,4 +234,4 @@ Directorio de perfiles comerciales con categorías de visitantes, registro y edi
 
 ## Artesano de la Semana y guía de Arecibo
 
-El archivo `/artesano-de-la-semana` reúne entrevistas publicadas, conservando sus enlaces. PB Control permite añadir o retirar cada historia de la sección sin eliminarla. La publicación promocional de Arecibo se prepara como borrador de El Balcón. Estado de afiliados, Stripe y operación en [`docs/PB-ARTESANO-SEMANA-Y-ARECIBO.md`](docs/PB-ARTESANO-SEMANA-Y-ARECIBO.md).
+El archivo `/artesano-de-la-semana` reúne entrevistas publicadas, conservando sus enlaces. PB Control permite añadir o retirar cada historia de la sección sin eliminarla. La guía municipal y la [historia de Arecibo en El Balcón](https://www.masboricuaqueunmofongo.com/blog/arecibo-un-fin-de-semana-entre-el-faro-el-mar-y-el-autocine) son piezas complementarias. Historial de afiliados, Stripe y operación en [`docs/PB-ARTESANO-SEMANA-Y-ARECIBO.md`](docs/PB-ARTESANO-SEMANA-Y-ARECIBO.md).
