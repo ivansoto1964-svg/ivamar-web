@@ -1,11 +1,15 @@
+const { renderPBSocialFollow } = require('./social-follow');
+
 const messages = {
   blog: {
     title: '🇵🇷 ¿Te gustó esta historia? Sigue conectado con Planeta Boricua.',
-    copy: 'Recibe nuevas historias, cultura y cosas de nuestra tierra directamente en tu correo.'
+    copy: 'Suscríbete para recibir nuevas historias, cultura y cosas de nuestra tierra directamente en tu correo.',
+    showSocial: true
   },
   lo_mas_reciente: {
     title: '⚡ Mantente al día con el Planeta.',
-    copy: 'Noticias, asuntos que nos afectan y lo que está pasando en Puerto Rico y la diáspora.'
+    copy: 'Suscríbete para estar al día con lo que pasa en Puerto Rico y la diáspora.',
+    showSocial: true
   },
   agenda: {
     title: '📅 Que no se te pase lo boricua.',
@@ -29,6 +33,7 @@ function renderSubscriberForm(source) {
       </div>
       <p class="pb-subscribe-status" role="status" aria-live="polite"></p>
     </form>
+    ${message.showSocial ? renderPBSocialFollow() : ''}
   </section><script src="/js/pb-subscribe.js?v=1"></script>`;
 }
 
