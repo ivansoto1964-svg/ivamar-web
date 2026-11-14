@@ -32,3 +32,4 @@ textarea{display:block;width:100%;border:1px solid #bdb0ab;border-radius:.55rem;
 .special-share{margin-top:1rem}
 .secondary-action{background:#fff;color:var(--accent);border:1px solid currentColor}
 .directory-place li .directory-special{font-weight:650}
+.coupon-qr{max-height:none;width:min(100%,18rem)}

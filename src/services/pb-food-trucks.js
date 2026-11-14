@@ -171,7 +171,7 @@ function profile(body) {
   return values;
 }
 
-function renderMenu(truck, preview = false, palette = truck.palette, photo = '') {
+function renderMenu(truck, preview = false, palette = truck.palette, photo = '', offer = '') {
   const socials = Object.entries(networks).map(([key,[name,hosts]]) => {
     const url = socialUrl(truck.social?.[key],hosts);
     return url ? `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${name}</a>` : '';
@@ -184,7 +184,7 @@ function renderMenu(truck, preview = false, palette = truck.palette, photo = '')
   const menuPhoto = photo ? `<section><h2>Foto del menú</h2><a href="${photo}"><img class="menu-photo" src="${photo}" alt="Menú de ${esc(truck.name || 'este negocio')}" /></a></section>` : '';
   const cart = items ? `<div class="grid">${items}</div><section class="card"><h2>Tu pedido</h2><ul id="cart-lines"></ul><p id="cart-total" aria-live="polite"></p><label>Método de pago<select id="cart-payment">${(truck.payments || []).map(method=>`<option>${esc(method)}</option>`).join('')}</select></label><button id="cart-send" disabled>Preparar pedido por WhatsApp</button><p>${preview?'Vista privada del menú.':'El negocio confirma el total y el recogido.'}</p></section><script id="pb-menu-data" type="application/json">${data}</script><script src="/js/pb-food-truck-cart.js" defer></script>` : '';
   const special = currentSpecial(truck);
-  return page(truck.name || 'Vista previa del menú', `<p>${esc(where)}</p><p>${esc(truck.hours)}</p><nav aria-label="Contacto y ubicación">${where ? `<a href="${esc(maps)}">Ver en Google Maps</a>` : ''}${contact}${socials.join('')}</nav>${special ? renderSpecial(special) : ''}${menuPhoto}${cart || (menuPhoto ? '' : '<p>Aún no hay platos en este menú.</p>')}`,palette);
+  return page(truck.name || 'Vista previa del menú', `<p>${esc(where)}</p><p>${esc(truck.hours)}</p><nav aria-label="Contacto y ubicación">${where ? `<a href="${esc(maps)}">Ver en Google Maps</a>` : ''}${contact}${socials.join('')}</nav>${special ? renderSpecial(special) : ''}${offer}${menuPhoto}${cart || (menuPhoto ? '' : '<p>Aún no hay platos en este menú.</p>')}`,palette);
 }
 
 module.exports = function mount(app,{file,origin,sendLink,limiter,stripe,billing,rawBody}) {
@@ -215,6 +215,8 @@ module.exports = function mount(app,{file,origin,sendLink,limiter,stripe,billing
     if (req.method==='POST' && (!sameOrigin(req) || req.body.csrf!==req.truck.csrf)) return res.sendStatus(403);
     next();
   }
+
+  const publicOffer = require('./pb-food-coupons')(app,{panel,menuPath,directory,origin,page,esc,read,edit,owner,csrf,update,privatePage,sameOrigin,limiter});
 
   app.get(access,(_req,res)=>privatePage(res).send(page('Crea o abre tu menú',`<form class="card" method="post">${field('Correo electrónico','email','','email',true)}<button>Enviar enlace de acceso</button></form>`)));
   app.post(access,limiter,async(req,res)=>{
@@ -297,7 +299,7 @@ module.exports = function mount(app,{file,origin,sendLink,limiter,stripe,billing
       : canActivate(truck) ? `<form method="post" action="${panel}/activar">${csrf(truck)}<button>Activar por $49</button><p>Primeros 30 días sin mensualidad. Luego $9.99 al mes.</p></form>`
       : `<p>${truck.subscription ? 'Tu suscripción está registrada.' : !truck.name || !truck.city || !truck.whatsapp ? 'Guarda el nombre, pueblo y WhatsApp del negocio para poder activar.' : !photoExists && !truck.items.some(item => item.available) ? 'Sube una foto o guarda un plato disponible para poder activar.' : 'La activación aún no está disponible.'}</p>`;
     return page('Administra tu menú', `
-      <nav aria-label="Accesos rápidos"><a href="#especial">Especiales</a><a href="#menu">Mi menú</a><a href="${panel}/vista-previa">Vista previa</a><a href="#ubicacion">Ubicación y redes</a></nav>
+      <nav aria-label="Accesos rápidos"><a href="#especial">Especiales</a><a href="${panel}/cupones">Cupones</a><a href="#menu">Mi menú</a><a href="${panel}/vista-previa">Vista previa</a><a href="#ubicacion">Ubicación y redes</a></nav>
       ${error ? `<p class="notice" role="alert">${esc(error)}</p>` : ''}
       ${specialEditor(truck,specialDraft,specialError)}
       <form class="card" method="post" id="ubicacion">${csrf(truck)}<h2>Mi negocio</h2>${basics}
@@ -468,7 +470,7 @@ module.exports = function mount(app,{file,origin,sendLink,limiter,stripe,billing
   app.get(directory+'/:id',(req,res)=>{
     const truck=read()[req.params.id];
     if(!truck?.active) return res.sendStatus(404);
-    res.send(renderMenu(truck,false,truck.palette,hasPhoto(truck) ? directory+'/'+truck.id+'/foto' : ''));
+    res.send(renderMenu(truck,false,truck.palette,hasPhoto(truck) ? directory+'/'+truck.id+'/foto' : '',publicOffer(truck)));
   });
   app.get(directory+'/:id/especial/:specialId',(req,res)=>{
     const truck = read()[req.params.id];
