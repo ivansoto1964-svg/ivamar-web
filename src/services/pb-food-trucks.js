@@ -177,7 +177,7 @@ function profile(body) {
   return values;
 }
 
-function renderMenu(truck, preview = false, palette = truck.palette, photo = '', offer = '') {
+function renderMenu(truck, preview = false, palette = truck.palette, photo = '', offer = '', previewActions = '') {
   const socials = Object.entries(networks).map(([key,[name,hosts]]) => {
     const url = socialUrl(truck.social?.[key],hosts);
     return url ? `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${name}</a>` : '';
@@ -191,7 +191,7 @@ function renderMenu(truck, preview = false, palette = truck.palette, photo = '',
   const menuPhoto = photo ? `<section><h2>Foto del menú</h2><a href="${photo}"><img class="menu-photo" src="${photo}" alt="Menú de ${esc(truck.name || 'este negocio')}" /></a></section>` : '';
   const cart = items && accepting ? `<section class="card"><h2>Tu pedido</h2><ul id="cart-lines"></ul><p id="cart-total" aria-live="polite"></p><label>Método de pago<select id="cart-payment">${(truck.payments || []).map(method=>`<option>${esc(method)}</option>`).join('')}</select></label><label>Recogido<select id="cart-pickup"><option value="pronto">Lo antes posible</option><option value="hora">Solicitar una hora</option></select></label><div id="cart-time-field" hidden><label>Hora aproximada en el negocio<input type="time" id="cart-time"></label></div><button id="cart-send" disabled>Pedir para recoger por WhatsApp</button><p>${preview?'Vista privada del menú.':'El negocio confirma el total y el recogido.'}</p></section><script id="pb-menu-data" type="application/json">${data}</script><script src="/js/pb-food-truck-cart.js" defer></script>` : '';
   const special = currentSpecial(truck);
-  return page(truck.name || 'Vista previa del menú', `${kitchenStatus(truck)}<p>${esc(where)}</p><p>${esc(truck.hours)}</p><nav aria-label="Contacto y ubicación">${where ? `<a href="${esc(maps)}">Ver en Google Maps</a>` : ''}${contact}${socials.join('')}</nav>${special ? renderSpecial(special) : ''}${offer}${menuPhoto}${items ? `<div class="grid">${items}</div>` : menuPhoto ? '' : '<p>Aún no hay platos en este menú.</p>'}${cart}`,palette);
+  return page(truck.name || 'Vista previa del menú', `${previewActions}${kitchenStatus(truck)}<p>${esc(where)}</p><p>${esc(truck.hours)}</p><nav aria-label="Contacto y ubicación">${where ? `<a href="${esc(maps)}">Ver en Google Maps</a>` : ''}${contact}${socials.join('')}</nav>${special ? renderSpecial(special) : ''}${offer}${menuPhoto}${items ? `<div class="grid">${items}</div>` : menuPhoto ? '' : '<p>Aún no hay platos en este menú.</p>'}${cart}`,palette);
 }
 
 module.exports = function mount(app,{file,origin,sendLink,limiter,stripe,billing,rawBody}) {
@@ -294,7 +294,29 @@ module.exports = function mount(app,{file,origin,sendLink,limiter,stripe,billing
     </section>`;
   }
 
-  function ownerPanel(truck, error = '', photoExists = hasPhoto(truck), specialDraft, specialError) {
+  function publishControls(truck) {
+    if (truck.active) {
+      const url = menuPath(truck);
+      return `<p>Tu menú está publicado.</p><a class="action" href="${url}">Ver mi menú público</a>
+        <a class="action" href="${url}/qr">Descargar QR</a>`;
+    }
+
+    if (canActivate(truck)) {
+      return `<form method="post" action="${panel}/activar">${csrf(truck)}
+        <p>$49 al publicar. Los primeros 30 días van incluidos. Después, $9.99 al mes. PB cobra $0 por pedido.</p>
+        <button>Publicar</button>
+        <p>Te llevamos a Stripe. Tu menú se hace público cuando se confirme el pago.</p>
+      </form>`;
+    }
+
+    const message = truck.subscription ? 'Revisa el estado de tu suscripción en Gestionar suscripción.'
+      : !truck.name || !truck.city || !truck.state || !truck.whatsapp ? 'Guarda primero el nombre, pueblo o ciudad, estado y WhatsApp del negocio.'
+      : !hasPhoto(truck) && !truck.items.some(item=>item.available) ? 'Sube una foto del menú o guarda al menos un plato disponible.'
+      : 'La publicación todavía no está disponible.';
+    return `<p>${message}</p>`;
+  }
+
+  function ownerPanel(truck, error = '', photoExists = hasPhoto(truck), specialDraft, specialError, notice = '') {
     const colors=Object.entries(palettes).map(([key,label])=>`<label><input type="radio" name="palette" value="${key}" ${theme(truck.palette)===key?'checked':''}> ${label} <a href="${panel}/vista-previa?paleta=${key}">Vista previa</a></label>`).join('');
     const social=Object.entries(networks).map(([key,[label]])=>field(label,key,truck.social?.[key],'url')).join('');
     const payments=methods.map(value=>`<label><input type="checkbox" name="payments" value="${value}" ${truck.payments?.includes(value)?'checked':''}> ${value}</label>`).join('');
@@ -303,12 +325,10 @@ module.exports = function mount(app,{file,origin,sendLink,limiter,stripe,billing
       .map(([label,key]) => field(key === 'whatsapp' ? 'WhatsApp' : label,key,truck[key],key === 'whatsapp' ? 'tel' : 'text',true)).join('');
     const details = profileFields.filter(([, key]) => !['name','whatsapp','city'].includes(key))
       .map(([label,key]) => field(label,key,key === 'state' ? truck[key] || 'Puerto Rico' : truck[key],key === 'phone' ? 'tel' : 'text')).join('');
-    const status = truck.active ? `<a class="action" href="${directory}/${truck.id}">Ver mi menú público</a> <a class="action" href="${directory}/${truck.id}/qr">Descargar QR</a>`
-      : canActivate(truck) ? `<form method="post" action="${panel}/activar">${csrf(truck)}<button>Activar por $49</button><p>Primeros 30 días sin mensualidad. Luego $9.99 al mes.</p></form>`
-      : `<p>${truck.subscription ? 'Tu suscripción está registrada.' : !truck.name || !truck.city || !truck.whatsapp ? 'Guarda el nombre, pueblo y WhatsApp del negocio para poder activar.' : !photoExists && !truck.items.some(item => item.available) ? 'Sube una foto o guarda un plato disponible para poder activar.' : 'La activación aún no está disponible.'}</p>`;
     return page('Administra tu menú', `
-      <nav aria-label="Accesos rápidos"><a href="#cocina">Cocina</a><a href="#especial">Especiales</a><a href="${panel}/cupones">Cupones</a><a href="${panel}/ventas">Ventas</a><a href="#menu">Mi menú</a><a href="${panel}/vista-previa">Vista previa</a><a href="#ubicacion">Ubicación y redes</a></nav>
+      <nav aria-label="Accesos rápidos"><a href="#cocina">Cocina</a><a href="#especial">Especiales</a><a href="${panel}/cupones">Cupones</a><a href="${panel}/ventas">Ventas</a><a href="#menu">Mi menú</a><a href="${panel}/vista-previa">Vista previa</a><a href="#publicar">Publicar y compartir</a><a href="#ubicacion">Ubicación y redes</a></nav>
       ${error ? `<p class="notice" role="alert">${esc(error)}</p>` : ''}
+      ${notice ? `<p class="notice" role="status">${esc(notice)}</p>` : ''}
       <section class="card" id="cocina"><h2>Estado de la cocina</h2>
         ${kitchenStatus(truck)}
         <p>Puedes cerrar temprano si ya completaste tu turno de pedidos. El horario publicado se conserva. Vuelve a abrir la cocina cuando estés listo.</p>
@@ -336,12 +356,23 @@ module.exports = function mount(app,{file,origin,sendLink,limiter,stripe,billing
         <h3>Platos para pedidos</h3><ul>${items}</ul>
         <a class="action" href="${panel}/plato/nuevo">Añadir plato</a>
       </section>
-      <section class="card"><h2>Publicar y compartir</h2>${status}
+      <section class="card" id="publicar"><h2>Publicar y compartir</h2>${publishControls(truck)}
         ${billingReady && truck.customer ? `<form method="post" action="${panel}/facturacion">${csrf(truck)}<button>Gestionar suscripción</button></form>` : ''}
       </section>`);
   }
 
-  app.get(panel,owner,(req,res)=>res.send(ownerPanel(req.truck)));
+  app.get(panel,owner,(req,res)=>{
+    const status = req.query.publicacion;
+    let notice = '';
+    if (status === 'confirmando') {
+      notice = req.truck.active ? 'Tu menú ya está publicado. Puedes compartirlo y descargar el QR.'
+        : 'Estamos esperando la confirmación de Stripe. Tu menú se publicará cuando se confirme el pago. Puedes recargar esta página para ver el estado.';
+    }
+    if (status === 'cancelada' && !req.truck.active) {
+      notice = 'Tu menú sigue guardado como borrador. Puedes editarlo o volver a publicar cuando quieras.';
+    }
+    res.send(ownerPanel(req.truck,'',hasPhoto(req.truck),undefined,undefined,notice));
+  });
   app.post(panel+'/pedidos',owner,(req,res)=>{
     const {mode} = req.body;
     if (mode !== 'pausar' && mode !== 'abrir') return res.sendStatus(400);
@@ -415,7 +446,15 @@ module.exports = function mount(app,{file,origin,sendLink,limiter,stripe,billing
     }
     res.redirect(303,panel+'#menu');
   });
-  app.get(panel+'/vista-previa',owner,(req,res)=>res.send(renderMenu(req.truck,true,req.query.paleta ?? req.truck.palette,hasPhoto(req.truck) ? panel+'/foto' : '')));
+  app.get(panel+'/vista-previa',owner,(req,res)=>{
+    const truck = req.truck;
+    const actions = `<section class="card"><h2>Vista previa privada</h2>
+      <p>Así se verá tu menú cuando lo compartas.</p>
+      <a class="action" href="${panel}">Seguir editando</a>
+      ${publishControls(truck)}
+    </section>`;
+    res.send(renderMenu(truck,true,req.query.paleta ?? truck.palette,hasPhoto(truck) ? panel+'/foto' : '','',actions));
+  });
   app.get(panel+'/plato/:id',owner,(req,res)=>{
     const item=req.params.id==='nuevo'?{}:req.truck.items.find(row=>row.id===req.params.id);
     if(!item) return res.sendStatus(404);
@@ -441,12 +480,12 @@ module.exports = function mount(app,{file,origin,sendLink,limiter,stripe,billing
     const truck=req.truck;
     if(!canActivate(truck)) return res.sendStatus(409);
     let session=truck.checkout && await stripe.checkout.sessions.retrieve(truck.checkout);
-    if(session?.status==='complete') return res.status(409).send(page('Activación en proceso',`<a href="${panel}">Volver</a>`));
+    if(session?.status==='complete') return res.redirect(303,panel+'?publicacion=confirmando');
     if(session?.status!=='open'){
       session=await stripe.checkout.sessions.create({
         mode:'subscription',customer_email:truck.email,line_items:[{price:billing.setup,quantity:1},{price:billing.monthly,quantity:1}],
         subscription_data:{trial_period_days:30,metadata:{pbFoodTruck:truck.id}},metadata:{pbFoodTruck:truck.id},
-        success_url:origin+panel,cancel_url:origin+panel
+        success_url:origin+panel+'?publicacion=confirmando',cancel_url:origin+panel+'?publicacion=cancelada'
       },{idempotencyKey:'pb-food-'+truck.id+'-'+(truck.checkout || 'initial')});
       update(req,record=>{record.checkout=session.id;});
     }

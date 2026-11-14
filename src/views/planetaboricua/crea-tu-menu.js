@@ -15,7 +15,7 @@ const copy = {
     steps: [
       ['Registra tu negocio', 'Entra con tu correo. Guarda el nombre del negocio, pueblo y WhatsApp.'],
       ['Arma tu menú', 'Sube una foto de tu menú o añade platos con precios para recibir pedidos.'],
-      ['Publica y comparte', 'Revisa cómo se ve en el celular. Al activar tu menú, tendrás un enlace y un QR descargable para redes, mensajes o imprimir.'],
+      ['Publica y comparte', 'Monta tu menú gratis y revisa cómo se ve en el celular. Cuando estés listo, toca Publicar. Después del pago, tendrás un enlace y un QR descargable.'],
       ['Comparte tus especiales', 'Anuncia el especial de hoy o de la semana y comparte su enlace en redes o WhatsApp.'],
       ['Recibe pedidos directos', 'Tus clientes pueden escribirte por WhatsApp. Si añades platos con precios, también pueden armar el pedido en el carrito. Tú confirmas la disponibilidad, el pago y la hora de recogido. Puedes cerrar y volver a abrir la cocina desde tu panel.']
     ],
@@ -41,7 +41,7 @@ const copy = {
     steps: [
       ['Register your business', 'Sign in by email. Save your business name, city and WhatsApp number.'],
       ['Build your menu', 'Upload a menu photo or add individual dishes with prices to take orders.'],
-      ['Publish and share', 'Preview your menu on mobile. Once activated, you’ll get a link and a downloadable QR code to post, message, or print.'],
+      ['Publish and share', 'Build and preview your menu for free on mobile. When you’re ready, tap Publish. Once payment is confirmed, you’ll get a link and a downloadable QR code.'],
       ['Share your specials', 'Post a daily or weekly special and share its link on social media or WhatsApp.'],
       ['Get direct orders', 'Customers can message you on WhatsApp. If you add dishes with prices, they can also build an order in the cart. You confirm availability, payment, and pickup time. You can close and reopen your kitchen from your dashboard.']
     ],
