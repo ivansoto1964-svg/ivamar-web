@@ -2820,14 +2820,15 @@ if (process.env.PB_FOOD_TRUCKS_ENABLED === 'true') {
   const origin = 'https://www.masboricuaqueunmofongo.com';
   const key = process.env.PB_FOOD_BILLING_ENABLED === 'true' ? process.env.PB_FOOD_STRIPE_KEY : '';
   const foodStripe = /^(rk|sk)_live_/.test(key || '') ? new Stripe(key) : null;
-  app.get('/crea-tu-menu', (_req,res) => res.set('X-Robots-Tag','noindex').send(renderBusinessLanding()));
-  app.get('/crea-tu-menu/en', (_req,res) => res.set('X-Robots-Tag','noindex').send(renderBusinessLanding({language:'en'})));
+  app.get(['/crea-tu-menu','/tu-negocio'], (_req,res) => res.set('X-Robots-Tag','noindex').send(renderBusinessLanding({businessPath:'/tu-negocio'})));
+  app.get(['/crea-tu-menu/en','/tu-negocio/en'], (_req,res) => res.set('X-Robots-Tag','noindex').send(renderBusinessLanding({language:'en',businessPath:'/tu-negocio'})));
   require('./services/pb-food-trucks')(app,{
     file:'/data/pb-food-trucks.json',
     origin,
     limiter:formLimiter,
     webhookRouter:foodStripeWebhook,
     inviteEmail:process.env.PB_FOOD_PILOT_EMAIL || '',
+    openDraftRegistration:true,
     stripe:foodStripe,
     billing:{
       setup:process.env.PB_FOOD_SETUP_PRICE,
@@ -2842,7 +2843,7 @@ if (process.env.PB_FOOD_TRUCKS_ENABLED === 'true') {
     async sendLink(email,link) {
       const {error} = await resend.emails.send({
         from:`Planeta Boricua <${PB_SENDER_EMAIL}>`,to:email,
-        subject:'Tu acceso a Crea tu menú · Planeta Boricua',text:'Abre este enlace en los próximos 20 minutos. ' + link
+        subject:'Tu acceso a Tu negocio · Planeta Boricua',text:'Abre este enlace en los próximos 20 minutos. ' + link
       });
       if (error) throw new Error('No se pudo enviar el enlace de acceso.');
     }

@@ -38,7 +38,7 @@ const englishExamples = [
     cta:'I’m interested in a service page', contact:'Page for my service business'}
 ];
 
-function renderBusinessLanding({language = 'es', preview = false} = {}) {
+function renderBusinessLanding({language = 'es', preview = false, businessPath = base} = {}) {
   const english = language === 'en';
   const t = (es, en) => english ? en : es;
   const examples = english ? spanishExamples.map((example,i)=>({...example,...englishExamples[i]})) : spanishExamples;
@@ -57,27 +57,38 @@ function renderBusinessLanding({language = 'es', preview = false} = {}) {
 <meta name="description" content="${t("Una mini web para tu menú, tienda o negocio de servicios. Muestra lo que haces y conecta con tus clientes por WhatsApp.", "A mini website for your menu, shop, or service business. Show what you offer and connect with customers on WhatsApp.")}">
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#172548">
-<link rel="stylesheet" href="/css/pb-business-landing.css?v=2">
+<link rel="stylesheet" href="/css/pb-business-landing.css?v=3">
 <script src="/js/pb-business-landing.js" defer></script>
 </head>
 <body>
 <header class="top wrap">
   <a class="brand" href="https://www.masboricuaqueunmofongo.com/"><img width="42" height="42" src="/pbn-logo.webp" alt=""><span>Planeta Boricua</span></a>
   <a class="top-link" href="#como-funciona">${t("Cómo funciona", "How it works")}</a>
-  <a class="top-link" href="${english ? base : base + '/en'}" lang="${english ? 'es' : 'en'}">${t('English', 'Español')}</a>
+  <a class="top-link" href="${english ? businessPath : businessPath + '/en'}" lang="${english ? 'es' : 'en'}">${t('English', 'Español')}</a>
 </header>
 <main>
   <section class="hero" aria-labelledby="title">
     <div class="wrap hero-inner">
       <div class="hero-copy">
         <p class="eyebrow">${t("Tu negocio en PB", "Your business on PB")}</p>
-        <h1 id="title">${t("Lo que vendes.", "What you sell.")}<br>${t("Lo que haces.", "What you do.")}<br><em>${t("En un solo enlace.", "In one link.")}</em></h1>
-        <p class="lead">${t("Pon tu menú, tus productos o tus servicios en una mini web que puedas compartir en WhatsApp, en tus redes o con un QR impreso.", "Put your menu, products, or services on a mini website you can share on WhatsApp, social media, or with a printed QR code.")}</p>
-        <div class="actions"><a class="button primary" href="${menuAction}">${t("Comenzar con tu menú", "Start your menu")} <span aria-hidden="true">↗</span></a><a class="button outline" href="#demo">${t("Probar la demo", "Try the demo")}</a></div>
-        <p class="hero-note">${preview ? t('Entorno de pruebas. El enlace de acceso se simula y los cobros son de prueba.', 'Test environment. Sign-in links and payments are simulated.') : t('Menús en piloto por invitación. Confirma tu correo para empezar tu borrador.', 'Invite-only menu pilot. Confirm your email to start your draft.')}</p>
+        <h1 id="title">${t("Una página para tu negocio.", "A page for your business.")}</h1>
+        <p class="lead">${t("Muestra lo que vendes, lo que cocinas o el servicio que ofreces. Dale a tus clientes una forma sencilla de contactarte por WhatsApp.", "Show what you sell, what you cook, or the services you offer. Give customers an easy way to reach you on WhatsApp.")}</p>
+        <div class="actions"><a class="button primary" href="#tipos">${t("Escoge tu tipo de negocio", "Choose your business type")}</a><a class="button outline" href="#demo">${t("Ver ejemplos", "View examples")}</a></div>
       </div>
-      <div class="hero-visual"><img src="/img/pb-business/food.webp" width="960" height="640" alt="${t("Entrega de una orden por la ventanilla de un food truck", "A customer receiving an order at a food truck window")}" fetchpriority="high"><span>${t("Menús · Catálogos · Servicios", "Menus · Catalogs · Services")}</span></div>
+      <div class="hero-visual business-photos">
+        ${examples.map(x=>`<figure><img src="/img/pb-business/${x.key==='comida'?'food':x.key}.webp" width="360" height="420" alt=""><figcaption>${x.label}</figcaption></figure>`).join('')}
+      </div>
     </div>
+  </section>
+
+  <section class="wrap section business-types" id="tipos" aria-labelledby="types-title">
+    <h2 id="types-title">${t("¿Qué ofrece tu negocio?", "What does your business offer?")}</h2>
+    <div class="type-grid">
+      <article><h3>${t("Servicios", "Services")}</h3><p>${t("Explica qué haces, qué zona cubres y cómo pedir una cita por WhatsApp.", "Explain what you do, where you work, and how to request a WhatsApp appointment.")}</p><a class="button primary" href="${menuAction}?tipo=servicios">${t("Crear página de servicios", "Create a service page")}</a></article>
+      <article><h3>${t("Tienda", "Shop")}</h3><p>${t("Conoce el ejemplo de catálogo y escríbenos para consultar opciones para tu tienda.", "See a sample catalog and get in touch about options for your shop.")}</p><a class="button primary" href="${interest(examples[1])}">${t("Consultar sobre catálogo", "Ask about a catalog")}</a></article>
+      <article><h3>${t("Comida", "Food")}</h3><p>${t("Arma tu menú con platos y precios para recibir pedidos por WhatsApp.", "Set up your menu with dishes and prices for WhatsApp orders.")}</p><a class="button primary" href="${menuAction}">${t("Crear menú", "Create a menu")}</a></article>
+    </div>
+    <p class="section-intro">${preview ? t("En esta demo puedes abrir los editores de prueba.", "In this demo you can open the test editors.") : t("Para empezar en Comida o Servicios, solicita un enlace de acceso con tu correo. Puedes guardar un borrador y revisar cómo se ve.", "To get started with Food or Services, request a sign-in link by email. You can save a draft and see how it looks.")}</p>
   </section>
 
   <section class="wrap section" id="demo" aria-labelledby="demo-title">
@@ -86,8 +97,8 @@ function renderBusinessLanding({language = 'es', preview = false} = {}) {
     <p class="section-intro">${t("Escoge un negocio ficticio y prueba el botón de contacto. Las acciones se simulan aquí mismo.", "Pick a sample business and try its contact button. All actions are simulated on this page.")}</p>
     <div class="demos">
     ${examples.map((x,i)=>`
-    <details class="demo" ${i===0?'open':''}>
-      <summary><span>${x.label}</span><small>${i===0?t('Piloto de menú','Menu pilot'):t('Vista de ejemplo','Sample preview')}</small></summary>
+    <details class="demo">
+      <summary><span>${x.label}</span></summary>
       <div class="demo-content">
         <article class="phone" aria-label="${t('Ejemplo de', 'Example of')} ${x.label.toLowerCase()}">
           <img src="/img/pb-business/${x.key==='comida'?'food':x.key}.webp" width="720" height="420" alt="" loading="lazy">
@@ -109,48 +120,13 @@ function renderBusinessLanding({language = 'es', preview = false} = {}) {
   </section>
 
   <section class="band" id="como-funciona"><div class="wrap section">
-    <p class="eyebrow blue">${t("Piloto de menús", "Menu pilot")}</p>
-    <h2>${t("De tu celular a las manos de tus clientes.", "From your phone to your customers.")}</h2>
+    <h2>${t("Cómo empezar", "How to get started")}</h2>
     <ol class="steps">
-      <li><h3>${t("Arma tu menú", "Build your menu")}</h3><p>${t("Entra con tu correo, añade tu WhatsApp y sube una foto del menú o escribe los platos y sus precios.", "Sign in with your email, add your WhatsApp number, and upload a menu photo or list your dishes and prices.")}</p></li>
-      <li><h3>${t("Míralo antes de publicar", "Preview before you publish")}</h3><p>${t("Prueba la vista previa desde el celular. Tú decides cuándo está listo.", "Check the preview from your phone. You decide when it’s ready.")}</p></li>
-      <li><h3>${t("Comparte tu enlace y QR", "Share your link and QR code")}</h3><p>${t("Al publicar, descarga tu QR y úsalo en tarjetas, rótulos o mesas. El mismo QR abre el menú actualizado.", "When you publish, download your QR code for cards, signs, or tables. The same code opens your updated menu.")}</p></li>
+      <li><h3>${t("Escoge tu tipo de negocio", "Choose your business type")}</h3><p>${t("En Comida y Servicios puedes entrar con tu correo. Para Tiendas, escríbenos desde la opción de catálogo.", "For Food and Services, sign in by email. For Shops, use the catalog contact option.")}</p></li>
+      <li><h3>${t("Añade tu información", "Add your information")}</h3><p>${t("Pon el nombre de tu negocio, lo que ofreces y cómo te pueden contactar.", "Add your business name, what you offer, and how customers can contact you.")}</p></li>
+      <li><h3>${t("Revisa tu página", "Preview your page")}</h3><p>${t("Guarda tu borrador y revisa cómo se ve desde el celular.", "Save your draft and check how it looks on your phone.")}</p></li>
     </ol>
   </div></section>
-
-  <section class="wrap section features" id="incluye" aria-labelledby="features-title">
-    <div><p class="eyebrow blue">${t("Qué incluye", "What’s included")}</p><h2 id="features-title">${t("Herramientas para vender a tu manera.", "Tools to sell your way.")}</h2>
-    <p>${t("Tu menú tiene un enlace propio listo para compartir en un QR, en tus redes y por WhatsApp.", "Your menu gets its own link to share with a QR code, on social media, and on WhatsApp.")}</p></div>
-    <dl>
-      <div><dt>${t("Pedidos directos", "Direct orders")}</dt><dd>${t("Tu cliente arma el pedido y te escribe por WhatsApp. Tú confirmas el recogido y cobras directamente.", "Customers build their orders and message you on WhatsApp. You confirm pickup and get paid directly.")}</dd></div>
-      <div><dt>${t("Promos que puedes compartir", "Shareable promotions")}</dt><dd>${t("Publica el especial de hoy o de la semana y ofrece descuentos con una cantidad limitada de cupones.", "Post a daily or weekly special and offer discounts with a limited number of coupons.")}</dd></div>
-      <div><dt>${t("Control desde el celular", "Manage it from your phone")}</dt><dd>${t("Cierra la cocina cuando te llenes, marca platos agotados y descarga un resumen de las ventas que registres.", "Pause orders when you’re at capacity, mark dishes sold out, and download a summary of the sales you record.")}</dd></div>
-      <div><dt>${t("Precio claro", "Clear pricing")}</dt><dd>${t("PB cobra por publicar y mantener tu menú. Cada venta va directo a tu negocio, con $0 de comisión de PB. Tu procesador puede tener sus propias tarifas.", "PB charges for publishing and hosting your menu. Each sale goes directly to your business, with $0 in PB commission. Your payment processor may have its own fees.")}</dd></div>
-    </dl>
-  </section>
-
-  <section class="wrap section"><div class="price-box">
-    <div><p class="eyebrow">${t("Precio del menú", "Menu pricing")}</p><h2>$49 <small>${t("al publicar", "when you publish")}</small></h2><p>${t("Los primeros 30 días van incluidos. Después, ", "The first 30 days are included. Then ")}<strong>${t("$9.99 al mes", "$9.99 per month")}</strong>.</p></div>
-    <div><a class="button primary" href="${menuAction}">${t("Comenzar con tu menú", "Start your menu")} <span aria-hidden="true">↗</span></a>
-    <p>${t("El editor de Servicios está en piloto. Para catálogos, puedes probar el ejemplo y escribirnos.", "The service page editor is in pilot. For catalogs, try the example and get in touch.")}</p></div>
-  </div></section>
-
-  <section class="band" id="planes-futuros" aria-labelledby="future-title"><div class="wrap section">
-    <p class="eyebrow blue">${t("En los planes", "On the roadmap")}</p>
-    <h2 id="future-title">${t("Lo que queremos añadir", "What we plan to add")}</h2>
-    <dl class="roadmap">
-      <div><dt><strong>${t("Reseñas por invitación", "Reviews by invitation")}</strong></dt>
-      <dd>${t("Después de atender a un cliente, podrás enviarle un enlace para dejar estrellas y un comentario en tu página. Está planificado para menús, tiendas y servicios.", "After serving a customer, you’ll be able to send them a link to leave a rating and a comment on your page. This is planned for menus, shops, and service businesses.")}</dd></div>
-      <div><dt><strong>Dónde Comer</strong></dt>
-      <dd>${t("Un futuro directorio de comida boricua que permitirá buscar por pueblo en Puerto Rico y por ciudad y estado en Estados Unidos.", "A future Puerto Rican food directory with browsing by town in Puerto Rico and by city and state in the United States.")}</dd></div>
-    </dl>
-  </div></section>
-
-  <section class="wrap section questions" aria-labelledby="questions-title"><h2 id="questions-title">${t("Preguntas rápidas", "Quick questions")}</h2>
-    <details><summary>${t("¿Qué me da PB además de una página de enlaces?", "What can I do beyond sharing links?")}</summary><p>${t("En el menú tienes herramientas para mostrar platos y precios, recibir pedidos y anunciar ofertas. Puedes compartir el mismo enlace en redes, tarjetas y WhatsApp.", "Show dishes and prices, take orders, and post specials. Share the same menu link on social media, business cards, and WhatsApp.")}</p></details>
-    <details><summary>${t("¿Qué pasa si ya uso una app de delivery?", "What if I already use a delivery app?")}</summary><p>${t("Puedes seguir usándola. El menú de PB te sirve como canal de recogido directo. Tu negocio confirma el pedido y el pago con el cliente.", "Keep using it. Your PB menu gives you a direct pickup channel. Your business confirms the order and payment with the customer.")}</p></details>
-    <details><summary>${t("¿Puedo empezar con una tienda o un servicio?", "Can I start with a shop or service business?")}</summary><p>${t("Servicios tiene su propio editor para montar y revisar tu página. Para una tienda, puedes ver el ejemplo y escribirnos.", "Services has its own editor to build and preview your page. For a shop, try the example and get in touch.")}</p></details>
-  </section>
 </main>
 <footer class="wrap bottom"><a href="https://www.masboricuaqueunmofongo.com/">Planeta Boricua</a><span>Más Boricua Que Un Mofongo</span><a href="mailto:${email}">${t("Escríbenos", "Get in touch")}</a></footer>
 </body>

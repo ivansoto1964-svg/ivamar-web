@@ -197,7 +197,7 @@ function renderMenu(truck, preview = false, palette = truck.palette, photo = '',
   return page(truck.name || 'Vista previa del menú', `${previewActions}${kitchenStatus(truck)}<p>${esc(where)}</p><p>${esc(truck.hours)}</p><nav aria-label="Contacto y ubicación">${where ? `<a href="${esc(maps)}">Ver en Google Maps</a>` : ''}${contact}${socials.join('')}</nav>${special ? renderSpecial(special) : ''}${offer}${menuPhoto}${items ? `<div class="grid">${items}</div>` : menuPhoto ? '' : '<p>Aún no hay platos en este menú.</p>'}${cart}`,palette);
 }
 
-module.exports = function mount(app,{file,origin,sendLink,limiter,stripe,billing,rawBody,webhookRouter=app,inviteEmail,demoAccess=false}) {
+module.exports = function mount(app,{file,origin,sendLink,limiter,stripe,billing,rawBody,webhookRouter=app,inviteEmail,openDraftRegistration=false,demoAccess=false}) {
   function read() {
     try { return JSON.parse(fs.readFileSync(file,'utf8')); }
     catch (error) { if(error.code==='ENOENT') return {}; throw error; }
@@ -243,15 +243,26 @@ module.exports = function mount(app,{file,origin,sendLink,limiter,stripe,billing
     if(!sameOrigin(req)) return res.sendStatus(403);
     const email=clean(req.body.email,254).toLowerCase();
     if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return res.sendStatus(400);
-    const confirmation = () => res.send(page('Revisa tu correo','<p>Si tu correo tiene acceso, recibirás un enlace que vence en 20 minutos.</p>'));
-    if (!canJoin(email) && !Object.values(read()).some(truck=>truck.email===email && truck.subscription)) return confirmation();
+    const confirmation = () => res.send(page('Revisa tu correo','<p>Si solicitaste el enlace, revisa tu correo. El enlace vence en 20 minutos.</p>'));
+    if (!openDraftRegistration && !canJoin(email) && !Object.values(read()).some(truck=>truck.email===email && truck.subscription)) return confirmation();
     const secret=token();
-    edit(records=>{
+    const requested = edit(records=>{
       let truck=Object.values(records).find(item=>item.email===email);
+      if (openDraftRegistration && truck?.loginRequestedAt > Date.now()-60_000) return false;
       if(!truck){const id=randomUUID();truck=records[id]={id,email,items:[]};}
-      Object.assign(truck,{login:hash(secret),loginUntil:Date.now()+20*60_000});
+      Object.assign(truck,{login:hash(secret),loginUntil:Date.now()+20*60_000,loginRequestedAt:Date.now()});
+      return true;
     });
-    await sendLink(email,origin+access+'/'+secret+(req.query.tipo === 'servicios' ? '?tipo=servicios' : ''));
+    if (!requested) return confirmation();
+    try {
+      await sendLink(email,origin+access+'/'+secret+(req.query.tipo === 'servicios' ? '?tipo=servicios' : ''));
+    } catch (error) {
+      edit(records=>{
+        const truck=Object.values(records).find(item=>item.email===email);
+        if (truck?.login===hash(secret)) delete truck.loginRequestedAt;
+      });
+      throw error;
+    }
     return confirmation();
   });
   app.get(access+'/:token',(req,res)=>{
@@ -586,7 +597,7 @@ module.exports = function mount(app,{file,origin,sendLink,limiter,stripe,billing
   });
 
   app.get(directory,(req,res)=>{
-    if (process.env.PB_FOOD_DIRECTORY_ENABLED !== 'true') return res.redirect(302,base+'#planes-futuros');
+    if (process.env.PB_FOOD_DIRECTORY_ENABLED !== 'true') return res.redirect(302,base+'#tipos');
     res.send(renderDirectory(Object.values(read()),req.query));
   });
   app.get(directory+'/:id',(req,res)=>{

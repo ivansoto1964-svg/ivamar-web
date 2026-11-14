@@ -91,3 +91,10 @@ summary{cursor:pointer}
 .roadmap{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,20rem),1fr));gap:1.5rem;margin:1.5rem 0 0}
 .roadmap div{border-top:2px solid #bd4237;padding-top:.8rem}
 .roadmap dd{margin:.4rem 0 0;max-width:56ch}
+
+.business-photos{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.65rem}
+.business-photos figure{margin:0}
+.business-photos img{aspect-ratio:3/4;box-shadow:none}
+.business-photos figcaption{margin-top:.45rem;font-weight:750}
+.type-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,16rem),1fr));gap:1rem;margin-top:1.4rem}
+.type-grid article{display:grid;justify-items:start;align-content:start;gap:.7rem;padding:1rem;border:1px solid var(--line);border-radius:.75rem;background:var(--paper)}

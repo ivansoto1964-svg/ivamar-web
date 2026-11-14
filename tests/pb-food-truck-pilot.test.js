@@ -78,7 +78,7 @@ test('pilot gates signup and handles signed payment, renewal and risk events', a
 
   const directory = await fetch(origin+'/donde-comer?region=pr',{redirect:'manual'});
   assert.equal(directory.status,302);
-  assert.equal(directory.headers.get('location'),'/crea-tu-menu#planes-futuros');
+  assert.equal(directory.headers.get('location'),'/crea-tu-menu#tipos');
 
 
   const invoice = {customer:subscription.customer,parent:{subscription_details:{subscription:subscription.id}}};
