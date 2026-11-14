@@ -11,7 +11,7 @@ const publicBase = '/servicios-pb';
 const access = '/crea-tu-menu/acceso?tipo=servicios';
 const complete = profile => Boolean(profile?.name && profile.area && profile.work && profile.whatsapp);
 
-function mountServicePages(app,{file,origin,owner,update,read,csrf,page,esc,clean,field,demoAccess}) {
+function mountServicePages(app,{file,origin,owner,update,read,csrf,page,esc,clean,field,demoAccess,reviews}) {
   const photoFile = (account, photo) => path.resolve(file + '.service-photos',account.id,photo + '.webp');
   const publicUrl = account => publicBase + '/' + account.id;
   const form = (account, error = '') => {
@@ -24,6 +24,10 @@ function mountServicePages(app,{file,origin,owner,update,read,csrf,page,esc,clea
         ${field('Nombre del negocio','name',info.name,'text',true)}
         ${field('Pueblos o zonas que cubres','area',info.area,'text',true)}
         <label>Trabajos que haces<textarea name="work" rows="5" maxlength="1000" required>${esc(info.work)}</textarea></label>
+        <label>Tipo de servicio<select name="category">
+          <option value="service">Servicios generales</option>
+          <option value="mechanic" ${info.category==='mechanic'?'selected':''}>Mecánica a domicilio</option>
+        </select></label>
         ${field('Horario o disponibilidad','hours',info.hours)}
         ${field('WhatsApp con código de país','whatsapp',info.whatsapp,'tel',true)}
         <button>Guardar borrador</button>
@@ -39,7 +43,7 @@ function mountServicePages(app,{file,origin,owner,update,read,csrf,page,esc,clea
         <a class="action" href="${editor}/vista-previa">Vista previa</a>
         ${account.servicePublished ? `<label>Enlace para compartir<input type="url" readonly value="${esc(origin+link)}"></label><a class="action" href="${link}">Abrir página de prueba</a><a class="action" href="${link}/qr">Descargar QR</a>
           <form method="post" action="${editor}/retirar">${csrf(account)}<button class="secondary-action">Retirar página de prueba</button></form>` : ''}
-      </section>`);
+      </section>${reviews.serviceOwner(account)}`);
   };
 
   const servicePage = (account, preview) => {
@@ -70,13 +74,14 @@ function mountServicePages(app,{file,origin,owner,update,read,csrf,page,esc,clea
       ${info.photo ? `<img class="menu-photo" src="${preview ? editor : url}/foto" alt="Foto del trabajo de ${esc(info.name)}">` : ''}
       <section class="card"><h2>Servicios</h2><p class="special-description">${esc(info.work)}</p></section>
       <section class="card"><h2>Zona de servicio y citas</h2><p>${esc(info.area)}</p>
-        ${info.hours ? `<p>${esc(info.hours)}</p>` : ''}${appointment}</section>`);
+        ${info.hours ? `<p>${esc(info.hours)}</p>` : ''}${appointment}</section>${preview ? '' : reviews.publicSection(account,'service')}`);
   };
 
   app.get(editor,owner,(req,res)=>res.send(form(req.truck)));
   app.post(editor,owner,(req,res)=>{
     const info = {
       name:clean(req.body.name,100),area:clean(req.body.area,200),work:clean(req.body.work,1000),
+      category:req.body.category==='mechanic' ? 'mechanic' : 'service',
       hours:clean(req.body.hours,160),whatsapp:clean(req.body.whatsapp,35).replace(/\D/g,'')
     };
     if (/^\d{10}$/.test(info.whatsapp)) info.whatsapp = '1'+info.whatsapp;
