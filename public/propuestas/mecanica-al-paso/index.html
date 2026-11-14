@@ -1,0 +1,21 @@
+<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="robots" content="noindex"><title>Mecánica al Paso | Planeta Boricua</title><link rel="stylesheet" href="/propuestas/mecanica-al-paso/estilos.css"></head><body data-theme="clasico"><header><a href="/">Planeta Boricua</a></header><main><h1>Mecánica al Paso</h1>
+      <p class="notice">Demostración de Planeta Boricua · negocio ficticio</p>
+      <img class="menu-photo" src="/propuestas/mecanica-al-paso/mecanico.webp" alt="Foto del trabajo de Mecánica al Paso">
+      <section class="card"><h2>Servicios</h2><p class="special-description">Diagnóstico a domicilio, cambio de batería y revisión antes de un viaje.</p></section>
+      <section class="card"><h2>Zona de servicio y citas</h2><p>Hatillo y Arecibo</p>
+        <p>Por cita</p><form method="dialog" data-service-appointment autocomplete="off">
+      <h3>Pide una cita a domicilio</h3>
+      <label>Dirección del servicio<input name="address" autocomplete="street-address" maxlength="180" required placeholder="Calle y número, urbanización o barrio"></label>
+      <label>Pueblo o ciudad<input name="city" autocomplete="address-level2" maxlength="80" required></label>
+      <label>Estado o territorio<input name="region" autocomplete="address-level1" maxlength="60" required></label>
+      <label>Punto de referencia (opcional)<input name="landmark" maxlength="120"></label>
+      <p>Usa una dirección ficticia para ver cómo quedaría la solicitud por WhatsApp.</p>
+      <button type="submit" disabled>Revisar dirección</button>
+      <div data-appointment-confirmation hidden>
+        <h4>Confirma la dirección del servicio</h4>
+        <p data-appointment-address class="special-description" tabindex="-1"></p>
+        <button type="button" data-appointment-example>Ver mensaje de WhatsApp</button><p data-appointment-message class="special-description" role="status" hidden></p>
+        <button type="button" class="secondary-action" data-appointment-edit>Editar dirección</button>
+      </div>
+      <noscript>Activa JavaScript para preparar la solicitud de cita.</noscript>
+    </form><script src="/propuestas/mecanica-al-paso/cita.js" defer></script></section></main></body></html>
