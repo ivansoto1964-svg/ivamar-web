@@ -38,7 +38,7 @@ const englishExamples = [
     cta:'I’m interested in a service page', contact:'Page for my service business'}
 ];
 
-function renderBusinessLanding({language = 'es', openMenu = false} = {}) {
+function renderBusinessLanding({language = 'es', preview = false} = {}) {
   const english = language === 'en';
   const t = (es, en) => english ? en : es;
   const examples = english ? spanishExamples.map((example,i)=>({...example,...englishExamples[i]})) : spanishExamples;
@@ -47,7 +47,7 @@ function renderBusinessLanding({language = 'es', openMenu = false} = {}) {
       'Saludos, Planeta Boricua. Me interesa esta opción para mi negocio.\n\nNombre del negocio:\nPueblo o ciudad:\nQué vendo u ofrezco:\n',
       'Hi, Planeta Boricua. I’m interested in this option for my business.\n\nBusiness name:\nTown or city:\nWhat I sell or offer:\n'
     ));
-  const menuAction = openMenu ? base + '/acceso' : interest(examples[0]);
+  const menuAction = base + '/acceso';
   return `<!doctype html>
 <html lang="${english ? 'en' : 'es'}">
 <head>
@@ -74,7 +74,7 @@ function renderBusinessLanding({language = 'es', openMenu = false} = {}) {
         <h1 id="title">${t("Lo que vendes.", "What you sell.")}<br>${t("Lo que haces.", "What you do.")}<br><em>${t("En un solo enlace.", "In one link.")}</em></h1>
         <p class="lead">${t("Pon tu menú, tus productos o tus servicios en una mini web que puedas compartir en WhatsApp, en tus redes o con un QR impreso.", "Put your menu, products, or services on a mini website you can share on WhatsApp, social media, or with a printed QR code.")}</p>
         <div class="actions"><a class="button primary" href="${menuAction}">${t("Comenzar con tu menú", "Start your menu")} <span aria-hidden="true">↗</span></a><a class="button outline" href="#demo">${t("Probar la demo", "Try the demo")}</a></div>
-        <p class="hero-note">${openMenu ? t('Acceso de prueba para menús. Los cobros son simulados.', 'Menu test access. Payments are simulated.') : t('Menús en piloto por invitación. El botón abre un correo para solicitar acceso.', 'The menu pilot is invite-only. Use the button to request access by email.')}</p>
+        <p class="hero-note">${preview ? t('Entorno de pruebas. El enlace de acceso se simula y los cobros son de prueba.', 'Test environment. Sign-in links and payments are simulated.') : t('Menús en piloto por invitación. Confirma tu correo para empezar tu borrador.', 'Invite-only menu pilot. Confirm your email to start your draft.')}</p>
       </div>
       <div class="hero-visual"><img src="/img/pb-business/food.webp" width="960" height="640" alt="${t("Entrega de una orden por la ventanilla de un food truck", "A customer receiving an order at a food truck window")}" fetchpriority="high"><span>${t("Menús · Catálogos · Servicios", "Menus · Catalogs · Services")}</span></div>
     </div>

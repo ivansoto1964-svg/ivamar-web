@@ -30,8 +30,8 @@ app.use(express.urlencoded({extended:true,limit:'15mb'}));
 app.use(express.static(path.resolve(__dirname,'../public')));
 app.get('/health',(_req,res)=>res.json({ok:true,stripeTestConfigured:Boolean(stripe && billing.setup && billing.monthly && billing.webhook)}));
 app.get('/',(_req,res)=>res.redirect('/crea-tu-menu'));
-app.get('/crea-tu-menu',(_req,res)=>res.send(renderBusinessLanding()));
-app.get('/crea-tu-menu/en',(_req,res)=>res.send(renderBusinessLanding({language:'en'})));
+app.get('/crea-tu-menu',(_req,res)=>res.send(renderBusinessLanding({preview:true})));
+app.get('/crea-tu-menu/en',(_req,res)=>res.send(renderBusinessLanding({language:'en',preview:true})));
 const limiter = rateLimit({windowMs:60_000,limit:20});
 app.post('/qa/enlace',limiter,(req,res)=>{
   const candidate = typeof req.body.code === 'string' ? req.body.code : '';
