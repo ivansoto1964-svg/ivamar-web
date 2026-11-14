@@ -169,23 +169,30 @@ function profile(body) {
   values.payments = methods.filter(value => [body.payments].flat().includes(value));
   if (!values.payments.length) values.payments = ['Al recoger'];
   values.palette = theme(body.palette);
-  values.social = {};
+  values.social = parseSocialLinks(body);
+  return values.social ? values : null;
+}
+
+function parseSocialLinks(body) {
+  const links = {};
   for (const [key,[,hosts]] of Object.entries(networks)) {
     const value = clean(body[key],500);
     if (!value) continue;
     const url = socialUrl(value,hosts);
     if (!url) return null;
-    values.social[key] = url;
+    links[key] = url;
   }
-  return values;
+  return links;
+}
+
+function renderSocialLinks(links) {
+  return Object.entries(networks).map(([key,[name,hosts]]) => {
+    const url = socialUrl(links?.[key],hosts);
+    return url ? `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${name}</a>` : '';
+  }).join('');
 }
 
 function renderMenu(truck, preview = false, palette = truck.palette, photo = '', offer = '', previewActions = '') {
-  const socials = Object.entries(networks).map(([key,[name,hosts]]) => {
-    const url = socialUrl(truck.social?.[key],hosts);
-    return url ? `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${name}</a>` : '';
-  }).filter(Boolean);
-  const accepting = !truck.ordersPaused;
   const items = truck.items.map(item => `<article class="card"><small>${esc(item.category)}</small><h2>${esc(item.name)}</h2><p>${esc(item.description)}</p><strong>${money(item.cents)}</strong> ${accepting ? `<button type="button" data-add="${item.id}" ${item.available?'':'disabled'}>${item.available?'Añadir':'Agotado'}</button>` : item.available ? '' : '<span>Agotado</span>'}</article>`).join('');
   const data = JSON.stringify({name:truck.name, whatsapp:preview?'':truck.whatsapp, items:truck.items}).replaceAll('<','\\u003c');
   const where = [address(truck), truck.city, truck.state].filter(Boolean).join(', ');
@@ -194,7 +201,7 @@ function renderMenu(truck, preview = false, palette = truck.palette, photo = '',
   const menuPhoto = photo ? `<section><h2>Foto del menú</h2><a href="${photo}"><img class="menu-photo" src="${photo}" alt="Menú de ${esc(truck.name || 'este negocio')}" /></a></section>` : '';
   const cart = items && accepting ? `<section class="card"><h2>Tu pedido</h2><ul id="cart-lines"></ul><p id="cart-total" aria-live="polite"></p><label>Método de pago<select id="cart-payment">${(truck.payments || []).map(method=>`<option>${esc(method)}</option>`).join('')}</select></label><label>Recogido<select id="cart-pickup"><option value="pronto">Lo antes posible</option><option value="hora">Solicitar una hora</option></select></label><div id="cart-time-field" hidden><label>Hora aproximada en el negocio<input type="time" id="cart-time"></label></div><button id="cart-send" disabled>Pedir para recoger por WhatsApp</button><p>${preview?'Vista privada del menú.':'El negocio confirma el total y el recogido.'}</p></section><script id="pb-menu-data" type="application/json">${data}</script><script src="/js/pb-food-truck-cart.js" defer></script>` : '';
   const special = currentSpecial(truck);
-  return page(truck.name || 'Vista previa del menú', `${previewActions}${kitchenStatus(truck)}<p>${esc(where)}</p><p>${esc(truck.hours)}</p><nav aria-label="Contacto y ubicación">${where ? `<a href="${esc(maps)}">Ver en Google Maps</a>` : ''}${contact}${socials.join('')}</nav>${special ? renderSpecial(special) : ''}${offer}${menuPhoto}${items ? `<div class="grid">${items}</div>` : menuPhoto ? '' : '<p>Aún no hay platos en este menú.</p>'}${cart}`,palette);
+  return page(truck.name || 'Vista previa del menú', `${previewActions}${kitchenStatus(truck)}<p>${esc(where)}</p><p>${esc(truck.hours)}</p><nav aria-label="Contacto y ubicación">${where ? `<a href="${esc(maps)}">Ver en Google Maps</a>` : ''}${contact}${renderSocialLinks(truck.social)}</nav>${special ? renderSpecial(special) : ''}${offer}${menuPhoto}${items ? `<div class="grid">${items}</div>` : menuPhoto ? '' : '<p>Aún no hay platos en este menú.</p>'}${cart}`,palette);
 }
 
 module.exports = function mount(app,{file,origin,sendLink,limiter,stripe,billing,rawBody,webhookRouter=app,inviteEmail,openDraftRegistration=false,demoAccess=false}) {
@@ -230,7 +237,7 @@ module.exports = function mount(app,{file,origin,sendLink,limiter,stripe,billing
   }
 
   const reviews = require('./pb-business-reviews')(app,{origin,owner,update,read,edit,csrf,clean,esc,page,limiter,privatePage,sameOrigin});
-  servicePages.mountServicePages(app,{file,origin,owner,update,read,csrf,page,esc,clean,field,demoAccess,reviews});
+  servicePages.mountServicePages(app,{file,origin,owner,update,read,csrf,page,esc,clean,field,demoAccess,reviews,networks,parseSocialLinks,renderSocialLinks});
   require('./pb-food-sales')(app,{panel,page,esc,owner,csrf,update});
   const publicOffer = require('./pb-food-coupons')(app,{panel,menuPath,directory,origin,page,esc,read,edit,owner,csrf,update,privatePage,sameOrigin,limiter});
 

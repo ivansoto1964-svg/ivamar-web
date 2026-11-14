@@ -123,7 +123,7 @@ function renderBusinessLanding({language = 'es', preview = false, businessPath =
     <h2>${t("Cómo empezar", "How to get started")}</h2>
     <ol class="steps">
       <li><h3>${t("Escoge tu tipo de negocio", "Choose your business type")}</h3><p>${t("En Comida y Servicios puedes entrar con tu correo. Para Tiendas, escríbenos desde la opción de catálogo.", "For Food and Services, sign in by email. For Shops, use the catalog contact option.")}</p></li>
-      <li><h3>${t("Añade tu información", "Add your information")}</h3><p>${t("Pon el nombre de tu negocio, lo que ofreces y cómo te pueden contactar.", "Add your business name, what you offer, and how customers can contact you.")}</p></li>
+      <li><h3>${t("Añade tu información", "Add your information")}</h3><p>${t("En Comida y Servicios puedes añadir el nombre de tu negocio, lo que ofreces, tu WhatsApp y tus redes sociales.", "Food and service businesses can add their name, what they offer, their WhatsApp number, and their social links.")}</p></li>
       <li><h3>${t("Revisa tu página", "Preview your page")}</h3><p>${t("Guarda tu borrador y revisa cómo se ve desde el celular.", "Save your draft and check how it looks on your phone.")}</p></li>
     </ol>
   </div></section>

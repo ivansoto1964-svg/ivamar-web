@@ -11,7 +11,7 @@ const publicBase = '/servicios-pb';
 const access = '/crea-tu-menu/acceso?tipo=servicios';
 const complete = profile => Boolean(profile?.name && profile.area && profile.work && profile.whatsapp);
 
-function mountServicePages(app,{file,origin,owner,update,read,csrf,page,esc,clean,field,demoAccess,reviews}) {
+function mountServicePages(app,{file,origin,owner,update,read,csrf,page,esc,clean,field,demoAccess,reviews,networks,parseSocialLinks,renderSocialLinks}) {
   const photoFile = (account, photo) => path.resolve(file + '.service-photos',account.id,photo + '.webp');
   const publicUrl = account => publicBase + '/' + account.id;
   const form = (account, error = '') => {
@@ -30,6 +30,10 @@ function mountServicePages(app,{file,origin,owner,update,read,csrf,page,esc,clea
         </select></label>
         ${field('Horario o disponibilidad','hours',info.hours)}
         ${field('WhatsApp con código de país','whatsapp',info.whatsapp,'tel',true)}
+        <fieldset><legend>Redes sociales (opcional)</legend>
+          <p>Pega el enlace completo de cada perfil que quieras mostrar.</p>
+          ${Object.entries(networks).map(([key,[label]])=>field(label,key,info.social?.[key],'url')).join('')}
+        </fieldset>
         <button>Guardar borrador</button>
       </form>
       <section class="card" id="foto"><h2>Foto de tu trabajo</h2>
@@ -49,6 +53,7 @@ function mountServicePages(app,{file,origin,owner,update,read,csrf,page,esc,clea
   const servicePage = (account, preview) => {
     const info = preview ? account.service || {} : account.servicePublished;
     const url = publicUrl(account);
+    const socials = renderSocialLinks(info.social);
     const appointment = `<form method="dialog" data-service-appointment data-phone="${preview ? '' : esc(info.whatsapp)}">
       <h3>Pide una cita a domicilio</h3>
       <label>Dirección del servicio<input name="address" autocomplete="street-address" maxlength="180" required placeholder="Calle y número, urbanización o barrio"></label>
@@ -73,6 +78,7 @@ function mountServicePages(app,{file,origin,owner,update,read,csrf,page,esc,clea
         : '<p class="notice">Página de prueba · negocio ficticio</p>'}
       ${info.photo ? `<img class="menu-photo" src="${preview ? editor : url}/foto" alt="Foto del trabajo de ${esc(info.name)}">` : ''}
       <section class="card"><h2>Servicios</h2><p class="special-description">${esc(info.work)}</p></section>
+      ${socials ? `<nav aria-label="Redes sociales">${socials}</nav>` : ''}
       <section class="card"><h2>Zona de servicio y citas</h2><p>${esc(info.area)}</p>
         ${info.hours ? `<p>${esc(info.hours)}</p>` : ''}${appointment}</section>${preview ? '' : reviews.publicSection(account,'service')}`);
   };
@@ -84,11 +90,16 @@ function mountServicePages(app,{file,origin,owner,update,read,csrf,page,esc,clea
       category:req.body.category==='mechanic' ? 'mechanic' : 'service',
       hours:clean(req.body.hours,160),whatsapp:clean(req.body.whatsapp,35).replace(/\D/g,'')
     };
+    const social = parseSocialLinks(req.body);
+    const draft = {...req.truck,service:{...req.truck.service,...info,social:Object.fromEntries(
+      Object.keys(networks).map(key=>[key,clean(req.body[key],500)])
+    )}};
     if (/^\d{10}$/.test(info.whatsapp)) info.whatsapp = '1'+info.whatsapp;
     if (!complete(info) || !/^[1-9]\d{7,14}$/.test(info.whatsapp)) {
-      return res.status(400).send(form({...req.truck,service:{...req.truck.service,...info}},'Completa los campos y verifica el número de WhatsApp.'));
+      return res.status(400).send(form(draft,'Completa los campos y verifica el número de WhatsApp.'));
     }
-    update(req,account=>{account.service={...account.service,...info};});
+    if (!social) return res.status(400).send(form(draft,'Verifica que cada enlace corresponda a su red social y empiece con https://.'));
+    update(req,account=>{account.service={...account.service,...info,social};});
     res.redirect(303,editor);
   });
 
