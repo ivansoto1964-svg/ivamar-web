@@ -2816,13 +2816,12 @@ app.get("/quienes-somos", (req, res) => res.send(quienesSomos));
 app.get("/anunciate-en-pb", (_req, res) => res.send(publicidadPB));
 
 if (process.env.PB_FOOD_TRUCKS_ENABLED === 'true') {
-  const renderMenuLanding = require('./views/planetaboricua/crea-tu-menu');
   const renderBusinessLanding = require('./views/planetaboricua/pb-business-landing');
   const origin = 'https://www.masboricuaqueunmofongo.com';
   const key = process.env.PB_FOOD_STRIPE_KEY;
   const foodStripe = /^(rk|sk)_live_/.test(key || '') ? new Stripe(key) : null;
   app.get('/crea-tu-menu', (_req,res) => res.set('X-Robots-Tag','noindex').send(renderBusinessLanding()));
-  app.get('/crea-tu-menu/en', (_req,res) => res.set('X-Robots-Tag','noindex').send(renderMenuLanding('en')));
+  app.get('/crea-tu-menu/en', (_req,res) => res.set('X-Robots-Tag','noindex').send(renderBusinessLanding({language:'en'})));
   require('./services/pb-food-trucks')(app,{
     file:'/data/pb-food-trucks.json',
     origin,
