@@ -6,8 +6,8 @@ const copy = {
     title: 'Crea tu menú en PB',
     headline: 'Tu food truck. Tu menú. Tus pedidos.',
     intro: 'Actualiza tu menú desde el celular y compártelo con un enlace o un QR. Tus clientes pueden armar su pedido y enviártelo por WhatsApp.',
-    price: '$49 de configuración inicial',
-    renewal: 'Primer mes sin mensualidad desde la publicación. Luego $9.99 al mes. Tu mensualidad sigue igual: si vendes $1,000 o más, pagas $9.99. Si vendes $10,000, pagas los mismos $9.99.',
+    price: '$49 de activación, un solo pago',
+    renewal: 'Primeros 30 días sin mensualidad. Luego $9.99 al mes. PB cobra $0 por pedido. Tú confirmas y cobras cada venta. Si usas un procesador de pagos, aplican sus propias tarifas.',
     cta: 'Crear mi menú',
     aboutTitle: '¿Qué es Planeta Boricua?',
     about: 'Somos un portal de cultura, artesanía, gastronomía y comunidad boricua. Somos una comunidad en crecimiento en Puerto Rico y la diáspora. Comparte tus especiales con quienes buscan comida boricua en la isla y en Estados Unidos. Cuando publiques tu menú, tu negocio también aparecerá en Dónde Comer, organizado por estado o territorio y ciudad o municipio.',
@@ -17,11 +17,11 @@ const copy = {
       ['Arma tu menú', 'Sube una foto de tu menú o añade platos con precios para recibir pedidos.'],
       ['Publica y comparte', 'Revisa cómo se ve en el celular. Al activar tu menú, tendrás un enlace y un QR descargable para redes, mensajes o imprimir.'],
       ['Comparte tus especiales', 'Anuncia el especial de hoy o de la semana y comparte su enlace en redes o WhatsApp.'],
-      ['Recibe pedidos directos', 'Tus clientes pueden escribirte por WhatsApp. Si añades platos con precios, también pueden armar el pedido en el carrito. Tú confirmas la disponibilidad, el pago y el recogido.']
+      ['Recibe pedidos directos', 'Tus clientes pueden escribirte por WhatsApp. Si añades platos con precios, también pueden armar el pedido en el carrito. Tú confirmas la disponibilidad, el pago y la hora de recogido. Puedes pausar los pedidos desde tu panel.']
     ],
     faqTitle: 'Preguntas frecuentes',
     faq: [
-      ['¿Cuánto cuesta?', 'Pagas $49 una sola vez por la configuración inicial. El primer mes desde la publicación va sin mensualidad. A partir del segundo mes pagas $9.99 al mes. Tu mensualidad sigue igual: si vendes $1,000 o más, pagas $9.99. Si vendes $10,000, pagas los mismos $9.99.'],
+      ['¿Cuánto cuesta?', 'Pagas $49 por la activación. Después de los primeros 30 días, la mensualidad es $9.99 e incluye tu menú, QR, especiales, cupones y listado en ¿Dónde comer? PB no cobra comisión por venta.'],
       ['¿En qué se diferencia de DoorDash y Uber Eats?', 'Sus marketplaces permiten encontrar negocios y ordenar desde sus apps, con opciones de entrega o recogido según el servicio. PB te da un menú editable, un enlace propio y un QR para recibir pedidos directos por WhatsApp. Puedes usar ambos canales. PB no ofrece reparto.'],
       ['¿Cómo cobro los pedidos?', 'Tú eliges qué métodos aceptas, como Zelle si tu banco lo permite para tu negocio, un enlace de pago o pago al recoger. Tú confirmas el cobro.'],
       ['¿Qué pasa si cambio de ubicación?', 'Tu dirección habitual se muestra por defecto. Si vas a un evento, podrás indicar una ubicación temporal y cuándo termina. Tu enlace y tu QR siguen siendo los mismos.'],
@@ -32,8 +32,8 @@ const copy = {
     title: 'Create your menu on PB',
     headline: 'Your food truck. Your menu. Your orders.',
     intro: 'Update your menu from your phone and share it with a link or QR code. Customers can build their order and send it to you on WhatsApp.',
-    price: '$49 one-time setup',
-    renewal: 'No monthly fee for the first month after publishing. Then $9.99 per month. Your monthly price stays the same: sell $1,000 or more and pay $9.99. Sell $10,000 and still pay $9.99.',
+    price: '$49 one-time activation',
+    renewal: 'No monthly fee for the first 30 days. Then $9.99 per month. PB charges $0 per order. You confirm each order and collect payment directly. Your payment provider may charge its own fees.',
     cta: 'Create my menu',
     aboutTitle: 'What is Planeta Boricua?',
     about: 'We’re a growing Puerto Rican community on the island and across the United States. Share your specials with people looking for Puerto Rican food. When you publish your menu, your business will also appear in our Where to Eat directory, organized by state or territory and city or municipality.',
@@ -43,11 +43,11 @@ const copy = {
       ['Build your menu', 'Upload a menu photo or add individual dishes with prices to take orders.'],
       ['Publish and share', 'Preview your menu on mobile. Once activated, you’ll get a link and a downloadable QR code to post, message, or print.'],
       ['Share your specials', 'Post a daily or weekly special and share its link on social media or WhatsApp.'],
-      ['Get direct orders', 'Customers can message you on WhatsApp. If you add dishes with prices, they can also build an order in the cart. You confirm availability, payment, and pickup.']
+      ['Get direct orders', 'Customers can message you on WhatsApp. If you add dishes with prices, they can also build an order in the cart. You confirm availability, payment, and pickup time. You can pause orders from your dashboard.']
     ],
     faqTitle: 'Frequently asked questions',
     faq: [
-      ['How much does it cost?', 'Setup is a one-time $49 payment. There’s no monthly fee for the first month after publishing. Starting in month two, it’s $9.99 per month. Your monthly price stays the same: sell $1,000 or more and pay $9.99. Sell $10,000 and still pay $9.99.'],
+      ['How much does it cost?', 'Activation is a one-time $49 payment. After the first 30 days, the monthly fee is $9.99 and includes your menu, QR code, specials, coupons and directory listing. PB charges no sales commission.'],
       ['How is it different from DoorDash and Uber Eats?', 'Their marketplaces let customers discover businesses and order in their apps, with delivery or pickup depending on the service. PB gives you an editable menu, your own link, and a QR code for direct WhatsApp orders. You can use both channels. PB does not offer delivery.'],
       ['How do I get paid for orders?', 'You choose which payment methods to accept, such as Zelle if your bank supports it for your business, a payment link, or pay at pickup. You confirm payment.'],
       ['What if I change locations?', 'Your usual address is displayed by default. If you’re attending an event, you’ll be able to set a temporary location and an end time. Your link and QR code stay the same.'],

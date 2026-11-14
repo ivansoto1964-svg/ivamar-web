@@ -176,15 +176,17 @@ function renderMenu(truck, preview = false, palette = truck.palette, photo = '',
     const url = socialUrl(truck.social?.[key],hosts);
     return url ? `<a href="${esc(url)}" target="_blank" rel="noopener noreferrer">${name}</a>` : '';
   }).filter(Boolean);
-  const items = truck.items.map(item => `<article class="card"><small>${esc(item.category)}</small><h2>${esc(item.name)}</h2><p>${esc(item.description)}</p><strong>${money(item.cents)}</strong> <button type="button" data-add="${item.id}" ${item.available?'':'disabled'}>${item.available?'Añadir':'Agotado'}</button></article>`).join('');
+  const accepting = !truck.ordersPaused;
+  const items = truck.items.map(item => `<article class="card"><small>${esc(item.category)}</small><h2>${esc(item.name)}</h2><p>${esc(item.description)}</p><strong>${money(item.cents)}</strong> ${accepting ? `<button type="button" data-add="${item.id}" ${item.available?'':'disabled'}>${item.available?'Añadir':'Agotado'}</button>` : item.available ? '' : '<span>Agotado</span>'}</article>`).join('');
   const data = JSON.stringify({name:truck.name, whatsapp:preview?'':truck.whatsapp, items:truck.items}).replaceAll('<','\\u003c');
   const where = [address(truck), truck.city, truck.state].filter(Boolean).join(', ');
   const maps = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(where);
   const contact = !preview && truck.whatsapp ? `<a class="action" href="https://wa.me/${esc(truck.whatsapp)}">Escribir por WhatsApp</a>` : '';
   const menuPhoto = photo ? `<section><h2>Foto del menú</h2><a href="${photo}"><img class="menu-photo" src="${photo}" alt="Menú de ${esc(truck.name || 'este negocio')}" /></a></section>` : '';
-  const cart = items ? `<div class="grid">${items}</div><section class="card"><h2>Tu pedido</h2><ul id="cart-lines"></ul><p id="cart-total" aria-live="polite"></p><label>Método de pago<select id="cart-payment">${(truck.payments || []).map(method=>`<option>${esc(method)}</option>`).join('')}</select></label><button id="cart-send" disabled>Preparar pedido por WhatsApp</button><p>${preview?'Vista privada del menú.':'El negocio confirma el total y el recogido.'}</p></section><script id="pb-menu-data" type="application/json">${data}</script><script src="/js/pb-food-truck-cart.js" defer></script>` : '';
+  const cart = items && accepting ? `<section class="card"><h2>Tu pedido</h2><ul id="cart-lines"></ul><p id="cart-total" aria-live="polite"></p><label>Método de pago<select id="cart-payment">${(truck.payments || []).map(method=>`<option>${esc(method)}</option>`).join('')}</select></label><label>Recogido<select id="cart-pickup"><option value="pronto">Lo antes posible</option><option value="hora">Solicitar una hora</option></select></label><div id="cart-time-field" hidden><label>Hora aproximada en el negocio<input type="time" id="cart-time"></label></div><button id="cart-send" disabled>Pedir para recoger por WhatsApp</button><p>${preview?'Vista privada del menú.':'El negocio confirma el total y el recogido.'}</p></section><script id="pb-menu-data" type="application/json">${data}</script><script src="/js/pb-food-truck-cart.js" defer></script>` : '';
   const special = currentSpecial(truck);
-  return page(truck.name || 'Vista previa del menú', `<p>${esc(where)}</p><p>${esc(truck.hours)}</p><nav aria-label="Contacto y ubicación">${where ? `<a href="${esc(maps)}">Ver en Google Maps</a>` : ''}${contact}${socials.join('')}</nav>${special ? renderSpecial(special) : ''}${offer}${menuPhoto}${cart || (menuPhoto ? '' : '<p>Aún no hay platos en este menú.</p>')}`,palette);
+  const pauseNotice = accepting ? '' : '<p class="notice">Pedidos para recoger en pausa. Puedes consultar el menú y la ubicación.</p>';
+  return page(truck.name || 'Vista previa del menú', `<p>${esc(where)}</p><p>${esc(truck.hours)}</p><nav aria-label="Contacto y ubicación">${where ? `<a href="${esc(maps)}">Ver en Google Maps</a>` : ''}${contact}${socials.join('')}</nav>${special ? renderSpecial(special) : ''}${pauseNotice}${offer}${menuPhoto}${items ? `<div class="grid">${items}</div>` : menuPhoto ? '' : '<p>Aún no hay platos en este menú.</p>'}${cart}`,palette);
 }
 
 module.exports = function mount(app,{file,origin,sendLink,limiter,stripe,billing,rawBody}) {
@@ -301,6 +303,12 @@ module.exports = function mount(app,{file,origin,sendLink,limiter,stripe,billing
     return page('Administra tu menú', `
       <nav aria-label="Accesos rápidos"><a href="#especial">Especiales</a><a href="${panel}/cupones">Cupones</a><a href="#menu">Mi menú</a><a href="${panel}/vista-previa">Vista previa</a><a href="#ubicacion">Ubicación y redes</a></nav>
       ${error ? `<p class="notice" role="alert">${esc(error)}</p>` : ''}
+      <section class="card"><h2>Pedidos para recoger</h2>
+        <p>${truck.ordersPaused ? 'Pedidos en pausa.' : 'Pedidos abiertos.'} Tu menú público sigue visible en ambos casos.</p>
+        <form method="post" action="${panel}/pedidos">${csrf(truck)}
+          <button name="mode" value="${truck.ordersPaused ? 'abrir' : 'pausar'}">${truck.ordersPaused ? 'Reabrir pedidos' : 'Pausar pedidos'}</button>
+        </form>
+      </section>
       ${specialEditor(truck,specialDraft,specialError)}
       <form class="card" method="post" id="ubicacion">${csrf(truck)}<h2>Mi negocio</h2>${basics}
         <details ${error ? 'open' : ''}><summary>Horario, ubicación, redes y estilo</summary>${details}
@@ -327,6 +335,12 @@ module.exports = function mount(app,{file,origin,sendLink,limiter,stripe,billing
   }
 
   app.get(panel,owner,(req,res)=>res.send(ownerPanel(req.truck)));
+  app.post(panel+'/pedidos',owner,(req,res)=>{
+    const {mode} = req.body;
+    if (mode !== 'pausar' && mode !== 'abrir') return res.sendStatus(400);
+    update(req,truck=>{truck.ordersPaused = mode === 'pausar';});
+    res.redirect(303,panel);
+  });
   app.post(panel,owner,(req,res)=>{
     const values=profile(req.body);
     if (!values) {
