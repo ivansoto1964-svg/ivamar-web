@@ -60,6 +60,10 @@ test('pilot gates signup and handles signed payment, renewal and risk events', a
   assert.equal(await send('checkout.session.async_payment_succeeded',checkout),200);
   assert.equal(await status(),200);
   assert.equal(await status('/qr'),200);
+  const directory = await fetch(origin+'/donde-comer?region=pr',{redirect:'manual'});
+  assert.equal(directory.status,302);
+  assert.equal(directory.headers.get('location'),'/crea-tu-menu#planes-futuros');
+
 
   const invoice = {customer:subscription.customer,parent:{subscription_details:{subscription:subscription.id}}};
   subscription.status='past_due';

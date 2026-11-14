@@ -57,7 +57,7 @@ function renderBusinessLanding({language = 'es', openMenu = false} = {}) {
 <meta name="description" content="${t("Una mini web para tu menú, tienda o negocio de servicios. Muestra lo que haces y conecta con tus clientes por WhatsApp.", "A mini website for your menu, shop, or service business. Show what you offer and connect with customers on WhatsApp.")}">
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#172548">
-<link rel="stylesheet" href="/css/pb-business-landing.css">
+<link rel="stylesheet" href="/css/pb-business-landing.css?v=2">
 <script src="/js/pb-business-landing.js" defer></script>
 </head>
 <body>
@@ -120,7 +120,7 @@ function renderBusinessLanding({language = 'es', openMenu = false} = {}) {
 
   <section class="wrap section features" id="incluye" aria-labelledby="features-title">
     <div><p class="eyebrow blue">${t("Qué incluye", "What’s included")}</p><h2 id="features-title">${t("Herramientas para vender a tu manera.", "Tools to sell your way.")}</h2>
-    <p>${t("Tu menú también puede aparecer en ", "Your menu can also appear in ")}<strong>Dónde Comer</strong>${t(", el directorio de comida de Planeta Boricua organizado por pueblo, ciudad y estado.", ", Planeta Boricua’s dining directory organized by town, city, and state.")}</p></div>
+    <p>${t("Tu menú tiene un enlace propio listo para compartir en un QR, en tus redes y por WhatsApp.", "Your menu gets its own link to share with a QR code, on social media, and on WhatsApp.")}</p></div>
     <dl>
       <div><dt>${t("Pedidos directos", "Direct orders")}</dt><dd>${t("Tu cliente arma el pedido y te escribe por WhatsApp. Tú confirmas el recogido y cobras directamente.", "Customers build their orders and message you on WhatsApp. You confirm pickup and get paid directly.")}</dd></div>
       <div><dt>${t("Promos que puedes compartir", "Shareable promotions")}</dt><dd>${t("Publica el especial de hoy o de la semana y ofrece descuentos con una cantidad limitada de cupones.", "Post a daily or weekly special and offer discounts with a limited number of coupons.")}</dd></div>
@@ -135,8 +135,19 @@ function renderBusinessLanding({language = 'es', openMenu = false} = {}) {
     <p>${t("Catálogos y servicios están en etapa de demostración. Puedes escribirnos para indicar qué necesita tu negocio.", "Catalogs and service pages are available as demos. Get in touch to tell us what your business needs.")}</p></div>
   </div></section>
 
+  <section class="band" id="planes-futuros" aria-labelledby="future-title"><div class="wrap section">
+    <p class="eyebrow blue">${t("En los planes", "On the roadmap")}</p>
+    <h2 id="future-title">${t("Lo que queremos añadir", "What we plan to add")}</h2>
+    <dl class="roadmap">
+      <div><dt><strong>${t("Reseñas por invitación", "Reviews by invitation")}</strong></dt>
+      <dd>${t("Después de atender a un cliente, podrás enviarle un enlace para dejar estrellas y un comentario en tu página. Está planificado para menús, tiendas y servicios.", "After serving a customer, you’ll be able to send them a link to leave a rating and a comment on your page. This is planned for menus, shops, and service businesses.")}</dd></div>
+      <div><dt><strong>Dónde Comer</strong></dt>
+      <dd>${t("Un futuro directorio de comida boricua que permitirá buscar por pueblo en Puerto Rico y por ciudad y estado en Estados Unidos.", "A future Puerto Rican food directory with browsing by town in Puerto Rico and by city and state in the United States.")}</dd></div>
+    </dl>
+  </div></section>
+
   <section class="wrap section questions" aria-labelledby="questions-title"><h2 id="questions-title">${t("Preguntas rápidas", "Quick questions")}</h2>
-    <details><summary>${t("¿Qué me da PB además de una página de enlaces?", "What can I do beyond sharing links?")}</summary><p>${t("En el menú tienes herramientas para mostrar platos y precios, recibir pedidos, anunciar ofertas y aparecer en Dónde Comer. Puedes compartir el mismo enlace en redes, tarjetas y WhatsApp.", "Show dishes and prices, take orders, post specials, and get listed in Dónde Comer. Share the same menu link on social media, business cards, and WhatsApp.")}</p></details>
+    <details><summary>${t("¿Qué me da PB además de una página de enlaces?", "What can I do beyond sharing links?")}</summary><p>${t("En el menú tienes herramientas para mostrar platos y precios, recibir pedidos y anunciar ofertas. Puedes compartir el mismo enlace en redes, tarjetas y WhatsApp.", "Show dishes and prices, take orders, and post specials. Share the same menu link on social media, business cards, and WhatsApp.")}</p></details>
     <details><summary>${t("¿Qué pasa si ya uso una app de delivery?", "What if I already use a delivery app?")}</summary><p>${t("Puedes seguir usándola. El menú de PB te sirve como canal de recogido directo. Tu negocio confirma el pedido y el pago con el cliente.", "Keep using it. Your PB menu gives you a direct pickup channel. Your business confirms the order and payment with the customer.")}</p></details>
     <details><summary>${t("¿Puedo empezar con una tienda o un servicio?", "Can I start with a shop or service business?")}</summary><p>${t("Ya puedes probar ambos ejemplos y escribirnos. El registro por correo y la publicación pagada están preparados para el piloto de menús.", "You can try both demos and get in touch now. Email sign-up and paid publishing are set up for the menu pilot.")}</p></details>
   </section>
