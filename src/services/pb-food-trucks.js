@@ -223,6 +223,7 @@ module.exports = function mount(app,{file,origin,sendLink,limiter,stripe,billing
     next();
   }
 
+  require('./pb-food-sales')(app,{panel,page,esc,owner,csrf,update});
   const publicOffer = require('./pb-food-coupons')(app,{panel,menuPath,directory,origin,page,esc,read,edit,owner,csrf,update,privatePage,sameOrigin,limiter});
 
   app.get(access,(_req,res)=>privatePage(res).send(page('Crea o abre tu menú',`<form class="card" method="post">${field('Correo electrónico','email','','email',true)}<button>Enviar enlace de acceso</button></form>`)));
@@ -306,7 +307,7 @@ module.exports = function mount(app,{file,origin,sendLink,limiter,stripe,billing
       : canActivate(truck) ? `<form method="post" action="${panel}/activar">${csrf(truck)}<button>Activar por $49</button><p>Primeros 30 días sin mensualidad. Luego $9.99 al mes.</p></form>`
       : `<p>${truck.subscription ? 'Tu suscripción está registrada.' : !truck.name || !truck.city || !truck.whatsapp ? 'Guarda el nombre, pueblo y WhatsApp del negocio para poder activar.' : !photoExists && !truck.items.some(item => item.available) ? 'Sube una foto o guarda un plato disponible para poder activar.' : 'La activación aún no está disponible.'}</p>`;
     return page('Administra tu menú', `
-      <nav aria-label="Accesos rápidos"><a href="#cocina">Cocina</a><a href="#especial">Especiales</a><a href="${panel}/cupones">Cupones</a><a href="#menu">Mi menú</a><a href="${panel}/vista-previa">Vista previa</a><a href="#ubicacion">Ubicación y redes</a></nav>
+      <nav aria-label="Accesos rápidos"><a href="#cocina">Cocina</a><a href="#especial">Especiales</a><a href="${panel}/cupones">Cupones</a><a href="${panel}/ventas">Ventas</a><a href="#menu">Mi menú</a><a href="${panel}/vista-previa">Vista previa</a><a href="#ubicacion">Ubicación y redes</a></nav>
       ${error ? `<p class="notice" role="alert">${esc(error)}</p>` : ''}
       <section class="card" id="cocina"><h2>Estado de la cocina</h2>
         ${kitchenStatus(truck)}
