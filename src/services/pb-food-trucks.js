@@ -210,7 +210,8 @@ module.exports = function mount(app,{file,origin,sendLink,limiter,stripe,billing
     } finally { if (fs.existsSync(temp)) fs.unlinkSync(temp); }
     return result;
   }
-  const privatePage = res => res.set({'Cache-Control':'no-store','Referrer-Policy':'no-referrer','X-Robots-Tag':'noindex'});
+  // Same-site forms need Origin while access URLs stay out of external referrers.
+  const privatePage = res => res.set({'Cache-Control':'no-store','Referrer-Policy':'same-origin','X-Robots-Tag':'noindex'});
   const sameOrigin = req => req.get('origin') === origin;
   const csrf = truck => `<input type="hidden" name="csrf" value="${truck.csrf}">`;
   const update = (req,fn) => edit(records=>fn(records[req.truck.id]));
