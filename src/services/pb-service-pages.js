@@ -45,10 +45,22 @@ function mountServicePages(app,{file,origin,owner,update,read,csrf,page,esc,clea
   const servicePage = (account, preview) => {
     const info = preview ? account.service || {} : account.servicePublished;
     const url = publicUrl(account);
-    const message = encodeURIComponent('Saludos, quisiera pedir una cita. ¿Qué disponibilidad tienen?');
-    const appointment = preview
-      ? '<p>Al publicar, tus clientes podrán pedir cita por WhatsApp.</p>'
-      : `<a class="action" href="https://wa.me/${info.whatsapp}?text=${message}" rel="noreferrer">Pedir cita por WhatsApp</a>`;
+    const appointment = `<form method="dialog" data-service-appointment data-phone="${preview ? '' : esc(info.whatsapp)}">
+      <h3>Pide una cita a domicilio</h3>
+      <label>Dirección del servicio<input name="address" autocomplete="street-address" maxlength="180" required placeholder="Calle y número, urbanización o barrio"></label>
+      <label>Pueblo o ciudad<input name="city" autocomplete="address-level2" maxlength="80" required></label>
+      <label>Estado o territorio<input name="region" autocomplete="address-level1" maxlength="60" required></label>
+      <label>Punto de referencia (opcional)<input name="landmark" maxlength="120"></label>
+      <p>Revisa la dirección antes de enviarla. El negocio te confirmará si puede llegar y qué horarios tiene.</p>
+      <button type="submit" disabled>Revisar dirección</button>
+      <div data-appointment-confirmation hidden>
+        <h4>Confirma la dirección del servicio</h4>
+        <p data-appointment-address class="special-description" tabindex="-1"></p>
+        ${preview ? '<p>Vista previa. Al publicar, tus clientes podrán enviar la solicitud por WhatsApp.</p>' : '<a class="action" data-appointment-whatsapp rel="noreferrer">Dirección correcta · Abrir WhatsApp</a>'}
+        <button type="button" class="secondary-action" data-appointment-edit>Editar dirección</button>
+      </div>
+      <noscript>Activa JavaScript para preparar la solicitud de cita.</noscript>
+    </form><script src="/js/pb-service-appointment.js" defer></script>`;
     const publish = demoAccess && account.demo && complete(info)
       ? `<form method="post" action="${editor}/publicar">${csrf(account)}<button>Publicar página de prueba</button></form>`
       : '<p>Completa el nombre, la zona, los servicios y el WhatsApp para probar la publicación en la demo.</p>';
