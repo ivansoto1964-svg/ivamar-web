@@ -21,6 +21,80 @@ const token = () => randomBytes(32).toString('hex');
 const money = cents => '$' + (cents / 100).toFixed(2);
 const address = truck => truck.temporaryAddress && Date.parse(truck.temporaryUntil) > Date.now() ? truck.temporaryAddress : truck.address;
 
+const collator = new Intl.Collator('es', {sensitivity:'base'});
+const locationKey = value => String(value ?? '').normalize('NFD').replace(/\p{M}/gu,'')
+  .toLowerCase().replace(/[^a-z0-9]+/g,' ').trim();
+const puertoRico = new Set(['puerto rico','pr','p r','estado libre asociado de puerto rico']);
+const stateNames = new Map(Object.entries({
+  AL:'Alabama', AK:'Alaska', AZ:'Arizona', AR:'Arkansas', CA:'California', CO:'Colorado',
+  CT:'Connecticut', DE:'Delaware', DC:'Washington D. C.', FL:'Florida', GA:'Georgia', HI:'Hawái',
+  ID:'Idaho', IL:'Illinois', IN:'Indiana', IA:'Iowa', KS:'Kansas', KY:'Kentucky', LA:'Luisiana',
+  ME:'Maine', MD:'Maryland', MA:'Massachusetts', MI:'Michigan', MN:'Minnesota', MS:'Misisipi',
+  MO:'Misuri', MT:'Montana', NE:'Nebraska', NV:'Nevada', NH:'New Hampshire', NJ:'Nueva Jersey',
+  NM:'Nuevo México', NY:'Nueva York', NC:'Carolina del Norte', ND:'Dakota del Norte', OH:'Ohio',
+  OK:'Oklahoma', OR:'Oregón', PA:'Pensilvania', RI:'Rhode Island', SC:'Carolina del Sur',
+  SD:'Dakota del Sur', TN:'Tennessee', TX:'Texas', UT:'Utah', VT:'Vermont', VA:'Virginia',
+  WA:'Washington', WV:'Virginia Occidental', WI:'Wisconsin', WY:'Wyoming'
+}).flatMap(([code,name])=>[[locationKey(code),name],[locationKey(name),name]]));
+Object.entries({
+  hawaii:'Hawái', louisiana:'Luisiana', mississippi:'Misisipi', missouri:'Misuri',
+  'new jersey':'Nueva Jersey','new mexico':'Nuevo México','new york':'Nueva York',
+  'north carolina':'Carolina del Norte','north dakota':'Dakota del Norte',
+  pennsylvania:'Pensilvania','south carolina':'Carolina del Sur','south dakota':'Dakota del Sur',
+  'west virginia':'Virginia Occidental','washington dc':'Washington D. C.','district of columbia':'Washington D. C.'
+}).forEach(([key,name])=>stateNames.set(key,name));
+
+function directoryUrl(filters = {}) {
+  const query = new URLSearchParams(filters).toString();
+  return esc(query ? directory + '?' + query : directory);
+}
+
+function renderDirectory(trucks, query) {
+  const requestedRegion = clean(query.region,10);
+  const requestedState = locationKey(clean(query.estado,60));
+  const requestedCity = clean(query.ciudad,80);
+  const cityFilter = locationKey(requestedCity);
+  const stateFilter = puertoRico.has(requestedState) ? 'Puerto Rico' : stateNames.get(requestedState);
+  const region = ['pr','usa'].includes(requestedRegion) ? requestedRegion
+    : stateFilter === 'Puerto Rico' ? 'pr' : stateFilter ? 'usa' : '';
+  const groups = new Map();
+  for (const truck of trucks) {
+    const key = locationKey(truck.state);
+    const state = puertoRico.has(key) ? 'Puerto Rico' : stateNames.get(key);
+    const city = clean(truck.city,80);
+    if (!truck.active || !state || !city) continue;
+    if (region && (region === 'pr') !== (state === 'Puerto Rico')) continue;
+    if (requestedState && state !== stateFilter) continue;
+    if (cityFilter && locationKey(city) !== cityFilter) continue;
+
+    if (!groups.has(state)) groups.set(state,new Map());
+    const places = groups.get(state);
+    const cityKey = locationKey(city);
+    if (!places.has(cityKey)) places.set(cityKey,{name:city,trucks:[]});
+    places.get(cityKey).trucks.push(truck);
+  }
+
+  const sections = [...groups].sort(([a],[b])=>collator.compare(a,b)).map(([state,places])=>{
+    const isIsland = state === 'Puerto Rico';
+    const stateLink = directoryUrl(isIsland ? {region:'pr'} : {region:'usa',estado:state});
+    const cities = [...places.values()].sort((a,b)=>collator.compare(a.name,b.name));
+    return `<section class="directory-region"><h2><a href="${stateLink}">${esc(state)}</a></h2>
+      <div class="grid">${cities.map(({name,trucks})=>{
+        const filters = isIsland ? {region:'pr',ciudad:name} : {region:'usa',estado:state,ciudad:name};
+        return `<section class="card directory-place"><h3><a href="${directoryUrl(filters)}">${esc(name)}</a></h3><ul>
+          ${trucks.sort((a,b)=>collator.compare(a.name,b.name)).map(truck=>`<li><a href="${directory}/${encodeURIComponent(truck.id)}">${esc(truck.name)}</a>${address(truck) ? `<span>${esc(address(truck))}</span>` : ''}</li>`).join('')}
+        </ul></section>`;
+      }).join('')}</div></section>`;
+  }).join('');
+  const regions = [['','Todos'],['pr','Puerto Rico'],['usa','Estados Unidos']];
+  const title = requestedCity ? [requestedCity,stateFilter].filter(Boolean).join(', ') : stateFilter;
+  return page('¿Dónde comer?',`<p>Encuentra negocios y sus menús por pueblo en Puerto Rico o por estado y ciudad en Estados Unidos.</p>
+    <nav aria-label="Región">${regions.map(([key,label])=>`<a href="${directoryUrl(key ? {region:key} : {})}"${region === key ? ' aria-current="page"' : ''}>${label}</a>`).join('')}</nav>
+    ${title ? `<p>Mostrando ${esc(title)} · <a href="${directoryUrl(region ? {region} : {})}">Ver toda la región</a></p>` : ''}
+    ${sections || '<p>Todavía no hay menús publicados para esta ubicación.</p>'}
+    <p class="directory-cta">¿Tienes un negocio de comida? <a href="${base}">Crea tu menú en PB</a></p>`);
+}
+
 function socialUrl(value, hosts) {
   try {
     const url = new URL(value);
@@ -297,12 +371,7 @@ module.exports = function mount(app,{file,origin,sendLink,limiter,stripe,billing
     res.sendStatus(200);
   });
 
-  app.get(directory,(req,res)=>{
-    const state=clean(req.query.estado,60),city=clean(req.query.ciudad,80);
-    const trucks=Object.values(read()).filter(truck=>truck.active && (!state || truck.state.toLowerCase()===state.toLowerCase()) && (!city || truck.city.toLowerCase()===city.toLowerCase()));
-    trucks.sort((a,b)=>a.state.localeCompare(b.state)||a.city.localeCompare(b.city)||a.name.localeCompare(b.name));
-    res.send(page('Dónde Comer',`<form method="get">${field('Estado o territorio','estado',state)}${field('Ciudad o municipio','ciudad',city)}<button>Buscar</button></form><div class="grid">${trucks.map(truck=>`<article class="card"><small>${esc(truck.city)}, ${esc(truck.state)}</small><h2><a href="${directory}/${truck.id}">${esc(truck.name)}</a></h2><p>${esc(address(truck))}</p></article>`).join('') || '<p>Todavía no hay menús para esta búsqueda.</p>'}</div>`));
-  });
+  app.get(directory,(req,res)=>res.send(renderDirectory(Object.values(read()),req.query)));
   app.get(directory+'/:id',(req,res)=>{
     const truck=read()[req.params.id];
     if(!truck?.active) return res.sendStatus(404);

@@ -326,7 +326,7 @@ ${renderStay22()}
     <div class="nav-links" id="pb-nav-links">
       <a href="/lo-mas-reciente">Lo más reciente</a>
       <a href="/blog">El Balcón</a>
-      <a href="/agenda-boricua">Agenda</a>
+      <a href="/agenda-boricua">Agenda</a>${process.env.PB_FOOD_TRUCKS_ENABLED === 'true' ? '<a href="/donde-comer">¿Dónde comer?</a>' : ''}
       <a href="#recursos">Recursos</a>
       <a href="/feria-artesanos">Artesanos</a>
       ${process.env.PB_TALENT_ENABLED !== 'true' ? '' : '<a href="/talento-boricua">Talento Boricua</a>'}
