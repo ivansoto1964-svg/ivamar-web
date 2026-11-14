@@ -990,6 +990,8 @@ if (!fs.existsSync(agreementsDir)) {
 
 // Signature verification requires the original bytes, before all JSON parsers.
 app.use(pbBusinessRoutes.webhookRouter(pbBusinessBilling));
+const foodStripeWebhook = express.Router();
+app.use(foodStripeWebhook);
 app.use(express.json({ limit: '15mb' }));
 app.use(express.urlencoded({ limit: '15mb', extended: true }));
 app.use((err, req, res, next) => {
@@ -2812,6 +2814,40 @@ app.get("/api/blog-feed", async (req, res) => {
 // ==========================================
 app.get("/quienes-somos", (req, res) => res.send(quienesSomos));
 app.get("/anunciate-en-pb", (_req, res) => res.send(publicidadPB));
+
+if (process.env.PB_FOOD_TRUCKS_ENABLED === 'true') {
+  const renderMenuLanding = require('./views/planetaboricua/crea-tu-menu');
+  const origin = 'https://www.masboricuaqueunmofongo.com';
+  const key = process.env.PB_FOOD_STRIPE_KEY;
+  const foodStripe = /^(rk|sk)_live_/.test(key || '') ? new Stripe(key) : null;
+  app.get('/crea-tu-menu', (_req,res) => res.set('X-Robots-Tag','noindex').send(renderMenuLanding('es')));
+  app.get('/crea-tu-menu/en', (_req,res) => res.set('X-Robots-Tag','noindex').send(renderMenuLanding('en')));
+  require('./services/pb-food-trucks')(app,{
+    file:'/data/pb-food-trucks.json',
+    origin,
+    limiter:formLimiter,
+    webhookRouter:foodStripeWebhook,
+    inviteEmail:process.env.PB_FOOD_PILOT_EMAIL || '',
+    stripe:foodStripe,
+    billing:{
+      setup:process.env.PB_FOOD_SETUP_PRICE,
+      monthly:process.env.PB_FOOD_MONTHLY_PRICE,
+      webhook:process.env.PB_FOOD_STRIPE_WEBHOOK_SECRET,
+      account:'acct_1Q4866DjCGKYfj5T',
+      live:true,
+      taxMode:process.env.PB_FOOD_TAX_MODE,
+      portal:process.env.PB_FOOD_STRIPE_PORTAL_ID
+    },
+    rawBody:express.raw({type:'application/json',limit:'256kb'}),
+    async sendLink(email,link) {
+      const {error} = await resend.emails.send({
+        from:`Planeta Boricua <${PB_SENDER_EMAIL}>`,to:email,
+        subject:'Tu acceso a Crea tu menú · Planeta Boricua',text:'Abre este enlace en los próximos 20 minutos. ' + link
+      });
+      if (error) throw new Error('No se pudo enviar el enlace de acceso.');
+    }
+  });
+}
 
 app.get("/caribex-sitemap.xml", async (req, res) => {
   const base = "https://www.yourcaribbeanexpert.com";
