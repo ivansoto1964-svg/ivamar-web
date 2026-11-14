@@ -101,7 +101,7 @@ function renderBusinessLanding({language = 'es', preview = false} = {}) {
           </div>
         </article>
         <div class="use-case"><h3>${x.type} ${t('para tu negocio', 'for your business')}</h3><p>${x.tools}</p>
-          <a class="text-link" href="${i===0?menuAction:interest(x)}">${x.cta} <span aria-hidden="true">↗</span></a>
+          <a class="text-link" href="${i===0?menuAction:x.key==='servicios' ? menuAction+'?tipo=servicios' : interest(x)}">${x.key==='servicios' ? t('Comenzar con tu página de servicios','Start your service page') : x.cta} <span aria-hidden="true">↗</span></a>
         </div>
       </div>
     </details>`).join('')}
@@ -132,7 +132,7 @@ function renderBusinessLanding({language = 'es', preview = false} = {}) {
   <section class="wrap section"><div class="price-box">
     <div><p class="eyebrow">${t("Precio del menú", "Menu pricing")}</p><h2>$49 <small>${t("al publicar", "when you publish")}</small></h2><p>${t("Los primeros 30 días van incluidos. Después, ", "The first 30 days are included. Then ")}<strong>${t("$9.99 al mes", "$9.99 per month")}</strong>.</p></div>
     <div><a class="button primary" href="${menuAction}">${t("Comenzar con tu menú", "Start your menu")} <span aria-hidden="true">↗</span></a>
-    <p>${t("Catálogos y servicios están en etapa de demostración. Puedes escribirnos para indicar qué necesita tu negocio.", "Catalogs and service pages are available as demos. Get in touch to tell us what your business needs.")}</p></div>
+    <p>${t("El editor de Servicios está en piloto. Para catálogos, puedes probar el ejemplo y escribirnos.", "The service page editor is in pilot. For catalogs, try the example and get in touch.")}</p></div>
   </div></section>
 
   <section class="band" id="planes-futuros" aria-labelledby="future-title"><div class="wrap section">
@@ -149,7 +149,7 @@ function renderBusinessLanding({language = 'es', preview = false} = {}) {
   <section class="wrap section questions" aria-labelledby="questions-title"><h2 id="questions-title">${t("Preguntas rápidas", "Quick questions")}</h2>
     <details><summary>${t("¿Qué me da PB además de una página de enlaces?", "What can I do beyond sharing links?")}</summary><p>${t("En el menú tienes herramientas para mostrar platos y precios, recibir pedidos y anunciar ofertas. Puedes compartir el mismo enlace en redes, tarjetas y WhatsApp.", "Show dishes and prices, take orders, and post specials. Share the same menu link on social media, business cards, and WhatsApp.")}</p></details>
     <details><summary>${t("¿Qué pasa si ya uso una app de delivery?", "What if I already use a delivery app?")}</summary><p>${t("Puedes seguir usándola. El menú de PB te sirve como canal de recogido directo. Tu negocio confirma el pedido y el pago con el cliente.", "Keep using it. Your PB menu gives you a direct pickup channel. Your business confirms the order and payment with the customer.")}</p></details>
-    <details><summary>${t("¿Puedo empezar con una tienda o un servicio?", "Can I start with a shop or service business?")}</summary><p>${t("Ya puedes probar ambos ejemplos y escribirnos. El registro por correo y la publicación pagada están preparados para el piloto de menús.", "You can try both demos and get in touch now. Email sign-up and paid publishing are set up for the menu pilot.")}</p></details>
+    <details><summary>${t("¿Puedo empezar con una tienda o un servicio?", "Can I start with a shop or service business?")}</summary><p>${t("Servicios tiene su propio editor para montar y revisar tu página. Para una tienda, puedes ver el ejemplo y escribirnos.", "Services has its own editor to build and preview your page. For a shop, try the example and get in touch.")}</p></details>
   </section>
 </main>
 <footer class="wrap bottom"><a href="https://www.masboricuaqueunmofongo.com/">Planeta Boricua</a><span>Más Boricua Que Un Mofongo</span><a href="mailto:${email}">${t("Escríbenos", "Get in touch")}</a></footer>

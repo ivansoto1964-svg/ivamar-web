@@ -2,6 +2,7 @@ const {randomBytes, randomUUID, createHash} = require('node:crypto');
 const fs = require('node:fs');
 const path = require('node:path');
 const QRCode = require('qrcode');
+const servicePages = require('./pb-service-pages');
 const sharp = require('sharp');
 
 const base = '/crea-tu-menu';
@@ -196,7 +197,7 @@ function renderMenu(truck, preview = false, palette = truck.palette, photo = '',
   return page(truck.name || 'Vista previa del menú', `${previewActions}${kitchenStatus(truck)}<p>${esc(where)}</p><p>${esc(truck.hours)}</p><nav aria-label="Contacto y ubicación">${where ? `<a href="${esc(maps)}">Ver en Google Maps</a>` : ''}${contact}${socials.join('')}</nav>${special ? renderSpecial(special) : ''}${offer}${menuPhoto}${items ? `<div class="grid">${items}</div>` : menuPhoto ? '' : '<p>Aún no hay platos en este menú.</p>'}${cart}`,palette);
 }
 
-module.exports = function mount(app,{file,origin,sendLink,limiter,stripe,billing,rawBody,webhookRouter=app,inviteEmail}) {
+module.exports = function mount(app,{file,origin,sendLink,limiter,stripe,billing,rawBody,webhookRouter=app,inviteEmail,demoAccess=false}) {
   function read() {
     try { return JSON.parse(fs.readFileSync(file,'utf8')); }
     catch (error) { if(error.code==='ENOENT') return {}; throw error; }
@@ -223,15 +224,19 @@ module.exports = function mount(app,{file,origin,sendLink,limiter,stripe,billing
     privatePage(res);
     const value = req.cookies[cookie];
     req.truck = typeof value==='string' && Object.values(read()).find(truck=>truck.session===hash(value) && truck.sessionUntil>Date.now());
-    if (!req.truck) return res.redirect(303,access);
+    if (!req.truck) return res.redirect(303,req.path.startsWith(servicePages.editor) ? servicePages.access : access);
     if (req.method==='POST' && (!sameOrigin(req) || req.body.csrf!==req.truck.csrf)) return res.sendStatus(403);
     next();
   }
 
+  servicePages.mountServicePages(app,{file,origin,owner,update,read,csrf,page,esc,clean,field,demoAccess});
   require('./pb-food-sales')(app,{panel,page,esc,owner,csrf,update});
   const publicOffer = require('./pb-food-coupons')(app,{panel,menuPath,directory,origin,page,esc,read,edit,owner,csrf,update,privatePage,sameOrigin,limiter});
 
-  app.get(access,(_req,res)=>privatePage(res).send(page('Crea o abre tu menú',`<form class="card" method="post">${field('Correo electrónico','email','','email',true)}<button>Enviar enlace de acceso</button></form>`)));
+  app.get(access,(req,res)=>{
+    const title = req.query.tipo === 'servicios' ? 'Crea o abre tu página de servicios' : 'Crea o abre tu menú';
+    privatePage(res).send(page(title,`<form class="card" method="post">${field('Correo electrónico','email','','email',true)}<button>Enviar enlace de acceso</button></form>`));
+  });
   app.post(access,limiter,async(req,res)=>{
     privatePage(res);
     if(!sameOrigin(req)) return res.sendStatus(403);
@@ -245,13 +250,14 @@ module.exports = function mount(app,{file,origin,sendLink,limiter,stripe,billing
       if(!truck){const id=randomUUID();truck=records[id]={id,email,items:[]};}
       Object.assign(truck,{login:hash(secret),loginUntil:Date.now()+20*60_000});
     });
-    await sendLink(email,origin+access+'/'+secret);
+    await sendLink(email,origin+access+'/'+secret+(req.query.tipo === 'servicios' ? '?tipo=servicios' : ''));
     return confirmation();
   });
   app.get(access+'/:token',(req,res)=>{
     privatePage(res);
     if(!/^[0-9a-f]{64}$/.test(req.params.token)) return res.sendStatus(404);
-    res.send(page('Confirma tu acceso','<form method="post"><button>Entrar a mi menú</button></form>'));
+    const label = req.query.tipo === 'servicios' ? 'Entrar a Servicios' : 'Entrar a mi menú';
+    res.send(page('Confirma tu acceso',`<form method="post"><button>${label}</button></form>`));
   });
   app.post(access+'/:token',limiter,(req,res)=>{
     privatePage(res);
@@ -266,7 +272,7 @@ module.exports = function mount(app,{file,origin,sendLink,limiter,stripe,billing
     });
     if(!valid) return res.status(400).send(page('Enlace vencido',`<a href="${access}">Solicitar otro</a>`));
     res.cookie(cookie,session,{httpOnly:true,sameSite:'lax',secure:origin.startsWith('https:'),path:base,maxAge:8*3_600_000});
-    res.redirect(303,panel);
+    res.redirect(303,req.query.tipo === 'servicios' ? servicePages.editor : panel);
   });
 
   const photoFile = truck => path.join(file + '.photos', truck.id + '.webp');
