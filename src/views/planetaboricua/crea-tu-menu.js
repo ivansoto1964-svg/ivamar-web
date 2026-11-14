@@ -13,10 +13,10 @@ const copy = {
     about: 'Somos un portal de cultura, artesanía, gastronomía y comunidad boricua. Nuestra audiencia sigue creciendo. Cuando publiques tu menú, tu negocio también aparecerá en Dónde Comer, organizado por estado o territorio y ciudad o municipio.',
     stepsTitle: 'Cómo funciona',
     steps: [
-      ['Registra tu negocio', 'Añade tu nombre, correo, teléfono, WhatsApp, horario y dirección habitual.'],
-      ['Arma tu menú', 'Organiza platos, bebidas y postres. Edita precios, añade extras y marca lo que se agote.'],
+      ['Registra tu negocio', 'Entra con tu correo. Guarda el nombre del negocio, pueblo y WhatsApp.'],
+      ['Arma tu menú', 'Sube una foto de tu menú o añade platos con precios para recibir pedidos.'],
       ['Publica y comparte', 'Revisa cómo se ve en el celular. Al activar tu menú, tendrás un enlace y un QR descargable para redes, mensajes o imprimir.'],
-      ['Recibe pedidos directos', 'El cliente arma su pedido en el carrito y lo envía por WhatsApp. Tú confirmas la disponibilidad, el pago y el recogido.']
+      ['Recibe pedidos directos', 'Tus clientes pueden escribirte por WhatsApp. Si añades platos con precios, también pueden armar el pedido en el carrito. Tú confirmas la disponibilidad, el pago y el recogido.']
     ],
     faqTitle: 'Preguntas frecuentes',
     faq: [
@@ -38,10 +38,10 @@ const copy = {
     about: 'We’re a growing portal for Puerto Rican culture, makers, food, and community. When you publish your menu, your business will also appear in our Where to Eat directory, organized by state or territory and city or municipality.',
     stepsTitle: 'How it works',
     steps: [
-      ['Register your business', 'Add your name, email, phone number, WhatsApp, hours, and usual location.'],
-      ['Build your menu', 'Organize food, drinks, and desserts. Update prices, add extras, and mark items as sold out.'],
+      ['Register your business', 'Sign in by email. Save your business name, city and WhatsApp number.'],
+      ['Build your menu', 'Upload a menu photo or add individual dishes with prices to take orders.'],
       ['Publish and share', 'Preview your menu on mobile. Once activated, you’ll get a link and a downloadable QR code to post, message, or print.'],
-      ['Get direct orders', 'Customers build an order in the cart and send it through WhatsApp. You confirm availability, payment, and pickup.']
+      ['Get direct orders', 'Customers can message you on WhatsApp. If you add dishes with prices, they can also build an order in the cart. You confirm availability, payment, and pickup.']
     ],
     faqTitle: 'Frequently asked questions',
     faq: [
