@@ -194,7 +194,7 @@ function renderMenu(truck, preview = false, palette = truck.palette, photo = '',
   return page(truck.name || 'Vista previa del menú', `${previewActions}${kitchenStatus(truck)}<p>${esc(where)}</p><p>${esc(truck.hours)}</p><nav aria-label="Contacto y ubicación">${where ? `<a href="${esc(maps)}">Ver en Google Maps</a>` : ''}${contact}${socials.join('')}</nav>${special ? renderSpecial(special) : ''}${offer}${menuPhoto}${items ? `<div class="grid">${items}</div>` : menuPhoto ? '' : '<p>Aún no hay platos en este menú.</p>'}${cart}`,palette);
 }
 
-module.exports = function mount(app,{file,origin,sendLink,limiter,stripe,billing,rawBody}) {
+module.exports = function mount(app,{file,origin,sendLink,limiter,stripe,billing,rawBody,demoAccess=false}) {
   function read() {
     try { return JSON.parse(fs.readFileSync(file,'utf8')); }
     catch (error) { if(error.code==='ENOENT') return {}; throw error; }
@@ -226,19 +226,27 @@ module.exports = function mount(app,{file,origin,sendLink,limiter,stripe,billing
   require('./pb-food-sales')(app,{panel,page,esc,owner,csrf,update});
   const publicOffer = require('./pb-food-coupons')(app,{panel,menuPath,directory,origin,page,esc,read,edit,owner,csrf,update,privatePage,sameOrigin,limiter});
 
-  app.get(access,(_req,res)=>privatePage(res).send(page('Crea o abre tu menú',`<form class="card" method="post">${field('Correo electrónico','email','','email',true)}<button>Enviar enlace de acceso</button></form>`)));
+  app.get(access,(_req,res)=>{
+    const form = demoAccess
+      ? '<p>Esto abre un borrador de prueba para que puedas explorar el editor.</p><form class="card" method="post"><button name="demo" value="1">Entrar al editor de prueba</button></form>'
+      : `<form class="card" method="post">${field('Correo electrónico','email','','email',true)}<button>Enviar enlace de acceso</button></form>`;
+    privatePage(res).send(page(demoAccess ? 'Prueba el editor de menús' : 'Crea o abre tu menú',form));
+  });
   app.post(access,limiter,async(req,res)=>{
     privatePage(res);
     if(!sameOrigin(req)) return res.sendStatus(403);
-    const email=clean(req.body.email,254).toLowerCase();
+    const startDemo = demoAccess && req.body.demo === '1';
+    const email=startDemo ? `menu-${randomUUID()}@example.invalid` : clean(req.body.email,254).toLowerCase();
     if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return res.sendStatus(400);
     const secret=token();
     edit(records=>{
       let truck=Object.values(records).find(item=>item.email===email);
-      if(!truck){const id=randomUUID();truck=records[id]={id,email,items:[]};}
+      if(!truck){const id=randomUUID();truck=records[id]={id,email,items:[],...(startDemo ? {demo:true} : {})};}
       Object.assign(truck,{login:hash(secret),loginUntil:Date.now()+20*60_000});
     });
-    await sendLink(email,origin+access+'/'+secret);
+    const confirmationPath = access+'/'+secret;
+    if (startDemo) return res.redirect(303,confirmationPath);
+    await sendLink(email,origin+confirmationPath);
     res.send(page('Revisa tu correo','<p>El enlace vence en 20 minutos.</p>'));
   });
   app.get(access+'/:token',(req,res)=>{
@@ -265,7 +273,7 @@ module.exports = function mount(app,{file,origin,sendLink,limiter,stripe,billing
   const photoFile = truck => path.join(file + '.photos', truck.id + '.webp');
   const hasPhoto = truck => fs.existsSync(photoFile(truck));
   const billingReady=Boolean(stripe && billing.setup && billing.monthly && billing.webhook);
-  const canActivate=truck=>billingReady && !truck.subscription && truck.name && truck.city && truck.state && truck.whatsapp && (hasPhoto(truck) || truck.items.some(item=>item.available));
+  const canActivate=truck=>billingReady && !truck.demo && !truck.subscription && truck.name && truck.city && truck.state && truck.whatsapp && (hasPhoto(truck) || truck.items.some(item=>item.available));
   function specialEditor(truck, draft = currentSpecial(truck) || {}, error = '') {
     const special = currentSpecial(truck);
     const url = truck.active && special ? origin + specialPath(truck,special) : '';
@@ -312,7 +320,7 @@ module.exports = function mount(app,{file,origin,sendLink,limiter,stripe,billing
     const message = truck.subscription ? 'Revisa el estado de tu suscripción en Gestionar suscripción.'
       : !truck.name || !truck.city || !truck.state || !truck.whatsapp ? 'Guarda primero el nombre, pueblo o ciudad, estado y WhatsApp del negocio.'
       : !hasPhoto(truck) && !truck.items.some(item=>item.available) ? 'Sube una foto del menú o guarda al menos un plato disponible.'
-      : 'La publicación todavía no está disponible.';
+      : truck.demo ? 'Este borrador es de prueba. Puedes editarlo y usar la vista previa.' : 'La publicación todavía no está disponible.';
     return `<p>${message}</p>`;
   }
 

@@ -46,7 +46,7 @@ app.post('/qa/enlace',limiter,(req,res)=>{
 });
 mountFoodTrucks(app,{
   file:path.join(os.tmpdir(),'pb-food-preview','trucks.json'),
-  origin, stripe, billing, limiter,
+  origin, stripe, billing, limiter, demoAccess:true,
   rawBody:express.raw({type:'application/json',limit:'256kb'}),
   async sendLink(email,link) {
     for (const [address,record] of accessLinks) if (record.expires < Date.now()) accessLinks.delete(address);
