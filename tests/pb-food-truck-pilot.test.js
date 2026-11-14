@@ -5,6 +5,7 @@ const { mkdtempSync, writeFileSync, readFileSync, rmSync } = require('node:fs');
 const { tmpdir } = require('node:os');
 const { join } = require('node:path');
 const express = require('express');
+const cookieParser = require('cookie-parser');
 const Stripe = require('stripe');
 const mount = require('../src/services/pb-food-trucks');
 
@@ -26,7 +27,7 @@ test('pilot gates signup and handles signed payment, renewal and risk events', a
   };
   const app = express(), webhookRouter = express.Router();
   app.use(webhookRouter);
-  app.use(express.json(),express.urlencoded({extended:false}));
+  app.use(cookieParser(),express.json(),express.urlencoded({extended:false}));
   const server = app.listen(0,'127.0.0.1');
   await new Promise(resolve=>server.once('listening',resolve));
   t.after(()=>{server.close();rmSync(folder,{recursive:true,force:true});});
@@ -35,7 +36,7 @@ test('pilot gates signup and handles signed payment, renewal and risk events', a
   mount(app,{file,origin,inviteEmail:ownerEmail,stripe,webhookRouter,
     limiter:(_req,_res,next)=>next(),rawBody:express.raw({type:'application/json'}),
     billing:{setup:'price_setup',monthly:'price_monthly',webhook:signingSecret,live:true,account:'acct_fixture'},
-    sendLink:async email=>emailed.push(email)
+    sendLink:async (email,link)=>emailed.push({email,link})
   });
   async function send(type,object,{live=true,valid=true}={}) {
     const payload=JSON.stringify({id:'evt_'+type,type,livemode:live,data:{object}});
@@ -48,7 +49,7 @@ test('pilot gates signup and handles signed payment, renewal and risk events', a
     const res=await fetch(origin+'/crea-tu-menu/acceso',{method:'POST',headers:{Origin:origin},body:new URLSearchParams({email})});
     assert.equal(res.status,200);
   }
-  assert.deepEqual(emailed,[ownerEmail]);
+  assert.deepEqual(emailed.map(item=>item.email),[ownerEmail]);
 
   const status = async (suffix='') => (await fetch(origin+'/donde-comer/truck'+suffix)).status;
   const checkout = {id:record.checkout,customer:subscription.customer,subscription:subscription.id,payment_status:'paid'};
@@ -60,6 +61,21 @@ test('pilot gates signup and handles signed payment, renewal and risk events', a
   assert.equal(await send('checkout.session.async_payment_succeeded',checkout),200);
   assert.equal(await status(),200);
   assert.equal(await status('/qr'),200);
+  const login = await fetch(emailed[0].link,{method:'POST',headers:{Origin:origin},redirect:'manual'});
+  const Cookie = login.headers.get('set-cookie').split(';')[0];
+  const manage = origin+'/crea-tu-menu/panel/resenas';
+  const form = await (await fetch(manage,{headers:{Cookie}})).text();
+  const csrf = form.match(/name="csrf" value="([^"]+)"/)[1];
+  const invitation = await fetch(manage,{method:'POST',headers:{Cookie,Origin:origin},body:new URLSearchParams({csrf})});
+  const link = (await invitation.text()).match(/value="([^"]+\/resenas-pb\/[a-f0-9]+)"/)[1];
+  assert.match(await (await fetch(link)).text(),/5 cucharitas de 5/);
+  const sendReview = () => fetch(link,{method:'POST',headers:{Origin:origin},body:new URLSearchParams({rating:4,comment:'Muy bueno <3'})});
+  assert.deepEqual((await Promise.all([sendReview(),sendReview()])).map(result=>result.status).sort(),[200,410]);
+  const menuWithReview = await (await fetch(origin+'/donde-comer/truck')).text();
+  assert.match(menuWithReview,/🥄🥄🥄🥄/);
+  assert.match(menuWithReview,/Muy bueno &lt;3/);
+  assert.equal((await fetch(origin+'/servicios-pb/truck')).status,404);
+
   const directory = await fetch(origin+'/donde-comer?region=pr',{redirect:'manual'});
   assert.equal(directory.status,302);
   assert.equal(directory.headers.get('location'),'/crea-tu-menu#planes-futuros');

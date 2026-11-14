@@ -229,7 +229,8 @@ module.exports = function mount(app,{file,origin,sendLink,limiter,stripe,billing
     next();
   }
 
-  servicePages.mountServicePages(app,{file,origin,owner,update,read,csrf,page,esc,clean,field,demoAccess});
+  const reviews = require('./pb-business-reviews')(app,{origin,owner,update,read,edit,csrf,clean,esc,page,limiter,privatePage,sameOrigin});
+  servicePages.mountServicePages(app,{file,origin,owner,update,read,csrf,page,esc,clean,field,demoAccess,reviews});
   require('./pb-food-sales')(app,{panel,page,esc,owner,csrf,update});
   const publicOffer = require('./pb-food-coupons')(app,{panel,menuPath,directory,origin,page,esc,read,edit,owner,csrf,update,privatePage,sameOrigin,limiter});
 
@@ -367,6 +368,7 @@ module.exports = function mount(app,{file,origin,sendLink,limiter,stripe,billing
           <button name="mode" value="${truck.ordersPaused ? 'abrir' : 'pausar'}">${truck.ordersPaused ? 'Abrir cocina' : 'Cerrar cocina'}</button>
         </form>
       </section>
+      ${reviews.foodOwner(truck)}
       ${specialEditor(truck,specialDraft,specialError)}
       <form class="card" method="post" id="ubicacion">${csrf(truck)}<h2>Mi negocio</h2>${basics}
         <details ${error ? 'open' : ''}><summary>Horario, ubicación, redes y estilo</summary>${details}
@@ -590,7 +592,7 @@ module.exports = function mount(app,{file,origin,sendLink,limiter,stripe,billing
   app.get(directory+'/:id',(req,res)=>{
     const truck=read()[req.params.id];
     if(!truck?.active) return res.sendStatus(404);
-    res.set('Cache-Control','no-store').send(renderMenu(truck,false,truck.palette,hasPhoto(truck) ? directory+'/'+truck.id+'/foto' : '',publicOffer(truck)));
+    res.set('Cache-Control','no-store').send(renderMenu(truck,false,truck.palette,hasPhoto(truck) ? directory+'/'+truck.id+'/foto' : '',publicOffer(truck)+reviews.publicSection(truck,'food')));
   });
   app.get(directory+'/:id/especial/:specialId',(req,res)=>{
     const truck = read()[req.params.id];
