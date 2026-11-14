@@ -144,7 +144,7 @@ function socialUrl(value, hosts) {
 
 function page(title, body, palette, share) {
   const social = share ? `<meta property="og:type" content="website"><meta property="og:site_name" content="Planeta Boricua"><meta property="og:title" content="${esc(title)}"><meta property="og:description" content="${esc(share.description)}"><meta property="og:url" content="${esc(share.url)}">` : '';
-  return `<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)} | Planeta Boricua</title>${social}<link rel="stylesheet" href="/css/pb-food-trucks.css"></head><body data-theme="${theme(palette)}"><header><a href="${directory}">Dónde Comer · PB</a><a href="${base}">Crea tu menú</a></header><main><h1>${esc(title)}</h1>${body}</main><script src="/js/pb-food-menu-photo.js" defer></script></body></html>`;
+  return `<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)} | Planeta Boricua</title>${social}<link rel="stylesheet" href="/css/pb-food-trucks.css"></head><body data-theme="${theme(palette)}"><header><a href="${base}">Planeta Boricua</a><a href="${base}">Crea tu menú</a></header><main><h1>${esc(title)}</h1>${body}</main><script src="/js/pb-food-menu-photo.js" defer></script></body></html>`;
 }
 
 function field(label, name, value = '', type = 'text', required = false) {
@@ -526,7 +526,10 @@ module.exports = function mount(app,{file,origin,sendLink,limiter,stripe,billing
     res.sendStatus(200);
   });
 
-  app.get(directory,(req,res)=>res.send(renderDirectory(Object.values(read()),req.query)));
+  app.get(directory,(req,res)=>{
+    if (process.env.PB_FOOD_DIRECTORY_ENABLED !== 'true') return res.redirect(302,base+'#planes-futuros');
+    res.send(renderDirectory(Object.values(read()),req.query));
+  });
   app.get(directory+'/:id',(req,res)=>{
     const truck=read()[req.params.id];
     if(!truck?.active) return res.sendStatus(404);
