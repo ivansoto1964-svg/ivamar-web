@@ -25,3 +25,10 @@ nav a[aria-current=page]{background:var(--accent);color:#fff}
 .directory-place li a{display:flex;align-items:center;min-height:44px;font-weight:750;overflow-wrap:anywhere}
 .directory-place li span{display:block;padding-bottom:.55rem}
 .directory-cta{margin-top:1.8rem}
+textarea{display:block;width:100%;border:1px solid #bdb0ab;border-radius:.55rem;padding:.65rem;font:inherit}
+.special-card{border-inline-start:4px solid var(--accent);background:var(--bg)}
+.special-label{color:var(--accent);font-weight:800}
+.special-description{white-space:pre-line;overflow-wrap:anywhere}
+.special-share{margin-top:1rem}
+.secondary-action{background:#fff;color:var(--accent);border:1px solid currentColor}
+.directory-place li .directory-special{font-weight:650}

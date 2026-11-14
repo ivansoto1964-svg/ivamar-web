@@ -10,12 +10,13 @@ const copy = {
     renewal: 'Primer mes sin mensualidad desde la publicación. Luego $9.99 al mes. Tu mensualidad sigue igual: si vendes $1,000 o más, pagas $9.99. Si vendes $10,000, pagas los mismos $9.99.',
     cta: 'Crear mi menú',
     aboutTitle: '¿Qué es Planeta Boricua?',
-    about: 'Somos un portal de cultura, artesanía, gastronomía y comunidad boricua. Nuestra audiencia sigue creciendo. Cuando publiques tu menú, tu negocio también aparecerá en Dónde Comer, organizado por estado o territorio y ciudad o municipio.',
+    about: 'Somos un portal de cultura, artesanía, gastronomía y comunidad boricua. Somos una comunidad en crecimiento en Puerto Rico y la diáspora. Comparte tus especiales con quienes buscan comida boricua en la isla y en Estados Unidos. Cuando publiques tu menú, tu negocio también aparecerá en Dónde Comer, organizado por estado o territorio y ciudad o municipio.',
     stepsTitle: 'Cómo funciona',
     steps: [
       ['Registra tu negocio', 'Entra con tu correo. Guarda el nombre del negocio, pueblo y WhatsApp.'],
       ['Arma tu menú', 'Sube una foto de tu menú o añade platos con precios para recibir pedidos.'],
       ['Publica y comparte', 'Revisa cómo se ve en el celular. Al activar tu menú, tendrás un enlace y un QR descargable para redes, mensajes o imprimir.'],
+      ['Comparte tus especiales', 'Anuncia el especial de hoy o de la semana y comparte su enlace en redes o WhatsApp.'],
       ['Recibe pedidos directos', 'Tus clientes pueden escribirte por WhatsApp. Si añades platos con precios, también pueden armar el pedido en el carrito. Tú confirmas la disponibilidad, el pago y el recogido.']
     ],
     faqTitle: 'Preguntas frecuentes',
@@ -35,12 +36,13 @@ const copy = {
     renewal: 'No monthly fee for the first month after publishing. Then $9.99 per month. Your monthly price stays the same: sell $1,000 or more and pay $9.99. Sell $10,000 and still pay $9.99.',
     cta: 'Create my menu',
     aboutTitle: 'What is Planeta Boricua?',
-    about: 'We’re a growing portal for Puerto Rican culture, makers, food, and community. When you publish your menu, your business will also appear in our Where to Eat directory, organized by state or territory and city or municipality.',
+    about: 'We’re a growing Puerto Rican community on the island and across the United States. Share your specials with people looking for Puerto Rican food. When you publish your menu, your business will also appear in our Where to Eat directory, organized by state or territory and city or municipality.',
     stepsTitle: 'How it works',
     steps: [
       ['Register your business', 'Sign in by email. Save your business name, city and WhatsApp number.'],
       ['Build your menu', 'Upload a menu photo or add individual dishes with prices to take orders.'],
       ['Publish and share', 'Preview your menu on mobile. Once activated, you’ll get a link and a downloadable QR code to post, message, or print.'],
+      ['Share your specials', 'Post a daily or weekly special and share its link on social media or WhatsApp.'],
       ['Get direct orders', 'Customers can message you on WhatsApp. If you add dishes with prices, they can also build an order in the cart. You confirm availability, payment, and pickup.']
     ],
     faqTitle: 'Frequently asked questions',

@@ -49,6 +49,32 @@ function directoryUrl(filters = {}) {
   return esc(query ? directory + '?' + query : directory);
 }
 
+const menuPath = truck => directory+'/'+encodeURIComponent(truck.id);
+const specialPath = (truck,special) => menuPath(truck)+'/especial/'+special.id;
+
+const specialPeriods = {
+  hoy: {label:'Especial de hoy', days:1},
+  semana: {label:'Especial de la semana', days:7}
+};
+
+function currentSpecial(truck) {
+  return truck.special && (truck.special.expiresAt === null || truck.special.expiresAt > Date.now()) ? truck.special : null;
+}
+
+function startSpecial(truck) {
+  if (truck.active && truck.special?.expiresAt === null) {
+    truck.special.expiresAt = Date.now()+specialPeriods[truck.special.period].days*86_400_000;
+  }
+}
+
+function renderSpecial(special) {
+  return `<section class="card special-card"><p class="special-label">${specialPeriods[special.period].label}</p>
+    <h2>${esc(special.title)}</h2>
+    ${special.description ? `<p class="special-description">${esc(special.description)}</p>` : ''}
+    ${special.price ? `<p><strong>${esc(special.price)}</strong></p>` : ''}
+  </section>`;
+}
+
 function renderDirectory(trucks, query) {
   const requestedRegion = clean(query.region,10);
   const requestedState = locationKey(clean(query.estado,60));
@@ -82,17 +108,23 @@ function renderDirectory(trucks, query) {
       <div class="grid">${cities.map(({name,trucks})=>{
         const filters = isIsland ? {region:'pr',ciudad:name} : {region:'usa',estado:state,ciudad:name};
         return `<section class="card directory-place"><h3><a href="${directoryUrl(filters)}">${esc(name)}</a></h3><ul>
-          ${trucks.sort((a,b)=>collator.compare(a.name,b.name)).map(truck=>`<li><a href="${directory}/${encodeURIComponent(truck.id)}">${esc(truck.name)}</a>${address(truck) ? `<span>${esc(address(truck))}</span>` : ''}</li>`).join('')}
+          ${trucks.sort((a,b)=>collator.compare(a.name,b.name)).map(truck=>{
+            const special = currentSpecial(truck);
+            const href = menuPath(truck);
+            return `<li><a href="${href}">${esc(truck.name)}</a>
+              ${special ? `<a class="directory-special" href="${specialPath(truck,special)}">${specialPeriods[special.period].label}</a>` : ''}
+              ${address(truck) ? `<span>${esc(address(truck))}</span>` : ''}</li>`;
+          }).join('')}
         </ul></section>`;
       }).join('')}</div></section>`;
   }).join('');
   const regions = [['','Todos'],['pr','Puerto Rico'],['usa','Estados Unidos']];
   const title = requestedCity ? [requestedCity,stateFilter].filter(Boolean).join(', ') : stateFilter;
-  return page('¿Dónde comer?',`<p>Encuentra negocios y sus menús por pueblo en Puerto Rico o por estado y ciudad en Estados Unidos.</p>
+  return page('¿Dónde comer?',`<p>Descubre dónde se cocina boricua, en Puerto Rico y en la diáspora. Explora menús y especiales por pueblo en la isla o por estado y ciudad en Estados Unidos.</p>
     <nav aria-label="Región">${regions.map(([key,label])=>`<a href="${directoryUrl(key ? {region:key} : {})}"${region === key ? ' aria-current="page"' : ''}>${label}</a>`).join('')}</nav>
     ${title ? `<p>Mostrando ${esc(title)} · <a href="${directoryUrl(region ? {region} : {})}">Ver toda la región</a></p>` : ''}
     ${sections || '<p>Todavía no hay menús publicados para esta ubicación.</p>'}
-    <p class="directory-cta">¿Tienes un negocio de comida? <a href="${base}">Crea tu menú en PB</a></p>`);
+    <p class="directory-cta">¿Cocinas boricua en la isla o en Estados Unidos? <a href="${base}">Crea tu menú en PB</a></p>`);
 }
 
 function socialUrl(value, hosts) {
@@ -104,8 +136,9 @@ function socialUrl(value, hosts) {
   return '';
 }
 
-function page(title, body, palette) {
-  return `<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)} | Planeta Boricua</title><link rel="stylesheet" href="/css/pb-food-trucks.css"></head><body data-theme="${theme(palette)}"><header><a href="${directory}">Dónde Comer · PB</a><a href="${base}">Crea tu menú</a></header><main><h1>${esc(title)}</h1>${body}</main><script src="/js/pb-food-menu-photo.js" defer></script></body></html>`;
+function page(title, body, palette, share) {
+  const social = share ? `<meta property="og:type" content="website"><meta property="og:site_name" content="Planeta Boricua"><meta property="og:title" content="${esc(title)}"><meta property="og:description" content="${esc(share.description)}"><meta property="og:url" content="${esc(share.url)}">` : '';
+  return `<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(title)} | Planeta Boricua</title>${social}<link rel="stylesheet" href="/css/pb-food-trucks.css"></head><body data-theme="${theme(palette)}"><header><a href="${directory}">Dónde Comer · PB</a><a href="${base}">Crea tu menú</a></header><main><h1>${esc(title)}</h1>${body}</main><script src="/js/pb-food-menu-photo.js" defer></script></body></html>`;
 }
 
 function field(label, name, value = '', type = 'text', required = false) {
@@ -150,7 +183,8 @@ function renderMenu(truck, preview = false, palette = truck.palette, photo = '')
   const contact = !preview && truck.whatsapp ? `<a class="action" href="https://wa.me/${esc(truck.whatsapp)}">Escribir por WhatsApp</a>` : '';
   const menuPhoto = photo ? `<section><h2>Foto del menú</h2><a href="${photo}"><img class="menu-photo" src="${photo}" alt="Menú de ${esc(truck.name || 'este negocio')}" /></a></section>` : '';
   const cart = items ? `<div class="grid">${items}</div><section class="card"><h2>Tu pedido</h2><ul id="cart-lines"></ul><p id="cart-total" aria-live="polite"></p><label>Método de pago<select id="cart-payment">${(truck.payments || []).map(method=>`<option>${esc(method)}</option>`).join('')}</select></label><button id="cart-send" disabled>Preparar pedido por WhatsApp</button><p>${preview?'Vista privada del menú.':'El negocio confirma el total y el recogido.'}</p></section><script id="pb-menu-data" type="application/json">${data}</script><script src="/js/pb-food-truck-cart.js" defer></script>` : '';
-  return page(truck.name || 'Vista previa del menú', `<p>${esc(where)}</p><p>${esc(truck.hours)}</p><nav aria-label="Contacto y ubicación">${where ? `<a href="${esc(maps)}">Ver en Google Maps</a>` : ''}${contact}${socials.join('')}</nav>${menuPhoto}${cart || (menuPhoto ? '' : '<p>Aún no hay platos en este menú.</p>')}`,palette);
+  const special = currentSpecial(truck);
+  return page(truck.name || 'Vista previa del menú', `<p>${esc(where)}</p><p>${esc(truck.hours)}</p><nav aria-label="Contacto y ubicación">${where ? `<a href="${esc(maps)}">Ver en Google Maps</a>` : ''}${contact}${socials.join('')}</nav>${special ? renderSpecial(special) : ''}${menuPhoto}${cart || (menuPhoto ? '' : '<p>Aún no hay platos en este menú.</p>')}`,palette);
 }
 
 module.exports = function mount(app,{file,origin,sendLink,limiter,stripe,billing,rawBody}) {
@@ -222,7 +256,35 @@ module.exports = function mount(app,{file,origin,sendLink,limiter,stripe,billing
   const hasPhoto = truck => fs.existsSync(photoFile(truck));
   const billingReady=Boolean(stripe && billing.setup && billing.monthly && billing.webhook);
   const canActivate=truck=>billingReady && !truck.subscription && truck.name && truck.city && truck.state && truck.whatsapp && (hasPhoto(truck) || truck.items.some(item=>item.available));
-  function ownerPanel(truck, error = '', photoExists = hasPhoto(truck)) {
+  function specialEditor(truck, draft = currentSpecial(truck) || {}, error = '') {
+    const special = currentSpecial(truck);
+    const url = truck.active && special ? origin + specialPath(truck,special) : '';
+    const message = url ? `${specialPeriods[special.period].label} · ${special.title} · ${truck.name}` : '';
+    return `<section class="card" id="especial"><h2>Mis especiales</h2>
+      ${error ? `<p class="notice" role="alert">${esc(error)}</p>` : ''}
+      <form method="post" action="${panel}/especial">${csrf(truck)}
+        <label>Duración<select name="period">
+          <option value="hoy" ${draft.period === 'hoy' ? 'selected' : ''}>Especial de hoy · 24 horas</option>
+          <option value="semana" ${draft.period === 'semana' ? 'selected' : ''}>Especial de la semana · 7 días</option>
+        </select></label>
+        <label>Nombre del especial<input name="title" maxlength="100" value="${esc(draft.title)}" required></label>
+        <label>Precio (opcional)<input name="price" maxlength="32" placeholder="$12" value="${esc(draft.price)}"></label>
+        <label>Descripción (opcional)<textarea name="description" maxlength="350" rows="3">${esc(draft.description)}</textarea></label>
+        <button>${truck.active ? 'Publicar especial' : 'Guardar especial'}</button>
+      </form>
+      ${url ? `<div class="special-share" data-special-share data-title="${esc(message)}">
+        <label>Enlace para redes<input type="url" value="${esc(url)}" readonly></label>
+        <button type="button" data-share hidden>Compartir</button>
+        <button type="button" data-copy hidden>Copiar enlace</button>
+        <a class="action" href="https://wa.me/?text=${encodeURIComponent(message+' '+url)}">Enviar por WhatsApp</a>
+        <a class="action" href="${esc(url)}">Ver especial</a><p role="status" data-share-status></p>
+      </div><script src="/js/pb-food-special-share.js" defer></script>` : ''}
+      ${special && !truck.active ? '<p>El enlace estará disponible cuando actives tu menú. La duración del especial empieza en ese momento.</p>' : ''}
+      ${special ? `<form method="post" action="${panel}/especial/retirar">${csrf(truck)}<button class="secondary-action">Retirar especial</button></form>` : ''}
+    </section>`;
+  }
+
+  function ownerPanel(truck, error = '', photoExists = hasPhoto(truck), specialDraft, specialError) {
     const colors=Object.entries(palettes).map(([key,label])=>`<label><input type="radio" name="palette" value="${key}" ${theme(truck.palette)===key?'checked':''}> ${label} <a href="${panel}/vista-previa?paleta=${key}">Vista previa</a></label>`).join('');
     const social=Object.entries(networks).map(([key,[label]])=>field(label,key,truck.social?.[key],'url')).join('');
     const payments=methods.map(value=>`<label><input type="checkbox" name="payments" value="${value}" ${truck.payments?.includes(value)?'checked':''}> ${value}</label>`).join('');
@@ -235,8 +297,9 @@ module.exports = function mount(app,{file,origin,sendLink,limiter,stripe,billing
       : canActivate(truck) ? `<form method="post" action="${panel}/activar">${csrf(truck)}<button>Activar por $49</button><p>Primeros 30 días sin mensualidad. Luego $9.99 al mes.</p></form>`
       : `<p>${truck.subscription ? 'Tu suscripción está registrada.' : !truck.name || !truck.city || !truck.whatsapp ? 'Guarda el nombre, pueblo y WhatsApp del negocio para poder activar.' : !photoExists && !truck.items.some(item => item.available) ? 'Sube una foto o guarda un plato disponible para poder activar.' : 'La activación aún no está disponible.'}</p>`;
     return page('Administra tu menú', `
-      <nav aria-label="Accesos rápidos"><a href="#menu">Mi menú</a><a href="${panel}/vista-previa">Vista previa</a><a href="#ubicacion">Ubicación y redes</a></nav>
+      <nav aria-label="Accesos rápidos"><a href="#especial">Especiales</a><a href="#menu">Mi menú</a><a href="${panel}/vista-previa">Vista previa</a><a href="#ubicacion">Ubicación y redes</a></nav>
       ${error ? `<p class="notice" role="alert">${esc(error)}</p>` : ''}
+      ${specialEditor(truck,specialDraft,specialError)}
       <form class="card" method="post" id="ubicacion">${csrf(truck)}<h2>Mi negocio</h2>${basics}
         <details ${error ? 'open' : ''}><summary>Horario, ubicación, redes y estilo</summary>${details}
         <fieldset><legend>Estilo de mi menú</legend>${colors}</fieldset>
@@ -273,6 +336,29 @@ module.exports = function mount(app,{file,origin,sendLink,limiter,stripe,billing
     }
     update(req,truck=>Object.assign(truck,values));
     res.redirect(303,panel);
+  });
+
+  app.post(panel+'/especial',owner,(req,res)=>{
+    const draft = {
+      period:clean(req.body.period,10), title:clean(req.body.title,100),
+      price:clean(req.body.price,32), description:clean(req.body.description,350)
+    };
+    if (!draft.title || !Object.hasOwn(specialPeriods,draft.period)) {
+      return res.status(400).send(ownerPanel(req.truck,'',hasPhoto(req.truck),draft,'Escribe el nombre del especial y escoge cuánto tiempo quieres mostrarlo.'));
+    }
+    update(req,truck=>{
+      const previous = currentSpecial(truck);
+      const sameSpecial = previous && previous.period === draft.period && previous.title === draft.title;
+      truck.special = {
+        ...draft, id:sameSpecial ? previous.id : randomUUID(),
+        expiresAt:sameSpecial ? previous.expiresAt : truck.active ? Date.now()+specialPeriods[draft.period].days*86_400_000 : null
+      };
+    });
+    res.redirect(303,panel+'#especial');
+  });
+  app.post(panel+'/especial/retirar',owner,(req,res)=>{
+    update(req,truck=>{delete truck.special;});
+    res.redirect(303,panel+'#especial');
   });
 
   function sendPhoto(truck, res) {
@@ -362,11 +448,18 @@ module.exports = function mount(app,{file,origin,sendLink,limiter,stripe,billing
       edit(list=>{
         const truck=list[id];
         if(truck.subscription && truck.subscription!==current.id) return;
-        Object.assign(truck,{subscription:current.id,customer:object.customer,active:['active','trialing'].includes(current.status)});
+        const active = ['active','trialing'].includes(current.status);
+        Object.assign(truck,{subscription:current.id,customer:object.customer,active});
+        startSpecial(truck);
       });
     } else if(subscription && records[id].subscription===object.id){
       const current=await stripe.subscriptions.retrieve(object.id);
-      edit(list=>{if(list[id].subscription===object.id) list[id].active=['active','trialing'].includes(current.status);});
+      edit(list=>{
+        const truck = list[id];
+        if (truck.subscription !== object.id) return;
+        truck.active = ['active','trialing'].includes(current.status);
+        startSpecial(truck);
+      });
     }
     res.sendStatus(200);
   });
@@ -376,6 +469,24 @@ module.exports = function mount(app,{file,origin,sendLink,limiter,stripe,billing
     const truck=read()[req.params.id];
     if(!truck?.active) return res.sendStatus(404);
     res.send(renderMenu(truck,false,truck.palette,hasPhoto(truck) ? directory+'/'+truck.id+'/foto' : ''));
+  });
+  app.get(directory+'/:id/especial/:specialId',(req,res)=>{
+    const truck = read()[req.params.id];
+    if (!truck?.active) return res.sendStatus(404);
+    res.set('Cache-Control','no-store');
+    const special = currentSpecial(truck);
+    const back = `<a class="action" href="${menuPath(truck)}">Ver el menú y la ubicación</a>`;
+    if (!special || special.id !== req.params.specialId) {
+      return res.status(410).send(page('Este especial ya terminó',back,truck.palette));
+    }
+    const title = `${special.title} · ${truck.name}`;
+    const description = [specialPeriods[special.period].label,special.price,special.description].filter(Boolean).join(' · ');
+    const message = encodeURIComponent('Hola, me interesa el especial: '+special.title);
+    const contact = truck.whatsapp ? `<a class="action" href="https://wa.me/${esc(truck.whatsapp)}?text=${message}">Preguntar por WhatsApp</a>` : '';
+    res.send(page(title,`<p class="special-label">${specialPeriods[special.period].label}</p>
+      ${special.description ? `<p class="special-description">${esc(special.description)}</p>` : ''}
+      ${special.price ? `<p><strong>${esc(special.price)}</strong></p>` : ''}
+      <nav aria-label="Opciones del especial">${contact}${back}</nav>`,truck.palette,{description,url:origin+specialPath(truck,special)}));
   });
   app.get(directory+'/:id/foto',(req,res)=>{
     const truck=read()[req.params.id];
