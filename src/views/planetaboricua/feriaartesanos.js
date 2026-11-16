@@ -39,6 +39,7 @@ nav{background:var(--white);border-bottom:3px solid var(--red);padding:0;positio
 
 .directorio-wrap{max-width:1200px;margin:0 auto;padding:2rem;}
 
+.dir-region-link{display:inline-block;padding:.65rem .85rem;border-radius:7px;background:#fff;color:var(--blue);font-size:.875rem;font-weight:800;border:1px solid var(--border);}
 .dir-search-row{margin:1rem 0;position:relative;}
 .dir-search-row input{width:100%;padding:0.85rem 1rem 0.85rem 2.8rem;border:2px solid var(--border);border-radius:8px;font-size:0.92rem;font-family:inherit;outline:none;transition:border 0.2s;}
 .dir-search-row input:focus{border-color:var(--blue);}
@@ -84,6 +85,7 @@ footer.pb-footer a{color:rgba(255,255,255,0.8);text-decoration:none;margin:0 0.5
 
 <div class="directorio-wrap" id="artesanos">
   <div class="directory-heading"><div><h2>Descubre el talento boricua</h2><p style="color:var(--mid);font-size:.85rem;margin-top:.3rem">Busca por nombre, oficio o ubicación.</p></div><div id="result-count" class="result-count" role="status" aria-live="polite">Cargando participantes…</div></div>
+  <a class="dir-region-link" href="/feria-artesanos/florida">Ver artesanos en Florida</a>
   <div class="dir-search-row">
     <span class="dir-search-icon" aria-hidden="true">🔍</span>
     <input type="search" id="dir-search" aria-label="Buscar artesanos por nombre, oficio o ubicación" autocomplete="off" placeholder="¿Buscas un tallador? ¿Joyería hecha a mano? ¿Un tejedor?..." oninput="searchDirectorio()">

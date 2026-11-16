@@ -1,11 +1,4 @@
-const decodeStoredText = value => String(value || '').replace(/&(#x[0-9a-f]+|#\d+|amp|lt|gt|quot|apos|nbsp);/gi, (match, entity) => {
-  const named = {amp:'&',lt:'<',gt:'>',quot:'"',apos:"'",nbsp:' '};
-  const key = entity.toLowerCase();
-  if (key.startsWith('#x')) return String.fromCodePoint(parseInt(key.slice(2), 16));
-  if (key.startsWith('#')) return String.fromCodePoint(parseInt(key.slice(1), 10));
-  return named[key] || match;
-});
-const esc = value => String(value || '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const { decodeStoredText, esc } = require('../../utils/pb-artisan-text');
 const normalizeArtisanTextFields = item => ({...item,
   name:decodeStoredText(item.name), ownerName:decodeStoredText(item.ownerName),
   desc:decodeStoredText(item.desc), fullDesc:decodeStoredText(item.fullDesc), city:decodeStoredText(item.city)
