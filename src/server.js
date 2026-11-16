@@ -245,6 +245,7 @@ const { getPlacePhoto } = require("./helpers/googlePhotos");
 const aecDemo = require("./views/autoridad-energia-criolla");
 const addNegocioPB = require("./views/planetaboricua/add-negocio");
 const feriaArtesanosPB = require("./views/planetaboricua/feriaartesanos");
+const renderFloridaArtisans = require('./views/planetaboricua/feria-florida');
 const artesanoPerfilPB = require("./views/planetaboricua/artesano-perfil");
 const artesanoQrPB = require("./views/planetaboricua/artesano-qr");
 const pbArtisanQr = require("./services/pb-artisan-qr");
@@ -360,6 +361,13 @@ function loadApprovedPBListings(options = {}) {
       return [];
     }
   });
+}
+
+const PB_ARTISAN_CATEGORY_LABELS = {'tallado-madera':'Tallado en madera','joyeria':'Joyería artesanal','ceramica':'Cerámica y alfarería','textiles':'Textiles y costura','pintura':'Pintura y arte','santos':'Santos y tallas religiosas','cuero':'Trabajo en cuero','vejigantes':'Máscaras y vejigantes','instrumentos':'Instrumentos musicales','reciclado':'Arte con material reciclado','velas-jabones':'Velas y jabones artesanales','otro':'Artesanía puertorriqueña'};
+
+function loadPBListingsByLocation(location) {
+  const locations = location === 'florida-us' ? ['florida-us', 'florida'] : [location];
+  return loadApprovedPBListings({strict:true}).filter(item => locations.includes(item.location));
 }
 
 function normalizePBArtisanEmail(value) {
@@ -3175,6 +3183,7 @@ app.get("/sitemap.xml", async (req, res) => {
   const latestUrls = readPBLatest('approved.json').map(item => `<url><loc>https://www.masboricuaqueunmofongo.com/lo-mas-reciente/${item.slug}</loc><lastmod>${String(item.publishedAt || '').slice(0,10)}</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>`).join('');
   const eventUrls = readPBEvents('approved.json').map(event => `<url><loc>${pbEventTools.eventPageUrl(event)}</loc><lastmod>${String(event.approvedAt || event.startDate || '').slice(0,10)}</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>`).join('');
   const staticUrls = `<url><loc>https://www.masboricuaqueunmofongo.com/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/blog</loc><changefreq>weekly</changefreq><priority>0.9</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/lo-mas-reciente</loc><changefreq>daily</changefreq><priority>0.9</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/recursos</loc><changefreq>weekly</changefreq><priority>0.9</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/mudarse-de-pr</loc><changefreq>monthly</changefreq><priority>0.8</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/regresar-a-pr</loc><changefreq>monthly</changefreq><priority>0.8</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/artesano-de-la-semana</loc><changefreq>weekly</changefreq><priority>0.8</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/feria-artesanos</loc><changefreq>weekly</changefreq><priority>0.8</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/quienes-somos</loc><changefreq>monthly</changefreq><priority>0.7</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/para-artesanos</loc><changefreq>monthly</changefreq><priority>0.7</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/anunciate-en-pb</loc><changefreq>monthly</changefreq><priority>0.6</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/privacidad-boricua</loc><changefreq>monthly</changefreq><priority>0.5</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/terminos-boricua</loc><changefreq>monthly</changefreq><priority>0.5</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/afiliados-boricua</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>`;
+  const floridaArtisansUrl = '<url><loc>https://www.masboricuaqueunmofongo.com/feria-artesanos/florida</loc></url>';
   let talentUrls = '';
   if (process.env.PB_TALENT_ENABLED === 'true') {
     try {
@@ -3185,7 +3194,7 @@ app.get("/sitemap.xml", async (req, res) => {
   try { businessUrls=pbBusinessStore.publicAll().map(item=>`<url><loc>https://www.masboricuaqueunmofongo.com/negocios/${item.slug}</loc><changefreq>weekly</changefreq></url>`).join(''); } catch(error) { console.error('PB business sitemap unavailable:',error.message); }
   const agendaUrl = `<url><loc>https://www.masboricuaqueunmofongo.com/agenda-boricua</loc><changefreq>daily</changefreq><priority>0.8</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/sala-de-prensa</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>`;
   res.set('Content-Type','application/xml');
-  res.send(`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${staticUrls}${agendaUrl}${eventUrls}${latestUrls}${postUrls}${artisanUrls}${talentUrls}${businessUrls}${pbTourismSection.sitemap()}</urlset>`);
+  res.send(`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${staticUrls}${floridaArtisansUrl}${agendaUrl}${eventUrls}${latestUrls}${postUrls}${artisanUrls}${talentUrls}${businessUrls}${pbTourismSection.sitemap()}</urlset>`);
 });
 
 app.get('/sala-de-prensa', (_req, res) => res.send(salaPrensaPB()));
@@ -3193,6 +3202,25 @@ app.get('/para-artesanos', (_req, res) => res.send(orientacionArtesanosPB));
 
 app.get("/feria-artesanos", (req, res) => {
   res.send(feriaArtesanosPB);
+});
+
+app.get('/feria-artesanos/florida', (_req, res) => {
+  try {
+    const profiles = loadPBListingsByLocation('florida-us')
+      .filter(item => !item.status || item.status === 'approved')
+      .map(item => ({
+        slug: canonicalPBArtisanSlug(pbArtisanSlug(item)),
+        name: item.name,
+        city: item.city,
+        category: PB_ARTISAN_CATEGORY_LABELS[item.category] || 'Artesanía puertorriqueña',
+        description: item.desc || item.fullDesc,
+        photo: item.photo
+      }));
+    return res.send(renderFloridaArtisans(profiles));
+  } catch (error) {
+    console.error('PB Florida artisan directory error:', error.message);
+    return res.status(503).send('El directorio de artesanos en Florida no está disponible en este momento.');
+  }
 });
 
 app.get('/agenda-artesanal', (_req, res) => res.redirect(301, '/agenda-boricua'));
@@ -3438,12 +3466,11 @@ app.get('/artesanos/:slug', (req, res, next) => {
   if (canonicalSlug !== req.params.slug) return res.redirect(301, `/artesanos/${encodeURIComponent(canonicalSlug)}`);
   const item = loadApprovedPBListings().find(entry => pbArtisanSlug(entry) === canonicalSlug);
   if (!item) return res.status(404).send('Artesano no encontrado');
-  const categories = {'tallado-madera':'Tallado en madera','joyeria':'Joyería artesanal','ceramica':'Cerámica y alfarería','textiles':'Textiles y costura','pintura':'Pintura y arte','santos':'Santos y tallas religiosas','cuero':'Trabajo en cuero','vejigantes':'Máscaras y vejigantes','instrumentos':'Instrumentos musicales','reciclado':'Arte con material reciclado','velas-jabones':'Velas y jabones artesanales','otro':'Artesanía puertorriqueña'};
   const locationLabel = `${item.city || item.location || 'Puerto Rico'}${PB_US_LOCATIONS.has(item.location) ? ', USA' : ', Puerto Rico'}`;
   const events = readPBEvents('approved.json').map(publicPBEvent).filter(event => event.artisanSlug === canonicalSlug && event.artisanRole !== 'contributor' && new Date(`${event.endDate || event.startDate}T23:59:59`) >= new Date());
   const ad = pbAds.select({section:'artisan',placement:'artisan.after_profile',pageSlug:canonicalSlug,artisanCategory:item.category});
   res.send(artesanoPerfilPB(item, {
-    categoryLabel:categories[item.category] || 'Artesanía puertorriqueña',
+    categoryLabel:PB_ARTISAN_CATEGORY_LABELS[item.category] || 'Artesanía puertorriqueña',
     locationLabel,
     slug:canonicalSlug,
     events,
@@ -4329,10 +4356,7 @@ app.get("/api/pb-negocios/:location", (req, res) => {
   }
   res.set('Cache-Control', feriaCanPreview(req) ? 'private, no-store' : 'public, max-age=60, stale-while-revalidate=300');
   try {
-    const locations = req.params.location === 'florida-us'
-      ? ['florida-us', 'florida']
-      : [req.params.location];
-    const negocios = loadApprovedPBListings({strict:true}).filter(item => locations.includes(item.location));
+    const negocios = loadPBListingsByLocation(req.params.location);
     const category = req.query.category;
     const filtered = category ? negocios.filter(n => n.category === category) : negocios;
     return res.json({ negocios: filtered.map(publicPBListing) });
