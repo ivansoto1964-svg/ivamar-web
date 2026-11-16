@@ -5,7 +5,6 @@ const marks = {
   home:'<path d="m3 10 9-7 9 7M5 9v11h14V9M10 20v-7h4v7"/><path class="pb-icon-accent" d="M17 4v3"/>',
   balcony:'<path d="M7 13V7a5 5 0 0 1 10 0v6M4 13h16v8H4zM3 17h18M8 13v8m4-8v8m4-8v8"/><path class="pb-icon-accent" d="M12 3v9"/>',
   artisans:art,
-  weekly:hands+'<path class="pb-icon-accent" d="m12 2 1.3 2.8 3.1.4-2.2 2.2.5 3.1L12 9l-2.7 1.5.5-3.1-2.2-2.2 3.1-.4z"/>',
   calendar:'<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M7 3v4m10-4v4M3 10h18M7 14h2m4 0h2m-8 3h2"/><path class="pb-icon-accent" d="m14 17 2 2 3-4"/>',
   plate:'<rect x="2" y="5" width="20" height="14" rx="3"/><path d="M6 8h2m8 0h2M6 16h12"/><path class="pb-icon-accent" d="M5 11v3l3-1.5z"/><path d="M11 14v-3h2a1 1 0 0 1 0 2h-2m5 1v-3h2a1 1 0 0 1 0 2h-2m1 0 2 1"/>',
   resources:'<path d="M3 8V5h6l2 3h10v12H3zM3 8h18"/><path class="pb-icon-accent" d="M8 12h8m-8 4h5"/>',

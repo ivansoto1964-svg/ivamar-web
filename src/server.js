@@ -20,8 +20,6 @@ const {createRouter:createPBVisitGuideRouter} = require('./services/pb-visit-gui
 const {createRouter:createPBTravelPermissionRouter} = require('./services/pb-travel-permission-routes');
 const pbLatestEditor = require('./services/pb-latest-editor');
 const pbControlDrafts = require('./services/pb-control-drafts');
-const pbArtisanStories = require('./services/pb-artisan-stories');
-const artisanStoriesPB = require('./views/planetaboricua/artesano-semana');
 const { cleanLatestFile } = require('./services/pb-legacy-commercial-cleanup');
 const pbPressRoom = require('./services/pb-press-room');
 const pbEventAdmin = require('./services/pb-event-admin');
@@ -296,13 +294,11 @@ function renderPBHome() {
   const middle = selectHomeAd('home.middle',[top?.id].filter(Boolean));
   const bottom = selectHomeAd('home.before_footer',[top?.id,middle?.id].filter(Boolean));
   const { renderHomeCreations } = require('./views/planetaboricua/home-creations');
-  const { renderHomeWeeklyArtisan } = require('./views/planetaboricua/home-weekly-artisan');
   const creations = loadApprovedPBListings().filter(item => !item.status || item.status === 'approved').map(item => ({
     slug:pbArtisanSlug(item),name:item.name,city:item.city,location:item.location,
     gallery:sanitizePBArtisanGallery(item.gallery,item.photo)
   }));
   return planetaboricua
-    .replace('<!--PB_HOME_WEEKLY_ARTISAN-->',()=>renderHomeWeeklyArtisan(readPBLatest('approved.json')))
     .replace('<!--PB_HOME_CREATIONS-->',()=>renderHomeCreations(creations))
     .replace('<!--PB_HOME_HERO_PRELOAD-->',heroPreload)
     .replace('<!--PB_AD_HOME_AFTER_HERO-->',renderPBAd(top,{placement:'home.after_hero',pageSlug:'portada'}))
@@ -2018,14 +2014,6 @@ app.post('/pb-control/action', requirePBAdmin, requirePBCsrf, express.json({limi
       if (!pbBlogStore.deletePost(id)) return missing();
       return ok('Artículo eliminado de El Balcón.');
     }
-    if (action === 'latest-weekly-add' || action === 'latest-weekly-remove') {
-      const items = readPBLatest('approved.json');
-      const item = items.find(entry => String(entry.id) === String(id));
-      if (!item) return missing();
-      item.artisanWeekly = action === 'latest-weekly-add';
-      writeJsonFile(path.join(PB_LATEST_DIR,'approved.json'),items);
-      return ok(item.artisanWeekly ? 'Historia añadida a Artesano de la Semana.' : 'Historia retirada de la sección; su publicación se conserva.');
-    }
     if (action === 'latest-update') {
       const title = sanitize(req.body.title || '').trim();
       const summary = sanitize(req.body.summary || '').trim();
@@ -2986,7 +2974,7 @@ function pbLatestTopic(item) {
 }
 
 app.get('/artesano-de-la-semana', (_req, res) => {
-  res.send(artisanStoriesPB(pbArtisanStories.selectStories(readPBLatest('approved.json'))));
+  res.redirect(301, '/feria-artesanos');
 });
 
 app.get('/lo-mas-reciente', (req, res) => {
@@ -3182,7 +3170,7 @@ app.get("/sitemap.xml", async (req, res) => {
   } catch(e) { console.error('Sitemap artisans error:', e.message); }
   const latestUrls = readPBLatest('approved.json').map(item => `<url><loc>https://www.masboricuaqueunmofongo.com/lo-mas-reciente/${item.slug}</loc><lastmod>${String(item.publishedAt || '').slice(0,10)}</lastmod><changefreq>daily</changefreq><priority>0.8</priority></url>`).join('');
   const eventUrls = readPBEvents('approved.json').map(event => `<url><loc>${pbEventTools.eventPageUrl(event)}</loc><lastmod>${String(event.approvedAt || event.startDate || '').slice(0,10)}</lastmod><changefreq>weekly</changefreq><priority>0.7</priority></url>`).join('');
-  const staticUrls = `<url><loc>https://www.masboricuaqueunmofongo.com/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/blog</loc><changefreq>weekly</changefreq><priority>0.9</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/lo-mas-reciente</loc><changefreq>daily</changefreq><priority>0.9</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/recursos</loc><changefreq>weekly</changefreq><priority>0.9</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/mudarse-de-pr</loc><changefreq>monthly</changefreq><priority>0.8</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/regresar-a-pr</loc><changefreq>monthly</changefreq><priority>0.8</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/artesano-de-la-semana</loc><changefreq>weekly</changefreq><priority>0.8</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/feria-artesanos</loc><changefreq>weekly</changefreq><priority>0.8</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/quienes-somos</loc><changefreq>monthly</changefreq><priority>0.7</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/para-artesanos</loc><changefreq>monthly</changefreq><priority>0.7</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/anunciate-en-pb</loc><changefreq>monthly</changefreq><priority>0.6</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/privacidad-boricua</loc><changefreq>monthly</changefreq><priority>0.5</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/terminos-boricua</loc><changefreq>monthly</changefreq><priority>0.5</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/afiliados-boricua</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>`;
+  const staticUrls = `<url><loc>https://www.masboricuaqueunmofongo.com/</loc><changefreq>weekly</changefreq><priority>1.0</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/blog</loc><changefreq>weekly</changefreq><priority>0.9</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/lo-mas-reciente</loc><changefreq>daily</changefreq><priority>0.9</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/recursos</loc><changefreq>weekly</changefreq><priority>0.9</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/mudarse-de-pr</loc><changefreq>monthly</changefreq><priority>0.8</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/regresar-a-pr</loc><changefreq>monthly</changefreq><priority>0.8</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/feria-artesanos</loc><changefreq>weekly</changefreq><priority>0.8</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/quienes-somos</loc><changefreq>monthly</changefreq><priority>0.7</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/para-artesanos</loc><changefreq>monthly</changefreq><priority>0.7</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/anunciate-en-pb</loc><changefreq>monthly</changefreq><priority>0.6</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/privacidad-boricua</loc><changefreq>monthly</changefreq><priority>0.5</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/terminos-boricua</loc><changefreq>monthly</changefreq><priority>0.5</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/afiliados-boricua</loc><changefreq>monthly</changefreq><priority>0.5</priority></url>`;
   const floridaArtisansUrl = '<url><loc>https://www.masboricuaqueunmofongo.com/feria-artesanos/florida</loc></url>';
   let talentUrls = '';
   if (process.env.PB_TALENT_ENABLED === 'true') {

@@ -34,13 +34,13 @@ console.log('PB shared navigation and profile preservation tests passed');
 // Each destination retains a visible name and a decorative icon on both surfaces.
 const header=renderSiteHeader('/blog');
 const iconLinks=[...header.matchAll(/<a href="([^"]+)"([^>]*)>([\s\S]*?)<\/a>/g)].filter(m=>m[3].includes('pb-nav-label'));
-assert.equal(iconLinks.length,28);
+assert.equal(iconLinks.length,26);
 for(const link of iconLinks){
  assert.match(link[3],/<svg[^>]*aria-hidden="true"[^>]*focusable="false"/);
  assert.match(link[3],/<span class="pb-nav-label">[^<]+<\/span>/);
 }
 assert.equal(iconLinks.filter(m=>m[1]==='/pueblos'&&m[3].includes('data-pb-icon="plate"')).length,2);
-assert.equal(iconLinks.filter(m=>m[1]==='/artesano-de-la-semana'&&m[3].includes('data-pb-icon="weekly"')).length,2);
+assert.doesNotMatch(header,/artesano-de-la-semana|Artesano de la Semana/i);
 assert.equal(iconLinks.filter(m=>m[1]==='/blog'&&m[2].includes('aria-current="page"')).length,2);
 assert.match(header,/data-pb-icon="menu"/);
 assert.doesNotMatch(header,/<img[^>]*src="https?:/);
