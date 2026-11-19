@@ -128,6 +128,8 @@ app.use((req, res, next) => {
 app.use((req, res, next) => {
   const host = String(req.hostname || '').toLowerCase();
   if (!host.includes('masboricuaqueunmofongo.com')) return next();
+  // Mounted routers temporarily change req.path before res.send is called.
+  const publicPath = req.path;
   const send = res.send.bind(res);
   res.send = body => {
     if (typeof body === 'string' && body.includes('</body>')) {
@@ -139,7 +141,7 @@ app.use((req, res, next) => {
       const privatePath = req.path === '/turistiando/presentacion' || /^\/(?:pb-control|api|auth)(?:\/|$)/.test(String(req.path || '')) || pbTalent.isPrivatePath(req.path) || pbBusinessRoutes.privatePath(req.path) || pbGroupRoutes.privatePath(req.path);
       if (!privatePath) {
         body = withPBSiteFooter(body, { social: renderPBSocialFollow() });
-        body = withPBSiteShell(body, req.path);
+        body = withPBSiteShell(body, publicPath);
       }
     }
     return send(body);

@@ -5,7 +5,7 @@ function renderBusinessPromo(context = 'portal') {
 }
 function withBusinessPromo(html, pathname) {
   if (html.includes('data-pb-business-promo')) return html;
-  if (pathname === '/') return html.replace('<!-- CREACIONES REALES DE LA FERIA -->', renderBusinessPromo('portada')+'<!-- CREACIONES REALES DE LA FERIA -->');
+  if (pathname === '/') return html.replace('<div class="pb-home-ad" aria-label="Publicidad destacada">', renderBusinessPromo('portada')+'<div class="pb-home-ad" aria-label="Publicidad destacada">');
   const context = /^\/lo-mas-reciente(?:\/|$)/.test(pathname) ? 'lo-mas-reciente'
     : /^\/blog(?:\/|$)/.test(pathname) ? 'el-balcon'
     : ['/recursos','/mudarse-de-pr','/regresar-a-pr'].includes(pathname) ? 'recursos'
