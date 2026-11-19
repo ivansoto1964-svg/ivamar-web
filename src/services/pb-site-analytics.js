@@ -5,6 +5,7 @@ const DEFAULT_FILE = process.env.PB_SITE_ANALYTICS_FILE || '/data/pb-site-analyt
 const RETENTION_DAYS = 400;
 const BOT_PATTERN = /bot|crawler|spider|slurp|facebookexternalhit|whatsapp|preview|monitor|uptime|headless/i;
 const EXCLUDED_PREFIXES = [
+  '/mi-grupo', '/grupos-boricuas/comenzar', '/grupos-boricuas/solicitar',
   '/pb-control', '/admin', '/api', '/media', '/health', '/metrics',
   '/artesanos/metric', '/artesanos/mi-perfil', '/artesanos/acceso',
   '/talento-boricua/registro', '/talento-boricua/acceso', '/talento-boricua/mi-perfil'

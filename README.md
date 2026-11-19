@@ -235,3 +235,15 @@ Directorio de perfiles comerciales con categorías de visitantes, registro y edi
 ## Artesano de la Semana y guía de Arecibo
 
 El archivo `/artesano-de-la-semana` reúne entrevistas publicadas, conservando sus enlaces. PB Control permite añadir o retirar cada historia de la sección sin eliminarla. La guía municipal y la [historia de Arecibo en El Balcón](https://www.masboricuaqueunmofongo.com/blog/arecibo-un-fin-de-semana-entre-el-faro-el-mar-y-el-autocine) son piezas complementarias. Historial de afiliados, Stripe y operación en [`docs/PB-ARTESANO-SEMANA-Y-ARECIBO.md`](docs/PB-ARTESANO-SEMANA-Y-ARECIBO.md).
+
+## Oficinas digitales de grupos boricuas
+
+- Presentación: `/grupos-boricuas`; ejemplo explícitamente ficticio: `/grupos/demo-florida-central`.
+- Solicitud: `/grupos-boricuas/comenzar`. PB revisa al administrador desde `/pb-control/grupos` y comparte un acceso privado de un solo uso. No se envían invitaciones automáticamente.
+- Oficina del equipo: `/mi-grupo`, con vista previa privada y publicación voluntaria; páginas públicas: `/grupos/:slug`.
+- Responsable principal: administra permisos, invita colaboradores y retira accesos. Administradores: información, logo, publicaciones y moderación del grupo. Publicadores: sus publicaciones. Cada miembro decide si muestra su nombre, bio y enlace. Los emails de acceso no son públicos.
+- Avisos y eventos: publicar solo en la página pública del grupo o solicitar difusión editorial en PB. La segunda opción conserva una copia en el grupo y entra a las colas existentes de Lo Más Reciente o Agenda; nunca implica aprobación automática. Retirar en el grupo no retira la copia editorial.
+- Incluye logo JPG/PNG/WebP, QR descargable, reglas, recursos, enlaces y contacto. No sincroniza Facebook ni importa miembros. Sin cobros ni nuevas dependencias.
+- Datos: `PB_GROUPS_DATA_DIR` o `/data/pb-groups`; archivo JSON con escritura atómica, logos WebP, tokens/sesiones guardados por hash. Diseñado para una sola instancia con disco persistente, como el servicio actual. No escalar a varias instancias sin migrar el almacén a una base de datos transaccional.
+- Accesos por email: reutiliza Resend y el remitente ya configurado; enlaces de login válidos dos horas, invitaciones siete días, sesiones doce horas. Suspender desde PB Control retira página, sesiones e invitaciones.
+- Comprobación: `npm run test:groups`, pruebas HTTP de permisos, CSRF, accesos de un uso, privacidad, conflictos de edición, logo, QR y suspensión.

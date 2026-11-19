@@ -13,6 +13,8 @@ const pbArtisanRetirement = require('./services/pb-artisan-retirement');
 const pbTalent = require('./services/pb-talent');
 const pbBusinesses = require('./services/pb-businesses');
 const pbBusinessRoutes = require('./services/pb-business-routes');
+const pbGroupRoutes = require('./services/pb-group-routes');
+const pbGroups = require('./services/pb-groups');
 const {createBilling:createPBBusinessBilling} = require('./services/pb-business-billing');
 const {createRouter:createPBTalentRouter} = require('./services/pb-talent-routes');
 const pbTourismSection = require('./services/pb-tourism-section');
@@ -104,7 +106,7 @@ app.use((req, res, next) => {
 
 // PB analytics: set PB_GA_MEASUREMENT_ID=G-XXXXXXXXXX in Render to activate.
 app.use((req, res, next) => {
-  if (pbTalent.isPrivatePath(req.path) || req.path === '/turistiando/presentacion' || /^\/pb-control\/turismo\/vista-previa(?:\/|$)/.test(req.path)) return next();
+  if (pbGroupRoutes.privatePath(req.path) || pbTalent.isPrivatePath(req.path) || req.path === '/turistiando/presentacion' || /^\/pb-control\/turismo\/vista-previa(?:\/|$)/.test(req.path)) return next();
   const measurementId = String(process.env.PB_GA_MEASUREMENT_ID || '').trim();
   if (!/^G-[A-Z0-9]+$/i.test(measurementId)) return next();
   const host = String(req.hostname || '').toLowerCase();
@@ -134,7 +136,7 @@ app.use((req, res, next) => {
         .replace(/href=(['"])\/privacidad\1/g, 'href=$1/privacidad-boricua$1')
         .replace(/href=(['"])\/contacto\1/g, 'href=$1/quienes-somos$1')
         .replace(/connect@ivamarai\.com/gi, 'masboricuaqueunmofongo@gmail.com');
-      const privatePath = req.path === '/turistiando/presentacion' || /^\/(?:pb-control|api|auth)(?:\/|$)/.test(String(req.path || '')) || pbTalent.isPrivatePath(req.path) || pbBusinessRoutes.privatePath(req.path);
+      const privatePath = req.path === '/turistiando/presentacion' || /^\/(?:pb-control|api|auth)(?:\/|$)/.test(String(req.path || '')) || pbTalent.isPrivatePath(req.path) || pbBusinessRoutes.privatePath(req.path) || pbGroupRoutes.privatePath(req.path);
       if (!privatePath) {
         body = withPBSiteFooter(body, { social: renderPBSocialFollow() });
         body = withPBSiteShell(body, req.path);
@@ -2916,6 +2918,34 @@ app.get("/api/place-photo", async (req, res) => {
 
 app.get("/autoridad-energia-criolla", (req, res) => res.send(aecDemo));
 app.get("/noticias", (req, res) => res.redirect(301, "/blog"));
+
+// Group offices: records stay on the existing persistent disk. Group-to-PB
+// submissions use the established review queues, never automatic editorial approval.
+const pbGroupStore = pbGroups.createStore(process.env.PB_GROUPS_DATA_DIR || '/data/pb-groups');
+app.use(pbGroupRoutes.createRouter({
+  store:pbGroupStore,requireAdmin:requirePBAdmin,requireAdminCsrf:requirePBCsrf,
+  sendAccess:process.env.RESEND_API_KEY ? async(email,link)=>{
+    const result=await resend.emails.send({from:`Planeta Boricua <${PB_SENDER_EMAIL}>`,to:email,
+      subject:'Tu acceso a la oficina de tu grupo en PB',
+      html:`<h2>Tu oficina digital</h2><p>Usa este enlace privado para entrar. Vence en dos horas y solo puede confirmarse una vez.</p><p><a href="${link}">Entrar a mi oficina</a></p><p>Si no lo solicitaste, ignora este mensaje.</p>`});
+    if(result?.error||!result?.data?.id)throw Error('Access delivery failed');
+  } : null,
+  submitPlanet:(group,post)=>{
+    const event=post.kind==='event',read=event?readPBEvents:readPBLatest,write=event?writePBEvents:writePBLatest;
+    const id='group-'+post.id;
+    if([...read('pending.json'),...read('approved.json')].some(p=>p.id===id))return;
+    const sourceUrl=`https://www.masboricuaqueunmofongo.com/grupos/${group.slug}#publicacion-${post.id}`;
+    const common={id,status:'pending',submittedAt:post.createdAt,groupId:group.id,groupSlug:group.slug,
+      groupName:group.profile.name,approveToken:crypto.randomBytes(24).toString('hex'),rejectToken:crypto.randomBytes(24).toString('hex')};
+    const item=event?{...common,name:post.title,type:'Evento comunitario',startDate:post.date,endDate:post.date,
+      time:post.time+' ('+post.timezone+')',venue:post.venue,address:post.venue,city:post.city,region:post.region,country:post.country,
+      virtual:post.country==='Virtual',description:post.body.slice(0,600),eventUrl:post.source,cost:post.cost,
+      organizerName:group.profile.name,sourceLabel:group.profile.name,image:'',email:group.members.find(m=>m.role==='owner')?.email||''}
+      :{...common,slug:pbLatestSlug(post.title,id),title:post.title,summary:post.body.slice(0,300),body:post.body,image:'',
+      sources:[{label:'Fuente compartida por '+group.profile.name,url:post.source},{label:'Publicación del grupo en PB',url:sourceUrl}]};
+    const pending=read('pending.json');pending.push(item);write('pending.json',pending);
+  }
+}));
 
 // PB town stories
 app.use(pbBusinessRoutes.createRouter({
