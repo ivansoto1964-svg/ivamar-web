@@ -247,3 +247,7 @@ El archivo `/artesano-de-la-semana` reúne entrevistas publicadas, conservando s
 - Datos: `PB_GROUPS_DATA_DIR` o `/data/pb-groups`; archivo JSON con escritura atómica, logos WebP, tokens/sesiones guardados por hash. Diseñado para una sola instancia con disco persistente, como el servicio actual. No escalar a varias instancias sin migrar el almacén a una base de datos transaccional.
 - Accesos por email: reutiliza Resend y el remitente ya configurado; enlaces de login válidos dos horas, invitaciones siete días, sesiones doce horas. Suspender desde PB Control retira página, sesiones e invitaciones.
 - Comprobación: `npm run test:groups`, pruebas HTTP de permisos, CSRF, accesos de un uso, privacidad, conflictos de edición, logo, QR y suspensión.
+
+## Exposición de páginas de negocios · 19 de noviembre de 2026
+
+El destino público es `/tu-negocio`: explica las opciones de Comida, Servicios y consulta de catálogo para Tiendas. El enlace «Tu negocio» está en navegación de escritorio y móvil; «Crea la página de tu negocio» está en el pie compartido. Hay una invitación visible después del bloque principal de portada y al terminar Lo Más Reciente, El Balcón, Recursos, Feria, Agenda y Publicidad. Las invitaciones quedan fuera del texto editorial, sin ventanas emergentes. `?desde=` identifica el punto de entrada sin alterar la atribución con UTM internos. La Feria gratuita de artesanos y las oficinas gratuitas de grupos conservan sus accesos separados.

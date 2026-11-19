@@ -34,7 +34,7 @@ console.log('PB shared navigation and profile preservation tests passed');
 // Each destination retains a visible name and a decorative icon on both surfaces.
 const header=renderSiteHeader('/blog');
 const iconLinks=[...header.matchAll(/<a href="([^"]+)"([^>]*)>([\s\S]*?)<\/a>/g)].filter(m=>m[3].includes('pb-nav-label'));
-assert.equal(iconLinks.length,26);
+assert.equal(iconLinks.length,28);
 for(const link of iconLinks){
  assert.match(link[3],/<svg[^>]*aria-hidden="true"[^>]*focusable="false"/);
  assert.match(link[3],/<span class="pb-nav-label">[^<]+<\/span>/);

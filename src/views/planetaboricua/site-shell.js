@@ -1,4 +1,5 @@
 const { navIcon } = require('./nav-icons');
+const { withBusinessPromo } = require('./business-promo');
 // Shared navigation only: public page styles and profile functions stay intact.
 function isPublicShellPath(pathname) {
   return pathname === '/' || /^\/(?:blog|lo-mas-reciente|agenda-boricua)(?:\/|$)/.test(pathname)
@@ -6,7 +7,7 @@ function isPublicShellPath(pathname) {
     || /^\/artesanos\/(?!mi-perfil(?:\/|$)|comunicaciones(?:\/|$))[^/]+$/.test(pathname);
 }
 function renderSiteHeader(pathname) {
-  const links = [['/','Inicio','home'],['/blog','El Balcón','balcony'],['/feria-artesanos','Artesanos','artisans'],['/agenda-boricua','Agenda','calendar'],['/pueblos','Nuestros pueblos','plate'],['/recursos','Recursos','resources']];
+  const links = [['/','Inicio','home'],['/blog','El Balcón','balcony'],['/feria-artesanos','Artesanos','artisans'],['/agenda-boricua','Agenda','calendar'],['/pueblos','Nuestros pueblos','plate'],['/recursos','Recursos','resources'],['/tu-negocio','Tu negocio','business']];
   const active = href => href === '/' ? pathname === '/' : href === '/feria-artesanos' ? pathname === href || pathname === '/feria-artesanos/florida' || pathname.startsWith('/artesanos/') : href === '/recursos' ? ['/recursos','/mudarse-de-pr','/regresar-a-pr'].includes(pathname) : pathname === href || pathname.startsWith(href+'/');
   const more = [['/lo-mas-reciente','Lo más reciente','news'],['/#viajes','Viajes y destinos','travel'],['/#newsletter','Boletín','newsletter'],['/quienes-somos','Quiénes somos','about'],['/anunciate-en-pb','Anúnciate en PB','ads'],['mailto:masboricuaqueunmofongo@gmail.com','Contacto','contact'],['/artesanos/mi-perfil','Administrar mi perfil','profile']];
   const render = ([href,label,icon]) => `<a href="${href}"${active(href)?' aria-current="page"':''}>${navIcon(icon)}<span class="pb-nav-label">${label}</span></a>`;
@@ -18,7 +19,8 @@ function withPBSiteShell(html, pathname) {
   const oldNav = /<nav\b[^>]*>[\s\S]*?<\/nav>/i;
   if (oldNav.test(result)) result = result.replace(oldNav, renderSiteHeader(pathname));
   else result = result.replace(/(<body\b[^>]*>)/i, '$1'+renderSiteHeader(pathname));
-  return result.replace('</head>', '<link rel="stylesheet" href="/css/pb-refresh.css?v=3"></head>')
+  result = withBusinessPromo(result, pathname);
+  return result.replace('</head>', '<link rel="stylesheet" href="/css/pb-refresh.css?v=4"></head>')
     .replace('</body>', '<script src="/js/pb-navigation.js?v=2" defer></script></body>');
 }
 module.exports = { withPBSiteShell, renderSiteHeader, isPublicShellPath };

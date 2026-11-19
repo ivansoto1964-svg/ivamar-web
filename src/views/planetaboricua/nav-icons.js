@@ -2,6 +2,7 @@
 const hands = '<path d="m3 14 2-5c.5-1 2-.6 1.8.5l-.5 3M21 14l-2-5c-.5-1-2-.6-1.8.5l.5 3M2 14l4 6h4v-4l-3-3c-1-1-2 .4-1 1.4L8 16M22 14l-4 6h-4v-4l3-3c1-1 2 .4 1 1.4L16 16"/>';
 const art = hands+'<path class="pb-icon-accent" d="m12 4 3 3-3 4-3-4z"/>';
 const marks = {
+  business:'<path d="M3 10V5h18v5M5 11v10h14V11M9 21v-6h6v6"/><path class="pb-icon-accent" d="M3 10c0 3 4 3 4 0 0 3 5 3 5 0 0 3 5 3 5 0 0 3 4 3 4 0M7 5v5m5-5v5m5-5v5"/>',
   home:'<path d="m3 10 9-7 9 7M5 9v11h14V9M10 20v-7h4v7"/><path class="pb-icon-accent" d="M17 4v3"/>',
   balcony:'<path d="M7 13V7a5 5 0 0 1 10 0v6M4 13h16v8H4zM3 17h18M8 13v8m4-8v8m4-8v8"/><path class="pb-icon-accent" d="M12 3v9"/>',
   artisans:art,
