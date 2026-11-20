@@ -64,7 +64,7 @@ assert.match(latestHtml, /\.body figure img\{display:block;width:100%;height:aut
 assert.match(latestHtml, /\.body figure img\{max-width:100%\}/, 'Latest inline images must never overflow their article container.');
 assert.match(latestHtml, /class="article-image pb-editorial-cover"><img class="pb-editorial-cover-image"/, 'Latest must use the shared non-cropping article cover system.');
 assert.match(latestHtml, /src="\/media\/pb-blog-optimized\/vertical\.webp\.webp"[^>]*fetchpriority="high"/, 'Latest visible cover must use the optimized high-priority image.');
-assert.match(latestHtml, /property="og:image" content="https:\/\/www\.masboricuaqueunmofongo\.com\/media\/pb-blog\/vertical\.webp"/, 'Latest social previews must keep the original stable image URL.');
+assert.match(latestHtml, /property="og:image" content="https:\/\/www\.masboricuaqueunmofongo\.com\/media\/pb-social\/[^"]+\.jpg/, 'Latest social previews must use the JPEG sharing route.');
 
 const blogHtml = renderBlogPost({
   slug:'prueba-blog', title:'Prueba El Balcón', excerpt:'Resumen', image:'/media/pb-blog/square.webp',
@@ -75,7 +75,7 @@ assert.match(blogHtml, /<p>Primer párrafo\.<\/p><figure><img src="\/media\/pb-b
 assert.match(blogHtml, /\.post-body figure img\{display:block;width:100%;max-width:100%;height:auto/, 'El Balcón inline images must be responsive.');
 assert.match(blogHtml, /class="post-hero pb-editorial-cover"><img class="pb-editorial-cover-image"/, 'El Balcón must use the same non-cropping article cover system.');
 assert.match(blogHtml, /src="\/media\/pb-blog-optimized\/square\.webp\.webp"[^>]*fetchpriority="high"/, 'El Balcón visible cover must use the optimized high-priority image.');
-assert.match(blogHtml, /property="og:image" content="https:\/\/www\.masboricuaqueunmofongo\.com\/media\/pb-blog\/square\.webp\?v=2026-09-07"/, 'El Balcón social previews must keep the original stable image URL.');
+assert.match(blogHtml, /property="og:image" content="https:\/\/www\.masboricuaqueunmofongo\.com\/media\/pb-social\/[^"]+\.jpg\?v=2026-09-07/, 'Blog social previews must use a versioned JPEG sharing route.');
 assert.match(editorialImages, /\.pb-editorial-card-image[\s\S]*object-fit: contain/, 'Editorial cards must preserve the complete image without cropping.');
 assert.match(editorialImages, /\.pb-editorial-cover-image[\s\S]*object-fit: contain/, 'Individual articles must share one proportion-preserving cover rule.');
 
