@@ -6,6 +6,7 @@ const sanitizeHtml = require('sanitize-html');
 const sanitize = (str) => str ? sanitizeHtml(str, { allowedTags: [], allowedAttributes: {} }) : '';
 const { hasRequiredDetailsForNewCreations } = require('./utils/pb-artisan-creations');
 const pbBlogStore = require('./services/pb-blog-store');
+const {withPBAdSense} = require('./services/pb-adsense');
 const pbSiteAnalytics = require('./services/pb-site-analytics');
 const { buildPBExploreRecommendations } = require('./services/pb-ecosystem-explore');
 const pbArtisanMailBatches = require('./services/pb-artisan-mail-batches');
@@ -142,6 +143,8 @@ app.use((req, res, next) => {
       if (!privatePath) {
         body = withPBSiteFooter(body, { social: renderPBSocialFollow() });
         body = withPBSiteShell(body, publicPath);
+        const adsensePrivate = pbTalent.isPrivatePath(publicPath) || pbBusinessRoutes.privatePath(publicPath) || pbGroupRoutes.privatePath(publicPath) || /^\/(?:pb-control|api|auth)(?:\/|$)/.test(publicPath) || publicPath === '/turistiando/presentacion';
+        body = withPBAdSense(body, {hostname:host,statusCode:res.statusCode,privatePage:adsensePrivate});
       }
     }
     return send(body);

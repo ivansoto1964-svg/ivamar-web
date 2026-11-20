@@ -127,7 +127,7 @@ nav{background:#fff;border-bottom:3px solid #CE1126;padding:0;}
 </nav>
 <section class="page-hero">
   <h1>Política de Privacidad</h1>
-  <p>Última actualización: 24 de septiembre de 2026</p>
+  <p>Última actualización: 20 de noviembre de 2026</p>
 </section>
 <div class="content">
   <p>En Más Boricua Que Un Mofongo (accesible a través de masboricuaqueunmofongo.com), portal de Planeta Boricua operado de manera independiente por Iván Soto desde Florida, una de nuestras principales prioridades es la privacidad de nuestros visitantes. Este documento detalla los tipos de información que recopilamos y registramos, y cómo la utilizamos.</p>
@@ -140,8 +140,11 @@ nav{background:#fff;border-bottom:3px solid #CE1126;padding:0;}
   <p>También utilizamos Google Analytics 4 para conocer de forma agregada cómo se visita el portal, por ejemplo las páginas consultadas, el país aproximado y el tipo de dispositivo. Planeta Boricua no envía a Google nombres, correos electrónicos ni la información privada de los perfiles de artesanos como parte de esta medición.</p>
 
   <h2>3. PB Ads y publicidad</h2>
-  <p>Planeta Boricua administra directamente sus espacios publicitarios mediante PB Ads, sin cargar una red publicitaria externa. Cada anuncio se identifica como <em>Publicidad</em>, <em>Enlace afiliado</em> o <em>Promoción de Planeta Boricua</em>, según corresponda.</p>
+  <p>Planeta Boricua administra directamente sus espacios publicitarios mediante PB Ads. Cada anuncio se identifica como <em>Publicidad</em>, <em>Enlace afiliado</em> o <em>Promoción de Planeta Boricua</em>, según corresponda.</p>
   <p>PB Ads registra métricas técnicas básicas y agregadas —como campaña, ubicación, impresión y clic— para evaluar el funcionamiento de las campañas. Este registro no almacena nombres, correos electrónicos ni direcciones IP. Al seguir un enlace externo, el sitio de destino aplicará sus propias políticas de privacidad.</p>
+
+  <p>También integramos Google AdSense en páginas públicas del portal. La aparición de anuncios de Google está sujeta a la aprobación del sitio y a la configuración del servicio. Google y sus socios pueden utilizar cookies y otros identificadores para publicar, personalizar y medir anuncios, tomando en cuenta visitas a este y otros sitios.</p>
+  <p>Puede conocer <a href="https://policies.google.com/technologies/partner-sites?hl=es" target="_blank" rel="noopener noreferrer">cómo utiliza Google los datos de los sitios que usan sus servicios</a> y gestionar la personalización en <a href="https://myadcenter.google.com/" target="_blank" rel="noopener noreferrer">Mi centro de anuncios de Google</a>. También puede bloquear o eliminar cookies desde la configuración de su navegador.</p>
 
   <h2>4. Divulgación de Enlaces de Afiliados</h2>
   <p>Más Boricua Que Un Mofongo se financia, en parte, a través de programas de marketing de afiliados. Cuando hace clic en ciertos enlaces de nuestro sitio web y realiza una compra, podemos recibir una pequeña comisión sin ningún costo adicional para usted.</p>
