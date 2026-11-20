@@ -48,6 +48,11 @@ function renderBusinessLanding({language = 'es', preview = false, businessPath =
       'Hi, Planeta Boricua. I’m interested in this option for my business.\n\nBusiness name:\nTown or city:\nWhat I sell or offer:\n'
     ));
   const menuAction = base + '/acceso';
+  const canonical = 'https://www.masboricuaqueunmofongo.com' + (businessPath === base ? '/tu-negocio' : businessPath) + (english ? '/en' : '');
+  const socialCover = 'https://www.masboricuaqueunmofongo.com/img/pb-business/tu-negocio-emprendedora-social-20261120.jpg';
+  const shareTitle = t('Tu negocio, con su propia web en PB', 'Your business, with its own website on PB');
+  const shareDescription = t('Una mini web para comida, tiendas y servicios. Muestra lo que ofreces y facilita el contacto por WhatsApp, en Puerto Rico y Florida.', 'A mini website for food businesses, shops and services. Show what you offer and make it easy to contact you on WhatsApp, in Puerto Rico and Florida.');
+  const shareAlt = t('Ejemplo ilustrativo de una emprendedora mostrando la mini web de su negocio en Planeta Boricua.', 'Illustrative example of an entrepreneur showing her business mini website on Planeta Boricua.');
   return `<!doctype html>
 <html lang="${english ? 'en' : 'es'}">
 <head>
@@ -57,6 +62,24 @@ function renderBusinessLanding({language = 'es', preview = false, businessPath =
 <meta name="description" content="${t("Una mini web para tu menú, tienda o negocio de servicios. Muestra lo que haces y conecta con tus clientes por WhatsApp.", "A mini website for your menu, shop, or service business. Show what you offer and connect with customers on WhatsApp.")}">
 <meta name="robots" content="noindex">
 <meta name="theme-color" content="#172548">
+<link rel="canonical" href="${canonical}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Planeta Boricua">
+<meta property="og:locale" content="${english ? 'en_US' : 'es_PR'}">
+<meta property="og:url" content="${canonical}">
+<meta property="og:title" content="${shareTitle}">
+<meta property="og:description" content="${shareDescription}">
+<meta property="og:image" content="${socialCover}">
+<meta property="og:image:secure_url" content="${socialCover}">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="${shareAlt}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="${shareTitle}">
+<meta name="twitter:description" content="${shareDescription}">
+<meta name="twitter:image" content="${socialCover}">
+<meta name="twitter:image:alt" content="${shareAlt}">
 <link rel="stylesheet" href="/css/pb-business-landing.css?v=3">
 <script src="/js/pb-business-landing.js" defer></script>
 </head>
