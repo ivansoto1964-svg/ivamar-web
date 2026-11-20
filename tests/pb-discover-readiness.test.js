@@ -24,3 +24,17 @@ for(const html of [b,l]){
 assert.match(tags(b)['og:image'],/v=2026-10-19/);
 assert.doesNotMatch(latest(null),/max-image-preview/,'An unavailable article is not promoted for discovery.');
 console.log('PASS: article large-image permission; original cover and metadata/schema consistency; existing image layout preserved.');
+
+const amazonImage='/images/editorial/amazon-dorado-empleos-entregas-20261120.webp';
+const amazon=latest({slug:'amazon-en-dorado',title:'Amazon en Dorado',summary:'Empleos y entregas.',body:'<p>Información original.</p>',image:amazonImage,sources:[],publishedAt:'2026-11-20T14:00:00Z'});
+const amazonMeta=tags(amazon);
+assert.equal(amazonMeta['og:image'],origin+'/images/editorial/amazon-dorado-empleos-entregas-social-20261120.jpg');
+assert.equal(amazonMeta['og:image:secure_url'],amazonMeta['og:image']);
+assert.equal(amazonMeta['twitter:image'],amazonMeta['og:image']);
+assert.equal(schema(amazon).image[0],amazonMeta['og:image']);
+assert.equal(amazonMeta['og:image:width'],'1200');
+assert.equal(amazonMeta['og:image:height'],'900');
+assert.equal(amazonMeta['og:image:type'],'image/jpeg');
+assert.ok(amazon.includes(amazonImage),'Keep the original article cover unchanged.');
+assert.equal((amazon.match(/property="og:image" /g)||[]).length,1);
+console.log('PASS: Amazon shares declare a JPEG cover and real dimensions, retaining the original article image.');
