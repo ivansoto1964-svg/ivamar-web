@@ -32,7 +32,8 @@ assert.match(server, /loadApprovedPBListings\(\)\.filter\(isIndexablePBArtisan\)
 assert.match(server, /\/mudarse-de-pr<\/loc>/);
 assert.match(server, /\/regresar-a-pr<\/loc>/);
 assert.match(server, /\/afiliados-boricua<\/loc>/);
-assert.doesNotMatch(server, /pub-2526350815852271/);
+assert.match(server, /withPBAdSense/,'AdSense is centralized and uses the explicitly authorized publisher.');
+assert.equal(fs.readFileSync(path.join(root,'public/ads.txt'),'utf8').trim(),'google.com, pub-2526350815852271, DIRECT, f08c47fec0942fa0');
 assert.doesNotMatch(server, /app\.get\(["']\/ads\.txt/);
 assert.doesNotMatch(server, /google\.com, pub-4181903530685744, DIRECT/);
 assert.doesNotMatch(server, /google\.com, pub-8301223085122981, DIRECT/);
