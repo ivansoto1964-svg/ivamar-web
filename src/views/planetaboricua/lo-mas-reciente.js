@@ -5,7 +5,7 @@ const { renderPBAd, insertAdsByProgress } = require('./pb-ad');
 const { wordCount } = require('../../services/pb-ads');
 const { hasTravelIntent, renderStay22 } = require('./stay22');
 const { optimizedImageUrl } = require('../../services/pb-blog-store');
-const socialImages = require('../../data/pb-social-images.json');
+const {socialCover: buildSocialCover, dimensionTags} = require('../../services/pb-social-images');
 
 function normalizeSources(sources = []) {
   return (Array.isArray(sources) ? sources : []).flatMap(source => {
@@ -32,10 +32,9 @@ module.exports = function loMasReciente(item, comments = [], recommendations = [
   const articleBody = insertAdsByProgress(bodyContent,[{progress:.4,html:firstAd},{progress:.75,html:secondAd}]);
   const paragraphs = topAd + articleBody + renderSubscriberForm('lo_mas_reciente');
   const image = item.image === "/img/og-planetaboricua.jpg" ? "" : (item.image || "");
-  const socialCover = socialImages[image];
-  const socialImage = socialCover?.url || image || "/img/pb-logo.png";
-  const absoluteImage = socialImage.startsWith("/") ? `https://www.masboricuaqueunmofongo.com${socialImage}` : socialImage;
-  const socialImageDetails = socialCover ? `<meta property="og:image:type" content="${esc(socialCover.type)}"><meta property="og:image:width" content="${socialCover.width}"><meta property="og:image:height" content="${socialCover.height}">` : '';
+  const socialCover = buildSocialCover(image || '/img/pb-logo.png', item.updatedAt || item.publishedAt || '');
+  const absoluteImage = socialCover.url;
+  const socialImageDetails = dimensionTags(socialCover);
   const displayImage = optimizedImageUrl(image);
   const hero = displayImage ? `<div class="article-image pb-editorial-cover"><img class="pb-editorial-cover-image" src="${esc(displayImage)}" alt="${esc(item.title)}" width="1280" height="960" fetchpriority="high" decoding="async"></div>` : '<div class="article-brand"><span>🇵🇷</span><strong>Planeta Boricua</strong><small>Lo más reciente</small></div>';
   const date = new Date(item.publishedAt || item.submittedAt || Date.now()).toLocaleString("es-PR", { dateStyle: "long", timeStyle: "short", timeZone: "America/Puerto_Rico" });

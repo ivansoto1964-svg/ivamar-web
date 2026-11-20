@@ -13,7 +13,12 @@ for(const html of [b,l]){
  const meta=tags(html),data=schema(html);
  assert.equal(meta.robots,'index,follow,max-image-preview:large');
  assert.equal((html.match(/<meta name="robots"/g)||[]).length,1);
- assert.ok(meta['og:image'].startsWith(origin+image));
+ assert.ok(meta['og:image'].startsWith(origin+'/media/pb-social/'));
+ assert.equal(meta['og:image:type'],'image/jpeg');
+ assert.equal(meta['og:image:width'],'1200');
+ assert.equal(meta['og:image:height'],'900');
+ const token=new URL(meta['og:image']).pathname.split('/').pop().replace(/\.jpg$/,'');
+ assert.equal(Buffer.from(token,'base64url').toString(),image);
  assert.equal(meta['twitter:image'],meta['og:image']);
  assert.equal(Array.isArray(data.image)?data.image[0]:data.image,meta['og:image']);
  assert.doesNotMatch(meta['og:image'],/crop|w_640|w_600|pb-blog-optimized/);

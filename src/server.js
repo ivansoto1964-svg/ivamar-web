@@ -1084,6 +1084,7 @@ function requirePBCsrf(req, res, next) {
 
 app.use(express.static("public", { maxAge: "1y", immutable: true }));
 app.use('/media/pb-blog', express.static(pbBlogStore.MEDIA_DIR, { maxAge:'30d', immutable:true }));
+app.use('/media/pb-social', require('./services/pb-social-images').createRouter({mediaDir:pbBlogStore.MEDIA_DIR}));
 app.use('/media/pb-ads', express.static(pbAds.mediaDir, { maxAge:'1y', immutable:true }));
 app.get('/media/pb-blog-optimized/:filename', async (req,res) => {
   try {

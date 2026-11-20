@@ -17,3 +17,9 @@ This is the durable publication route for authorized PB editorial work when the 
 Publication requires the GitHub and Render connections to remain authorized and deployment to succeed. This is a deployment-backed workflow, not a permanent logged-in browser session. It does not post to social networks. Events still use Agenda's normal authenticated editorial tools; do not put dated event invitations into Lo Más Reciente merely to bypass Agenda access.
 
 An article already imported is edited through the PB panel; changing its inbox JSON will not overwrite its live version. Retain the import journal with the persistent data backups. Future migrations can replace this route with a dedicated scoped publishing integration when needed.
+
+## Social preview covers
+
+Article templates create JPEG social previews automatically through `/media/pb-social/:token.jpg`, with explicit 1200×900 dimensions. The full source image is contained without cropping; displayed article covers are unchanged. Local files under the public editorial image directories and uploaded blog media are supported, including optimized media URLs. Existing external image hosts are explicitly allowlisted; the endpoint never follows redirects or accepts arbitrary remote hosts. Responses are bounded and cached in memory; no preview files accumulate on the persistent disk.
+
+Keep assigning the actual editorial cover in `image`. Changing its filename or the article modification date versions its social preview URL. A prior Facebook share may still require “Scrape Again” in Meta Sharing Debugger; this cannot retroactively replace every existing shared post. A note with no assigned cover intentionally uses the PB brand fallback. Run `tests/pb-social-images.test.js` and the discover readiness regressions when changing this pipeline.
