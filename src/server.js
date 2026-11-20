@@ -499,6 +499,15 @@ function publicPBEvent(event) {
 }
 
 const PB_LATEST_DIR = '/data/pb-latest';
+try {
+  const {imported} = require('./services/pb-editorial-inbox').importEditorialInbox({
+    inboxDir:path.join(__dirname,'../editorial/latest'),
+    publicDir:path.join(__dirname,'../public'),
+    dataDir:PB_LATEST_DIR
+  });
+  if (imported) console.log(`PB editorial inbox: ${imported} publications imported.`);
+} catch (error) { console.error('PB editorial inbox import failed:',error.message); }
+
 const PB_COMMENTS_DIR = '/data/pb-comments';
 const PB_CONTACT_EMAIL = process.env.PB_CONTACT_EMAIL || 'masboricuaqueunmofongo@gmail.com';
 const PB_SENDER_EMAIL = process.env.PB_SENDER_EMAIL || 'notificaciones@masboricuaqueunmofongo.com';
