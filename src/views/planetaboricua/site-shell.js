@@ -1,4 +1,5 @@
 const { navIcon } = require('./nav-icons');
+const { withGetYourGuide } = require('./getyourguide');
 const { withBusinessPromo } = require('./business-promo');
 // Shared navigation only: public page styles and profile functions stay intact.
 function isPublicShellPath(pathname) {
@@ -20,6 +21,7 @@ function withPBSiteShell(html, pathname) {
   if (oldNav.test(result)) result = result.replace(oldNav, renderSiteHeader(pathname));
   else result = result.replace(/(<body\b[^>]*>)/i, '$1'+renderSiteHeader(pathname));
   result = withBusinessPromo(result, pathname);
+  result = withGetYourGuide(result, pathname);
   return result.replace('</head>', '<link rel="stylesheet" href="/css/pb-refresh.css?v=4"></head>')
     .replace('</body>', '<script src="/js/pb-navigation.js?v=2" defer></script></body>');
 }
