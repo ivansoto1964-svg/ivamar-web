@@ -58,6 +58,10 @@ app.use(compression());
 app.use(helmet({ contentSecurityPolicy: false, crossOriginEmbedderPolicy: false }));
 app.set('trust proxy', 1);
 
+// Password-encrypted partner review. Keep outside analytics, ads and public shell.
+const pbLakelandPreview = require('./services/pb-lakeland-preview');
+app.get(pbLakelandPreview.PREVIEW_PATH, pbLakelandPreview.servePreview);
+
 // Let search crawlers read API responses so they can honor this directive.
 // Blocking /api/ in robots.txt can leave previously discovered URLs indexed
 // because the crawler is unable to revisit them and see a noindex response.
