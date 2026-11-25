@@ -22,22 +22,27 @@ for (const [first,second] of [['id="hero"','id="feria"'],['id="feria"','id="agen
 assert.match(home,/const events=\(data.events\|\|\[\]\)\.slice\(0,3\)/);
 const scripts = [...home.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/gi)].map(m=>m[1]);
 for (const script of scripts) assert.doesNotThrow(()=>new vm.Script(script),'Inline JavaScript must compile after template interpolation');
-// Exercise the actual independent feeds: the blog must not overwrite news.
+// The front page can be read before the blog feed or scripts load.
+const { renderHomeLead, renderHomeNewsRows } = require('../src/views/planetaboricua/home-news');
+const lead = {slug:'noticia',title:'Noticia <nueva>',summary:'Actualidad',publishedAt:day,image};
+const leadHtml = renderHomeLead(lead);
+assert.match(leadHtml,/href="\/lo-mas-reciente\/noticia"/);
+assert.match(leadHtml,/Noticia &lt;nueva&gt;/);
+assert.ok(leadHtml.indexOf('<h1') < leadHtml.indexOf('<img'));
+assert.match(leadHtml,/id="hero-main-img"[^>]*fetchpriority="high"[^>]*decoding="async"/);
+assert.match(renderHomeLead(),/href="\/lo-mas-reciente"/);
+const newsRows = renderHomeNewsRows([{...lead,slug:'anterior',title:'Anterior'}]);
+assert.match(newsRows,/href="\/lo-mas-reciente\/anterior"/);
+assert.match(newsRows,/loading="lazy"/);
 const elements = new Map();
 const element = id => {if (!elements.has(id)) elements.set(id,{innerHTML:'',textContent:'',href:'',outerHTML:''});return elements.get(id)};
-const pending=[];
 const context = {document:{getElementById:element},console,Date,encodeURIComponent,pbCheckForUpdate(){},fetch:async url=>({json:async()=>url.includes('pb-lo-mas-reciente')?{items:[{slug:'noticia',title:'Noticia',summary:'Actualidad',publishedAt:day},{slug:'anterior',title:'Anterior',summary:'Otra noticia',publishedAt:day}]}:[{title:'Historia',img:image,link:'/blog/historia'},{title:'Segunda',img:image,link:'/blog/segunda'}]})};
 (async()=>{
   const hydrated=scripts.find(s=>s.includes('// Blog Feed'));
-  const start=hydrated.indexOf('// Lo más reciente —');
+  const start=hydrated.indexOf('// Blog Feed');
   const end=hydrated.indexOf('setInterval',start);
   vm.runInNewContext(hydrated.slice(start,end),context);
   await new Promise(resolve=>setImmediate(resolve));
-  assert.match(element('latest-grid').innerHTML,/Anterior/);
-  assert.doesNotMatch(element('latest-grid').innerHTML,/\/noticia["']/);
-  assert.equal(element('hero-main-link').href,'/lo-mas-reciente/noticia');
-  assert.equal(element('hero-main-title').textContent,'Noticia');
-  assert.equal(element('hero-main-cat').textContent,'Lo más reciente');
   assert.match(element('noticias-grid').innerHTML,/Historia/);
   assert.match(element('noticias-grid').innerHTML,/Segunda/);
   assert.equal(element('hero-sidebar').innerHTML,'','Blog feed must leave the news sidebar intact');

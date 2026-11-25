@@ -295,10 +295,12 @@ function selectHomeAd(placement, excludeIds = []) {
     || pbAds.select({section:'latest',placement:'latest.inline_1',pageSlug:`portada-${placement}`,excludeIds});
 }
 
+const { newsImage: homeNewsImage, renderHomeLead, renderHomeNewsRows } = require('./views/planetaboricua/home-news');
+
 function renderPBHome() {
   const { renderPBAd } = require('./views/planetaboricua/pb-ad');
-  const heroPost = readPBLatest('approved.json').sort((a,b) => new Date(b.publishedAt) - new Date(a.publishedAt))[0];
-  const heroImage = pbBlogStore.optimizedImageUrl(heroPost?.image);
+  const [heroPost, ...recentPosts] = readPBLatest('approved.json').sort((a,b) => new Date(b.publishedAt) - new Date(a.publishedAt)).slice(0,4);
+  const heroImage = homeNewsImage(heroPost);
   const escapedHeroImage = heroImage.replace(/[&<>"]/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[char]));
   const heroPreload = escapedHeroImage ? `<link rel="preload" as="image" href="${escapedHeroImage}" fetchpriority="high">` : '';
   const top = selectHomeAd('home.after_hero');
@@ -312,6 +314,8 @@ function renderPBHome() {
   return planetaboricua
     .replace('<!--PB_HOME_CREATIONS-->',()=>renderHomeCreations(creations))
     .replace('<!--PB_HOME_HERO_PRELOAD-->',heroPreload)
+    .replace('<!--PB_HOME_LEAD-->',()=>renderHomeLead(heroPost))
+    .replace('<!--PB_HOME_NEWS-->',()=>renderHomeNewsRows(recentPosts))
     .replace('<!--PB_AD_HOME_AFTER_HERO-->',renderPBAd(top,{placement:'home.after_hero',pageSlug:'portada'}))
     .replace('<!--PB_AD_HOME_MIDDLE-->',renderPBAd(middle,{placement:'home.middle',pageSlug:'portada'}))
     .replace('<!--PB_AD_HOME_BEFORE_FOOTER-->',renderPBAd(bottom,{placement:'home.before_footer',pageSlug:'portada'}));
@@ -3031,7 +3035,14 @@ app.get('/lo-mas-reciente', (req, res) => {
   const selectedTopic = sanitize(req.query.tema || '').trim().slice(0,60);
   const all = readPBLatest('approved.json').map(publicPBLatest).map(item => ({...item,topic:pbLatestTopic(item)})).sort((a,b) => new Date(b.publishedAt) - new Date(a.publishedAt));
   const topics = [...new Set(all.map(item => item.topic))];
-  const filtered = all.filter(item => (!query || `${item.title} ${item.summary} ${item.body}`.toLowerCase().includes(query)) && (!selectedTopic || item.topic === selectedTopic));
+  const normalizeSearch = value => value.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase();
+  const terms = normalizeSearch(query).split(/\s+/).filter(Boolean);
+  const filtered = all.filter(item => {
+    if (selectedTopic && item.topic !== selectedTopic) return false;
+    if (!terms.length) return true;
+    const text = normalizeSearch(`${item.title} ${item.summary} ${item.body}`);
+    return terms.every(term => text.includes(term));
+  });
   const perPage = 9;
   const totalPages = Math.max(1, Math.ceil(filtered.length / perPage));
   const requestedPage = Number.parseInt(req.query.page,10) || 1;
@@ -3044,8 +3055,11 @@ app.get('/lo-mas-reciente/:slug', (req, res) => {
   const item = readPBLatest('approved.json').find(entry => entry.slug === req.params.slug);
   if (!item) return res.status(404).send(loMasRecientePB(null));
   const comments = readPBComments('approved.json').filter(comment => comment.articleSlug === item.slug && (comment.section || 'latest') === 'latest').sort((a,b) => new Date(b.approvedAt) - new Date(a.approvedAt)).map(publicPBComment);
-  const recommendations = pbExploreRecommendations({currentSlug:item.slug});
   const topic = pbLatestTopic(item);
+  const recommendations = pbExploreRecommendations({
+    currentSlug:item.slug,
+    matchesLatest: candidate => pbLatestTopic(candidate) === topic
+  });
   const topAd = pbAds.select({section:'latest',placement:'latest.top',category:topic,pageSlug:item.slug})
     || pbAds.select({section:'latest',placement:'latest.inline_1',category:topic,pageSlug:`${item.slug}-top`});
   const firstAd = pbAds.select({section:'latest',placement:'latest.inline_1',category:topic,pageSlug:item.slug,excludeIds:topAd ? [topAd.id] : []});

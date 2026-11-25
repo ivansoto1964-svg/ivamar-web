@@ -25,6 +25,7 @@ function eventDate(event) {
 
 function buildPBExploreRecommendations({
   currentSlug = '',
+  matchesLatest = () => false,
   currentBlogSlug = '',
   currentArtisanSlug = '',
   excludeAreas = [],
@@ -35,9 +36,8 @@ function buildPBExploreRecommendations({
   today = new Date().toISOString().slice(0, 10)
 } = {}) {
   const recommendations = [];
-  const nextLatest = latest
-    .filter(item => item && item.slug && item.slug !== currentSlug)
-    .sort(byNewest)[0];
+  const otherLatest = latest.filter(item => item && item.slug && item.slug !== currentSlug).sort(byNewest);
+  const nextLatest = otherLatest.find(matchesLatest) || otherLatest[0];
   if (nextLatest) recommendations.push({
     area:'Lo más reciente',
     title:nextLatest.title,

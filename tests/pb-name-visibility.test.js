@@ -31,7 +31,7 @@ for (const footer of legal.match(/<footer\b[\s\S]*?<\/footer>/gi) || []) {
 }
 
 assert.match(read('src/views/quienes-somos.js'), /creado y dirigido por <strong>Iván Soto<\/strong>/);
-assert.match(read('src/views/pb-blog/post.js'), /✍️ <strong>Iván Soto<\/strong>/);
+assert.match(read('src/views/pb-blog/post.js'), /class="post-meta"[^\n]*<strong>Iván Soto<\/strong>/);
 assert.match(read('src/views/planetaboricua/sala-prensa.js'), /expresó Iván Soto Pino/);
 assert.match(read('src/services/pb-subscriber-welcome.js'), /<strong>Iván Soto Pino<\/strong>/);
 
