@@ -1,6 +1,10 @@
 const { renderPBSocialFollow } = require('./social-follow');
 
 const messages = {
+  portal: {
+    title: 'Lo boricua, en tu correo',
+    copy: 'Recibe historias, actividades y novedades de Puerto Rico y nuestra comunidad.'
+  },
   blog: {
     title: '🇵🇷 ¿Te gustó esta historia? Sigue conectado con Planeta Boricua.',
     copy: 'Suscríbete para recibir nuevas historias, cultura y cosas de nuestra tierra directamente en tu correo.',
@@ -17,24 +21,26 @@ const messages = {
   }
 };
 
-function renderSubscriberForm(source) {
-  const message = messages[source];
+function renderSubscriberForm(source, {english = false} = {}) {
+  const message = english && source === 'portal'
+    ? {title:'Stay connected with Planeta Boricua',copy:'Get stories, events and news from Puerto Rico and our community.'}
+    : messages[source];
   if (!message) return '';
-  return `<style>${subscriberStyles}</style><section class="pb-subscribe" aria-labelledby="pb-subscribe-${source}-title">
+  return `<style>${subscriberStyles}</style><section class="pb-subscribe" id="pb-boletin" aria-labelledby="pb-subscribe-${source}-title">
     <div class="pb-subscribe-copy">
       <h2 id="pb-subscribe-${source}-title">${message.title}</h2>
       <p>${message.copy}</p>
     </div>
     <form class="pb-subscribe-form" data-pb-subscribe data-source="${source}">
-      <label class="pb-subscribe-label" for="pb-subscribe-${source}-email">Correo electrónico</label>
+      <label class="pb-subscribe-label" for="pb-subscribe-${source}-email">${english ? 'Email address' : 'Correo electrónico'}</label>
       <div class="pb-subscribe-fields">
-        <input id="pb-subscribe-${source}-email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="tu@email.com" required>
-        <button type="submit">Suscribirme</button>
+        <input id="pb-subscribe-${source}-email" name="email" type="email" inputmode="email" autocomplete="email" placeholder="${english ? 'you@example.com' : 'tu@email.com'}" required>
+        <button type="submit">${english ? 'Subscribe for free' : 'Suscribirme gratis'}</button>
       </div>
       <p class="pb-subscribe-status" role="status" aria-live="polite"></p>
     </form>
     ${message.showSocial ? renderPBSocialFollow() : ''}
-  </section><script src="/js/pb-subscribe.js?v=2"></script>`;
+  </section><script src="/js/pb-subscribe.js?v=3"></script>`;
 }
 
 const subscriberStyles = `.pb-subscribe{margin:2rem 0;padding:1.35rem;background:linear-gradient(135deg,#eef4fb,#fff);border:1px solid #c9d7e8;border-left:5px solid #ce1126;border-radius:10px}.pb-subscribe h2{font-family:Georgia,serif;color:#002d62;font-size:1.25rem;line-height:1.3;margin:0 0 .4rem}.pb-subscribe .pb-subscribe-copy>p{color:#5f6772;font-family:Inter,system-ui,sans-serif;font-size:.92rem;line-height:1.55;margin:0 0 1rem}.pb-subscribe-label{display:block;color:#002d62;font-size:.75rem;font-weight:800;margin-bottom:.35rem}.pb-subscribe-fields{display:flex;gap:.55rem}.pb-subscribe-fields input{min-width:0;flex:1;border:1px solid #b9c4d0;border-radius:7px;background:#fff;padding:.78rem;font:inherit}.pb-subscribe-fields button{border:0;border-radius:7px;background:#ce1126;color:#fff;padding:.78rem 1rem;font:800 .82rem Inter,system-ui,sans-serif;cursor:pointer;white-space:nowrap}.pb-subscribe-fields button:disabled{opacity:.65;cursor:wait}.pb-subscribe .pb-subscribe-status{min-height:1.2em;margin:.65rem 0 0;font-family:Inter,system-ui,sans-serif;font-size:.78rem;font-weight:800;line-height:1.4;color:#666}.pb-subscribe-status[data-state="success"]{color:#166534}.pb-subscribe-status[data-state="error"]{color:#b91c1c}@media(max-width:560px){.pb-subscribe{padding:1.1rem}.pb-subscribe-fields{align-items:stretch;flex-direction:column}.pb-subscribe-fields button{width:100%}}`;

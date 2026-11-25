@@ -84,11 +84,10 @@ function renderBusinessLanding({language = 'es', preview = false, businessPath =
 <script src="/js/pb-business-landing.js" defer></script>
 </head>
 <body>
-<header class="top wrap">
-  <a class="brand" href="https://www.masboricuaqueunmofongo.com/"><img width="42" height="42" src="/pbn-logo.webp" alt=""><span>Planeta Boricua</span></a>
+<nav class="top wrap" data-pb-local-nav aria-label="${t('Información para negocios', 'Business information')}">
   <a class="top-link" href="#como-funciona">${t("Cómo funciona", "How it works")}</a>
   <a class="top-link" href="${english ? businessPath : businessPath + '/en'}" lang="${english ? 'es' : 'en'}">${t('English', 'Español')}</a>
-</header>
+</nav>
 <main>
   <section class="hero" aria-labelledby="title">
     <div class="wrap hero-inner">

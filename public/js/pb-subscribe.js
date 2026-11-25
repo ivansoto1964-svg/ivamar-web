@@ -1,4 +1,6 @@
 (() => {
+  const english = document.documentElement.lang.toLowerCase().startsWith('en');
+  const t = (es,en) => english ? en : es;
   document.querySelectorAll('[data-pb-subscribe]').forEach((form) => {
     form.addEventListener('submit', async (event) => {
       event.preventDefault();
@@ -15,12 +17,12 @@
 
       if (!emailInput?.checkValidity()) {
         emailInput?.reportValidity();
-        show('Escribe un correo electrónico válido.', 'error');
+        show(t('Escribe un correo electrónico válido.','Enter a valid email address.'), 'error');
         return;
       }
 
       button.disabled = true;
-      show('Guardando tu suscripción…', 'pending');
+      show(t('Guardando tu suscripción…','Saving your subscription…'), 'pending');
       try {
         const response = await fetch('/api/newsletter-boricua', {
           method: 'POST',
@@ -31,9 +33,9 @@
         if (!response.ok || !result.ok) throw new Error(result.error || 'No se pudo completar la suscripción.');
         form.reset();
         if (!result.existing) window.gtag?.('event', 'pb_newsletter_signup', {source});
-        show('¡Wepa! Ya estás suscrito a Planeta Boricua. 🇵🇷', 'success');
+        show(t('¡Wepa! Ya estás suscrito a Planeta Boricua. 🇵🇷','You’re subscribed to Planeta Boricua!'), 'success');
       } catch (error) {
-        show(error.message || 'No se pudo conectar. Intenta nuevamente.', 'error');
+        show(english ? 'Could not subscribe. Try again.' : error.message || 'No se pudo conectar. Intenta nuevamente.', 'error');
       } finally {
         button.disabled = false;
       }

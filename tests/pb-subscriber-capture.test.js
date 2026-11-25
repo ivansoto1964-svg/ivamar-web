@@ -8,7 +8,7 @@ const renderAgenda = require('../src/views/planetaboricua/agenda-artesanal');
 const renderControl = require('../src/views/pb-control');
 
 assert(home.includes('data-pb-subscribe data-source="inicio"'), 'Inicio debe usar el formulario existente con origen inicio.');
-assert(home.includes('/js/pb-subscribe.js?v=2'), 'Inicio debe cargar el manejador compartido.');
+assert(home.includes('/js/pb-subscribe.js?v=3'), 'Inicio debe cargar el manejador compartido.');
 assert(!home.includes('nlSubscribe()'), 'Inicio no debe conservar el manejador anterior en paralelo.');
 
 const blog = renderBlogPost({
@@ -50,7 +50,7 @@ assert(control.includes('El Balcón: <strong>1</strong>'), 'PB Control debe resu
 assert(!control.includes('Inicio: <strong>1</strong>'), 'El resumen por origen no debe contar suscriptores dados de baja.');
 
 const server = fs.readFileSync(require.resolve('../src/server'), 'utf8');
-assert(server.includes("new Set(['blog', 'lo_mas_reciente', 'agenda', 'inicio'])"), 'El servidor debe limitar los orígenes aceptados.');
+assert(server.includes("new Set(['blog', 'lo_mas_reciente', 'agenda', 'inicio', 'portal'])"), 'El servidor debe limitar los orígenes aceptados.');
 assert(server.includes('pbSubscriberWelcome.findSubscriber(subscribers, email)'), 'El servidor debe evitar duplicados normalizados mediante el servicio compartido.');
 
 console.log('PB subscriber capture tests passed.');

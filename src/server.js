@@ -1093,6 +1093,14 @@ function requirePBCsrf(req, res, next) {
   next();
 }
 
+const pueblosIndex = fs.readFileSync(path.join(__dirname,'../public/pueblos/index.html'),'utf8');
+app.get(['/pueblos','/pueblos/index.html'], (req,res) => {
+  if (req.path !== '/pueblos/') {
+    const query = req.originalUrl.slice(req.path.length);
+    return res.redirect(301,'/pueblos/' + query);
+  }
+  res.send(pueblosIndex);
+});
 app.use(express.static("public", { maxAge: "1y", immutable: true }));
 app.use('/media/pb-blog', express.static(pbBlogStore.MEDIA_DIR, { maxAge:'30d', immutable:true }));
 app.use('/media/pb-social', require('./services/pb-social-images').createRouter({mediaDir:pbBlogStore.MEDIA_DIR}));
@@ -4598,7 +4606,7 @@ app.post('/api/newsletter-boricua', express.json(), formLimiter, async (req, res
     const requestedSource = String(body.source || '').trim().toLowerCase();
     const sourceAliases = { landing: 'inicio' };
     const source = sourceAliases[requestedSource] || requestedSource;
-    const allowedSources = new Set(['blog', 'lo_mas_reciente', 'agenda', 'inicio']);
+    const allowedSources = new Set(['blog', 'lo_mas_reciente', 'agenda', 'inicio', 'portal']);
     const savedSource = allowedSources.has(source) ? source : 'inicio';
     if (!pbSubscriberWelcome.isValidSubscriberEmail(email)) return res.status(400).json({ok:false,error:'Email inválido'});
 

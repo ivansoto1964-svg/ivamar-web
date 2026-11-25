@@ -6,7 +6,7 @@ for (const route of ['/pb-control','/pb-control/ads','/api/listings','/artesanos
   assert.equal(isPublicShellPath(route),false,route);
   assert.equal(withPBSiteShell(sample,route),sample);
 }
-for (const route of ['/','/blog','/blog/prueba','/lo-mas-reciente','/agenda-boricua','/feria-artesanos','/recursos','/artesanos/taller-prueba']) {
+for (const route of ['/','/blog','/blog/prueba','/lo-mas-reciente','/agenda-boricua','/feria-artesanos','/recursos','/artesanos/taller-prueba','/pueblos/','/pueblos/arecibo/','/tu-negocio','/anunciate-en-pb']) {
   const output=withPBSiteShell(sample,route);
   assert.equal((output.match(/id="pb-page-content"/g)||[]).length,1);
   assert.match(output,/<form action="\/blog\/buscar"><input name="q"><\/form>/);
@@ -19,8 +19,8 @@ for (const route of ['/','/blog','/blog/prueba','/lo-mas-reciente','/agenda-bori
   assert.match(output, /href="\/blog"[^>]*>[\s\S]*?<span class="pb-nav-label">El Balcón<\/span>/);
   const desktop = output.match(/<nav class="pb-site-nav"[^>]*>([\s\S]*?)<\/nav>/)[1];
   const mobile = output.match(/<nav class="pb-site-panel" aria-label="Navegación móvil">([\s\S]*?)<\/nav>/)[1];
-  assert.match(desktop, /href="\/pueblos">[\s\S]*?<span class="pb-nav-label">Nuestros pueblos<\/span><\/a>/);
-  assert.match(mobile, /href="\/pueblos">[\s\S]*?<span class="pb-nav-label">Nuestros pueblos<\/span><\/a>/);
+  assert.match(desktop, /href="\/pueblos"[^>]*>[\s\S]*?<span class="pb-nav-label">Nuestros pueblos<\/span><\/a>/);
+  assert.match(mobile, /href="\/pueblos"[^>]*>[\s\S]*?<span class="pb-nav-label">Nuestros pueblos<\/span><\/a>/);
   assert.doesNotMatch(output,/href="\/(?:talento-boricua|donde-comer|crea-tu-menu)"/,'Deferred sections must not be activated');
 }
 const artisan={name:'Taller de prueba',ownerName:'Persona de prueba',desc:'Trabajo artesanal.',photo:'https://example.com/photo.jpg',whatsapp:'17875551212',gallery:[{image:'https://example.com/pieza.jpg',title:'Creación',description:'Detalle de la pieza.'}]};
@@ -34,7 +34,7 @@ console.log('PB shared navigation and profile preservation tests passed');
 // Each destination retains a visible name and a decorative icon on both surfaces.
 const header=renderSiteHeader('/blog');
 const iconLinks=[...header.matchAll(/<a href="([^"]+)"([^>]*)>([\s\S]*?)<\/a>/g)].filter(m=>m[3].includes('pb-nav-label'));
-assert.equal(iconLinks.length,28);
+assert.equal(iconLinks.length,27);
 for(const link of iconLinks){
  assert.match(link[3],/<svg[^>]*aria-hidden="true"[^>]*focusable="false"/);
  assert.match(link[3],/<span class="pb-nav-label">[^<]+<\/span>/);
@@ -44,3 +44,13 @@ assert.doesNotMatch(header,/artesano-de-la-semana|Artesano de la Semana/i);
 assert.equal(iconLinks.filter(m=>m[1]==='/blog'&&m[2].includes('aria-current="page"')).length,2);
 assert.match(header,/data-pb-icon="menu"/);
 assert.doesNotMatch(header,/<img[^>]*src="https?:/);
+
+const landing = '<html lang="en"><head><title>Business</title></head><body><nav data-pb-local-nav><a href="#details">How it works</a></nav><main id="details">Business</main></body></html>';
+const landingShell = withPBSiteShell(landing, '/tu-negocio/en');
+assert.match(landingShell,/class="pb-site-header pb-editorial-header"/);
+assert.match(landingShell,/src="\/img\/pb-logo-header.webp"/);
+assert.match(landingShell,/aria-label="Search Planeta Boricua"/);
+assert.match(landingShell,/data-pb-local-nav><a href="#details">How it works/);
+assert.equal((landingShell.match(/id="pb-boletin"/g)||[]).length,1);
+assert.match(landingShell,/href="#pb-boletin">Newsletter/);
+assert.match(landingShell,/Subscribe for free/);

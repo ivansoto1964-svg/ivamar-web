@@ -82,7 +82,7 @@ function subscriberRows(items) {
 }
 
 function subscriberSourceLabel(source) {
-  const labels = { blog:'El Balcón', lo_mas_reciente:'Lo más reciente', agenda:'Agenda Boricua', inicio:'Inicio', landing:'Inicio' };
+  const labels = { blog:'El Balcón', lo_mas_reciente:'Lo más reciente', agenda:'Agenda Boricua', portal:'Portal', inicio:'Inicio', landing:'Inicio' };
   return labels[source] || source || 'Planeta Boricua';
 }
 

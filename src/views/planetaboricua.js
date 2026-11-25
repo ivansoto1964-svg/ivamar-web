@@ -922,7 +922,7 @@ setInterval(() => {
 
 </script>
 
-<script src="/js/pb-subscribe.js?v=2"></script>
+<script src="/js/pb-subscribe.js?v=3"></script>
 
 
 <!-- Cookie Banner -->

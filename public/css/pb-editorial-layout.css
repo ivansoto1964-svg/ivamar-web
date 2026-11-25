@@ -1,15 +1,14 @@
-/* Homepage and editorial articles use the same mobile reading layout. */
-[data-pb-edition] {
+/* Shared portal identity and editorial reading layout. */
+[data-pb-navigation] {
   --pb-navy: #10213a;
   --pb-paper: #faf8f3;
   --pb-ink: #17202a;
   --pb-muted: #526071;
   --pb-red: #c8102e;
   --pb-rule: #e3ded4;
-  background: var(--pb-paper);
-  color: var(--pb-ink);
 }
-[data-pb-edition] :is(a, button, input, summary):focus-visible {
+[data-pb-edition] { background: var(--pb-paper); color: var(--pb-ink); }
+[data-pb-navigation] :is(a, button, input, summary):focus-visible {
   outline: 3px solid #4577ab;
   outline-offset: 3px;
 }
@@ -23,7 +22,6 @@
   gap: .85rem;
 }
 .pb-editorial-header .pb-site-brand,
-.pb-editorial-header .pb-site-brand small,
 .pb-editorial-header .pb-site-nav > a,
 .pb-editorial-header .pb-site-menu > summary {
   color: white !important;
@@ -39,9 +37,21 @@
 .pb-editorial-header .pb-site-brand strong {
   font-size: clamp(1.08rem, 5.25vw, 1.45rem);
 }
-.pb-editorial-header .pb-site-brand small { display: none; }
 .pb-editorial-header :is(.pb-site-nav > a, .pb-site-menu > summary) .pb-nav-icon { color: inherit; }
 .pb-editorial-header :is(.pb-site-nav > a, .pb-site-menu > summary) .pb-icon-accent { stroke: currentColor; }
+.pb-header-newsletter {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding-inline: .7rem;
+  border: 1px solid #a0b6cd;
+  border-radius: 6px;
+  font-size: .875rem;
+  font-weight: 800;
+  color: white !important;
+  text-decoration: none;
+  white-space: nowrap;
+}
 .pb-editorial-header .pb-site-menu > summary {
   display: flex;
   align-items: center;
@@ -291,7 +301,54 @@
 [data-pb-edition="article"] .pb-subscribe-fields input { font-size: 1rem; }
 [data-pb-edition] .pb-social-follow a { min-height: 44px; font-size: .875rem; }
 
-@media (max-width: 1100px) {
+#pb-boletin { scroll-margin-top: 88px; }
+.pb-community-signup {
+  width: min(100% - 2rem, 780px);
+  margin: 2.5rem auto;
+  text-align: left;
+}
+[data-pb-navigation] .pb-continue {
+  position: static;
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+[data-pb-navigation] .pb-continue a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: .4rem .7rem;
+  border: 1px solid #b2bdc8;
+  border-radius: 6px;
+  background: #fff;
+  color: var(--pb-navy);
+  font: 700 .875rem/1.3 system-ui, sans-serif;
+  text-decoration: none;
+}
+[data-pb-navigation] .pb-continue a:hover { text-decoration: underline; }
+[data-pb-navigation] .pb-community-signup .pb-subscribe {
+  margin-top: .85rem;
+  background: var(--pb-paper);
+  border-color: var(--pb-rule);
+  border-left-color: var(--pb-red);
+}
+[data-pb-navigation] .pb-community-signup .pb-subscribe h2 {
+  color: var(--pb-navy);
+  font-size: clamp(1.4rem, 3vw, 1.85rem);
+}
+[data-pb-navigation] .pb-community-signup .pb-subscribe p {
+  color: var(--pb-muted);
+  font: 400 1rem/1.5 system-ui, sans-serif;
+}
+[data-pb-navigation] .pb-subscribe-fields input { min-height: 44px; font-size: 1rem; }
+[data-pb-navigation] .pb-subscribe-fields button { min-height: 44px; background: var(--pb-red); }
+nav[data-pb-local-nav].top { display: flex; justify-content: flex-end; }
+@media (max-width: 1180px) {
+  .pb-editorial-header .pb-site-nav, .pb-header-newsletter { display: none; }
+  .pb-editorial-header .pb-site-mobile { display: block; }
   .pb-editorial-header .pb-site-brand { margin-right: auto; }
   .pb-editorial-search { position: static; }
   .pb-editorial-header .pb-editorial-search > .pb-site-panel { right: 1rem; }
