@@ -148,7 +148,7 @@ app.use((req, res, next) => {
         body = withPBSiteFooter(body, { social: renderPBSocialFollow() });
         body = withPBSiteShell(body, publicPath);
         const adsensePrivate = pbTalent.isPrivatePath(publicPath) || pbBusinessRoutes.privatePath(publicPath) || pbGroupRoutes.privatePath(publicPath) || /^\/(?:pb-control|api|auth)(?:\/|$)/.test(publicPath) || publicPath === '/turistiando/presentacion';
-        body = withPBAdSense(body, {hostname:host,statusCode:res.statusCode,privatePage:adsensePrivate});
+        if (!res.locals.skipAdSense) body = withPBAdSense(body, {hostname:host,statusCode:res.statusCode,privatePage:adsensePrivate});
       }
     }
     return send(body);
@@ -3062,6 +3062,7 @@ app.get('/lo-mas-reciente', (req, res) => {
   const requestedPage = Number.parseInt(req.query.page,10) || 1;
   const page = Math.min(Math.max(1,requestedPage),totalPages);
   const items = filtered.slice((page-1)*perPage,page*perPage);
+  if (items.length === 0) res.locals.skipAdSense = true;
   res.send(loMasRecienteIndexPB(items,page,totalPages,query,selectedTopic,topics,filtered.length));
 });
 
