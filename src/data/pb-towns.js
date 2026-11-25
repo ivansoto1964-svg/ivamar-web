@@ -46,12 +46,12 @@ module.exports = {
     communityPrompt: '¿Hay un dato que solamente un adjunteño sabría? ¿Un comercio que lleva toda la vida, un negocio que desapareció, un jangueo que nadie olvida, una leyenda o una versión diferente de una historia? Aquí la memoria del pueblo también cuenta.'
   },
   arecibo: {
-    name:'Arecibo', region:'Norte · Costa y zona cársica', zip:'00612', demonym:'Arecibeños', founded:'1616', character:'Mar, carso, ciencia e historia',
+    name:'Arecibo', region:'Norte · Costa y zona cársica', zip:'00612', demonym:'Arecibeños', founded:'Entre los siglos XVI y XVII', character:'Mar, carso, ciencia e historia',
     indexable:true,
     intro:'Donde el Atlántico, los mogotes, los ríos y siglos de historia se encuentran en una misma ciudad.',
     nicknames:['Villa del Capitán Correa','Ciudad del Cetí','Diamante del Norte','Muy Leal'],
     why:'Arecibo no es una sola experiencia. En un mismo día puedes caminar por un casco urbano histórico, contemplar la fuerza del Atlántico, entrar al paisaje de cuevas y mogotes del norte y terminar junto a un río o un lago. Es uno de los mejores puntos para entender cómo la costa, el carso, la ciencia y la vida cotidiana conviven en Puerto Rico.',
-    history:'Arecibo quedó constituido como pueblo en 1616 y su nombre se vincula al cacique Arasibo. También se conoce como Villa del Capitán Correa por Antonio de los Reyes Correa, recordado por la defensa del poblado ante un ataque británico en 1702. Su desarrollo quedó marcado por el puerto, la agricultura, el comercio regional y una relación constante con el mar y los ríos.',
+    history:'San Felipe del Arecibo tomó forma entre finales del siglo XVI y comienzos del XVII. El municipio documenta distintas fechas para su fundación, entre ellas 1580 y 1616. Su nombre se vincula al cacique Arasibo. El 5 de agosto de 1702, Antonio de los Reyes Correa defendió la costa de un ataque británico. De ahí viene el nombre Villa del Capitán Correa. El puerto, el comercio y los ríos marcaron el crecimiento posterior de la ciudad.',
     symbols:{
       flag:'La bandera se divide verticalmente en azul y amarillo. En la sección amarilla aparecen quince rombos azules; sus colores y composición proceden del escudo municipal.',
       shield:'El escudo reúne la herencia taína, la fundación española y la memoria del Capitán Correa. Incluye la corona del cacique Arasibo, tortugas, una greca taína, rombos azules y dorados, una correa y una corona mural de cinco torres.'
@@ -60,7 +60,7 @@ module.exports = {
     identity:[
       ['🌊 Costa con carácter','La Poza del Obispo, los acantilados de Islote y la costa de la PR-681 muestran un litoral que no funciona como simple fondo: forma parte de la memoria y la vida arecibeña.'],
       ['🪨 País del carso','Cuevas, sumideros y mogotes definen buena parte del territorio. Cueva del Indio, Cueva Ventana y el corredor del río Tanamá ayudan a comprender un paisaje formado durante miles de años.'],
-      ['🔭 Una ciudad ligada a la ciencia','El legado del Observatorio de Arecibo convirtió el nombre del pueblo en referencia mundial. Arecibo C3 conserva esa conexión mediante experiencias educativas, exhibiciones y actividades STEM en desarrollo.'],
+      ['🔭 Una ciudad ligada a la ciencia','El legado del Observatorio de Arecibo convirtió el nombre del pueblo en referencia mundial. El Centro STEM Arecibo C3 conserva esa conexión mediante exhibiciones, actividades educativas y visitas con programación propia.'],
       ['🐟 La Ciudad del Cetí','El cetí forma parte de la identidad gastronómica local. Su temporada y preparación han conectado por generaciones el río, la cocina y la memoria popular de Arecibo.'],
       ['🎭 Cultura viva','Casa Ulanga, la Catedral San Felipe Apóstol y otras estructuras del centro histórico sirven como puntos de encuentro entre arquitectura, historia, arte y actividad comunitaria.'],
       ['🚗 Cine bajo las estrellas','Auto Cine Santana, establecido en 1957, conserva una experiencia cada vez más rara: disfrutar una película desde el automóvil bajo el cielo del norte.']
@@ -84,7 +84,7 @@ module.exports = {
       ['Bosque Estatal de Cambalache','Bosque compartido con Barceloneta, conocido por senderos, ciclismo, observación de aves y áreas recreativas.'],
       ['Río Tanamá y Chorros La Planta','Corredor de aventura, cuevas, agua y memoria de una antigua infraestructura hidroeléctrica. Para ciertas experiencias se recomienda guía autorizado.'],
       ['Lago Dos Bocas','Embalse entre Arecibo y Utuado, rodeado de montañas y asociado con paseos en bote y restaurantes del área.'],
-      ['Arecibo C3','Centro STEM en desarrollo dentro del distrito histórico del antiguo Observatorio. Opera con programación y acceso limitado que deben verificarse antes de visitar.'],
+      ['Arecibo C3','Centro educativo en el distrito histórico del Observatorio, con exhibiciones y visitas guiadas. Consulta qué días recibe público y qué actividades requieren reservación.'],
       ['Auto Cine Santana','Autocine familiar activo desde 1957 y una experiencia singular dentro de Puerto Rico.'],
       ['Centro histórico','La plaza, la Catedral San Felipe Apóstol, Casa Ulanga y los comercios del casco permiten recorrer Arecibo desde su historia urbana.']
     ],

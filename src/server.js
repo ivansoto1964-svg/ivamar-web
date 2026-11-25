@@ -1093,8 +1093,14 @@ function requirePBCsrf(req, res, next) {
   next();
 }
 
-const pueblosIndex = fs.readFileSync(path.join(__dirname,'../public/pueblos/index.html'),'utf8');
+const pbMunicipalities = require('./data/pb-municipalities');
+const pbTownDirectory = require('./views/planetaboricua/town-editorial').directoryData();
+const pueblosIndex = fs.readFileSync(path.join(__dirname,'../public/pueblos/index.html'),'utf8')
+  .replace('const editorial = {};', () => 'const editorial = ' + JSON.stringify(pbTownDirectory).replace(/</g, '\\u003c') + ';')
+  .replace('<!-- PUEBLOS_DIRECTORIO -->', () => '<ul>' + pbMunicipalities.map(([slug,name]) => `<li><a href="/pueblos/${slug}/">${name}</a></li>`).join('') + '</ul>');
 app.get(['/pueblos','/pueblos/index.html'], (req,res) => {
+  const town = req.query.pueblo;
+  if (typeof town === 'string' && Object.hasOwn(pbTownDirectory,town)) return res.redirect(301, '/pueblos/' + town + '/');
   if (req.path !== '/pueblos/') {
     const query = req.originalUrl.slice(req.path.length);
     return res.redirect(301,'/pueblos/' + query);
@@ -3252,8 +3258,10 @@ app.get("/sitemap.xml", async (req, res) => {
   let businessUrls='';
   try { businessUrls=pbBusinessStore.publicAll().map(item=>`<url><loc>https://www.masboricuaqueunmofongo.com/negocios/${item.slug}</loc><changefreq>weekly</changefreq></url>`).join(''); } catch(error) { console.error('PB business sitemap unavailable:',error.message); }
   const agendaUrl = `<url><loc>https://www.masboricuaqueunmofongo.com/agenda-boricua</loc><changefreq>daily</changefreq><priority>0.8</priority></url><url><loc>https://www.masboricuaqueunmofongo.com/sala-de-prensa</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>`;
+  const townUrls = ['', ...Object.keys(pbTownDirectory)]
+    .map(slug => `<url><loc>https://www.masboricuaqueunmofongo.com/pueblos/${slug ? slug + '/' : ''}</loc></url>`).join('');
   res.set('Content-Type','application/xml');
-  res.send(`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${staticUrls}${floridaArtisansUrl}${agendaUrl}${eventUrls}${latestUrls}${postUrls}${artisanUrls}${talentUrls}${businessUrls}${pbTourismSection.sitemap()}</urlset>`);
+  res.send(`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${staticUrls}${floridaArtisansUrl}${agendaUrl}${eventUrls}${latestUrls}${postUrls}${artisanUrls}${talentUrls}${businessUrls}${townUrls}${pbTourismSection.sitemap()}</urlset>`);
 });
 
 app.get('/sala-de-prensa', (_req, res) => res.send(salaPrensaPB()));
