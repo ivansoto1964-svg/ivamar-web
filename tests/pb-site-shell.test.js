@@ -19,8 +19,8 @@ for (const route of ['/','/blog','/blog/prueba','/lo-mas-reciente','/agenda-bori
   assert.match(output, /href="\/blog"[^>]*>[\s\S]*?<span class="pb-nav-label">El Balcón<\/span>/);
   const desktop = output.match(/<nav class="pb-site-nav"[^>]*>([\s\S]*?)<\/nav>/)[1];
   const mobile = output.match(/<nav class="pb-site-panel" aria-label="Navegación móvil">([\s\S]*?)<\/nav>/)[1];
-  assert.match(desktop, /href="\/pueblos"[^>]*>[\s\S]*?<span class="pb-nav-label">Nuestros pueblos<\/span><\/a>/);
-  assert.match(mobile, /href="\/pueblos"[^>]*>[\s\S]*?<span class="pb-nav-label">Nuestros pueblos<\/span><\/a>/);
+  assert.match(desktop, /href="\/pueblos\/\?v=2"[^>]*>[\s\S]*?<span class="pb-nav-label">Nuestros pueblos<\/span><\/a>/);
+  assert.match(mobile, /href="\/pueblos\/\?v=2"[^>]*>[\s\S]*?<span class="pb-nav-label">Nuestros pueblos<\/span><\/a>/);
   assert.doesNotMatch(output,/href="\/(?:talento-boricua|donde-comer|crea-tu-menu)"/,'Deferred sections must not be activated');
 }
 const artisan={name:'Taller de prueba',ownerName:'Persona de prueba',desc:'Trabajo artesanal.',photo:'https://example.com/photo.jpg',whatsapp:'17875551212',gallery:[{image:'https://example.com/pieza.jpg',title:'Creación',description:'Detalle de la pieza.'}]};

@@ -1099,7 +1099,7 @@ app.get(['/pueblos','/pueblos/index.html'], (req,res) => {
     const query = req.originalUrl.slice(req.path.length);
     return res.redirect(301,'/pueblos/' + query);
   }
-  res.send(pueblosIndex);
+  res.set('Cache-Control','no-cache').send(pueblosIndex);
 });
 app.use(express.static("public", { maxAge: "1y", immutable: true }));
 app.use('/media/pb-blog', express.static(pbBlogStore.MEDIA_DIR, { maxAge:'30d', immutable:true }));

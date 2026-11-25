@@ -93,6 +93,8 @@ function withPBSiteShell(html, pathname) {
   }
   result = withBusinessPromo(result, current);
   result = withGetYourGuide(result, current);
+  // The former static index was cached as immutable for a year.
+  result = result.replace(/href=(["'])\/pueblos\/?\1/g, 'href=$1/pueblos/?v=2$1');
   if (!hasSignup) {
     const related = [
       ['/lo-mas-reciente','Lee las últimas noticias','Read the latest news'],
