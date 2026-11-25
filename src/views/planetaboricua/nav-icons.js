@@ -17,6 +17,8 @@ const marks = {
   contact:'<path d="M21 12a9 9 0 0 1-13 8l-5 1 1-5a9 9 0 1 1 17-4Z"/><path class="pb-icon-accent" d="M8 9h8m-8 4h5"/>',
   profile:'<circle cx="12" cy="8" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2"/><path class="pb-icon-accent" d="M10 8h4"/>',
   more:'<circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/>',
+  share:'<path d="m8.5 10.5 7-4m-7 7 7 4"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="5" r="2.5"/><circle cx="18" cy="19" r="2.5"/>',
+  search:'<circle cx="10.5" cy="10.5" r="5.5"/><path d="m15 15 5 5"/>',
   menu:'<path d="M4 6h16M4 18h16"/><path class="pb-icon-accent" d="M4 12h16"/>'
 };
 function navIcon(name) {

@@ -30,6 +30,7 @@
         const result = await response.json().catch(() => ({}));
         if (!response.ok || !result.ok) throw new Error(result.error || 'No se pudo completar la suscripción.');
         form.reset();
+        if (!result.existing) window.gtag?.('event', 'pb_newsletter_signup', {source});
         show('¡Wepa! Ya estás suscrito a Planeta Boricua. 🇵🇷', 'success');
       } catch (error) {
         show(error.message || 'No se pudo conectar. Intenta nuevamente.', 'error');

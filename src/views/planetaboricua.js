@@ -1,3 +1,4 @@
+const { renderPBSocialFollow } = require('./planetaboricua/social-follow');
 const { renderPBSiteFooter } = require('./planetaboricua/site-footer');
 const { renderStay22 } = require('./planetaboricua/stay22');
 
@@ -373,23 +374,17 @@ ${renderStay22()}
   </div>
 </nav>
 
+<main>
 <!-- HERO -->
 <section class="hero" id="hero">
   <div class="hero-inner">
     <div class="hero-main" id="hero-main">
-      <div class="hero-main-img" id="hero-main-img" style="display:flex;align-items:center;justify-content:center;font-size:5rem;">🇵🇷</div>
-      <div class="hero-cat" id="hero-main-cat">Lo más reciente</div>
-      <h1 class="hero-title" id="hero-main-title">Lo más reciente de nuestro Planeta Boricua</h1>
-      <p class="hero-excerpt" id="hero-main-excerpt"></p>
-      <div class="hero-meta">
-        <span id="hero-main-date"></span>
-        <a href="/lo-mas-reciente" id="hero-main-link" class="hero-read">Leer artículo →</a>
-      </div>
+      <!--PB_HOME_LEAD-->
     </div>
     <aside class="hero-sidebar" id="hero-sidebar" aria-labelledby="home-latest-title">
-      <h2 id="home-latest-title" class="home-sidebar-heading">Lo más reciente</h2>
-      <div id="latest-grid" class="latest-grid"><p>Cargando novedades…</p></div>
-      <a href="/lo-mas-reciente" class="sec-divider-link">Ver todas →</a>
+      <h2 id="home-latest-title" class="home-sidebar-heading">Lo último</h2>
+      <div id="latest-grid" class="latest-grid"><!--PB_HOME_NEWS--></div>
+      <a href="/lo-mas-reciente" class="sec-divider-link">Ver todas las noticias</a>
     </aside>
   </div>
 </section>
@@ -591,6 +586,22 @@ async function loadDirectorio() {
 // La Feria completa se publica en /feria-artesanos el 23 de septiembre.
 </script>
 
+<!-- BOLETÍN -->
+<section class="newsletter" id="newsletter">
+  <div class="newsletter-inner">
+    <div class="newsletter-eyebrow">Boletín Boricua</div>
+    <h2>Lo boricua, en tu correo.</h2>
+    <p>Recibe historias, recursos y novedades de Puerto Rico y la diáspora.</p>
+    <form class="newsletter-form" data-pb-subscribe data-source="inicio">
+      <input class="newsletter-input" name="email" type="email" inputmode="email" autocomplete="email" placeholder="tu@email.com" aria-label="Correo electrónico" required>
+      <button class="newsletter-btn" type="submit">Suscribirme gratis</button>
+      <p class="pb-subscribe-status" role="status" aria-live="polite"></p>
+    </form>
+    <div class="newsletter-note">Cancela cuando quieras.</div>
+  </div>
+</section>
+${renderPBSocialFollow()}
+
 <!-- RECURSOS -->
 <section id="recursos" class="home-resources" aria-labelledby="home-resources-title">
   <div class="home-section-inner">
@@ -699,21 +710,6 @@ async function loadDirectorio() {
   </div>
 </section>
 
-<!-- NEWSLETTER -->
-<section class="newsletter" id="newsletter">
-  <div class="newsletter-inner">
-    <div class="newsletter-eyebrow">Boletín Boricua</div>
-    <h2>Lo Boricua <em>Directo</em> a Tu Email</h2>
-    <p>Historias, cultura, recursos y novedades de nuestra comunidad — directo a tu correo. Sin spam, solo lo bueno.</p>
-    <form class="newsletter-form" data-pb-subscribe data-source="inicio">
-      <input class="newsletter-input" name="email" type="email" inputmode="email" autocomplete="email" placeholder="tu@email.com" aria-label="Correo electrónico" required>
-      <button class="newsletter-btn" type="submit">Suscribirme →</button>
-      <p class="pb-subscribe-status" role="status" aria-live="polite"></p>
-    </form>
-    <div class="newsletter-note">Sin spam. Cancela cuando quieras. ¡Wepa! 🇵🇷</div>
-  </div>
-</section>
-
 <!-- APP INSTALABLE -->
 <section class="pb-app" id="instalar-app">
   <div class="pb-app-inner">
@@ -733,6 +729,8 @@ async function loadDirectorio() {
 </section>
 
 <div class="pb-home-ad" aria-label="Publicidad"><!--PB_AD_HOME_BEFORE_FOOTER--></div>
+
+</main>
 
 <!-- FOOTER -->
 ${renderPBSiteFooter()}
@@ -873,38 +871,6 @@ async function pbCheckForUpdate(post) {
   }
 }
 
-// Lo más reciente — canal editorial rápido de PB
-(function loadLatest(){
-  const grid=document.getElementById('latest-grid');
-  if(!grid)return;
-  const safe=value=>String(value||'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
-  fetch('/api/pb-lo-mas-reciente').then(response=>response.json()).then(data=>{
-    const items=(data.items||[]).slice(0,4);
-    if(!items.length){grid.innerHTML='<div style="grid-column:1/-1;background:var(--light);border-radius:8px;padding:1.3rem;color:var(--mid);">Aquí aparecerán las actualizaciones importantes verificadas por Planeta Boricua.</div>';return;}
-    // La publicación más nueva abre la portada; las siguientes van al lado.
-    const heroPost=items[0];
-    const heroLink='/lo-mas-reciente/'+encodeURIComponent(heroPost.slug);
-    const heroImg=document.getElementById('hero-main-img');
-    if(heroPost.image&&heroPost.image!=='/img/og-planetaboricua.jpg'){
-      heroImg.outerHTML='<img id="hero-main-img" src="'+safe(heroPost.image)+'" alt="'+safe(heroPost.title)+'" width="768" height="320" fetchpriority="high" decoding="async" style="display:block;width:100%;height:320px;object-fit:contain;object-position:center;background:#eef1f5;border-radius:4px;margin-bottom:1rem;">';
-    }
-    document.getElementById('hero-main-cat').textContent='Lo más reciente';
-    document.getElementById('hero-main-title').textContent=heroPost.title;
-    document.getElementById('hero-main-excerpt').textContent=heroPost.summary;
-    document.getElementById('hero-main-date').textContent=new Date(heroPost.publishedAt).toLocaleString('es-PR',{dateStyle:'medium',timeStyle:'short'});
-    document.getElementById('hero-main-link').href=heroLink;
-    grid.innerHTML=items.slice(1).map(item=>{
-      const href='/lo-mas-reciente/'+encodeURIComponent(item.slug);
-      const image=item.image&&item.image!=='/img/og-planetaboricua.jpg'
-        ? '<img src="'+safe(item.image)+'" alt="" width="112" height="84" loading="lazy" decoding="async">'
-        : '<div class="latest-placeholder" aria-hidden="true"><span>🇵🇷</span></div>';
-      const date=new Date(item.publishedAt).toLocaleString('es-PR',{dateStyle:'medium',timeStyle:'short'});
-      return '<a class="latest-card" href="'+href+'">'+image+
-        '<div class="latest-copy"><h3>'+safe(item.title)+'</h3><div class="latest-date">'+safe(date)+'</div></div></a>';
-    }).join('');
-  }).catch(()=>{grid.innerHTML='<div style="color:var(--mid);font-size:.8rem;">No pudimos cargar las actualizaciones.</div>'});
-})();
-
 // Blog Feed
 (function(){
   fetch('/api/planetaboricua-blog')
@@ -956,7 +922,7 @@ setInterval(() => {
 
 </script>
 
-<script src="/js/pb-subscribe.js?v=1"></script>
+<script src="/js/pb-subscribe.js?v=2"></script>
 
 
 <!-- Cookie Banner -->

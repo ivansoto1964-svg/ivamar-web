@@ -8,7 +8,7 @@ const renderAgenda = require('../src/views/planetaboricua/agenda-artesanal');
 const renderControl = require('../src/views/pb-control');
 
 assert(home.includes('data-pb-subscribe data-source="inicio"'), 'Inicio debe usar el formulario existente con origen inicio.');
-assert(home.includes('/js/pb-subscribe.js?v=1'), 'Inicio debe cargar el manejador compartido.');
+assert(home.includes('/js/pb-subscribe.js?v=2'), 'Inicio debe cargar el manejador compartido.');
 assert(!home.includes('nlSubscribe()'), 'Inicio no debe conservar el manejador anterior en paralelo.');
 
 const blog = renderBlogPost({

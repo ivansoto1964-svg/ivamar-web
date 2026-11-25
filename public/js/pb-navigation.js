@@ -1,7 +1,9 @@
 (() => {
   const menus = [...document.querySelectorAll('.pb-site-menu')];
   menus.forEach(menu => menu.addEventListener('toggle', () => {
-    if (menu.open) menus.forEach(other => { if (other !== menu) other.open = false; });
+    if (!menu.open) return;
+    menus.forEach(other => { if (other !== menu) other.open = false; });
+    menu.querySelector('input[type=search]')?.focus();
   }));
   document.addEventListener('keydown', event => {
     if (event.key !== 'Escape') return;

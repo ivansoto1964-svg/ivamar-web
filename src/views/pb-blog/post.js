@@ -1,4 +1,5 @@
 const { renderSubscriberForm } = require('../planetaboricua/subscriber-form');
+const { renderArticleShare } = require('../planetaboricua/article-share');
 const { renderExplorePB } = require('../planetaboricua/explore-pb');
 const { qualifyAffiliateLinks } = require('../../utils/pb-seo');
 const { renderPBAd, insertAdsByProgress } = require('../planetaboricua/pb-ad');
@@ -13,7 +14,7 @@ module.exports = function renderPBPost(post, relatedPosts, prevPost, nextPost, c
   const cover = buildSocialCover(post.image || '/img/og-planetaboricua.jpg', imageVersion);
   const socialImage = cover.url;
   const related = (relatedPosts || []).slice(0, 3).map(p => `
-    <a href="/blog/${encodeURIComponent(p.slug)}" class="related-card">
+    <a href="/blog/${encodeURIComponent(p.slug)}" class="related-card" data-pb-event="pb_related_open" data-pb-method="el_balcon">
       <div class="related-img pb-editorial-card-media"><img class="pb-editorial-card-image" src="${esc(optimizedImageUrl(p.image) || '/img/og-planetaboricua.jpg')}" alt="${esc(p.title)}" width="640" height="420" loading="lazy" decoding="async"></div>
       <div class="related-body"><span class="related-cat">${esc(p.category || 'Cultura Boricua')}</span><h4>${esc(p.title)}</h4></div>
     </a>`).join('');
@@ -22,9 +23,6 @@ module.exports = function renderPBPost(post, relatedPosts, prevPost, nextPost, c
   const readTime = Math.max(1, Math.ceil(wordCount / 200));
   const navPrevNext = `<div class="post-nav">${prevPost ? `<a href="/blog/${encodeURIComponent(prevPost.slug)}" class="post-nav-item"><span>← Anterior</span><strong>${esc(prevPost.title)}</strong></a>` : '<div></div>'}${nextPost ? `<a href="/blog/${encodeURIComponent(nextPost.slug)}" class="post-nav-item post-nav-next"><span>Siguiente →</span><strong>${esc(nextPost.title)}</strong></a>` : '<div></div>'}</div>`;
   const commentList = comments.length ? comments.map(comment => `<article class="comment"><div class="comment-head"><strong>${esc(comment.name)}</strong><time>${new Date(comment.approvedAt || comment.submittedAt).toLocaleDateString('es-PR',{year:'numeric',month:'short',day:'numeric'})}</time></div><p>${esc(comment.comment).replace(/\n/g,'<br>')}</p></article>`).join('') : '<p class="comments-empty">Sé la primera persona en dejar un comentario.</p>';
-  const encodedUrl = encodeURIComponent(pageUrl);
-  const encodedTitle = encodeURIComponent(post.title);
-  const encodedShare = encodeURIComponent(post.title + ' ' + pageUrl);
   const seoTitle = post.seoTitle || post.title;
   const metaDescription = post.metaDescription || post.excerpt || post.title;
   const schema = JSON.stringify({"@context":"https://schema.org","@type":"BlogPosting",headline:post.title,description:metaDescription,image:socialImage,datePublished:post.dateISO||post.date||'',dateModified:post.updatedISO||post.dateISO||'',author:{"@type":"Person",name:"Iván Soto"},publisher:{"@type":"Organization",name:"Planeta Boricua",url:"https://www.masboricuaqueunmofongo.com"},mainEntityOfPage:pageUrl}).replace(/</g,'\\u003c');
@@ -42,21 +40,18 @@ module.exports = function renderPBPost(post, relatedPosts, prevPost, nextPost, c
 </style></head><body>
 <nav><a href="/">🇵🇷 Planeta Boricua</a><div class="nav-links"><a href="/lo-mas-reciente">Lo más reciente</a><a class="active" href="/blog">El Balcón</a><a href="/feria-artesanos">Artesanos</a></div></nav>
 <div class="breadcrumb"><a href="/">Inicio</a> › <a href="/blog">El Balcón</a> › ${esc(post.title.length > 55 ? post.title.slice(0,55)+'…' : post.title)}</div>
-<main class="article">${hero}<div class="post-wrap"><div class="post-cat">El Balcón · ${esc(post.category || 'Cultura Boricua')}</div><h1 class="post-title">${esc(post.title)}</h1>${post.excerpt ? `<p class="post-summary">${esc(post.excerpt)}</p>` : ''}<div class="post-meta"><span>📅 <strong>${esc(post.date || '')}</strong></span><span>✍️ <strong>Iván Soto</strong></span><span>⏱️ <strong>${readTime} min</strong></span></div>${topAd}<div class="post-body">${articleWithAds}</div>
+<main class="article"><div class="post-wrap"><div class="pb-article-heading"><div class="post-cat">El Balcón · ${esc(post.category || 'Cultura Boricua')}</div><h1 class="post-title">${esc(post.title)}</h1>${post.excerpt ? `<p class="post-summary">${esc(post.excerpt)}</p>` : ''}<div class="post-meta"><span><strong>${esc(post.date || '')}</strong></span><span><strong>Iván Soto</strong></span><span><strong>${readTime} min</strong></span></div>${renderArticleShare(post.title, pageUrl)}</div>${hero}${topAd}<div class="post-body">${articleWithAds}</div>
 ${tags ? `<div class="post-tags"><span class="post-tags-label">Temas:</span>${tags}</div>` : ''}
+${navPrevNext}${related ? `<section class="post-related"><h3>🎙️ Sigue en El Balcón</h3><div class="related-grid">${related}</div></section>` : ''}${explore}
 ${renderSubscriberForm('blog')}
-<section class="share-box" aria-labelledby="share-title"><h2 id="share-title">Comparte esta publicación</h2><p>Ayúdanos a llevar esta conversación a más boricuas.</p><div class="share-grid"><a class="share share-wa" href="https://wa.me/?text=${encodedShare}" target="_blank" rel="noopener noreferrer">WhatsApp</a><a class="share share-fb" href="https://www.facebook.com/sharer/sharer.php?u=${encodedUrl}" target="_blank" rel="noopener noreferrer">Facebook</a><a class="share share-x" href="https://twitter.com/intent/tweet?text=${encodedTitle}&url=${encodedUrl}" target="_blank" rel="noopener noreferrer">X</a><a class="share share-threads" href="https://www.threads.net/intent/post?text=${encodedShare}" target="_blank" rel="noopener noreferrer">Threads</a><a class="share share-tg" href="https://t.me/share/url?url=${encodedUrl}&text=${encodedTitle}" target="_blank" rel="noopener noreferrer">Telegram</a><a class="share share-mail" href="mailto:?subject=${encodedTitle}&body=${encodedShare}">Correo</a><button class="share share-copy" type="button" id="copy-link">Copiar enlace</button><button class="share share-more" type="button" id="native-share">Más opciones</button></div><p class="form-status" id="share-status" role="status" aria-live="polite"></p></section>
 <section class="comments" id="comentarios" aria-labelledby="comments-title"><h2 id="comments-title">Comentarios (${comments.length})</h2><p class="comments-intro">¿Qué opinas? Participa con respeto. Todos los comentarios se revisan antes de publicarse.</p><form class="comment-form" id="comment-form"><label for="comment-name">Tu nombre</label><input id="comment-name" name="name" maxlength="60" autocomplete="name" required><label for="comment-text">Tu comentario</label><textarea id="comment-text" name="comment" maxlength="1000" required></textarea><label class="hp" aria-hidden="true">No completar<input name="website" tabindex="-1" autocomplete="off"></label><button type="submit">Enviar comentario</button><p class="form-note">Planeta Boricua aprobará el comentario antes de mostrarlo.</p><p class="form-status" id="comment-status" role="status" aria-live="polite"></p></form><div class="comment-list">${commentList}</div></section>
 <aside class="author"><strong>Sobre el autor</strong><p>Iván Soto escribe desde la experiencia de un boricua entre la isla y Florida, con atención a nuestra cultura, memoria y comunidad.</p></aside>
-${navPrevNext}${related ? `<section class="post-related"><h3>🎙️ Sigue en El Balcón</h3><div class="related-grid">${related}</div></section>` : ''}${explore}</div></main>
+</div></main>
 <footer><a href="/">Portal</a><a href="/lo-mas-reciente">Lo más reciente</a><a href="/blog">El Balcón</a><a href="/privacidad-boricua">Privacidad</a><a href="/terminos-boricua">Términos</a><p>© 2026 Planeta Boricua · Más Boricua Que Un Mofongo 🇵🇷</p></footer>
 <div class="cookie-banner" id="cookie-banner"><p>🍪 Usamos cookies para mejorar tu experiencia y mostrar anuncios relevantes. <a href="/privacidad-boricua" style="color:#ff8b98">Política de Privacidad</a></p><button id="accept-cookies">Aceptar</button></div>
 <script>
 (function(){
- const pageUrl=${JSON.stringify(pageUrl)}, title=${JSON.stringify(post.title)}, slug=${JSON.stringify(post.slug)};
- const copy=document.getElementById('copy-link'), shareStatus=document.getElementById('share-status'), nativeShare=document.getElementById('native-share');
- copy.addEventListener('click',async()=>{try{await navigator.clipboard.writeText(pageUrl);shareStatus.textContent='✅ Enlace copiado.';}catch(_){shareStatus.textContent='Copia este enlace: '+pageUrl;}});
- if(navigator.share){nativeShare.addEventListener('click',()=>navigator.share({title,url:pageUrl}).catch(()=>{}));}else{nativeShare.hidden=true;}
+ const slug=${JSON.stringify(post.slug)};
  const form=document.getElementById('comment-form'), status=document.getElementById('comment-status');
  form.addEventListener('submit',async event=>{event.preventDefault();const button=form.querySelector('button[type="submit"]');button.disabled=true;status.textContent='Enviando…';const data=Object.fromEntries(new FormData(form).entries());data.section='blog';try{const response=await fetch('/api/pb-comments/'+encodeURIComponent(slug),{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});const result=await response.json();if(!response.ok)throw new Error(result.error||'No se pudo enviar.');form.reset();status.textContent='✅ Recibido. Lo revisaremos antes de publicarlo.';}catch(error){status.textContent='⚠️ '+error.message;}finally{button.disabled=false;}});
  const banner=document.getElementById('cookie-banner');if(!localStorage.getItem('cookies_accepted'))banner.style.display='flex';document.getElementById('accept-cookies').addEventListener('click',()=>{localStorage.setItem('cookies_accepted','1');banner.style.display='none';});
