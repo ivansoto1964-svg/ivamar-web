@@ -1,5 +1,6 @@
 const municipalities = require('../../data/pb-municipalities');
 const guides = require('../../data/pb-town-guides.json');
+const routes = require('../../data/pb-town-routes.json');
 const { getTownTravelLinks } = require('../../services/pb-town-travel-links');
 
 const esc = value => String(value ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -23,7 +24,7 @@ function photoImage(photo) {
 
 function mapsLink(place, town) {
   const query = new URLSearchParams({api:'1', query:place + ', ' + town + ', Puerto Rico'});
-  return `https://www.google.com/maps/search/?${esc(query)}`;
+  return `https://www.google.com/maps/search/?${query}`;
 }
 
 function placePhoto(photo) {
@@ -38,18 +39,35 @@ function stopId(section, index) {
   return `${section}-parada-${index + 1}`;
 }
 
-function guideCards(town, entries, {showMap = false, photos = {}, section = 'guia-del-pueblo'} = {}) {
-  return `<div class="cards">${entries.map(([name, copy, link, linkText, otherLinks = [], visitStatus], index) => `
-    <article class="mini town-stop" id="${stopId(section,index)}"><h3>${esc(name)}</h3>${placePhoto(photos[name])}<p>${visitStatus ? `<strong>${esc(visitStatus)}.</strong> ` : ''}${esc(copy)}</p>
-    ${showMap ? `<a class="town-map" href="${mapsLink(name,town)}" ${external}>Ver mapa de ${esc(name)} ↗</a>` : ''}
-    ${link ? `<p><a class="town-map" href="${esc(link)}" ${link.startsWith('https://') ? external : ''}>${esc(linkText || 'Más sobre ' + name)} ${link.startsWith('https://') ? '↗' : '→'}</a></p>` : ''}
-    ${otherLinks.length ? `<ul class="town-stop-links">${otherLinks.map(([label,url]) => `<li><a href="${esc(url)}" ${url.startsWith('https://') ? external : ''}>${esc(label)} ${url.startsWith('https://') ? '↗' : '→'}</a></li>`).join('')}</ul>` : ''}</article>`).join('')}</div>`;
+function stopLinks(items, attributes, arrow) {
+  return `<ul class="town-stop-links">${items.map(([label,url]) => `<li><a href="${esc(url)}" ${attributes}>${esc(label)} ${arrow}</a></li>`).join('')}</ul>`;
 }
 
-function renderGuide(town, guide, hasWeekendGuide) {
+function guideCards(town, entries, {showMap = false, photos = {}, section = 'guia-del-pueblo'} = {}) {
+  return `<div class="cards">${entries.map(([name, copy, link, linkText, otherLinks = [], visitStatus], index) => {
+    const links = link ? [[linkText || 'Más sobre ' + name, link], ...otherLinks] : otherLinks;
+    const internal = links.filter(([,url]) => url.startsWith('/'));
+    const outbound = links.filter(([,url]) => url.startsWith('https://'));
+    if (showMap) outbound.unshift(['Ver mapa de ' + name, mapsLink(name,town)]);
+    return `
+    <article class="mini town-stop" id="${stopId(section,index)}"><h3>${esc(name)}</h3>${placePhoto(photos[name])}<p>${visitStatus ? `<strong>${esc(visitStatus)}.</strong> ` : ''}${esc(copy)}</p>
+      ${internal.length ? stopLinks(internal, '', '→') : ''}
+      ${outbound.length ? `<details class="town-visit-links"><summary>${showMap ? 'Mapa y enlaces de visita' : 'Enlaces de visita'}</summary>${stopLinks(outbound, external, '↗')}</details>` : ''}
+    </article>`;
+  }).join('')}</div>`;
+}
+
+function renderGuide(town, guide, slug) {
+  const route = routes[slug];
+  const routeStops = (route?.stops || []).map(index => {
+    const [name] = guide.places[index];
+    return `<li><a href="#${stopId('guia-del-pueblo', index)}">${esc(name)}</a></li>`;
+  }).join('');
   return `<section class="section town-guide" id="guia-del-pueblo">
-    <h2>${hasWeekendGuide ? 'Tres paradas para entender Arecibo' : 'Qué visitar'}</h2>
-    <div class="town-plan"><strong>${hasWeekendGuide ? 'Del casco al carso' : 'Un plan para empezar'}</strong><p>${esc(guide.plan)}</p></div>
+    <h2>Qué visitar</h2>
+    <div class="town-plan" id="ruta-recomendada"><h3>${esc(route?.title || 'Un plan para empezar')}</h3><p>${esc(route?.copy || guide.plan)}</p>
+      ${routeStops ? `<ol class="town-route-stops" aria-label="Paradas de la ruta">${routeStops}</ol>` : ''}
+    </div>
     ${guideCards(town, guide.places, {showMap:true, photos:guide.placePhotos})}
   </section>
   ${(guide.sections || []).map(({id,title,entries}) => `<section class="section town-guide" id="${esc(id)}">
@@ -57,7 +75,7 @@ function renderGuide(town, guide, hasWeekendGuide) {
 }
 
 function renderSources(guide, hasHeroPhoto) {
-  return `<section class="section town-guide-sources" id="fuentes"><h2>Fuentes y enlaces de visita</h2><ul>${guide.sources.map(([label,url]) => `<li><a href="${esc(url)}" ${external}>${esc(label)} ↗</a></li>`).join('')}</ul>${hasHeroPhoto ? photoCredit(guide.photo) : ''}</section>`;
+  return `<section class="section town-guide-sources" id="fuentes"><details><summary>Referencias y créditos de fotos</summary><ul>${guide.sources.map(([label,url]) => `<li><a href="${esc(url)}" ${external}>${esc(label)} ↗</a></li>`).join('')}${guide.population2025 ? `<li><a href="https://www.census.gov/data/datasets/time-series/demo/popest/2020s-total-puerto-rico-municipios.html" ${external}>Negociado del Censo — estimados de población ↗</a></li>` : ''}</ul>${hasHeroPhoto ? photoCredit(guide.photo) : ''}</details></section>`;
 }
 
 function renderTravelLinks(slug) {

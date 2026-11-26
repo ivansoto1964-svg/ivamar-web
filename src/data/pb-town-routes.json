@@ -1,0 +1,631 @@
+{
+  "adjuntas": {
+    "title": "Del casco al lago",
+    "copy": "Empieza en Casa Pueblo para entender el papel de la energía solar en el pueblo. Deja la segunda parte del paseo para el paisaje montañoso de Lago Garzas y confirma cuáles áreas tienen acceso público.",
+    "stops": [
+      0,
+      2
+    ]
+  },
+  "aguada": {
+    "title": "Una tarde de plaza y playa",
+    "copy": "Haz la primera parada en la plaza para caminar el casco. Luego ve a Pico de Piedra y tómate el tiempo de conocer el litoral desde la arena si el mar está picado.",
+    "stops": [
+      2,
+      0
+    ]
+  },
+  "aguadilla": {
+    "title": "Del muelle a la ciudad",
+    "copy": "Visita Crash Boat temprano y reserva el segundo tramo para caminar por el Paseo Real Marina. Son dos maneras de conocer la costa de Aguadilla, una desde la playa y otra desde el casco.",
+    "stops": [
+      0,
+      2
+    ]
+  },
+  "aguas-buenas": {
+    "title": "Una mañana en el casco",
+    "copy": "Toma la plaza Luis A. Ferré como punto de partida. Si quieres añadir las cavernas a otro día, verifica con el municipio si hay acceso o visitas programadas antes de subir.",
+    "stops": [
+      0
+    ]
+  },
+  "aibonito": {
+    "title": "Mirador e historia de montaña",
+    "copy": "Empieza con la vista en Piedra Degetau y sigue al Asomante para ubicar en el paisaje el episodio de 1898. Si vienes por las flores, confirma las fechas del festival por separado.",
+    "stops": [
+      1,
+      2
+    ]
+  },
+  "anasco": {
+    "title": "De la plaza a Tres Hermanos",
+    "copy": "Empieza por el centro de Añasco para orientarte en el pueblo. Luego cambia el paso en Tres Hermanos y deja tiempo para disfrutar la costa desde la orilla.",
+    "stops": [
+      0,
+      1
+    ]
+  },
+  "arecibo": {
+    "title": "Del casco al valle del río",
+    "copy": "Pasa por Casa Ulanga para conocer el casco histórico y reserva otro tramo del día para Cueva Ventana. Usa la hora del recorrido guiado como referencia para organizar las dos paradas.",
+    "stops": [
+      1,
+      2
+    ]
+  },
+  "arroyo": {
+    "title": "Una caminata por el antiguo puerto",
+    "copy": "Empieza por la Antigua Aduana y sigue al malecón. Juntas, las dos paradas dejan ver el vínculo entre el comercio del pueblo y su frente marítimo.",
+    "stops": [
+      1,
+      0
+    ]
+  },
+  "barceloneta": {
+    "title": "Senderos y costa en un día",
+    "copy": "Ve primero a Cambalache si quieres caminar temprano. Haz de La Boca la segunda parada y aprovecha el cambio de paisaje entre el bosque y la desembocadura.",
+    "stops": [
+      0,
+      1
+    ]
+  },
+  "barranquitas": {
+    "title": "La historia a pie por el casco",
+    "copy": "Empieza en la plaza y sigue a la casa natal de Luis Muñoz Rivera. Para conocer el cañón de San Cristóbal, separa una salida con guía y confirma el acceso.",
+    "stops": [
+      2,
+      0
+    ]
+  },
+  "bayamon": {
+    "title": "Arte primero, paseo después",
+    "copy": "Organiza la mañana alrededor del Museo Francisco Oller y deja tiempo para caminar un tramo del Paseo Lineal. Son planes que puedes hacer por separado si vienes con poco tiempo.",
+    "stops": [
+      0,
+      1
+    ]
+  },
+  "cabo-rojo": {
+    "title": "Salinas, faro y tarde en Boquerón",
+    "copy": "Dedica la primera parte del día a las salinas y al paisaje del faro. Termina en Boquerón para comer o quedarte a ver cómo cambia el ambiente al anochecer.",
+    "stops": [
+      0,
+      1,
+      2
+    ]
+  },
+  "caguas": {
+    "title": "Una vuelta por el Corazón Criollo",
+    "copy": "Usa la ruta del casco para ubicarte y elige el Museo del Tabaco como parada principal. Así puedes dedicarle tiempo a la historia del trabajo en el valle del Turabo.",
+    "stops": [
+      0,
+      1
+    ]
+  },
+  "camuy": {
+    "title": "Del casco a Peñón Amador",
+    "copy": "Combina una vuelta por la plaza y la iglesia con una parada en la costa. En Peñón Amador el plan es mirar el paisaje desde tierra firme. El parque de las cavernas sigue cerrado.",
+    "stops": [
+      1,
+      2
+    ]
+  },
+  "canovanas": {
+    "title": "Del centro a la memoria azucarera",
+    "copy": "Recorre la plaza y ubica la antigua central como referencia del pasado cañero. Verifica con el municipio qué partes del entorno se pueden visitar.",
+    "stops": [
+      2,
+      0
+    ]
+  },
+  "carolina": {
+    "title": "Arte en el casco y costa en Isla Verde",
+    "copy": "Consulta las exhibiciones de Casa Escuté y dedica otro tramo del día a Isla Verde. El contraste ayuda a conocer Carolina más allá del corredor hotelero.",
+    "stops": [
+      1,
+      0
+    ]
+  },
+  "catano": {
+    "title": "Cruza la bahía y pasea por el malecón",
+    "copy": "Si vienes desde San Juan, organiza la salida alrededor del horario de la lancha. Al llegar, camina por el malecón y mira el Viejo San Juan desde la otra orilla.",
+    "stops": [
+      1,
+      0
+    ]
+  },
+  "cayey": {
+    "title": "Del arte universitario a las lechoneras",
+    "copy": "Consulta el horario del Museo Pío López Martínez antes de salir. Deja la comida para Guavate y cuenta con el tiempo de traslado entre el casco y las lechoneras.",
+    "stops": [
+      2,
+      0
+    ]
+  },
+  "ceiba": {
+    "title": "La costa antes del ferry",
+    "copy": "Si tienes una salida confirmada, visita Los Machos con suficiente margen para regresar al terminal. Para un viaje sin ferry, puedes dedicar la visita a conocer el litoral de Ceiba.",
+    "stops": [
+      1,
+      0
+    ]
+  },
+  "ciales": {
+    "title": "Café y paseo en Ciales",
+    "copy": "Usa el museo para conocer por qué el café marcó la economía del pueblo. Completa el plan con un tramo del paseo dedicado a Juan Antonio Corretjer.",
+    "stops": [
+      0,
+      1
+    ]
+  },
+  "cidra": {
+    "title": "Del centro al embalse",
+    "copy": "Empieza en la plaza Francisco M. Zeno y deja el lago para el segundo tramo. Confirma los accesos públicos al embalse antes de escoger desde dónde verlo.",
+    "stops": [
+      1,
+      0
+    ]
+  },
+  "coamo": {
+    "title": "Casco y aguas termales",
+    "copy": "Camina primero por la plaza y el entorno de la iglesia San Blas. Organiza el resto del día alrededor del horario de los baños termales.",
+    "stops": [
+      2,
+      0
+    ]
+  },
+  "comerio": {
+    "title": "Trova y paisaje de río",
+    "copy": "Empieza en la plaza de la Trova y observa después el valle del Río de la Plata desde un acceso público. El centro y el río ofrecen dos entradas a la historia del pueblo.",
+    "stops": [
+      1,
+      2
+    ]
+  },
+  "corozal": {
+    "title": "Un día entre el casco y Cibuco",
+    "copy": "Camina la plaza para conocer el centro de Corozal y comprueba el horario del Cibuco antes de seguir. Si viajas por el Festival del Plátano, consulta la programación de ese año.",
+    "stops": [
+      0,
+      1
+    ]
+  },
+  "culebra": {
+    "title": "Dewey y una tarde en Flamenco",
+    "copy": "Organiza el transporte desde Dewey antes de salir hacia Flamenco. Si vas y vienes el mismo día, calcula la hora de regreso al terminal antes de añadir otra playa.",
+    "stops": [
+      2,
+      0
+    ]
+  },
+  "dorado": {
+    "title": "Una vuelta por el pueblo antes de la playa",
+    "copy": "Conoce la Casa del Rey en el casco y dedica más tarde un tramo al balneario Manuel Morales. Guarda tiempo para cada zona porque el interés de ambas es distinto.",
+    "stops": [
+      0,
+      1
+    ]
+  },
+  "fajardo": {
+    "title": "La tarde en Las Croabas y la noche en la laguna",
+    "copy": "Empieza por Las Croabas y usa la hora del recorrido reservado como punto de referencia para la noche. Confirma con el operador el punto de encuentro en lugar de dar por hecho que todos salen del mismo lugar.",
+    "stops": [
+      2,
+      1
+    ]
+  },
+  "florida": {
+    "title": "El casco y el paisaje de mogotes",
+    "copy": "Toma la plaza como punto de orientación. Si sigues hacia el carso, disfruta el paisaje desde lugares de acceso público y consulta al municipio antes de planificar una visita a una cueva.",
+    "stops": [
+      0,
+      1
+    ]
+  },
+  "guanica": {
+    "title": "Del bosque seco a la bahía",
+    "copy": "Visita el bosque temprano por el calor y guarda el segundo tramo para el malecón. Comprueba el acceso a los senderos antes de elegir cuál caminar.",
+    "stops": [
+      0,
+      1
+    ]
+  },
+  "guayama": {
+    "title": "La plaza y una casa para leer la ciudad",
+    "copy": "Empieza por la plaza Cristóbal Colón. Si Casa Cautiño está recibiendo visitas, entra para entender cómo se vivía en una residencia del casco.",
+    "stops": [
+      1,
+      0
+    ]
+  },
+  "guayanilla": {
+    "title": "Una mirada al casco y su litoral",
+    "copy": "Camina la plaza y continúa hacia el litoral cuando tengas claro el acceso público. Busca en el contraste entre ambos lugares la relación del pueblo con el comercio y la caña.",
+    "stops": [
+      0,
+      1
+    ]
+  },
+  "guaynabo": {
+    "title": "Dos capítulos de la historia de Guaynabo",
+    "copy": "Escoge Caparra para comenzar con la historia del asentamiento colonial. Luego visita el Museo del Deporte si su calendario permite combinar ambas paradas.",
+    "stops": [
+      0,
+      1
+    ]
+  },
+  "gurabo": {
+    "title": "La ciudad de las escaleras a pie",
+    "copy": "Empieza por la plaza y dedica el paseo a mirar cómo las escalinatas conectan calles a diferentes alturas. Escoge hasta dónde subir según el tiempo y la movilidad del grupo.",
+    "stops": [
+      1,
+      0
+    ]
+  },
+  "hatillo": {
+    "title": "Del centro de Hatillo a Sardinera",
+    "copy": "Empieza en la plaza, busca el mar en el Paseo del Carmen y deja Sardinera para la última parada. Si vienes a comer o a comprar queso, reserva tiempo para ese tramo por separado.",
+    "stops": [
+      0,
+      3,
+      5
+    ]
+  },
+  "hormigueros": {
+    "title": "De la plaza al santuario",
+    "copy": "Mira primero el casco desde la plaza y sigue al santuario. Antes de ir, revisa el horario de la basílica si quieres conocer su interior.",
+    "stops": [
+      2,
+      0
+    ]
+  },
+  "humacao": {
+    "title": "Lagunas y memoria pesquera",
+    "copy": "Haz la primera parada en la reserva para conocer el humedal. Continúa hacia Punta Santiago y observa cómo cambia el paisaje al llegar a la costa abierta.",
+    "stops": [
+      0,
+      1
+    ]
+  },
+  "isabela": {
+    "title": "Jobos y el paisaje de roca",
+    "copy": "Conoce la playa de Jobos y observa el Pozo de Jacinto desde un punto seguro. Para un plan de senderos, reserva otra salida al Bosque de Guajataca.",
+    "stops": [
+      0,
+      1
+    ]
+  },
+  "jayuya": {
+    "title": "Una mañana de historia en Coabey",
+    "copy": "Combina Casa Canales con el Museo El Cemí y confirma el acceso antes de subir a la montaña. Si tienes tiempo, añade Piedra Escrita como una parada aparte.",
+    "stops": [
+      2,
+      1
+    ]
+  },
+  "juana-diaz": {
+    "title": "Una ruta tras los Reyes Magos",
+    "copy": "Empieza por la plaza y coordina una visita a la Casa Museo de los Santos Reyes. Si viajas por la fiesta, usa el programa de ese año para decidir dónde ver el recorrido.",
+    "stops": [
+      1,
+      0
+    ]
+  },
+  "juncos": {
+    "title": "Una vuelta por el valle de Juncos",
+    "copy": "Conoce la plaza primero y continúa hacia el entorno del Río Valenciano por accesos públicos. Si tu visita coincide con una actividad deportiva, consulta el calendario municipal.",
+    "stops": [
+      0,
+      1
+    ]
+  },
+  "lajas": {
+    "title": "De La Parguera a la bahía al anochecer",
+    "copy": "Llega con tiempo para conocer el poblado y tener claro el punto de salida. Separa la excursión nocturna de cualquier paseo diurno por los cayos.",
+    "stops": [
+      0,
+      1
+    ]
+  },
+  "lares": {
+    "title": "Historia y comercio a pie",
+    "copy": "Comienza en la Plaza de la Revolución y sigue por la iglesia y los comercios del centro. Guarda un rato para preguntar por café o almojábanas.",
+    "stops": [
+      0,
+      1,
+      2
+    ]
+  },
+  "las-marias": {
+    "title": "El casco y la temporada de la china dulce",
+    "copy": "Usa la plaza para conocer el pueblo cualquier día. Si tu interés es el festival, organiza el viaje alrededor de sus fechas publicadas por el municipio.",
+    "stops": [
+      1,
+      0
+    ]
+  },
+  "las-piedras": {
+    "title": "Del casco a los petroglifos",
+    "copy": "Dedica la primera parada a la plaza y pregunta por el acceso al parque arqueológico antes de continuar. El valor de la segunda visita está en mirar el arte rupestre sin tocarlo.",
+    "stops": [
+      1,
+      0
+    ]
+  },
+  "loiza": {
+    "title": "Patrimonio en Loíza y comida en Piñones",
+    "copy": "Empieza con una visita a la Cueva María de la Cruz según su horario. Deja después tiempo para comer en Piñones, donde puedes recorrer un tramo del litoral.",
+    "stops": [
+      1,
+      0
+    ]
+  },
+  "luquillo": {
+    "title": "Playa y kioscos",
+    "copy": "Dedica la primera parte del día al balneario La Monserrate y deja la comida para los kioscos. Añade La Pared si quieres recorrer otro sector del litoral.",
+    "stops": [
+      0,
+      1
+    ]
+  },
+  "manati": {
+    "title": "Del valle agrícola al litoral",
+    "copy": "Si consigues un recorrido de Hacienda La Esperanza, organiza el día alrededor de su hora. Completa la salida mirando las formaciones de Mar Chiquita desde la costa.",
+    "stops": [
+      1,
+      0
+    ]
+  },
+  "maricao": {
+    "title": "Bosque de altura y casco cafetero",
+    "copy": "Escoge un tramo de bosque con acceso confirmado y deja tiempo para el casco. Si vienes por el acabe del café, revisa las actividades de ese año.",
+    "stops": [
+      0,
+      2
+    ]
+  },
+  "maunabo": {
+    "title": "Faro y humedal en Punta Tuna",
+    "copy": "Mira el faro desde los puntos habilitados y continúa por el entorno de la reserva según su acceso. Las dos paradas cuentan la historia costera desde ángulos distintos.",
+    "stops": [
+      0,
+      1
+    ]
+  },
+  "mayaguez": {
+    "title": "Una tarde de arquitectura en el centro",
+    "copy": "Camina desde Plaza Colón hasta el entorno del Teatro Yagüez. Si coincide con una función, convierte el paseo por la arquitectura en un plan de noche.",
+    "stops": [
+      0,
+      1
+    ]
+  },
+  "moca": {
+    "title": "Del mundillo a la hacienda de Laguerre",
+    "copy": "Agenda primero el Museo del Mundillo para conocer la técnica de encaje. Deja la segunda parte para el Palacete Los Moreau si hay visita disponible.",
+    "stops": [
+      0,
+      1
+    ]
+  },
+  "morovis": {
+    "title": "Casco de montaña y carso con guía",
+    "copy": "Camina la plaza y organiza Las Cabachuelas como una salida aparte con operador autorizado. Confirma el punto de encuentro y las condiciones del recorrido.",
+    "stops": [
+      0,
+      1
+    ]
+  },
+  "naguabo": {
+    "title": "El pueblo y el paseo de Húcares",
+    "copy": "Conoce primero el casco y guarda la tarde para caminar el malecón. El frente marítimo es buena parada para buscar dónde comer pescado o mariscos.",
+    "stops": [
+      2,
+      0
+    ]
+  },
+  "naranjito": {
+    "title": "De la plaza al paisaje de La Plata",
+    "copy": "Empieza en el centro y observa el embalse solo desde un acceso habilitado. Si tu ruta pasa por el puente atirantado, incorpóralo al recorrido en carro.",
+    "stops": [
+      1,
+      2
+    ]
+  },
+  "orocovis": {
+    "title": "Senderos de altura y longaniza",
+    "copy": "Empieza por el bosque con acceso y condiciones confirmados. Busca luego un negocio de la Ruta de la Longaniza para completar la salida por la montaña.",
+    "stops": [
+      0,
+      2
+    ]
+  },
+  "patillas": {
+    "title": "Un día entre embalse y costa",
+    "copy": "Acércate al Lago Patillas desde un punto habilitado y guarda la segunda parada para Villa Pesquera. Puedes dedicar cada tramo a mirar paisajes distintos sin entrar al agua.",
+    "stops": [
+      0,
+      1
+    ]
+  },
+  "penuelas": {
+    "title": "La plaza y la memoria de la caña",
+    "copy": "Camina el centro de Peñuelas y ubica Hacienda Dolores para poner en contexto el pasado agrícola. Confirma si hay acceso para visitantes al sitio histórico.",
+    "stops": [
+      1,
+      0
+    ]
+  },
+  "ponce": {
+    "title": "Del casco a la vista de la ciudad",
+    "copy": "Empieza por el Parque de Bombas y la plaza. Si quieres subir al Castillo Serrallés, organiza ese tramo alrededor de la hora disponible para la visita.",
+    "stops": [
+      0,
+      2
+    ]
+  },
+  "quebradillas": {
+    "title": "Dos perspectivas de Guajataca",
+    "copy": "Empieza en el mirador para entender la geografía del litoral. Antes de bajar al área del túnel, confirma los accesos y reserva tiempo para observar el antiguo paso ferroviario.",
+    "stops": [
+      1,
+      0
+    ]
+  },
+  "rincon": {
+    "title": "Una tarde entre el faro y la plaza",
+    "copy": "Mira la costa desde Punta Higüero y deja un tramo para caminar la plaza y comer en el pueblo. Para una parada de surf, consulta las condiciones en Domes.",
+    "stops": [
+      0,
+      2
+    ]
+  },
+  "rio-grande": {
+    "title": "El Yunque por la entrada de la PR-191",
+    "copy": "Empieza en El Portal si quieres orientación y organiza Yokahú y La Coca en función del acceso en la carretera. Revisa los avisos del Servicio Forestal antes de salir.",
+    "stops": [
+      0,
+      1,
+      2
+    ]
+  },
+  "sabana-grande": {
+    "title": "La plaza y una tradición de peregrinación",
+    "copy": "Camina el casco y dedica otra parada al Pozo de la Virgen según su horario. Si tu interés son las hamacas, consulta la programación del festival antes de hacer el viaje.",
+    "stops": [
+      1,
+      0
+    ]
+  },
+  "salinas": {
+    "title": "Manglares y comida frente a la costa",
+    "copy": "Consulta los accesos a Bahía de Jobos y deja un segundo tramo frente al litoral. Si buscas cocina local, pregunta por pescado con mojo isleño.",
+    "stops": [
+      0,
+      1
+    ]
+  },
+  "san-german": {
+    "title": "El casco histórico a pie",
+    "copy": "Empieza en Santo Domingo, visita Porta Coeli según su horario y sigue hacia la iglesia de San Germán de Auxerre. Las fachadas son parte del paseo incluso si algún interior está cerrado.",
+    "stops": [
+      1,
+      0,
+      2
+    ]
+  },
+  "san-juan": {
+    "title": "De El Morro a la bahía",
+    "copy": "Empieza por la fortificación y deja tiempo para llegar al Paseo de la Princesa por las calles del casco. Para arte o vida nocturna, dedica otra parte del día a Santurce.",
+    "stops": [
+      0,
+      1
+    ]
+  },
+  "san-lorenzo": {
+    "title": "Una salida del casco a la montaña",
+    "copy": "Conoce primero la plaza y reserva tiempo para la visita a Hacienda Muñoz si está recibiendo público. Organiza el día contando el traslado entre ambas paradas.",
+    "stops": [
+      0,
+      2
+    ]
+  },
+  "san-sebastian": {
+    "title": "Memoria del Pepino y una parada de agua",
+    "copy": "Comienza en Casa Doña Bisa y confirma las condiciones de Gozalandia antes de salir del casco. Si llueve en la zona, dale más tiempo al paseo por el pueblo.",
+    "stops": [
+      1,
+      0
+    ]
+  },
+  "santa-isabel": {
+    "title": "De la plaza hacia Jauca",
+    "copy": "Empieza en el centro y fíjate en el paisaje agrícola de camino al litoral. Para la parada de playa, confirma por dónde se puede acceder públicamente.",
+    "stops": [
+      0,
+      1
+    ]
+  },
+  "toa-alta": {
+    "title": "Dos paradas en el casco histórico",
+    "copy": "Camina la Plaza Pública y observa la iglesia San Fernando Rey. Si quieres añadir el embalse La Plata, verifica los accesos antes de salir hacia el lago.",
+    "stops": [
+      1,
+      0
+    ]
+  },
+  "toa-baja": {
+    "title": "La bahía y el litoral en dos paradas",
+    "copy": "Dedica la primera parada a Isla de Cabras y al entorno del fortín. Sigue a Punta Salinas si tienes tiempo y el acceso al balneario está disponible.",
+    "stops": [
+      0,
+      1
+    ]
+  },
+  "trujillo-alto": {
+    "title": "Del casco a la memoria del río",
+    "copy": "Camina desde la plaza al entorno del puente histórico según los accesos peatonales vigentes. Para el embalse, usa una salida aparte con punto de observación confirmado.",
+    "stops": [
+      1,
+      0
+    ]
+  },
+  "utuado": {
+    "title": "Arqueología y casco de montaña",
+    "copy": "Organiza el día alrededor del horario de Caguana y guarda tiempo para caminar por el centro de Utuado. El embalse Dos Bocas puede ser una salida distinta.",
+    "stops": [
+      0,
+      2
+    ]
+  },
+  "vega-alta": {
+    "title": "Playa y senderos en Cerro Gordo",
+    "copy": "Empieza por el balneario y añade un tramo de sendero si los accesos están habilitados. Decide cuánto caminar antes de salir, especialmente si vienes con niños.",
+    "stops": [
+      0,
+      1
+    ]
+  },
+  "vega-baja": {
+    "title": "Del casco a Puerto Nuevo",
+    "copy": "Consulta si puedes visitar Casa Alonso y deja el segundo tramo para Puerto Nuevo. La plaza puede sustituir al museo si está cerrado ese día.",
+    "stops": [
+      1,
+      0
+    ]
+  },
+  "vieques": {
+    "title": "Historia de día y bahía de noche",
+    "copy": "Empieza por el Fortín según su horario y continúa hacia Esperanza. Reserva el recorrido por la bahía y confirma cómo regresar después al hospedaje.",
+    "stops": [
+      1,
+      2,
+      0
+    ]
+  },
+  "villalba": {
+    "title": "Mirador y casco entre montañas",
+    "copy": "Consulta primero el acceso al mirador y deja tiempo para conocer la plaza del pueblo. Si hay poca visibilidad, comienza en el casco y decide después si subes.",
+    "stops": [
+      1,
+      2
+    ]
+  },
+  "yabucoa": {
+    "title": "Del valle hacia Playa Lucía",
+    "copy": "Pasa por el casco y observa el paisaje del valle camino a Playa Lucía. La antigua Central Roig sirve de referencia histórica si quieres entender cómo se trabajaba la caña.",
+    "stops": [
+      2,
+      1
+    ]
+  },
+  "yauco": {
+    "title": "Arte en la calle y vuelta por el casco",
+    "copy": "Camina el entorno de Yaucromatic y completa el recorrido en Plaza Fernando de Pacheco. Reserva tiempo para mirar las fachadas históricas entre ambas paradas.",
+    "stops": [
+      0,
+      2
+    ]
+  }
+}

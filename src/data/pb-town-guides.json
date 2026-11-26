@@ -1,6 +1,7 @@
 {
   "adjuntas": {
     "region": "Centro",
+    "population2025": 17994,
     "subtitle": "Café, bosques y energía comunitaria",
     "history": "El café marcó la economía de estas montañas. Casa Pueblo añadió otro capítulo con su defensa del territorio y su trabajo para llevar la energía solar a la comunidad.",
     "places": [
@@ -19,6 +20,8 @@
     ],
     "plan": "Empieza en el pueblo y acompaña la visita con café de la montaña antes de subir al bosque.",
     "sources": [
+      ["Casa Pueblo — contacto", "https://casapueblo.org/contacto/"],
+      ["Discover Puerto Rico — Lago Garzas", "https://www.discoverpuertorico.com/es/profile/lago-garzas/1722"],
       [
         "Discover Puerto Rico — Adjuntas",
         "https://www.discoverpuertorico.com/es/regiones/cordillera-central/adjuntas"
@@ -42,6 +45,7 @@
   },
   "aguada": {
     "region": "Oeste",
+    "population2025": 37319,
     "subtitle": "Del casco urbano a la costa de Pico de Piedra",
     "history": "La tradición local asocia la costa con las primeras escalas españolas en la isla. El lugar exacto del desembarco de Colón se discute entre distintos municipios del oeste.",
     "places": [
@@ -83,6 +87,7 @@
   },
   "aguadilla": {
     "region": "Oeste",
+    "population2025": 53219,
     "subtitle": "Surf, aviación y un paseo frente a la bahía",
     "history": "El antiguo complejo militar de Ramey cambió la historia del extremo noroeste. Parte de esa infraestructura se convirtió en el Aeropuerto Rafael Hernández.",
     "places": [
@@ -110,6 +115,19 @@
         "https://www.tripadvisor.com/Attractions-g580452-Activities-Aguadilla_Puerto_Rico.html"
       ]
     ],
+    "placePhotos": {
+      "Crash Boat": {
+        "author": "The Eloquent Peasant",
+        "height": 747,
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "path": "/img/pueblos/aguadilla/crash-boat.webp",
+        "source": "https://commons.wikimedia.org/wiki/File:On_the_pier_at_Crash_Boat_Beach_in_Borinquen,_Aguadilla,_Puerto_Rico.jpg",
+        "title": "On the pier at Crash Boat Beach in Borinquen, Aguadilla, Puerto Rico",
+        "width": 995,
+        "alt": "El muelle azul de Crash Boat con visitantes y una bandera de Puerto Rico"
+      }
+    },
     "photo": {
       "author": "Ian Poellet",
       "height": 889,
@@ -124,6 +142,7 @@
   },
   "aguas-buenas": {
     "region": "Centro",
+    "population2025": 22838,
     "subtitle": "Quebradas y memoria entre montañas",
     "history": "Antes de constituirse como municipio, Aguas Buenas estuvo vinculada a Caguas. Su nombre recuerda los manantiales y cursos de agua que atraviesan las lomas.",
     "places": [
@@ -161,6 +180,7 @@
   },
   "aibonito": {
     "region": "Centro",
+    "population2025": 24746,
     "subtitle": "Flores y memoria en el Paso del Asomante",
     "history": "En 1898, el Paso del Asomante fue escenario de la campaña militar entre España y Estados Unidos. Hoy Aibonito también se reconoce por la floricultura y su festival.",
     "places": [
@@ -202,6 +222,7 @@
   },
   "anasco": {
     "region": "Oeste",
+    "population2025": 24449,
     "subtitle": "Historia del oeste a orillas del Río Grande",
     "history": "El valle del Río Grande de Añasco sostiene una de las memorias más conocidas de la historia temprana de Puerto Rico: el relato de Salcedo, transmitido con versiones distintas.",
     "places": [
@@ -247,6 +268,7 @@
   },
   "arecibo": {
     "region": "Norte",
+    "population2025": 85539,
     "subtitle": "Faro, carso y cine bajo las estrellas",
     "history": "El puerto y los ríos marcaron la economía local. En 1702, Antonio de los Reyes Correa defendió el poblado durante un ataque británico. El observatorio añadió una historia científica de alcance mundial.",
     "places": [
@@ -295,6 +317,19 @@
         "https://www.tripadvisor.com/Attractions-g1383492-Activities-Arecibo_Puerto_Rico.html"
       ]
     ],
+    "placePhotos": {
+      "Cueva Ventana": {
+        "author": "Tom Vazquez",
+        "height": 746,
+        "license": "Dominio público",
+        "licenseUrl": "",
+        "path": "/img/pueblos/arecibo/cueva-ventana.webp",
+        "source": "https://commons.wikimedia.org/wiki/File:Cueva_Ventana.jpg",
+        "title": "Cueva Ventana",
+        "width": 995,
+        "alt": "Vista del valle desde la abertura de Cueva Ventana"
+      }
+    },
     "photo": {
       "author": "Joseacaraballo",
       "height": 801,
@@ -309,6 +344,7 @@
   },
   "arroyo": {
     "region": "Sur",
+    "population2025": 14744,
     "subtitle": "Un puerto azucarero y las primeras señales del telégrafo",
     "history": "La historia comercial de Arroyo estuvo ligada a la caña y al puerto. El pueblo también conserva la memoria de Samuel Morse y las primeras demostraciones del telégrafo en Puerto Rico.",
     "places": [
@@ -354,6 +390,7 @@
   },
   "barceloneta": {
     "region": "Norte",
+    "population2025": 22316,
     "subtitle": "El carso llega hasta el Atlántico",
     "history": "El nombre recuerda a la Barceloneta española, de donde procedía su fundador. La agricultura de la llanura costera convivió con una economía industrial posterior.",
     "places": [
@@ -391,6 +428,7 @@
   },
   "barranquitas": {
     "region": "Centro",
+    "population2025": 29509,
     "subtitle": "Cuna de figuras públicas y balcón sobre el cañón",
     "history": "La casa natal de Luis Muñoz Rivera recuerda la importancia política y periodística del pueblo. Entre Barranquitas y Aibonito, el cañón de San Cristóbal añade una historia natural distinta.",
     "places": [
@@ -432,6 +470,7 @@
   },
   "bayamon": {
     "region": "Metro",
+    "population2025": 180562,
     "subtitle": "Arte, ciencia y un río convertido en paseo",
     "history": "El valle de Bayamón se desarrolló entre agricultura y crecimiento urbano. El pintor Francisco Oller, cuyo nombre lleva un museo municipal, ofrece otra forma de acercarse a la historia local.",
     "places": [
@@ -477,6 +516,7 @@
   },
   "cabo-rojo": {
     "region": "Oeste",
+    "population2025": 46580,
     "subtitle": "Salinas, faro y acantilados del suroeste",
     "history": "La extracción de sal y la navegación quedaron inscritas en el litoral. El faro de Los Morrillos guiaba el tránsito marítimo junto al paso entre el Caribe y el Atlántico.",
     "places": [
@@ -524,6 +564,7 @@
   },
   "caguas": {
     "region": "Este",
+    "population2025": 124161,
     "subtitle": "Rutas urbanas y huellas del valle del Turabo",
     "history": "Caguas se desarrolló en el valle del Turabo. Sus museos cuentan historias de trabajo, religión, música y artes populares en el centro de una ciudad contemporánea.",
     "places": [
@@ -569,6 +610,7 @@
   },
   "camuy": {
     "region": "Norte",
+    "population2025": 32691,
     "subtitle": "Un río que también corre bajo tierra",
     "history": "El Río Camuy atraviesa el carso y contribuyó a esculpir un sistema de cuevas. El pueblo y su costa ofrecen una lectura distinta del mismo territorio.",
     "places": [
@@ -618,6 +660,7 @@
   },
   "canovanas": {
     "region": "Este",
+    "population2025": 41302,
     "subtitle": "Huellas de la caña y de las carreras de caballos",
     "history": "Canóvanas conserva rastros de su pasado azucarero y se convirtió en municipio separado de Loíza tras un proceso que culminó en el siglo XX.",
     "places": [
@@ -659,6 +702,7 @@
   },
   "carolina": {
     "region": "Metro",
+    "population2025": 149874,
     "subtitle": "Gigantes, beisbol y una costa junto al aeropuerto",
     "history": "Carolina recuerda a figuras como Roberto Clemente y Julia de Burgos. Isla Verde se desarrolló como distrito turístico costero, mientras el casco conserva otra mirada sobre el municipio.",
     "places": [
@@ -704,6 +748,7 @@
   },
   "catano": {
     "region": "Metro",
+    "population2025": 21701,
     "subtitle": "La bahía vista desde la otra orilla",
     "history": "Cataño creció frente a San Juan y conserva una fuerte relación con el transporte de pasajeros por la bahía. La destilería de Bacardí forma parte de su historia industrial reciente.",
     "places": [
@@ -722,6 +767,7 @@
     ],
     "plan": "Combina el cruce en lancha con el malecón. Si reservas una visita a la destilería, comprueba el transporte desde la terminal.",
     "sources": [
+      ["Autoridad de Transporte Integrado — servicio marítimo", "https://www.ati.pr.gov/transportacion-urbana"],
       [
         "Discover Puerto Rico — Cataño",
         "https://www.discoverpuertorico.com/es/regiones/metro/catano"
@@ -745,6 +791,7 @@
   },
   "cayey": {
     "region": "Centro",
+    "population2025": 40027,
     "subtitle": "Lechón, bosque y una ciudad universitaria",
     "history": "La carretera de montaña y la actividad agrícola marcaron a Cayey. Guavate llevó las lechoneras y su vida musical a una ruta gastronómica conocida fuera del municipio.",
     "places": [
@@ -786,6 +833,7 @@
   },
   "ceiba": {
     "region": "Este",
+    "population2025": 10559,
     "subtitle": "Puerta marítima a Vieques y Culebra",
     "history": "La antigua base naval Roosevelt Roads cambió el litoral de Ceiba. El terminal de ferris en la zona sostiene ahora parte de la conexión cotidiana con las islas municipio.",
     "places": [
@@ -831,6 +879,7 @@
   },
   "ciales": {
     "region": "Centro",
+    "population2025": 16652,
     "subtitle": "El café deja su huella en el carso",
     "history": "La caficultura conecta la historia comercial de Ciales con las comunidades de la montaña. Su casco y las formaciones calizas permiten conocer dos escalas del pueblo.",
     "places": [
@@ -876,6 +925,7 @@
   },
   "cidra": {
     "region": "Centro",
+    "population2025": 39669,
     "subtitle": "La ciudad de la paloma sabanera",
     "history": "La paloma sabanera está ligada a la identidad de Cidra. El embalse y los barrios rurales completan un paisaje que combina montaña y agua.",
     "places": [
@@ -913,6 +963,7 @@
   },
   "coamo": {
     "region": "Sur",
+    "population2025": 33076,
     "subtitle": "Aguas termales y un casco de larga historia",
     "history": "Coamo fue uno de los asentamientos tempranos del sur. Su posición entre la montaña y la costa marcó su desarrollo; sus aguas termales también dieron forma al turismo local.",
     "places": [
@@ -958,6 +1009,7 @@
   },
   "comerio": {
     "region": "Centro",
+    "population2025": 18445,
     "subtitle": "El Río de la Plata cuenta la historia del pueblo",
     "history": "El municipio se conoció como Sabana del Palmar antes de adoptar el nombre de Comerío. Tabaco, agua y producción hidroeléctrica forman parte de su memoria.",
     "places": [
@@ -999,6 +1051,7 @@
   },
   "corozal": {
     "region": "Centro",
+    "population2025": 34531,
     "subtitle": "Plátano y memoria indígena en el interior",
     "history": "La agricultura y el cultivo de plátano se asocian con la identidad corozaleña. El nombre alude al corozo, una palma de la isla.",
     "places": [
@@ -1040,6 +1093,7 @@
   },
   "culebra": {
     "region": "Islas Municipio",
+    "population2025": 1735,
     "subtitle": "Arrecifes, memoria naval y vida isleña",
     "history": "La presencia de la Marina de Estados Unidos y la organización vecinal que la enfrentó forman parte de la historia contemporánea de la isla. Parte del territorio tiene protección federal de vida silvestre.",
     "places": [
@@ -1089,6 +1143,7 @@
   },
   "dorado": {
     "region": "Norte",
+    "population2025": 35891,
     "subtitle": "Patrimonio del casco y playas del norte",
     "history": "Dorado se separó de Toa Baja durante el siglo XIX. Su identidad incluye el legado musical de la familia Figueroa y el desarrollo turístico del litoral.",
     "places": [
@@ -1134,6 +1189,7 @@
   },
   "fajardo": {
     "region": "Este",
+    "population2025": 30780,
     "subtitle": "Un faro, una laguna luminosa y salida hacia los cayos",
     "history": "La navegación y el puerto marcaron a Fajardo. El faro de Las Cabezas de San Juan ayuda a entender la relación de la ciudad con el extremo oriental de la isla.",
     "places": [
@@ -1179,6 +1235,7 @@
   },
   "florida": {
     "region": "Norte",
+    "population2025": 11371,
     "subtitle": "Un municipio joven entre mogotes",
     "history": "Florida se separó de Barceloneta en el siglo XX. El paisaje calizo del norte se reconoce en los mogotes y cavidades. El béisbol tiene un espacio propio en la identidad del pueblo, conocido como Tierra de los Titanes.",
     "places": [
@@ -1216,6 +1273,7 @@
   },
   "guanica": {
     "region": "Oeste",
+    "population2025": 11840,
     "subtitle": "Bosque seco y un puerto que quedó en la historia",
     "history": "En 1898, las fuerzas estadounidenses desembarcaron en Guánica. Su otro gran relato es ecológico: el bosque seco crece junto a una costa de clima muy distinto al del norte lluvioso.",
     "places": [
@@ -1261,6 +1319,7 @@
   },
   "guayama": {
     "region": "Sur",
+    "population2025": 34043,
     "subtitle": "Arquitectura de plaza y memoria afroboricua",
     "history": "El azúcar marcó la economía histórica de Guayama. En el casco, la arquitectura doméstica y las tradiciones populares cuentan cómo se formó la ciudad.",
     "places": [
@@ -1302,6 +1361,7 @@
   },
   "guayanilla": {
     "region": "Sur",
+    "population2025": 16489,
     "subtitle": "Del valle cañero al Caribe",
     "history": "La caña marcó el valle de Guayanilla y su costa se vinculó al movimiento de mercancías. El casco conserva esa memoria entre edificios afectados por los sismos de 2020.",
     "places": [
@@ -1343,6 +1403,7 @@
   },
   "guaynabo": {
     "region": "Metro",
+    "population2025": 89055,
     "subtitle": "Caparra y los comienzos de la colonización española",
     "history": "Juan Ponce de León estableció Caparra a principios del siglo XVI. El traslado del asentamiento al islote de San Juan explica por qué las ruinas quedaron tierra adentro.",
     "places": [
@@ -1384,6 +1445,7 @@
   },
   "gurabo": {
     "region": "Este",
+    "population2025": 39780,
     "subtitle": "Escaleras en un pueblo de lomas",
     "history": "Gurabo se separó de Caguas en el siglo XIX. Las escalinatas que conectan calles a distintas alturas le dieron una de sus imágenes más reconocibles.",
     "places": [
@@ -1421,6 +1483,7 @@
   },
   "hatillo": {
     "region": "Norte",
+    "population2025": 37810,
     "subtitle": "Del paseo frente al Atlántico a los quesos de Carrizales",
     "history": "Hatillo se fundó en 1823 en la costa norte. El catolicismo de tradición canaria dejó una huella visible en la fiesta de los Santos Inocentes. Hoy, el Festival de las Máscaras se reconoce por las comparsas y los trajes que preparan grupos del pueblo. Tierra adentro, las vaquerías forman parte del paisaje y explican otro de sus nombres, la Capital de la Industria Lechera. Nuestra Señora del Carmen da nombre a la parroquia del casco y al paseo costero.",
     "places": [
@@ -1609,6 +1672,7 @@
   },
   "hormigueros": {
     "region": "Oeste",
+    "population2025": 15222,
     "subtitle": "Un pueblo que creció alrededor de un santuario",
     "history": "La devoción a Nuestra Señora de la Monserrate atrajo peregrinaciones antes de la constitución del municipio. El santuario ocupa un lugar prominente en el casco.",
     "places": [
@@ -1650,6 +1714,7 @@
   },
   "humacao": {
     "region": "Este",
+    "population2025": 49249,
     "subtitle": "Humedales y caminos entre la costa y el pueblo",
     "history": "La agricultura y la caña transformaron el litoral de Humacao. En la reserva costera, antiguas infraestructuras conviven con lagunas, canales y vegetación de humedal.",
     "places": [
@@ -1691,6 +1756,7 @@
   },
   "isabela": {
     "region": "Oeste",
+    "population2025": 42938,
     "subtitle": "Surf y caminos junto al Atlántico",
     "history": "El oleaje del Atlántico dio proyección a la cultura del surf en Isabela. En su territorio también quedan las ruinas de San Antonio de la Tuna, asociadas a un asentamiento anterior al pueblo actual.",
     "places": [
@@ -1732,6 +1798,7 @@
   },
   "jayuya": {
     "region": "Centro",
+    "population2025": 14423,
     "subtitle": "Petroglifos y patrimonio taíno en la montaña",
     "history": "El levantamiento nacionalista de 1950 marcó la historia moderna de Jayuya. El pueblo también conserva petroglifos y celebra el patrimonio indígena.",
     "places": [
@@ -1750,6 +1817,7 @@
     ],
     "plan": "Combina los espacios culturales en lugar de intentar cubrir toda la montaña en una mañana.",
     "sources": [
+      ["Municipio de Jayuya — Museo El Cemí", "https://agencias.pr.gov/municipio/jayuya/turismo/Lugaresinteres/Pages/MuseoelCemi.aspx"],
       [
         "Discover Puerto Rico — Jayuya",
         "https://www.discoverpuertorico.com/es/regiones/cordillera-central/jayuya"
@@ -1773,6 +1841,7 @@
   },
   "juana-diaz": {
     "region": "Sur",
+    "population2025": 45853,
     "subtitle": "La tradición de Reyes tiene casa propia",
     "history": "Los Reyes Magos y sus promesas tienen una presencia particular en Juana Díaz. La celebración reúne música, artesanía y un recorrido anual por el pueblo.",
     "places": [
@@ -1814,6 +1883,7 @@
   },
   "juncos": {
     "region": "Este",
+    "population2025": 36639,
     "subtitle": "El Valle del Valenciano y su memoria agrícola",
     "history": "El Río Valenciano cruza un valle donde la caña tuvo importancia económica. El nombre de Juncos se ha relacionado con la vegetación de la zona. La carrera que lleva el nombre de Modesto Carrión añade una tradición deportiva al calendario.",
     "places": [
@@ -1851,6 +1921,7 @@
   },
   "lajas": {
     "region": "Oeste",
+    "population2025": 22784,
     "subtitle": "Un valle agrícola con salida a La Parguera",
     "history": "Lajas combina una llanura agrícola con manglares y canales. La actividad pesquera y las excursiones costeras transformaron a La Parguera en uno de sus lugares más reconocidos.",
     "places": [
@@ -1892,6 +1963,7 @@
   },
   "lares": {
     "region": "Oeste",
+    "population2025": 27744,
     "subtitle": "La plaza del Grito y el sabor de la almojábana",
     "history": "El Grito de Lares de 1868 convirtió al pueblo en un referente de la historia independentista. Su identidad también pasa por el café y las almojábanas.",
     "places": [
@@ -1933,6 +2005,7 @@
   },
   "las-marias": {
     "region": "Oeste",
+    "population2025": 8638,
     "subtitle": "Chinas y café en las lomas del oeste",
     "history": "Las Marías se separó de San Sebastián en el siglo XIX. La agricultura de montaña y la producción de cítricos quedaron representadas en el Festival de la China Dulce.",
     "places": [
@@ -1974,6 +2047,7 @@
   },
   "las-piedras": {
     "region": "Este",
+    "population2025": 34723,
     "subtitle": "Arte rupestre en el oriente interior",
     "history": "Las Piedras se desarrolló cerca de cursos del sistema del Río Humacao. Sus cuevas y petroglifos ayudan a leer la historia indígena del este.",
     "places": [
@@ -2015,6 +2089,7 @@
   },
   "loiza": {
     "region": "Este",
+    "population2025": 21542,
     "subtitle": "Bomba, máscaras de coco y una tradición que sigue viva",
     "history": "Las comunidades afrodescendientes de Loíza sostienen una parte fundamental de la cultura puertorriqueña. La bomba y las fiestas de Santiago Apóstol tienen una expresión propia en el municipio.",
     "places": [
@@ -2056,6 +2131,7 @@
   },
   "luquillo": {
     "region": "Este",
+    "population2025": 17190,
     "subtitle": "Kioscos, costa y el Yunque en el horizonte",
     "history": "La costa y el piedemonte explican el nombre turístico de Capital del Sol. El pueblo combina pesca, actividades de playa y una tradición de comida en los kioscos.",
     "places": [
@@ -2097,6 +2173,7 @@
   },
   "manati": {
     "region": "Norte",
+    "population2025": 38413,
     "subtitle": "Un casco histórico detrás del litoral cársico",
     "history": "Manatí tuvo un casco vinculado al comercio agrícola de su valle. La costa de roca caliza, el karst y los humedales narran otra parte de su historia.",
     "places": [
@@ -2142,6 +2219,7 @@
   },
   "maricao": {
     "region": "Oeste",
+    "population2025": 4336,
     "subtitle": "Café de altura y caminos de bosque",
     "history": "El café fue central en la economía de Maricao y se celebra con una fiesta dedicada al acabe de la cosecha. El bosque estatal marca el paisaje del cordón montañoso del oeste.",
     "places": [
@@ -2183,6 +2261,7 @@
   },
   "maunabo": {
     "region": "Este",
+    "population2025": 10120,
     "subtitle": "El Faro de Punta Tuna y la costa del sureste",
     "history": "La agricultura del valle y el tráfico marítimo dejaron huellas distintas en Maunabo. El faro lleva al paisaje costero que le da al pueblo su carácter.",
     "places": [
@@ -2224,6 +2303,7 @@
   },
   "mayaguez": {
     "region": "Oeste",
+    "population2025": 68905,
     "subtitle": "Arquitectura, universidad y una ciudad junto al mar",
     "history": "El puerto, la industria y la universidad marcaron el crecimiento de Mayagüez. La Plaza Colón y el Teatro Yagüez ayudan a leer esa historia en las calles del centro.",
     "places": [
@@ -2265,6 +2345,7 @@
   },
   "moca": {
     "region": "Oeste",
+    "population2025": 37562,
     "subtitle": "El mundillo y la historia de una hacienda cafetalera",
     "history": "En Moca se preserva la tradición del encaje de bolillos, conocido como mundillo. Palacete Los Moreau recuerda la antigua Hacienda Iruena y su vínculo con la novela de Enrique Laguerre.",
     "places": [
@@ -2306,6 +2387,7 @@
   },
   "morovis": {
     "region": "Centro",
+    "population2025": 28170,
     "subtitle": "Montaña, carso y una frase que se quedó en el habla",
     "history": "La frase popular «la isla menos Morovis» tiene varias explicaciones en la tradición oral. El municipio combina agricultura de montaña y formaciones del carso.",
     "places": [
@@ -2343,6 +2425,7 @@
   },
   "naguabo": {
     "region": "Este",
+    "population2025": 22666,
     "subtitle": "Pesca y cocina frente al mar Caribe",
     "history": "La costa de Naguabo mantiene una relación estrecha con la pesca. Tierra adentro, el relieve enlaza el municipio con las estribaciones de la Sierra de Luquillo.",
     "places": [
@@ -2384,6 +2467,7 @@
   },
   "naranjito": {
     "region": "Centro",
+    "population2025": 29627,
     "subtitle": "Dos orillas unidas por el Puente Atirantado",
     "history": "Naranjito se constituyó en el siglo XIX. La agricultura y el relieve del centro de Puerto Rico marcaron su desarrollo junto al sistema del Río de la Plata.",
     "places": [
@@ -2425,6 +2509,7 @@
   },
   "orocovis": {
     "region": "Centro",
+    "population2025": 21329,
     "subtitle": "El centro de la isla se recorre entre montañas",
     "history": "El territorio de Orocovis reúne barrios montañosos y caminos agrícolas. El bosque de Toro Negro y la preparación artesanal de longaniza ofrecen dos maneras distintas de conocerlo.",
     "places": [
@@ -2470,6 +2555,7 @@
   },
   "patillas": {
     "region": "Sur",
+    "population2025": 15077,
     "subtitle": "Costa, lago y caminos al pie de la Sierra de Cayey",
     "history": "Patillas combina una historia agrícola de tierras bajas y edificaciones de pueblo con barrios que suben hacia la sierra. El lago ayuda a leer el uso histórico del agua en el valle.",
     "places": [
@@ -2511,6 +2597,7 @@
   },
   "penuelas": {
     "region": "Sur",
+    "population2025": 19325,
     "subtitle": "Valle agrícola y memoria de una antigua hacienda",
     "history": "Peñuelas conserva huellas de su historia agrícola y azucarera. La Hacienda Dolores es un punto de referencia para entender cómo se organizaba la producción en el valle.",
     "places": [
@@ -2552,6 +2639,7 @@
   },
   "ponce": {
     "region": "Sur",
+    "population2025": 128384,
     "subtitle": "Una ciudad de plazas, museos y memoria musical",
     "history": "El comercio y la caña dejaron riqueza arquitectónica en el casco. De la tradición de la plena al teatro y la pintura, Ponce conserva distintas formas de contar su propia historia.",
     "places": [
@@ -2597,6 +2685,7 @@
   },
   "quebradillas": {
     "region": "Oeste",
+    "population2025": 23189,
     "subtitle": "Un túnel ferroviario junto a Guajataca",
     "history": "El antiguo ferrocarril dejó un túnel en el litoral de Guajataca. Los caminos del carso y las quebradas también explican la identidad de este rincón del noroeste.",
     "places": [
@@ -2638,6 +2727,7 @@
   },
   "rincon": {
     "region": "Oeste",
+    "population2025": 15582,
     "subtitle": "La costa occidental y la cultura del surf",
     "history": "El campeonato mundial de surf celebrado en 1968 ayudó a dar proyección internacional a Rincón. Su identidad también pasa por el comercio y las comunidades de la costa.",
     "places": [
@@ -2683,6 +2773,7 @@
   },
   "rio-grande": {
     "region": "Este",
+    "population2025": 44799,
     "subtitle": "Bosque lluvioso y costa en un mismo viaje",
     "history": "El Yunque protege parte de la Sierra de Luquillo y el paisaje de Río Grande. Su bosque y el litoral representan dos formas distintas de experimentar el noreste.",
     "places": [
@@ -2701,6 +2792,7 @@
     ],
     "plan": "Escoge el bosque como actividad principal y confirma directamente los accesos y cierres.",
     "sources": [
+      ["Servicio Forestal de EE. UU. — mapa del corredor PR-191", "https://www.fs.usda.gov/sites/nfs/files/r08/elyunque/publication/La%20Mina%20Recreation%20Map_06-4-2025_0.pdf"],
       [
         "Discover Puerto Rico — Río Grande",
         "https://www.discoverpuertorico.com/es/regiones/este/rio-grande"
@@ -2732,6 +2824,7 @@
   },
   "sabana-grande": {
     "region": "Oeste",
+    "population2025": 22055,
     "subtitle": "El Pozo de la Virgen y los oficios de la tradición",
     "history": "La devoción al Pozo de la Virgen reúne peregrinos desde el siglo XX. Sabana Grande también se reconoce por las hamacas y el trabajo artesanal.",
     "places": [
@@ -2773,6 +2866,7 @@
   },
   "salinas": {
     "region": "Sur",
+    "population2025": 24218,
     "subtitle": "Costa pesquera y cocina con mojo isleño",
     "history": "El pescado y el mojo isleño se asocian con la mesa de Salinas. La costa conserva una relación con la pesca, las marinas y los manglares.",
     "places": [
@@ -2818,6 +2912,7 @@
   },
   "san-german": {
     "region": "Oeste",
+    "population2025": 30809,
     "subtitle": "Porta Coeli y calles de siglos de historia",
     "history": "San Germán fue uno de los centros urbanos tempranos de Puerto Rico. Su casco conserva edificios religiosos y residencias que muestran distintos momentos de la arquitectura del oeste.",
     "places": [
@@ -2859,6 +2954,7 @@
   },
   "san-juan": {
     "region": "Metro",
+    "population2025": 329737,
     "subtitle": "Murallas, barrios y cultura en la capital",
     "history": "El casco amurallado se convirtió en un puerto estratégico del Caribe. Santurce, Río Piedras y otros sectores amplían esa historia con arte, mercados y vida urbana.",
     "places": [
@@ -2914,6 +3010,7 @@
   },
   "san-lorenzo": {
     "region": "Este",
+    "population2025": 37275,
     "subtitle": "Montaña cafetalera y memoria de San Miguel de Hato Grande",
     "history": "San Lorenzo se conoció como San Miguel de Hato Grande. La agricultura de montaña y la devoción a Nuestra Señora del Carmen son parte de su historia local.",
     "places": [
@@ -2955,6 +3052,7 @@
   },
   "san-sebastian": {
     "region": "Oeste",
+    "population2025": 39019,
     "subtitle": "De San Sebastián del Pepino a los saltos del río",
     "history": "El nombre Pepino sigue presente en la identidad del municipio. La agricultura de los valles interiores y el auge del café se reflejan en su historia comercial.",
     "places": [
@@ -2996,6 +3094,7 @@
   },
   "santa-isabel": {
     "region": "Sur",
+    "population2025": 19547,
     "subtitle": "Agricultura de llano y costa del sur",
     "history": "El valle de Santa Isabel se transformó con canales de riego y agricultura. Conserva un carácter agrícola visible en el camino entre el casco y el litoral.",
     "places": [
@@ -3037,6 +3136,7 @@
   },
   "toa-alta": {
     "region": "Norte",
+    "population2025": 65754,
     "subtitle": "Un casco antiguo sobre el valle de la Plata",
     "history": "La agricultura y el Río de la Plata marcaron el desarrollo de Toa Alta. Su parroquia y su centro urbano conservan parte del trazado histórico del valle.",
     "places": [
@@ -3078,6 +3178,7 @@
   },
   "toa-baja": {
     "region": "Metro",
+    "population2025": 70931,
     "subtitle": "Fortificaciones, islotes y costa en Levittown",
     "history": "El territorio combina un casco histórico del valle y desarrollos urbanos posteriores como Levittown. El Fortín El Cañuelo, en Isla de Cabras, guarda memoria de la defensa de la bahía.",
     "places": [
@@ -3119,6 +3220,7 @@
   },
   "trujillo-alto": {
     "region": "Metro",
+    "population2025": 66348,
     "subtitle": "Un puente de hierro y el agua que abastece la ciudad",
     "history": "El Río Grande de Loíza influyó en los caminos y asentamientos del municipio. El Puente Histórico y el embalse de Carraízo registran distintas etapas en la vida del río.",
     "places": [
@@ -3160,6 +3262,7 @@
   },
   "utuado": {
     "region": "Centro",
+    "population2025": 26894,
     "subtitle": "Parque ceremonial, café y un embalse entre montañas",
     "history": "El centro ceremonial de Caguana conserva plazas de piedra y petroglifos. La agricultura de montaña y los ríos dieron forma al Utuado posterior.",
     "places": [
@@ -3205,6 +3308,7 @@
   },
   "vega-alta": {
     "region": "Norte",
+    "population2025": 34351,
     "subtitle": "Del casco al Atlántico en Cerro Gordo",
     "history": "Vega Alta se formó en la llanura costera del norte. En su territorio, la costa y el bosque muestran el contraste con el paisaje agrícola histórico del interior.",
     "places": [
@@ -3246,6 +3350,7 @@
   },
   "vega-baja": {
     "region": "Norte",
+    "population2025": 53505,
     "subtitle": "El río, la costa y una plaza con memoria",
     "history": "El valle y el cultivo de caña marcaron la historia de Vega Baja. La costa de Puerto Nuevo y el casco aportan dos paisajes muy distintos a poca distancia.",
     "places": [
@@ -3287,6 +3392,7 @@
   },
   "vieques": {
     "region": "Islas Municipio",
+    "population2025": 7867,
     "subtitle": "Barrios isleños y la luz de Mosquito Bay",
     "history": "La Marina estadounidense ocupó buena parte de Vieques hasta 2003. El refugio de vida silvestre, las restricciones de acceso y la historia comunitaria ayudan a entender el paisaje actual.",
     "places": [
@@ -3336,6 +3442,7 @@
   },
   "villalba": {
     "region": "Sur",
+    "population2025": 21133,
     "subtitle": "Embalses de montaña y tradición cafetalera",
     "history": "Villalba se separó de Juana Díaz durante el siglo XX. La agricultura de altura y el aprovechamiento del agua marcaron el territorio de laderas y embalses.",
     "places": [
@@ -3377,6 +3484,7 @@
   },
   "yabucoa": {
     "region": "Este",
+    "population2025": 28058,
     "subtitle": "Valle cañero y memoria del huracán María",
     "history": "La caña se cultivó por generaciones en el valle y dejó huellas industriales. En 2017 Yabucoa fue el lugar de entrada del huracán María en la isla principal.",
     "places": [
@@ -3418,6 +3526,7 @@
   },
   "yauco": {
     "region": "Oeste",
+    "population2025": 31608,
     "subtitle": "Café, casas de colores y vida urbana",
     "history": "El café marcó el desarrollo económico de Yauco y atrajo inmigración corsa. El centro conserva residencias históricas y proyectos de arte público.",
     "places": [

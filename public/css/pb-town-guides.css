@@ -31,3 +31,8 @@
 .town-place-photo{margin:.7rem 0 1rem}.town-place-photo img{display:block;width:100%;height:auto;max-height:340px;object-fit:contain;border-radius:12px;background:#eef1ef}.town-place-photo figcaption .town-photo-credit{font-size:.77rem;line-height:1.4}
 
 .town-stop{scroll-margin-top:94px}.town-stop-links{padding-left:1.15rem;margin:.65rem 0 .15rem;display:grid;gap:.35rem}
+
+.town-plan h3{margin:0 0 .45rem;font-size:1.15rem}
+.town-route-stops{margin:.65rem 0 0;padding-left:1.5rem}
+.town-route-stops a{display:inline-block;padding:.24rem 0;font-weight:700;overflow-wrap:anywhere}
+.town-guide-sources summary,.town-visit-links summary{cursor:pointer;font-weight:700;padding:.55rem 0}

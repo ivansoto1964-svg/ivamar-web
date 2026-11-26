@@ -4,6 +4,7 @@ const path = require('node:path');
 const municipalities = require('../src/data/pb-municipalities');
 const guides = require('../src/data/pb-town-guides.json');
 const towns = require('../src/data/pb-towns');
+const routes = require('../src/data/pb-town-routes.json');
 const renderTownPage = require('../src/views/planetaboricua/town-page');
 
 const arecibo = renderTownPage(towns.arecibo, 'arecibo');
@@ -20,6 +21,7 @@ assert.match(arecibo, /\/api\/pb-stories\//);
 assert.doesNotMatch(adjuntas, /<a href="#administra"/);
 
 assert.deepEqual(Object.keys(guides), municipalities.map(([slug]) => slug));
+assert.deepEqual(Object.keys(routes), Object.keys(guides));
 for (const [slug, name] of municipalities) {
   const guide = guides[slug];
   assert.ok(guide.places.length >= 2, slug);
@@ -30,7 +32,14 @@ for (const [slug, name] of municipalities) {
   assert.ok(html.includes(`<h1>${name}</h1>`), slug);
   assert.match(html, /id="guia-del-pueblo"/);
   assert.match(html, /id="historia-del-pueblo"/);
-  assert.match(html, /id="fuentes"/);
+  assert.match(html, /id="fuentes"><details><summary>/);
+  assert.ok(html.includes(routes[slug].title), slug);
+  for (const index of routes[slug].stops) {
+    const stop = 'guia-del-pueblo-parada-' + (index + 1);
+    assert.ok(html.includes('href="#' + stop + '"'), slug);
+    assert.ok(html.includes('id="' + stop + '"'), slug);
+    assert.ok(!guide.places[index][5], slug + ' should avoid closed stops in its route');
+  }
 }
 assert.match(renderTownPage(towns.arecibo, 'arecibo', guides.arecibo), /partner_id=SW7UD0N/);
 assert.match(renderTownPage(towns.arecibo, 'arecibo', guides.arecibo), /rel="sponsored noopener noreferrer"/);
