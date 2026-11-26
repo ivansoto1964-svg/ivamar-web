@@ -84,7 +84,7 @@ module.exports = {
       ['Bosque Estatal de Cambalache','Bosque compartido con Barceloneta, conocido por senderos, ciclismo, observación de aves y áreas recreativas.'],
       ['Río Tanamá y Chorros La Planta','Corredor de aventura, cuevas, agua y memoria de una antigua infraestructura hidroeléctrica. Para ciertas experiencias se recomienda guía autorizado.'],
       ['Lago Dos Bocas','Embalse entre Arecibo y Utuado, rodeado de montañas y asociado con paseos en bote y restaurantes del área.'],
-      ['Arecibo C3','Centro educativo en el distrito histórico del Observatorio, con exhibiciones y visitas guiadas. Consulta qué días recibe público y qué actividades requieren reservación.'],
+      ['Arecibo C3','El radiotelescopio histórico dejó de operar tras el colapso de 2020. El Centro de Ciencias y Visitantes Arecibo C3 recibe público en fechas selectas con exhibiciones y vistas de los restos del telescopio. Reserva la entrada en el calendario oficial.'],
       ['Auto Cine Santana','Autocine familiar activo desde 1957 y una experiencia singular dentro de Puerto Rico.'],
       ['Centro histórico','La plaza, la Catedral San Felipe Apóstol, Casa Ulanga y los comercios del casco permiten recorrer Arecibo desde su historia urbana.']
     ],

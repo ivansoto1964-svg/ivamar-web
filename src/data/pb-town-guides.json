@@ -260,10 +260,15 @@
       ],
       [
         "Cueva Ventana",
-        "El recorrido guiado conecta el interior calizo con una vista del valle del Río Grande."
+        "Recorrido guiado por cuevas calizas en Hato Viejo, con un mirador natural sobre el valle del Río Grande de Arecibo. La entrada está en la PR-10, km 75.",
+        "https://cuevaventana.com/",
+        "Ver disponibilidad con el operador",
+        [
+          ["Ver ficha en Tripadvisor", "https://www.tripadvisor.com/Attraction_Review-g1383492-d34044642-Reviews-Cueva_Ventana_Tours-Arecibo_Puerto_Rico.html"]
+        ]
       ]
     ],
-    "plan": "Dedica el día a la costa de Islote o al carso, y deja la noche para el Auto Cine Santana si hay función.",
+    "plan": "Reserva el recorrido guiado de Cueva Ventana si quieres explorar el carso. Para un día de costa, empieza por el faro en Islote. Si prefieres la historia del radiotelescopio, consulta las fechas del Centro de Visitantes Arecibo C3.",
     "sources": [
       [
         "Discover Puerto Rico — Arecibo",
@@ -282,8 +287,8 @@
         "https://areciboc3.org/es/visit/tickets/"
       ],
       [
-        "Cueva Ventana, información de visita",
-        "https://cuevaventana.org/faq/"
+        "Discover Puerto Rico — Cueva Ventana",
+        "https://www.discoverpuertorico.com/es/profile/cueva-ventana/9898"
       ],
       [
         "Tripadvisor — reseñas y actividades",
@@ -569,18 +574,26 @@
     "places": [
       [
         "Parque Nacional de las Cavernas del Río Camuy",
-        "Consulta el calendario y las restricciones de acceso del parque."
+        "El parque permanece cerrado al público hasta nuevo aviso. Estado verificado el 26 de noviembre de 2026.",
+        "https://www.discoverpuertorico.com/es/articulo/explora-el-parque-de-las-cavernas-de-camuy",
+        "Consultar el aviso de cierre",
+        [
+          ["Explora Cueva Ventana en Arecibo", "/pueblos/arecibo/#guia-del-pueblo-parada-3"]
+        ],
+        "Cerrado temporalmente"
       ],
       [
         "Casco urbano de Camuy",
         "Recorre la plaza y la iglesia para sumar historia urbana a la visita."
       ],
       [
-        "Peñón Amador",
-        "Una parada costera para mirar la relación entre el carso y el Atlántico."
+        "Playa Peñón Amador",
+        "Parada para caminar por la orilla y apreciar las formaciones rocosas del Atlántico desde tierra firme.",
+        "https://www.discoverpuertorico.com/es/profile/playa-penon-amador/12974",
+        "Ver información de la playa"
       ]
     ],
-    "plan": "Si viajas por las cavernas, confirma primero la visita y organiza el resto del día alrededor de ella.",
+    "plan": "Mientras el Parque de las Cavernas siga cerrado, recorre la plaza y el casco de Camuy y termina frente al Atlántico en Playa Peñón Amador. Si quieres hacer un recorrido guiado por una cueva, consulta Cueva Ventana en Arecibo.",
     "sources": [
       [
         "Discover Puerto Rico — Camuy",

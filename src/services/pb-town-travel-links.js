@@ -46,7 +46,6 @@ const activities = {
     ['es-es/arecibo-l138123/puerto-rico-aventura-de-tubing-en-el-rio-tanama-arecibo-t1092510/', 'Excursión por el río Tanamá y una cueva en Arecibo']
   ],
   bayamon: [['es-es/ron-del-barrilito-hacienda-santa-ana-bayamon-l166624/', 'Experiencias de Ron del Barrilito en Hacienda Santa Ana']],
-  camuy: [['es-es/san-juan-puerto-rico-l355/san-juan-canon-del-rio-camuy-y-tour-por-cueva-con-recogida-t1087134/', 'Excursión al cañón del Río Camuy con salida desde San Juan']],
   catano: [['es-es/san-juan-puerto-rico-l355/san-juan-tour-por-la-destileria-casa-bacardi-t429467/', 'Recorrido en Casa BACARDÍ, en Cataño']],
   fajardo: [['es-es/fajardo-l882/desde-fajardo-viaje-de-un-dia-en-catamaran-a-la-isla-de-icacos-t19891/', 'Catamarán a Icacos con salida desde Fajardo']],
   isabela: [['san-juan-puerto-rico-l355/san-juan-caguas-guavate-ponce-rincon-isabela-day-trip-t772787/', 'Excursión desde San Juan con parada en Isabela']],

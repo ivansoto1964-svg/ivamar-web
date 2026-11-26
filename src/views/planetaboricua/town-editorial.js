@@ -39,11 +39,11 @@ function stopId(section, index) {
 }
 
 function guideCards(town, entries, {showMap = false, photos = {}, section = 'guia-del-pueblo'} = {}) {
-  return `<div class="cards">${entries.map(([name, copy, link, linkText, otherLinks = []], index) => `
-    <article class="mini town-stop" id="${stopId(section,index)}"><h3>${esc(name)}</h3>${placePhoto(photos[name])}<p>${esc(copy)}</p>
+  return `<div class="cards">${entries.map(([name, copy, link, linkText, otherLinks = [], visitStatus], index) => `
+    <article class="mini town-stop" id="${stopId(section,index)}"><h3>${esc(name)}</h3>${placePhoto(photos[name])}<p>${visitStatus ? `<strong>${esc(visitStatus)}.</strong> ` : ''}${esc(copy)}</p>
     ${showMap ? `<a class="town-map" href="${mapsLink(name,town)}" ${external}>Ver mapa de ${esc(name)} ↗</a>` : ''}
     ${link ? `<p><a class="town-map" href="${esc(link)}" ${link.startsWith('https://') ? external : ''}>${esc(linkText || 'Más sobre ' + name)} ${link.startsWith('https://') ? '↗' : '→'}</a></p>` : ''}
-    ${otherLinks.length ? `<ul class="town-stop-links">${otherLinks.map(([label,url]) => `<li><a href="${esc(url)}" ${external}>${esc(label)} ↗</a></li>`).join('')}</ul>` : ''}</article>`).join('')}</div>`;
+    ${otherLinks.length ? `<ul class="town-stop-links">${otherLinks.map(([label,url]) => `<li><a href="${esc(url)}" ${url.startsWith('https://') ? external : ''}>${esc(label)} ${url.startsWith('https://') ? '↗' : '→'}</a></li>`).join('')}</ul>` : ''}</article>`).join('')}</div>`;
 }
 
 function renderGuide(town, guide, hasWeekendGuide) {
@@ -92,10 +92,10 @@ const topicPatterns = {
 };
 function searchableStops(guide) {
   const sections = [{id:'guia-del-pueblo',entries:guide.places}, ...(guide.sections || [])];
-  return sections.flatMap(({id,entries}) => entries.map(([name],index) => {
+  return sections.flatMap(({id,entries}) => entries.map(([name,,,,,visitStatus],index) => {
     const searchable = name.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase();
     const topics = Object.entries(topicPatterns).filter(([,pattern]) => pattern.test(searchable)).map(([topic]) => topic);
-    return {name,id:stopId(id,index),topics};
+    return {name,id:stopId(id,index),topics,visitStatus};
   }));
 }
 
