@@ -27,3 +27,5 @@
 .town-index-photo{display:block;width:100%;aspect-ratio:16/8;object-fit:cover;margin-bottom:.65rem;border-radius:9px;background:#e3eaf0}
 @media(max-width:600px){.town-hero{min-height:360px;padding-bottom:4rem}.town-jumps a{flex:1 1 auto}}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+
+.town-place-photo{margin:.7rem 0 1rem}.town-place-photo img{display:block;width:100%;height:auto;max-height:340px;object-fit:contain;border-radius:12px;background:#eef1ef}.town-place-photo figcaption .town-photo-credit{font-size:.77rem;line-height:1.4}

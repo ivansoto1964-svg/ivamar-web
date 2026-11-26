@@ -1414,7 +1414,9 @@
     "places": [
       [
         "Plaza Pública de Hatillo",
-        "Empieza aquí para recorrer a pie el casco. La parroquia y el museo te dan dos formas distintas de conocer el pueblo sin mover el carro."
+        "Empieza aquí para recorrer a pie el casco. La parroquia y el museo te dan dos formas distintas de conocer el pueblo sin mover el carro.",
+        "https://www.flickr.com/photos/auvet/34910946766",
+        "Ver foto de la plaza"
       ],
       [
         "Parroquia Nuestra Señora del Carmen de Hatillo",
@@ -1534,7 +1536,53 @@
           ]
         ]
       }
-    ]
+    ],
+    "placePhotos": {
+      "Plaza Pública de Hatillo": {
+        "path": "/img/pueblos/hatillo/casco-casa-alcaldia.webp",
+        "width": 775,
+        "height": 602,
+        "alt": "Casa Alcaldía de Hatillo, en el entorno de la plaza pública",
+        "title": "Casa Alcaldía de Hatillo, Puerto Rico",
+        "author": "Joe Delgado",
+        "source": "https://commons.wikimedia.org/wiki/File:Casa_Alcald%C3%ADa_de_Hatillo%2C_Puerto_Rico.jpg",
+        "license": "CC BY-SA 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0"
+      },
+      "Parroquia Nuestra Señora del Carmen de Hatillo": {
+        "path": "/img/pueblos/hatillo/parroquia-del-carmen.webp",
+        "width": 783,
+        "height": 874,
+        "alt": "Fachada de la Parroquia Nuestra Señora del Carmen desde el entorno de la plaza",
+        "title": "Parroquia Nuestra Señora del Carmen, Hatillo, Puerto Rico",
+        "author": "Joe Delgado",
+        "source": "https://commons.wikimedia.org/wiki/File:Parroquia_Nuestra_Se%C3%B1ora_del_Carmen%2C_Hatillo%2C_Puerto_Rico.jpg",
+        "license": "CC BY-SA 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0"
+      },
+      "Paseo del Carmen, Hatillo": {
+        "path": "/img/pueblos/hatillo/paseo-del-carmen.webp",
+        "width": 775,
+        "height": 531,
+        "alt": "Barandas y faroles del Paseo del Carmen junto a la costa de Hatillo",
+        "title": "Paseo del Carmen, Hatillo, Puerto Rico 02",
+        "author": "Joe Delgado",
+        "source": "https://commons.wikimedia.org/wiki/File:Paseo_del_Carmen%2C_Hatillo%2C_Puerto_Rico_02.jpg",
+        "license": "CC BY-SA 2.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/2.0"
+      },
+      "Playa Sardinera de Hatillo": {
+        "path": "/img/pueblos/hatillo/playa-sardinera.webp",
+        "width": 1100,
+        "height": 619,
+        "alt": "Arena, agua y formaciones rocosas en Playa Sardinera, Hatillo",
+        "title": "Playa Sardinera, Hatillo, Puerto Rico",
+        "author": "Yarfpr",
+        "source": "https://commons.wikimedia.org/wiki/File:Playa_Sardinera%2C_Hatillo%2C_Puerto_Rico.jpg",
+        "license": "CC BY-SA 4.0",
+        "licenseUrl": "https://creativecommons.org/licenses/by-sa/4.0"
+      }
+    }
   },
   "hormigueros": {
     "region": "Oeste",
