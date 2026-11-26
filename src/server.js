@@ -111,7 +111,9 @@ app.use((req, res, next) => {
 
 // PB analytics: set PB_GA_MEASUREMENT_ID=G-XXXXXXXXXX in Render to activate.
 app.use((req, res, next) => {
-  if (pbGroupRoutes.privatePath(req.path) || pbTalent.isPrivatePath(req.path) || req.path === '/turistiando/presentacion' || /^\/pb-control\/turismo\/vista-previa(?:\/|$)/.test(req.path)) return next();
+  // Keep administrative traffic out of GA4, including the login and nested tools.
+  if (/^\/pb-control(?:\/|$)/i.test(req.path)) return next();
+  if (pbGroupRoutes.privatePath(req.path) || pbTalent.isPrivatePath(req.path) || req.path === '/turistiando/presentacion') return next();
   const measurementId = String(process.env.PB_GA_MEASUREMENT_ID || '').trim();
   if (!/^G-[A-Z0-9]+$/i.test(measurementId)) return next();
   const host = String(req.hostname || '').toLowerCase();
