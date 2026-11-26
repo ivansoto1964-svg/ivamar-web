@@ -132,9 +132,7 @@ module.exports = {
   hatillo: {
     name:'Hatillo', region:'Norte', zip:'00659', demonym:'Hatillanos', founded:'1823', character:'Costa y tradición',
     intro:'Costa norte, tradición, agricultura y una ubicación perfecta para combinar varios pueblos en un mismo viaje.',
-    why:'Hatillo funciona muy bien como base para descubrir el norte, con identidad propia y acceso rápido a Arecibo, Camuy y Quebradillas.',
-    places:[['Centro de Hatillo','Comercios, comunidad y vida cotidiana del pueblo.'],['Costa norte','Tramos de litoral que conectan visualmente a Hatillo con el resto de la región.']],
-    stays:[['Parador El Buen Café','Candidato fuerte','Historia familiar, gastronomía y base útil para el norte.'],['Hotel Punta Maracayo / Juan Luis Cuevas','Candidato fuerte','Opción costera con historia comunitaria.']]
+    why:'En un mismo día puedes caminar por el casco, entender cómo la ganadería marcó el pueblo y terminar frente al Atlántico. Si tienes un segundo día, puedes combinar la visita con Camuy o Arecibo.'
   },
   isabela: {
     name:'Isabela', region:'Oeste · Norte', zip:'00662', demonym:'Isabelinos', founded:'1819', character:'Costa y surf',

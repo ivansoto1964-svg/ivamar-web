@@ -21,7 +21,7 @@ module.exports = function renderTownPage(town, slug, guide) {
   const history = historyText ? `<section class="section" id="historia-del-pueblo"><h2>Historia y cultura</h2><div class="card prose"><p>${esc(historyText)}</p></div></section>` : '';
   const editorialPlaces = guide ? townEditorial.renderGuide(town.name, guide, hasGuide) : '';
   const travelLinks = guide && !hasGuide ? townEditorial.renderTravelLinks(slug) : '';
-  const jumps = guide ? `<nav class="town-jumps" aria-label="En esta guía"><a href="/pueblos/">← Los 78 pueblos</a><a href="#guia-del-pueblo">Qué visitar</a><a href="#historia-del-pueblo">Historia y cultura</a>${(hasGuide || travelLinks) ? '<a href="#reservas">Reservas</a>' : ''}<a href="#historias-publicadas">Historias</a></nav>` : '';
+  const jumps = guide ? `<nav class="town-jumps" aria-label="En esta guía"><a href="/pueblos/">← Los 78 pueblos</a><a href="#guia-del-pueblo">Qué visitar</a>${(guide.sections || []).map(({id,label}) => `<a href="#${esc(id)}">${esc(label)}</a>`).join('')}<a href="#historia-del-pueblo">Historia y cultura</a>${(hasGuide || travelLinks) ? '<a href="#reservas">Reservas</a>' : ''}<a href="#historias-publicadas">Historias</a></nav>` : '';
   const cover = guide?.photo;
   const socialImage = hasGuide ? {path:'/img/pueblos/arecibo/faro.webp',alt:'El Faro de Arecibo frente al Atlántico'} : cover;
   if (socialImage) schema.image = 'https://www.masboricuaqueunmofongo.com' + socialImage.path;

@@ -26,14 +26,21 @@ function mapsLink(place, town) {
   return `https://www.google.com/maps/search/?${esc(query)}`;
 }
 
+function guideCards(town, entries, showMap = false) {
+  return `<div class="cards">${entries.map(([name, copy, link]) => `
+    <article class="mini"><h3>${esc(name)}</h3><p>${esc(copy)}</p>
+    ${showMap ? `<a class="town-map" href="${mapsLink(name,town)}" ${external}>Ver mapa de ${esc(name)} ↗</a>` : ''}
+    ${link ? `<p><a class="town-map" href="${esc(link)}" ${link.startsWith('https://') ? external : ''}>Más sobre ${esc(name)} ${link.startsWith('https://') ? '↗' : '→'}</a></p>` : ''}</article>`).join('')}</div>`;
+}
+
 function renderGuide(town, guide, hasWeekendGuide) {
-  const placeCards = `<div class="cards">${guide.places.map(([name, copy]) => `
-    <article class="mini"><h3>${esc(name)}</h3><p>${esc(copy)}</p><a class="town-map" href="${mapsLink(name,town)}" ${external}>Ver mapa de ${esc(name)} ↗</a></article>`).join('')}</div>`;
   return `<section class="section town-guide" id="guia-del-pueblo">
     <h2>${hasWeekendGuide ? 'Tres paradas para entender Arecibo' : 'Qué visitar'}</h2>
     <div class="town-plan"><strong>${hasWeekendGuide ? 'Del casco al carso' : 'Un plan para empezar'}</strong><p>${esc(guide.plan)}</p></div>
-    ${placeCards}
-  </section>`;
+    ${guideCards(town, guide.places, true)}
+  </section>
+  ${(guide.sections || []).map(({id,title,entries}) => `<section class="section town-guide" id="${esc(id)}">
+    <h2>${esc(title)}</h2>${guideCards(town, entries)}</section>`).join('')}`;
 }
 
 function renderSources(guide, hasHeroPhoto) {

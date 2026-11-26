@@ -1409,31 +1409,59 @@
   },
   "hatillo": {
     "region": "Norte",
-    "subtitle": "Máscaras, ganadería y costa norte",
-    "history": "La ganadería lechera dio forma al paisaje rural. El Festival de las Máscaras, asociado al Día de los Santos Inocentes, se reconoce por los trajes ornamentados y las comparsas.",
+    "subtitle": "Del paseo frente al Atlántico a los quesos de Carrizales",
+    "history": "Hatillo se fundó en 1823 en la costa norte. El catolicismo de tradición canaria dejó una huella visible en la fiesta de los Santos Inocentes. Hoy, el Festival de las Máscaras se reconoce por las comparsas y los trajes que preparan grupos del pueblo. Tierra adentro, las vaquerías forman parte del paisaje y explican otro de sus nombres, la Capital de la Industria Lechera. Nuestra Señora del Carmen da nombre a la parroquia del casco y al paseo costero.",
     "places": [
       [
-        "Festival de las Máscaras",
-        "La tradición suele celebrarse el 28 de diciembre. Verifica el itinerario y cierres con el municipio."
+        "Plaza Pública de Hatillo",
+        "Empieza aquí para recorrer a pie el casco. La parroquia y el museo te dan dos formas distintas de conocer el pueblo sin mover el carro."
       ],
       [
-        "Playa Sardinera",
-        "Un punto para ver el Atlántico desde la costa de Hatillo."
+        "Parroquia Nuestra Señora del Carmen de Hatillo",
+        "La patrona da nombre a esta iglesia del casco. Si vas a entrar, confirma primero si hay misa o si el templo está abierto.",
+        "https://www.pr.gov/directorio-municipos/hatillo"
       ],
       [
-        "Casco de Hatillo",
-        "Empieza por la plaza y la parroquia, y busca productos de la tradición lechera en comercios locales."
+        "Museo de Arte e Historia Oscar Colón Delgado",
+        "Está en la calle Franklin D. Roosevelt, en el casco. Tiene una colección de historia de Hatillo y exhibiciones rotativas de artistas locales. Confirma admisión y horario al 787-898-3840.",
+        "https://www.discoverpuertorico.com/es/node/27081"
+      ],
+      [
+        "Paseo del Carmen, Hatillo",
+        "Para una caminata junto al litoral sin hacer de la playa el centro del día. Combínalo con el casco y verifica las condiciones si hay marejada."
+      ],
+      [
+        "Gran Parque del Norte, Hatillo",
+        "Área de recreo al aire libre por la PR-119, km 2.4. Escógelo para un rato de parque o un picnic y confirma el acceso o cualquier cierre antes de ir."
+      ],
+      [
+        "Playa Sardinera de Hatillo",
+        "Úsala como parada de costa y confirma el pronóstico de oleaje y corrientes para tu fecha. Si hay avisos o el mar está fuerte, disfruta desde tierra.",
+        "https://www.weather.gov/sju/"
+      ],
+      [
+        "Vaca Negra, Hatillo",
+        "En Carrizales, por la PR-493 km 0.7. Sus quesos y yogures ayudan a entender la relación entre las vaquerías y la mesa local. Consulta al negocio por degustaciones, visitas o talleres si eso motiva el viaje.",
+        "https://vacanegra.com/"
       ]
     ],
-    "plan": "Si vas en diciembre, organiza la visita alrededor de las máscaras. El resto del año reúne plaza y costa.",
+    "plan": "Si solo tienes una mañana, combina plaza, museo y Paseo del Carmen. Con un día completo puedes añadir una parada en Carrizales y escoger entre Playa Sardinera o el Gran Parque del Norte. Deja el 28 de diciembre para la visita centrada en las máscaras.",
     "sources": [
       [
-        "Discover Puerto Rico — Hatillo",
-        "https://www.discoverpuertorico.com/es/regiones/norte/hatillo"
+        "Gobierno de Puerto Rico · Municipio de Hatillo",
+        "https://www.pr.gov/directorio-municipos/hatillo"
       ],
       [
-        "Tripadvisor — reseñas y actividades",
-        "https://www.tripadvisor.com/Attractions-g659455-Activities-c47-Hatillo_Puerto_Rico.html"
+        "Junta de Planificación · Plan territorial de Hatillo",
+        "https://docs.pr.gov/files/JP-Junta%20de%20Planificacion/Vistas%20Publicas/VP%20-%20Planes%20Territoriales/Hatillo/Plan-Territorial-FINAL-Hatillo.pdf"
+      ],
+      [
+        "Discover Puerto Rico · Hatillo",
+        "https://www.discoverpuertorico.com/regions/north/hatillo"
+      ],
+      [
+        "Tripadvisor · parques y atracciones naturales",
+        "https://www.tripadvisor.co/Attractions-g659455-Activities-c57-Hatillo_Puerto_Rico.html"
       ]
     ],
     "photo": {
@@ -1446,7 +1474,67 @@
       "title": "Festival de Mascaras de Hatillo, Puerto Rico",
       "width": 800,
       "alt": "Participantes del Festival de Máscaras de Hatillo"
-    }
+    },
+    "sections": [
+      {
+        "id": "itinerarios",
+        "label": "Itinerarios",
+        "title": "Rutas para medio día, un día o el festival",
+        "entries": [
+          [
+            "Medio día en el casco",
+            "Comienza en la plaza y la parroquia. Sigue al museo si está abierto y termina con un paseo por la costa. Si el museo está cerrado, hay tiempo para pasar por un comercio local o alargar la caminata."
+          ],
+          [
+            "Un día de costa y quesos",
+            "Haz la parada costera temprano. Escoge el Gran Parque del Norte para un picnic o Playa Sardinera para ver el litoral. Después almuerza en Hatillo y deja Carrizales para los quesos, según el horario del negocio."
+          ],
+          [
+            "28 de diciembre · Festival de las Máscaras",
+            "La tradición de los Santos Inocentes se celebra cada 28 de diciembre. Si vas por las comparsas, busca el programa de la edición, las rutas y los cierres del municipio antes de elegir dónde verlas.",
+            "https://www.pr.gov/directorio-municipos/hatillo"
+          ]
+        ]
+      },
+      {
+        "id": "comida-hospedaje",
+        "label": "Comida y hospedaje",
+        "title": "Dónde comer y quedarse",
+        "entries": [
+          [
+            "Restaurante y Parador El Buen Café",
+            "El restaurante abrió en 1980, según su propia historia. Puedes hacer una parada para comer o comparar las habitaciones si usas Hatillo como base para recorrer la costa norte. Revisa horarios y tarifas directamente.",
+            "https://elbuencafepr.com/"
+          ],
+          [
+            "Punta Maracayo",
+            "El sector tiene opciones de hotel y campamento. Verifica directamente cuál modalidad recibe visitantes en tu fecha y pregunta qué servicios incluye antes de reservar.",
+            "https://www.discoverpuertorico.com/regions/north/hatillo"
+          ]
+        ]
+      },
+      {
+        "id": "organizar-salida",
+        "label": "Antes de salir",
+        "title": "Cómo organizar la salida",
+        "entries": [
+          [
+            "Cómo llegar y moverte",
+            "Usa la PR-2 como eje para escoger tus paradas. Para un itinerario que incluya parque costero, casco y Carrizales, planifica los tramos en carro; para el casco, empieza por la plaza y recorre esa parte a pie."
+          ],
+          [
+            "Si vas con niños o necesitas acceso sin escalones",
+            "Para un rato al aire libre, considera el parque. Si el acceso sin escalones, los baños o el estacionamiento son imprescindibles, llama primero al lugar. Municipio de Hatillo: 787-898-3835 o 787-898-3840.",
+            "https://www.pr.gov/directorio-municipios/hatillo"
+          ],
+          [
+            "Combina con Camuy o Arecibo",
+            "En un segundo día puedes enlazar la visita con el carso de Camuy o con el casco y el faro de Arecibo. Confirma la operación del sitio que elijas antes de salir.",
+            "/pueblos/camuy/"
+          ]
+        ]
+      }
+    ]
   },
   "hormigueros": {
     "region": "Oeste",
