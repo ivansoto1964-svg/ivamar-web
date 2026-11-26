@@ -17,6 +17,7 @@ body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Sego
 .toolbar{display:flex;gap:.7rem;flex-wrap:wrap;margin:1rem 0}
 .toolbar input,.toolbar select{padding:.8rem 1rem;border:1px solid #cfc8bc;border-radius:9px;background:#fff;font:inherit}
 .toolbar input{flex:1;min-width:min(100%,230px)}
+.town-results{padding:.55rem .35rem;margin:0;list-style:none}.town-results li+li{margin-top:.35rem}.town-results a{display:inline-block;color:#124975;font-weight:700;text-underline-offset:.17em;padding:.27rem .15rem}.town-result-card{min-width:0}.toolbar select{max-width:100%}
 .count{font-weight:900;color:#002d62}
 .footer{text-align:center;color:#465360;font-size:.8rem;margin-top:2rem}
 .footer-links{display:flex;justify-content:center;gap:.75rem;flex-wrap:wrap;margin:.55rem 0}
@@ -31,10 +32,10 @@ body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Sego
 <symbol id="pb-plate-garita" viewBox="0 0 100 180"><g fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M23 159h60v12H23zM30 154V58h47v96M22 58h63v-9H22zM25 48q3-24 29-27 25 4 28 27M33 35q21-15 42 0M49 20V9q5-9 10 0v11M43 158v-14h20v14M48 101V70q8-6 13 0v31zM23 113h60M28 125h51M30 137h47M39 113v12m20-12v12m11 0v12m-23-12v12M16 171h74"/></g></symbol>
 </defs></svg>
 <nav class="town-jumps" aria-label="Planeta Boricua"><a href="/">🇵🇷 Planeta Boricua</a><a href="/agenda-boricua">Agenda Boricua</a></nav>
-<header class="hero"><h1>Descubre nuestros 78 pueblos</h1><p>Busca un pueblo y encuentra fotos, historia local y lugares para recorrer. Empieza cerca de casa o escoge tu próxima escapada.</p></header>
+<header class="hero"><h1>Descubre nuestros 78 pueblos</h1><p>Busca un pueblo, una parada o un plan. Explora playas, naturaleza, comida y más para organizar tu próxima escapada.</p></header>
 <main class="wrap">
 <section id="indexView" aria-label="Directorio de municipios">
-<div class="toolbar"><input id="search" placeholder="Busca un pueblo…" aria-label="Buscar pueblo"><select id="region" aria-label="Filtrar por región"><option value="">Todas las zonas</option><option>Norte</option><option>Centro</option><option>Este</option><option>Sur</option><option>Oeste</option><option>Metro</option><option>Islas Municipio</option></select></div>
+<div class="toolbar"><input id="search" placeholder="Ej. playa, Sardinera o Hatillo" aria-label="Buscar pueblo, lugar o actividad"><select id="region" aria-label="Filtrar por región"><option value="">Todas las zonas</option><option>Norte</option><option>Centro</option><option>Este</option><option>Sur</option><option>Oeste</option><option>Metro</option><option>Islas Municipio</option></select><select id="topic" aria-label="Filtrar por actividad"><option value="">Todas las actividades</option><option value="playa">Playa</option><option value="naturaleza">Naturaleza</option><option value="vida nocturna">Vida nocturna</option><option value="comida">Comida</option><option value="historia y cultura">Historia y cultura</option><option value="festivales">Festivales</option><option value="hospedaje">Hospedaje</option></select></div>
 <p aria-live="polite"><span class="count" id="count">78</span> pueblos</p><div class="grid" id="townGrid"></div>
 <noscript><!-- PUEBLOS_DIRECTORIO --></noscript>
 </section>
@@ -48,15 +49,49 @@ const editorial = {};
 function slug(s){return s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')}
 const bySlug=Object.fromEntries(towns.map(t=>[slug(t[0]),t]));
 function townHref(t){const id=slug(t[0]);return `/pueblos/${id}/`}
-function renderTownPlate(t){
+function renderTownPlate(t, matches = []){
  const name=t[0], guide=editorial[slug(name)];
  const status=name==='Arecibo'?'Guía de fin de semana, costa, historia y comunidad':guide?.subtitle || 'Historia y lugares para visitar';
  const photo=guide?.photo ? `<img class="town-index-photo" src="${guide.photo}" alt="" loading="lazy" decoding="async">` : '';
+ const region=guide?.region || t[1];
+ const stopLinks=matches.length ? `<ul class="town-results" aria-label="Paradas en ${name}">${matches.map(({name:stop,id}) => `<li><a href="${townHref(t)}#${id}">${escapeHtml(stop)} →</a></li>`).join('')}</ul>` : '';
  const nameWidth=Math.min(460,Array.from(name).length*51);
- return `<a class="town" href="${townHref(t)}" aria-label="Explorar ${name}, región ${guide?.region || t[1]}">${photo}<div class="town-plate"><i class="plate-slot tl" aria-hidden="true"></i><i class="plate-slot tr" aria-hidden="true"></i><i class="plate-slot bl" aria-hidden="true"></i><i class="plate-slot br" aria-hidden="true"></i><span class="plate-country" aria-hidden="true">Puerto Rico</span><svg class="plate-garita" aria-hidden="true" viewBox="0 0 100 180"><use href="#pb-plate-garita"></use></svg><h3 class="plate-name"><span class="plate-sr-only">${name}</span><svg viewBox="0 0 520 145" aria-hidden="true"><text x="260" y="118" font-size="120" text-anchor="middle" textLength="${nameWidth}" lengthAdjust="spacingAndGlyphs">${name.toLocaleUpperCase('es-PR')}</text></svg></h3><div class="plate-bottom" aria-hidden="true"><svg class="plate-flag" viewBox="0 0 90 60"><use href="#pb-plate-flag"></use></svg><span>Isla del Encanto</span><svg class="plate-flag" viewBox="0 0 90 60"><use href="#pb-plate-flag"></use></svg></div></div><div class="town-meta"><span class="town-region">${t[1]}</span><span class="town-explore">Explorar pueblo →</span></div><small>${status}</small></a>`;
+ return `<div class="town-result-card"><a class="town" href="${townHref(t)}" aria-label="Explorar ${name}, región ${region}">${photo}<div class="town-plate"><i class="plate-slot tl" aria-hidden="true"></i><i class="plate-slot tr" aria-hidden="true"></i><i class="plate-slot bl" aria-hidden="true"></i><i class="plate-slot br" aria-hidden="true"></i><span class="plate-country" aria-hidden="true">Puerto Rico</span><svg class="plate-garita" aria-hidden="true" viewBox="0 0 100 180"><use href="#pb-plate-garita"></use></svg><h3 class="plate-name"><span class="plate-sr-only">${name}</span><svg viewBox="0 0 520 145" aria-hidden="true"><text x="260" y="118" font-size="120" text-anchor="middle" textLength="${nameWidth}" lengthAdjust="spacingAndGlyphs">${name.toLocaleUpperCase('es-PR')}</text></svg></h3><div class="plate-bottom" aria-hidden="true"><svg class="plate-flag" viewBox="0 0 90 60"><use href="#pb-plate-flag"></use></svg><span>Isla del Encanto</span><svg class="plate-flag" viewBox="0 0 90 60"><use href="#pb-plate-flag"></use></svg></div></div><div class="town-meta"><span class="town-region">${region}</span><span class="town-explore">Explorar pueblo →</span></div><small>${escapeHtml(status)}</small></a>${stopLinks}</div>`;
 }
 function searchText(s){return s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().trim()}
-function renderGrid(){const q=searchText(document.getElementById('search').value),r=document.getElementById('region').value;const list=towns.filter(t=>(!q||searchText(t[0]).includes(q))&&(!r||(editorial[slug(t[0])]?.region || t[1])===r));document.getElementById('count').textContent=list.length;document.getElementById('townGrid').innerHTML=list.map(renderTownPlate).join('')||'<p class="empty" role="status">No encontramos pueblos con esos filtros. Prueba otro nombre o selecciona todas las zonas.</p>'}
-document.getElementById('search').addEventListener('input',renderGrid);document.getElementById('region').addEventListener('change',renderGrid);const id=new URLSearchParams(location.search).get('pueblo');if(id&&bySlug[id])location.replace('/pueblos/'+id+'/');else renderGrid();
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function renderGrid(){
+ const q=searchText(document.getElementById('search').value);
+ const region=document.getElementById('region').value;
+ const topic=document.getElementById('topic').value;
+ const terms=q.split(/\s+/).filter(Boolean);
+ const results=[];
+ for(const town of towns){
+  const [name,fallbackRegion]=town;
+  const guide=editorial[slug(name)];
+  if(region && (guide?.region || fallbackRegion)!==region)continue;
+  const townName=searchText(name);
+  const matches=(guide?.stops || []).filter(stop=>{
+   if(topic && !stop.topics.includes(topic))return false;
+   if(!topic && !q)return false;
+   const text=searchText([stop.name,...stop.topics,name].join(' '));
+   return terms.every(word=>text.includes(word));
+  });
+  if(matches.length || (!topic && (!q || townName.includes(q)))) {
+   const showMatches=topic || (q && !townName.includes(q));
+   results.push([town,showMatches ? matches : []]);
+  }
+ }
+ document.getElementById('count').textContent=results.length;
+ document.getElementById('townGrid').innerHTML=results.map(([t,stops])=>renderTownPlate(t,stops)).join('')||'<p class="empty" role="status">No encontramos pueblos con esos filtros. Prueba otro lugar, actividad o región.</p>';
+}
+for(const key of ['search','region','topic'])document.getElementById(key).addEventListener(key==='search'?'input':'change',renderGrid);
+const query=new URLSearchParams(location.search);
+const id=query.get('pueblo');
+if(id&&bySlug[id])location.replace('/pueblos/'+id+'/');
+else {
+ document.getElementById('search').value=query.get('q') || '';
+ renderGrid();
+}
 </script>
 </body></html>

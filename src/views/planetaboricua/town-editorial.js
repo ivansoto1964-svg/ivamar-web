@@ -34,11 +34,16 @@ function placePhoto(photo) {
   </figure>`;
 }
 
-function guideCards(town, entries, {showMap = false, photos = {}} = {}) {
-  return `<div class="cards">${entries.map(([name, copy, link, linkText]) => `
-    <article class="mini"><h3>${esc(name)}</h3>${placePhoto(photos[name])}<p>${esc(copy)}</p>
+function stopId(section, index) {
+  return `${section}-parada-${index + 1}`;
+}
+
+function guideCards(town, entries, {showMap = false, photos = {}, section = 'guia-del-pueblo'} = {}) {
+  return `<div class="cards">${entries.map(([name, copy, link, linkText, otherLinks = []], index) => `
+    <article class="mini town-stop" id="${stopId(section,index)}"><h3>${esc(name)}</h3>${placePhoto(photos[name])}<p>${esc(copy)}</p>
     ${showMap ? `<a class="town-map" href="${mapsLink(name,town)}" ${external}>Ver mapa de ${esc(name)} ↗</a>` : ''}
-    ${link ? `<p><a class="town-map" href="${esc(link)}" ${link.startsWith('https://') ? external : ''}>${esc(linkText || 'Más sobre ' + name)} ${link.startsWith('https://') ? '↗' : '→'}</a></p>` : ''}</article>`).join('')}</div>`;
+    ${link ? `<p><a class="town-map" href="${esc(link)}" ${link.startsWith('https://') ? external : ''}>${esc(linkText || 'Más sobre ' + name)} ${link.startsWith('https://') ? '↗' : '→'}</a></p>` : ''}
+    ${otherLinks.length ? `<ul class="town-stop-links">${otherLinks.map(([label,url]) => `<li><a href="${esc(url)}" ${external}>${esc(label)} ↗</a></li>`).join('')}</ul>` : ''}</article>`).join('')}</div>`;
 }
 
 function renderGuide(town, guide, hasWeekendGuide) {
@@ -48,7 +53,7 @@ function renderGuide(town, guide, hasWeekendGuide) {
     ${guideCards(town, guide.places, {showMap:true, photos:guide.placePhotos})}
   </section>
   ${(guide.sections || []).map(({id,title,entries}) => `<section class="section town-guide" id="${esc(id)}">
-    <h2>${esc(title)}</h2>${guideCards(town, entries)}</section>`).join('')}`;
+    <h2>${esc(title)}</h2>${guideCards(town, entries, {section:id})}</section>`).join('')}`;
 }
 
 function renderSources(guide, hasHeroPhoto) {
@@ -76,11 +81,30 @@ function renderTownNavigation(slug) {
   return `<nav class="town-next" aria-label="Recorre los pueblos"><a href="/pueblos/">Los 78 pueblos</a>${links.filter(([town]) => town).map(([[id,name], label]) => `<a href="/pueblos/${id}/"><small>${label}</small><strong>${esc(name)}</strong></a>`).join('')}</nav>`;
 }
 
+const topicPatterns = {
+  playa: /\b(playas?|balnearios?|surf|jobos|domes|poza del obispo|la pared)\b/,
+  naturaleza: /\b(bosques?|cuevas?|cavernas?|canones?|r[ií]os?|lagos?|lagunas?|montana|naturales?|reservas?|cascadas?|senderos?|embalses?|mirador|humedales?|refugio|salinas|petroglifos)\b/,
+  'vida nocturna': /\b(la placita de santurce|poblado de boqueron|vida nocturna|bares)\b/,
+  comida: /\b(cafes?|restaurantes?|lechon|kioscos?|vaca negra|gastronom[ií]a|agroturismo|chocolat|longaniza|quesos?|panaderia)\b/,
+  'historia y cultura': /\b(museos?|histori[ac][oa]?s?|plazas?|fuerte|castillo|casco|parroquia|iglesia|faro|teatro|ruinas|artesan[ií]a|caparra)\b/,
+  festivales: /\b(festival|fiestas|mascaras|carnaval)\b/,
+  hospedaje: /\b(hoteles?|paradores?|hospedaje|campamento|punta maracayo)\b/
+};
+function searchableStops(guide) {
+  const sections = [{id:'guia-del-pueblo',entries:guide.places}, ...(guide.sections || [])];
+  return sections.flatMap(({id,entries}) => entries.map(([name],index) => {
+    const searchable = name.normalize('NFD').replace(/\p{Diacritic}/gu, '').toLowerCase();
+    const topics = Object.entries(topicPatterns).filter(([,pattern]) => pattern.test(searchable)).map(([topic]) => topic);
+    return {name,id:stopId(id,index),topics};
+  }));
+}
+
 function directoryData() {
   return Object.fromEntries(Object.entries(guides).map(([slug, guide]) => [slug, {
     subtitle:guide.subtitle,
     region:guide.region,
-    photo:guide.photo?.path
+    photo:guide.photo?.path,
+    stops:searchableStops(guide)
   }]));
 }
 

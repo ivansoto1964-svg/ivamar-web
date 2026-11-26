@@ -485,7 +485,9 @@
       ],
       [
         "Poblado de Boquerón",
-        "Camina por el poblado costero y aprovecha sus comercios y mesas locales."
+        "Combina el paseo costero con los restaurantes y bares del poblado. Consulta los horarios del lugar que elijas antes de salir de noche.",
+        "https://www.discoverpuertorico.com/es/node/69841",
+        "Conoce el Poblado de Boquerón"
       ]
     ],
     "plan": "Divide el día entre el refugio y Boquerón. El color de las salinas cambia con las condiciones.",
@@ -1132,10 +1134,7 @@
       ],
       [
         "Las Croabas",
-        "Área costera para comer y salir hacia actividades acuáticas"
-      ],
-      [
-        " verifica el punto de partida de cada operador."
+        "Área costera para comer y salir hacia actividades acuáticas Verifica el punto de partida de cada operador."
       ]
     ],
     "plan": "Combina un paseo diurno por la costa con una excursión nocturna, dejando un descanso entre ambos.",
@@ -1506,7 +1505,18 @@
           [
             "Restaurante y Parador El Buen Café",
             "El restaurante abrió en 1980, según su propia historia. Puedes hacer una parada para comer o comparar las habitaciones si usas Hatillo como base para recorrer la costa norte. Revisa horarios y tarifas directamente.",
-            "https://elbuencafepr.com/"
+            "https://elbuencafepr.com/",
+            "Sitio oficial",
+            [
+              [
+                "Reseñas del restaurante en Tripadvisor",
+                "https://www.tripadvisor.com/Restaurant_Review-g659455-d1046261-Reviews-El_Buen_Cafe-Hatillo_Puerto_Rico.html"
+              ],
+              [
+                "Reseñas del parador en Tripadvisor",
+                "https://www.tripadvisor.com/Hotel_Review-g659455-d251395-Reviews-Parador_El_Buen_Cafe-Hatillo_Puerto_Rico.html"
+              ]
+            ]
           ],
           [
             "Punta Maracayo",
@@ -2850,6 +2860,12 @@
       [
         "Museo de Arte de Puerto Rico",
         "Busca las exposiciones en Santurce y dedica tiempo al barrio."
+      ],
+      [
+        "La Placita de Santurce",
+        "Mercado durante el día y punto de encuentro para comer, tomar algo y salir por la noche. Confirma el horario del negocio que quieras visitar.",
+        "https://www.discoverpuertorico.com/es/articulo/guia-de-restaurantes-bares-y-vida-nocturna-en-la-placita",
+        "Guía de bares y restaurantes"
       ]
     ],
     "plan": "Dedica un día al casco histórico y otro al arte o los mercados para ver más de la capital.",

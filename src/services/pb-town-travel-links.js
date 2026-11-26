@@ -40,12 +40,21 @@ const tripPropertyLabels = {
 };
 const tripQuery = new URL(ARECIBO_HOTELS).search;
 const activities = {
-  aguadilla: ['punta-borinquen-beach-l234802/', 'Actividades en Punta Borinquén'],
-  arecibo: ['arecibo-l138123/mata-de-platano-nature-reserve-bat-watching-night-tour-t1110409/', 'Visita nocturna en Mata de Plátano'],
-  fajardo: ['fajardo-l882/', 'Excursiones con salida desde Fajardo'],
-  orocovis: ['orocovis-l145413/toro-verde-zipline-the-monster-with-transportation-t948281/', 'Tirolesas en Toro Verde con transporte'],
-  'rio-grande': ['san-juan-puerto-rico-l355/from-san-juan-el-yunque-rainforest-and-waterslide-tour-vip-t276657/', 'Excursión a El Yunque con salida desde San Juan'],
-  'san-juan': ['san-juan-puerto-rico-l355/', 'Actividades y recorridos en San Juan']
+  aguadilla: [['aguadilla-l2465/puerto-rico-horseback-sunset-riding-in-the-beach-t839683/', 'Paseo a caballo por la costa de Aguadilla']],
+  arecibo: [
+    ['arecibo-l138123/mata-de-platano-nature-reserve-bat-watching-night-tour-t1110409/', 'Visita nocturna en Mata de Plátano'],
+    ['es-es/arecibo-l138123/puerto-rico-aventura-de-tubing-en-el-rio-tanama-arecibo-t1092510/', 'Excursión por el río Tanamá y una cueva en Arecibo']
+  ],
+  bayamon: [['es-es/ron-del-barrilito-hacienda-santa-ana-bayamon-l166624/', 'Experiencias de Ron del Barrilito en Hacienda Santa Ana']],
+  camuy: [['es-es/san-juan-puerto-rico-l355/san-juan-canon-del-rio-camuy-y-tour-por-cueva-con-recogida-t1087134/', 'Excursión al cañón del Río Camuy con salida desde San Juan']],
+  catano: [['es-es/san-juan-puerto-rico-l355/san-juan-tour-por-la-destileria-casa-bacardi-t429467/', 'Recorrido en Casa BACARDÍ, en Cataño']],
+  fajardo: [['es-es/fajardo-l882/desde-fajardo-viaje-de-un-dia-en-catamaran-a-la-isla-de-icacos-t19891/', 'Catamarán a Icacos con salida desde Fajardo']],
+  isabela: [['san-juan-puerto-rico-l355/san-juan-caguas-guavate-ponce-rincon-isabela-day-trip-t772787/', 'Excursión desde San Juan con parada en Isabela']],
+  lajas: [['la-parguera-l145138/la-parguera-sunset-and-biobay-or-late-night-biobay-cruise-t437542/', 'Paseo en bote por la bahía bioluminiscente de La Parguera']],
+  orocovis: [['orocovis-l145413/toro-verde-zipline-the-monster-with-transportation-t948281/', 'Tirolesas en Toro Verde con transporte']],
+  'rio-grande': [['san-juan-puerto-rico-l355/from-san-juan-el-yunque-rainforest-and-waterslide-tour-vip-t276657/', 'Excursión a El Yunque con salida desde San Juan']],
+  'san-juan': [['es-es/san-juan-puerto-rico-l355/descubre-el-viejo-san-juan-en-un-carrito-de-golf-t1093336/', 'Recorrido en carrito de golf por el Viejo San Juan']],
+  vieques: [['es-es/municipio-vieques-l32198/vieques-tour-nocturno-en-kayak-por-la-bahia-bioluminiscente-con-guia-t999419/', 'Kayak nocturno en la bahía bioluminiscente de Vieques']]
 };
 const expediaActivities = {
   ponce: ['from-san-juan-full-day-cultural-road-trip-to-ponce.a51796675.activity-details', 'Ruta cultural por Ponce con salida desde San Juan'],
@@ -70,11 +79,11 @@ function getTownTravelLinks(slug) {
     const url = 'https://us.trip.com/hotels/' + hotel + '/' + tripQuery;
     links.push({provider:'Trip.com', label:tripPropertyLabels[slug] || 'Compara hospedajes en el área', url, affiliate:true});
   }
-  const activity = activities[slug];
-  if (activity) {
-    const customUrl = slug === 'arecibo' ? getAreciboActivitiesUrl() : '';
-    const url = customUrl || 'https://www.getyourguide.com/' + activity[0] + '?partner_id=SW7UD0N&cmp=pb-pueblos-' + slug;
-    links.push({provider:'GetYourGuide', label:customUrl ? 'Explora actividades en el área de Arecibo' : activity[1], url, affiliate:true});
+  const customUrl = slug === 'arecibo' ? getAreciboActivitiesUrl() : '';
+  for (const [index, [path,label]] of (activities[slug] || []).entries()) {
+    const useCustom = index === 0 && customUrl;
+    const url = useCustom || 'https://www.getyourguide.com/' + path + '?partner_id=SW7UD0N&cmp=pb-pueblos-' + slug;
+    links.push({provider:'GetYourGuide', label:useCustom ? 'Explora actividades en el área de Arecibo' : label, url, affiliate:true});
   }
   const expedia = expediaActivities[slug];
   if (expedia) links.push({provider:'Expedia', label:expedia[1], url:'https://www.expedia.com/things-to-do/' + expedia[0], affiliate:false});
