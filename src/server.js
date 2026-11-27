@@ -143,7 +143,6 @@ app.use((req, res, next) => {
       body = body
         .replace(/href=(['"])\/terminos\1/g, 'href=$1/terminos-boricua$1')
         .replace(/href=(['"])\/privacidad\1/g, 'href=$1/privacidad-boricua$1')
-        .replace(/href=(['"])\/contacto\1/g, 'href=$1/quienes-somos$1')
         .replace(/connect@ivamarai\.com/gi, 'masboricuaqueunmofongo@gmail.com');
       const privatePath = req.path === '/turistiando/presentacion' || /^\/(?:pb-control|api|auth)(?:\/|$)/.test(String(req.path || '')) || pbTalent.isPrivatePath(req.path) || pbBusinessRoutes.privatePath(req.path) || pbGroupRoutes.privatePath(req.path);
       if (!privatePath) {
@@ -233,7 +232,7 @@ const { terminos: terminosBoricua, privacidad: privacidadBoricua, afiliados: afi
 const regresarAPR = require("./views/regresar-a-pr");
 const mudarseDePR = require("./views/mudarse-de-pr");
 const sobreNosotros = require("./views/sobre-nosotros");
-const contactoES = require("./views/contacto");
+const { createContactRouter } = require("./routes/pb-contact");
 const contact = require("./views/contact");
 const privacy = require("./views/privacy");
 const terms = require("./views/terms");
@@ -1262,7 +1261,16 @@ app.get("/about", (req, res) => {
   return res.send(layout({ lang: "en", title: "About — Ivamar AI LLC", body: about }));
 });
 app.get("/sobre-nosotros", (req, res) => res.send(layout({ title: "Sobre Nosotros — Ivamar AI", body: sobreNosotros })));
-app.get("/contacto", (req, res) => res.redirect(301, "/quienes-somos"));
+app.use(createContactRouter({
+  email:PB_CONTACT_EMAIL,
+  sendMessage:async message => {
+    const result = await resend.emails.send({
+      from:`Planeta Boricua <${PB_SENDER_EMAIL}>`,to:PB_CONTACT_EMAIL,...message
+    });
+    if (result.error || !result.data?.id) throw new Error('PB contact delivery rejected');
+  }
+}));
+app.get("/contacto", (_req, res) => res.redirect(301, "/quienes-somos"));
 app.get("/contact", (req, res) => res.send(layout({  lang: "en", title: "Contact — Ivamar AI LLC", body: contact })));
 app.get("/privacy", (req, res) => res.send(layout({  lang: "en", title: "Privacy Policy — Ivamar AI LLC", body: privacy })));
 app.get("/terms", (req, res) => res.send(layout({  lang: "en", title: "Terms of Service — Ivamar AI LLC", body: terms })));
@@ -3271,7 +3279,7 @@ app.get("/sitemap.xml", async (req, res) => {
   const townUrls = ['', ...Object.keys(pbTownDirectory)]
     .map(slug => `<url><loc>https://www.masboricuaqueunmofongo.com/pueblos/${slug ? slug + '/' : ''}</loc></url>`).join('');
   res.set('Content-Type','application/xml');
-  res.send(`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${staticUrls}${floridaArtisansUrl}${agendaUrl}${eventUrls}${latestUrls}${postUrls}${artisanUrls}${talentUrls}${businessUrls}${townUrls}${pbTourismSection.sitemap()}</urlset>`);
+  res.send(`<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${staticUrls}<url><loc>https://www.masboricuaqueunmofongo.com/contacto</loc></url>${floridaArtisansUrl}${agendaUrl}${eventUrls}${latestUrls}${postUrls}${artisanUrls}${talentUrls}${businessUrls}${townUrls}${pbTourismSection.sitemap()}</urlset>`);
 });
 
 app.get('/sala-de-prensa', (_req, res) => res.send(salaPrensaPB()));

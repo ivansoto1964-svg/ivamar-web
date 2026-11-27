@@ -163,6 +163,7 @@ nav{background:#fff;border-bottom:3px solid #CE1126;padding:0;}
   <p>Esta Política de Privacidad puede actualizarse ocasionalmente. Cualquier cambio será publicado en esta misma página con la fecha de actualización.</p>
 
   <h2>8. Contacto</h2>
+  <p>Si usas el formulario de contacto, recibimos tu nombre, correo, tema y mensaje por correo electrónico para atender tu consulta. Enviar un mensaje no te suscribe al boletín.</p>
   <p>Si tiene alguna pregunta sobre esta Política de Privacidad, puede contactarnos a través de: <a href="mailto:masboricuaqueunmofongo@gmail.com" style="color:#CE1126;">masboricuaqueunmofongo@gmail.com</a></p>
 </div>
 <footer class="footer">

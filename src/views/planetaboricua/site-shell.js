@@ -13,7 +13,7 @@ function isPublicShellPath(pathname) {
   return current === '/' || /^\/(?:blog|lo-mas-reciente|agenda-boricua|pueblos)(?:\/|$)/.test(current)
     || /^\/turistiando(?:\/viaje-[a-f0-9]{16})?$/.test(current)
     || /^\/(?:tu-negocio|crea-tu-menu)(?:\/en)?$/.test(current)
-    || ['/feria-artesanos','/feria-artesanos/florida','/recursos','/mudarse-de-pr','/regresar-a-pr','/quienes-somos','/anunciate-en-pb','/privacidad-boricua','/terminos-boricua','/afiliados-boricua','/sala-de-prensa','/grupos-boricuas','/compartir-evento-boricua'].includes(current)
+    || ['/feria-artesanos','/feria-artesanos/florida','/recursos','/mudarse-de-pr','/regresar-a-pr','/quienes-somos','/anunciate-en-pb','/privacidad-boricua','/terminos-boricua','/afiliados-boricua','/sala-de-prensa','/contacto','/grupos-boricuas','/compartir-evento-boricua'].includes(current)
     || /^\/artesanos\/(?!mi-perfil(?:\/|$)|comunicaciones(?:\/|$))[^/]+$/.test(current);
 }
 
@@ -40,7 +40,7 @@ function renderSiteHeader(pathname, {english = false, newsletter = '#pb-boletin'
     [english ? '/tu-negocio/en' : '/tu-negocio','Tu negocio','Your business','business'],
     ['/quienes-somos','Quiénes somos','About us','about'],
     ['/anunciate-en-pb','Anúnciate en PB','Advertise','ads'],
-    ['mailto:masboricuaqueunmofongo@gmail.com','Contacto','Contact','contact'],
+    ['/contacto','Contacto','Contact','contact'],
     ['/artesanos/mi-perfil','Administrar mi perfil','Manage my profile','profile']
   ];
   const active = href => {
