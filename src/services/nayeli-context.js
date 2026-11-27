@@ -4,6 +4,8 @@ const townGuides = require('../data/pb-town-guides.json');
 const municipalities = require('../data/pb-municipalities');
 
 const STOP_WORDS = new Set('busco buscar cerca como con cual cuando donde durante del desde dia dias esta estan este estoy encontrame encontrar favor fin fue hacer hay las los lugar lugares mejor necesito para pasar puedo puedes que quiero semana sirve sobre tarde tiene tienes una unas uno unos ver voy manana hoy sabado domingo'.split(' '));
+const agendaDate = new Intl.DateTimeFormat('es-PR',{dateStyle:'full',timeZone:'UTC'});
+const weekdays = ['domingo','lunes','martes','miercoles','jueves','viernes','sabado'];
 const puertoRicoDate = new Intl.DateTimeFormat('en-CA',{timeZone:'America/Puerto_Rico',year:'numeric',month:'2-digit',day:'2-digit'});
 
 function normalize(value) {
@@ -51,19 +53,67 @@ function townContext([slug,name],terms) {
 
 const articleLine = (item,path,excerpt) => `- ${plainText(item.title,140)} — ${plainText(excerpt)} — ${path}`;
 
+function addDays(day,offset) {
+  const date = new Date(day+'T00:00:00Z');
+  date.setUTCDate(date.getUTCDate()+offset);
+  return date.toISOString().slice(0,10);
+}
+
+function requestedDates(message,today) {
+  const text = normalize(message);
+  if (mentions(text,'hoy')) return [today,today];
+  if (mentions(text,'manana') && !mentions(text,'por la manana')) {
+    const tomorrow = addDays(today,1);
+    return [tomorrow,tomorrow];
+  }
+  const currentWeekday = new Date(today+'T00:00:00Z').getUTCDay();
+  const nextDay = day=>addDays(today,(day-currentWeekday+7)%7);
+  if (mentions(text,'este fin de semana') || mentions(text,'el fin de semana')) {
+    return currentWeekday===0 ? [today,today] : [nextDay(6),nextDay(0)];
+  }
+  const weekday = text.match(/\b(?:este|el|para) (domingo|lunes|martes|miercoles|jueves|viernes|sabado)\b/)?.[1];
+  if (!weekday) return null;
+  const day = nextDay(weekdays.indexOf(weekday));
+  return [day,day];
+}
+
+function displayAgendaDate(iso) {
+  return agendaDate.format(new Date(iso+'T00:00:00Z'));
+}
+
+function agendaLine(item) {
+  const start = displayAgendaDate(item.startDate);
+  const dates = item.endDate && item.endDate!==item.startDate ? start+' a '+displayAgendaDate(item.endDate) : start;
+  const where = [item.venue,item.address,item.city,item.region].filter(Boolean).join(', ');
+  const details = [dates,plainText(item.time,80),plainText(where,160),plainText(item.cost,60),plainText(item.description,180)].filter(Boolean);
+  return '- '+[plainText(item.name,130),...details,item.url || '/agenda-boricua'].join(' — ');
+}
+
 function buildNayeliContext({message,posts = [],latest = [],tourism = [],events = [],artisans = [],now = new Date()}) {
   const terms = termsFor(message);
   const locations = namedTowns(message).slice(0,3);
   const today = puertoRicoDate.format(now);
-  const sections = [];
+  const dates = requestedDates(message,today);
+  const sections = [`FECHA LOCAL DE PUERTO RICO: ${displayAgendaDate(today)}.`];
+  if (dates) sections.push('FECHA SOLICITADA: '+[...new Set(dates)].map(displayAgendaDate).join(' a ')+'.');
   const selectedTourism = select(tourism,['title','summary','category','excerpt'],terms,locations);
   const selectedPosts = select(posts,['title','excerpt','category','content'],terms,locations);
   const selectedLatest = select(latest,['title','summary','body','topic'],terms,locations);
-  const selectedEvents = select(events.filter(item=>!(item.endDate || item.startDate) || (item.endDate || item.startDate)>=today),['name','description','city','region','type','organizerName'],terms,locations);
+  const datedEvents = events.filter(item=>{
+    const {startDate} = item;
+    const endDate = item.endDate || startDate;
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(startDate || '') || !/^\d{4}-\d{2}-\d{2}$/.test(endDate || '')) return false;
+    if (!Number.isFinite(Date.parse(startDate)) || !Number.isFinite(Date.parse(endDate))) return false;
+    return dates ? startDate<=dates[1] && endDate>=dates[0] : endDate>=today;
+  });
+  const selectedEvents = dates && !terms.length
+    ? datedEvents.sort((a,b)=>a.startDate.localeCompare(b.startDate)).slice(0,3)
+    : select(datedEvents,['name','description','city','region','type','organizerName','venue'],terms,locations);
   const selectedArtisans = select(artisans,['name','ownerName','category','desc','fullDesc','city','location'],terms,locations);
   if (locations.length) sections.push('NUESTROS PUEBLOS:\n' + locations.map(item=>townContext(item,terms)).join('\n'));
   if (selectedTourism.length) sections.push('TURISTIANDO:\n' + selectedTourism.map(item=>articleLine(item,`/turistiando/${encodeURIComponent(item.slug)}`,item.summary || item.excerpt)).join('\n'));
-  if (selectedEvents.length) sections.push('AGENDA (fechas de las actividades):\n' + selectedEvents.map(item=>`- ${plainText(item.name,130)} — ${plainText(item.startDate,30)} ${plainText(item.time,50)} — ${plainText([item.city,item.region].filter(Boolean).join(', '),100)} — ${plainText(item.description,180)} — ${item.url || '/agenda-boricua'}`).join('\n'));
+  if (selectedEvents.length) sections.push('AGENDA (día y fecha verificados por calendario):\n' + selectedEvents.map(agendaLine).join('\n'));
+  else if (dates) sections.push('AGENDA: no se encontraron actividades publicadas en PB que coincidan con la fecha y la consulta.');
   if (selectedArtisans.length) sections.push('ARTESANOS:\n' + selectedArtisans.map(item=>`- ${plainText(item.name,130)} — ${plainText(item.category,85)} — ${plainText(item.city || item.location,95)} — ${plainText(item.desc || item.fullDesc,160)} — /artesanos/${encodeURIComponent(item.slug || '')}`).join('\n'));
   if (selectedPosts.length) sections.push('EL BALCÓN:\n' + selectedPosts.map(item=>articleLine(item,`/blog/${encodeURIComponent(item.slug || '')}`,item.excerpt)).join('\n'));
   if (selectedLatest.length) sections.push('LO MÁS RECIENTE (comprueba la fecha antes de usar un aviso):\n' + selectedLatest.map(item=>articleLine(item,`/lo-mas-reciente/${encodeURIComponent(item.slug || '')}`,[String(item.publishedAt || '').slice(0,10),item.summary || item.body].filter(Boolean).join(' · '))).join('\n'));

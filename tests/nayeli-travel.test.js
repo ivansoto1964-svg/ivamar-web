@@ -83,3 +83,23 @@ test('the chat turns spaced and escaped Markdown into verified, unique links',()
   assert.ok(children.includes('el faro'));
   assert.ok(children.includes('este enlace'));
 });
+
+test('a Saturday question cannot surface the Hatillo festival held on Sunday',()=>{
+  const events = [
+    {name:'Festival Lágrimas de Monte',city:'Hatillo',venue:'Hacienda Doña Fela',startDate:'2026-11-29',url:'/agenda-boricua/festival-lagrimas-de-monte-20261129'},
+    {name:'Plan de sábado',city:'Hatillo',startDate:'2026-11-28',url:'/agenda-boricua/plan-de-sabado'},
+    {name:'Evento del próximo mes',city:'Hatillo',startDate:'2026-12-12'}
+  ];
+  const saturday = buildNayeliContext({message:'¿Qué hay este sábado cerca de Hatillo?',events,now});
+  assert.match(saturday,/FECHA SOLICITADA: sábado, 28 de noviembre de 2026/);
+  assert.match(saturday,/Plan de sábado — sábado, 28 de noviembre de 2026/);
+  assert.doesNotMatch(saturday,/Festival Lágrimas de Monte|Evento del próximo mes/);
+  const none = buildNayeliContext({message:'¿Qué hay este sábado cerca de Hatillo?',events:[events[0]],now});
+  assert.match(none,/AGENDA: no se encontraron actividades/);
+  const sunday = buildNayeliContext({message:'¿Qué hay este domingo cerca de Hatillo?',events,now:new Date('2026-11-28T02:00:00Z')});
+  assert.match(sunday,/FECHA LOCAL DE PUERTO RICO: viernes, 27 de noviembre de 2026/);
+  assert.match(sunday,/Festival Lágrimas de Monte — domingo, 29 de noviembre de 2026 — Hacienda Doña Fela/);
+  const weekend = buildNayeliContext({message:'¿Qué hay este fin de semana cerca de Hatillo?',events,now});
+  assert.match(weekend,/Plan de sábado/);
+  assert.match(weekend,/Festival Lágrimas de Monte/);
+});

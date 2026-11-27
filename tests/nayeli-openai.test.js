@@ -26,7 +26,8 @@ assert.equal(nayeliOpenAI.normalizeMode('unknown'),'general');
 const context = buildNayeliContext({
   message:'Busco una artesana de crochet en Arecibo',
   posts:[{title:'Historia del café',excerpt:'Café de Puerto Rico',slug:'historia-cafe'}],
-  events:[{name:'Festival del Cetí',description:'Actividad gastronómica',city:'Arecibo',region:'Puerto Rico'}],
+  events:[{name:'Festival del Cetí',description:'Actividad gastronómica',city:'Arecibo',region:'Puerto Rico',startDate:'2026-11-28'}],
+  now:new Date('2026-11-27T20:00:00Z'),
   artisans:[{name:'Tejidos Boricuas',category:'Crochet',city:'Arecibo',desc:'Piezas tejidas',slug:'tejidos-boricuas'}]
 });
 assert.match(context,/Tejidos Boricuas/);
