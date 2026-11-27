@@ -111,12 +111,12 @@ const portalSections = [
 const artisanHelp = [
   ['Orientación de la Feria Digital y contacto del equipo','/para-artesanos'],
   ['Crear un perfil artesanal. Envía una descripción y una foto de tu trabajo en el formulario de registro. PB revisa la solicitud antes de publicar','/pb/add-negocio'],
-  ['Administrar un perfil aprobado. Solicita el enlace seguro con el correo que usaste para registrarte. Si el enlace venció, solicita otro en la misma página','/artesanos/mi-perfil'],
-  ['Herramientas del perfil. Después de entrar, puedes editar tu historia, publicar hasta 12 creaciones, añadir redes y WhatsApp, descargar el QR y enviar actividades a la Agenda para revisión','/artesanos/herramientas']
+  ['Acceder a un perfil aprobado. Solicita el enlace seguro con el correo que usaste para registrarte. Si el enlace venció, solicita otro en la misma página. El enlace del correo abre el editor privado','/artesanos/mi-perfil'],
+  ['Una vez dentro: para editar tu historia, fotos, redes, WhatsApp o añadir hasta 12 creaciones, usa la pestaña «Mi perfil» y pulsa «Guardar cambios». Para obtener el código, abre la pestaña «Herramientas» dentro del perfil y pulsa «Descargar QR». Desde Herramientas también puedes enviar actividades a la Agenda para revisión.']
 ];
 
 function portalHelpLines(entries) {
-  return entries.map(([label,href])=>`- ${label} — ${href}`).join('\n');
+  return entries.map(([label,href])=>href ? `- ${label} — ${href}` : `- ${label}`).join('\n');
 }
 
 function buildNayeliContext({message,history = [],mode = 'general',posts = [],latest = [],tourism = [],events = [],artisans = [],now = new Date()}) {

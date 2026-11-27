@@ -158,7 +158,9 @@ test('an itinerary follow-up retrieves the last requested town and a specific Ma
 
 test('artisan questions retrieve official registration, secure access and human support',()=>{
   const context = buildNayeliContext({message:'No me llega el enlace para mi perfil y necesito el QR',now});
-  for (const value of ['/para-artesanos','/pb/add-negocio','/artesanos/mi-perfil','/artesanos/herramientas','masboricuaqueunmofongo@gmail.com','12 creaciones']) assert.ok(context.includes(value),value);
+  for (const value of ['/para-artesanos','/pb/add-negocio','/artesanos/mi-perfil','Guardar cambios','Descargar QR','masboricuaqueunmofongo@gmail.com','12 creaciones']) assert.ok(context.includes(value),value);
+  assert.match(context,/Herramientas.*Descargar QR/);
+  assert.doesNotMatch(context,/\/artesanos\/herramientas/);
   assert.match(context,/gratis/);
   assert.match(buildNayeliContext({message:'Ayúdame a contar mi historia',mode:'profile',now}),/AYUDA PARA ARTESANOS/);
   assert.match(buildNayeliContext({message:'¿Dónde leo historias?',now}),/El Balcón, cultura/);
