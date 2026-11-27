@@ -2,6 +2,7 @@
 const fs=require('node:fs'),path=require('node:path'),express=require('express'),crypto=require('node:crypto');
 const sanitizeHtml=require('sanitize-html');
 const siteAnalytics=require('./pb-site-analytics');
+const {linkedTravelPosts}=require('./pb-travel-index');
 const renderEditorialIndex=require('../views/pb-blog/index');
 const renderEditorialPost=require('../views/pb-blog/post');
 const {categorySlug}=require('../utils/pb-editorial');
@@ -108,9 +109,10 @@ function travelLayout(title,body){
     .travel-report td,.travel-report th{padding:.6rem .8rem;border-bottom:1px solid #ddd;text-align:left}
   </style></head>`);
 }
-function router({requireAdmin,requireAdminCsrf,loadComments=()=>[],ads}){const r=express.Router();const safe=(req,res,next)=>{res.set({'Cache-Control':'private, no-store','X-Robots-Tag':'noindex, nofollow'});next()};
+function router({requireAdmin,requireAdminCsrf,loadComments=()=>[],loadEditorial=()=>({}),ads}){const r=express.Router();const safe=(req,res,next)=>{res.set({'Cache-Control':'private, no-store','X-Robots-Tag':'noindex, nofollow'});next()};
  r.get('/turistiando',(req,res)=>{
-   const posts=all().filter(isPublic).map(post=>editorialPost(post));
+   const posts=all().filter(isPublic).map(post=>editorialPost(post)).concat(linkedTravelPosts(loadEditorial()))
+     .sort((a,b)=>Date.parse(b.dateISO)-Date.parse(a.dateISO));
    if(!posts.length)res.locals.skipAdSense=true;
    const categories=[...new Set(posts.map(post=>post.category))];
    const category=categories.some(name=>categorySlug(name)===req.query.tema)?req.query.tema:null;
@@ -118,7 +120,7 @@ function router({requireAdmin,requireAdminCsrf,loadComments=()=>[],ads}){const r
    const normalize=text=>text.normalize('NFD').replace(/\p{M}/gu,'').toLowerCase();
    const term=normalize(search);
    const filtered=posts.filter(post=>(!category||categorySlug(post.category)===category)
-     &&(!term||normalize([post.title,post.excerpt,post.category].join(' ')).includes(term)));
+     &&(!term||normalize([post.title,post.excerpt,post.category,post.sourceLabel].join(' ')).includes(term)));
    const perPage=9;
    const totalPages=search?1:Math.max(1,Math.ceil(filtered.length/perPage));
    const page=search?1:Math.min(totalPages,Math.max(1,parseInt(req.query.page,10)||1));
