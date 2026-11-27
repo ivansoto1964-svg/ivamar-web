@@ -31,7 +31,13 @@ for (const footer of legal.match(/<footer\b[\s\S]*?<\/footer>/gi) || []) {
 }
 
 assert.match(read('src/views/quienes-somos.js'), /creado y dirigido por <strong>Iván Soto<\/strong>/);
-assert.match(read('src/views/pb-blog/post.js'), /class="post-meta"[^\n]*<strong>Iván Soto<\/strong>/);
+const renderBlogPost = require('../src/views/pb-blog/post');
+const post = {slug:'autor-de-prueba',title:'Autor de prueba'};
+assert.match(renderBlogPost(post), /class="post-meta"[^\n]*<strong>Iván Soto<\/strong>/);
+const guestPost = renderBlogPost({...post,authorName:'Antonio Irizarry',authorAffiliation:'CompassWaves'});
+assert.match(guestPost, /class="post-meta"[^\n]*<strong>Antonio Irizarry, CompassWaves<\/strong>/);
+assert.match(guestPost, /"author":\{"@type":"Person","name":"Antonio Irizarry"\}/);
+assert.doesNotMatch(guestPost, /Iván Soto/);
 assert.match(read('src/views/planetaboricua/sala-prensa.js'), /expresó Iván Soto Pino/);
 assert.match(read('src/services/pb-subscriber-welcome.js'), /<strong>Iván Soto Pino<\/strong>/);
 
