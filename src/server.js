@@ -1925,7 +1925,11 @@ app.post('/pb-control/nayeli/preview', requirePBAdmin, aiLimiter, express.json({
   try {
     const trip = mode==='general' && parseNayeliRoute(message);
     if (trip) {
-      const result = await lookupNayeliStops(trip);
+      const result = await lookupNayeliStops(trip,{
+        onStatus:status=>{
+          if (!status.startsWith('verified_stops')) console.warn('Nayeli Maps:',status);
+        }
+      });
       const usage = nayeliUsage.record({ok:true,mode});
       return res.json({ok:true,...result,usage});
     }
@@ -4485,15 +4489,7 @@ app.get("/api/pb-negocios/:location", (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log("Servidor corriendo en puerto " + PORT);
-  const probeUntil = Date.parse(process.env.NAYELI_MAPS_PROBE_UNTIL || '');
-  if (probeUntil > Date.now() && probeUntil - Date.now() <= 15 * 60 * 1000) {
-    const trip = {origin:'Camuy',destination:'Isabela',search:'restaurantes con picadera y cerveza'};
-    lookupNayeliStops(trip,{onStatus:status=>console.log('Nayeli Maps probe:',status)})
-      .catch(()=>console.warn('Nayeli Maps probe: unexpected_error'));
-  }
-});
+app.listen(PORT, () => console.log("Servidor corriendo en puerto " + PORT));
 
 app.get('/api/planetaboricua-blog', (_req, res) => {
   const posts = pbBlogStore.loadPosts().slice(0,4).map(post => ({
