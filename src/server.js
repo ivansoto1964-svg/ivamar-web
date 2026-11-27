@@ -33,7 +33,9 @@ const pbFairFunnelMetrics = require('./services/pb-fair-funnel-metrics');
 const pbSubscriberWelcome = require('./services/pb-subscriber-welcome');
 const nayeliOpenAI = require('./services/nayeli-openai');
 const nayeliUsage = require('./services/nayeli-usage');
-const { buildNayeliContext } = require('./services/nayeli-context');
+const {buildNayeliContext,namedTowns,normalize:normalizeNayeliQuery} = require('./services/nayeli-context');
+const {routeRequest:parseNayeliRoute,lookupStops:lookupNayeliStops} = require('./services/nayeli-route');
+const {getTownTravelLinks} = require('./services/pb-town-travel-links');
 const { createPBAds } = require('./services/pb-ads');
 const { createExternalMetrics } = require('./services/pb-external-metrics');
 const { createWebVitals } = require('./services/pb-web-vitals');
@@ -1884,7 +1886,26 @@ app.get('/pb-control/logout',(req,res) => {
 
 app.get('/pb-control', requirePBAdmin, (req,res) => res.send(pbControl(buildPBControlModel(req.pbAdminSession.csrf))));
 
+function nayeliAffiliateLinks(message) {
+  const text = normalizeNayeliQuery(message);
+  const hotels = /\b(?:hoteles?|hospedajes?|alojamiento|dormir|quedarme)\b/.test(text);
+  const tours = /\b(?:tours?|excursiones?|reservar una actividad)\b/.test(text);
+  const links = [];
+  for (const [slug] of namedTowns(text).slice(0,1)) {
+    for (const item of getTownTravelLinks(slug)) {
+      if (item.provider==='Trip.com' ? !hotels : !tours) continue;
+      links.push({label:item.label+' · '+item.provider,href:item.url,affiliate:item.affiliate});
+    }
+  }
+  if (hotels && !links.some(link=>link.href.includes('trip.com/'))) {
+    links.push({label:'Buscar hoteles en Trip.com',href:'/go/travel-hotels',affiliate:true});
+  }
+  if (/\bamazon\b/.test(text)) links.push({label:'Selección de Planeta Boricua en Amazon',href:PB_AFFILIATE_CAMPAIGNS['amazon-store'].url,affiliate:true});
+  return links.slice(0,4);
+}
+
 app.get('/pb-control/nayeli', requirePBAdmin, (req,res) => {
+  res.set('Cache-Control','private, no-store');
   res.send(pbNayeliPreview({csrf:req.pbAdminSession.csrf,...nayeliOpenAI.configuration(),usage:nayeliUsage.summary()}));
 });
 
@@ -1895,22 +1916,35 @@ app.get('/pb-control/nayeli', requirePBAdmin, (req,res) => {
 app.post('/pb-control/nayeli/preview', requirePBAdmin, aiLimiter, express.json({limit:'12kb'}), requirePBCsrf, async (req,res) => {
   const config = nayeliOpenAI.configuration();
   if (!config.enabled) return res.status(404).json({ok:false,error:'La vista previa de Nayeli está desactivada.'});
-  if (!config.hasApiKey) return res.status(503).json({ok:false,error:'OpenAI no está configurado.'});
+  res.set('Cache-Control','private, no-store');
   const before = nayeliUsage.summary();
   if (!before.allowed) return res.status(429).json({ok:false,error:'Nayeli alcanzó el límite privado de pruebas de hoy.',usage:before});
   const mode = nayeliOpenAI.normalizeMode(req.body?.mode);
+  const message = typeof req.body?.message==='string' ? req.body.message.trim().slice(0,nayeliOpenAI.MAX_MESSAGE_CHARS) : '';
+  if (!message) return res.status(400).json({ok:false,error:'Escribe un mensaje para Nayeli.'});
   try {
+    const trip = mode==='general' && parseNayeliRoute(message);
+    if (trip) {
+      const result = await lookupNayeliStops(trip);
+      const usage = nayeliUsage.record({ok:true,mode});
+      return res.json({ok:true,...result,usage});
+    }
+    if (!config.hasApiKey) return res.status(503).json({ok:false,error:'La conversación con OpenAI necesita configurar su clave. Puedes probar una ruta de pueblo a pueblo.'});
+
     const artisans = loadApprovedPBListings().map(item => ({...item,slug:pbArtisanSlug(item)}));
     const context = buildNayeliContext({
-      message:req.body?.message,
+      message,
       posts:pbBlogStore.loadPosts(),
       latest:readPBLatest('approved.json'),
+      tourism:mode==='general' ? pbTourismSection.publicEditorialPosts() : [],
       events:readPBEvents('approved.json').map(publicPBEvent),
       artisans
     });
-    const result = await nayeliOpenAI.reply({message:req.body?.message,history:req.body?.history,mode,context});
+    const result = await nayeliOpenAI.reply({message,history:req.body?.history,mode,context});
     const usage = nayeliUsage.record({ok:true,usage:result.usage,mode});
-    return res.json({ok:true,reply:result.reply,model:result.model,mode:result.mode,usage});
+    const allowedPaths = context.match(/ — \/(?:pueblos|artesanos|blog|lo-mas-reciente|turistiando|agenda-boricua)[a-z0-9\/-]*(?=\n|$)/g)?.map(entry=>entry.slice(3)) || [];
+    const links = mode==='general' ? nayeliAffiliateLinks(message) : [];
+    return res.json({ok:true,reply:result.reply,model:result.model,mode:result.mode,usage,allowedPaths,links});
   } catch (error) {
     if (error?.code === 'NAYELI_INVALID_MESSAGE') return res.status(400).json({ok:false,error:error.message});
     const usage = nayeliUsage.record({ok:false,mode});

@@ -104,6 +104,9 @@ function editorialPost(post,coverSize=640){
     originalUrl:isHttps(post.originalUrl)?post.originalUrl:'',archiveNote,
   };
 }
+function publicEditorialPosts() {
+   return all().filter(isPublic).map(post=>editorialPost(post));
+}
 function travelLayout(title,body){
   return layout(title,body).replace('</head>',`<style>
     .travel-report td,.travel-report th{padding:.6rem .8rem;border-bottom:1px solid #ddd;text-align:left}
@@ -111,7 +114,7 @@ function travelLayout(title,body){
 }
 function router({requireAdmin,requireAdminCsrf,loadComments=()=>[],loadEditorial=()=>({}),ads}){const r=express.Router();const safe=(req,res,next)=>{res.set({'Cache-Control':'private, no-store','X-Robots-Tag':'noindex, nofollow'});next()};
  r.get('/turistiando',(req,res)=>{
-   const posts=all().filter(isPublic).map(post=>editorialPost(post)).concat(linkedTravelPosts(loadEditorial()))
+   const posts=publicEditorialPosts().concat(linkedTravelPosts(loadEditorial()))
      .sort((a,b)=>Date.parse(b.dateISO)-Date.parse(a.dateISO));
    if(!posts.length)res.locals.skipAdSense=true;
    const categories=[...new Set(posts.map(post=>post.category))];
@@ -193,4 +196,4 @@ function router({requireAdmin,requireAdminCsrf,loadComments=()=>[],loadEditorial
  r.get('/pb-control/turismo/:id',safe,requireAdmin,(req,res)=>{const p=get(req.params.id);if(!p)return res.sendStatus(404);res.send(layout('Editar artículo',`<a href="/pb-control/turismo">← Artículos</a><h1>Editar artículo</h1><p>Original: ${esc(p.originalTitle)} · ${esc(p.originalDate)}</p><form method="post"><input type="hidden" name="csrf" value="${esc(req.pbAdminSession.csrf)}"><label>Título<input name="title" required maxlength="180" value="${esc(p.title)}"></label><label>Fecha original<input type="date" name="originalDate" value="${esc(p.originalDate)}"></label><label>Imagen (enlace HTTPS)<input name="image" type="url" maxlength="2000" value="${esc(p.image)}"></label><label>Contenido<textarea name="body" required maxlength="30000">${esc(p.body)}</textarea></label><label>Idioma<select name="language"><option value="en" ${p.language==='en'?'selected':''}>Inglés original</option><option value="es" ${p.language==='es'?'selected':''}>Español revisado</option></select></label><label>Estado<select name="status"><option value="draft" ${p.status==='draft'?'selected':''}>Borrador</option><option value="published" ${p.status==='published'&&p.language==='es'?'selected':''}>Publicado</option></select></label><p>Para publicar, selecciona Español revisado. Comprueba los datos y la imagen.</p><button>Guardar</button></form>`));});
  r.post('/pb-control/turismo/:id',safe,requireAdmin,requireAdminCsrf,(req,res)=>{const p=get(req.params.id);if(!p)return res.sendStatus(404);const {title,body,language,status,originalDate,image}=req.body;if(typeof title!=='string'||!title.trim()||title.length>180||typeof body!=='string'||!body.trim()||body.length>30000||!['es','en'].includes(language)||!['draft','published'].includes(status)||!/^\d{4}-\d{2}-\d{2}$/.test(originalDate))return res.status(400).send('Datos inválidos.');if(typeof image!=='string'||image.length>2000||(image&&!/^https:\/\//i.test(image)))return res.status(400).send('Enlace de imagen inválido.');if(status==='published'&&language!=='es')return res.status(400).send('Revisa y traduce al español antes de publicar.');save({...p,title:title.trim(),body:body.trim(),image:image.trim(),language,status,originalDate,updatedAt:new Date().toISOString()});res.redirect('/pb-control/turismo/'+p.id);});return r;}
 function sitemap(){return '<url><loc>https://www.masboricuaqueunmofongo.com/turistiando</loc></url>'+all().filter(isPublic).map(p=>`<url><loc>https://www.masboricuaqueunmofongo.com/turistiando/${p.id}</loc></url>`).join('');}
-module.exports={router,all,get,save,sitemap,publicPost};
+module.exports={router,all,get,save,sitemap,publicPost,publicEditorialPosts};
