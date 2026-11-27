@@ -229,3 +229,13 @@ test('the public endpoint bounds provider calls and returns no private usage dat
   env.NAYELI_PUBLIC_ENABLED='false';
   assert.equal((await request('consulta')).status,404);
 });
+
+test('Iván Soto is identified by the public PB bio without unrelated namesakes',()=>{
+  const context = buildNayeliContext({
+    message:'Hola Nayeli, ¿quién es Ivan Soto?',now,
+    artisans:[{name:'Iván Ríos de Ivan Lures',slug:'ivan-lures'},{name:'Rústico by Iván',slug:'rustico'}]
+  });
+  assert.match(context,/Iván Soto es un comunicador puertorriqueño radicado en Florida. Creó y dirige Planeta Boricua/);
+  assert.match(context,/Fuente oficial de PB — \/quienes-somos/);
+  assert.doesNotMatch(context,/Ivan Lures|Rústico by Iván/);
+});

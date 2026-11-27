@@ -139,6 +139,7 @@ function buildNayeliContext({message,history = [],mode = 'general',posts = [],la
   if (mode!=='general' || /\b(?:artesan[a-z]*|mi perfil|mi galeria|enlace seguro|qr|registre|registrarme|no me llega|solicitud|feria digital)\b/.test(text)) {
     sections.push('AYUDA PARA ARTESANOS DE PB:\nEl registro y las herramientas de la Feria son gratis. PB no procesa las compras de artesanía ni cobra comisión por las ventas acordadas directamente. Nayeli puede orientar y redactar borradores. El equipo de PB atiende los casos que necesitan revisión humana en masboricuaqueunmofongo@gmail.com.\n'+portalHelpLines(artisanHelp));
   }
+  sections.push('QUIÉNES SOMOS:\n- Iván Soto es un comunicador puertorriqueño radicado en Florida. Creó y dirige Planeta Boricua, un proyecto cultural y editorial independiente. Fuente oficial de PB — /quienes-somos');
   sections.push('SECCIONES DE PB:\n'+portalHelpLines(portalSections));
   const selectedTourism = select(tourism,['title','summary','category','excerpt'],terms,locations);
   const selectedPosts = select(posts,['title','excerpt','category','content'],terms,locations);
@@ -153,7 +154,8 @@ function buildNayeliContext({message,history = [],mode = 'general',posts = [],la
   const selectedEvents = dates && !terms.length
     ? datedEvents.sort((a,b)=>a.startDate.localeCompare(b.startDate)).slice(0,3)
     : select(datedEvents,['name','description','city','region','type','organizerName','venue'],terms,locations);
-  const selectedArtisans = select(artisans,['name','ownerName','category','desc','fullDesc','city','location'],terms,locations);
+  const artisanTerms = mentions(text,'Ivan Soto') ? terms.filter(term=>term!=='ivan') : terms;
+  const selectedArtisans = select(artisans,['name','ownerName','category','desc','fullDesc','city','location'],artisanTerms,locations);
   if (locations.length) sections.push('NUESTROS PUEBLOS:\n' + locations.map(item=>townContext(item,terms,wantsMap)).join('\n'));
   if (selectedTourism.length) sections.push('TURISTIANDO:\n' + selectedTourism.map(item=>articleLine(item,`/turistiando/${encodeURIComponent(item.slug)}`,item.summary || item.excerpt)).join('\n'));
   if (selectedEvents.length) sections.push('AGENDA (día y fecha verificados por calendario):\n' + selectedEvents.map(agendaLine).join('\n'));
