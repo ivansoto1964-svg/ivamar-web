@@ -109,6 +109,10 @@
   position: static;
   z-index: auto;
   display: flex;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: center;
+  overflow-x: auto;
   justify-content: flex-start;
   gap: clamp(.6rem, 3vw, 1.65rem);
   max-width: 1180px;
