@@ -95,7 +95,7 @@ test('the chat turns spaced and escaped Markdown into verified, unique links',()
     querySelectorAll(){return [];}
   };
   const bubble = compileFunction(script+'\nreturn bubble;', ['document','location'])(document,new URL('https://www.masboricuaqueunmofongo.com/pb-control/nayeli'));
-  bubble('assistant',String.raw`[Cueva Ventana]\( /pueblos/arecibo/ \) y [el faro]( /pueblos/arecibo/ ). [Lee la crónica](/blog/arecibo) o [este enlace](https://example.com/).`,{
+  bubble('assistant',String.raw`[Cueva Ventana]\( /pueblos/arecibo/ \) y [el faro]( /pueblos/arecibo/ ). [Lee la crónica](https://www.masboricuaqueunmofongo.com/blog/arecibo) o [este enlace](https://example.com/).`,{
     allowedPaths:['/pueblos/arecibo/','/blog/arecibo']
   });
   const children = conversation.children[0].children;
@@ -141,4 +141,17 @@ test('route stops honor the requested maximum instead of rounding before filteri
   assert.deepEqual(result.links.map(link=>link.label),['Dentro del límite','Ver la ruta en Google Maps']);
   const none = await lookupStops({...trip,maxDetourMinutes:5},{env,fetcher,now});
   assert.match(none.reply,/hasta 5 minutos/);
+});
+
+test('an itinerary follow-up retrieves the last requested town and a specific Maps link',()=>{
+  const message = '¿En qué punto exacto de la costa harías la segunda parada? Déjame el enlace para llegar';
+  const history = [
+    {role:'user',content:'Tengo una tarde libre en Arecibo. Quiero ver el mar.'},
+    {role:'assistant',content:'Podrías ir al faro y luego a la costa de Islote.'}
+  ];
+  const context = buildNayeliContext({message,history,now});
+  assert.match(context,/\/pueblos\/arecibo\//);
+  assert.match(context,/La Poza del Obispo: .* — https:\/\/www\.google\.com\/maps\/search\/\?api=1&query=La\+Poza\+del\+Obispo%2C\+Arecibo%2C\+Puerto\+Rico/);
+  assert.doesNotMatch(buildNayeliContext({message:'¿Qué hay en Rincón?',history,now}),/\/pueblos\/arecibo\//);
+  assert.doesNotMatch(buildNayeliContext({message:'¿Quién es tu primo?',history,now}),/\/pueblos\/arecibo\//);
 });

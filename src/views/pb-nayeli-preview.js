@@ -35,7 +35,8 @@ module.exports = function pbNayeliPreview(model = {}) {
       const linkedPaths=new Set();
       let start=0;
       for(const match of text.matchAll(links)){
-        const [full,label,href]=match;
+        const [full,label,rawHref]=match;
+        const href=rawHref.replace(/^https:\\/\\/(?:www\\.)?masboricuaqueunmofongo\\.com(?=\\/)/,'');
         item.append(text.slice(start,match.index));
         if(!linkedPaths.has(href) && (href==='https://chatgpt.com/' || result.allowedPaths?.includes(href))){
           addLink(item,label,href);

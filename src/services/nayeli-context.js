@@ -38,17 +38,24 @@ function select(items, fields, terms, locations = []) {
   }).filter(entry=>entry.score > 0).sort((a,b)=>b.score-a.score).slice(0,3).map(entry=>entry.item);
 }
 
-function townContext([slug,name],terms) {
+function townContext([slug,name],terms,wantsMap) {
   const town = towns[slug] || {};
   const guide = townGuides[slug] || {};
   const attractions = new Map();
   for (const [place,description] of [...(guide.places || []),...(town.places || [])]) {
     if (!attractions.has(normalize(place))) attractions.set(normalize(place),{name:place,description});
   }
-  const ranked = select([...attractions.values()],['name','description'],terms);
-  const choices = [...new Set([...ranked,...attractions.values()])].slice(0,4);
+  const coastal = terms.some(term=>['costa','playa','mar','islote'].includes(term));
+  const placeTerms = coastal ? [...new Set([...terms,'mar','playa','poza','costera','islote'])] : terms;
+  const ranked = select([...attractions.values()],['name','description'],placeTerms);
+  const choices = [...new Set([...ranked,...attractions.values()])].slice(0,wantsMap ? 5 : 4);
   return [`- ${name} — /pueblos/${slug}/`, plainText(guide.plan || town.intro || town.why,300),
-    ...choices.map(place=>`  · ${plainText(place.name,90)}: ${plainText(place.description,180)}`)].filter(Boolean).join('\n');
+    ...choices.map(place=>{
+      const line = `  · ${plainText(place.name,90)}: ${plainText(place.description,180)}`;
+      if (!wantsMap) return line;
+      const params = new URLSearchParams({api:'1',query:`${place.name}, ${name}, Puerto Rico`});
+      return line+' — https://www.google.com/maps/search/?'+params;
+    })].filter(Boolean).join('\n');
 }
 
 const articleLine = (item,path,excerpt) => `- ${plainText(item.title,140)} — ${plainText(excerpt)} — ${path}`;
@@ -89,9 +96,19 @@ function agendaLine(item) {
   return '- '+[plainText(item.name,130),...details,item.url || '/agenda-boricua'].join(' — ');
 }
 
-function buildNayeliContext({message,posts = [],latest = [],tourism = [],events = [],artisans = [],now = new Date()}) {
+function buildNayeliContext({message,history = [],posts = [],latest = [],tourism = [],events = [],artisans = [],now = new Date()}) {
   const terms = termsFor(message);
-  const locations = namedTowns(message).slice(0,3);
+  const text = normalize(message);
+  const wantsMap = /\b(?:mapa|maps|como llego|como llegar|enlace para llegar|indicaciones|ubicacion|donde queda)\b/.test(text);
+  const followup = wantsMap || /\b(?:parada|primera|segunda|tercera|ese lugar|esa opcion|alli)\b/.test(text);
+  let locations = namedTowns(message).slice(0,3);
+  if (!locations.length && followup) {
+    for (const turn of history.slice(-6).reverse()) {
+      if (turn.role!=='user') continue;
+      locations = namedTowns(turn.content).slice(0,3);
+      if (locations.length) break;
+    }
+  }
   const today = puertoRicoDate.format(now);
   const dates = requestedDates(message,today);
   const sections = [`FECHA LOCAL DE PUERTO RICO: ${displayAgendaDate(today)}.`];
@@ -110,7 +127,7 @@ function buildNayeliContext({message,posts = [],latest = [],tourism = [],events 
     ? datedEvents.sort((a,b)=>a.startDate.localeCompare(b.startDate)).slice(0,3)
     : select(datedEvents,['name','description','city','region','type','organizerName','venue'],terms,locations);
   const selectedArtisans = select(artisans,['name','ownerName','category','desc','fullDesc','city','location'],terms,locations);
-  if (locations.length) sections.push('NUESTROS PUEBLOS:\n' + locations.map(item=>townContext(item,terms)).join('\n'));
+  if (locations.length) sections.push('NUESTROS PUEBLOS:\n' + locations.map(item=>townContext(item,terms,wantsMap)).join('\n'));
   if (selectedTourism.length) sections.push('TURISTIANDO:\n' + selectedTourism.map(item=>articleLine(item,`/turistiando/${encodeURIComponent(item.slug)}`,item.summary || item.excerpt)).join('\n'));
   if (selectedEvents.length) sections.push('AGENDA (día y fecha verificados por calendario):\n' + selectedEvents.map(agendaLine).join('\n'));
   else if (dates) sections.push('AGENDA: no se encontraron actividades publicadas en PB que coincidan con la fecha y la consulta.');
