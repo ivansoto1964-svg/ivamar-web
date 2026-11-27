@@ -31,13 +31,16 @@ module.exports = function pbNayeliPreview(model = {}) {
     item.className='bubble '+role;
     if(!result){item.textContent=text}
     else{
-      const links=/\\[([^\\]\\n]+)\\]\\(([^)\\s]+)\\)/g;
+      const links=/\\[([^\\]\\n]+)\\]\\\\?\\(\\s*([^()\\s\\\\]+)\\s*\\\\?\\)/g;
+      const linkedPaths=new Set();
       let start=0;
       for(const match of text.matchAll(links)){
         const [full,label,href]=match;
         item.append(text.slice(start,match.index));
-        if(href==='https://chatgpt.com/' || result.allowedPaths?.includes(href))addLink(item,label,href);
-        else item.append(label);
+        if(!linkedPaths.has(href) && (href==='https://chatgpt.com/' || result.allowedPaths?.includes(href))){
+          addLink(item,label,href);
+          linkedPaths.add(href);
+        }else item.append(label);
         start=match.index+full.length;
       }
       item.append(text.slice(start));

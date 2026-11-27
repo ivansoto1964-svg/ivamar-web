@@ -57,3 +57,29 @@ test('the private mobile view uses the supplied portrait and presents quick test
   assert.match(html,/Camuy y voy a Isabela/);
   assert.doesNotThrow(()=>compileFunction(html.split('<script>')[1].split('</script>')[0]));
 });
+
+test('the chat turns spaced and escaped Markdown into verified, unique links',()=>{
+  const html = render({enabled:false});
+  const script = html.split('<script>')[1].split('</script>')[0];
+  const node = () => ({
+    children:[],
+    append(...parts){this.children.push(...parts);},
+    appendChild(part){this.append(part);}
+  });
+  const conversation = node();
+  const document = {
+    createElement(tag){return {tag,...node()};},
+    getElementById(){return conversation;},
+    querySelectorAll(){return [];}
+  };
+  const bubble = compileFunction(script+'\nreturn bubble;', ['document','location'])(document,new URL('https://www.masboricuaqueunmofongo.com/pb-control/nayeli'));
+  bubble('assistant',String.raw`[Cueva Ventana]\( /pueblos/arecibo/ \) y [el faro]( /pueblos/arecibo/ ). [Lee la crónica](/blog/arecibo) o [este enlace](https://example.com/).`,{
+    allowedPaths:['/pueblos/arecibo/','/blog/arecibo']
+  });
+  const children = conversation.children[0].children;
+  assert.deepEqual(children.filter(part=>part.tag==='a').map(link=>[link.textContent,new URL(link.href).pathname]),[
+    ['Cueva Ventana','/pueblos/arecibo/'],['Lee la crónica','/blog/arecibo']
+  ]);
+  assert.ok(children.includes('el faro'));
+  assert.ok(children.includes('este enlace'));
+});
