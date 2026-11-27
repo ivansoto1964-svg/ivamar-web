@@ -28,16 +28,16 @@ function renderSiteHeader(pathname, {english = false, newsletter = '#pb-boletin'
   const home = current === '/';
   const t = (es,en) => english ? en : es;
   const links = [
-    ['/','Inicio','Home','home'],
     ...editorialSections,
     ['/feria-artesanos','Artesanos','Artisans','artisans'],
     ['/agenda-boricua','Agenda','Events','calendar'],
     ['/pueblos','Nuestros pueblos','Our towns','plate'],
-    ['/recursos','Recursos','Resources','resources'],
-    [english ? '/tu-negocio/en' : '/tu-negocio','Tu negocio','Your business','business']
+    ['/recursos','Recursos','Resources','resources']
   ];
   const newsletterItem = [newsletter,'Boletín','Newsletter','newsletter'];
+  const homeLink = ['/','Inicio','Home','home'];
   const more = [
+    [english ? '/tu-negocio/en' : '/tu-negocio','Tu negocio','Your business','business'],
     ['/quienes-somos','Quiénes somos','About us','about'],
     ['/anunciate-en-pb','Anúnciate en PB','Advertise','ads'],
     ['mailto:masboricuaqueunmofongo@gmail.com','Contacto','Contact','contact'],
@@ -72,7 +72,7 @@ function renderSiteHeader(pathname, {english = false, newsletter = '#pb-boletin'
         </nav>
         ${search}
         <a class="pb-header-newsletter" href="${newsletter}">${t('Boletín','Newsletter')}</a>
-        <details class="pb-site-menu pb-site-mobile"><summary>${navIcon('menu')}<span>${t('Menú','Menu')}</span></summary><nav class="pb-site-panel" aria-label="${t('Navegación móvil','Mobile navigation')}">${render(newsletterItem)}${links.map(render).join('')}${more.map(render).join('')}</nav></details>
+        <details class="pb-site-menu pb-site-mobile"><summary>${navIcon('menu')}<span>${t('Menú','Menu')}</span></summary><nav class="pb-site-panel" aria-label="${t('Navegación móvil','Mobile navigation')}">${render(newsletterItem)}${render(homeLink)}${links.map(render).join('')}${more.map(render).join('')}</nav></details>
       </div>
     </header><div id="pb-page-content" tabindex="-1"></div>${edition}`;
 }
@@ -117,7 +117,7 @@ function withPBSiteShell(html, pathname) {
   if (editorial) {
     result = result.replace('data-pb-navigation', `data-pb-navigation data-pb-edition="${current === '/' ? 'home' : 'article'}"`);
   }
-  return result.replace('</head>', '<link rel="stylesheet" href="/css/pb-refresh.css?v=4"><link rel="stylesheet" href="/css/pb-editorial-layout.css?v=3"></head>')
+  return result.replace('</head>', '<link rel="stylesheet" href="/css/pb-refresh.css?v=4"><link rel="stylesheet" href="/css/pb-editorial-layout.css?v=4"></head>')
     .replace('</body>', '<script src="/js/pb-navigation.js?v=3" defer></script><script src="/js/pb-editorial-events.js?v=1" defer></script></body>');
 }
 module.exports = { withPBSiteShell, renderSiteHeader, isPublicShellPath };

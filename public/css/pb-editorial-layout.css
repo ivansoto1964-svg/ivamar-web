@@ -374,3 +374,19 @@ nav[data-pb-local-nav].top { display: flex; justify-content: flex-end; }
   .pb-editorial-header .pb-editorial-search > summary { width: 44px; }
   .pb-edition > nav { justify-content: space-between; gap: .35rem; }
 }
+
+.pb-site-header.pb-editorial-header {
+  max-width: none;
+  width: 100%;
+}
+.pb-editorial-header .pb-site-header-inner {
+  max-width: 1260px;
+}
+.pb-editorial-header .pb-site-nav {
+  gap: clamp(.6rem, 1vw, .9rem);
+}
+@media (max-width: 360px) {
+  .pb-editorial-header .pb-site-brand strong { font-size: 1rem; }
+  .pb-editorial-header .pb-site-brand img { width: 32px; }
+  .pb-editorial-header .pb-site-mobile > summary { padding-inline: .35rem; }
+}
