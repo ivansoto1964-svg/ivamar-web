@@ -10,6 +10,7 @@ function normalizePath(pathname) {
 function isPublicShellPath(pathname) {
   const current = normalizePath(pathname);
   return current === '/' || /^\/(?:blog|lo-mas-reciente|agenda-boricua|pueblos)(?:\/|$)/.test(current)
+    || /^\/turistiando(?:\/viaje-[a-f0-9]{16})?$/.test(current)
     || /^\/(?:tu-negocio|crea-tu-menu)(?:\/en)?$/.test(current)
     || ['/feria-artesanos','/feria-artesanos/florida','/recursos','/mudarse-de-pr','/regresar-a-pr','/quienes-somos','/anunciate-en-pb','/privacidad-boricua','/terminos-boricua','/afiliados-boricua','/sala-de-prensa'].includes(current)
     || /^\/artesanos\/(?!mi-perfil(?:\/|$)|comunicaciones(?:\/|$))[^/]+$/.test(current);
@@ -17,7 +18,8 @@ function isPublicShellPath(pathname) {
 
 function usesEditorialLayout(pathname) {
   return pathname === '/' || /^\/lo-mas-reciente\/[^/]+$/.test(pathname)
-    || /^\/blog\/(?!buscar(?:\/|$))[^/]+$/.test(pathname);
+    || /^\/blog\/(?!buscar(?:\/|$))[^/]+$/.test(pathname)
+    || /^\/turistiando\/viaje-[a-f0-9]{16}$/.test(pathname);
 }
 
 function renderSiteHeader(pathname, {english = false, newsletter = '#pb-boletin'} = {}) {
@@ -36,7 +38,7 @@ function renderSiteHeader(pathname, {english = false, newsletter = '#pb-boletin'
   const newsletterItem = [newsletter,'Boletín','Newsletter','newsletter'];
   const more = [
     ['/lo-mas-reciente','Lo más reciente','Latest','news'],
-    ['/#viajes','Viajes y destinos','Travel','travel'],
+    ['/turistiando','Turistiando','Travel','travel'],
     ['/quienes-somos','Quiénes somos','About us','about'],
     ['/anunciate-en-pb','Anúnciate en PB','Advertise','ads'],
     ['mailto:masboricuaqueunmofongo@gmail.com','Contacto','Contact','contact'],

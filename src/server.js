@@ -3085,24 +3085,31 @@ app.get('/lo-mas-reciente/:slug', (req, res) => {
   res.send(loMasRecientePB({...publicPBLatest(item),body:blogContentHtml(item.body)}, comments, recommendations, {top:topAd,first:firstAd,second:secondAd}));
 });
 
+const PB_COMMENT_PATHS={blog:'/blog/',latest:'/lo-mas-reciente/',turistiando:'/turistiando/'};
+const pbCommentSection=value=>typeof value==='string'&&Object.hasOwn(PB_COMMENT_PATHS,value)?value:'latest';
+function pbCommentArticle(section,slug) {
+  if(!/^[a-z0-9-]+$/.test(slug))return null;
+  if(section==='blog')return pbBlogStore.readPost(slug);
+  if(section==='turistiando') {
+    const post=pbTourismSection.publicPost(slug);
+    return post?{slug:post.id,title:post.title}:null;
+  }
+  return readPBLatest('approved.json').find(item=>item.slug===slug);
+}
+function approvedPBComments(slug,section) {
+  return readPBComments('approved.json').filter(comment=>comment.articleSlug===slug&&(comment.section||'latest')===section)
+    .sort((a,b)=>new Date(b.approvedAt)-new Date(a.approvedAt)).map(publicPBComment);
+}
+
 app.get('/api/pb-comments/:slug', (req, res) => {
-  const section = req.query.section === 'blog' ? 'blog' : 'latest';
-  const validSlug = /^[a-z0-9-]+$/.test(req.params.slug);
-  const articleExists = validSlug && (section === 'blog' ? Boolean(pbBlogStore.readPost(req.params.slug)) : readPBLatest('approved.json').some(item => item.slug === req.params.slug));
-  if (!articleExists) return res.status(404).json({ok:false,error:'Publicación no encontrada.'});
-  const comments = readPBComments('approved.json').filter(comment => comment.articleSlug === req.params.slug && (comment.section || 'latest') === section).sort((a,b) => new Date(b.approvedAt) - new Date(a.approvedAt)).map(publicPBComment);
-  res.json({ok:true,comments});
+  const section=pbCommentSection(req.query.section);
+  if(!pbCommentArticle(section,req.params.slug))return res.status(404).json({ok:false,error:'Publicación no encontrada.'});
+  res.json({ok:true,comments:approvedPBComments(req.params.slug,section)});
 });
 
 app.post('/api/pb-comments/:slug', formLimiter, express.json({ limit:'20kb' }), async (req, res) => {
-  const section = req.body.section === 'blog' ? 'blog' : 'latest';
-  if (!/^[a-z0-9-]+$/.test(req.params.slug)) return res.status(404).json({ok:false,error:'Publicación no encontrada.'});
-  let article = null;
-  if (section === 'blog') {
-    article = pbBlogStore.readPost(req.params.slug);
-  } else {
-    article = readPBLatest('approved.json').find(item => item.slug === req.params.slug);
-  }
+  const section=pbCommentSection(req.body.section);
+  const article=pbCommentArticle(section,req.params.slug);
   if (!article) return res.status(404).json({ok:false,error:'Publicación no encontrada.'});
   if (String(req.body.website || '').trim()) return res.json({ok:true,pending:true});
   const name = sanitize(req.body.name || '').replace(/\s+/g,' ').trim();
@@ -3130,7 +3137,7 @@ app.get('/admin/pb-comment-approve/:token', (req, res) => {
   delete item.approveToken; delete item.rejectToken; item.status='approved'; item.approvedAt=new Date().toISOString();
   const approved = readPBComments('approved.json'); approved.push(item);
   writePBComments('pending.json',pending); writePBComments('approved.json',approved);
-  res.send(`<!doctype html><html lang="es"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Comentario aprobado</title><body style="font-family:system-ui;text-align:center;padding:3rem"><h1>✅ Comentario publicado</h1><p>${emailEscForResponse(item.name)}</p><p><a href="${item.section === 'blog' ? '/blog/' : '/lo-mas-reciente/'}${encodeURIComponent(item.articleSlug)}#comentarios">Ver comentarios</a></p></body></html>`);
+  res.send(`<!doctype html><html lang="es"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Comentario aprobado</title><body style="font-family:system-ui;text-align:center;padding:3rem"><h1>✅ Comentario publicado</h1><p>${emailEscForResponse(item.name)}</p><p><a href="${PB_COMMENT_PATHS[pbCommentSection(item.section)]}${encodeURIComponent(item.articleSlug)}#comentarios">Ver comentarios</a></p></body></html>`);
 });
 
 app.get('/admin/pb-comment-reject/:token', (req, res) => {
@@ -3474,7 +3481,7 @@ app.post('/admin/pb-event-delete/:token', (req, res) => {
   res.send(`<h2>✅ Evento eliminado</h2><p>${sanitize(event.name)} ya no aparece en la agenda.</p><p><a href="/agenda-boricua">Ver agenda</a></p>`);
 });
 
-app.use(pbTourismSection.router({requireAdmin:requirePBAdmin,requireAdminCsrf:requirePBCsrf}));
+app.use(pbTourismSection.router({requireAdmin:requirePBAdmin,requireAdminCsrf:requirePBCsrf,loadComments:slug=>approvedPBComments(slug,'turistiando')}));
 
 // Private visit notes and evidence; never published through this router.
 app.use(createPBVisitGuideRouter({requireAdmin:requirePBAdmin,requireAdminCsrf:requirePBCsrf}));

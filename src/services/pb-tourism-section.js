@@ -2,8 +2,18 @@
 const fs=require('node:fs'),path=require('node:path'),express=require('express'),crypto=require('node:crypto');
 const sanitizeHtml=require('sanitize-html');
 const siteAnalytics=require('./pb-site-analytics');
+const renderEditorialIndex=require('../views/pb-blog/index');
+const renderEditorialPost=require('../views/pb-blog/post');
+const {categorySlug}=require('../utils/pb-editorial');
 const caribexMetrics=require('../../data/pb-caribex-metrics.json');
 const caribexPosts=require('../../data/pb-turistiando/archivo-caribex.json');
+const originalCovers=new Map(require('../../data/pb-turistiando/caribex.json')
+  .filter(post=>post.image?.startsWith('https://blogger.googleusercontent.com/'))
+  .map(post=>[post.sourceId,post.image]));
+const destinationCovers={
+  'What Travelers Should Understand Before Choosing Vieques':'/img/pueblos/vieques/guia.webp',
+  "Culebra Is Not a Simple Escape. It's a Specific One.":'/img/pueblos/culebra/guia.webp',
+};
 const caribexSpanish=require('../../data/pb-caribex-es.json');
 const caribexRoutes=new Map(caribexPosts.map(post=>[post.originalUrl,`/turistiando/${post.id}`]));
 const ROOT=process.env.PB_TOURISM_DATA_DIR||'/data/pb-turismo';const SEED_DIR=path.join(__dirname,'../../data/pb-turistiando');
@@ -48,96 +58,83 @@ function caribexBody(post){
       img:(tagName,attributes)=>{
         const src=attributes.src||'';
         const alt=attributes.alt||post.originalTitle;
-        if(!src.startsWith('https://blogger.googleusercontent.com/'))return {tagName,attribs:{}};
+        if(!src.startsWith('https://blogger.googleusercontent.com/')||src===originalCovers.get(post.sourceId))return {tagName,attribs:{}};
         return {tagName,attribs:{src,alt,loading:'lazy',referrerpolicy:'no-referrer'}};
       },
     },
-    exclusiveFilter:frame=>frame.tag==='img'&&!frame.attribs.src,
+    exclusiveFilter:frame=>frame.tag==='img'&&!frame.attribs.src
+      ||frame.tag==='a'&&!frame.text.trim()&&!frame.mediaChildren.length,
   });
 }
 const caribexBodies=new Map(caribexPosts.map(post=>[post.id,caribexBody(post)]));
-function postDate(date){
+function dateLabel(date){
   const parsed=new Date(date?`${date}T00:00:00Z`:'');
-  if(!Number.isFinite(parsed.valueOf()))return esc(date);
-  return `<time datetime="${esc(date)}">${originalDateFormat.format(parsed)}</time>`;
+  return Number.isFinite(parsed.valueOf())?originalDateFormat.format(parsed):date;
 }
-function postCard(post,heading){
-  return `<article class="travel-card">
-    <${heading}><a href="/turistiando/${post.id}">${esc(post.title)}</a></${heading}>
-    <p class="muted">${postDate(post.originalDate)}</p>
-  </article>`;
+function postDate(date){
+  return `<time datetime="${esc(date)}">${esc(dateLabel(date))}</time>`;
+}
+function publicPost(id){
+  if(!valid(id))return null;
+  let post=get(id);
+  if(!post){
+    init();
+    post=get(id);
+  }
+  return post&&isPublic(post)?post:null;
+}
+function editorialPost(post,coverSize=640){
+  const content=caribexBodies.get(post.id)||esc(post.body).split(/\n{2,}/).map(paragraph=>`<p>${paragraph.replace(/\n/g,'<br>')}</p>`).join('');
+  const excerpt=post.summary||(caribexBodies.has(post.id)?String(post.body||'').split(/\n{2,}/)[0]:'');
+  const historicalViews=caribexMetrics.articleViews[post.id];
+  const archiveNote=Number.isInteger(historicalViews)
+    ? `Publicado originalmente en Caribex. ${views(historicalViews)} vistas históricas en Caribex según Blogger al ${dateLabel(caribexMetrics.capturedOn)}.`
+    : '';
+  const originalCover=originalCovers.get(post.sourceId)?.replace(/\/(?:s\d+|w\d+-h\d+)\//,`/s${coverSize}/`);
+  return {
+    slug:post.id,title:post.title,authorName:'Iván Soto',content,excerpt,summary:excerpt,
+    image:post.image||originalCover||destinationCovers[post.originalTitle]||'',
+    category:archiveSections.find(([id])=>id===post.category)?.[1]||'Viajes',
+    dateISO:post.originalDate,date:dateLabel(post.originalDate),
+    updatedISO:post.updatedAt?.slice(0,10)||post.originalDate,
+    readTime:Math.max(1,Math.ceil(content.replace(/<[^>]+>/g,' ').trim().split(/\s+/).length/200)),
+    originalUrl:isHttps(post.originalUrl)?post.originalUrl:'',archiveNote,
+  };
 }
 function travelLayout(title,body){
   return layout(title,body).replace('</head>',`<style>
-    .travel-intro{padding:20px 0 16px}.travel-intro img{display:block}
-    .travel-intro h1,.travel-story h1{font-size:clamp(1.8rem,5vw,2.8rem);line-height:1.15;margin:.5em 0}
-    .travel-topics{display:flex;flex-wrap:wrap;gap:8px;margin:1rem 0 1.5rem}
-    .travel-topics a{display:inline-flex;align-items:center;min-height:44px;padding:0 12px;border:1px solid #d2e1de;border-radius:8px;background:#fff}
-    .travel-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:12px}
-    .travel-card{margin:0;padding:16px}.travel-card h3,.travel-card h4{font-size:1.1rem;line-height:1.35;margin:0 0 8px}.travel-card p{margin:0;font-size:.9rem}
-    .travel-story{max-width:720px;margin:20px auto}.travel-copy p{white-space:pre-line;overflow-wrap:anywhere}
-    .travel-source{border-top:1px solid #ddd;padding-top:16px;margin-bottom:0}
-    .travel-original{border-top:1px solid #ddd;margin-top:24px;padding-top:16px;overflow-wrap:anywhere}
-    .travel-original img{display:block;margin:1rem auto;max-width:100%;height:auto}
-    .travel-original table,.travel-report{display:block;overflow-x:auto;border-collapse:collapse}
     .travel-report td,.travel-report th{padding:.6rem .8rem;border-bottom:1px solid #ddd;text-align:left}
   </style></head>`);
 }
-function router({requireAdmin,requireAdminCsrf}){const r=express.Router();const safe=(req,res,next)=>{res.set({'Cache-Control':'private, no-store','X-Robots-Tag':'noindex, nofollow'});next()};
- r.get('/turistiando',(_req,res)=>{
-   const posts=all().filter(isPublic);
-   if (posts.length === 0) res.locals.skipAdSense = true;
-   const archive=posts.filter(p=>p.originalUrl);
-   const recent=posts.filter(p=>!p.originalUrl);
-   const sections=archiveSections.map(([id,title])=>({
-     id,title,posts:archive.filter(p=>p.category===id),
-   })).filter(section=>section.posts.length);
-   const archiveHtml=archive.length?`
-     <section id="archivo-caribex" aria-labelledby="titulo-archivo">
-       <h2 id="titulo-archivo">Archivo de Caribex</h2>
-       <p>Explora ${archive.length} publicaciones de Caribex en español, con sus fechas originales de publicación.</p>
-       <p><strong>${views(caribexMetrics.blogViews)} vistas históricas del blog Caribex</strong> · Blogger, al ${postDate(caribexMetrics.capturedOn)}.</p>
-       <nav class="travel-topics" aria-label="Temas del archivo">${sections.map(({id,title})=>`<a href="#${id}">${title}</a>`).join('')}</nav>
-       ${sections.map(({id,title,posts})=>`<section id="${id}"><h3>${title}</h3><div class="travel-grid">${posts.map(p=>postCard(p,'h4')).join('')}</div></section>`).join('')}
-     </section>`:'';
-   res.send(travelLayout('Turistiando con Iván Soto',`
-     <a href="/">← Planeta Boricua</a>
-     <header class="travel-intro">
-       <img src="/img/turistiando-logo.png" alt="" width="420">
-       <h1>Turistiando con Iván Soto</h1>
-       <p>Ideas, rutas e historias para conocer el Caribe a tu ritmo.</p>
-     </header>
-     ${recent.length?`<section><h2>Más historias de viaje</h2><div class="travel-grid">${recent.map(p=>postCard(p,'h3')).join('')}</div></section>`:''}
-     ${archiveHtml}
-     ${posts.length?'':'<p>Próximamente compartiremos nuevas historias.</p>'}
-     <p><a href="/pueblos/">Explora las guías de los 78 pueblos de Puerto Rico →</a></p>`));
+function router({requireAdmin,requireAdminCsrf,loadComments=()=>[]}){const r=express.Router();const safe=(req,res,next)=>{res.set({'Cache-Control':'private, no-store','X-Robots-Tag':'noindex, nofollow'});next()};
+ r.get('/turistiando',(req,res)=>{
+   const posts=all().filter(isPublic).map(post=>editorialPost(post));
+   if(!posts.length)res.locals.skipAdSense=true;
+   const categories=[...new Set(posts.map(post=>post.category))];
+   const category=categories.some(name=>categorySlug(name)===req.query.tema)?req.query.tema:null;
+   const search=typeof req.query.q==='string'?req.query.q.trim().slice(0,100):'';
+   const normalize=text=>text.normalize('NFD').replace(/\p{M}/gu,'').toLowerCase();
+   const term=normalize(search);
+   const filtered=posts.filter(post=>(!category||categorySlug(post.category)===category)
+     &&(!term||normalize([post.title,post.excerpt,post.category].join(' ')).includes(term)));
+   const perPage=9;
+   const totalPages=search?1:Math.max(1,Math.ceil(filtered.length/perPage));
+   const page=search?1:Math.min(totalPages,Math.max(1,parseInt(req.query.page,10)||1));
+   const visible=search?filtered:filtered.slice((page-1)*perPage,page*perPage);
+   const archive=page===1&&!search?filtered.slice(perPage):[];
+   const archiveNote=`${views(caribexMetrics.blogViews)} vistas históricas del blog Caribex según Blogger al ${dateLabel(caribexMetrics.capturedOn)}. Las publicaciones conservan sus fechas originales.`;
+   res.send(renderEditorialIndex(visible,page,totalPages,category,search,categories,filtered.length,archive,{travel:true,archiveNote}));
  });
  r.get('/turistiando/:id',(req,res,next)=>{
-   const {id}=req.params;
-   if(!valid(id))return next();
-   let post=get(id);
-   if(!post){
-     init();
-     post=get(id);
-   }
-   if(!post||!isPublic(post))return next();
-   const translatedBody=caribexBodies.get(post.id);
-   const historicalViews=caribexMetrics.articleViews[post.id];
-   const metadata=translatedBody?`<meta property="article:published_time" content="${esc(post.originalDate)}"><meta name="author" content="Iván Soto">`:'';
-   const image=isHttps(post.image)?`<img src="${esc(post.image)}" alt="">`:'';
-   const source=isHttps(post.originalUrl)?`<p class="travel-source"><a href="${esc(post.originalUrl)}">Consultar la publicación original en Caribex →</a></p>`:'';
-   const date=post.originalUrl?'Publicado originalmente en Caribex el ':'Fecha original: ';
-   res.send(travelLayout(post.title,`
-     <a href="/turistiando${source?'#archivo-caribex':''}">← Turistiando</a>
-     <article class="travel-story">
-       <h1>${esc(post.title)}</h1>
-       <p class="muted">${date}${postDate(post.originalDate)}${post.updatedAt?' · Actualizado: '+esc(post.updatedAt.slice(0,10)):''}</p>
-       ${Number.isInteger(historicalViews)?`<p class="muted">${views(historicalViews)} vistas históricas en Caribex · Blogger, al ${postDate(caribexMetrics.capturedOn)}.</p>`:''}
-       ${image}
-       <div class="travel-copy">${esc(post.body).split(/\n{2,}/).map(paragraph=>`<p>${paragraph}</p>`).join('')}</div>
-       ${translatedBody?`<div class="travel-original">${translatedBody}</div>`:''}
-       ${source}
-     </article>`).replace('</head>',metadata+'</head>'));
+   const post=publicPost(req.params.id);
+   if(!post)return next();
+   const published=all().filter(isPublic);
+   const index=published.findIndex(item=>item.id===post.id);
+   const related=published.filter(item=>item.id!==post.id&&item.category===post.category).slice(0,3).map(item=>editorialPost(item));
+   const prev=published[index+1];
+   const nextPost=index>0?published[index-1]:null;
+   res.send(renderEditorialPost(editorialPost(post,1200),related,prev&&editorialPost(prev),nextPost&&editorialPost(nextPost),
+     loadComments(post.id),[],{},{travel:true}));
  });
  r.get('/pb-control/turismo/metricas',safe,requireAdmin,(_req,res)=>{
    const siteViews=siteAnalytics.summary().allTime.pages;
@@ -187,4 +184,4 @@ function router({requireAdmin,requireAdminCsrf}){const r=express.Router();const 
  r.get('/pb-control/turismo/:id',safe,requireAdmin,(req,res)=>{const p=get(req.params.id);if(!p)return res.sendStatus(404);res.send(layout('Editar artículo',`<a href="/pb-control/turismo">← Artículos</a><h1>Editar artículo</h1><p>Original: ${esc(p.originalTitle)} · ${esc(p.originalDate)}</p><form method="post"><input type="hidden" name="csrf" value="${esc(req.pbAdminSession.csrf)}"><label>Título<input name="title" required maxlength="180" value="${esc(p.title)}"></label><label>Fecha original<input type="date" name="originalDate" value="${esc(p.originalDate)}"></label><label>Imagen (enlace HTTPS)<input name="image" type="url" maxlength="2000" value="${esc(p.image)}"></label><label>Contenido<textarea name="body" required maxlength="30000">${esc(p.body)}</textarea></label><label>Idioma<select name="language"><option value="en" ${p.language==='en'?'selected':''}>Inglés original</option><option value="es" ${p.language==='es'?'selected':''}>Español revisado</option></select></label><label>Estado<select name="status"><option value="draft" ${p.status==='draft'?'selected':''}>Borrador</option><option value="published" ${p.status==='published'&&p.language==='es'?'selected':''}>Publicado</option></select></label><p>Para publicar, selecciona Español revisado. Comprueba los datos y la imagen.</p><button>Guardar</button></form>`));});
  r.post('/pb-control/turismo/:id',safe,requireAdmin,requireAdminCsrf,(req,res)=>{const p=get(req.params.id);if(!p)return res.sendStatus(404);const {title,body,language,status,originalDate,image}=req.body;if(typeof title!=='string'||!title.trim()||title.length>180||typeof body!=='string'||!body.trim()||body.length>30000||!['es','en'].includes(language)||!['draft','published'].includes(status)||!/^\d{4}-\d{2}-\d{2}$/.test(originalDate))return res.status(400).send('Datos inválidos.');if(typeof image!=='string'||image.length>2000||(image&&!/^https:\/\//i.test(image)))return res.status(400).send('Enlace de imagen inválido.');if(status==='published'&&language!=='es')return res.status(400).send('Revisa y traduce al español antes de publicar.');save({...p,title:title.trim(),body:body.trim(),image:image.trim(),language,status,originalDate,updatedAt:new Date().toISOString()});res.redirect('/pb-control/turismo/'+p.id);});return r;}
 function sitemap(){return '<url><loc>https://www.masboricuaqueunmofongo.com/turistiando</loc></url>'+all().filter(isPublic).map(p=>`<url><loc>https://www.masboricuaqueunmofongo.com/turistiando/${p.id}</loc></url>`).join('');}
-module.exports={router,all,get,save,sitemap};
+module.exports={router,all,get,save,sitemap,publicPost};
