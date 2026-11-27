@@ -1,3 +1,4 @@
+const { editorialSections } = require('./editorial-sections');
 const { navIcon } = require('./nav-icons');
 const { withGetYourGuide } = require('./getyourguide');
 const { withBusinessPromo } = require('./business-promo');
@@ -12,7 +13,7 @@ function isPublicShellPath(pathname) {
   return current === '/' || /^\/(?:blog|lo-mas-reciente|agenda-boricua|pueblos)(?:\/|$)/.test(current)
     || /^\/turistiando(?:\/viaje-[a-f0-9]{16})?$/.test(current)
     || /^\/(?:tu-negocio|crea-tu-menu)(?:\/en)?$/.test(current)
-    || ['/feria-artesanos','/feria-artesanos/florida','/recursos','/mudarse-de-pr','/regresar-a-pr','/quienes-somos','/anunciate-en-pb','/privacidad-boricua','/terminos-boricua','/afiliados-boricua','/sala-de-prensa'].includes(current)
+    || ['/feria-artesanos','/feria-artesanos/florida','/recursos','/mudarse-de-pr','/regresar-a-pr','/quienes-somos','/anunciate-en-pb','/privacidad-boricua','/terminos-boricua','/afiliados-boricua','/sala-de-prensa','/grupos-boricuas','/compartir-evento-boricua'].includes(current)
     || /^\/artesanos\/(?!mi-perfil(?:\/|$)|comunicaciones(?:\/|$))[^/]+$/.test(current);
 }
 
@@ -28,7 +29,7 @@ function renderSiteHeader(pathname, {english = false, newsletter = '#pb-boletin'
   const t = (es,en) => english ? en : es;
   const links = [
     ['/','Inicio','Home','home'],
-    ['/blog','El Balcón','El Balcón','balcony'],
+    ...editorialSections,
     ['/feria-artesanos','Artesanos','Artisans','artisans'],
     ['/agenda-boricua','Agenda','Events','calendar'],
     ['/pueblos','Nuestros pueblos','Our towns','plate'],
@@ -37,8 +38,6 @@ function renderSiteHeader(pathname, {english = false, newsletter = '#pb-boletin'
   ];
   const newsletterItem = [newsletter,'Boletín','Newsletter','newsletter'];
   const more = [
-    ['/lo-mas-reciente','Lo más reciente','Latest','news'],
-    ['/turistiando','Turistiando','Travel','travel'],
     ['/quienes-somos','Quiénes somos','About us','about'],
     ['/anunciate-en-pb','Anúnciate en PB','Advertise','ads'],
     ['mailto:masboricuaqueunmofongo@gmail.com','Contacto','Contact','contact'],
@@ -60,9 +59,9 @@ function renderSiteHeader(pathname, {english = false, newsletter = '#pb-boletin'
       <a href="/blog/buscar">${t('Buscar en El Balcón','Search El Balcón')}</a>
     </form>
   </details>`;
-  const quickLinks = [['/#hero','Destacadas'],['/lo-mas-reciente','Lo último'],['/agenda-boricua','Agenda'],['/feria-artesanos','Artesanos']];
+  const quickLinks = [...editorialSections,['/#hero','Destacadas'],['/agenda-boricua','Agenda'],['/feria-artesanos','Artesanos']];
   const edition = usesEditorialLayout(current) ? `<div class="pb-edition">${home ? '<p>Puerto Rico y nuestra comunidad en Florida Central.</p>' : ''}
-    <nav aria-label="Secciones de Planeta Boricua">${quickLinks.map(([href,label]) => `<a href="${href}">${label}</a>`).join('')}</nav>
+    <nav aria-label="Secciones de Planeta Boricua">${quickLinks.map(([href,label]) => `<a href="${href}"${active(href)?' aria-current="page"':''}>${label}</a>`).join('')}</nav>
   </div>` : '';
   return `<a class="pb-site-skip" href="#pb-page-content">${t('Saltar al contenido','Skip to content')}</a>
     <header class="pb-site-header pb-editorial-header">
@@ -101,6 +100,7 @@ function withPBSiteShell(html, pathname) {
     const related = [
       ['/lo-mas-reciente','Lee las últimas noticias','Read the latest news'],
       ['/blog','Historias de El Balcón','Stories from El Balcón'],
+      ['/turistiando','Explora Turistiando','Explore Turistiando'],
       ['/agenda-boricua','Busca actividades','Find events'],
       ['/feria-artesanos','Conoce a los artesanos','Meet the artisans']
     ].filter(([href]) => current !== href && !current.startsWith(href+'/')).slice(0,3);

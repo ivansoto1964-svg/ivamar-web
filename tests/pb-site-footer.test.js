@@ -13,7 +13,7 @@ const { renderPBSocialFollow } = require('../src/views/planetaboricua/social-fol
 const canonical = renderPBSiteFooter();
 assert.match(canonical, /data-pb-site-footer/);
 assert.match(canonical, /href="\/lo-mas-reciente"/);
-assert.match(canonical, /href="\/blog"/);
+assert.match(canonical, /href="\/blog">El Balcón<\/a><a href="\/lo-mas-reciente">Lo Más Reciente<\/a><a href="\/turistiando">Turistiando<\/a>/);
 assert.match(canonical, /href="\/feria-artesanos"/);
 assert.match(canonical, /href="\/agenda-boricua"/);
 assert.match(canonical, /href="\/pueblos"/);

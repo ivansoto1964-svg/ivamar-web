@@ -6,7 +6,7 @@ for (const route of ['/pb-control','/pb-control/ads','/api/listings','/artesanos
   assert.equal(isPublicShellPath(route),false,route);
   assert.equal(withPBSiteShell(sample,route),sample);
 }
-for (const route of ['/','/blog','/blog/prueba','/lo-mas-reciente','/agenda-boricua','/feria-artesanos','/recursos','/artesanos/taller-prueba','/pueblos/','/pueblos/arecibo/','/tu-negocio','/anunciate-en-pb']) {
+for (const route of ['/','/blog','/blog/prueba','/lo-mas-reciente','/agenda-boricua','/feria-artesanos','/recursos','/artesanos/taller-prueba','/pueblos/','/pueblos/arecibo/','/tu-negocio','/anunciate-en-pb','/turistiando','/turistiando/viaje-c2857686a3df91a4','/grupos-boricuas','/compartir-evento-boricua']) {
   const output=withPBSiteShell(sample,route);
   assert.equal((output.match(/id="pb-page-content"/g)||[]).length,1);
   assert.match(output,/<form action="\/blog\/buscar"><input name="q"><\/form>/);
@@ -19,6 +19,12 @@ for (const route of ['/','/blog','/blog/prueba','/lo-mas-reciente','/agenda-bori
   assert.match(output, /href="\/blog"[^>]*>[\s\S]*?<span class="pb-nav-label">El Balcón<\/span>/);
   const desktop = output.match(/<nav class="pb-site-nav"[^>]*>([\s\S]*?)<\/nav>/)[1];
   const mobile = output.match(/<nav class="pb-site-panel" aria-label="Navegación móvil">([\s\S]*?)<\/nav>/)[1];
+  for (const menu of [desktop,mobile]) {
+    const destinations = [...menu.matchAll(/href="([^"]+)"/g)].map(match=>match[1]);
+    const start = destinations.indexOf('/blog');
+    assert.deepEqual(destinations.slice(start,start+3),['/blog','/lo-mas-reciente','/turistiando']);
+    assert.equal(destinations.filter(href=>href==='/turistiando').length,1);
+  }
   assert.match(desktop, /href="\/pueblos\/\?v=2"[^>]*>[\s\S]*?<span class="pb-nav-label">Nuestros pueblos<\/span><\/a>/);
   assert.match(mobile, /href="\/pueblos\/\?v=2"[^>]*>[\s\S]*?<span class="pb-nav-label">Nuestros pueblos<\/span><\/a>/);
   assert.doesNotMatch(output,/href="\/(?:talento-boricua|donde-comer|crea-tu-menu)"/,'Deferred sections must not be activated');
