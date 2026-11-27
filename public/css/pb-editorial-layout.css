@@ -132,6 +132,11 @@
   font-weight: 700;
 }
 .pb-edition nav a:hover { text-decoration: underline; }
+/* The shortcuts replace the visible desktop menu on smaller screens. */
+@media (width > 1180px) {
+  .pb-edition > nav, [data-pb-edition="article"] .pb-edition { display: none; }
+  .pb-edition > p { padding-bottom: .6rem; }
+}
 [data-pb-edition="home"] .hero {
   background: var(--pb-paper);
   padding-block: clamp(1rem, 3vw, 2.25rem);

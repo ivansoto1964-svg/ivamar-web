@@ -117,7 +117,7 @@ function withPBSiteShell(html, pathname) {
   if (editorial) {
     result = result.replace('data-pb-navigation', `data-pb-navigation data-pb-edition="${current === '/' ? 'home' : 'article'}"`);
   }
-  return result.replace('</head>', '<link rel="stylesheet" href="/css/pb-refresh.css?v=4"><link rel="stylesheet" href="/css/pb-editorial-layout.css?v=4"></head>')
+  return result.replace('</head>', '<link rel="stylesheet" href="/css/pb-refresh.css?v=4"><link rel="stylesheet" href="/css/pb-editorial-layout.css?v=5"></head>')
     .replace('</body>', '<script src="/js/pb-navigation.js?v=3" defer></script><script src="/js/pb-editorial-events.js?v=1" defer></script></body>');
 }
 module.exports = { withPBSiteShell, renderSiteHeader, isPublicShellPath };
