@@ -82,9 +82,12 @@ try {
   assert.ok(commercialCsv.includes('Cliente directo'));
   assert.ok(commercialCsv.includes('PB-001'));
   const inventory = service.inventory(new Date(now));
-  assert.strictEqual(inventory.rows.length,10);
+  assert.strictEqual(inventory.rows.length,13);
   assert.strictEqual(inventory.rows.find(item => item.id === 'blog.inline_1').status,'occupied');
   assert.strictEqual(inventory.rows.find(item => item.id === 'home.after_hero').status,'available');
+  for (const placement of ['turistiando.top','turistiando.inline_1','turistiando.inline_2']) {
+    assert.strictEqual(inventory.rows.find(item => item.id === placement).status,'available');
+  }
   assert.strictEqual(inventory.rows.find(item => item.id === 'artisan.after_profile').status,'occupied');
   assert.strictEqual(wordCount('<style>ignorar esto</style><p>Uno dos tres</p>'),3);
 
@@ -131,6 +134,17 @@ try {
   assert.strictEqual((longBlog.match(/class="pb-sponsor-card"/g)||[]).length,3,'long blog posts may show three ads');
   assert.ok(!longBlog.includes('class="post-affiliate"'));
   assert.ok(!longBlog.includes('class="post-amazon"'));
+  const travelPost = renderBlogPost({...blogBase,content:repeated(200)},[],null,null,[],[],{top:affiliateAd,first:directAd,second:campaigns[0]},{travel:true});
+  assert.deepStrictEqual([...travelPost.matchAll(/data-pb-placement="([^"]+)"/g)].map(match => match[1]),['turistiando.top','turistiando.inline_1','turistiando.inline_2']);
+  const travelCampaign = service.save({...base,internalName:'Campaña de viaje',type:'direct',sections:['turistiando'],placements:['turistiando.top'],categories:['Destinos y rutas']});
+  assert.strictEqual(service.select({section:'turistiando',placement:'turistiando.top',category:'Destinos y rutas',now}).id,travelCampaign.id);
+  assert.strictEqual(service.select({section:'turistiando',placement:'turistiando.top',category:'Historias y cultura',now}),null);
+  assert.strictEqual(service.select({section:'turistiando',placement:'turistiando.inline_1',category:'Destinos y rutas',now}),null);
+  service.recordMetric(travelCampaign.id,'impression',{placement:'turistiando.top'});
+  service.recordMetric(travelCampaign.id,'click',{placement:'turistiando.top'});
+  const travelInventory = service.inventory().rows.find(item => item.id==='turistiando.top');
+  assert.strictEqual(travelInventory.impressions,1);
+  assert.strictEqual(travelInventory.clicks,1);
 
   const latest = renderLatest({slug:'noticia',title:'Noticia',summary:'Resumen',body:'<p>Contenido corto.</p>',sources:[],publishedAt:now},[],[],{top:affiliateAd,first:directAd,second:campaigns[0]});
   assert.strictEqual((latest.match(/class="pb-sponsor-card"/g)||[]).length,1,'short latest posts may show one ad after the content');
@@ -154,12 +168,16 @@ try {
   assert.ok(controlHtml.includes('Portada · Debajo del hero'));
   assert.ok(controlHtml.includes('Portada · Zona intermedia'));
   assert.ok(controlHtml.includes('Portada · Antes del footer'));
+  assert.ok(controlHtml.includes('name="sections" value="turistiando"'));
+  assert.ok(controlHtml.includes('Turistiando · Debajo del encabezado'));
+  assert.ok(controlHtml.includes('Turistiando · Dentro del artículo 1'));
+  assert.ok(controlHtml.includes('Turistiando · Dentro del artículo 2'));
   assert.ok(controlHtml.includes('hora de Puerto Rico'));
   assert.ok(controlHtml.includes('Información comercial interna'));
   assert.ok(controlHtml.includes('Descargar informe comercial CSV'));
   assert.ok(controlHtml.includes('$250.00'));
   assert.ok(controlHtml.includes('Inventario de espacios'));
-  assert.ok(controlHtml.includes('10 espacios'));
+  assert.ok(controlHtml.includes('13 espacios'));
   assert.ok(controlHtml.includes('Disponible'));
   assert.ok(controlHtml.includes('2026-09-22T08%3A00'),'campaign dates must be edited in Puerto Rico time');
   const inlineScript = (controlHtml.match(/<script>([\s\S]*?)<\/script>/)||[])[1];

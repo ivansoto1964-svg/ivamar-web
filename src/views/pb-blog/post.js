@@ -2,6 +2,7 @@ const { renderSubscriberForm } = require('../planetaboricua/subscriber-form');
 const { renderArticleShare } = require('../planetaboricua/article-share');
 const { renderExplorePB } = require('../planetaboricua/explore-pb');
 const { qualifyAffiliateLinks } = require('../../utils/pb-seo');
+const { wordCount } = require('../../services/pb-ads');
 const { renderPBAd, insertAdsByProgress } = require('../planetaboricua/pb-ad');
 const { hasTravelIntent, renderStay22 } = require('../planetaboricua/stay22');
 const { optimizedImageUrl } = require('../../services/pb-blog-store');
@@ -23,8 +24,8 @@ module.exports = function renderPBPost(post, relatedPosts, prevPost, nextPost, c
       <div class="related-body"><span class="related-cat">${esc(p.category || 'Cultura Boricua')}</span><h4>${esc(p.title)}</h4></div>
     </a>`).join('');
   const tags = (post.tags || []).map(t => `<a href="${travel?basePath:'/blog/buscar'}?q=${encodeURIComponent(t)}" class="post-tag">${esc(t)}</a>`).join('');
-  const wordCount = (post.content || '').replace(/<[^>]+>/g, '').trim().split(/\s+/).filter(Boolean).length;
-  const readTime = Math.max(1, Math.ceil(wordCount / 200));
+  const bodyWords = wordCount(post.content);
+  const readTime = Math.max(1, Math.ceil(bodyWords / 200));
   const navPrevNext = `<div class="post-nav">${prevPost ? `<a href="${basePath}/${encodeURIComponent(prevPost.slug)}" class="post-nav-item"><span>← Anterior</span><strong>${esc(prevPost.title)}</strong></a>` : '<div></div>'}${nextPost ? `<a href="${basePath}/${encodeURIComponent(nextPost.slug)}" class="post-nav-item post-nav-next"><span>Siguiente →</span><strong>${esc(nextPost.title)}</strong></a>` : '<div></div>'}</div>`;
   const commentList = comments.length ? comments.map(comment => `<article class="comment"><div class="comment-head"><strong>${esc(comment.name)}</strong><time>${new Date(comment.approvedAt || comment.submittedAt).toLocaleDateString('es-PR',{year:'numeric',month:'short',day:'numeric'})}</time></div><p>${esc(comment.comment).replace(/\n/g,'<br>')}</p></article>`).join('') : '<p class="comments-empty">Sé la primera persona en dejar un comentario.</p>';
   const seoTitle = post.seoTitle || post.title;
@@ -37,9 +38,9 @@ module.exports = function renderPBPost(post, relatedPosts, prevPost, nextPost, c
   const imageCredit = credit ? `<p class="travel-cover-credit">Foto de <a href="${esc(credit.source)}">${esc(credit.author)}</a> · <a href="${esc(credit.licenseUrl)}">${esc(credit.license)}</a>. Versión redimensionada.</p>` : '';
   const hero = displayImage ? `<div class="post-hero pb-editorial-cover${travel?' travel-cover':''}"><img class="pb-editorial-cover-image" src="${esc(displayImage)}" alt="${esc(post.imageAlt || post.title)}" width="1280" height="960" fetchpriority="high" decoding="async">${logo}</div>${imageCredit}` : `<div class="article-brand"><span>🇵🇷</span><strong>Planeta Boricua</strong><small>${label}</small></div>`;
   const articleContent = qualifyAffiliateLinks(post.content || '');
-  const topAd = renderPBAd(ads.top,{placement:'blog.top',pageSlug:post.slug});
-  const firstAd = wordCount >= 450 ? renderPBAd(ads.first,{placement:'blog.inline_1',pageSlug:post.slug}) : '';
-  const secondAd = wordCount >= 750 ? renderPBAd(ads.second,{placement:'blog.inline_2',pageSlug:post.slug}) : '';
+  const topAd = renderPBAd(ads.top,{placement:`${section}.top`,pageSlug:post.slug});
+  const firstAd = bodyWords >= 450 ? renderPBAd(ads.first,{placement:`${section}.inline_1`,pageSlug:post.slug}) : '';
+  const secondAd = bodyWords >= 750 ? renderPBAd(ads.second,{placement:`${section}.inline_2`,pageSlug:post.slug}) : '';
   const articleWithAds = insertAdsByProgress(articleContent,[{progress:.4,html:firstAd},{progress:.75,html:secondAd}]);
   const explore = renderExplorePB(recommendations);
   return `<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><meta name="robots" content="index,follow,max-image-preview:large"><title>${esc(seoTitle)} — Planeta Boricua</title><meta name="description" content="${esc(metaDescription)}">${post.tags?.length?`<meta name="keywords" content="${esc(post.tags.join(', '))}">`:''}<link rel="canonical" href="${pageUrl}"><meta property="og:type" content="article">${travel&&post.dateISO?`<meta property="article:published_time" content="${esc(post.dateISO)}">`:''}<meta property="og:title" content="${esc(seoTitle)}"><meta property="og:description" content="${esc(metaDescription)}"><meta property="og:url" content="${pageUrl}"><meta property="og:image" content="${esc(socialImage)}"><meta property="og:image:secure_url" content="${esc(socialImage)}">${dimensionTags(cover)}<meta property="og:image:alt" content="${esc(post.title)}"><meta property="og:locale" content="es_PR"><meta property="og:site_name" content="Planeta Boricua"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${esc(seoTitle)}"><meta name="twitter:description" content="${esc(metaDescription)}"><meta name="twitter:image" content="${esc(socialImage)}"><meta name="twitter:image:alt" content="${esc(post.title)}"><link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet"><link rel="stylesheet" href="/css/pb-editorial-images.css?v=3">${travel?'<link rel="stylesheet" href="/css/pb-turistiando-brand.css?v=1">':''}<link rel="stylesheet" href="/css/pb-ads.css?v=3"><script type="application/ld+json">${schema}</script><style>

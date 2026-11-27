@@ -108,7 +108,7 @@ function travelLayout(title,body){
     .travel-report td,.travel-report th{padding:.6rem .8rem;border-bottom:1px solid #ddd;text-align:left}
   </style></head>`);
 }
-function router({requireAdmin,requireAdminCsrf,loadComments=()=>[]}){const r=express.Router();const safe=(req,res,next)=>{res.set({'Cache-Control':'private, no-store','X-Robots-Tag':'noindex, nofollow'});next()};
+function router({requireAdmin,requireAdminCsrf,loadComments=()=>[],ads}){const r=express.Router();const safe=(req,res,next)=>{res.set({'Cache-Control':'private, no-store','X-Robots-Tag':'noindex, nofollow'});next()};
  r.get('/turistiando',(req,res)=>{
    const posts=all().filter(isPublic).map(post=>editorialPost(post));
    if(!posts.length)res.locals.skipAdSense=true;
@@ -135,8 +135,13 @@ function router({requireAdmin,requireAdminCsrf,loadComments=()=>[]}){const r=exp
    const related=published.filter(item=>item.id!==post.id&&item.category===post.category).slice(0,3).map(item=>editorialPost(item));
    const prev=published[index+1];
    const nextPost=index>0?published[index-1]:null;
-   res.send(renderEditorialPost(editorialPost(post,1200),related,prev&&editorialPost(prev),nextPost&&editorialPost(nextPost),
-     loadComments(post.id),[],{},{travel:true}));
+   const article=editorialPost(post,1200);
+   const context={section:'turistiando',category:article.category,pageSlug:article.slug};
+   const top=ads?.select({...context,placement:'turistiando.top'});
+   const first=ads?.select({...context,placement:'turistiando.inline_1',excludeIds:[top?.id].filter(Boolean)});
+   const second=ads?.select({...context,placement:'turistiando.inline_2',excludeIds:[top?.id,first?.id].filter(Boolean)});
+   res.send(renderEditorialPost(article,related,prev&&editorialPost(prev),nextPost&&editorialPost(nextPost),
+     loadComments(post.id),[],{top,first,second},{travel:true}));
  });
  r.get('/pb-control/turismo/metricas',safe,requireAdmin,(_req,res)=>{
    const siteViews=siteAnalytics.summary().allTime.pages;
@@ -152,7 +157,7 @@ function router({requireAdmin,requireAdminCsrf,loadComments=()=>[]}){const r=exp
      <table class="travel-report"><thead><tr><th scope="col">Artículo</th><th scope="col">Vistas históricas en Blogger</th><th scope="col">Vistas en PB</th></tr></thead>
      <tbody>${rows.map(({post,pbViews,bloggerViews})=>`<tr><th scope="row"><a href="/turistiando/${post.id}">${esc(post.title)}</a></th><td>${views(bloggerViews)}</td><td>${views(pbViews)}</td></tr>`).join('')}</tbody></table>`));
  });
- r.get('/pb-control/turismo',safe,requireAdmin,(req,res)=>res.send(layout('Turistiando · Panel',`<a href="/pb-control">← Panel de control</a><h1>Turistiando</h1><p><a href="/pb-control/turismo/vista-previa">Ver vista privada de Turistiando</a> · <a href="/pb-control/turismo/metricas">Ver métricas de Turistiando</a></p><form method="post" action="/pb-control/turismo/nuevo"><input type="hidden" name="csrf" value="${esc(req.pbAdminSession.csrf)}"><button>Crear artículo nuevo</button></form><p>Las fichas públicas de Turistiando incluyen el artículo completo en español. El campo Contenido permite editar la introducción de cada ficha.</p>${all().map(p=>`<article><a href="/pb-control/turismo/${p.id}">${esc(p.title)}</a> · ${esc(p.originalDate)} · ${p.status==='draft'?'Borrador':'Publicado'} · ${esc(p.language)}</article>`).join('')}`)));
+ r.get('/pb-control/turismo',safe,requireAdmin,(req,res)=>res.send(layout('Turistiando · Panel',`<a href="/pb-control">← Panel de control</a><h1>Turistiando</h1><p><a href="/pb-control/turismo/vista-previa">Ver vista privada de Turistiando</a> · <a href="/pb-control/turismo/metricas">Ver métricas de Turistiando</a> · <a href="/pb-control/ads">Gestionar publicidad</a></p><form method="post" action="/pb-control/turismo/nuevo"><input type="hidden" name="csrf" value="${esc(req.pbAdminSession.csrf)}"><button>Crear artículo nuevo</button></form><p>Las fichas públicas de Turistiando incluyen el artículo completo en español. El campo Contenido permite editar la introducción de cada ficha.</p>${all().map(p=>`<article><a href="/pb-control/turismo/${p.id}">${esc(p.title)}</a> · ${esc(p.originalDate)} · ${p.status==='draft'?'Borrador':'Publicado'} · ${esc(p.language)}</article>`).join('')}`)));
  // Private review is restricted to administrators; drafts never use public URLs.
  const reviewable=p=>p.language==='es'&&!/^\[(?:fusionar|integrado)\b/i.test(String(p.title||''));
  const previewLayout=(title,body)=>layout(title,body).replace('</head>',`<style>

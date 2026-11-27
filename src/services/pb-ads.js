@@ -18,10 +18,13 @@ const PLACEMENT_CATALOG = [
   {id:'latest.top',section:'latest',sectionLabel:'Lo más reciente',label:'Debajo del encabezado'},
   {id:'latest.inline_1',section:'latest',sectionLabel:'Lo más reciente',label:'Dentro de publicación 1'},
   {id:'latest.inline_2',section:'latest',sectionLabel:'Lo más reciente',label:'Dentro de publicación 2'},
+  {id:'turistiando.top',section:'turistiando',sectionLabel:'Turistiando',label:'Debajo del encabezado'},
+  {id:'turistiando.inline_1',section:'turistiando',sectionLabel:'Turistiando',label:'Dentro del artículo 1'},
+  {id:'turistiando.inline_2',section:'turistiando',sectionLabel:'Turistiando',label:'Dentro del artículo 2'},
   {id:'artisan.after_profile',section:'artisan',sectionLabel:'Perfil de artesano',label:'Después del perfil y sus herramientas'}
 ];
 const PLACEMENTS = new Set(PLACEMENT_CATALOG.map(item => item.id));
-const SECTIONS = new Set(['home', 'blog', 'latest', 'artisan']);
+const SECTIONS = new Set(PLACEMENT_CATALOG.map(item => item.section));
 const IMAGE_TYPES = [
   { mime:'image/jpeg', ext:'jpg', test:buffer => buffer[0] === 0xff && buffer[1] === 0xd8 && buffer[2] === 0xff },
   { mime:'image/png', ext:'png', test:buffer => buffer.slice(0,8).equals(Buffer.from([0x89,0x50,0x4e,0x47,0x0d,0x0a,0x1a,0x0a])) },

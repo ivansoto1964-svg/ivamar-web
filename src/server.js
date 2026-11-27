@@ -3481,7 +3481,7 @@ app.post('/admin/pb-event-delete/:token', (req, res) => {
   res.send(`<h2>✅ Evento eliminado</h2><p>${sanitize(event.name)} ya no aparece en la agenda.</p><p><a href="/agenda-boricua">Ver agenda</a></p>`);
 });
 
-app.use(pbTourismSection.router({requireAdmin:requirePBAdmin,requireAdminCsrf:requirePBCsrf,loadComments:slug=>approvedPBComments(slug,'turistiando')}));
+app.use(pbTourismSection.router({requireAdmin:requirePBAdmin,requireAdminCsrf:requirePBCsrf,loadComments:slug=>approvedPBComments(slug,'turistiando'),ads:pbAds}));
 
 // Private visit notes and evidence; never published through this router.
 app.use(createPBVisitGuideRouter({requireAdmin:requirePBAdmin,requireAdminCsrf:requirePBCsrf}));
