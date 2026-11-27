@@ -1,0 +1,24 @@
+/* The official Turistiando mark lives above the photograph in the shared layout. */
+.travel-cover {
+  position: relative;
+}
+.travel-cover-mark {
+  position: absolute;
+  z-index: 1;
+  right: .65rem;
+  bottom: .65rem;
+  width: clamp(6.4rem, 25%, 9rem);
+  aspect-ratio: 3 / 1;
+  border-radius: .35rem;
+  background: #fffdf8 url('/img/turistiando-logo.png') center / 87% auto no-repeat;
+  box-shadow: 0 2px 10px #10213a33;
+  pointer-events: none;
+}
+.travel-cover-credit {
+  margin: .4rem 0 1rem;
+  color: #526071;
+  font-size: .72rem;
+}
+.travel-cover-credit a {
+  color: #002d62;
+}

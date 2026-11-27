@@ -7,13 +7,7 @@ const renderEditorialPost=require('../views/pb-blog/post');
 const {categorySlug}=require('../utils/pb-editorial');
 const caribexMetrics=require('../../data/pb-caribex-metrics.json');
 const caribexPosts=require('../../data/pb-turistiando/archivo-caribex.json');
-const originalCovers=new Map(require('../../data/pb-turistiando/caribex.json')
-  .filter(post=>post.image?.startsWith('https://blogger.googleusercontent.com/'))
-  .map(post=>[post.sourceId,post.image]));
-const destinationCovers={
-  'What Travelers Should Understand Before Choosing Vieques':'/img/pueblos/vieques/guia.webp',
-  "Culebra Is Not a Simple Escape. It's a Specific One.":'/img/pueblos/culebra/guia.webp',
-};
+const {covers:travelCovers,credits:travelCoverCredits}=require('../../data/pb-turistiando-portadas.json');
 const caribexSpanish=require('../../data/pb-caribex-es.json');
 const caribexRoutes=new Map(caribexPosts.map(post=>[post.originalUrl,`/turistiando/${post.id}`]));
 const ROOT=process.env.PB_TOURISM_DATA_DIR||'/data/pb-turismo';const SEED_DIR=path.join(__dirname,'../../data/pb-turistiando');
@@ -44,26 +38,32 @@ const isHttps=url=>/^https:\/\//i.test(url||'');
 const originalDateFormat=new Intl.DateTimeFormat('es-PR',{dateStyle:'long',timeZone:'UTC'});
 const formatViews=new Intl.NumberFormat('en-PR');
 const views=count=>formatViews.format(count);
+const travelBrand = text => String(text||'').replace(/caribb?ex(?:\s+ai(?:tm|™)?)?/gi,'Turistiando');
+const legacyTravelLink = /^https?:\/\/(?:www\.|blog\.)?(?:yourcaribbeanexpert\.com|caribbex\.blogspot\.com)(?:[/?#]|$)/i;
+const assistantPrompt = /^(?:consulta|dile|p[ií]de(?:le|la)|preg[uú]ntale|pregunte|deja que|explora)\b.{0,70}\b(?:sun ai|asistente de (?:caribex|turistiando)|turistiando (?:te ayude|qué ritmo|cómo viajas|lo que estás buscando|lo que realmente estás buscando))/i;
 function caribexBody(post){
   return sanitizeHtml(caribexSpanish[post.id],{
-    allowedTags:[...sanitizeHtml.defaults.allowedTags,'img','figure','figcaption'],
-    allowedAttributes:{a:['href'],img:['src','alt','loading','referrerpolicy'],td:['colspan','rowspan'],th:['colspan','rowspan','scope']},
+    allowedTags:sanitizeHtml.defaults.allowedTags,
+    allowedAttributes:{a:['href'],td:['colspan','rowspan'],th:['colspan','rowspan','scope']},
     allowedSchemes:['https','mailto'],
     allowProtocolRelative:false,
+    textFilter:text=>travelBrand(text)
+      .replace(/explorar 35 destinos del Caribe en Turistiando/gi,'Explorar las publicaciones de Turistiando')
+      .replace(/Sun AI/gi,'Turistiando'),
     transformTags:{
       a:(tagName,attributes)=>{
         const href=attributes.href||'';
-        return {tagName,attribs:{href:caribexRoutes.get(href)||href}};
-      },
-      img:(tagName,attributes)=>{
-        const src=attributes.src||'';
-        const alt=attributes.alt||post.originalTitle;
-        if(!src.startsWith('https://blogger.googleusercontent.com/')||src===originalCovers.get(post.sourceId))return {tagName,attribs:{}};
-        return {tagName,attribs:{src,alt,loading:'lazy',referrerpolicy:'no-referrer'}};
+        const migrated=caribexRoutes.get(href.split(/[?#]/)[0]);
+        if(migrated)return {tagName,attribs:{href:migrated}};
+        if(legacyTravelLink.test(href)){
+          const {pathname}=new URL(href);
+          return pathname==='/'?{tagName,attribs:{href:'/turistiando'}}:{tagName:'span',attribs:{}};
+        }
+        return {tagName,attribs:{href}};
       },
     },
-    exclusiveFilter:frame=>frame.tag==='img'&&!frame.attribs.src
-      ||frame.tag==='a'&&!frame.text.trim()&&!frame.mediaChildren.length,
+    exclusiveFilter:frame=>['p','a','span'].includes(frame.tag)
+      && (!frame.text.trim()||assistantPrompt.test(frame.text.trim())),
   });
 }
 const caribexBodies=new Map(caribexPosts.map(post=>[post.id,caribexBody(post)]));
@@ -88,12 +88,14 @@ function editorialPost(post,coverSize=640){
   const excerpt=post.summary||(caribexBodies.has(post.id)?String(post.body||'').split(/\n{2,}/)[0]:'');
   const historicalViews=caribexMetrics.articleViews[post.id];
   const archiveNote=Number.isInteger(historicalViews)
-    ? `Publicado originalmente en Caribex. ${views(historicalViews)} vistas históricas en Caribex según Blogger al ${dateLabel(caribexMetrics.capturedOn)}.`
+    ? `Publicado originalmente en Blogger. ${views(historicalViews)} vistas históricas de Turistiando al ${dateLabel(caribexMetrics.capturedOn)}.`
     : '';
-  const originalCover=originalCovers.get(post.sourceId)?.replace(/\/(?:s\d+|w\d+-h\d+)\//,`/s${coverSize}/`);
+  const selectedCover=post.image||travelCovers[post.id]||'';
+  const credit=travelCoverCredits[selectedCover];
+  const originalCover=selectedCover.replace(/\/(?:s\d+|w\d+-h\d+)\//,`/s${coverSize}/`);
   return {
-    slug:post.id,title:post.title,authorName:'Iván Soto',content,excerpt,summary:excerpt,
-    image:post.image||originalCover||destinationCovers[post.originalTitle]||'',
+    slug:post.id,title:travelBrand(post.title),authorName:'Iván Soto',content,excerpt:travelBrand(excerpt),summary:travelBrand(excerpt),
+    image:originalCover,imageAlt:credit?.alt, imageCredit:credit,
     category:archiveSections.find(([id])=>id===post.category)?.[1]||'Viajes',
     dateISO:post.originalDate,date:dateLabel(post.originalDate),
     updatedISO:post.updatedAt?.slice(0,10)||post.originalDate,
@@ -122,7 +124,7 @@ function router({requireAdmin,requireAdminCsrf,loadComments=()=>[]}){const r=exp
    const page=search?1:Math.min(totalPages,Math.max(1,parseInt(req.query.page,10)||1));
    const visible=search?filtered:filtered.slice((page-1)*perPage,page*perPage);
    const archive=page===1&&!search?filtered.slice(perPage):[];
-   const archiveNote=`${views(caribexMetrics.blogViews)} vistas históricas del blog Caribex según Blogger al ${dateLabel(caribexMetrics.capturedOn)}. Las publicaciones conservan sus fechas originales.`;
+   const archiveNote=`${views(caribexMetrics.blogViews)} vistas históricas de Turistiando según Blogger al ${dateLabel(caribexMetrics.capturedOn)}. Las publicaciones conservan sus fechas originales.`;
    res.send(renderEditorialIndex(visible,page,totalPages,category,search,categories,filtered.length,archive,{travel:true,archiveNote}));
  });
  r.get('/turistiando/:id',(req,res,next)=>{
@@ -145,12 +147,12 @@ function router({requireAdmin,requireAdminCsrf,loadComments=()=>[]}){const r=exp
    }));
    res.send(travelLayout('Métricas de Turistiando',`
      <a href="/pb-control/turismo">← Turistiando</a><h1>Métricas de Turistiando</h1>
-     <p><strong>${views(caribexMetrics.blogViews)}</strong> vistas históricas de todo el blog Caribex, según Blogger al ${postDate(caribexMetrics.capturedOn)}.</p>
-     <p><strong>${views(rows.reduce((total,row)=>total+row.pbViews,0))}</strong> vistas registradas en PB en las páginas de los artículos de Caribex.</p>
-     <table class="travel-report"><thead><tr><th scope="col">Artículo</th><th scope="col">Vistas en Caribex</th><th scope="col">Vistas en PB</th></tr></thead>
+     <p><strong>${views(caribexMetrics.blogViews)}</strong> vistas históricas de Turistiando, según Blogger al ${postDate(caribexMetrics.capturedOn)}.</p>
+     <p><strong>${views(rows.reduce((total,row)=>total+row.pbViews,0))}</strong> vistas registradas en PB en las publicaciones de Turistiando.</p>
+     <table class="travel-report"><thead><tr><th scope="col">Artículo</th><th scope="col">Vistas históricas en Blogger</th><th scope="col">Vistas en PB</th></tr></thead>
      <tbody>${rows.map(({post,pbViews,bloggerViews})=>`<tr><th scope="row"><a href="/turistiando/${post.id}">${esc(post.title)}</a></th><td>${views(bloggerViews)}</td><td>${views(pbViews)}</td></tr>`).join('')}</tbody></table>`));
  });
- r.get('/pb-control/turismo',safe,requireAdmin,(req,res)=>res.send(layout('Turistiando · Panel',`<a href="/pb-control">← Panel de control</a><h1>Turistiando</h1><p><a href="/pb-control/turismo/vista-previa">Ver vista privada de Turistiando</a> · <a href="/pb-control/turismo/metricas">Ver métricas de Turistiando</a></p><form method="post" action="/pb-control/turismo/nuevo"><input type="hidden" name="csrf" value="${esc(req.pbAdminSession.csrf)}"><button>Crear artículo nuevo</button></form><p>Las fichas públicas de Caribex incluyen el artículo completo en español. El campo Contenido permite editar la introducción de cada ficha.</p>${all().map(p=>`<article><a href="/pb-control/turismo/${p.id}">${esc(p.title)}</a> · ${esc(p.originalDate)} · ${p.status==='draft'?'Borrador':'Publicado'} · ${esc(p.language)}</article>`).join('')}`)));
+ r.get('/pb-control/turismo',safe,requireAdmin,(req,res)=>res.send(layout('Turistiando · Panel',`<a href="/pb-control">← Panel de control</a><h1>Turistiando</h1><p><a href="/pb-control/turismo/vista-previa">Ver vista privada de Turistiando</a> · <a href="/pb-control/turismo/metricas">Ver métricas de Turistiando</a></p><form method="post" action="/pb-control/turismo/nuevo"><input type="hidden" name="csrf" value="${esc(req.pbAdminSession.csrf)}"><button>Crear artículo nuevo</button></form><p>Las fichas públicas de Turistiando incluyen el artículo completo en español. El campo Contenido permite editar la introducción de cada ficha.</p>${all().map(p=>`<article><a href="/pb-control/turismo/${p.id}">${esc(p.title)}</a> · ${esc(p.originalDate)} · ${p.status==='draft'?'Borrador':'Publicado'} · ${esc(p.language)}</article>`).join('')}`)));
  // Private review is restricted to administrators; drafts never use public URLs.
  const reviewable=p=>p.language==='es'&&!/^\[(?:fusionar|integrado)\b/i.test(String(p.title||''));
  const previewLayout=(title,body)=>layout(title,body).replace('</head>',`<style>
