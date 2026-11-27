@@ -60,15 +60,24 @@ async function requestJson(fetcher,url,key,fields,body) {
     headers:{'Content-Type':'application/json','X-Goog-Api-Key':key,'X-Goog-FieldMask':fields},
     body:JSON.stringify(body)
   });
-  if (!response.ok) throw new Error('Google Maps status '+response.status);
+  if (!response.ok) {
+    const payload = typeof response.json==='function' ? await response.json().catch(()=>null) : null;
+    const reason = payload?.error?.details?.find(item=>typeof item.reason==='string')?.reason;
+    const safeReason = /^[A-Z][A-Z0-9_]{2,70}$/.test(reason || '') ? ' '+reason : '';
+    const service = url.includes('routes.googleapis.com') ? 'Routes' : 'Places';
+    throw new Error(service+' HTTP '+response.status+safeReason);
+  }
   return response.json();
 }
 
-async function lookupStops(trip,{env = process.env,fetcher = fetch,now = new Date()} = {}) {
+async function lookupStops(trip,{env = process.env,fetcher = fetch,now = new Date(),onStatus = ()=>{}} = {}) {
   const key = String(env.NAYELI_GOOGLE_MAPS_KEY || env.GOOGLE_MAPS_API_KEY || env.GOOGLE_PLACES_KEY || '').trim();
   const wantsBeer = trip.search.includes('cerveza');
   const links = [{label:'Ver la ruta en Google Maps',href:directions(trip)}];
-  if (!key) return fallback(trip,links);
+  if (!key) {
+    onStatus('missing_key');
+    return fallback(trip,links);
+  }
   let results;
   let duration;
   try {
@@ -80,14 +89,18 @@ async function lookupStops(trip,{env = process.env,fetcher = fetch,now = new Dat
     const route = routes?.[0];
     const polyline = route?.polyline?.encodedPolyline;
     duration = seconds(route?.duration);
-    if (!polyline || duration === null) return fallback(trip,links);
+    if (!polyline || duration === null) {
+      onStatus('no_route');
+      return fallback(trip,links);
+    }
     results = await requestJson(fetcher,'https://places.googleapis.com/v1/places:searchText',key,
       'places.id,places.displayName,places.formattedAddress,places.businessStatus,places.currentOpeningHours,places.attributions,routingSummaries'+(wantsBeer?',places.servesBeer':''),{
         textQuery:trip.search,languageCode:'es',regionCode:'PR',pageSize:10,
         searchAlongRouteParameters:{polyline:{encodedPolyline:polyline}},
         routingParameters:{travelMode:'DRIVE',routingPreference:'TRAFFIC_UNAWARE'}
       });
-  } catch (_) {
+  } catch (error) {
+    onStatus(/^(?:Routes|Places) HTTP [0-9]{3}(?: [A-Z0-9_]+)?$/.test(error.message) ? error.message : 'timeout_or_network_or_invalid_response');
     return fallback(trip,links);
   }
   const stops = (results.places || []).flatMap((place,index)=>{
@@ -114,6 +127,7 @@ async function lookupStops(trip,{env = process.env,fetcher = fetch,now = new Dat
       attribution:(place.attributions || []).map(item=>item.provider).filter(Boolean).join(', ')
     }];
   }).sort((a,b)=>a.detour-b.detour).slice(0,3);
+  onStatus(stops.length ? 'verified_stops '+stops.length : 'no_verified_stops; candidates '+(results.places || []).length);
   if (!stops.length) return fallback(trip,links);
   return {reply:`¡Dale, pana! Mira estas paradas de ${trip.origin} a ${trip.destination}. El tiempo extra es de manejo. Confirma el horario y el menú con el negocio.`,links:[...stops,...links],mapSource:true};
 }

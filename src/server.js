@@ -4485,7 +4485,15 @@ app.get("/api/pb-negocios/:location", (req, res) => {
   }
 });
 
-app.listen(PORT, () => console.log("Servidor corriendo en puerto " + PORT));
+app.listen(PORT, () => {
+  console.log("Servidor corriendo en puerto " + PORT);
+  const probeUntil = Date.parse(process.env.NAYELI_MAPS_PROBE_UNTIL || '');
+  if (probeUntil > Date.now() && probeUntil - Date.now() <= 15 * 60 * 1000) {
+    const trip = {origin:'Camuy',destination:'Isabela',search:'restaurantes con picadera y cerveza'};
+    lookupNayeliStops(trip,{onStatus:status=>console.log('Nayeli Maps probe:',status)})
+      .catch(()=>console.warn('Nayeli Maps probe: unexpected_error'));
+  }
+});
 
 app.get('/api/planetaboricua-blog', (_req, res) => {
   const posts = pbBlogStore.loadPosts().slice(0,4).map(post => ({

@@ -62,8 +62,14 @@ test('routes use both municipalities and only display verified nearby results',a
   assert.match(fallback.reply,/no pude verificar paradas/);
   assert.match(fallback.links[0].href,/google.com\/maps\/dir/);
   assert.match(fallback.links[1].href,/google.com\/maps\/search/);
-  const unavailable = await lookupStops(trip,{env:{GOOGLE_MAPS_API_KEY:'fake'},fetcher:async()=>({ok:false,status:403})});
+  const statuses = [];
+  const unavailable = await lookupStops(trip,{
+    env:{GOOGLE_MAPS_API_KEY:'fake'},
+    fetcher:async()=>({ok:false,status:403,json:async()=>({error:{details:[{reason:'SERVICE_DISABLED',metadata:{key:'secret'}}]}})}),
+    onStatus:value=>statuses.push(value)
+  });
   assert.deepEqual(unavailable,fallback);
+  assert.deepEqual(statuses,['Routes HTTP 403 SERVICE_DISABLED']);
 });
 
 test('the private mobile view uses the supplied portrait and presents quick tests',()=>{
