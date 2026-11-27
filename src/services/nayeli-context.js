@@ -96,7 +96,30 @@ function agendaLine(item) {
   return '- '+[plainText(item.name,130),...details,item.url || '/agenda-boricua'].join(' — ');
 }
 
-function buildNayeliContext({message,history = [],posts = [],latest = [],tourism = [],events = [],artisans = [],now = new Date()}) {
+const portalSections = [
+  ['Lo Más Reciente, actualidad de Puerto Rico y la diáspora','/lo-mas-reciente'],
+  ['El Balcón, cultura, historias y memoria boricua','/blog'],
+  ['Turistiando, rutas, guías y avisos de viaje','/turistiando'],
+  ['Nuestros Pueblos, guías de los municipios','/pueblos/'],
+  ['Agenda Boricua, actividades y eventos','/agenda-boricua'],
+  ['Feria Digital, búsqueda de artesanos y sus perfiles públicos','/feria-artesanos'],
+  ['Recursos de PB','/recursos'],
+  ['Información sobre Planeta Boricua y sus colaboraciones','/quienes-somos'],
+  ['Información para anunciantes de PB','/anunciate-en-pb']
+];
+
+const artisanHelp = [
+  ['Orientación de la Feria Digital y contacto del equipo','/para-artesanos'],
+  ['Crear un perfil artesanal. Envía una descripción y una foto de tu trabajo en el formulario de registro. PB revisa la solicitud antes de publicar','/pb/add-negocio'],
+  ['Administrar un perfil aprobado. Solicita el enlace seguro con el correo que usaste para registrarte. Si el enlace venció, solicita otro en la misma página','/artesanos/mi-perfil'],
+  ['Herramientas del perfil. Después de entrar, puedes editar tu historia, publicar hasta 12 creaciones, añadir redes y WhatsApp, descargar el QR y enviar actividades a la Agenda para revisión','/artesanos/herramientas']
+];
+
+function portalHelpLines(entries) {
+  return entries.map(([label,href])=>`- ${label} — ${href}`).join('\n');
+}
+
+function buildNayeliContext({message,history = [],mode = 'general',posts = [],latest = [],tourism = [],events = [],artisans = [],now = new Date()}) {
   const terms = termsFor(message);
   const text = normalize(message);
   const wantsMap = /\b(?:mapa|maps|como llego|como llegar|enlace para llegar|indicaciones|ubicacion|donde queda)\b/.test(text);
@@ -113,6 +136,10 @@ function buildNayeliContext({message,history = [],posts = [],latest = [],tourism
   const dates = requestedDates(message,today);
   const sections = [`FECHA LOCAL DE PUERTO RICO: ${displayAgendaDate(today)}.`];
   if (dates) sections.push('FECHA SOLICITADA: '+[...new Set(dates)].map(displayAgendaDate).join(' a ')+'.');
+  if (mode!=='general' || /\b(?:artesan[a-z]*|mi perfil|mi galeria|enlace seguro|qr|registre|registrarme|no me llega|solicitud|feria digital)\b/.test(text)) {
+    sections.push('AYUDA PARA ARTESANOS DE PB:\nEl registro y las herramientas de la Feria son gratis. PB no procesa las compras de artesanía ni cobra comisión por las ventas acordadas directamente. Nayeli puede orientar y redactar borradores. El equipo de PB atiende los casos que necesitan revisión humana en masboricuaqueunmofongo@gmail.com.\n'+portalHelpLines(artisanHelp));
+  }
+  sections.push('SECCIONES DE PB:\n'+portalHelpLines(portalSections));
   const selectedTourism = select(tourism,['title','summary','category','excerpt'],terms,locations);
   const selectedPosts = select(posts,['title','excerpt','category','content'],terms,locations);
   const selectedLatest = select(latest,['title','summary','body','topic'],terms,locations);

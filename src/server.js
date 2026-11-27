@@ -1938,6 +1938,7 @@ app.post('/pb-control/nayeli/preview', requirePBAdmin, aiLimiter, express.json({
     const artisans = loadApprovedPBListings().map(item => ({...item,slug:pbArtisanSlug(item)}));
     const context = buildNayeliContext({
       message,
+      mode,
       history:nayeliOpenAI.safeHistory(req.body?.history),
       posts:pbBlogStore.loadPosts(),
       latest:readPBLatest('approved.json'),
@@ -1947,7 +1948,7 @@ app.post('/pb-control/nayeli/preview', requirePBAdmin, aiLimiter, express.json({
     });
     const result = await nayeliOpenAI.reply({message,history:req.body?.history,mode,context});
     const usage = nayeliUsage.record({ok:true,usage:result.usage,mode});
-    const allowedPaths = context.match(/ — \/(?:pueblos|artesanos|blog|lo-mas-reciente|turistiando|agenda-boricua)[a-z0-9\/-]*(?=\n|$)/g)?.map(entry=>entry.slice(3)) || [];
+    const allowedPaths = context.match(/ — \/(?:pueblos|artesanos|blog|lo-mas-reciente|turistiando|agenda-boricua|feria-artesanos|para-artesanos|pb\/add-negocio|recursos|quienes-somos|anunciate-en-pb)[a-z0-9\/-]*(?=\n|$)/g)?.map(entry=>entry.slice(3)) || [];
     const mapPaths = context.match(/ — https:\/\/www\.google\.com\/maps\/search\/\?api=1&query=[A-Za-z0-9%+.*_-]+(?=\n|$)/g)?.map(entry=>entry.slice(3)) || [];
     allowedPaths.push(...mapPaths);
     const links = mode==='general' ? nayeliAffiliateLinks(message) : [];
