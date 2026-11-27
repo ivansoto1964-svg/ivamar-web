@@ -1,9 +1,19 @@
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),express=require('express'),crypto=require('node:crypto');
-const ROOT=process.env.PB_TOURISM_DATA_DIR||'/data/pb-turismo';const seed=path.join(__dirname,'../../data/pb-turistiando/caribex.json');
+const ROOT=process.env.PB_TOURISM_DATA_DIR||'/data/pb-turismo';const SEED_DIR=path.join(__dirname,'../../data/pb-turistiando');
 const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const valid=id=>/^(caribex|viaje)-[a-f0-9]{16}$/.test(id);
-function init(){fs.mkdirSync(ROOT,{recursive:true,mode:0o700});for(const post of JSON.parse(fs.readFileSync(seed,'utf8'))){const p=path.join(ROOT,post.id+'.json');try{fs.writeFileSync(p,JSON.stringify(post,null,2),{flag:'wx',mode:0o600});}catch(e){if(e.code!=='EEXIST')throw e;}}}
+function init(){
+  fs.mkdirSync(ROOT,{recursive:true,mode:0o700});
+  for(const filename of fs.readdirSync(SEED_DIR).filter(name=>name.endsWith('.json')).sort()){
+    const posts=JSON.parse(fs.readFileSync(path.join(SEED_DIR,filename),'utf8'));
+    for(const post of posts){
+      const file=path.join(ROOT,post.id+'.json');
+      try{fs.writeFileSync(file,JSON.stringify(post,null,2),{flag:'wx',mode:0o600});}
+      catch(error){if(error.code!=='EEXIST')throw error;}
+    }
+  }
+}
 function get(id){if(!valid(id))return null;try{return JSON.parse(fs.readFileSync(path.join(ROOT,id+'.json'),'utf8'));}catch(e){if(e.code==='ENOENT')return null;throw e;}}
 function all(){init();return fs.readdirSync(ROOT).filter(x=>/^(caribex|viaje)-[a-f0-9]{16}\.json$/.test(x)).map(x=>get(x.slice(0,-5))).filter(Boolean).sort((a,b)=>String(b.originalDate).localeCompare(String(a.originalDate)));}
 function save(p){if(!valid(p.id))throw Error('Identificador inválido');init();const f=path.join(ROOT,p.id+'.json'),tmp=f+'.'+crypto.randomBytes(8).toString('hex')+'.tmp';try{fs.writeFileSync(tmp,JSON.stringify(p,null,2),{flag:'wx',mode:0o600});fs.renameSync(tmp,f);}finally{fs.rmSync(tmp,{force:true});}}
@@ -38,6 +48,8 @@ function router({requireAdmin,requireAdminCsrf}){const r=express.Router();const 
    <div class="preview-grid">${posts.map(p=>`<article class="preview-card">${previewImg(p)}<div><h2><a href="/pb-control/turismo/vista-previa/${esc(p.id)}">${esc(p.title)}</a></h2><p>${esc(p.originalDate)} · ${p.status==='published'?'Publicado':'Borrador'}</p></div></article>`).join('')||'<p>Aún no hay artículos disponibles para revisar.</p>'}</div>`));
  });
  r.get('/pb-control/turismo/vista-previa/:id',safe,requireAdmin,(req,res)=>{
+   if(!valid(req.params.id))return res.sendStatus(404);
+   init();
    const p=get(req.params.id);if(!p||!reviewable(p))return res.sendStatus(404);
    res.send(previewLayout(p.title,`
    <div class="preview-top"><a href="/pb-control/turismo/vista-previa">← Vista de Turistiando</a><a href="/pb-control/turismo/${esc(p.id)}">Editar artículo</a></div>
