@@ -37,9 +37,9 @@ function configuration(env = process.env) {
   };
 }
 
-async function reply({message,history,context,mode,client,env = process.env}) {
+async function reply({message,history,context,mode,client,publicBeta = false,env = process.env}) {
   const config = configuration(env);
-  if (!config.enabled) {
+  if (publicBeta ? env.NAYELI_PUBLIC_ENABLED!=='true' : !config.enabled) {
     const error = new Error('La vista previa de Nayeli está desactivada.');
     error.code = 'NAYELI_DISABLED';
     throw error;
@@ -56,7 +56,7 @@ async function reply({message,history,context,mode,client,env = process.env}) {
     throw error;
   }
 
-  const openai = client || new OpenAI({apiKey:env.OPENAI_API_KEY});
+  const openai = client || new OpenAI({apiKey:env.OPENAI_API_KEY,...(publicBeta ? {maxRetries:0,timeout:18000} : {})});
   const input = [...safeHistory(history),{role:'user',content:cleanedMessage}];
   const selectedMode = normalizeMode(mode);
   const response = await openai.responses.create({

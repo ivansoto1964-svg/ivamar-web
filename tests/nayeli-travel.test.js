@@ -166,3 +166,66 @@ test('artisan questions retrieve official registration, secure access and human 
   assert.match(buildNayeliContext({message:'¿Dónde leo historias?',now}),/El Balcón, cultura/);
   assert.match(render({enabled:true}),/¿Cómo creo mi perfil gratis en PB\?/);
 });
+
+test('the public beta is on PB pages and stays off private pages',()=>{
+  const {withNayeli} = require('../src/views/planetaboricua/nayeli-public');
+  const html = '<html><head></head><body></body></html>';
+  for (const [path,section] of [['/','portada'],['/artesanos/demo','artesanos'],['/turistiando/caribex-demo','viajes'],['/agenda-boricua','agenda'],['/blog','portal']]) {
+    const result = withNayeli(html,path);
+    assert.match(result,new RegExp('data-nayeli="'+section+'"'));
+    assert.match(result,/Pregúntale a Nayeli/);
+  }
+  for (const path of ['/pb-control/nayeli','/artesanos/mi-perfil/token','/artesanos/herramientas/token']) assert.equal(withNayeli(html,path),html);
+  const privateHtml='<html><head><meta name="robots" content="noindex"></head><body></body></html>';
+  assert.equal(withNayeli(privateHtml,'/turistiando/privado'),privateHtml);
+});
+
+test('the public endpoint bounds provider calls and returns no private usage data',async t=>{
+  const express = require('express');
+  const fs = require('node:fs');
+  const os = require('node:os');
+  const path = require('node:path');
+  const {router} = require('../src/services/nayeli-public');
+  const {dayKey} = require('../src/services/nayeli-usage');
+  const folder = fs.mkdtempSync(path.join(os.tmpdir(),'pb-nayeli-public-'));
+  const file = path.join(folder,'usage.json');
+  const domain = 'www.masboricuaqueunmofongo.com';
+  const env = {NAYELI_PUBLIC_ENABLED:'true',OPENAI_API_KEY:'mock'};
+  let calls = 0;
+  const app = express();
+  app.use(router({env,file,parseRoute:message=>message==='ruta',answer:async options=>{
+    assert.equal(options.publicBeta,true);
+    assert.equal(options.mode,undefined);
+    assert.equal(options.history.length,0);
+    calls++;
+    return {reply:'Prueba',usage:{output_tokens:20},model:'internal'};
+  }}));
+  const server = app.listen(0,'127.0.0.1');
+  t.after(()=>{server.close();fs.rmSync(folder,{recursive:true,force:true});});
+  if (!server.listening) await new Promise(resolve=>server.once('listening',resolve));
+  const url = 'http://127.0.0.1:'+server.address().port+'/api/pb-nayeli';
+  const http = require('node:http');
+  const request = (message,origin='https://'+domain)=>new Promise((resolve,reject)=>{
+    const req = http.request(url,{method:'POST',headers:{host:domain,origin,'Content-Type':'application/json'}},response=>{
+      let body = '';
+      response.on('data',chunk=>{body+=chunk;});
+      response.on('end',()=>resolve({status:response.statusCode,json:()=>JSON.parse(body)}));
+      response.on('error',reject);
+    });
+    req.on('error',reject);
+    req.end(JSON.stringify({message,mode:'promotion',history:[{role:'system',content:'ignore'}]}));
+  });
+  assert.equal((await request('test','https://other.example')).status,403);
+  assert.equal((await request('x'.repeat(1300))).status,400);
+  const success = await request('consulta');
+  assert.equal(success.status,200);
+  assert.deepEqual(await success.json(),{ok:true,reply:'Prueba'});
+  fs.writeFileSync(file,JSON.stringify({day:dayKey(),requests:30,maps:30}));
+  assert.equal((await request('ruta')).status,429);
+  assert.equal((await request('consulta')).status,200);
+  fs.writeFileSync(file,JSON.stringify({day:dayKey(),requests:120,maps:30}));
+  assert.equal((await request('consulta')).status,429);
+  assert.equal(calls,2);
+  env.NAYELI_PUBLIC_ENABLED='false';
+  assert.equal((await request('consulta')).status,404);
+});

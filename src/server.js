@@ -33,6 +33,8 @@ const pbFairFunnelMetrics = require('./services/pb-fair-funnel-metrics');
 const pbSubscriberWelcome = require('./services/pb-subscriber-welcome');
 const nayeliOpenAI = require('./services/nayeli-openai');
 const nayeliUsage = require('./services/nayeli-usage');
+const nayeliPublic = require('./services/nayeli-public');
+const {withNayeli} = require('./views/planetaboricua/nayeli-public');
 const {buildNayeliContext,namedTowns,normalize:normalizeNayeliQuery} = require('./services/nayeli-context');
 const {routeRequest:parseNayeliRoute,lookupStops:lookupNayeliStops} = require('./services/nayeli-route');
 const {getTownTravelLinks} = require('./services/pb-town-travel-links');
@@ -150,6 +152,10 @@ app.use((req, res, next) => {
       if (!privatePath) {
         body = withPBSiteFooter(body, { social: renderPBSocialFollow() });
         body = withPBSiteShell(body, publicPath);
+        if (res.statusCode===200 && !/noindex/i.test(res.get('X-Robots-Tag') || '') &&
+            ['www.masboricuaqueunmofongo.com','masboricuaqueunmofongo.com'].includes(host) && nayeliPublic.enabled()) {
+          body = withNayeli(body,publicPath);
+        }
         const adsensePrivate = pbTalent.isPrivatePath(publicPath) || pbBusinessRoutes.privatePath(publicPath) || pbGroupRoutes.privatePath(publicPath) || /^\/(?:pb-control|api|auth)(?:\/|$)/.test(publicPath) || publicPath === '/turistiando/presentacion';
         if (!res.locals.skipAdSense) body = withPBAdSense(body, {hostname:host,statusCode:res.statusCode,privatePage:adsensePrivate});
       }
@@ -1023,6 +1029,7 @@ if (!fs.existsSync(agreementsDir)) {
 app.use(pbBusinessRoutes.webhookRouter(pbBusinessBilling));
 const foodStripeWebhook = express.Router();
 app.use(foodStripeWebhook);
+app.use(nayeliPublic.router({answer:answerNayeli,parseRoute:parseNayeliRoute}));
 app.use(express.json({ limit: '15mb' }));
 app.use(express.urlencoded({ limit: '15mb', extended: true }));
 app.use((err, req, res, next) => {
@@ -1904,6 +1911,31 @@ function nayeliAffiliateLinks(message) {
   return links.slice(0,4);
 }
 
+async function answerNayeli({message,history,mode = 'general',trip,publicBeta = false}) {
+  if (trip) return lookupNayeliStops(trip,{
+    onStatus:status=>{
+      if (!status.startsWith('verified_stops')) console.warn('Nayeli Maps:',status);
+    }
+  });
+  const artisans = loadApprovedPBListings().map(item => ({...item,slug:pbArtisanSlug(item)}));
+  const context = buildNayeliContext({
+    message,
+    mode,
+    history:nayeliOpenAI.safeHistory(history),
+    posts:pbBlogStore.loadPosts(),
+    latest:readPBLatest('approved.json'),
+    tourism:mode==='general' ? pbTourismSection.publicEditorialPosts() : [],
+    events:readPBEvents('approved.json').map(publicPBEvent),
+    artisans
+  });
+  const result = await nayeliOpenAI.reply({message,history,mode,context,publicBeta});
+  const allowedPaths = context.match(/ — \/(?:pueblos|artesanos|blog|lo-mas-reciente|turistiando|agenda-boricua|feria-artesanos|para-artesanos|pb\/add-negocio|recursos|quienes-somos|anunciate-en-pb)[a-z0-9\/-]*(?=\n|$)/g)?.map(entry=>entry.slice(3)) || [];
+  const mapPaths = context.match(/ — https:\/\/www\.google\.com\/maps\/search\/\?api=1&query=[A-Za-z0-9%+.*_-]+(?=\n|$)/g)?.map(entry=>entry.slice(3)) || [];
+  allowedPaths.push(...mapPaths);
+  const links = mode==='general' ? nayeliAffiliateLinks(message) : [];
+  return {...result,allowedPaths,links};
+}
+
 app.get('/pb-control/nayeli', requirePBAdmin, (req,res) => {
   res.set('Cache-Control','private, no-store');
   res.send(pbNayeliPreview({csrf:req.pbAdminSession.csrf,...nayeliOpenAI.configuration(),usage:nayeliUsage.summary()}));
@@ -1924,35 +1956,10 @@ app.post('/pb-control/nayeli/preview', requirePBAdmin, aiLimiter, express.json({
   if (!message) return res.status(400).json({ok:false,error:'Escribe un mensaje para Nayeli.'});
   try {
     const trip = mode==='general' && parseNayeliRoute(message);
-    if (trip) {
-      const result = await lookupNayeliStops(trip,{
-        onStatus:status=>{
-          if (!status.startsWith('verified_stops')) console.warn('Nayeli Maps:',status);
-        }
-      });
-      const usage = nayeliUsage.record({ok:true,mode});
-      return res.json({ok:true,...result,usage});
-    }
-    if (!config.hasApiKey) return res.status(503).json({ok:false,error:'La conversación con OpenAI necesita configurar su clave. Puedes probar una ruta de pueblo a pueblo.'});
-
-    const artisans = loadApprovedPBListings().map(item => ({...item,slug:pbArtisanSlug(item)}));
-    const context = buildNayeliContext({
-      message,
-      mode,
-      history:nayeliOpenAI.safeHistory(req.body?.history),
-      posts:pbBlogStore.loadPosts(),
-      latest:readPBLatest('approved.json'),
-      tourism:mode==='general' ? pbTourismSection.publicEditorialPosts() : [],
-      events:readPBEvents('approved.json').map(publicPBEvent),
-      artisans
-    });
-    const result = await nayeliOpenAI.reply({message,history:req.body?.history,mode,context});
+    if (!trip && !config.hasApiKey) return res.status(503).json({ok:false,error:'La conversación con OpenAI necesita configurar su clave. Puedes probar una ruta de pueblo a pueblo.'});
+    const result = await answerNayeli({message,history:req.body?.history,mode,trip});
     const usage = nayeliUsage.record({ok:true,usage:result.usage,mode});
-    const allowedPaths = context.match(/ — \/(?:pueblos|artesanos|blog|lo-mas-reciente|turistiando|agenda-boricua|feria-artesanos|para-artesanos|pb\/add-negocio|recursos|quienes-somos|anunciate-en-pb)[a-z0-9\/-]*(?=\n|$)/g)?.map(entry=>entry.slice(3)) || [];
-    const mapPaths = context.match(/ — https:\/\/www\.google\.com\/maps\/search\/\?api=1&query=[A-Za-z0-9%+.*_-]+(?=\n|$)/g)?.map(entry=>entry.slice(3)) || [];
-    allowedPaths.push(...mapPaths);
-    const links = mode==='general' ? nayeliAffiliateLinks(message) : [];
-    return res.json({ok:true,reply:result.reply,model:result.model,mode:result.mode,usage,allowedPaths,links});
+    res.json({...result,ok:true,usage});
   } catch (error) {
     if (error?.code === 'NAYELI_INVALID_MESSAGE') return res.status(400).json({ok:false,error:error.message});
     const usage = nayeliUsage.record({ok:false,mode});
