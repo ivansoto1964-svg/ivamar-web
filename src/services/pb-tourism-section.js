@@ -1,5 +1,11 @@
 'use strict';
 const fs=require('node:fs'),path=require('node:path'),express=require('express'),crypto=require('node:crypto');
+const sanitizeHtml=require('sanitize-html');
+const siteAnalytics=require('./pb-site-analytics');
+const caribexMetrics=require('../../data/pb-caribex-metrics.json');
+const caribexOriginals=new Map(require('../../data/pb-turistiando/caribex.json').map(post=>[post.sourceId,post]));
+const caribexPosts=require('../../data/pb-turistiando/archivo-caribex.json');
+const caribexRoutes=new Map(caribexPosts.map(post=>[post.originalUrl,`/turistiando/${post.id}`]));
 const ROOT=process.env.PB_TOURISM_DATA_DIR||'/data/pb-turismo';const SEED_DIR=path.join(__dirname,'../../data/pb-turistiando');
 const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const valid=id=>/^(caribex|viaje)-[a-f0-9]{16}$/.test(id);
@@ -26,6 +32,31 @@ const archiveSections=[
 const isPublic=post=>post.status==='published'&&post.language==='es';
 const isHttps=url=>/^https:\/\//i.test(url||'');
 const originalDateFormat=new Intl.DateTimeFormat('es-PR',{dateStyle:'long',timeZone:'UTC'});
+const formatViews=new Intl.NumberFormat('en-PR');
+const views=count=>formatViews.format(count);
+function caribexBody(original,post){
+  return sanitizeHtml(original.originalHtml,{
+    allowedTags:[...sanitizeHtml.defaults.allowedTags,'img','figure','figcaption'],
+    allowedAttributes:{a:['href'],img:['src','alt','loading','referrerpolicy'],td:['colspan','rowspan'],th:['colspan','rowspan','scope']},
+    allowedSchemes:['https','mailto'],
+    allowProtocolRelative:false,
+    transformTags:{
+      h1:'h3',
+      a:(tagName,attributes)=>{
+        const href=attributes.href||'';
+        return {tagName,attribs:{href:caribexRoutes.get(href)||href}};
+      },
+      img:(tagName,attributes)=>{
+        const src=attributes.src||'';
+        const alt=attributes.alt||post.originalTitle;
+        if(!src.startsWith('https://blogger.googleusercontent.com/'))return {tagName,attribs:{}};
+        return {tagName,attribs:{src,alt,loading:'lazy',referrerpolicy:'no-referrer'}};
+      },
+    },
+    exclusiveFilter:frame=>frame.tag==='img'&&!frame.attribs.src,
+  });
+}
+const caribexBodies=new Map(caribexPosts.map(post=>[post.id,caribexBody(caribexOriginals.get(post.sourceId),post)]));
 function postDate(date){
   const parsed=new Date(date?`${date}T00:00:00Z`:'');
   if(!Number.isFinite(parsed.valueOf()))return esc(date);
@@ -47,6 +78,10 @@ function travelLayout(title,body){
     .travel-card{margin:0;padding:16px}.travel-card h3,.travel-card h4{font-size:1.1rem;line-height:1.35;margin:0 0 8px}.travel-card p{margin:0;font-size:.9rem}
     .travel-story{max-width:720px;margin:20px auto}.travel-copy p{white-space:pre-line;overflow-wrap:anywhere}
     .travel-source{border-top:1px solid #ddd;padding-top:16px;margin-bottom:0}
+    .travel-original{border-top:1px solid #ddd;margin-top:24px;padding-top:16px;overflow-wrap:anywhere}
+    .travel-original img{display:block;margin:1rem auto;max-width:100%;height:auto}
+    .travel-original table,.travel-report{display:block;overflow-x:auto;border-collapse:collapse}
+    .travel-report td,.travel-report th{padding:.6rem .8rem;border-bottom:1px solid #ddd;text-align:left}
   </style></head>`);
 }
 function router({requireAdmin,requireAdminCsrf}){const r=express.Router();const safe=(req,res,next)=>{res.set({'Cache-Control':'private, no-store','X-Robots-Tag':'noindex, nofollow'});next()};
@@ -61,7 +96,8 @@ function router({requireAdmin,requireAdminCsrf}){const r=express.Router();const 
    const archiveHtml=archive.length?`
      <section id="archivo-caribex" aria-labelledby="titulo-archivo">
        <h2 id="titulo-archivo">Archivo de Caribex</h2>
-       <p>Explora ${archive.length} publicaciones de Caribex, adaptadas al español para Planeta Boricua. Cada historia conserva la fecha de su primera publicación y enlaza al artículo original.</p>
+       <p>Explora ${archive.length} publicaciones de Caribex. Cada página reúne una introducción en español y el artículo completo en inglés, con su fecha original de publicación.</p>
+       <p><strong>${views(caribexMetrics.blogViews)} vistas históricas del blog Caribex</strong> · Blogger, al ${postDate(caribexMetrics.capturedOn)}.</p>
        <nav class="travel-topics" aria-label="Temas del archivo">${sections.map(({id,title})=>`<a href="#${id}">${title}</a>`).join('')}</nav>
        ${sections.map(({id,title,posts})=>`<section id="${id}"><h3>${title}</h3><div class="travel-grid">${posts.map(p=>postCard(p,'h4')).join('')}</div></section>`).join('')}
      </section>`:'';
@@ -86,20 +122,43 @@ function router({requireAdmin,requireAdminCsrf}){const r=express.Router();const 
      post=get(id);
    }
    if(!post||!isPublic(post))return next();
+   const originalBody=caribexBodies.get(post.id);
+   const historicalViews=caribexMetrics.articleViews[post.id];
+   const metadata=originalBody?`<meta property="article:published_time" content="${esc(post.originalDate)}"><meta name="author" content="Iván Soto">`:'';
    const image=isHttps(post.image)?`<img src="${esc(post.image)}" alt="">`:'';
-   const source=isHttps(post.originalUrl)?`<p class="travel-source"><a href="${esc(post.originalUrl)}">Leer el original en inglés en Caribex →</a></p>`:'';
+   const source=isHttps(post.originalUrl)?`<p class="travel-source"><a href="${esc(post.originalUrl)}">Consultar la publicación en Blogger →</a></p>`:'';
    const date=post.originalUrl?'Publicado originalmente en Caribex el ':'Fecha original: ';
    res.send(travelLayout(post.title,`
      <a href="/turistiando${source?'#archivo-caribex':''}">← Turistiando</a>
      <article class="travel-story">
        <h1>${esc(post.title)}</h1>
        <p class="muted">${date}${postDate(post.originalDate)}${post.updatedAt?' · Actualizado: '+esc(post.updatedAt.slice(0,10)):''}</p>
+       ${Number.isInteger(historicalViews)?`<p class="muted">${views(historicalViews)} vistas históricas en Caribex · Blogger, al ${postDate(caribexMetrics.capturedOn)}.</p>`:''}
+       ${originalBody?'<p><a href="#articulo-original">Ir al artículo completo en inglés ↓</a></p><h2>En español</h2>':''}
        ${image}
        <div class="travel-copy">${esc(post.body).split(/\n{2,}/).map(paragraph=>`<p>${paragraph}</p>`).join('')}</div>
+       ${originalBody?`<section class="travel-original" id="articulo-original" aria-labelledby="original-title">
+         <p>Artículo completo en inglés</p>
+         <div lang="en"><h2 id="original-title">${esc(post.originalTitle)}</h2>${originalBody}</div>
+       </section>`:''}
        ${source}
-     </article>`));
+     </article>`).replace('</head>',metadata+'</head>'));
  });
- r.get('/pb-control/turismo',safe,requireAdmin,(req,res)=>res.send(layout('Turistiando · Panel',`<a href="/pb-control">← Panel de control</a><h1>Turistiando</h1><p><a href="/pb-control/turismo/vista-previa">Ver vista privada de Turistiando</a></p><form method="post" action="/pb-control/turismo/nuevo"><input type="hidden" name="csrf" value="${esc(req.pbAdminSession.csrf)}"><button>Crear artículo nuevo</button></form><p>Los originales importados están en inglés y permanecen como borradores hasta que los traduzcas y publiques.</p>${all().map(p=>`<article><a href="/pb-control/turismo/${p.id}">${esc(p.title)}</a> · ${esc(p.originalDate)} · ${p.status==='draft'?'Borrador':'Publicado'} · ${esc(p.language)}</article>`).join('')}`)));
+ r.get('/pb-control/turismo/metricas',safe,requireAdmin,(_req,res)=>{
+   const siteViews=siteAnalytics.summary().allTime.pages;
+   const articles=all().filter(post=>isPublic(post)&&caribexBodies.has(post.id));
+   const rows=articles.map(post=>({
+     post,pbViews:siteViews[`/turistiando/${post.id}`]||0,
+     bloggerViews:caribexMetrics.articleViews[post.id],
+   }));
+   res.send(travelLayout('Métricas de Turistiando',`
+     <a href="/pb-control/turismo">← Turistiando</a><h1>Métricas de Turistiando</h1>
+     <p><strong>${views(caribexMetrics.blogViews)}</strong> vistas históricas de todo el blog Caribex, según Blogger al ${postDate(caribexMetrics.capturedOn)}.</p>
+     <p><strong>${views(rows.reduce((total,row)=>total+row.pbViews,0))}</strong> vistas registradas en PB en las páginas de los artículos de Caribex.</p>
+     <table class="travel-report"><thead><tr><th scope="col">Artículo</th><th scope="col">Vistas en Caribex</th><th scope="col">Vistas en PB</th></tr></thead>
+     <tbody>${rows.map(({post,pbViews,bloggerViews})=>`<tr><th scope="row"><a href="/turistiando/${post.id}">${esc(post.title)}</a></th><td>${views(bloggerViews)}</td><td>${views(pbViews)}</td></tr>`).join('')}</tbody></table>`));
+ });
+ r.get('/pb-control/turismo',safe,requireAdmin,(req,res)=>res.send(layout('Turistiando · Panel',`<a href="/pb-control">← Panel de control</a><h1>Turistiando</h1><p><a href="/pb-control/turismo/vista-previa">Ver vista privada de Turistiando</a> · <a href="/pb-control/turismo/metricas">Ver métricas de Turistiando</a></p><form method="post" action="/pb-control/turismo/nuevo"><input type="hidden" name="csrf" value="${esc(req.pbAdminSession.csrf)}"><button>Crear artículo nuevo</button></form><p>Las copias de trabajo en inglés están en borradores. Las fichas publicadas de Caribex muestran el texto completo junto con la introducción en español.</p>${all().map(p=>`<article><a href="/pb-control/turismo/${p.id}">${esc(p.title)}</a> · ${esc(p.originalDate)} · ${p.status==='draft'?'Borrador':'Publicado'} · ${esc(p.language)}</article>`).join('')}`)));
  // Private review is restricted to administrators; drafts never use public URLs.
  const reviewable=p=>p.language==='es'&&!/^\[(?:fusionar|integrado)\b/i.test(String(p.title||''));
  const previewLayout=(title,body)=>layout(title,body).replace('</head>',`<style>
