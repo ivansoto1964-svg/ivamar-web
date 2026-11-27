@@ -3,8 +3,8 @@ const fs=require('node:fs'),path=require('node:path'),express=require('express')
 const sanitizeHtml=require('sanitize-html');
 const siteAnalytics=require('./pb-site-analytics');
 const caribexMetrics=require('../../data/pb-caribex-metrics.json');
-const caribexOriginals=new Map(require('../../data/pb-turistiando/caribex.json').map(post=>[post.sourceId,post]));
 const caribexPosts=require('../../data/pb-turistiando/archivo-caribex.json');
+const caribexSpanish=require('../../data/pb-caribex-es.json');
 const caribexRoutes=new Map(caribexPosts.map(post=>[post.originalUrl,`/turistiando/${post.id}`]));
 const ROOT=process.env.PB_TOURISM_DATA_DIR||'/data/pb-turismo';const SEED_DIR=path.join(__dirname,'../../data/pb-turistiando');
 const esc=x=>String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -34,14 +34,13 @@ const isHttps=url=>/^https:\/\//i.test(url||'');
 const originalDateFormat=new Intl.DateTimeFormat('es-PR',{dateStyle:'long',timeZone:'UTC'});
 const formatViews=new Intl.NumberFormat('en-PR');
 const views=count=>formatViews.format(count);
-function caribexBody(original,post){
-  return sanitizeHtml(original.originalHtml,{
+function caribexBody(post){
+  return sanitizeHtml(caribexSpanish[post.id],{
     allowedTags:[...sanitizeHtml.defaults.allowedTags,'img','figure','figcaption'],
     allowedAttributes:{a:['href'],img:['src','alt','loading','referrerpolicy'],td:['colspan','rowspan'],th:['colspan','rowspan','scope']},
     allowedSchemes:['https','mailto'],
     allowProtocolRelative:false,
     transformTags:{
-      h1:'h3',
       a:(tagName,attributes)=>{
         const href=attributes.href||'';
         return {tagName,attribs:{href:caribexRoutes.get(href)||href}};
@@ -56,7 +55,7 @@ function caribexBody(original,post){
     exclusiveFilter:frame=>frame.tag==='img'&&!frame.attribs.src,
   });
 }
-const caribexBodies=new Map(caribexPosts.map(post=>[post.id,caribexBody(caribexOriginals.get(post.sourceId),post)]));
+const caribexBodies=new Map(caribexPosts.map(post=>[post.id,caribexBody(post)]));
 function postDate(date){
   const parsed=new Date(date?`${date}T00:00:00Z`:'');
   if(!Number.isFinite(parsed.valueOf()))return esc(date);
@@ -96,7 +95,7 @@ function router({requireAdmin,requireAdminCsrf}){const r=express.Router();const 
    const archiveHtml=archive.length?`
      <section id="archivo-caribex" aria-labelledby="titulo-archivo">
        <h2 id="titulo-archivo">Archivo de Caribex</h2>
-       <p>Explora ${archive.length} publicaciones de Caribex. Cada página reúne una introducción en español y el artículo completo en inglés, con su fecha original de publicación.</p>
+       <p>Explora ${archive.length} publicaciones de Caribex en español, con sus fechas originales de publicación.</p>
        <p><strong>${views(caribexMetrics.blogViews)} vistas históricas del blog Caribex</strong> · Blogger, al ${postDate(caribexMetrics.capturedOn)}.</p>
        <nav class="travel-topics" aria-label="Temas del archivo">${sections.map(({id,title})=>`<a href="#${id}">${title}</a>`).join('')}</nav>
        ${sections.map(({id,title,posts})=>`<section id="${id}"><h3>${title}</h3><div class="travel-grid">${posts.map(p=>postCard(p,'h4')).join('')}</div></section>`).join('')}
@@ -122,11 +121,11 @@ function router({requireAdmin,requireAdminCsrf}){const r=express.Router();const 
      post=get(id);
    }
    if(!post||!isPublic(post))return next();
-   const originalBody=caribexBodies.get(post.id);
+   const translatedBody=caribexBodies.get(post.id);
    const historicalViews=caribexMetrics.articleViews[post.id];
-   const metadata=originalBody?`<meta property="article:published_time" content="${esc(post.originalDate)}"><meta name="author" content="Iván Soto">`:'';
+   const metadata=translatedBody?`<meta property="article:published_time" content="${esc(post.originalDate)}"><meta name="author" content="Iván Soto">`:'';
    const image=isHttps(post.image)?`<img src="${esc(post.image)}" alt="">`:'';
-   const source=isHttps(post.originalUrl)?`<p class="travel-source"><a href="${esc(post.originalUrl)}">Consultar la publicación en Blogger →</a></p>`:'';
+   const source=isHttps(post.originalUrl)?`<p class="travel-source"><a href="${esc(post.originalUrl)}">Consultar la publicación original en Caribex →</a></p>`:'';
    const date=post.originalUrl?'Publicado originalmente en Caribex el ':'Fecha original: ';
    res.send(travelLayout(post.title,`
      <a href="/turistiando${source?'#archivo-caribex':''}">← Turistiando</a>
@@ -134,13 +133,9 @@ function router({requireAdmin,requireAdminCsrf}){const r=express.Router();const 
        <h1>${esc(post.title)}</h1>
        <p class="muted">${date}${postDate(post.originalDate)}${post.updatedAt?' · Actualizado: '+esc(post.updatedAt.slice(0,10)):''}</p>
        ${Number.isInteger(historicalViews)?`<p class="muted">${views(historicalViews)} vistas históricas en Caribex · Blogger, al ${postDate(caribexMetrics.capturedOn)}.</p>`:''}
-       ${originalBody?'<p><a href="#articulo-original">Ir al artículo completo en inglés ↓</a></p><h2>En español</h2>':''}
        ${image}
        <div class="travel-copy">${esc(post.body).split(/\n{2,}/).map(paragraph=>`<p>${paragraph}</p>`).join('')}</div>
-       ${originalBody?`<section class="travel-original" id="articulo-original" aria-labelledby="original-title">
-         <p>Artículo completo en inglés</p>
-         <div lang="en"><h2 id="original-title">${esc(post.originalTitle)}</h2>${originalBody}</div>
-       </section>`:''}
+       ${translatedBody?`<div class="travel-original">${translatedBody}</div>`:''}
        ${source}
      </article>`).replace('</head>',metadata+'</head>'));
  });
@@ -158,7 +153,7 @@ function router({requireAdmin,requireAdminCsrf}){const r=express.Router();const 
      <table class="travel-report"><thead><tr><th scope="col">Artículo</th><th scope="col">Vistas en Caribex</th><th scope="col">Vistas en PB</th></tr></thead>
      <tbody>${rows.map(({post,pbViews,bloggerViews})=>`<tr><th scope="row"><a href="/turistiando/${post.id}">${esc(post.title)}</a></th><td>${views(bloggerViews)}</td><td>${views(pbViews)}</td></tr>`).join('')}</tbody></table>`));
  });
- r.get('/pb-control/turismo',safe,requireAdmin,(req,res)=>res.send(layout('Turistiando · Panel',`<a href="/pb-control">← Panel de control</a><h1>Turistiando</h1><p><a href="/pb-control/turismo/vista-previa">Ver vista privada de Turistiando</a> · <a href="/pb-control/turismo/metricas">Ver métricas de Turistiando</a></p><form method="post" action="/pb-control/turismo/nuevo"><input type="hidden" name="csrf" value="${esc(req.pbAdminSession.csrf)}"><button>Crear artículo nuevo</button></form><p>Las copias de trabajo en inglés están en borradores. Las fichas publicadas de Caribex muestran el texto completo junto con la introducción en español.</p>${all().map(p=>`<article><a href="/pb-control/turismo/${p.id}">${esc(p.title)}</a> · ${esc(p.originalDate)} · ${p.status==='draft'?'Borrador':'Publicado'} · ${esc(p.language)}</article>`).join('')}`)));
+ r.get('/pb-control/turismo',safe,requireAdmin,(req,res)=>res.send(layout('Turistiando · Panel',`<a href="/pb-control">← Panel de control</a><h1>Turistiando</h1><p><a href="/pb-control/turismo/vista-previa">Ver vista privada de Turistiando</a> · <a href="/pb-control/turismo/metricas">Ver métricas de Turistiando</a></p><form method="post" action="/pb-control/turismo/nuevo"><input type="hidden" name="csrf" value="${esc(req.pbAdminSession.csrf)}"><button>Crear artículo nuevo</button></form><p>Las fichas públicas de Caribex incluyen el artículo completo en español. El campo Contenido permite editar la introducción de cada ficha.</p>${all().map(p=>`<article><a href="/pb-control/turismo/${p.id}">${esc(p.title)}</a> · ${esc(p.originalDate)} · ${p.status==='draft'?'Borrador':'Publicado'} · ${esc(p.language)}</article>`).join('')}`)));
  // Private review is restricted to administrators; drafts never use public URLs.
  const reviewable=p=>p.language==='es'&&!/^\[(?:fusionar|integrado)\b/i.test(String(p.title||''));
  const previewLayout=(title,body)=>layout(title,body).replace('</head>',`<style>
