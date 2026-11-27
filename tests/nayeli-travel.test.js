@@ -125,3 +125,20 @@ test('a Saturday question cannot surface the Hatillo festival held on Sunday',()
   assert.match(weekend,/Plan de sábado/);
   assert.match(weekend,/Festival Lágrimas de Monte/);
 });
+
+test('route stops honor the requested maximum instead of rounding before filtering',async ()=>{
+  const trip = routeRequest('Salgo de Camuy y voy pa’ Isabela. ¿Dónde puedo picar algo y tomarme una cerveza sin desviarme más de 10 minutos?');
+  assert.equal(trip.maxDetourMinutes,10);
+  const fetcher = async url=>{
+    if (url.includes('computeRoutes')) return {ok:true,json:async()=>({routes:[{duration:'1800s',polyline:{encodedPolyline:'test'}}]})};
+    return {ok:true,json:async()=>({
+      places:[{displayName:{text:'Dentro del límite'}},{displayName:{text:'Sobre el límite'}}],
+      routingSummaries:[600,601].map(extra=>({legs:[{duration:'600s'},{duration:(1200+extra)+'s'}]}))
+    })};
+  };
+  const env = {NAYELI_GOOGLE_MAPS_KEY:'fake'};
+  const result = await lookupStops(trip,{env,fetcher,now});
+  assert.deepEqual(result.links.map(link=>link.label),['Dentro del límite','Ver la ruta en Google Maps']);
+  const none = await lookupStops({...trip,maxDetourMinutes:5},{env,fetcher,now});
+  assert.match(none.reply,/hasta 5 minutos/);
+});

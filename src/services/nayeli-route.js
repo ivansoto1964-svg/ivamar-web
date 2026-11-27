@@ -29,7 +29,9 @@ function routeRequest(message) {
   else if (/\b(?:gasolineras?|gasolina)\b/.test(text)) search = 'gasolineras';
   else if (/\b(?:cafe|cafecito|cafeterias?)\b/.test(text)) search = 'cafeterías';
   else if (/\b(?:comer|comida|picadera|picar|restaurantes?|almuerzo|desayuno|cena|panaderias?)\b/.test(text)) search = 'restaurantes';
-  return search ? {...pair,search} : null;
+  if (!search) return null;
+  const minutes = text.match(/\b(?:maximo(?: de)?|hasta|(?:no |sin )?(?:mas de)|menos de) (\d{1,3}) (?:minutos?|mins?)\b/)?.[1];
+  return minutes===undefined ? {...pair,search} : {...pair,search,maxDetourMinutes:Number(minutes)};
 }
 
 function directions({origin,destination}, stop) {
@@ -73,6 +75,7 @@ async function requestJson(fetcher,url,key,fields,body) {
 async function lookupStops(trip,{env = process.env,fetcher = fetch,now = new Date(),onStatus = ()=>{}} = {}) {
   const key = String(env.NAYELI_GOOGLE_MAPS_KEY || env.GOOGLE_MAPS_API_KEY || env.GOOGLE_PLACES_KEY || '').trim();
   const wantsBeer = trip.search.includes('cerveza');
+  const maxDetourMinutes = trip.maxDetourMinutes ?? 15;
   const links = [{label:'Ver la ruta en Google Maps',href:directions(trip)}];
   if (!key) {
     onStatus('missing_key');
@@ -108,8 +111,9 @@ async function lookupStops(trip,{env = process.env,fetcher = fetch,now = new Dat
     const first = seconds(legs?.[0]?.duration);
     const last = seconds(legs?.[1]?.duration);
     if (!place.displayName?.text || place.businessStatus?.startsWith('CLOSED') || first===null || last===null) return [];
-    const detour = Math.max(0,Math.round((first+last-duration)/60));
-    if (detour>15 || (wantsBeer && place.servesBeer===false)) return [];
+    const extraSeconds = Math.max(0,first+last-duration);
+    const detour = Math.round(extraSeconds/60);
+    if (extraSeconds>maxDetourMinutes*60 || (wantsBeer && place.servesBeer===false)) return [];
     const hours = place.currentOpeningHours;
     const arrival = now.valueOf()+first*1000;
     const closes = Date.parse(hours?.nextCloseTime);
@@ -128,12 +132,15 @@ async function lookupStops(trip,{env = process.env,fetcher = fetch,now = new Dat
     }];
   }).sort((a,b)=>a.detour-b.detour).slice(0,3);
   onStatus(stops.length ? 'verified_stops '+stops.length : 'no_verified_stops; candidates '+(results.places || []).length);
-  if (!stops.length) return fallback(trip,links);
+  if (!stops.length) return fallback(trip,links,{searched:true});
   return {reply:`¡Dale, pana! Mira estas paradas de ${trip.origin} a ${trip.destination}. El tiempo extra es de manejo. Confirma el horario y el menú con el negocio.`,links:[...stops,...links],mapSource:true};
 }
 
-function fallback(trip,links) {
-  return {reply:`Te dejo la ruta de ${trip.origin} a ${trip.destination}, pana. En este momento no pude verificar paradas ni cuánto te desviarían.`,
+function fallback(trip,links,{searched = false} = {}) {
+  const detail = searched && trip.maxDetourMinutes!==undefined
+    ? `No encontré paradas verificadas con un desvío de hasta ${trip.maxDetourMinutes} minutos.`
+    : 'En este momento no pude verificar paradas ni cuánto te desviarían.';
+  return {reply:`Te dejo la ruta de ${trip.origin} a ${trip.destination}, pana. ${detail}`,
     links:[...links,{label:`Buscar ${trip.search} en ${trip.destination}`,href:mapSearch(trip.search,trip.destination)}]};
 }
 
