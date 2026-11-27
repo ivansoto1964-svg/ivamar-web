@@ -27,6 +27,20 @@ test('a town question prioritizes the actual PB guide, travel articles and curre
 test('routes use both municipalities and only display verified nearby results',async ()=>{
   const trip = routeRequest('Estoy en Camuy, voy a Isabela, búscame un sitio con cerveza y algo para picar');
   assert.deepEqual(trip,{origin:'Camuy',destination:'Isabela',search:'restaurantes con picadera y cerveza'});
+  for (const question of [
+    'Entre Camuy e Isabela, búscame un sitio de picadera y cerveza',
+    'Voy de Camuy a Isabela. ¿Dónde paro a tomar cerveza?',
+    'Voy a Isabela saliendo de Camuy, ¿dónde paro por cerveza?',
+    'Isabela desde Camuy, ¿dónde paro a tomar cerveza?',
+    'Camuy. Voy pa’ Isabela. ¿Una parada con cerveza?',
+    'En la ruta Camuy–Isabela, ¿dónde hay chinchorros?'
+  ]) {
+    assert.deepEqual(routeRequest(question),trip,question);
+  }
+  assert.deepEqual(routeRequest('¿Un lugar para comer entre Camuy e Isabela?'),{
+    origin:'Camuy',destination:'Isabela',search:'restaurantes'
+  });
+  assert.equal(routeRequest('¿Qué restaurantes hay en Camuy e Isabela?'),null);
   assert.equal(routeRequest('¿Qué puedo hacer en Camuy?'),null);
   const places = [
     {displayName:{text:'Opción lejos'},servesBeer:true},
@@ -48,6 +62,8 @@ test('routes use both municipalities and only display verified nearby results',a
   assert.match(fallback.reply,/no pude verificar paradas/);
   assert.match(fallback.links[0].href,/google.com\/maps\/dir/);
   assert.match(fallback.links[1].href,/google.com\/maps\/search/);
+  const unavailable = await lookupStops(trip,{env:{GOOGLE_MAPS_API_KEY:'fake'},fetcher:async()=>({ok:false,status:403})});
+  assert.deepEqual(unavailable,fallback);
 });
 
 test('the private mobile view uses the supplied portrait and presents quick tests',()=>{

@@ -2,17 +2,34 @@ const {namedTowns, normalize} = require('./nayeli-context');
 
 function routeRequest(message) {
   const text = normalize(message);
-  const from = text.match(/\b(?:estoy en|salgo de|saliendo de|voy de|desde|de) (.+?)\b(?:y )?(?:(?:voy |vamos )?(?:hacia|para|pa l|pa|a)|rumbo a) (.+)/);
-  if (!from) return null;
-  const origin = namedTowns(from[1])[0];
-  const destination = namedTowns(from[2].split(/\b(?:busca|buscame|donde|recomienda|quiero|necesito|consigue|puedo)\b/)[0])[0];
-  if (!origin || !destination || origin[0] === destination[0]) return null;
+  const towns = namedTowns(text).map(([,name])=>{
+    const label = normalize(name);
+    const start = (' '+text+' ').indexOf(' '+label+' ');
+    return {name,start,end:start+label.length};
+  }).sort((a,b)=>a.start-b.start);
+  if (towns.length<2) return null;
+
+  const pair = towns.slice(0,-1).map((first,index)=>{
+    const second = towns[index+1];
+    const lead = text.slice(0,first.start);
+    const between = text.slice(first.end,second.start).trim().replace(/^(?:puerto rico|pr)\b/,'').trim();
+    if (/\b(?:saliendo de|salgo de|desde)$/.test(between)) {
+      return {origin:second.name,destination:first.name};
+    }
+    if (/\b(?:a|hacia|para|pa|pa l|pa la)$/.test(between)
+      || (/\bentre\s*$/.test(lead) && /^(?:e|y)$/.test(between))
+      || (/\b(?:ruta|trayecto)\s*$/.test(lead) && /^(?:e|y)?$/.test(between))) {
+      return {origin:first.name,destination:second.name};
+    }
+    return null;
+  }).find(Boolean);
+  if (!pair) return null;
   let search;
-  if (/\b(?:cervezas?|picadera|picar|chinchorros?)\b/.test(text)) search = 'restaurantes con picadera y cerveza';
-  else if (/\b(?:gasolinera|gasolina|gasolineras)\b/.test(text)) search = 'gasolineras';
-  else if (/\b(?:cafe|cafecito|cafeteria)\b/.test(text)) search = 'cafeterías';
-  else if (/\b(?:comer|restaurantes?|almuerzo|desayuno|cena|panaderias?)\b/.test(text)) search = 'restaurantes';
-  return search ? {origin:origin[1],destination:destination[1],search} : null;
+  if (/\b(?:cervezas?|cervecerias?|chinchorros?)\b/.test(text)) search = 'restaurantes con picadera y cerveza';
+  else if (/\b(?:gasolineras?|gasolina)\b/.test(text)) search = 'gasolineras';
+  else if (/\b(?:cafe|cafecito|cafeterias?)\b/.test(text)) search = 'cafeterías';
+  else if (/\b(?:comer|comida|picadera|picar|restaurantes?|almuerzo|desayuno|cena|panaderias?)\b/.test(text)) search = 'restaurantes';
+  return search ? {...pair,search} : null;
 }
 
 function directions({origin,destination}, stop) {
@@ -48,7 +65,7 @@ async function requestJson(fetcher,url,key,fields,body) {
 }
 
 async function lookupStops(trip,{env = process.env,fetcher = fetch,now = new Date()} = {}) {
-  const key = String(env.NAYELI_GOOGLE_MAPS_KEY || env.GOOGLE_PLACES_KEY || '').trim();
+  const key = String(env.NAYELI_GOOGLE_MAPS_KEY || env.GOOGLE_MAPS_API_KEY || env.GOOGLE_PLACES_KEY || '').trim();
   const wantsBeer = trip.search.includes('cerveza');
   const links = [{label:'Ver la ruta en Google Maps',href:directions(trip)}];
   if (!key) return fallback(trip,links);
