@@ -76,6 +76,7 @@ test('the private mobile view uses the supplied portrait and presents quick test
   const html = render({enabled:true,hasApiKey:true});
   assert.match(html,/nayeli-soto-cruz\.webp/);
   assert.match(html,/Nayeli Soto Cruz/);
+  assert.match(html,/Iván Soto me creó para Planeta Boricua/);
   assert.match(html,/Camuy y voy a Isabela/);
   assert.doesNotThrow(()=>compileFunction(html.split('<script>')[1].split('</script>')[0]));
 });
@@ -174,6 +175,7 @@ test('the public beta is on PB pages and stays off private pages',()=>{
     const result = withNayeli(html,path);
     assert.match(result,new RegExp('data-nayeli="'+section+'"'));
     assert.match(result,/Pregúntale a Nayeli/);
+    assert.match(result,/Iván Soto me creó.*Lake Wales, Florida.*Hatillo, Puerto Rico/);
   }
   for (const path of ['/pb-control/nayeli','/artesanos/mi-perfil/token','/artesanos/herramientas/token']) assert.equal(withNayeli(html,path),html);
   const privateHtml='<html><head><meta name="robots" content="noindex"></head><body></body></html>';
